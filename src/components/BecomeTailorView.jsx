@@ -18,11 +18,11 @@ export default function BecomeTailorView({ onJoinClick }) {
 
   // Hero Carousel Configuration
   const carouselImages = [
-    { url: '/tailor_hero_5.jpg', alt: "Tailor partner measuring custom suit jacket" },
-    { url: '/tailor_hero_1.jpg', alt: "StitchBee tailors collaborating at workspace" },
-    { url: '/tailor_hero_2.jpg', alt: "Stitching workbench with designs & tailoring tools" },
-    { url: '/tailor_hero_3.jpg', alt: "Precision sewing machine stitching gold fabric border" },
-    { url: '/tailor_hero_4.jpg', alt: "Professional tailor marking and pinning fabrics" }
+    { url: './tailor_hero_5.jpg', alt: "Tailor partner measuring custom suit jacket" },
+    { url: './tailor_hero_1.jpg', alt: "StitchBee tailors collaborating at workspace" },
+    { url: './tailor_hero_2.jpg', alt: "Stitching workbench with designs & tailoring tools" },
+    { url: './tailor_hero_3.jpg', alt: "Precision sewing machine stitching gold fabric border" },
+    { url: './tailor_hero_4.jpg', alt: "Professional tailor marking and pinning fabrics" }
   ];
 
   useEffect(() => {
@@ -44,11 +44,11 @@ export default function BecomeTailorView({ onJoinClick }) {
   const [whyJoinSlide, setWhyJoinSlide] = useState(0);
   
   const whyJoinImages = [
-    { url: '/why_join_1.jpg', alt: "Redhead designer reviewing custom sizing patterns on a tablet" },
-    { url: '/why_join_2.jpg', alt: "Boutique tailor measuring a client's chest fitting" },
-    { url: '/why_join_3.jpg', alt: "Precision tailoring using scissors to cut fabric patterns" },
-    { url: '/why_join_4.png', alt: "StitchBee Partner App showing measurement tools" },
-    { url: '/why_join_5.jpg', alt: "Custom designer measuring waist fitting on a female client" }
+    { url: './why_join_1.jpg', alt: "Redhead designer reviewing custom sizing patterns on a tablet" },
+    { url: './why_join_2.jpg', alt: "Boutique tailor measuring a client's chest fitting" },
+    { url: './why_join_3.jpg', alt: "Precision tailoring using scissors to cut fabric patterns" },
+    { url: './why_join_4.png', alt: "StitchBee Partner App showing measurement tools" },
+    { url: './why_join_5.jpg', alt: "Custom designer measuring waist fitting on a female client" }
   ];
 
   useEffect(() => {

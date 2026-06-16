@@ -121,11 +121,11 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
           <button className="slider-nav-btn slider-left" onClick={() => scrollCategories('left')}>&#8592;</button>
           <div className="categories-slider" ref={catScrollRef}>
             {[
-              { key: 'men', name: 'Men Collection', price: '₹599', img: '/Mens Collection.jpg' },
-              { key: 'women', name: 'Women Collection', price: '₹499', img: '/womensCollection.jpg' },
-              { key: 'bridal', name: 'Bridal Collection', price: '₹899', img: '/bridalCollection.jpg' },
-              { key: 'kids', name: 'Kids Collection', price: '₹399', img: '/kidsCollection.jpg' },
-              { key: 'luxury', name: 'Luxury Exclusive', price: '₹899', img: '/luxuryCollection.jpg' }
+              { key: 'men', name: 'Men Collection', price: '₹599', img: './Mens Collection.jpg' },
+              { key: 'women', name: 'Women Collection', price: '₹499', img: './womensCollection.jpg' },
+              { key: 'bridal', name: 'Bridal Collection', price: '₹899', img: './bridalCollection.jpg' },
+              { key: 'kids', name: 'Kids Collection', price: '₹399', img: './kidsCollection.jpg' },
+              { key: 'luxury', name: 'Luxury Exclusive', price: '₹899', img: './luxuryCollection.jpg' }
             ].map((cat, idx) => (
               <div 
                 key={idx} 

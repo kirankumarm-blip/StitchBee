@@ -16,11 +16,11 @@ export default function BecomeStudentView({ onJoinClick }) {
 
   // Hero carousel configuration
   const carouselImages = [
-    { url: '/student_hero_1.jpg', alt: "Fashion student reviewing color blocks and fabric catalog charts" },
-    { url: '/student_hero_2.jpg', alt: "Student tailoring assistant cutting fabric with tailoring scissors" },
-    { url: '/student_hero_3.jpg', alt: "Student logistics team coordinating packaging and routes on digital dashboard" },
-    { url: '/student_hero_4.jpg', alt: "Fashion design contributors discussing digital models in design studio" },
-    { url: '/student_hero_5.jpg', alt: "Tailoring assistant stitching garment on professional machine" }
+    { url: './student_hero_1.jpg', alt: "Fashion student reviewing color blocks and fabric catalog charts" },
+    { url: './student_hero_2.jpg', alt: "Student tailoring assistant cutting fabric with tailoring scissors" },
+    { url: './student_hero_3.jpg', alt: "Student logistics team coordinating packaging and routes on digital dashboard" },
+    { url: './student_hero_4.jpg', alt: "Fashion design contributors discussing digital models in design studio" },
+    { url: './student_hero_5.jpg', alt: "Tailoring assistant stitching garment on professional machine" }
   ];
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function BecomeStudentView({ onJoinClick }) {
       todo: ["Pick up beautifully stitched clothes from boutiques", "Deliver securely to customer doorsteps", "Work in your free study hours", "Choose your own delivery slots"],
       benefits: ["Daily gig earnings and bonuses", "100% flexible schedule", "Weekly direct payouts every Monday", "Logistics & customer service certifications"],
       quote: "“Use your free time to build your income.”",
-      img: "/delivery_hero_3.jpg"
+      img: "./delivery_hero_3.jpg"
     },
     design: {
       title: "Fashion Design Contributor",
@@ -54,7 +54,7 @@ export default function BecomeStudentView({ onJoinClick }) {
       todo: ["Upload your creative outfits & styles", "Participate in monthly design contests", "Create trendy outfit ideas for customers", "Build a live digital portfolio"],
       benefits: ["Design royalties per customer select", "Cash rewards for winning contests", "Direct client profile views and bookings", "Premium designer profile badges"],
       quote: "“Your designs can become real fashion.”",
-      img: "/why_join_1.jpg"
+      img: "./why_join_1.jpg"
     },
     tailor: {
       title: "Tailoring Assistant",
@@ -62,7 +62,7 @@ export default function BecomeStudentView({ onJoinClick }) {
       todo: ["Take on small custom stitching tasks", "Assist boutique tailors with alterations", "Work closely alongside master tailor partners", "Practice advanced tailoring on live projects"],
       benefits: ["Highly paid tailoring gigs", "Practical boutique studio learning", "Rapid hands-on sewing skill growth", "Unlock professional boutique placements"],
       quote: "“Learn from the masters while you earn.”",
-      img: "/why_join_2.jpg"
+      img: "./why_join_2.jpg"
     },
     learn: {
       title: "Learn Tailoring",
@@ -70,7 +70,7 @@ export default function BecomeStudentView({ onJoinClick }) {
       todo: ["Learn precise body measurement techniques", "Understand fabric basics and structures", "Master sewing machine configurations", "Learn customer communication skills"],
       benefits: ["Certified training curriculum completion", "Guaranteed paid internship placement", "Direct job opportunities on graduation", "Earn a StitchBee skills passport"],
       quote: "“Start with zero experience.”",
-      img: "/why_join_5.jpg"
+      img: "./why_join_5.jpg"
     }
   };
 

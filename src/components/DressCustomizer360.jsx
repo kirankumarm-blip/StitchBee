@@ -16,9 +16,9 @@ export default function DressCustomizer360({ minimal = false }) {
       desc: 'Hand-beaded leaf embroidery, high thigh slit, and a flowing sheer cape.',
       badge: 'Signature Design',
       frames: {
-        front: '/dress1.jpg',
-        side: '/dress1_side.png',
-        back: '/dress1_back.png'
+        front: './dress1.jpg',
+        side: './dress1_side.png',
+        back: './dress1_back.png'
       }
     },
     {
@@ -27,9 +27,9 @@ export default function DressCustomizer360({ minimal = false }) {
       desc: 'Striking asymmetric silhouette blending sleek black satin with liquid gold silk mermaid trail.',
       badge: 'Trending Design',
       frames: {
-        front: '/dress2.jpg',
-        side: '/dress2_side.png',
-        back: '/dress2_back.png'
+        front: './dress2.jpg',
+        side: './dress2_side.png',
+        back: './dress2_back.png'
       }
     },
     {
@@ -38,9 +38,9 @@ export default function DressCustomizer360({ minimal = false }) {
       desc: 'Pleated crimson chiffon transitioning into a structured dark corset bodice with a shoulder drape.',
       badge: 'Premium Edition',
       frames: {
-        front: '/dress3.jpg',
-        side: '/dress3_side.png',
-        back: '/dress3_back.png'
+        front: './dress3.jpg',
+        side: './dress3_side.png',
+        back: './dress3_back.png'
       }
     }
   ];

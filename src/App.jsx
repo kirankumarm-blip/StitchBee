@@ -454,16 +454,16 @@ export default function App() {
             
             <div className="categories-grid-v2">
               {[
-                { name: "Men's Tailoring", img: "/mens_tailoring.jpg", price: "399", cat: "mens" },
-                { name: "Women's Tailoring", img: "/womens_tailoring_v2.jpg", price: "499", cat: "womens" },
-                { name: "Bridal Wear", img: "/bridal_wear.jpg", price: "1999", cat: "bridal" },
-                { name: "Alterations & Fit", img: "/alterations_fit_v2.jpg", price: "149", cat: "alterations" },
-                { name: "Uniform Stitching", img: "/uniform_stitching.jpg", price: "299", cat: "mens" },
-                { name: "Custom Design", img: "/custom_design.jpg", price: "899", cat: "all" },
-                { name: "Kids Wear", img: "/kids_wear_v2.jpg", price: "249", cat: "kids" },
-                { name: "Bags & Leathers", img: "/bags_leathers.jpg", price: "599", cat: "bags" },
+                { name: "Men's Tailoring", img: "./mens_tailoring.jpg", price: "399", cat: "mens" },
+                { name: "Women's Tailoring", img: "./womens_tailoring_v2.jpg", price: "499", cat: "womens" },
+                { name: "Bridal Wear", img: "./bridal_wear.jpg", price: "1999", cat: "bridal" },
+                { name: "Alterations & Fit", img: "./alterations_fit_v2.jpg", price: "149", cat: "alterations" },
+                { name: "Uniform Stitching", img: "./uniform_stitching.jpg", price: "299", cat: "mens" },
+                { name: "Custom Design", img: "./custom_design.jpg", price: "899", cat: "all" },
+                { name: "Kids Wear", img: "./kids_wear_v2.jpg", price: "249", cat: "kids" },
+                { name: "Bags & Leathers", img: "./bags_leathers.jpg", price: "599", cat: "bags" },
                 { name: "Shoes & Slippers", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80", price: "499", cat: "shoes" },
-                { name: "Vehicle Seat Covers", img: "/vehicle_seats.jpg", price: "999", cat: "seats" }
+                { name: "Vehicle Seat Covers", img: "./vehicle_seats.jpg", price: "999", cat: "seats" }
               ].map((category, idx) => (
                 <div key={idx} className="category-card-v2" onClick={() => {
                   setCustomerCategory(category.cat);
@@ -561,18 +561,18 @@ export default function App() {
             <div className="reels-carousel-container">
               <div className="reels-carousel" ref={reelsRef}>
                 {[
-                  { title: "Zardozi Royal Lehenga", designer: "Sneha Reddy (Expert)", price: 8500, cat: "bridal", videoUrl: "/trending_video_1.mp4" },
-                  { title: "Italian Double-Breasted Suit", designer: "Vikram Singh (Expert)", price: 5500, cat: "mens", videoUrl: "/trending_video_2.mp4" },
-                  { title: "Georgette Floral Kurti", designer: "Ananya Pillai (Expert)", price: 1200, cat: "womens", videoUrl: "/trending_video_3.mp4" },
-                  { title: "Padded Silk Blouse", designer: "Sarah Khan (Expert)", price: 1500, cat: "womens", videoUrl: "/trending_video_4.mp4" },
-                  { title: "Classic Oxford Cotton Shirt", designer: "Amit Kumar (Student)", price: 1800, cat: "mens", videoUrl: "/trending_video_5.mp4" },
-                  { title: "Handwoven Chanderi Saree", designer: "Pooja Mehta (Expert)", price: 6200, cat: "womens", videoUrl: "/trending_video_6.mp4" },
-                  { title: "Bespoke Indigo Sherwani", designer: "Rajesh Nair (Expert)", price: 9500, cat: "mens", videoUrl: "/trending_video_7.mp4" },
-                  { title: "Organza Pastel Anarkali", designer: "Kiran Shah (Student)", price: 4800, cat: "womens", videoUrl: "/trending_video_8.mp4" },
-                  { title: "Kid's Velvet Party Suit", designer: "Meena Patel (Expert)", price: 2400, cat: "kids", videoUrl: "/trending_video_9.mp4" },
-                  { title: "Premium Tweed Blazer", designer: "Sanjay Dutta (Expert)", price: 3800, cat: "mens", videoUrl: "/trending_video_10.mp4" },
-                  { title: "Satin Evening Slip Gown", designer: "Nisha Sen (Student)", price: 5200, cat: "womens", videoUrl: "/trending_video_11.mp4" },
-                  { title: "Embroidered Pashmina Shawl", designer: "Harish Gupta (Expert)", price: 7000, cat: "womens", videoUrl: "/trending_video_12.mp4" }
+                  { title: "Zardozi Royal Lehenga", designer: "Sneha Reddy (Expert)", price: 8500, cat: "bridal", videoUrl: "./trending_video_1.mp4" },
+                  { title: "Italian Double-Breasted Suit", designer: "Vikram Singh (Expert)", price: 5500, cat: "mens", videoUrl: "./trending_video_2.mp4" },
+                  { title: "Georgette Floral Kurti", designer: "Ananya Pillai (Expert)", price: 1200, cat: "womens", videoUrl: "./trending_video_3.mp4" },
+                  { title: "Padded Silk Blouse", designer: "Sarah Khan (Expert)", price: 1500, cat: "womens", videoUrl: "./trending_video_4.mp4" },
+                  { title: "Classic Oxford Cotton Shirt", designer: "Amit Kumar (Student)", price: 1800, cat: "mens", videoUrl: "./trending_video_5.mp4" },
+                  { title: "Handwoven Chanderi Saree", designer: "Pooja Mehta (Expert)", price: 6200, cat: "womens", videoUrl: "./trending_video_6.mp4" },
+                  { title: "Bespoke Indigo Sherwani", designer: "Rajesh Nair (Expert)", price: 9500, cat: "mens", videoUrl: "./trending_video_7.mp4" },
+                  { title: "Organza Pastel Anarkali", designer: "Kiran Shah (Student)", price: 4800, cat: "womens", videoUrl: "./trending_video_8.mp4" },
+                  { title: "Kid's Velvet Party Suit", designer: "Meena Patel (Expert)", price: 2400, cat: "kids", videoUrl: "./trending_video_9.mp4" },
+                  { title: "Premium Tweed Blazer", designer: "Sanjay Dutta (Expert)", price: 3800, cat: "mens", videoUrl: "./trending_video_10.mp4" },
+                  { title: "Satin Evening Slip Gown", designer: "Nisha Sen (Student)", price: 5200, cat: "womens", videoUrl: "./trending_video_11.mp4" },
+                  { title: "Embroidered Pashmina Shawl", designer: "Harish Gupta (Expert)", price: 7000, cat: "womens", videoUrl: "./trending_video_12.mp4" }
                 ].map((reel, idx) => (
                   <div 
                     key={idx} 

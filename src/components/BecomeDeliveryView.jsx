@@ -18,11 +18,11 @@ export default function BecomeDeliveryView({ onJoinClick }) {
 
   // Hero Carousel Configuration
   const carouselImages = [
-    { url: '/delivery_hero_1.jpg', alt: "Delivery partner on scooter checking navigation map on smartphone" },
-    { url: '/delivery_hero_2.jpg', alt: "Mockup map routing and delivery tracking overview" },
-    { url: '/delivery_hero_3.jpg', alt: "StitchBee delivery partner carrying lightweight fashion package" },
-    { url: '/delivery_hero_4.jpg', alt: "Courier partner picking up custom packages from boutique tailor" },
-    { url: '/delivery_hero_5.jpg', alt: "Handing over premium packaged custom clothes to client with a smile" }
+    { url: './delivery_hero_1.jpg', alt: "Delivery partner on scooter checking navigation map on smartphone" },
+    { url: './delivery_hero_2.jpg', alt: "Mockup map routing and delivery tracking overview" },
+    { url: './delivery_hero_3.jpg', alt: "StitchBee delivery partner carrying lightweight fashion package" },
+    { url: './delivery_hero_4.jpg', alt: "Courier partner picking up custom packages from boutique tailor" },
+    { url: './delivery_hero_5.jpg', alt: "Handing over premium packaged custom clothes to client with a smile" }
   ];
 
   useEffect(() => {
@@ -48,27 +48,27 @@ export default function BecomeDeliveryView({ onJoinClick }) {
     {
       title: "Easy Onboarding",
       desc: "Register online, upload your ID and vehicle details, and get verified in under 24 hours.",
-      img: "/delivery_works_2.jpg"
+      img: "./delivery_works_2.jpg"
     },
     {
       title: "Careful Packaging",
       desc: "Wait for order notifications and secure the boutique outfits in high-quality clothing bags.",
-      img: "/delivery_works_3.jpg"
+      img: "./delivery_works_3.jpg"
     },
     {
       title: "Smart Pickups",
       desc: "Scan QR/barcodes on custom clothes at the tailor's studio to confirm pick-up details.",
-      img: "/delivery_works_1.jpg"
+      img: "./delivery_works_1.jpg"
     },
     {
       title: "Doorstep Delivery",
       desc: "Navigate to the customer's location and safely hand over the premium garments.",
-      img: "/delivery_works_4.jpg"
+      img: "./delivery_works_4.jpg"
     },
     {
       title: "High Earnings",
       desc: "Receive payments instantly, earn milestone bonuses, and cash out to your bank weekly.",
-      img: "/delivery_works_5.jpg"
+      img: "./delivery_works_5.jpg"
     }
   ];
 
@@ -304,7 +304,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             <div className="why-join-delivery-visual-col">
               <div className="delivery-premium-card-wrapper">
                 <img 
-                  src="/delivery_premium.png" 
+                  src="./delivery_premium.png" 
                   alt="Premium clothing garment package being handled with care" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
