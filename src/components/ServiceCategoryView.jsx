@@ -61,17 +61,21 @@ const categoryTemplates = {
       { name: "Party Wear", desc: "Embellished evening gowns and festive salwar suits.", icon: <Star size={20} /> }
     ],
     designs: [
-      { id: "w-lehenga", name: "Handcrafted Festive Lehenga", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80", desc: "Elegant georgette base with heavy border sequins and matching choli.", price: "₹3,999" },
-      { id: "w-blouse", name: "Padded Designer Saree Blouse", img: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80", desc: "Princess cut sweetheart blouse with backend lace tie customizations.", price: "₹599" },
-      { id: "w-suit", name: "Anarkali Salwar Suit", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80", desc: "Royal flair silk salwar suit with embroidered georgette dupatta.", price: "₹999" },
-      { id: "w-gown", name: "Satin Evening Slip Gown", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80", desc: "Sleek cowl neck premium satin gown for corporate dinners.", price: "₹2,999" },
-      { id: "w-kurti", name: "Floral Georgette Kurti", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=400&q=80", desc: "Lightweight A-line summer kurti with delicate cuff loops.", price: "₹399" }
+      { id: "w-lehenga", name: "Handcrafted Festive Lehenga", img: "./w_women1.jpg", desc: "Elegant georgette base with heavy border sequins and matching choli.", price: "₹3,999" },
+      { id: "w-blouse", name: "Padded Designer Saree Blouse", img: "./w_women2.jpg", desc: "Princess cut sweetheart blouse with backend lace tie customizations.", price: "₹599" },
+      { id: "w-suit", name: "Anarkali Salwar Suit", img: "./w_womens3.jpg", desc: "Royal flair silk salwar suit with embroidered georgette dupatta.", price: "₹999" },
+      { id: "w-gown", name: "Satin Evening Slip Gown", img: "./w_women4.jpg", desc: "Sleek cowl neck premium satin gown for corporate dinners.", price: "₹2,999" },
+      { id: "w-kurti", name: "Floral Georgette Kurti", img: "./w_women5.jpg", desc: "Lightweight A-line summer kurti with delicate cuff loops.", price: "₹399" },
+      { id: "w-blazer", name: "Tailored Women's Blazer", img: "./w_women6.jpg", desc: "Structured formal blazer for modern workplace style.", price: "₹2,199" },
+      { id: "w-saree", name: "Designer Saree Custom Drape", img: "./w_women7.jpg", desc: "Bespoke custom saree stitching and pre-pleated drape service.", price: "₹1,499" }
     ],
     fabrics: [
-      { id: "f-satin", name: "Royal Crepe Satin", type: "Premium Satin", price: 799, rating: "4.9", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-georgette", name: "Embellished Georgette", type: "Georgette Silk", price: 699, rating: "4.8", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-chiffon", name: "Fine Pure Chiffon", type: "Chiffon Blend", price: 599, rating: "4.7", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-velvet", name: "Plush Maroon Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=300&q=80" }
+      { id: "f-satin", name: "Royal Crepe Satin", type: "Premium Satin", price: 799, rating: "4.9", img: "./wf_b2.jpg" },
+      { id: "f-georgette", name: "Embellished Georgette", type: "Georgette Silk", price: 699, rating: "4.8", img: "./wf_b3.jpg" },
+      { id: "f-chiffon", name: "Fine Pure Chiffon", type: "Chiffon Blend", price: 599, rating: "4.7", img: "./wf_b4.jpg" },
+      { id: "f-velvet", name: "Plush Maroon Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "./wf_b5.jpg" },
+      { id: "f-banarasi", name: "Premium Banarasi Brocade", type: "Banarasi Silk", price: 1299, rating: "4.9", img: "./wf_banarasi.jpg" },
+      { id: "f-organza", name: "Organza Floral Silk", type: "Organza Silk", price: 899, rating: "4.8", img: "./wf_b6.jpg" }
     ],
     pricing: [
       { item: "Basic A-Line Kurti Stitching", price: "₹399" },
@@ -100,14 +104,22 @@ const categoryTemplates = {
       { name: "Luxury Fabric Sourcing", desc: "Sourcing gold-certified SilkMark Banarasi and Kanchipuram silk.", icon: <Star size={20} /> }
     ],
     designs: [
-      { id: "b-lehenga", name: "Royal Zardozi Bridal Lehenga", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80", desc: "Traditional dark red velvet lehenga with dual dupatta and gold metallic threads.", price: "₹7,999" },
-      { id: "b-blouse", name: "Embroidered Silk Bridal Blouse", img: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80", desc: "Heavy hand-beaded blouse with elbow-length sleeves and back neckline keyhole.", price: "₹1,999" },
-      { id: "b-gown", name: "Lace Overlay Wedding Gown", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80", desc: "Imported french lace bodice with layers of premium soft tulle trail.", price: "₹6,999" }
+      { id: "b-lehenga", name: "Royal Zardozi Bridal Lehenga", img: "./br_b1.jpg", desc: "Traditional dark red velvet lehenga with dual dupatta and gold metallic threads.", price: "₹7,999" },
+      { id: "b-blouse", name: "Embroidered Silk Bridal Blouse", img: "./br_b2.jpg", desc: "Heavy hand-beaded blouse with elbow-length sleeves and back neckline keyhole.", price: "₹1,999" },
+      { id: "b-gown", name: "Lace Overlay Wedding Gown", img: "./br_bridal2.jpg", desc: "Imported french lace bodice with layers of premium soft tulle trail.", price: "₹6,999" },
+      { id: "b-anarkali", name: "Luxury Bridal Anarkali Suit", img: "./br_bridal3.jpg", desc: "Floor-length heavy embroidered silk Anarkali suit for wedding festivities.", price: "₹3,499" },
+      { id: "b-saree", name: "Banarasi Bridal Saree Gown", img: "./br_bridal4.jpg", desc: "Stitched pre-draped bridal saree with heavy golden border details.", price: "₹4,499" },
+      { id: "b-sherwani-bride", name: "Royal Indowestern Bridal Set", img: "./br_bridal 5.jpg", desc: "Contemporary high-fashion wedding wear with matching custom details.", price: "₹5,499" },
+      { id: "b-reception-gown", name: "Glittering Reception Gown", img: "./br_bridal6.jpg", desc: "Glamorous off-shoulder gown with sparkling glass beads and trailing net skirt.", price: "₹8,999" },
+      { id: "b-haldi", name: "Yellow Haldi Crop-Top Set", img: "./br_bridal7.jpg", desc: "Charming mustard-yellow crop top and flared skirt with mirror work details.", price: "₹2,799" }
     ],
     fabrics: [
-      { id: "f-silk", name: "Pure Silk Banarasi", type: "Banarasi Silk", price: 2999, rating: "5.0", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-velvet-b", name: "Royal Wedding Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-raw-silk", name: "Certified Raw Silk", type: "Mulberry Raw Silk", price: 1499, rating: "4.9", img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80" }
+      { id: "f-silk", name: "Pure Silk Banarasi", type: "Banarasi Silk", price: 2999, rating: "5.0", img: "./brf_fa2.jpg" },
+      { id: "f-velvet-b", name: "Royal Wedding Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "./brf_fa3.jpg" },
+      { id: "f-raw-silk", name: "Certified Raw Silk", type: "Mulberry Raw Silk", price: 1499, rating: "4.9", img: "./brf_fa4.jpg" },
+      { id: "f-brocade-b", name: "Premium Golden Brocade", type: "Golden Brocade", price: 2199, rating: "4.9", img: "./brf_fa5.jpg" },
+      { id: "f-organza-b", name: "Sheer Organza Tissue", type: "Tissue Organza", price: 1299, rating: "4.8", img: "./brf_faa6.jpg" },
+      { id: "f-net-b", name: "Heavy Sequins Net", type: "Embroidered Net", price: 1799, rating: "4.7", img: "./brf_fa7.jpg" }
     ],
     pricing: [
       { item: "Zardozi Saree Blouse Stitching", price: "₹1,999" },
