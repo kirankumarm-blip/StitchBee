@@ -9,7 +9,7 @@ export const INITIAL_TAILORS = [
     reviews: 142,
     distance: 0.8,
     specialty: 'Premium Suits, Blazers & Alterations',
-    categories: ['mens', 'alterations'],
+    categories: ['mens', 'alterations', 'uniforms'],
     address: 'Sector 4, HSR Layout, Bengaluru',
     coordinates: { x: 30, y: 40 },
     image: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=400&q=80',

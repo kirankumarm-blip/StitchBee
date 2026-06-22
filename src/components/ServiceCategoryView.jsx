@@ -144,14 +144,20 @@ const categoryTemplates = {
       { name: "Doorstep Trials", desc: "Quick fit checks at home, designed for zero stress for parents.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "k-suit", name: "Toddler Party Tuxedo Suit", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80", desc: "Three-piece tiny suit with micro bow-tie and elastic waistband trouser.", price: "₹1,199" },
-      { id: "k-festive", name: "Kids Silk Kurta Pyjama", img: "https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=400&q=80", desc: "Soft blend kurta with side buttons and comfortable cotton pajama.", price: "₹599" },
-      { id: "k-daily", name: "Comfort Cotton Frock", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=400&q=80", desc: "Anti-allergen organic cotton frock with back zip closure.", price: "₹249" }
+      { id: "k-suit", name: "Toddler Party Tuxedo Suit", img: "./k_k1.jpg", desc: "Three-piece tiny suit with micro bow-tie and elastic waistband trouser.", price: "₹1,199" },
+      { id: "k-festive", name: "Kids Silk Kurta Pyjama", img: "./k_k2.jpg", desc: "Soft blend kurta with side buttons and comfortable cotton pajama.", price: "₹599" },
+      { id: "k-daily", name: "Comfort Cotton Frock", img: "./k_k3.jpg", desc: "Anti-allergen organic cotton frock with back zip closure.", price: "₹249" },
+      { id: "k-lehenga", name: "Kids Silk Lehenga Choli", img: "./k_k4.jpg", desc: "Cute mini silk lehenga with matching floral choli.", price: "₹899" },
+      { id: "k-sherwani", name: "Junior Wedding Sherwani", img: "./k_k5.jpg", desc: "Micro zardozi work sherwani for boys, comes with cotton pajama.", price: "₹1,099" },
+      { id: "k-frock", name: "Premium Tulle Birthday Frock", img: "./k_k6.jpg", desc: "Fluffy net frock with soft cotton lining layers and back ribbon tie.", price: "₹799" }
     ],
     fabrics: [
-      { id: "f-supima", name: "Organic Supima Cotton", type: "Supima Cotton", price: 899, rating: "4.9", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-soft-satin", name: "Baby-Safe Soft Satin", type: "Soft Satin", price: 599, rating: "4.8", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-cotton-b", name: "Combed Cotton Blend", type: "Combed Cotton", price: 399, rating: "4.7", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80" }
+      { id: "f-supima", name: "Organic Supima Cotton", type: "Supima Cotton", price: 899, rating: "4.9", img: "./kf_fab1.jpg" },
+      { id: "f-soft-satin", name: "Baby-Safe Soft Satin", type: "Soft Satin", price: 599, rating: "4.8", img: "./kf_fab2.jpg" },
+      { id: "f-cotton-b", name: "Combed Cotton Blend", type: "Combed Cotton", price: 399, rating: "4.7", img: "./kf_fab3.jpg" },
+      { id: "f-kids-linen", name: "Soft Organic Linen", type: "Organic Linen", price: 699, rating: "4.8", img: "./kf_fab4.jpg" },
+      { id: "f-kids-silk", name: "Soft Mulberry Silk", type: "Mulberry Silk", price: 1199, rating: "4.9", img: "./kf_fab5.jpg" },
+      { id: "f-kids-flannel", name: "Cozy Brushed Flannel", type: "Brushed Flannel", price: 499, rating: "4.7", img: "./kf_fab6.jpg" }
     ],
     pricing: [
       { item: "Kids Basic Cotton Wear", price: "₹249" },
@@ -162,6 +168,44 @@ const categoryTemplates = {
     reviews: [
       { author: "Meera Patel", text: "Loved the soft cotton lining in my son's sherwani. He wore it all evening without complaining once about itching. Fantastic job!", rating: 5, initial: "M" },
       { author: "Karan Mehta", text: "The growth allowance stitch is a genius idea. Stitched a birthday suit for my 5-year old, it has space to adjust as he grows.", rating: 5, initial: "K" }
+    ]
+  },
+  uniforms: {
+    badge: "DURABLE SCHOOL & WORK WEAR",
+    title: "Premium Uniform Stitching",
+    subtext: "High-durability school, corporate, and healthcare uniforms stitched to perfection. Reinforced seams, quality brass buttons, and custom school/corporate logos.",
+    services: [
+      { name: "School Uniforms", desc: "Shirts, skirts, trousers, and pinafores for all school codes.", icon: <Scissors size={20} /> },
+      { name: "Corporate Uniforms", desc: "Structured blazers, waistcoats, and formal pants.", icon: <Sparkles size={20} /> },
+      { name: "Medical & Scrubs", desc: "Comfortable, sterile-wash safe healthcare scrubs and lab coats.", icon: <Layers size={20} /> },
+      { name: "Bulk Measurements", desc: "Boutique master tailors visiting schools/offices for group fittings.", icon: <User size={20} /> },
+      { name: "Logo Embroidery", desc: "High-density custom machine embroidery for badges and logos.", icon: <Award size={20} /> }
+    ],
+    designs: [
+      { id: "uni-boy", name: "Classic Boy's School Set", img: "./uni_uni1.jpg", desc: "Short sleeve formal white shirt with matching grey shorts.", price: "₹299" },
+      { id: "uni-girl", name: "Classic Girl's Pinafore", img: "./uni_uni2.jpg", desc: "Navy blue pinafore dress with short sleeve white collared shirt.", price: "₹349" },
+      { id: "uni-blazer", name: "School Crest Blazer", img: "./uni_uni3.jpg", desc: "Structured dark navy blazer with custom pocket crest lining.", price: "₹899" },
+      { id: "uni-shirt", name: "Premium Oxford School Shirt", img: "./uni_uni4.jpg", desc: "Durable cotton-poly blend collared shirt with reinforced elbows.", price: "₹199" },
+      { id: "uni-scrub", name: "Medical Scrub Set", img: "./uni_uni5.jpg", desc: "V-neck lightweight teal scrubs with multi-pocket trousers.", price: "₹399" },
+      { id: "uni-lab", name: "Classic Lab Coat", img: "./uni_uni6.jpg", desc: "Full-length white cotton lab coat with front button closure.", price: "₹299" }
+    ],
+    fabrics: [
+      { id: "f-uni-cotton", name: "Twill School Cotton", type: "Cotton Poly", price: 290, rating: "4.8", img: "./unif_fab1.jpg" },
+      { id: "f-uni-poly", name: "Durable Polyester Blend", type: "Durable Poly", price: 180, rating: "4.7", img: "./unif_fab2.jpg" },
+      { id: "f-uni-suiting", name: "Premium Suiting Fabric", type: "Viscose Blend", price: 390, rating: "4.9", img: "./unif_fab3.jpg" },
+      { id: "f-uni-anti", name: "Anti-Bacterial Medical Fabric", type: "Anti-Bacterial", price: 450, rating: "4.9", img: "./unif_fab4.jpg" },
+      { id: "f-uni-drill", name: "Heavy Cotton Drill", type: "Cotton Drill", price: 320, rating: "4.8", img: "./unif_fab5.jpg" },
+      { id: "f-uni-terry", name: "Terrycot Classic Uniform", type: "Terrycot Blend", price: 240, rating: "4.7", img: "./unif_fab6.jpg" }
+    ],
+    pricing: [
+      { item: "School Shirt Stitching", price: "₹199" },
+      { item: "School Skirt/Pinafore", price: "₹349" },
+      { item: "School Blazer Stitching", price: "₹899" },
+      { item: "Medical Scrubs Set", price: "₹399" }
+    ],
+    reviews: [
+      { author: "Anita Rao", text: "Ordered uniforms for both my kids. The fabric is durable and doesn't shrink. Excellent fitting around the collar.", rating: 5, initial: "A" },
+      { author: "Dr. Sandeep", text: "Stitched lab coats for our entire clinic staff. Clean stitching, correct sizes, and daily convenience.", rating: 5, initial: "S" }
     ]
   },
   alterations: {

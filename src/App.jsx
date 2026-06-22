@@ -270,7 +270,7 @@ export default function App() {
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); }}>Bridal</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); }}>Kids</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); }}>Alterations</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); }}>Uniforms</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); }}>Uniforms</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); }}>Bags And Leathers</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); }}>Shoes And Slippers</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); }}>Vehicle Seat Covers</li>
@@ -458,7 +458,7 @@ export default function App() {
                 { name: "Women's Tailoring", img: "./womens_tailoring_v2.jpg", price: "499", cat: "womens" },
                 { name: "Bridal Wear", img: "./bridal_wear.jpg", price: "1999", cat: "bridal" },
                 { name: "Alterations & Fit", img: "./alterations_fit_v2.jpg", price: "149", cat: "alterations" },
-                { name: "Uniform Stitching", img: "./uniform_stitching.jpg", price: "299", cat: "mens" },
+                { name: "Uniform Stitching", img: "./uniform_stitching.jpg", price: "299", cat: "uniforms" },
                 { name: "Custom Design", img: "./custom_design.jpg", price: "899", cat: "all" },
                 { name: "Kids Wear", img: "./kids_wear_v2.jpg", price: "249", cat: "kids" },
                 { name: "Bags & Leathers", img: "./bags_leathers.jpg", price: "599", cat: "bags" },
