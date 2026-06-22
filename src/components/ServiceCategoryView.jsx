@@ -220,14 +220,12 @@ const categoryTemplates = {
       { name: "doorstep trials", desc: "Student runner picks up reference garments and delivers alterations.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "a-suit", name: "Suit & Blazer Slimming", img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=400&q=80", desc: "Narrowing jacket seams and sleeves to match athletic measurements.", price: "₹799" },
-      { id: "a-hem", name: "Trouser Leg Hemming", img: "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=400&q=80", desc: "Shortening denim or formal trousers with original-looking borders.", price: "₹149" },
-      { id: "a-zip", name: "Heavy-Duty Zipper Swap", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80", desc: "Replacing broken zippers on jackets, lehengas, and denim trousers.", price: "₹99" }
-    ],
-    fabrics: [
-      { id: "f-thread", name: "StitchBee Thread Spool Pack", type: "Polyester Thread", price: 99, rating: "4.9", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-zipper", name: "Premium Brass Zipper", type: "Zipper Asset", price: 79, rating: "4.8", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80" },
-      { id: "f-lining", name: "Soft Cotton Lining Fabric", type: "Cotton Lining", price: 199, rating: "4.7", img: "https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80" }
+      { id: "a-suit", name: "Suit & Blazer Slimming", img: "./alt_al1.jpg", desc: "Narrowing jacket seams and sleeves to match athletic measurements.", price: "₹799" },
+      { id: "a-hem", name: "Trouser Leg Hemming", img: "./alt_al2.jpg", desc: "Shortening denim or formal trousers with original-looking borders.", price: "₹149" },
+      { id: "a-zip", name: "Heavy-Duty Zipper Swap", img: "./alt_al3.jpg", desc: "Replacing broken zippers on jackets, lehengas, and denim trousers.", price: "₹99" },
+      { id: "a-dress", name: "Dress & Kurti Resizing", img: "./alt_al4.jpg", desc: "Waist tightening and design modifications for women's dresses.", price: "₹299" },
+      { id: "a-sleeve", name: "Sleeve & Cuff Adjustments", img: "./alt_al5.jpg", desc: "Shortening sleeves or reshaping cuffs on formal shirts.", price: "₹199" },
+      { id: "a-lining", name: "Coat Lining Replacement", img: "./alt_al6.jpg", desc: "Replacing torn internal lining sheets with premium fabrics.", price: "₹499" }
     ],
     pricing: [
       { item: "Jeans Hemming / Shortening", price: "₹149" },
@@ -314,6 +312,44 @@ const categoryTemplates = {
     reviews: [
       { author: "Kiran M.", text: "First time trying custom wholecut shoes. The fit is perfect for my wide feet. Extremely comfortable cushion.", rating: 5, initial: "K" },
       { author: "Rajesh S.", text: "Stitched mojari shoes to match my wedding sherwani. Beautiful golden zari detail and fits very comfortably.", rating: 5, initial: "R" }
+    ]
+  },
+  seats: {
+    badge: "CUSTOM AUTOMOTIVE INTERIORS",
+    title: "Premium Vehicle Seat Covers",
+    subtext: "Custom-fit leather and fabric seat covers for cars and bikes. Hand-stitched with durable, weather-resistant, and high-density foam padding for luxury comfort.",
+    services: [
+      { name: "Car Seat Covers", desc: "Full interior sets for hatchbacks, sedans, and SUVs.", icon: <Scissors size={20} /> },
+      { name: "Bike Seat Covers", desc: "Anti-slip, waterproof, and custom-cushioned bike covers.", icon: <Sparkles size={20} /> },
+      { name: "Orthopedic Padding", desc: "Extra lumbar support and memory foam layer additions.", icon: <Layers size={20} /> },
+      { name: "Doorstep Fitting", desc: "StitchBee partners install covers at your home/garage.", icon: <User size={20} /> },
+      { name: "Steering & Dashboard Wrap", desc: "Matching custom leather wraps for steering wheels and dashboards.", icon: <Award size={20} /> }
+    ],
+    designs: [
+      { id: "seat-quilted", name: "Premium Quilted Leather Set", img: "./car_c1.jpg", desc: "Luxury diamond-stitched seat covers with double-bonded borders.", price: "₹12,000" },
+      { id: "seat-sporty", name: "Sporty Bucket Seat Covers", img: "./car_c2.jpg", desc: "Contoured bucket seat styling with high-contrast racing stripes.", price: "₹9,500" },
+      { id: "seat-classic", name: "Classic Matte Tan Set", img: "./car_c3.jpg", desc: "Sophisticated minimalist tan seat covers, perfect for luxury sedans.", price: "₹8,000" },
+      { id: "seat-bike-gel", name: "Gel-Cushioned Bike Seat", img: "./car_c4.jpg", desc: "Ergonomic motorcycle seat cover with integrated comfort gel pad.", price: "₹1,500" },
+      { id: "seat-perforated", name: "Perforated Breathable Leather", img: "./car_c5.jpg", desc: "Micro-perforated leather covers to prevent heat buildup in summer.", price: "₹11,000" },
+      { id: "seat-suv", name: "Heavy-Duty SUV Row Set", img: "./car_c6.jpg", desc: "Tough, water-resistant dirt-proof seat covers for 3-row SUVs.", price: "₹14,000" }
+    ],
+    fabrics: [
+      { id: "f-car-nappa", name: "Premium Nappa Car Leather", type: "Nappa Leather", price: 2500, rating: "5.0", img: "./carf_f1.jpg" },
+      { id: "f-car-pu", name: "Heavy PU Leather", type: "PU Leather", price: 1200, rating: "4.8", img: "./carf_f2.jpg" },
+      { id: "f-car-suede", name: "Alcantara Style Suede", type: "Alcantara Suede", price: 2900, rating: "4.9", img: "./carf_f3.jpg" },
+      { id: "f-car-vinyl", name: "Durable Marine Vinyl", type: "Marine Vinyl", price: 1000, rating: "4.7", img: "./carf_f4.jpg" },
+      { id: "f-car-foam", name: "High-Density Foam Layer", type: "HD Foam", price: 500, rating: "4.8", img: "./carf_f5.jpg" },
+      { id: "f-car-mesh", name: "3D Spacer Mesh Fabric", type: "Spacer Mesh", price: 800, rating: "4.7", img: "./carf_f6.jpg" }
+    ],
+    pricing: [
+      { item: "Bike Seat Cover Stitching", price: "₹1,500" },
+      { item: "Hatchback Full Cover Set", price: "₹8,000" },
+      { item: "Sedan Full Cover Set", price: "₹9,500" },
+      { item: "SUV 3-Row Full Cover Set", price: "₹14,000" }
+    ],
+    reviews: [
+      { author: "Karthik R.", text: "Stitched quilted seat covers for my Thar. Excellent fitting and the red border stitching matches my car exterior perfectly.", rating: 5, initial: "K" },
+      { author: "Suresh Gowda", text: "Got custom gel seat stitching for my Royal Enfield. Long rides are so much more comfortable now. Highly recommended.", rating: 5, initial: "S" }
     ]
   }
 };
