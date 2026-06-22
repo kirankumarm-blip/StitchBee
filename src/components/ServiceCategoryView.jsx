@@ -239,6 +239,82 @@ const categoryTemplates = {
       { author: "Sanjay Dutta", text: "Alteration was done in less than 24 hours. They picked up my wedding suit, slimmed the trousers, and returned it fitting perfectly.", rating: 5, initial: "S" },
       { author: "Rohan Das", text: "Replaced a broken zip on a leather jacket. Excellent work, looks identical to the original one.", rating: 4, initial: "R" }
     ]
+  },
+  bags: {
+    badge: "CUSTOM LEATHER & CANVAS WORKS",
+    title: "Bespoke Bags & Leathercraft",
+    subtext: "Hand-stitched leather bags, custom wallets, luggage repair, and premium canvas restorations. Crafted by leather specialists with high-end reinforced stitching.",
+    services: [
+      { name: "Leather Bags", desc: "Custom handbags, tote bags, and backpacks stitched to order.", icon: <Scissors size={20} /> },
+      { name: "Wallets & Accessories", desc: "Premium custom wallets, belts, passport holders, and watch straps.", icon: <Sparkles size={20} /> },
+      { name: "Luggage Restorations", desc: "Repairs for heavy-duty travel bags, zip swaps, and strap fixes.", icon: <Layers size={20} /> },
+      { name: "Custom Canvas Stitching", desc: "Duffel bags and messenger bags with high-density canvas panels.", icon: <User size={20} /> },
+      { name: "Monogram Embossing", desc: "Custom hot-stamp name or logo engraving on leather surfaces.", icon: <Award size={20} /> }
+    ],
+    designs: [
+      { id: "bag-tote", name: "Premium Leather Tote Bag", img: "./bag_b1.jpg", desc: "Spacious daily-carry tote bag made of full-grain pull-up leather.", price: "₹2,499" },
+      { id: "bag-messenger", name: "Executive Canvas Messenger", img: "./bag_b2.jpg", desc: "Water-resistant waxed canvas messenger bag with brass buckles.", price: "₹1,899" },
+      { id: "bag-wallet", name: "Minimalist Bifold Wallet", img: "./bag_b3.jpg", desc: "Sleek bifold pocket wallet with 6 card slots and currency pocket.", price: "₹599" },
+      { id: "bag-duffel", name: "Overnight Travel Duffel", img: "./bag_b4.jpg", desc: "Classic round-cut travel duffel with detachable shoulder strap.", price: "₹3,499" },
+      { id: "bag-clutch", name: "Elegant Ladies Clutch", img: "./bag_b5.jpg", desc: "Top-grain saffiano leather clutch with detachable gold chain.", price: "₹1,299" },
+      { id: "bag-backpack", name: "Urban Commuter Backpack", img: "./bag_b6.jpg", desc: "Roll-top canvas backpack with laptop compartment and leather accents.", price: "₹2,799" }
+    ],
+    fabrics: [
+      { id: "f-leather-full", name: "Full-Grain Tan Leather", type: "Full-Grain Leather", price: 1500, rating: "5.0", img: "./bagf_fb1.jpg" },
+      { id: "f-leather-saff", name: "Black Saffiano Leather", type: "Saffiano Leather", price: 1800, rating: "4.9", img: "./bagf_fb2.jpg" },
+      { id: "f-leather-suede", name: "Brown Suede Leather", type: "Suede Leather", price: 1400, rating: "4.8", img: "./bagf_fb3.jpg" },
+      { id: "f-canvas-waxed", name: "Heavy Waxed Canvas", type: "Waxed Canvas", price: 800, rating: "4.9", img: "./bagf_fb4.jpg" },
+      { id: "f-lining-jacq", name: "Bemberg Silk Lining", type: "Silk Jacquard", price: 600, rating: "4.8", img: "./bagf_fb5.jpg" },
+      { id: "f-leather-nappa", name: "Soft Nappa Leather", type: "Nappa Leather", price: 1900, rating: "5.0", img: "./bagf_fb6.jpg" }
+    ],
+    pricing: [
+      { item: "Bifold Wallet Stitching", price: "₹599" },
+      { item: "Premium Leather Tote Bag", price: "₹2,499" },
+      { item: "Waxed Canvas Messenger Bag", price: "₹1,899" },
+      { item: "Overnight Duffel Stitching", price: "₹3,499" }
+    ],
+    reviews: [
+      { author: "Vikram Sen", text: "Stitched a custom messenger bag. The hardware is solid brass and the leather feel is top-notch. Absolutely worth it.", rating: 5, initial: "V" },
+      { author: "Meera K.", text: "Restored my vintage leather suitcase. Replaced the runner zip with a high-quality brass zipper. Excellent craftsmanship.", rating: 5, initial: "M" }
+    ]
+  },
+  shoes: {
+    badge: "BESPOKE HANDMADE FOOTWEAR",
+    title: "Bespoke Shoes & Slippers",
+    subtext: "Handcrafted leather shoes, custom wedding mojaris, casual slip-ons, and traditional slippers. Stitched by master cobblers with orthopedic cushioning.",
+    services: [
+      { name: "Oxford & Derbies", desc: "Bespoke formal dress shoes stitched with premium calfskin.", icon: <Scissors size={20} /> },
+      { name: "Wedding Mojaris", desc: "Embellished ethnic wedding shoes matching your sherwani.", icon: <Sparkles size={20} /> },
+      { name: "Slippers & Sandals", desc: "Comfortable daily-wear leather slippers and casual sandals.", icon: <Layers size={20} /> },
+      { name: "Orthopedic Insoles", desc: "Custom arch support insoles layered for comfortable walking.", icon: <User size={20} /> },
+      { name: "Leather Resoling", desc: "Resoling, shining, and heel reconstructions for luxury shoes.", icon: <Award size={20} /> }
+    ],
+    designs: [
+      { id: "shoe-oxford", name: "Classic Wholecut Oxford", img: "./shoe_c1.jpg", desc: "Formal wholecut leather dress shoe with polished calfskin finish.", price: "₹3,499" },
+      { id: "shoe-loafer", name: "Penny Loafer Slip-On", img: "./shoe_c2.jpg", desc: "Casual penny loafers made of supple brown suede leather.", price: "₹2,799" },
+      { id: "shoe-mojari", name: "Royal Embroidered Mojari", img: "./shoe_c3.jpg", desc: "Ethnic wedding mojari shoe with golden zari thread embroidery.", price: "₹1,599" },
+      { id: "shoe-sandal", name: "Classic Leather Sandal", img: "./shoe_c4.jpg", desc: "Strappy leather sandals with durable rubber outsoles.", price: "₹1,299" },
+      { id: "shoe-slipper", name: "Premium Leather Slipper", img: "./shoe_c6.jpg", desc: "Open-toe indoor/outdoor slippers with cushioned footbeds.", price: "₹899" },
+      { id: "shoe-boot", name: "Chelsea Leather Boots", img: "./shoe_c7.jpg", desc: "Ankle-high Chelsea boots with elastic side panels and pull tabs.", price: "₹3,999" }
+    ],
+    fabrics: [
+      { id: "f-calfskin", name: "Italian Calfskin Leather", type: "Calfskin Leather", price: 2000, rating: "5.0", img: "./shoef_c2.jpg" },
+      { id: "f-suede-shoe", name: "Premium Suede Split", type: "Suede Leather", price: 1500, rating: "4.8", img: "./shoef_c3.jpg" },
+      { id: "f-sole-leather", name: "Heavy Oak Sole Leather", type: "Sole Leather", price: 1200, rating: "4.9", img: "./shoef_c4.jpg" },
+      { id: "f-nubuck", name: "Velvety Nubuck Leather", type: "Nubuck Leather", price: 1700, rating: "4.8", img: "./shoef_c5.jpg" },
+      { id: "f-lining-cow", name: "Soft Cowhide Lining", type: "Cowhide Lining", price: 800, rating: "4.9", img: "./shoef_c6.jpg" },
+      { id: "f-patent", name: "Glossy Patent Leather", type: "Patent Leather", price: 1900, rating: "4.7", img: "./shoef_c7.jpg" }
+    ],
+    pricing: [
+      { item: "Leather Slipper Stitching", price: "₹899" },
+      { item: "Bespoke Mojari Stitching", price: "₹1,599" },
+      { item: "Handmade Penny Loafers", price: "₹2,799" },
+      { item: "Wholecut Oxford Dress Shoes", price: "₹3,499" }
+    ],
+    reviews: [
+      { author: "Kiran M.", text: "First time trying custom wholecut shoes. The fit is perfect for my wide feet. Extremely comfortable cushion.", rating: 5, initial: "K" },
+      { author: "Rajesh S.", text: "Stitched mojari shoes to match my wedding sherwani. Beautiful golden zari detail and fits very comfortably.", rating: 5, initial: "R" }
+    ]
   }
 };
 
