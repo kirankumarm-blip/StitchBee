@@ -466,34 +466,36 @@ export default function ServiceCategoryView({
       </section>
 
       {/* 4. Premium Fabric Marketplace */}
-      <section style={{ margin: '4rem 0' }}>
-        <div className="section-header" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff' }}>Recommended Fabrics</h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '4px' }}>Sourced luxury fabrics optimized for these styles</p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-          {data.fabrics.map((fab, idx) => (
-            <div key={idx} className="glass-card-no-hover" style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '12px', textAlign: 'left' }}>
-              <div style={{ height: '140px', borderRadius: '8px', overflow: 'hidden' }}>
-                <img src={fab.img} alt={fab.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <span className="badge-mini" style={{ width: 'fit-content', background: 'rgba(255,255,255,0.06)', color: 'var(--text-secondary)', fontSize: '0.65rem' }}>{fab.type}</span>
-                <h4 style={{ fontWeight: 'bold', color: '#fff', fontSize: '0.9rem', lineHeight: '1.2' }}>{fab.name}</h4>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-                  <strong style={{ color: 'var(--primary)', fontSize: '0.9rem' }}>₹{fab.price}/m</strong>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.72rem', color: '#fbbf24' }}>
-                    <Star size={10} fill="#fbbf24" /> {fab.rating}
-                  </span>
+      {data.fabrics && data.fabrics.length > 0 && (
+        <section style={{ margin: '4rem 0' }}>
+          <div className="section-header" style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff' }}>Recommended Fabrics</h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '4px' }}>Sourced luxury fabrics optimized for these styles</p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+            {data.fabrics.map((fab, idx) => (
+              <div key={idx} className="glass-card-no-hover" style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '12px', textAlign: 'left' }}>
+                <div style={{ height: '140px', borderRadius: '8px', overflow: 'hidden' }}>
+                  <img src={fab.img} alt={fab.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span className="badge-mini" style={{ width: 'fit-content', background: 'rgba(255,255,255,0.06)', color: 'var(--text-secondary)', fontSize: '0.65rem' }}>{fab.type}</span>
+                  <h4 style={{ fontWeight: 'bold', color: '#fff', fontSize: '0.9rem', lineHeight: '1.2' }}>{fab.name}</h4>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
+                    <strong style={{ color: 'var(--primary)', fontSize: '0.9rem' }}>₹{fab.price}/m</strong>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.72rem', color: '#fbbf24' }}>
+                      <Star size={10} fill="#fbbf24" /> {fab.rating}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <button className="btn btn-secondary" onClick={onViewFabrics} style={{ margin: '0 auto', display: 'block', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>
-          Explore All Fabrics <ArrowRight size={14} style={{ marginLeft: '6px' }} />
-        </button>
-      </section>
+            ))}
+          </div>
+          <button className="btn btn-secondary" onClick={onViewFabrics} style={{ margin: '0 auto', display: 'block', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>
+            Explore All Fabrics <ArrowRight size={14} style={{ marginLeft: '6px' }} />
+          </button>
+        </section>
+      )}
 
       {/* 5. How It Works */}
       <section style={{ margin: '4rem 0', background: 'rgba(255,255,255,0.01)', padding: '40px', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
