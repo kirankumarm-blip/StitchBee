@@ -5,6 +5,7 @@ import {
   Video, Layers, Activity, FileText, Shield, Sliders 
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
+import ServiceCategoryView from './ServiceCategoryView';
 
 export default function CustomerView({ 
   tailors, orders, addOrder, updateOrderStatus, ledger, setLedger, banners, articles, currentUser,
@@ -116,6 +117,12 @@ export default function CustomerView({
   });
 
   const addFabricToCart = (variant, meters, brandName, collectionName) => {
+    if (!currentUser) {
+      if (onLoginRequired) {
+        onLoginRequired();
+        return;
+      }
+    }
     const itemId = variant.id;
     const existing = cart.find(c => c.id === itemId);
     const itemName = `${brandName} ${collectionName} (${variant.color})`;
@@ -355,6 +362,12 @@ export default function CustomerView({
 
   // Shopping Cart Logic
   const handleAddToCart = (item, type) => {
+    if (!currentUser) {
+      if (onLoginRequired) {
+        onLoginRequired();
+        return;
+      }
+    }
     const existing = cart.find(c => c.id === item.id);
     if (existing) {
       setCart(cart.map(c => c.id === item.id ? { ...c, qty: c.qty + 1 } : c));
@@ -1220,9 +1233,6 @@ export default function CustomerView({
 
       {/* Hub Tabs selector */}
       <div style={{ display: 'flex', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
-        <button className={`btn ${activeHub === 'tailors' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('tailors'); setWizardOpen(false); }}>
-          <Scissors size={16} /> Stitching Marketplace
-        </button>
         <button className={`btn ${activeHub === 'fabrics' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}>
           <Layers size={16} /> Fabric Shop
         </button>
@@ -1235,7 +1245,17 @@ export default function CustomerView({
         <button className={`btn ${activeHub === 'articles' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('articles'); setWizardOpen(false); }}>
           <Info size={16} /> Style articles
         </button>
-        <button className={`btn ${activeHub === 'history' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('history'); setWizardOpen(false); }}>
+        <button 
+          className={`btn ${activeHub === 'history' ? 'btn-primary' : 'btn-ghost'}`} 
+          onClick={() => { 
+            if (!currentUser) {
+              if (onLoginRequired) onLoginRequired();
+              return;
+            }
+            setActiveHub('history'); 
+            setWizardOpen(false); 
+          }}
+        >
           <FileText size={16} /> Invoices & History
         </button>
       </div>
@@ -2305,6 +2325,39 @@ export default function CustomerView({
         </div>
       )}
 
+      {/* --- HUB 0: SERVICE CATEGORY LANDING HUB --- */}
+      {activeHub === 'category-landing' && (
+        <ServiceCategoryView 
+          categoryKey={selectedCategory}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onExploreDesigns={() => {
+            const el = document.getElementById('popular-designs-section');
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              setActiveHub('designers');
+            }
+          }}
+          onViewFabrics={() => {
+            setActiveHub('fabrics');
+          }}
+          onBookStitching={(design = null) => {
+            if (!currentUser) {
+              if (onLoginRequired) onLoginRequired();
+              return;
+            }
+            setSelectedWizardCategory(selectedCategory);
+            setSelectedDesign(design);
+            setAddFabric(false);
+            setWizardStep(1);
+            setWizardOpen(true);
+            setActiveHub('tailors');
+          }}
+          tailors={tailors}
+        />
+      )}
+
       {/* --- HUB 1: TAILORS MARKETPLACE (DASHBOARD) --- */}
       {activeHub === 'tailors' && !wizardOpen && (
         <div>
@@ -2598,6 +2651,10 @@ export default function CustomerView({
                         {/* Wishlist Heart Toggle overlay */}
                         <button 
                           onClick={() => {
+                            if (!currentUser) {
+                              if (onLoginRequired) onLoginRequired();
+                              return;
+                            }
                             if (fabricWishlist.includes(v.id)) {
                               setFabricWishlist(fabricWishlist.filter(id => id !== v.id));
                             } else {
@@ -2980,6 +3037,10 @@ export default function CustomerView({
                             <button 
                               className="btn btn-secondary"
                               onClick={() => {
+                                if (!currentUser) {
+                                  if (onLoginRequired) onLoginRequired();
+                                  return;
+                                  }
                                 if (fabricWishlist.includes(v.id)) {
                                   setFabricWishlist(fabricWishlist.filter(id => id !== v.id));
                                 } else {

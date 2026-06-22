@@ -21,7 +21,7 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalConfig, setAuthModalConfig] = useState({ role: 'customer', tab: 'login' });
   const [customerCategory, setCustomerCategory] = useState('all');
-  const [customerHub, setCustomerHub] = useState('tailors');
+  const [customerHub, setCustomerHub] = useState('fabrics');
 
   const handleCategorySelect = (categoryKey) => {
     setCustomerCategory(categoryKey);
@@ -265,15 +265,15 @@ export default function App() {
           <div className="nav-item-relative">
             <button className="role-btn">Services ▼</button>
             <ul className="nav-dropdown-menu">
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('mens'); }}>Men</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('womens'); }}>Women</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('bridal'); }}>Bridal</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('kids'); }}>Kids</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('alterations'); }}>Alterations</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('mens'); }}>Uniforms</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('bags'); }}>Bags And Leathers</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('shoes'); }}>Shoes And Slippers</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('tailors'); setCustomerCategory('seats'); }}>Vehicle Seat Covers</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); }}>Men</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); }}>Women</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); }}>Bridal</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); }}>Kids</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); }}>Alterations</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); }}>Uniforms</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); }}>Bags And Leathers</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); }}>Shoes And Slippers</li>
+              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); }}>Vehicle Seat Covers</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); }}>Custom Design</li>
             </ul>
           </div>
@@ -467,7 +467,7 @@ export default function App() {
               ].map((category, idx) => (
                 <div key={idx} className="category-card-v2" onClick={() => {
                   setCustomerCategory(category.cat);
-                  setCustomerHub('tailors');
+                  setCustomerHub('category-landing');
                   setRole('customer');
                 }}>
                   <div className="category-card-img-wrapper">
@@ -1065,6 +1065,7 @@ export default function App() {
           currentUser={currentUser}
           initialCategory={customerCategory}
           initialHub={customerHub}
+          onLoginRequired={() => openAuthModal('customer', 'login')}
         />
       )}
 

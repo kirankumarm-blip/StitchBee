@@ -4564,3 +4564,108 @@ body.light-theme .slider-nav-btn:hover {
   box-shadow: var(--shadow-glow) !important;
 }
 
+/* Service Category Landing Page Styles */
+.service-category-container {
+  padding: 10px 0;
+  text-align: left;
+}
+
+.category-landing-hero {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(247,37,133,0.18) 0%, rgba(76,201,240,0.1) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: var(--shadow-glow);
+  margin-bottom: 3rem;
+}
+
+.category-hero-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(circle at 80% 20%, rgba(247,37,133,0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(76,201,240,0.1) 0%, transparent 50%);
+  backdrop-filter: blur(10px);
+  z-index: 1;
+}
+
+.service-card-mini {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: default;
+}
+
+.service-card-mini:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(247,37,133,0.15);
+}
+
+.design-grid-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.design-grid-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.design-grid-card img {
+  transition: transform 0.5s ease;
+}
+
+.design-grid-card:hover img {
+  transform: scale(1.06);
+}
+
+/* Light Theme Support */
+body.light-theme .service-category-container {
+  color: #0f172a;
+}
+
+body.light-theme .category-landing-hero {
+  background: linear-gradient(135deg, rgba(247,37,133,0.08) 0%, rgba(76,201,240,0.05) 100%);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+body.light-theme .category-landing-hero h1,
+body.light-theme .category-landing-hero p {
+  color: #0f172a !important;
+}
+
+body.light-theme .category-landing-hero .btn-secondary {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .service-card-mini,
+body.light-theme .design-grid-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .service-card-mini h4,
+body.light-theme .design-grid-card h4 {
+  color: #0f172a !important;
+}
+
+body.light-theme .service-card-mini p,
+body.light-theme .design-grid-card p {
+  color: #475569 !important;
+}
+
+body.light-theme .how-it-works-grid div h4 {
+  color: #0f172a !important;
+}
+
+body.light-theme .how-it-works-grid div p {
+  color: #475569 !important;
+}
+
+
