@@ -283,7 +283,7 @@ export default function App() {
             >
               Services ▼
             </button>
-            <ul className={`nav-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
+            <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
               <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
               <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
               <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
@@ -335,7 +335,7 @@ export default function App() {
             >
               Earn With StitchBee ▼
             </button>
-            <ul className={`nav-dropdown-menu ${activeDropdown === 'earn' ? 'show' : ''}`}>
+            <ul className={`nav-dropdown-menu earn-dropdown-menu ${activeDropdown === 'earn' ? 'show' : ''}`}>
               <li className={`dropdown-item ${role === 'become-tailor' || role === 'tailor' ? 'active' : ''}`} onClick={() => {
                 if (currentUser && currentUser.role === 'tailor') {
                   setRole('tailor');
