@@ -264,6 +264,35 @@ export default function App() {
 
           <div className="nav-item-relative">
             <button className="role-btn">Services ▼</button>
+            <select 
+              className="mobile-services-select"
+              defaultValue=""
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === 'designers') {
+                  setRole('customer');
+                  setCustomerHub('designers');
+                  setCustomerCategory('all');
+                } else {
+                  setRole('customer');
+                  setCustomerHub('category-landing');
+                  setCustomerCategory(val);
+                }
+                e.target.value = ""; // Reset
+              }}
+            >
+              <option value="" disabled hidden>Services</option>
+              <option value="mens">Men</option>
+              <option value="womens">Women</option>
+              <option value="bridal">Bridal</option>
+              <option value="kids">Kids</option>
+              <option value="alterations">Alterations</option>
+              <option value="uniforms">Uniforms</option>
+              <option value="bags">Bags And Leathers</option>
+              <option value="shoes">Shoes And Slippers</option>
+              <option value="seats">Vehicle Seat Covers</option>
+              <option value="designers">Custom Design</option>
+            </select>
             <ul className="nav-dropdown-menu">
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); }}>Men</li>
               <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); }}>Women</li>
@@ -308,6 +337,38 @@ export default function App() {
 
           <div className="nav-item-relative">
             <button className="role-btn">Earn With StitchBee ▼</button>
+            <select 
+              className="mobile-services-select"
+              defaultValue=""
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === 'tailor') {
+                  if (currentUser && currentUser.role === 'tailor') {
+                    setRole('tailor');
+                  } else {
+                    setRole('become-tailor');
+                  }
+                } else if (val === 'delivery') {
+                  if (currentUser && currentUser.role === 'student') {
+                    setRole('student');
+                  } else {
+                    setRole('become-delivery');
+                  }
+                } else if (val === 'student') {
+                  if (currentUser && currentUser.role === 'student') {
+                    setRole('student');
+                  } else {
+                    setRole('become-student');
+                  }
+                }
+                e.target.value = ""; // Reset
+              }}
+            >
+              <option value="" disabled hidden>Earn With StitchBee</option>
+              <option value="tailor">Become a Tailor</option>
+              <option value="delivery">Become a Delivery Partner</option>
+              <option value="student">Student Gigs</option>
+            </select>
             <ul className="nav-dropdown-menu">
               <li className="dropdown-item" onClick={() => {
                 if (currentUser && currentUser.role === 'tailor') {
