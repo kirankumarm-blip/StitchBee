@@ -24,6 +24,270 @@ export default function App() {
   const [customerHub, setCustomerHub] = useState('fabrics');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
 
+  // Geolocation & Interactive Map States
+  const [locationStatus, setLocationStatus] = useState('prompt'); // 'prompt' | 'fetching' | 'success' | 'denied'
+  const [userCoords, setUserCoords] = useState({ lat: null, lng: null });
+  const [nearbyTailors, setNearbyTailors] = useState([]);
+  const [mapObj, setMapObj] = useState(null);
+  const [markersRef, setMarkersRef] = useState([]);
+  const mapContainerRef = useRef(null);
+
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return parseFloat((R * c).toFixed(1)); // Return distance in km with 1 decimal place
+  };
+
+  const handleFindTailors = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      setLocationStatus('error');
+      return;
+    }
+    
+    setLocationStatus('fetching');
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setUserCoords({ lat, lng });
+        setLocationStatus('success');
+        
+        // Dynamically generate 4 nearby tailors around the user's location
+        const tailorsData = [
+          {
+            id: 't_near_1',
+            name: "StitchPro Tailors",
+            specialty: "Suits & Sherwanis Specialist",
+            rating: 4.9,
+            orders: 142,
+            exp: "8 Years",
+            availability: "🟢 Available Today",
+            phone: "+91 98765 43210",
+            address: "Near Main Market Road",
+            latOffset: 0.0065,
+            lngOffset: -0.0058
+          },
+          {
+            id: 't_near_2',
+            name: "Elite Mens Wear",
+            specialty: "Men's Formal & Casual Suits",
+            rating: 4.8,
+            orders: 98,
+            exp: "6 Years",
+            availability: "🟡 Next Slot: Tomorrow",
+            phone: "+91 98765 43211",
+            address: "Opposite Commercial Complex",
+            latOffset: -0.0082,
+            lngOffset: 0.0094
+          },
+          {
+            id: 't_near_3',
+            name: "Bridal Masters",
+            specialty: "Luxury Lehengas & Gowns",
+            rating: 4.9,
+            orders: 210,
+            exp: "12 Years",
+            availability: "🟢 Available Today",
+            phone: "+91 98765 43212",
+            address: "Designer Lane, Ground Floor",
+            latOffset: 0.0124,
+            lngOffset: -0.0112
+          },
+          {
+            id: 't_near_4',
+            name: "Quick Alterations",
+            specialty: "Hemming, Adjustments & Fittings",
+            rating: 4.7,
+            orders: 76,
+            exp: "3 Years",
+            availability: "🟢 Available Today",
+            phone: "+91 98765 43213",
+            address: "Corner Shop, Near Subway Station",
+            latOffset: -0.0041,
+            lngOffset: -0.0076
+          }
+        ].map(t => {
+          const tLat = lat + t.latOffset;
+          const tLng = lng + t.lngOffset;
+          const dist = calculateDistance(lat, lng, tLat, tLng);
+          return {
+            ...t,
+            lat: tLat,
+            lng: tLng,
+            dist: `${dist} km`
+          };
+        });
+        
+        setNearbyTailors(tailorsData);
+        setTimeout(() => {
+          initializeMap(lat, lng, tailorsData);
+        }, 100);
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setLocationStatus('denied');
+        // Load default Bengaluru tailors if location access is denied
+        const defaultLat = 12.9716;
+        const defaultLng = 77.5946;
+        loadDefaultTailors(defaultLat, defaultLng);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  const loadDefaultTailors = (lat, lng) => {
+    const defaultTailors = [
+      {
+        id: 't_near_1',
+        name: "StitchPro Tailors",
+        specialty: "Suits & Sherwanis Specialist",
+        rating: 4.9,
+        orders: 120,
+        exp: "8 Years",
+        availability: "🟢 Available Today",
+        phone: "+91 98765 43210",
+        address: "Sector 3, HSR Layout, Bengaluru",
+        lat: 12.9141,
+        lng: 77.6329
+      },
+      {
+        id: 't_near_2',
+        name: "Elite Mens Wear",
+        specialty: "Men's Formal & Casual Suits",
+        rating: 4.8,
+        orders: 85,
+        exp: "5 Years",
+        availability: "🟡 Next Slot: Tomorrow",
+        phone: "+91 98765 43211",
+        address: "5th Block, Koramangala, Bengaluru",
+        lat: 12.9345,
+        lng: 77.6267
+      },
+      {
+        id: 't_near_3',
+        name: "Bridal Masters",
+        specialty: "Luxury Lehengas & Gowns",
+        rating: 4.9,
+        orders: 142,
+        exp: "10 Years",
+        availability: "🟢 Available Today",
+        phone: "+91 98765 43212",
+        address: "100 Feet Road, Indiranagar, Bengaluru",
+        lat: 12.9719,
+        lng: 77.6412
+      },
+      {
+        id: 't_near_4',
+        name: "Quick Alterations",
+        specialty: "Hemming, Adjustments & Fittings",
+        rating: 4.7,
+        orders: 54,
+        exp: "3 Years",
+        availability: "🟢 Available Today",
+        phone: "+91 98765 43213",
+        address: "Jayanagar 4th Block, Bengaluru",
+        lat: 12.9298,
+        lng: 77.5833
+      }
+    ].map(t => {
+      const dist = calculateDistance(lat, lng, t.lat, t.lng);
+      return {
+        ...t,
+        dist: `${dist} km`
+      };
+    });
+    setNearbyTailors(defaultTailors);
+    setTimeout(() => {
+      initializeMap(lat, lng, defaultTailors, true);
+    }, 100);
+  };
+
+  const initializeMap = (centerLat, centerLng, tailorsList, isDenied = false) => {
+    if (!window.L) return;
+    
+    // Clear old map instance
+    const container = mapContainerRef.current;
+    if (!container) return;
+
+    // Check if container already has a Leaflet map initialized on it
+    if (container._leaflet_id) {
+      container._leaflet_id = null; // Reset Leaflet internal container tracker
+    }
+    
+    const map = window.L.map(container).setView([centerLat, centerLng], 13);
+    
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    
+    const markers = [];
+    
+    const userSvgIcon = window.L.divIcon({
+      html: `<div style="background: #4cc9f0; width: 14px; height: 14px; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.5); animation: pulse-glow 1.5s infinite;"></div>`,
+      className: 'custom-user-marker',
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    });
+    
+    const tailorSvgIcon = window.L.divIcon({
+      html: `<div style="background: #f72585; width: 22px; height: 22px; border: 2.5px solid #fff; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="width: 7px; height: 7px; background: #fff; border-radius: 50%; transform: rotate(45deg);"></div></div>`,
+      className: 'custom-tailor-marker',
+      iconSize: [22, 22],
+      iconAnchor: [11, 22]
+    });
+    
+    if (!isDenied) {
+      window.L.marker([centerLat, centerLng], { icon: userSvgIcon })
+        .addTo(map)
+        .bindPopup(`<strong>📍 Your Location</strong>`)
+        .openPopup();
+    }
+    
+    tailorsList.forEach(t => {
+      const marker = window.L.marker([t.lat, t.lng], { icon: tailorSvgIcon })
+        .addTo(map)
+        .bindPopup(`
+          <div style="font-family: Inter, sans-serif; color: #111; padding: 4px; text-align: left;">
+            <strong style="font-size: 0.85rem; display: block; margin-bottom: 2px;">${t.name}</strong>
+            <span style="font-size: 0.72rem; color: #555; display: block; margin-bottom: 2px;">${t.specialty}</span>
+            <span style="font-size: 0.72rem; font-weight: bold; color: #f72585;">⭐ ${t.rating} • ${t.dist} away</span>
+          </div>
+        `);
+      markers.push({ id: t.id, marker });
+    });
+    
+    setMapObj(map);
+    setMarkersRef(markers);
+  };
+
+  const handleViewOnMap = (tailor) => {
+    if (mapObj) {
+      mapObj.setView([tailor.lat, tailor.lng], 15);
+      const found = markersRef.find(m => m.id === tailor.id);
+      if (found) {
+        found.marker.openPopup();
+      }
+    }
+  };
+
+  const handleBookTailor = (tailorName) => {
+    alert(`Booking initiated for ${tailorName}! We will fetch your size profile and direct you to customize the order.`);
+    if (!currentUser) {
+      openAuthModal('customer', 'login');
+    } else {
+      setCustomerHub('tailors');
+      setRole('customer');
+    }
+  };
+
   useEffect(() => {
     const handleGlobalClick = () => {
       setActiveDropdown(null);
@@ -660,65 +924,125 @@ export default function App() {
           <section id="tailors-near-you" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
               <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Verified Tailors Near You</h2>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Locate verified boutique partners offering doorstep measurement trials</p>
-            </div>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Verified Tailors Near You</h2>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Locate verified boutique partners offering doorstep measurement trials</p>
+              </div>
 
-            <div className="grid-cols-3">
-              {[
-                { name: "Elite Stitch Studio", address: "Sector 3, HSR Layout, Bengaluru", rating: 4.9, orders: 120, exp: "8 years", coords: "[12.9141, 77.6329]", dist: "0.8 km" },
-                { name: "Royal Fit Boutique", address: "5th Block, Koramangala, Bengaluru", rating: 4.8, orders: 85, exp: "5 years", coords: "[12.9345, 77.6267]", dist: "1.4 km" },
-                { name: "Urban Threads Custom", address: "100 Feet Road, Indiranagar, Bengaluru", rating: 4.7, orders: 94, exp: "4 years", coords: "[12.9719, 77.6412]", dist: "3.2 km" }
-              ].map((tailor, idx) => (
-                <div key={idx} className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
-                      <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{tailor.name}</h3>
-                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                        <MapPin size={12} /> {tailor.address}
-                      </p>
-                    </div>
-                    <span style={{ background: 'rgba(251,191,36,0.15)', color: '#fbbf24', fontSize: '0.75rem', fontWeight: 'bold', padding: '3px 8px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Star size={10} fill="#fbbf24" /> {tailor.rating}
-                    </span>
+              {locationStatus === 'prompt' && (
+                <div className="glass-card-no-hover" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px', padding: '40px', alignItems: 'center' }}>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', height: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px dashed var(--border-color)', gap: '16px', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.15, background: 'radial-gradient(circle, rgba(247,37,133,0.5) 10%, transparent 10.5%), radial-gradient(circle, rgba(255,255,255,0.2) 20%, transparent 20.5%)', backgroundSize: '20px 20px' }}></div>
+                    <MapPin size={56} style={{ color: 'var(--primary)', zIndex: 1, animation: 'pulse-glow 1.5s infinite' }} />
+                    <div style={{ zIndex: 1, color: '#fff', fontSize: '0.8rem', opacity: 0.6 }}>Map Preview Overlay</div>
                   </div>
-
-                  <div style={{ display: 'flex', gap: '20px', background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
-                    <div>
-                      <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Completed</span>
-                      <strong style={{ fontSize: '0.95rem' }}>{tailor.orders} orders</strong>
-                    </div>
-                    <div style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '20px' }}>
-                      <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Experience</span>
-                      <strong style={{ fontSize: '0.95rem' }}>{tailor.exp}</strong>
-                    </div>
-                    <div style={{ borderLeft: '1px solid var(--border-color)', paddingLeft: '20px' }}>
-                      <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Distance</span>
-                      <strong style={{ fontSize: '0.95rem', color: 'var(--accent)' }}>{tailor.dist}</strong>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                    <span>Coordinates: <code>{tailor.coords}</code></span>
+                  <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <span className="badge badge-primary" style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>GPS GEOLOCATION SEARCH</span>
+                    <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff' }}>Find Boutiques in Your Neighborhood</h3>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                      StitchBee requests browser GPS location access to find and rank local sewing partners. Allowing access enables real-time geodesic calculations (in KM) and maps precise doorstep pickup route trials.
+                    </p>
                     <button 
-                      className="btn btn-ghost" 
-                      style={{ padding: '6px 12px', border: '1px solid var(--border-color)', minHeight: '32px' }}
-                      onClick={() => {
-                        if (!currentUser) {
-                          openAuthModal('customer', 'login');
-                        } else {
-                          setCustomerCategory('all');
-                          setCustomerHub('tailors');
-                          setRole('customer');
-                        }
-                      }}
+                      onClick={handleFindTailors} 
+                      className="btn btn-primary" 
+                      style={{ padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '8px', width: 'fit-content' }}
                     >
-                      View Profile
+                      <MapPin size={16} /> Allow Location Access & Search
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              )}
+
+              {locationStatus === 'fetching' && (
+                <div className="glass-card-no-hover" style={{ padding: '60px 40px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
+                  <RefreshCw size={40} className="animate-spin" style={{ color: 'var(--primary)' }} />
+                  <div>
+                    <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff' }}>Querying GPS Coordinates...</h4>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '6px' }}>Please allow browser location permissions if prompted. Fetching nearest tailoring studios...</p>
+                  </div>
+                </div>
+              )}
+
+              {(locationStatus === 'success' || locationStatus === 'denied') && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', alignItems: 'start' }}>
+                  
+                  {/* Left Column: Map Preview */}
+                  <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: '0 8px 30px rgba(0,0,0,0.5)', height: '420px' }}>
+                    <div 
+                      ref={mapContainerRef} 
+                      style={{ width: '100%', height: '100%' }} 
+                    />
+                    
+                    {/* Custom Map Top Status Banner */}
+                    <div style={{ position: 'absolute', top: '10px', left: '10px', right: '10px', zIndex: 1000, pointerEvents: 'none' }}>
+                      {locationStatus === 'success' ? (
+                        <div style={{ background: 'rgba(16,185,129,0.95)', color: '#fff', fontSize: '0.75rem', fontWeight: 'bold', padding: '6px 12px', borderRadius: '6px', backdropFilter: 'blur(4px)', display: 'inline-flex', alignItems: 'center', gap: '6px', pointerEvents: 'auto' }}>
+                          <Check size={12} /> Map showing tailors near your GPS coordinates
+                        </div>
+                      ) : (
+                        <div style={{ background: 'rgba(239,68,68,0.95)', color: '#fff', fontSize: '0.75rem', fontWeight: 'bold', padding: '6px 12px', borderRadius: '6px', backdropFilter: 'blur(4px)', display: 'inline-flex', alignItems: 'center', gap: '6px', pointerEvents: 'auto' }}>
+                          ⚠️ GPS Denied. Showing default partners in Bengaluru
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right Column: Tailors List */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '6px' }}>
+                    <div style={{ textAlign: 'left', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>
+                        📍 {locationStatus === 'success' ? 'Your Neighborhood' : 'Bengaluru Area'}
+                      </span>
+                      <span className="badge" style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.06)' }}>
+                        {nearbyTailors.length} Studios Found
+                      </span>
+                    </div>
+
+                    {nearbyTailors.map((tailor) => (
+                      <div 
+                        key={tailor.id} 
+                        className="glass-card-no-hover" 
+                        style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left', border: '1px solid rgba(255,255,255,0.06)', transition: 'border 0.3s' }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+                          <div>
+                            <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#fff' }}>{tailor.name}</h4>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{tailor.specialty}</span>
+                          </div>
+                          <span style={{ background: 'rgba(251,191,36,0.12)', color: '#fbbf24', fontSize: '0.72rem', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
+                            <Star size={10} fill="#fbbf24" /> {tailor.rating}
+                          </span>
+                        </div>
+
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', fontSize: '0.75rem', color: 'var(--text-secondary)', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '10px' }}>
+                          <div>Distance: <strong style={{ color: 'var(--accent)' }}>{tailor.dist}</strong></div>
+                          <div>•</div>
+                          <div>Avail: <strong style={{ color: tailor.availability.includes('🟢') ? '#10b981' : '#f59e0b' }}>{tailor.availability.replace('🟢 ', '').replace('🟡 ', '')}</strong></div>
+                          <div>•</div>
+                          <div>Orders: <strong>{tailor.orders}</strong></div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
+                          <button 
+                            className="btn btn-secondary" 
+                            style={{ flexGrow: 1, padding: '6px 12px', fontSize: '0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)' }}
+                            onClick={() => handleViewOnMap(tailor)}
+                          >
+                            View on Map
+                          </button>
+                          <button 
+                            className="btn btn-primary" 
+                            style={{ flexGrow: 1, padding: '6px 12px', fontSize: '0.75rem' }}
+                            onClick={() => handleBookTailor(tailor.name)}
+                          >
+                            Book Now
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              )}
             </div>
           </section>
 

@@ -4745,4 +4745,78 @@ body.light-theme .dropdown-item.active {
   }
 }
 
+/* Leaflet map custom markers and pulse keyframes */
+@keyframes pulse-glow {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.7);
+  }
+  70% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 10px rgba(76, 201, 240, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+  }
+}
+
+.custom-user-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.custom-tailor-marker {
+  background: none !important;
+  border: none !important;
+}
+
+/* Ensure Leaflet zoom controls have readable text/colors in dark theme */
+.leaflet-bar a {
+  background-color: rgba(15, 13, 30, 0.85) !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: var(--primary) !important;
+}
+
+.leaflet-container {
+  background: #121020 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Leaflet popups premium dark-glass styling */
+.leaflet-popup-content-wrapper {
+  background: rgba(15, 13, 30, 0.95) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 8px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(15, 13, 30, 0.95) !important;
+}
+
+/* Light theme overrides for leaflet elements */
+body.light-theme .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #111111 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-theme .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+body.light-theme .leaflet-bar a {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  border-bottom: 1px solid #eeeeee !important;
+}
+
+
 
