@@ -4668,4 +4668,19 @@ body.light-theme .how-it-works-grid div p {
   color: #475569 !important;
 }
 
+/* Custom Design & Designer Hub Premium Refinements */
+.designer-studio-badge {
+  background: var(--grad-primary);
+  box-shadow: 0 0 10px rgba(247, 37, 133, 0.3);
+}
+
+.designer-portfolio-btn:hover {
+  background: var(--bg-card-hover) !important;
+  border-color: var(--primary) !important;
+}
+
+.inspiration-preview-box {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
 

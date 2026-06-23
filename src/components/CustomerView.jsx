@@ -116,6 +116,55 @@ export default function CustomerView({
     availability: {}
   });
 
+  // Custom Design & Designer Studios Hub States
+  const [selectedSpec, setSelectedSpec] = useState('all');
+  const [selectedFabricFilter, setSelectedFabricFilter] = useState('');
+  const [liveRequests, setLiveRequests] = useState([
+    { id: 1, title: 'Need reception gown design', budget: 2000, category: 'bridal', bids: 3 },
+    { id: 2, title: 'Need custom sherwani pattern', budget: 1500, category: 'ethnic', bids: 2 },
+    { id: 3, title: 'Summer office wear capsule sketches', budget: 3000, category: 'office', bids: 5 }
+  ]);
+  const [newReqTitle, setNewReqTitle] = useState('');
+  const [newReqBudget, setNewReqBudget] = useState('');
+  const [newReqCategory, setNewReqCategory] = useState('bridal');
+
+  const [inspTitle, setInspTitle] = useState('');
+  const [inspImage, setInspImage] = useState('');
+  const [inspDesc, setInspDesc] = useState('');
+  const [inspBudget, setInspBudget] = useState('');
+  const [inspCategory, setInspCategory] = useState('bridal');
+  const [inspSubmissions, setInspSubmissions] = useState([
+    {
+      id: 101,
+      title: 'Emerald Green Reception Lehenga',
+      category: 'bridal',
+      image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80',
+      description: 'Need a customized lehenga design with heavy zari work on borders and a minimal blouse design.',
+      budget: 12000,
+      status: 'Bids Received',
+      bids: [
+        { designerId: 'd1', designerName: 'Malini Iyer', amount: 11500, time: '2 hours ago', rating: 4.9, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' },
+        { designerId: 'd3', designerName: 'Sneha Reddy', amount: 12000, time: '1 hour ago', rating: 5.0, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80' }
+      ]
+    },
+    {
+      id: 102,
+      title: 'Korean Style Overcoat',
+      category: 'western',
+      image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=300&q=80',
+      description: 'Pastel pink oversized trench coat with double breasted buttons and side pockets.',
+      budget: 3500,
+      status: 'Bids Received',
+      bids: [
+        { designerId: 'd2', designerName: 'Rahul Varma', amount: 3200, time: '30 mins ago', rating: 4.7, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80' }
+      ]
+    }
+  ]);
+
+  const [studentCollege, setStudentCollege] = useState('all');
+  const [studentSkill, setStudentSkill] = useState('all');
+  const [studentSpecialty, setStudentSpecialty] = useState('all');
+
   const addFabricToCart = (variant, meters, brandName, collectionName) => {
     if (!currentUser) {
       if (onLoginRequired) {
@@ -1234,16 +1283,16 @@ export default function CustomerView({
       {/* Hub Tabs selector */}
       <div style={{ display: 'flex', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
         <button className={`btn ${activeHub === 'fabrics' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}>
-          <Layers size={16} /> Fabric Shop
+          <Layers size={16} /> Fabric Marketplace
         </button>
         <button className={`btn ${activeHub === 'sarees' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('sarees'); setWizardOpen(false); }}>
-          <Sparkles size={16} /> Sarees Shop
+          <Sparkles size={16} /> Ready Designs
         </button>
         <button className={`btn ${activeHub === 'designers' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('designers'); setWizardOpen(false); }}>
           <Star size={16} /> Designer Studios
         </button>
         <button className={`btn ${activeHub === 'articles' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('articles'); setWizardOpen(false); }}>
-          <Info size={16} /> Style articles
+          <Info size={16} /> Style Articles
         </button>
         <button 
           className={`btn ${activeHub === 'history' ? 'btn-primary' : 'btn-ghost'}`} 
@@ -1256,7 +1305,16 @@ export default function CustomerView({
             setWizardOpen(false); 
           }}
         >
-          <FileText size={16} /> Invoices & History
+          <FileText size={16} /> My Orders
+        </button>
+        <button 
+          className={`btn ${activeHub === 'design-upload' ? 'btn-primary' : 'btn-ghost'}`} 
+          onClick={() => { 
+            setActiveHub('design-upload'); 
+            setWizardOpen(false); 
+          }}
+        >
+          <Upload size={16} /> Custom Design Upload
         </button>
       </div>
 
@@ -3235,36 +3293,511 @@ export default function CustomerView({
       )}
 
       {/* --- HUB 4: DESIGNERS TAB --- */}
-      {activeHub === 'designers' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Expert & Student Designers Studio</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Consult with designers to generate custom patterns, lining styling, and border embroidery outlines.</p>
-          </div>
+      {activeHub === 'designers' && (() => {
+        // Mock Designers list
+        const allDesigners = [
+          {
+            id: 'd1',
+            name: 'Malini Iyer',
+            role: 'Professional',
+            specialties: ['bridal', 'ethnic', 'western'],
+            specialtyText: 'Luxury Bridal | Indo-Western | Embroidery Specialist',
+            experience: '8 Years',
+            rating: '4.9',
+            designsCount: 320,
+            price: 1500,
+            image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+            badges: ['🏆 Verified Designer', '👗 Bridal Specialist', '🧵 Embroidery Expert'],
+            college: 'NIFT Graduate',
+            fabrics: ['silk', 'velvet', 'tweed']
+          },
+          {
+            id: 'd2',
+            name: 'Rahul Varma',
+            role: 'Student',
+            specialties: ['western', 'casual', 'concepts'],
+            specialtyText: 'Streetwear | Casual Wear | Gen-Z Trends',
+            experience: '2 Years',
+            rating: '4.7',
+            designsCount: 85,
+            price: 450,
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+            badges: ['🎓 Fashion Graduate', '🔥 Trending Designer'],
+            college: 'NIFT Bengaluru',
+            fabrics: ['cotton', 'linen']
+          },
+          {
+            id: 'd3',
+            name: 'Sneha Reddy',
+            role: 'Professional',
+            specialties: ['bridal', 'ethnic'],
+            specialtyText: 'Royal Lehengas | Banarasi Couture | Silk Specialist',
+            experience: '12 Years',
+            rating: '5.0',
+            designsCount: 410,
+            price: 1800,
+            image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
+            badges: ['🏆 Verified Designer', '👗 Bridal Specialist', '🔥 Trending Designer'],
+            college: 'Pearl Academy',
+            fabrics: ['silk', 'velvet']
+          },
+          {
+            id: 'd4',
+            name: 'Vikram Das',
+            role: 'Student',
+            specialties: ['western', 'office', 'casual'],
+            specialtyText: 'Smart Casuals | Office Wear | Minimalist Drapes',
+            experience: '1 Year',
+            rating: '4.6',
+            designsCount: 92,
+            price: 400,
+            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+            badges: ['🎓 Fashion Graduate'],
+            college: 'Pearl Academy Delhi',
+            fabrics: ['cotton', 'wool']
+          },
+          {
+            id: 'd5',
+            name: 'Ananya Sen',
+            role: 'Student',
+            specialties: ['party', 'kids'],
+            specialtyText: 'Party Wear | Kids Comfortable Festive Wear',
+            experience: '3 Years',
+            rating: '4.8',
+            designsCount: 110,
+            price: 500,
+            image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80',
+            badges: ['🎓 Fashion Graduate', '🔥 Trending Designer'],
+            college: 'JD Institute',
+            fabrics: ['cotton', 'silk']
+          },
+          {
+            id: 'd6',
+            name: 'Priya Sharma',
+            role: 'Student',
+            specialties: ['uniforms', 'office'],
+            specialtyText: 'School Uniforms | Healthcare Scrubs | Workwear',
+            experience: '2 Years',
+            rating: '4.5',
+            designsCount: 60,
+            price: 350,
+            image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80',
+            badges: ['🎓 Fashion Graduate'],
+            college: 'NIFT Chennai',
+            fabrics: ['cotton', 'linen']
+          }
+        ];
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-            <div className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', gap: '16px' }}>
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Malini" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
-              <div>
-                <span className="badge badge-primary" style={{ fontSize: '0.55rem' }}>Professional</span>
-                <h4 style={{ fontSize: '1rem', color: '#fff', marginTop: '4px' }}>Malini Iyer</h4>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Specialty: Indo-Western Fusion</p>
-                <div style={{ marginTop: '8px', fontSize: '0.8rem', color: 'var(--accent)', fontWeight: '700' }}>Charge: ₹1500/session</div>
+        // Filtering featured designers
+        const featuredDesigners = allDesigners.filter(d => {
+          if (selectedSpec !== 'all' && !d.specialties.includes(selectedSpec)) return false;
+          if (selectedFabricFilter !== '' && !d.fabrics.includes(selectedFabricFilter)) return false;
+          return true;
+        });
+
+        // Filtering student designers
+        const studentDesigners = allDesigners.filter(d => {
+          if (d.role !== 'Student') return false;
+          if (studentCollege !== 'all' && !d.college.toLowerCase().includes(studentCollege.toLowerCase())) return false;
+          if (studentSpecialty !== 'all' && !d.specialties.includes(studentSpecialty)) return false;
+          if (studentSkill !== 'all') {
+            if (studentSkill === 'graduate' && !d.badges.some(b => b.toLowerCase().includes('graduate'))) return false;
+            if (studentSkill === 'trending' && !d.badges.some(b => b.toLowerCase().includes('trending'))) return false;
+          }
+          return true;
+        });
+
+        const handleBookConsultation = (designerName, charge) => {
+          alert(`Consultation request sent to ${designerName}! Our team will schedule your live session (Charge: ₹${charge}).`);
+        };
+
+        const handleAddLiveRequest = (e) => {
+          e.preventDefault();
+          if (!newReqTitle || !newReqBudget) {
+            alert('Please fill in request title and budget.');
+            return;
+          }
+          const newReq = {
+            id: Date.now(),
+            title: newReqTitle,
+            budget: parseInt(newReqBudget),
+            category: newReqCategory,
+            bids: 0
+          };
+          setLiveRequests([newReq, ...liveRequests]);
+          setNewReqTitle('');
+          setNewReqBudget('');
+          alert('Live Design Request posted to the marketplace! Designers can now place bids.');
+        };
+
+        const handleBid = (reqId) => {
+          setLiveRequests(liveRequests.map(r => r.id === reqId ? { ...r, bids: r.bids + 1 } : r));
+          alert('Simulating designer bid! Bid successfully registered.');
+        };
+
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+            {/* Header banner */}
+            <div style={{ background: 'var(--grad-primary)', padding: '24px', borderRadius: '12px', textAlign: 'left' }}>
+              <span className="badge" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: '0.65rem' }}>STITCHBEE LABS</span>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Designer Studios</h2>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', marginTop: '4px' }}>Co-create styling patterns, custom embroidery designs, and sketch layouts with professional & student designers.</p>
+            </div>
+
+            {/* 1. Featured Designers (Hero Cards) */}
+            <div>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Featured Designers</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+                {featuredDesigners.slice(0, 2).map((des) => (
+                  <div key={des.id} className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div style={{ width: '120px', height: '120px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
+                      <img src={des.image} alt={des.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                        <span className={`badge ${des.role === 'Professional' ? 'badge-primary' : 'badge-secondary'}`} style={{ fontSize: '0.6rem' }}>{des.role} Designer</span>
+                        {des.badges.map((bg, bidx) => (
+                          <span key={bidx} style={{ fontSize: '0.7rem', background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px', color: '#fff' }}>{bg}</span>
+                        ))}
+                      </div>
+                      <h4 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff' }}>{des.name}</h4>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--accent)', fontWeight: '600' }}>{des.specialtyText}</p>
+                      <div style={{ display: 'flex', gap: '20px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                        <div>Experience: <strong>{des.experience}</strong></div>
+                        <div>Rating: <strong style={{ color: '#fbbf24' }}>⭐ {des.rating}</strong></div>
+                        <div>Completed Designs: <strong>{des.designsCount}</strong></div>
+                        <div>Starting Price: <strong style={{ color: 'var(--primary)' }}>₹{des.price}/session</strong></div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '160px' }}>
+                      {des.role === 'Professional' ? (
+                        <>
+                          <button className="btn btn-primary" onClick={() => handleBookConsultation(des.name, des.price)}>Book Consultation</button>
+                          <button className="btn btn-secondary" onClick={() => alert(`Opening portfolio page for ${des.name}...`)} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>View Portfolio</button>
+                        </>
+                      ) : (
+                        <>
+                          <button className="btn btn-primary" onClick={() => handleBookConsultation(des.name, des.price)}>Book Session</button>
+                          <button className="btn btn-secondary" onClick={() => alert(`Opening design concepts for ${des.name}...`)} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>View Concepts</button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {featuredDesigners.length === 0 && (
+                  <div className="glass-card-no-hover" style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    No featured designers match your selected specialization or fabric filters.
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', gap: '16px' }}>
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Rahul" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
-              <div>
-                <span className="badge badge-secondary" style={{ fontSize: '0.55rem' }}>Fashion Student</span>
-                <h4 style={{ fontSize: '1rem', color: '#fff', marginTop: '4px' }}>Rahul Varma</h4>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Specialty: Minimalist Streetwear</p>
-                <div style={{ marginTop: '8px', fontSize: '0.8rem', color: 'var(--accent)', fontWeight: '700' }}>Charge: ₹450/session</div>
+            {/* 8. Fabric + Designer Matching */}
+            <div className="glass-card-no-hover" style={{ padding: '24px', background: 'rgba(247,37,133,0.03)', border: '1px solid rgba(247,37,133,0.15)', textAlign: 'left' }}>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div style={{ flexGrow: 1 }}>
+                  <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff' }}>Smart Fabric + Designer Matcher</h4>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Select a fabric you want to stitch, and we will filter designers who specialize in crafting with that material.</p>
+                </div>
+                <div style={{ width: '220px' }}>
+                  <select 
+                    value={selectedFabricFilter} 
+                    onChange={e => setSelectedFabricFilter(e.target.value)}
+                    style={{ width: '100%', padding: '10px', background: 'rgba(8,7,16,0.8)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', outline: 'none' }}
+                  >
+                    <option value="">-- Match by Fabric --</option>
+                    <option value="silk">Banarasi Silk / Pure Silk</option>
+                    <option value="wool">Merino Wool / Suiting Wool</option>
+                    <option value="cotton">Giza Cotton / Supima Cotton</option>
+                    <option value="linen">Belgian Flax Linen</option>
+                    <option value="velvet">Plush Velvet</option>
+                    <option value="tweed">Tweed Wool</option>
+                  </select>
+                </div>
+                {selectedFabricFilter !== '' && (
+                  <button className="btn btn-ghost" onClick={() => setSelectedFabricFilter('')} style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>Clear</button>
+                )}
               </div>
             </div>
+
+            {/* 2. Browse by Design Category */}
+            <div>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Browse by Design Category</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '16px' }}>
+                {[
+                  { key: 'bridal', name: 'Bridal Designs' },
+                  { key: 'party', name: 'Party Wear' },
+                  { key: 'ethnic', name: 'Ethnic Wear' },
+                  { key: 'western', name: 'Western Wear' },
+                  { key: 'office', name: 'Office Wear' },
+                  { key: 'kids', name: 'Kids Wear' },
+                  { key: 'uniforms', name: 'Uniform Designs' },
+                  { key: 'concepts', name: 'Custom Concepts' }
+                ].map(cat => (
+                  <div 
+                    key={cat.key} 
+                    className="glass-card" 
+                    onClick={() => {
+                      setSelectedSpec(selectedSpec === cat.key ? 'all' : cat.key);
+                    }}
+                    style={{ 
+                      padding: '16px', 
+                      cursor: 'pointer', 
+                      borderRadius: '8px', 
+                      border: selectedSpec === cat.key ? '1px solid var(--primary)' : '1px solid var(--border-color)',
+                      background: selectedSpec === cat.key ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)',
+                      textAlign: 'center'
+                    }}
+                  >
+                    <div style={{ fontSize: '1.6rem', marginBottom: '6px' }}>
+                      {cat.key === 'bridal' && '👗'}
+                      {cat.key === 'party' && '🔥'}
+                      {cat.key === 'ethnic' && '✨'}
+                      {cat.key === 'western' && '🧥'}
+                      {cat.key === 'office' && '💼'}
+                      {cat.key === 'kids' && '🧸'}
+                      {cat.key === 'uniforms' && '🎓'}
+                      {cat.key === 'concepts' && '🎨'}
+                    </div>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: selectedSpec === cat.key ? 'var(--primary)' : '#fff' }}>{cat.name}</div>
+                  </div>
+                ))}
+              </div>
+              {selectedSpec !== 'all' && (
+                <button className="btn btn-ghost" onClick={() => setSelectedSpec('all')} style={{ display: 'block', margin: '12px auto 0 auto', fontSize: '0.8rem', color: 'var(--primary)' }}>Clear Category Filter</button>
+              )}
+            </div>
+
+            {/* Embedded Inspiration Upload Card */}
+            <div className="glass-card-no-hover" style={{ padding: '24px', background: 'linear-gradient(135deg, rgba(76,201,240,0.06) 0%, rgba(247,37,133,0.06) 100%)', border: '1px solid rgba(76,201,240,0.15)', textAlign: 'left', display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ flexGrow: 1 }}>
+                <span className="badge" style={{ fontSize: '0.65rem', background: 'var(--accent)', color: '#0b0914', fontWeight: 'bold' }}>PINTEREST & IG STYLE RECREATION</span>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Have an Outfit Photo or Sketch Inspiration?</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Submit your design reference images, specify your custom fit, and receive tailored proposals from our fashion studios.</p>
+              </div>
+              <button 
+                className="btn btn-primary" 
+                onClick={() => {
+                  setActiveHub('design-upload');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                style={{ display: 'flex', gap: '8px', alignItems: 'center' }}
+              >
+                <Upload size={16} /> Upload Inspiration
+              </button>
+            </div>
+
+            {/* 3. Trending Design Concepts */}
+            <div>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Trending Design Concepts</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
+                {[
+                  { title: 'Minimal Bridal Look', desc: 'Luxury silk drape with delicate borders and tone-on-tone thread embroidery.', img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80', tag: 'Wedding' },
+                  { title: 'Korean Pastel Blazer', desc: 'Oversized structured blazer in soft lavender and mint tones.', img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=300&q=80', tag: 'Korean Fashion' },
+                  { title: 'Indo-Western Fusion Suit', desc: 'Asymmetric sherwani collar jacket styled over cigarette formal trousers.', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=300&q=80', tag: 'Fusion' },
+                  { title: 'Sustainable Handlooms', desc: 'Sourced cotton-linen slips with vegetable dye prints.', img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80', tag: 'Eco Fashion' }
+                ].map((tr, idx) => (
+                  <div key={idx} className="glass-card" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
+                    <div style={{ height: '140px', borderRadius: '6px', overflow: 'hidden', position: 'relative' }}>
+                      <img src={tr.img} alt={tr.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <span className="badge badge-primary" style={{ position: 'absolute', top: '8px', left: '8px', fontSize: '0.55rem' }}>{tr.tag}</span>
+                    </div>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: '#fff' }}>{tr.title}</h4>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: '1.3' }}>{tr.desc}</p>
+                    <button className="btn btn-ghost" onClick={() => alert(`Starting discussion for ${tr.title} concept...`)} style={{ marginTop: 'auto', padding: '6px 0', border: '1px solid var(--border-color)', fontSize: '0.8rem', color: 'var(--primary)' }}>Discuss with Designer</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 4. Design Packages */}
+            <div>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Design consultation Packages</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+                {[
+                  {
+                    title: 'Basic Styling',
+                    price: 499,
+                    features: ['1 custom concept sketch', 'Basic style tips', 'Fabric material suggestion']
+                  },
+                  {
+                    title: 'Premium Design',
+                    price: 1499,
+                    features: ['3 custom concept options', 'Fabric matching & mapping', 'Lining sheets suggestions', 'Local tailor recommendations']
+                  },
+                  {
+                    title: 'Luxury Couture',
+                    price: 4999,
+                    features: ['Full custom layout mapping', '1-on-1 designer consult calls', 'Pattern sheet creation', 'Direct tailor assignment & support', 'Final fitting oversight assistance']
+                  }
+                ].map((pkg, idx) => (
+                  <div key={idx} className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', border: idx === 1 ? '1px solid var(--primary)' : '1px solid var(--border-color)', position: 'relative', textAlign: 'left' }}>
+                    {idx === 1 && <span className="badge badge-primary" style={{ position: 'absolute', top: '-10px', right: '20px', fontSize: '0.6rem' }}>MOST POPULAR</span>}
+                    <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>{pkg.title}</h4>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                      <span style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--accent)' }}>₹{pkg.price}</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>/design</span>
+                    </div>
+                    <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8rem', color: 'var(--text-secondary)', paddingLeft: '16px', listStyleType: 'disc' }}>
+                      {pkg.features.map((feat, fidx) => (
+                        <li key={fidx}>{feat}</li>
+                      ))}
+                    </ul>
+                    <button className="btn btn-primary" onClick={() => alert(`Starting setup for ${pkg.title} package consultation...`)} style={{ marginTop: 'auto', width: '100%' }}>Select Package</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 5. Student Designers Hub */}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+                <div>
+                  <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Student Designers Hub</h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '2px' }}>Trendy concepts and faster delivery by student partners from top colleges.</p>
+                </div>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <select 
+                    value={studentCollege} 
+                    onChange={e => setStudentCollege(e.target.value)}
+                    style={{ padding: '6px 12px', background: 'rgba(8,7,16,0.8)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '0.75rem' }}
+                  >
+                    <option value="all">All Colleges</option>
+                    <option value="nift">NIFT</option>
+                    <option value="pearl">Pearl Academy</option>
+                    <option value="jd">JD Institute</option>
+                  </select>
+                  <select 
+                    value={studentSpecialty} 
+                    onChange={e => setStudentSpecialty(e.target.value)}
+                    style={{ padding: '6px 12px', background: 'rgba(8,7,16,0.8)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '0.75rem' }}
+                  >
+                    <option value="all">All Specialties</option>
+                    <option value="western">Western Wear</option>
+                    <option value="casual">Casual Wear</option>
+                    <option value="party">Party Wear</option>
+                    <option value="office">Office Wear</option>
+                  </select>
+                  <select 
+                    value={studentSkill} 
+                    onChange={e => setStudentSkill(e.target.value)}
+                    style={{ padding: '6px 12px', background: 'rgba(8,7,16,0.8)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '0.75rem' }}
+                  >
+                    <option value="all">All Skills</option>
+                    <option value="graduate">Graduates Only</option>
+                    <option value="trending">Trending Styles</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+                {studentDesigners.map(des => (
+                  <div key={des.id} className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', gap: '12px', textAlign: 'left' }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                      <img src={des.image} alt={des.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flexGrow: 1 }}>
+                      <span className="badge badge-secondary" style={{ width: 'fit-content', fontSize: '0.55rem' }}>{des.college}</span>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: '#fff' }}>{des.name}</h4>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{des.specialtyText}</p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
+                        <span style={{ fontSize: '0.75rem', color: '#fbbf24' }}>⭐ {des.rating} • {des.designsCount} Designs</span>
+                        <strong style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>₹{des.price}/sess</strong>
+                      </div>
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                        <button className="btn btn-primary" onClick={() => handleBookConsultation(des.name, des.price)} style={{ padding: '4px 10px', fontSize: '0.72rem' }}>Book Session</button>
+                        <button className="btn btn-ghost" onClick={() => alert(`Showing concepts for ${des.name}...`)} style={{ padding: '4px 10px', fontSize: '0.72rem', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>View Concepts</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {studentDesigners.length === 0 && (
+                  <div className="glass-card-no-hover" style={{ padding: '24px', gridColumn: '1 / -1', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    No student designers match the selected filters.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 7. Live Design Requests Marketplace */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', flexWrap: 'wrap', textAlign: 'left' }}>
+              <div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Live Customer Requests Feed</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {liveRequests.map(req => (
+                    <div key={req.id} className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span className="badge badge-primary" style={{ fontSize: '0.55rem' }}>{req.category.toUpperCase()}</span>
+                        <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: '#fff', marginTop: '4px' }}>{req.title}</h4>
+                        <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Budget: <strong style={{ color: 'var(--accent)' }}>₹{req.budget}</strong> | Active Bids: {req.bids}</p>
+                      </div>
+                      <button className="btn btn-secondary" onClick={() => handleBid(req.id)} style={{ padding: '6px 12px', fontSize: '0.75rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>Place Bid</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Post a Design Request</h3>
+                <form onSubmit={handleAddLiveRequest} className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Request Title</label>
+                    <input 
+                      type="text" 
+                      placeholder="e.g. Need embroidery design layout for blouse" 
+                      value={newReqTitle}
+                      onChange={e => setNewReqTitle(e.target.value)}
+                      style={{ padding: '10px', background: 'rgba(8,7,16,0.6)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '0.85rem' }} 
+                    />
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Target Budget (₹)</label>
+                      <input 
+                        type="number" 
+                        placeholder="e.g. 1500" 
+                        value={newReqBudget}
+                        onChange={e => setNewReqBudget(e.target.value)}
+                        style={{ padding: '10px', background: 'rgba(8,7,16,0.6)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '0.85rem' }} 
+                      />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Category</label>
+                      <select 
+                        value={newReqCategory}
+                        onChange={e => setNewReqCategory(e.target.value)}
+                        style={{ padding: '10px', background: 'rgba(8,7,16,0.6)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '0.85rem' }}
+                      >
+                        <option value="bridal">Bridal Wear</option>
+                        <option value="ethnic">Ethnic Wear</option>
+                        <option value="western">Western Wear</option>
+                        <option value="office">Office Wear</option>
+                        <option value="kids">Kids Wear</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" className="btn btn-primary" style={{ marginTop: '8px' }}>Post Live Request</button>
+                </form>
+              </div>
+            </div>
+
+            {/* 10. Designer Earnings Section */}
+            <div className="glass-card-no-hover" style={{ padding: '30px', background: 'linear-gradient(135deg, rgba(247,37,133,0.08) 0%, rgba(114,9,183,0.08) 100%)', border: '1px solid rgba(247,37,133,0.2)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+              <span className="badge badge-primary">ONBOARDING FREELANCERS</span>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff' }}>Earn with StitchBee Designer Network</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', maxWidth: '600px' }}>
+                Join our platform to offer freelance design consulting, sell digital outfit concepts, build your professional portfolio, and train fashion students.
+              </p>
+              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center', margin: '8px 0', fontSize: '0.8rem', color: '#fff' }}>
+                <div>✨ Work Freelance</div>
+                <div>👥 Get High-Paying Clients</div>
+                <div>🎨 Sell Concepts & Sketches</div>
+                <div>💼 Build Verifiable Portfolio</div>
+              </div>
+              <button className="btn btn-primary" onClick={() => alert('Onboarding wizard opening soon! Submit your fashion portfolio to designer@stitchbee.com.')}>Become a Designer</button>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* --- HUB 5: ARTICLES --- */}
       {activeHub === 'articles' && (
@@ -3318,6 +3851,240 @@ export default function CustomerView({
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* --- HUB 7: CUSTOM DESIGN UPLOAD --- */}
+      {activeHub === 'design-upload' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', textAlign: 'left' }}>
+          {/* Header banner */}
+          <div style={{ background: 'var(--grad-primary)', padding: '24px', borderRadius: '12px', textAlign: 'left' }}>
+            <span className="badge" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: '0.65rem' }}>PINTEREST & SKETCH STUDIO</span>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>Upload Your Inspiration</h2>
+            <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', marginTop: '4px' }}>Have a photo from Instagram, Pinterest, or a hand-drawn sketch? Share it below. Our custom designers will review it, suggest fabrics, and send you direct design bids.</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '32px', alignItems: 'start', flexWrap: 'wrap' }}>
+            {/* Upload Form */}
+            <div className="glass-card-no-hover" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', color: 'var(--primary)' }}>Submit Custom Sketch / Outfit Link</h3>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Inspiration Title</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Lavender Georgette Anarkali with Gota Patti" 
+                  className="form-input"
+                  value={inspTitle}
+                  onChange={e => setInspTitle(e.target.value)}
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Category</label>
+                  <select 
+                    value={inspCategory}
+                    onChange={e => setInspCategory(e.target.value)}
+                    className="form-select"
+                    style={{ width: '100%' }}
+                  >
+                    <option value="bridal">Bridal Wear</option>
+                    <option value="ethnic">Ethnic Wear</option>
+                    <option value="western">Western Wear</option>
+                    <option value="office">Office Wear</option>
+                    <option value="party">Party Wear</option>
+                    <option value="kids">Kids Wear</option>
+                    <option value="uniforms">Uniform Designs</option>
+                    <option value="concepts">Custom Concepts</option>
+                  </select>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Target Budget (₹)</label>
+                  <input 
+                    type="number" 
+                    placeholder="e.g. 5000" 
+                    className="form-input"
+                    value={inspBudget}
+                    onChange={e => setInspBudget(e.target.value)}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Pinterest / IG Link or Image URL</label>
+                <input 
+                  type="text" 
+                  placeholder="Paste URL (e.g. https://images.unsplash.com/... or Pinterest link)" 
+                  className="form-input"
+                  value={inspImage}
+                  onChange={e => setInspImage(e.target.value)}
+                  style={{ width: '100%' }}
+                />
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Paste any online image URL to generate an interactive mockup preview.</span>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Outfit Description & Custom Styling Directions</label>
+                <textarea 
+                  rows={4}
+                  placeholder="Describe your design specifications (e.g. Fit preferences, fabric embroidery, collar style, sleeve details, hemline instructions)"
+                  className="form-textarea"
+                  value={inspDesc}
+                  onChange={e => setInspDesc(e.target.value)}
+                  style={{ width: '100%', resize: 'none' }}
+                />
+              </div>
+
+              <button 
+                onClick={() => {
+                  if (!currentUser) {
+                    if (onLoginRequired) onLoginRequired();
+                    return;
+                  }
+                  if (!inspTitle || !inspImage || !inspBudget || !inspDesc) {
+                    alert('Please fill out all fields of the inspiration upload form.');
+                    return;
+                  }
+                  const newUpload = {
+                    id: Date.now(),
+                    title: inspTitle,
+                    category: inspCategory,
+                    image: inspImage.startsWith('http') ? inspImage : 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80',
+                    description: inspDesc,
+                    budget: parseInt(inspBudget),
+                    status: 'Awaiting Bids',
+                    bids: []
+                  };
+                  setInspSubmissions([newUpload, ...inspSubmissions]);
+                  setInspTitle('');
+                  setInspImage('');
+                  setInspDesc('');
+                  setInspBudget('');
+                  alert('Inspiration uploaded successfully! Designers have been notified.');
+                  
+                  // Mock interactive feedback: generate a bid from a designer after 4 seconds!
+                  setTimeout(() => {
+                    setInspSubmissions(prev => prev.map(item => {
+                      if (item.id === newUpload.id) {
+                        return {
+                          ...item,
+                          status: 'Bids Received',
+                          bids: [
+                            {
+                              designerId: 'd2',
+                              designerName: 'Rahul Varma',
+                              amount: Math.round(newUpload.budget * 0.9),
+                              time: 'Just now',
+                              rating: 4.7,
+                              avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80'
+                            }
+                          ]
+                        };
+                      }
+                      return item;
+                    }));
+                  }, 4000);
+                }}
+                className="btn btn-primary" 
+                style={{ width: '100%', padding: '14px', fontSize: '1rem', marginTop: '8px' }}
+              >
+                Submit Inspiration to Designer Pool
+              </button>
+            </div>
+
+            {/* Live Preview Panel */}
+            <div className="glass-card-no-hover" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px', minHeight: '400px' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', color: 'var(--accent)' }}>Live Preview</h3>
+              
+              <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--border-color)', borderRadius: '8px', padding: '20px', background: 'rgba(255,255,255,0.01)', overflow: 'hidden' }}>
+                {inspImage && inspImage.startsWith('http') ? (
+                  <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ height: '240px', borderRadius: '6px', overflow: 'hidden' }}>
+                      <img src={inspImage} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80' }} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span className="badge badge-primary" style={{ fontSize: '0.6rem' }}>{inspCategory.toUpperCase()}</span>
+                      <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>{inspTitle || 'Untitled Design'}</h4>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>{inspDesc || 'No description provided.'}</p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px' }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Target Budget:</span>
+                        <strong style={{ color: 'var(--accent)', fontSize: '1.1rem' }}>₹{inspBudget || '0'}</strong>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                    <Upload size={40} style={{ color: 'rgba(255,255,255,0.2)' }} />
+                    <div>
+                      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>No valid image link pasted yet.</p>
+                      <p style={{ fontSize: '0.75rem', marginTop: '4px' }}>Paste an Unsplash image URL or click to see how it looks.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Submissions List */}
+          <div>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Your Inspiration Submissions</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
+              {inspSubmissions.map(sub => (
+                <div key={sub.id} className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
+                  <div style={{ width: '120px', height: '120px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0 }}>
+                    <img src={sub.image} alt={sub.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                        <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>{sub.category.toUpperCase()}</span>
+                        <span className={`badge ${sub.status === 'Awaiting Bids' ? 'badge-secondary' : 'badge-success'}`} style={{ fontSize: '0.65rem' }}>{sub.status}</span>
+                      </div>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>ID: #{sub.id.toString().slice(-6)}</span>
+                    </div>
+                    <h4 style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>{sub.title}</h4>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{sub.description}</p>
+                    <div style={{ display: 'flex', gap: '20px', fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                      <div>Budget Limit: <strong style={{ color: 'var(--accent)' }}>₹{sub.budget}</strong></div>
+                      <div>Bids Received: <strong>{sub.bids.length}</strong></div>
+                    </div>
+
+                    {/* Bids List */}
+                    {sub.bids.length > 0 && (
+                      <div style={{ marginTop: '16px', background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                        <h5 style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#fff', marginBottom: '10px' }}>Active Designer Bids</h5>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                          {sub.bids.map((bid, bidx) => (
+                            <div key={bidx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: bidx < sub.bids.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none', paddingBottom: bidx < sub.bids.length - 1 ? '10px' : '0' }}>
+                              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                <img src={bid.avatar} alt={bid.designerName} style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} />
+                                <div>
+                                  <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#fff' }}>{bid.designerName}</div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>⭐ {bid.rating} • {bid.time}</div>
+                                </div>
+                              </div>
+                              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                                <strong style={{ color: 'var(--primary)', fontSize: '0.95rem' }}>₹{bid.amount}</strong>
+                                <button className="btn btn-primary" onClick={() => alert(`Bid of ₹${bid.amount} by ${bid.designerName} accepted! We will initialize a consultation session.`)} style={{ padding: '4px 12px', fontSize: '0.72rem' }}>Accept Bid</button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {inspSubmissions.length === 0 && (
+                <div className="glass-card-no-hover" style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  No custom inspirations uploaded yet. Use the form above to share your dream outfit with our designer community.
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
