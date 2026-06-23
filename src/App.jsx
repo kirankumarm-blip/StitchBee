@@ -28,9 +28,9 @@ export default function App() {
   const [locationStatus, setLocationStatus] = useState('prompt'); // 'prompt' | 'fetching' | 'success' | 'denied'
   const [userCoords, setUserCoords] = useState({ lat: null, lng: null });
   const [nearbyTailors, setNearbyTailors] = useState([]);
-  const [mapObj, setMapObj] = useState(null);
   const [markersRef, setMarkersRef] = useState([]);
   const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // Radius of the Earth in km
@@ -58,7 +58,6 @@ export default function App() {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         setUserCoords({ lat, lng });
-        setLocationStatus('success');
         
         // Dynamically generate 4 nearby tailors around the user's location
         const tailorsData = [
@@ -127,17 +126,15 @@ export default function App() {
         });
         
         setNearbyTailors(tailorsData);
-        setTimeout(() => {
-          initializeMap(lat, lng, tailorsData);
-        }, 100);
+        setLocationStatus('success');
       },
       (error) => {
         console.error("Geolocation error:", error);
-        setLocationStatus('denied');
         // Load default Bengaluru tailors if location access is denied
         const defaultLat = 12.9716;
         const defaultLng = 77.5946;
         loadDefaultTailors(defaultLat, defaultLng);
+        setLocationStatus('denied');
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
@@ -205,21 +202,27 @@ export default function App() {
       };
     });
     setNearbyTailors(defaultTailors);
-    setTimeout(() => {
-      initializeMap(lat, lng, defaultTailors, true);
-    }, 100);
   };
 
   const initializeMap = (centerLat, centerLng, tailorsList, isDenied = false) => {
     if (!window.L) return;
     
-    // Clear old map instance
     const container = mapContainerRef.current;
     if (!container) return;
-
-    // Check if container already has a Leaflet map initialized on it
+ 
+    // Remove existing map instance if any to prevent Leaflet container duplicate initialization error
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {
+        console.error("Error removing Leaflet map:", e);
+      }
+      mapInstanceRef.current = null;
+    }
+    
+    // Clear Leaflet internal tracker on container DOM element
     if (container._leaflet_id) {
-      container._leaflet_id = null; // Reset Leaflet internal container tracker
+      delete container._leaflet_id;
     }
     
     const map = window.L.map(container).setView([centerLat, centerLng], 13);
@@ -264,20 +267,43 @@ export default function App() {
       markers.push({ id: t.id, marker });
     });
     
-    setMapObj(map);
+    mapInstanceRef.current = map;
     setMarkersRef(markers);
   };
-
+ 
+  // Effect to automatically initialize map once location access resolves and DOM renders the container
+  useEffect(() => {
+    if ((locationStatus === 'success' || locationStatus === 'denied') && nearbyTailors.length > 0) {
+      initializeMap(
+        locationStatus === 'success' ? userCoords.lat : 12.9716,
+        locationStatus === 'success' ? userCoords.lng : 77.5946,
+        nearbyTailors,
+        locationStatus === 'denied'
+      );
+    }
+ 
+    return () => {
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {
+          console.error("Cleanup map error:", e);
+        }
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [locationStatus, nearbyTailors, userCoords]);
+ 
   const handleViewOnMap = (tailor) => {
-    if (mapObj) {
-      mapObj.setView([tailor.lat, tailor.lng], 15);
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setView([tailor.lat, tailor.lng], 15);
       const found = markersRef.find(m => m.id === tailor.id);
       if (found) {
         found.marker.openPopup();
       }
     }
   };
-
+ 
   const handleBookTailor = (tailorName) => {
     alert(`Booking initiated for ${tailorName}! We will fetch your size profile and direct you to customize the order.`);
     if (!currentUser) {
