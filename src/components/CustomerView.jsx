@@ -3592,10 +3592,10 @@ export default function CustomerView({
               <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Trending Design Concepts</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
                 {[
-                  { title: 'Minimal Bridal Look', desc: 'Luxury silk drape with delicate borders and tone-on-tone thread embroidery.', img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80', tag: 'Wedding' },
-                  { title: 'Korean Pastel Blazer', desc: 'Oversized structured blazer in soft lavender and mint tones.', img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=300&q=80', tag: 'Korean Fashion' },
-                  { title: 'Indo-Western Fusion Suit', desc: 'Asymmetric sherwani collar jacket styled over cigarette formal trousers.', img: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=300&q=80', tag: 'Fusion' },
-                  { title: 'Sustainable Handlooms', desc: 'Sourced cotton-linen slips with vegetable dye prints.', img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80', tag: 'Eco Fashion' }
+                  { title: 'Minimal Bridal Lehenga', desc: 'Luxury silk drape with delicate gold borders and tone-on-tone fine thread embroidery.', img: './br_b1.jpg', tag: 'Wedding' },
+                  { title: 'Royal Lucknowi Ghagra', desc: 'Intricate georgette lehenga showcasing heavy ivory Chikankari and pearl accents.', img: './br_b2.jpg', tag: 'Royal Bridal' },
+                  { title: 'Velvet Zardozi Couture', desc: 'Plush velvet panels hand-embroidered with classic gold thread and antique metallic motifs.', img: './br_bridal2.jpg', tag: 'Luxury Velvet' },
+                  { title: 'Pastel Organza Lehenga', desc: 'Muted champagne silk textures styled with floral bootis and matching organza dupattas.', img: './br_bridal3.jpg', tag: 'Pastel Trends' }
                 ].map((tr, idx) => (
                   <div key={idx} className="glass-card" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
                     <div style={{ height: '140px', borderRadius: '6px', overflow: 'hidden', position: 'relative' }}>
@@ -4002,8 +4002,8 @@ export default function CustomerView({
               <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--border-color)', borderRadius: '8px', padding: '20px', background: 'rgba(255,255,255,0.01)', overflow: 'hidden' }}>
                 {inspImage && inspImage.startsWith('http') ? (
                   <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ height: '240px', borderRadius: '6px', overflow: 'hidden' }}>
-                      <img src={inspImage} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80' }} />
+                    <div style={{ height: '280px', borderRadius: '6px', overflow: 'hidden', background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img src={inspImage} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80' }} />
                     </div>
                     <div style={{ textAlign: 'left' }}>
                       <span className="badge badge-primary" style={{ fontSize: '0.6rem' }}>{inspCategory.toUpperCase()}</span>
@@ -4034,8 +4034,8 @@ export default function CustomerView({
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
               {inspSubmissions.map(sub => (
                 <div key={sub.id} className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'start' }}>
-                  <div style={{ width: '120px', height: '120px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0 }}>
-                    <img src={sub.image} alt={sub.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div style={{ width: '120px', height: '120px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img src={sub.image} alt={sub.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                   </div>
                   <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
