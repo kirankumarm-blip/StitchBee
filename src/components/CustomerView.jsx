@@ -7,6 +7,40 @@ import {
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
 import ServiceCategoryView from './ServiceCategoryView';
 
+const resolveInspirationImage = (inputUrl) => {
+  if (!inputUrl) return '';
+  const trimmed = inputUrl.trim();
+  const lower = trimmed.toLowerCase();
+  
+  if (lower.includes('bridal 5.jpg') || lower.includes('bridal%205.jpg')) return './br_bridal 5.jpg';
+  if (lower.includes('bridal2.jpg')) return './br_bridal2.jpg';
+  if (lower.includes('bridal3.jpg')) return './br_bridal3.jpg';
+  if (lower.includes('bridal4.jpg')) return './br_bridal4.jpg';
+  if (lower.includes('bridal6.jpg')) return './br_bridal6.jpg';
+  if (lower.includes('bridal7.jpg')) return './br_bridal7.jpg';
+  if (lower.includes('b1.jpg')) return './br_b1.jpg';
+  if (lower.includes('b2.jpg')) return './br_b2.jpg';
+  
+  if (lower.includes('bridalcollection.jpg')) return './bridalCollection.jpg';
+  if (lower.includes('kidscollection.jpg')) return './kidsCollection.jpg';
+  if (lower.includes('luxurycollection.jpg')) return './luxuryCollection.jpg';
+  if (lower.includes('mens collection.jpg') || lower.includes('mens%20collection.jpg') || lower.includes('menscollection.jpg')) return './Mens Collection.jpg';
+  if (lower.includes('womenscollection.jpg')) return './womensCollection.jpg';
+  
+  if (lower.includes('men1.jpg')) return './men1.jpg';
+  if (lower.includes('k1.jpg')) return './k_k1.jpg';
+  if (lower.includes('k2.jpg')) return './k_k2.jpg';
+  if (lower.includes('k3.jpg')) return './k_k3.jpg';
+  if (lower.includes('k4.jpg')) return './k_k4.jpg';
+  if (lower.includes('k5.jpg')) return './k_k5.jpg';
+  if (lower.includes('k6.jpg')) return './k_k6.jpg';
+  
+  if (trimmed.startsWith('http') || trimmed.startsWith('./') || trimmed.startsWith('/')) {
+    return trimmed;
+  }
+  return trimmed;
+};
+
 export default function CustomerView({ 
   tailors, orders, addOrder, updateOrderStatus, ledger, setLedger, banners, articles, currentUser,
   initialCategory = 'all', initialHub = 'tailors', onLoginRequired
@@ -164,6 +198,15 @@ export default function CustomerView({
   const [studentCollege, setStudentCollege] = useState('all');
   const [studentSkill, setStudentSkill] = useState('all');
   const [studentSpecialty, setStudentSpecialty] = useState('all');
+
+  // Style Articles Hub States
+  const [activeArticleCategory, setActiveArticleCategory] = useState('all');
+  const [activeSeasonalTab, setActiveSeasonalTab] = useState('summer');
+  const [activeQuiz, setActiveQuiz] = useState(null);
+  const [quizStep, setQuizStep] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState({});
+  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [featuredSection, setFeaturedSection] = useState(null); // 'colors' | 'cuts' | 'fabrics' | 'celebs' | null
 
   const addFabricToCart = (variant, meters, brandName, collectionName) => {
     if (!currentUser) {
@@ -3598,8 +3641,8 @@ export default function CustomerView({
                   { title: 'Pastel Organza Lehenga', desc: 'Muted champagne silk textures styled with floral bootis and matching organza dupattas.', img: './br_bridal3.jpg', tag: 'Pastel Trends' }
                 ].map((tr, idx) => (
                   <div key={idx} className="glass-card" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
-                    <div style={{ height: '140px', borderRadius: '6px', overflow: 'hidden', position: 'relative' }}>
-                      <img src={tr.img} alt={tr.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ height: '180px', borderRadius: '6px', overflow: 'hidden', position: 'relative', background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img src={tr.img} alt={tr.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                       <span className="badge badge-primary" style={{ position: 'absolute', top: '8px', left: '8px', fontSize: '0.55rem' }}>{tr.tag}</span>
                     </div>
                     <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: '#fff' }}>{tr.title}</h4>
@@ -3800,20 +3843,515 @@ export default function CustomerView({
       })()}
 
       {/* --- HUB 5: ARTICLES --- */}
-      {activeHub === 'articles' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '20px' }}>
-          {articles.map(art => (
-            <div key={art.id} className="glass-card-no-hover" style={{ display: 'grid', gridTemplateColumns: '130px 1fr', gap: '16px', padding: '16px' }}>
-              <img src={art.imageUrl} alt={art.title} style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '6px' }} />
-              <div>
-                <span className="badge badge-primary" style={{ fontSize: '0.55rem' }}>{art.category}</span>
-                <h4 style={{ fontSize: '0.9rem', color: '#fff', marginTop: '4px', marginBottom: '2px', lineHeight: '1.2' }}>{art.title}</h4>
-                <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{art.author} • {art.reads} Reads</p>
+      {activeHub === 'articles' && (() => {
+        const localArticles = [
+          // Fabric Knowledge
+          { id: 'f1', title: 'Wool vs Linen: Choosing the Right Weight', category: 'Fabric Guides', author: 'Vikram Das', reads: 1420, img: './fab6.jpg', body: 'Wool and Linen represent two extremes of the fabric spectrum. While wool excels in cold temperatures due to its high insulation and heat-trapping crimps, linen is the ultimate summer champion. Sourced from flax fibers, linen features a hollow core that allows maximum breathability and moisture-wicking. When choosing between them, consider the occasion and the climate: suiting wool (280-340 GSM) provides structural drape, while lightweight linen (120-180 GSM) is ideal for casual shirts and relaxed trousers.' },
+          { id: 'f2', title: 'Best Summer Fabrics for Tropical Climates', category: 'Fabric Guides', author: 'Priya Sharma', reads: 980, img: './fab2.jpg', body: 'Dressing for high heat requires lightweight, breathable fibers. The best fabrics for tropical summers include Giza Cotton, Belgian Flax Linen, and lightweight Chanderi silks. Avoid synthetic materials like polyester, which trap heat and cause perspiration. Stick to light colors like lavender, sky blue, and pastel pink, which reflect light rather than absorb it.' },
+          { id: 'f3', title: 'Silk Types Explained: Banarasi to Chanderi', category: 'Fabric Guides', author: 'Sneha Reddy', reads: 2410, img: './brf_fa2.jpg', body: 'Silks carry a rich legacy in Indian tailoring. Banarasi silk is characterized by its heavy gold zari brocade work and metallic sheets, making it ideal for bridal lehengas. Chanderi silk is a lightweight blend of cotton and silk yarn, offering a sheer texture and glossy finish suitable for summer festivals. Kanjeevaram silk is double-threaded and heavy, providing excellent structural drape for traditional sarees.' },
+          { id: 'f4', title: 'Understanding Cotton GSM: Weave & Weights', category: 'Fabric Guides', author: 'Vikram Das', reads: 850, img: './fab3.jpg', body: 'GSM stands for Grams per Square Meter. It measures the weight and thickness of a fabric. For cotton, 50-100 GSM represents sheer, lightweight fabric (like lawn or voile), ideal for linings and summer slips. 100-150 GSM is medium weight, used for standard shirts and blouses. 150-250+ GSM is heavy weight, perfect for structured trousers, jackets, and winter kurtas.' },
+          { id: 'f5', title: 'How to Choose the Perfect Bridal Lehenga Fabric', category: 'Fabric Guides', author: 'Malini Iyer', reads: 3200, img: './brf_fa5.jpg', body: 'Your bridal lehenga drape is determined entirely by the base fabric. Velvet is heavy, royal, and holds heavy zardozi embroidery without sagging. Pure raw silk offers a beautiful natural sheen and holds structure well, ideal for classic A-line flares. Georgette and net are lightweight, providing a soft, flowy, and highly romantic silhouette.' },
+          { id: 'f6', title: 'Fabric Care Guide: Preservation & Ironing Tips', category: 'Fabric Guides', author: 'Amit Patel', reads: 1120, img: './fab5.jpg', body: 'Premium fabrics require proper care. Pure silk should always be dry cleaned and stored in soft muslin bags to avoid moisture damage. Linen can be machine-washed but should be ironed while slightly damp to smooth out deep creases. Wool garments must be stored with cedar balls and dry cleaned to preserve natural fibers.' },
+          
+          // Design Inspiration
+          { id: 'd1', title: 'Celebrity Inspired Red Carpet Outfits', category: 'Celebrity Looks', author: 'Rahul Varma', reads: 1850, img: './br_bridal4.jpg', body: 'Red carpet fashion this season is dominated by asymmetrical cuts and bold color blocks. We see a shift towards high-neck collars, sheer organza capes, and metallic thread details. To replicate these looks on a budget, choose premium georgette or crepe fabrics and pair them with a specialized custom design consult.' },
+          { id: 'd2', title: 'Instagram Viral Fashion Trends this Month', category: 'Trending Styles', author: 'Rahul Varma', reads: 2200, img: './w_women1.jpg', body: 'Pastel coordinates, puff-sleeve blouses, and oversized structured blazers are taking over social media feeds. The trend focuses on comfort-meets-elegance. Light lilac and mint green are the colors of the month.' },
+          { id: 'd3', title: 'Pinterest Wedding Boards: Style Inklings', category: 'Wedding Fashion', author: 'Malini Iyer', reads: 3400, img: './br_bridal7.jpg', body: 'Pinterest bridal boards show a clear trend: tone-on-tone embroidery. Instead of contrasting thread, modern brides prefer gold work on gold fabric, or red-on-red. Minimal jewelry and long sheer veils complete this aesthetic.' },
+          { id: 'd4', title: 'Minimalist Bridal Looks for Day Ceremonies', category: 'Wedding Fashion', author: 'Sneha Reddy', reads: 1950, img: './br_b1.jpg', body: 'Daytime weddings call for lighter fabrics that breathe. Pastel organza, lightweight silk, and georgette with minimal sequins are ideal. Muted champagne and peach tones capture natural light beautifully, avoiding the heavy weight of traditional evening bridal wear.' },
+          { id: 'd5', title: 'Korean Fashion Trends: Oversized Silhouettes', category: 'Seasonal Fashion', author: 'Rahul Varma', reads: 2800, img: './w_women2.jpg', body: 'Korean street fashion is all about layering. Oversized trench coats, double-breasted blazers in pastel lavender, and loose linen trousers dominate. The key is balancing the proportions: pair an oversized jacket with a fitted inner top.' },
+          
+          // Stitching Education
+          { id: 's1', title: 'How Perfect Measurements Work: 3D vs Tape', category: 'Tailoring Tips', author: 'Rajesh Kumar', reads: 1600, img: './why_join_4.png', body: 'Traditional measuring uses a tape, which is subject to human error and posture shifts. Modern digital custom shops use multi-point photos or 3D coordinate mapping to calculate precise chest drops, shoulder angles, and arm curves. For the best fit, stand naturally with feet shoulder-width apart and breathe regularly during measurements.' },
+          { id: 's2', title: '5 Common Stitching Mistakes & How to Avoid Them', category: 'Tailoring Tips', author: 'Rajesh Kumar', reads: 1250, img: './why_join_3.jpg', body: 'The most common mistakes include: choosing the wrong fabric drape for a pattern (e.g. using stiff cotton for a flowy gown), ignoring seam allowances, incorrect shoulder drops, tight armholes, and not checking the lining weight. Always discuss fabric mapping with your tailor before cutting.' },
+          { id: 's3', title: 'Suit Fitting Guide: Shoulder Seams & Hemlines', category: 'Tailoring Tips', author: 'Amit Patel', reads: 1450, img: './mens_tailoring.jpg', body: 'A perfect suit starts at the shoulders. The shoulder seam should lie flat and align exactly where your arm meets the collarbone. The jacket hemline should cover your seat, and the trouser bottom should have a slight break over the shoe lace.' },
+          { id: 's4', title: 'Blouse Fitting Secrets: Dart Placements', category: 'Tailoring Tips', author: 'Sneha Reddy', reads: 3100, img: './why_join_5.jpg', body: 'A saree blouse fit depends entirely on the apex point and dart placement. Double darts create a structured cup shape, while single darts offer a softer fit. Ensure the neck drop does not gap when you lean forward, and choose a lining that matches the stretch of the blouse fabric.' },
+          { id: 's5', title: 'Alteration Tips: Re-adjusting Seams at Home', category: 'Tailoring Tips', author: 'Amit Patel', reads: 950, img: './alterations_fit_v2.jpg', body: 'For simple adjustments, search for the side seam stitch. You can easily let out or take in up to 1 inch if the tailor left a seam allowance. Always use a seam ripper to avoid tearing the fabric fibers, and iron the new seam flat to remove needle holes.' },
+          
+          // Student Learning Hub
+          { id: 'l1', title: 'Beginner Tailoring: Needle Threading & Basics', category: 'Fashion Careers', author: 'Rahul Varma', reads: 750, img: './student_hero_1.jpg', body: 'Learning to stitch starts with machine control. Practice sewing straight lines on paper before using fabric. Learn to wind the bobbin evenly, adjust thread tension, and thread the needle. A standard size 14 needle is perfect for starting with medium cotton fabrics.' },
+          { id: 'l2', title: 'Pattern Making Basics: Paper Drafting Layouts', category: 'Fashion Careers', author: 'Ananya Sen', reads: 880, img: './student_hero_4.jpg', body: 'Pattern drafting is translating 3D body shapes onto 2D paper sheets. Learn to draft basic blocks: front bodice, back bodice, sleeve, and skirt. Use French curves to draw smooth armholes and necklines, and always add seam allowances (typically 0.5 inch for necklines, 1 inch for side seams).' },
+          { id: 'l3', title: 'Fashion Sketching: Outfit Proportions & Croquis', category: 'Fashion Careers', author: 'Vikram Das', reads: 1100, img: './student_hero_3.jpg', body: 'Fashion sketching uses a 9-head or 10-head figure ratio to emphasize clothing details. Start with a light wireframe pencil sketch (croquis), map the shoulder and hip slant, and drape the fabric folds naturally over the joints. Shade the fabric creases to simulate drape weight.' },
+          { id: 'l4', title: 'Understanding Fabric Weaves: Plain, Twill, Satin', category: 'Fashion Careers', author: 'Ananya Sen', reads: 620, img: './student_hero_2.jpg', body: 'Fabric feel depends on weave geometry. Plain weave (over-one, under-one) is durable and flat (e.g. linen, canvas). Twill weave has diagonal ridges, making it heavy and stretch-resistant (e.g. denim, gabardine). Satin weave features long thread floats, creating a highly glossy, smooth, but snag-prone surface.' },
+          { id: 'l5', title: 'Stitching Certifications: Ranks & Badges Guide', category: 'Fashion Careers', author: 'Priya Sharma', reads: 530, img: './student_hero_5.jpg', body: 'StitchBee Academy ranks certify tailoring skill sets. Bronze requires simple seams and alterations. Silver includes shirts and blouses. Gold covers double-breasted suits and bridal lehengas. Complete practical exams to unlock higher partner payouts.' },
+          { id: 'l6', title: 'Delivery Etiquette: Handling Premium Garments', category: 'Fashion Careers', author: 'Rajesh Kumar', reads: 400, img: './delivery_works_3.jpg', body: 'Fashion delivery is about presentation. Premium garments must be transported on hangers inside dust-proof garment bags. Never fold a structured blazer or heavily embroidered lehenga. Greet the client politely and offer fitting assistance if required.' }
+        ];
+
+        const categoriesList = [
+          { key: 'Trending Styles', name: 'Trending Styles', icon: '🔥' },
+          { key: 'Fabric Guides', name: 'Fabric Guides', icon: '🧵' },
+          { key: 'Tailoring Tips', name: 'Tailoring Tips', icon: '✂️' },
+          { key: 'Wedding Fashion', name: 'Wedding Fashion', icon: '👗' },
+          { key: 'Seasonal Fashion', name: 'Seasonal Fashion', icon: '🍂' },
+          { key: 'Celebrity Looks', name: 'Celebrity Looks', icon: '⭐' },
+          { key: 'Kids Fashion', name: 'Kids Fashion', icon: '🧸' },
+          { key: 'Men’s Fashion', name: 'Men’s Fashion', icon: '👔' },
+          { key: 'Women’s Fashion', name: 'Women’s Fashion', icon: '👜' },
+          { key: 'Uniform Styling', name: 'Uniform Styling', icon: '🎓' },
+          { key: 'Sustainable Fashion', name: 'Sustainable Fashion', icon: '🌿' },
+          { key: 'Fashion Careers', name: 'Fashion Careers', icon: '💼' }
+        ];
+
+        const trendingThisWeek = [
+          { id: 'trend1', title: 'Top 10 Blouse Styles for 2026', badge: '🔥 Trending', badgeClass: 'badge-primary', body: 'This week, the top 10 blouse designs are dominated by sheer organza backs, sweetheart plunge necklines, elbow-length heavy hand-embellished sleeves, high-collared jackets, and retro puff cuffs. Silk brocade remains the fabric of choice to pair with these premium cuts.' },
+          { id: 'trend2', title: 'Trending Bridal Neckline Shapes', badge: '👗 New Arrival', badgeClass: 'badge-secondary', body: 'Deep sweetheart necklines, illusion nets, asymmetrical neck drops, and high-collared royal sherwani necks are the top choices for brides this season. Gold thread zardozi detailing adds an antique finish.' },
+          { id: 'trend3', title: 'Latest Groom Sherwani Designs', badge: '⭐ Editor Pick', badgeClass: 'badge-warning', body: 'Structured pastel sherwanis in champagne gold and mint green silk are trending. Pairing asymmetrical outer jackets over fitted formal trousers replaces traditional heavy styles.' },
+          { id: 'trend4', title: 'Office Wear Trends: Linen Coordinates', badge: '🔥 Trending', badgeClass: 'badge-primary', body: 'Linen coordinate sets (oversized blazers with matching wide-leg trousers) are the leading office style. Breathable flax fabrics in earth tones like beige and sand dominate.' },
+          { id: 'trend5', title: 'Summer Fabrics Guide: Linen & Giza Cotton', badge: '⭐ Editor Pick', badgeClass: 'badge-warning', body: 'Our editors recommend pure flax linen and long-staple Giza cotton for extreme summer heat. Stick to light weave fabrics under 130 GSM for maximum breathability.' }
+        ];
+
+        const handleTrendingClick = (item) => {
+          setSelectedArticle({
+            id: item.id,
+            title: item.title,
+            category: 'Trending This Week',
+            author: 'Editor Pick',
+            reads: '4500+',
+            body: item.body,
+            img: './br_bridal7.jpg'
+          });
+        };
+
+        const filteredArticlesList = localArticles.filter(art => {
+          if (activeArticleCategory === 'all') return true;
+          return art.category === activeArticleCategory;
+        });
+
+        // Interactive Quizzes Code
+        const handleQuizAnswer = (questionKey, answerVal) => {
+          const newAnswers = { ...quizAnswers, [questionKey]: answerVal };
+          setQuizAnswers(newAnswers);
+          setQuizStep(quizStep + 1);
+        };
+
+        const resetQuiz = (quizId) => {
+          setActiveQuiz(quizId);
+          setQuizStep(0);
+          setQuizAnswers({});
+        };
+
+        const renderQuizContent = () => {
+          if (activeQuiz === 'fabric') {
+            if (quizStep === 0) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 1: What occasion are you dressing for?</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('occ', 'wedding')}>Wedding / Royal Ceremony</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('occ', 'office')}>Office / Daily Formal</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('occ', 'party')}>Casual Summer Party</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('occ', 'festive')}>Traditional Festival</button>
+                  </div>
+                </div>
+              );
+            }
+            if (quizStep === 1) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 2: What climate or season is this outfit for?</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('climate', 'summer')}>Hot Summer / Humid</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('climate', 'winter')}>Cold Winter / Chill</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('climate', 'mild')}>Mild / Spring / Indoor AC</button>
+                  </div>
+                </div>
+              );
+            }
+            if (quizStep === 2) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 3: What texture or feel do you prefer?</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('feel', 'shiny')}>Soft & Shiny (Glossy)</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('feel', 'breathable')}>Crisp & Lightweight</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('feel', 'warm')}>Heavy, Rich & Warm</button>
+                  </div>
+                </div>
+              );
+            }
+            // Quiz Results calculation
+            const occ = quizAnswers.occ;
+            const climate = quizAnswers.climate;
+            const feel = quizAnswers.feel;
+            let resultFabric = 'Premium Giza Cotton';
+            let resultCategory = 'cotton';
+            let resultDesc = 'Excellent breathability, crisp texture, and easy daily maintenance.';
+            let resultPrice = '₹499/meter';
+
+            if (occ === 'wedding' || feel === 'shiny') {
+              resultFabric = 'Banarasi Silk / Pure Silk';
+              resultCategory = 'silk';
+              resultDesc = 'Lustrous texture, royal gold brocade weaves, and holds elegant structured flares.';
+              resultPrice = '₹1200/meter';
+            } else if (climate === 'summer' || feel === 'breathable') {
+              resultFabric = 'Belgian Flax Linen';
+              resultCategory = 'linen';
+              resultDesc = 'Extremely airy, hollow fibers for hot climates, and a clean natural texture look.';
+              resultPrice = '₹690/meter';
+            } else if (climate === 'winter' || feel === 'warm') {
+              resultFabric = 'Plush Velvet / Tweed Wool';
+              resultCategory = 'velvet';
+              resultDesc = 'Heavy weight, rich drape, traps warmth comfortably, and feels highly premium.';
+              resultPrice = '₹850/meter';
+            }
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
+                <span style={{ fontSize: '2.5rem' }}>🧵</span>
+                <h4 style={{ fontSize: '1.2rem', color: 'var(--accent)', fontWeight: 'bold' }}>Recommendation: {resultFabric}</h4>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{resultDesc} (Est: {resultPrice})</p>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                  <button className="btn btn-primary" style={{ flexGrow: 1 }} onClick={() => { setActiveHub('fabrics'); setSelectedCategory(resultCategory); }}>Go Search in Shop</button>
+                  <button className="btn btn-secondary" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }} onClick={() => resetQuiz('fabric')}>Retake Quiz</button>
+                </div>
+              </div>
+            );
+          }
+
+          if (activeQuiz === 'body') {
+            if (quizStep === 0) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 1: What is your fit preference?</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('fit', 'tight')}>Tailored Slim Fit</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('fit', 'regular')}>Classic Regular Fit</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('fit', 'loose')}>Comfort / Oversized</button>
+                  </div>
+                </div>
+              );
+            }
+            if (quizStep === 1) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 2: Select your silhouette structure:</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('body', 'broad')}>Broad Shoulders / Athletic</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('body', 'balanced')}>Balanced Proportion</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('body', 'narrow')}>Narrow / Petite Frame</button>
+                  </div>
+                </div>
+              );
+            }
+
+            const fit = quizAnswers.fit;
+            const body = quizAnswers.body;
+            let resultOutfit = 'Classic Structured Kurta Set';
+            let resultDesc = 'A well-tailored regular fit kurta provides a clean drop down the frame, balancing proportions.';
+
+            if (fit === 'loose' || body === 'broad') {
+              resultOutfit = 'Oversized Pastel Trench Blazer';
+              resultDesc = 'A comfortable oversized double-breasted blazer balances broad shoulders and drapes loosely.';
+            } else if (fit === 'tight' || body === 'narrow') {
+              resultOutfit = 'Structured Slim-Fit Sherwani / Corset Gown';
+              resultDesc = 'A close-fitting tailored structure highlights petite silhouettes and adds posture support.';
+            }
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
+                <span style={{ fontSize: '2.5rem' }}>🧥</span>
+                <h4 style={{ fontSize: '1.2rem', color: 'var(--accent)', fontWeight: 'bold' }}>Recommendation: {resultOutfit}</h4>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{resultDesc}</p>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                  <button className="btn btn-primary" style={{ flexGrow: 1 }} onClick={() => { setActiveHub('sarees'); }}>Browse Outfit Designs</button>
+                  <button className="btn btn-secondary" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }} onClick={() => resetQuiz('body')}>Retake Quiz</button>
+                </div>
+              </div>
+            );
+          }
+
+          if (activeQuiz === 'wedding-planner') {
+            if (quizStep === 0) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 1: What is your role in the wedding?</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('role', 'bride')}>The Bride / Groom</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('role', 'party')}>Bridesmaid / Best Man</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('role', 'guest')}>Wedding Guest</button>
+                  </div>
+                </div>
+              );
+            }
+            if (quizStep === 1) {
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', color: '#fff' }}>Question 2: Select your budget allocation:</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('budget', 'low')}>Under ₹5,000</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('budget', 'med')}>₹5,000 to ₹15,000</button>
+                    <button className="btn btn-secondary" onClick={() => handleQuizAnswer('budget', 'high')}>Luxury Couture (₹15,000+)</button>
+                  </div>
+                </div>
+              );
+            }
+
+            const wRole = quizAnswers.role;
+            const wBudget = quizAnswers.budget;
+            let resultPlan = 'Premium Custom Stitching';
+            let resultDesc = 'We recommend purchasing raw fabrics from our shop and hiring a pro-tailor with measurements for a custom fit.';
+
+            if (wRole === 'bride' || wBudget === 'high') {
+              resultPlan = 'Luxury Couture & Designer Consultation';
+              resultDesc = 'Book a direct 1-on-1 session with Malini Iyer for raw silk mapping, pattern sheets, and direct tailor assignment.';
+            } else if (wRole === 'guest' && wBudget === 'low') {
+              resultPlan = 'Ready Dress Alterations';
+              resultDesc = 'Order a ready design dress from our shop and use our quick alterations service to fit it to your size.';
+            }
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
+                <span style={{ fontSize: '2.5rem' }}>💍</span>
+                <h4 style={{ fontSize: '1.2rem', color: 'var(--accent)', fontWeight: 'bold' }}>Plan Recommended: {resultPlan}</h4>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{resultDesc}</p>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                  <button className="btn btn-primary" style={{ flexGrow: 1 }} onClick={() => { setActiveHub(wRole === 'bride' || wBudget === 'high' ? 'designers' : 'sarees'); }}>Explore Options</button>
+                  <button className="btn btn-secondary" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }} onClick={() => resetQuiz('wedding-planner')}>Retake Quiz</button>
+                </div>
+              </div>
+            );
+          }
+
+          // Default state: select which quiz to take
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Tired of reading? Choose one of our quick interactive planners to get guided style suggestions immediately:</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <button className="btn btn-secondary" style={{ textAlign: 'left', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => resetQuiz('fabric')}>
+                  <span>🧵 Find Your Perfect Fabric Quiz</span>
+                  <ChevronRight size={16} />
+                </button>
+                <button className="btn btn-secondary" style={{ textAlign: 'left', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => resetQuiz('body')}>
+                  <span>🧥 Silhouette & Body Type Guide</span>
+                  <ChevronRight size={16} />
+                </button>
+                <button className="btn btn-secondary" style={{ textAlign: 'left', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} onClick={() => resetQuiz('wedding-planner')}>
+                  <span>💍 Wedding Style & Budget Planner</span>
+                  <ChevronRight size={16} />
+                </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        };
+
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', textAlign: 'left' }}>
+            
+            {/* 1. Featured Article (Hero) */}
+            <div className="glass-card-no-hover" style={{ padding: '24px', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '32px', alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span className="badge badge-primary">EDITORIAL HERO</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Malini Iyer • 5 Min Read</span>
+                </div>
+                <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#fff', lineHeight: '1.3' }}>2026 Wedding Trends: Bridal Lehengas, Fabrics & Styling</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.5' }}>
+                  A breakdown of emerging bridal silhouettes, raw thread works, and luxury textile combinations dominating the wedding registers this season.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+                  {[
+                    { id: 'colors', label: 'Trending Colors', content: 'Emerald Green, Soft Lavender, Champagne Gold, and Dusty Rose are dominating the luxury bridal space. Brides are moving away from traditional reds to pastel bases with heavy gold zari.' },
+                    { id: 'cuts', label: 'Popular Cuts', content: 'A-Line structured flares, asymmetric layered hemlines, and off-shoulder corseted blouses are major hits for 2026 receptions.' },
+                    { id: 'fabrics', label: 'Premium Fabrics', content: 'Plush Velvet panels, Banarasi Brocade silk borders, and organza overlays with hand-painted gold highlights are preferred for their royal texture.' },
+                    { id: 'celebs', label: 'Celebrity Inspiration', content: 'Celebrity weddings this year showed minimal jewelry paired with extremely heavy hand-embroidered lehengas, shifting attention to fabric texture.' }
+                  ].map(sec => (
+                    <div key={sec.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', paddingBottom: '8px' }}>
+                      <button 
+                        onClick={() => setFeaturedSection(featuredSection === sec.id ? null : sec.id)}
+                        style={{ background: 'none', border: 'none', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', fontWeight: '600', fontSize: '0.85rem', cursor: 'pointer', padding: '6px 0' }}
+                      >
+                        <span>{sec.label}</span>
+                        <span style={{ color: 'var(--primary)' }}>{featuredSection === sec.id ? '−' : '+'}</span>
+                      </button>
+                      {featuredSection === sec.id && (
+                        <p className="animate-fade-in" style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.4' }}>{sec.content}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{ height: '280px', borderRadius: '12px', overflow: 'hidden' }}>
+                <img src="./br_bridal6.jpg" alt="Bridal Fashion Trend" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            </div>
+
+            {/* 2. Article Categories */}
+            <div>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Article Categories</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px' }}>
+                <button 
+                  className={`btn ${activeArticleCategory === 'all' ? 'btn-primary' : 'btn-ghost'}`} 
+                  onClick={() => setActiveArticleCategory('all')}
+                  style={{ display: 'flex', gap: '8px', padding: '10px 14px', fontSize: '0.8rem', justifyContent: 'center', border: activeArticleCategory === 'all' ? 'none' : '1px solid var(--border-color)', background: activeArticleCategory === 'all' ? '' : 'rgba(255,255,255,0.01)' }}
+                >
+                  📖 All Categories
+                </button>
+                {categoriesList.map(cat => (
+                  <button 
+                    key={cat.key} 
+                    className={`btn ${activeArticleCategory === cat.key ? 'btn-primary' : 'btn-ghost'}`} 
+                    onClick={() => setActiveArticleCategory(cat.key)}
+                    style={{ display: 'flex', gap: '8px', padding: '10px 14px', fontSize: '0.8rem', justifyContent: 'center', border: activeArticleCategory === cat.key ? 'none' : '1px solid var(--border-color)', background: activeArticleCategory === cat.key ? '' : 'rgba(255,255,255,0.01)' }}
+                  >
+                    <span>{cat.icon}</span> {cat.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Two-Column Layout for Main Content & Sidebar */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: '32px', alignItems: 'start', flexWrap: 'wrap' }}>
+              
+              {/* Left Column: Filtered Articles & Quizzes */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+                
+                {/* 9. Interactive Articles */}
+                <div>
+                  <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Interactive Style Planners</h3>
+                  <div className="glass-card-no-hover" style={{ padding: '24px', border: activeQuiz ? '1px solid var(--accent)' : '1px solid var(--border-color)' }}>
+                    <div style={{ display: 'flex', justify: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', marginBottom: '16px' }}>
+                      <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#fff' }}>
+                        {activeQuiz === 'fabric' && '🧵 Quiz: Find Your Fabric'}
+                        {activeQuiz === 'body' && '🧥 Guide: Silhouette Matcher'}
+                        {activeQuiz === 'wedding-planner' && '💍 Planner: Wedding Budget'}
+                        {!activeQuiz && '🎨 Guided Styling Tools'}
+                      </h4>
+                      {activeQuiz && (
+                        <button className="btn btn-ghost" onClick={() => setActiveQuiz(null)} style={{ padding: '4px 8px', fontSize: '0.72rem', color: 'var(--primary)' }}>Exit Tool</button>
+                      )}
+                    </div>
+                    {renderQuizContent()}
+                  </div>
+                </div>
+
+                {/* Main Articles List (Fabric Knowledge, Stitching Ed, Student Hub, etc.) */}
+                <div>
+                  <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>
+                    {activeArticleCategory === 'all' ? 'Latest Styling Guides' : `${activeArticleCategory} Articles`}
+                  </h3>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {filteredArticlesList.map(art => (
+                      <div key={art.id} className="glass-card" style={{ display: 'flex', gap: '16px', padding: '16px', cursor: 'pointer' }} onClick={() => setSelectedArticle(art)}>
+                        <div style={{ width: '130px', height: '110px', borderRadius: '6px', overflow: 'hidden', flexShrink: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <img src={art.img} alt={art.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', textAlign: 'left', flexGrow: 1 }}>
+                          <span className="badge badge-primary" style={{ width: 'fit-content', fontSize: '0.55rem' }}>{art.category.toUpperCase()}</span>
+                          <h4 style={{ fontSize: '0.95rem', color: '#fff', fontWeight: 'bold', marginTop: '4px', lineHeight: '1.3' }}>{art.title}</h4>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis' }}>{art.body}</p>
+                          <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: 'auto' }}>{art.author} • {art.reads} Reads</p>
+                        </div>
+                      </div>
+                    ))}
+                    {filteredArticlesList.length === 0 && (
+                      <div className="glass-card-no-hover" style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                        No articles found in this category. Select another category above.
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column: Trending, Seasonal, Designer Picks */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+                
+                {/* 3. Trending This Week */}
+                <div>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Trending This Week</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {trendingThisWeek.map((tr, idx) => (
+                      <div key={idx} className="glass-card" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '6px', cursor: 'pointer' }} onClick={() => handleTrendingClick(tr)}>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--accent)' }}>#0{idx+1}</span>
+                          <span className={`badge ${tr.badgeClass}`} style={{ fontSize: '0.55rem' }}>{tr.badge}</span>
+                        </div>
+                        <h4 style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 'bold' }}>{tr.title}</h4>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 8. Seasonal Guides */}
+                <div>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Seasonal Styling Guides</h3>
+                  <div className="glass-card-no-hover" style={{ padding: '20px' }}>
+                    {/* Tab Selector */}
+                    <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '10px', gap: '10px', marginBottom: '16px' }}>
+                      {[
+                        { id: 'summer', label: '☀️ Summer' },
+                        { id: 'wedding', label: '👗 Wedding' },
+                        { id: 'festive', label: '✨ Festive' }
+                      ].map(tab => (
+                        <button 
+                          key={tab.id}
+                          className="btn btn-ghost" 
+                          onClick={() => setActiveSeasonalTab(tab.id)}
+                          style={{ padding: '4px 10px', fontSize: '0.75rem', borderBottom: activeSeasonalTab === tab.id ? '2px solid var(--primary)' : 'none', color: activeSeasonalTab === tab.id ? 'var(--primary)' : 'var(--text-secondary)', background: 'none', borderRadius: '0' }}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                    {/* Tab Content */}
+                    {activeSeasonalTab === 'summer' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8rem' }}>
+                        <div>🍀 <strong>Best Fabrics:</strong> Belgian Flax Linen, Giza Cotton yarn, sheer organza drops.</div>
+                        <div>🎨 <strong>Light Colors:</strong> Lavender tones, sky blue, muted champagne, beige shades.</div>
+                        <div>🍃 <strong>Breathable Outfits:</strong> Wide-leg linen trousers, loose-fit shirts, unlined blazers.</div>
+                      </div>
+                    )}
+                    {activeSeasonalTab === 'wedding' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8rem' }}>
+                        <div>👑 <strong>Bridal Fabrics:</strong> Plush Velvet panels, Banarasi Brocade silk.</div>
+                        <div>👔 <strong>Groom Fabrics:</strong> Italian suiting wool, raw silk sherwanis.</div>
+                        <div>👥 <strong>Family Outfits:</strong> Pastel coordinate sets, traditional border silk sarees.</div>
+                      </div>
+                    )}
+                    {activeSeasonalTab === 'festive' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8rem' }}>
+                        <div>🪔 <strong>Diwali Styles:</strong> Heavy Anarkalis, silk Nehru jackets, bootis work.</div>
+                        <div>🕌 <strong>Eid Collection:</strong> Sheer Georgette suits, silver embroidery kurtas.</div>
+                        <div>🎄 <strong>Christmas Looks:</strong> Emerald Tweed jackets, plush dark red velvet outfits.</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 10. Designer Picks */}
+                <div>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Designer Recommendations</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div className="glass-card-no-hover" style={{ padding: '16px', borderLeft: '3px solid var(--primary)' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px' }}>
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" alt="Malini Iyer" style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} />
+                        <span style={{ fontSize: '0.78rem', fontWeight: 'bold', color: '#fff' }}>Designer Malini Iyer recommends:</span>
+                      </div>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontStyle: 'italic', lineHeight: '1.4' }}>
+                        "For the upcoming festive season, focus on high-neck blouse collars paired with elbow-length heavy sleeve zardozi panels. Keep the saree minimal to make the embroidery pop!"
+                      </p>
+                      <button className="btn btn-ghost" onClick={() => { setActiveHub('designers'); }} style={{ fontSize: '0.72rem', color: 'var(--primary)', marginTop: '8px', padding: '2px 0', border: 'none', background: 'none' }}>Book Consultation →</button>
+                    </div>
+
+                    <div className="glass-card-no-hover" style={{ padding: '16px', borderLeft: '3px solid var(--accent)' }}>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px' }}>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Rahul Varma" style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} />
+                        <span style={{ fontSize: '0.78rem', fontWeight: 'bold', color: '#fff' }}>Designer Rahul Varma recommends:</span>
+                      </div>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', fontStyle: 'italic', lineHeight: '1.4' }}>
+                        "Gen-Z streetwear is shifting to pastel linen coordinates. Layer an unlined oversized sand blazer over a white cotton crop, paired with sand-tints trousers."
+                      </p>
+                      <button className="btn btn-ghost" onClick={() => { setActiveHub('designers'); }} style={{ fontSize: '0.72rem', color: 'var(--primary)', marginTop: '8px', padding: '2px 0', border: 'none', background: 'none' }}>Book Session →</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
 
       {/* --- HUB 6: HISTORY & INVOICES TAB --- */}
       {activeHub === 'history' && (
@@ -3940,19 +4478,11 @@ export default function CustomerView({
 
               <button 
                 onClick={() => {
-                  if (!currentUser) {
-                    if (onLoginRequired) onLoginRequired();
-                    return;
-                  }
-                  if (!inspTitle || !inspImage || !inspBudget || !inspDesc) {
-                    alert('Please fill out all fields of the inspiration upload form.');
-                    return;
-                  }
-                  const newUpload = {
+                                    const newUpload = {
                     id: Date.now(),
                     title: inspTitle,
                     category: inspCategory,
-                    image: inspImage.startsWith('http') ? inspImage : 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80',
+                    image: resolveInspirationImage(inspImage) || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80',
                     description: inspDesc,
                     budget: parseInt(inspBudget),
                     status: 'Awaiting Bids',
@@ -3994,36 +4524,42 @@ export default function CustomerView({
                 Submit Inspiration to Designer Pool
               </button>
             </div>
-
+ 
             {/* Live Preview Panel */}
             <div className="glass-card-no-hover" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px', minHeight: '400px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', color: 'var(--accent)' }}>Live Preview</h3>
               
               <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--border-color)', borderRadius: '8px', padding: '20px', background: 'rgba(255,255,255,0.01)', overflow: 'hidden' }}>
-                {inspImage && inspImage.startsWith('http') ? (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ height: '280px', borderRadius: '6px', overflow: 'hidden', background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src={inspImage} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80' }} />
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                      <span className="badge badge-primary" style={{ fontSize: '0.6rem' }}>{inspCategory.toUpperCase()}</span>
-                      <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>{inspTitle || 'Untitled Design'}</h4>
-                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>{inspDesc || 'No description provided.'}</p>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Target Budget:</span>
-                        <strong style={{ color: 'var(--accent)', fontSize: '1.1rem' }}>₹{inspBudget || '0'}</strong>
+                {(() => {
+                  const resolvedPreviewImg = resolveInspirationImage(inspImage);
+                  if (resolvedPreviewImg) {
+                    return (
+                      <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <div style={{ height: '280px', borderRadius: '6px', overflow: 'hidden', background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <img src={resolvedPreviewImg} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80' }} />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                          <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>{inspCategory.toUpperCase()}</span>
+                          <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff', marginTop: '6px' }}>{inspTitle || 'Untitled Design'}</h4>
+                          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>{inspDesc || 'No description provided.'}</p>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Target Budget:</span>
+                            <strong style={{ color: 'var(--accent)', fontSize: '1.1rem' }}>₹{inspBudget || '0'}</strong>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div style={{ textAlign: 'center', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                      <Upload size={40} style={{ color: 'rgba(255,255,255,0.2)' }} />
+                      <div>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>No valid image link pasted yet.</p>
+                        <p style={{ fontSize: '0.75rem', marginTop: '4px' }}>Paste an Unsplash image URL or click to see how it looks.</p>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div style={{ textAlign: 'center', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-                    <Upload size={40} style={{ color: 'rgba(255,255,255,0.2)' }} />
-                    <div>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>No valid image link pasted yet.</p>
-                      <p style={{ fontSize: '0.75rem', marginTop: '4px' }}>Paste an Unsplash image URL or click to see how it looks.</p>
-                    </div>
-                  </div>
-                )}
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -4257,6 +4793,82 @@ export default function CustomerView({
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Article Details Modal Overlay */}
+      {selectedArticle && (
+        <div 
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 999999, padding: '20px'
+          }}
+          onClick={() => setSelectedArticle(null)}
+        >
+          <div 
+            className="glass-card-no-hover animate-fade-in"
+            style={{
+              width: '100%', maxWidth: '650px', maxHeight: '90vh',
+              overflowY: 'auto', background: 'var(--bg-dark)',
+              border: '1px solid var(--border-color)', borderRadius: '16px',
+              padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px',
+              textAlign: 'left'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>{selectedArticle.category.toUpperCase()}</span>
+              <button 
+                onClick={() => setSelectedArticle(null)}
+                style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', lineHeight: '1.3' }}>{selectedArticle.title}</h3>
+            
+            <div style={{ display: 'flex', gap: '12px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <div>Author: <strong>{selectedArticle.author}</strong></div>
+              <div>•</div>
+              <div>Reads: <strong>{selectedArticle.reads}</strong></div>
+            </div>
+
+            {selectedArticle.img && (
+              <div style={{ height: '220px', borderRadius: '8px', overflow: 'hidden', background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img src={selectedArticle.img} alt="Article cover" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+              </div>
+            )}
+
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>
+              {selectedArticle.body}
+            </p>
+
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '20px', display: 'flex', gap: '12px', marginTop: '10px' }}>
+              <button 
+                className="btn btn-primary" 
+                style={{ flexGrow: 1 }} 
+                onClick={() => {
+                  setSelectedArticle(null);
+                  setActiveHub('fabrics');
+                }}
+              >
+                Explore Recommended Fabrics
+              </button>
+              <button 
+                className="btn btn-secondary" 
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', flexGrow: 1 }} 
+                onClick={() => {
+                  setSelectedArticle(null);
+                  setActiveHub('designers');
+                }}
+              >
+                Book Designer Consultation
+              </button>
+            </div>
           </div>
         </div>
       )}
