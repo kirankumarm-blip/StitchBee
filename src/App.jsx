@@ -22,6 +22,17 @@ export default function App() {
   const [authModalConfig, setAuthModalConfig] = useState({ role: 'customer', tab: 'login' });
   const [customerCategory, setCustomerCategory] = useState('all');
   const [customerHub, setCustomerHub] = useState('fabrics');
+  const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
+
+  useEffect(() => {
+    const handleGlobalClick = () => {
+      setActiveDropdown(null);
+    };
+    window.addEventListener('click', handleGlobalClick);
+    return () => {
+      window.removeEventListener('click', handleGlobalClick);
+    };
+  }, []);
 
   const handleCategorySelect = (categoryKey) => {
     setCustomerCategory(categoryKey);
@@ -263,47 +274,26 @@ export default function App() {
 
 
           <div className="nav-item-relative">
-            <button className="role-btn">Services ▼</button>
-            <select 
-              className="mobile-services-select"
-              defaultValue=""
-              onChange={(e) => {
-                const val = e.target.value;
-                if (val === 'designers') {
-                  setRole('customer');
-                  setCustomerHub('designers');
-                  setCustomerCategory('all');
-                } else {
-                  setRole('customer');
-                  setCustomerHub('category-landing');
-                  setCustomerCategory(val);
-                }
-                e.target.value = ""; // Reset
+            <button 
+              className="role-btn" 
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                setActiveDropdown(activeDropdown === 'services' ? null : 'services'); 
               }}
             >
-              <option value="" disabled hidden>Services</option>
-              <option value="mens">Men</option>
-              <option value="womens">Women</option>
-              <option value="bridal">Bridal</option>
-              <option value="kids">Kids</option>
-              <option value="alterations">Alterations</option>
-              <option value="uniforms">Uniforms</option>
-              <option value="bags">Bags And Leathers</option>
-              <option value="shoes">Shoes And Slippers</option>
-              <option value="seats">Vehicle Seat Covers</option>
-              <option value="designers">Custom Design</option>
-            </select>
-            <ul className="nav-dropdown-menu">
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); }}>Men</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); }}>Women</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); }}>Bridal</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); }}>Kids</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); }}>Alterations</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); }}>Uniforms</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); }}>Bags And Leathers</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); }}>Shoes And Slippers</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); }}>Vehicle Seat Covers</li>
-              <li className="dropdown-item" onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); }}>Custom Design</li>
+              Services ▼
+            </button>
+            <ul className={`nav-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
+              <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
             </ul>
           </div>
 
@@ -336,60 +326,39 @@ export default function App() {
           </button>
 
           <div className="nav-item-relative">
-            <button className="role-btn">Earn With StitchBee ▼</button>
-            <select 
-              className="mobile-services-select"
-              defaultValue=""
-              onChange={(e) => {
-                const val = e.target.value;
-                if (val === 'tailor') {
-                  if (currentUser && currentUser.role === 'tailor') {
-                    setRole('tailor');
-                  } else {
-                    setRole('become-tailor');
-                  }
-                } else if (val === 'delivery') {
-                  if (currentUser && currentUser.role === 'student') {
-                    setRole('student');
-                  } else {
-                    setRole('become-delivery');
-                  }
-                } else if (val === 'student') {
-                  if (currentUser && currentUser.role === 'student') {
-                    setRole('student');
-                  } else {
-                    setRole('become-student');
-                  }
-                }
-                e.target.value = ""; // Reset
+            <button 
+              className="role-btn" 
+              onClick={(e) => { 
+                e.stopPropagation(); 
+                setActiveDropdown(activeDropdown === 'earn' ? null : 'earn'); 
               }}
             >
-              <option value="" disabled hidden>Earn With StitchBee</option>
-              <option value="tailor">Become a Tailor</option>
-              <option value="delivery">Become a Delivery Partner</option>
-              <option value="student">Student Gigs</option>
-            </select>
-            <ul className="nav-dropdown-menu">
-              <li className="dropdown-item" onClick={() => {
+              Earn With StitchBee ▼
+            </button>
+            <ul className={`nav-dropdown-menu ${activeDropdown === 'earn' ? 'show' : ''}`}>
+              <li className={`dropdown-item ${role === 'become-tailor' || role === 'tailor' ? 'active' : ''}`} onClick={() => {
                 if (currentUser && currentUser.role === 'tailor') {
                   setRole('tailor');
                 } else {
                   setRole('become-tailor');
                 }
+                setActiveDropdown(null);
               }}>Become a Tailor</li>
-              <li className="dropdown-item" onClick={() => {
+              <li className={`dropdown-item ${role === 'become-delivery' || (role === 'student' && currentUser && currentUser.role === 'student') ? 'active' : ''}`} onClick={() => {
                 if (currentUser && currentUser.role === 'student') {
                   setRole('student');
                 } else {
                   setRole('become-delivery');
                 }
+                setActiveDropdown(null);
               }}>Become a Delivery Partner</li>
-              <li className="dropdown-item" onClick={() => {
+              <li className={`dropdown-item ${role === 'become-student' ? 'active' : ''}`} onClick={() => {
                 if (currentUser && currentUser.role === 'student') {
                   setRole('student');
                 } else {
                   setRole('become-student');
                 }
+                setActiveDropdown(null);
               }}>Student Gigs</li>
             </ul>
           </div>
