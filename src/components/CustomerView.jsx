@@ -827,9 +827,10 @@ export default function CustomerView({
   };
 
   const videoRef = React.useRef(null);
-  React.useEffect(() => {
-    if (videoRef.current && cameraStream) {
-      videoRef.current.srcObject = cameraStream;
+  const setVideoRef = React.useCallback((node) => {
+    videoRef.current = node;
+    if (node && cameraStream) {
+      node.srcObject = cameraStream;
     }
   }, [cameraStream]);
 
@@ -1662,42 +1663,71 @@ export default function CustomerView({
 
                     {/* STEP 3: INSTRUCTIONS SCREEN */}
                     {aiScanStep === 'instructions' && (
-                      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                        <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--accent)' }}>📐 Scan Posture Instructions</span>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span style={{ color: 'var(--primary)' }}>•</span>
-                            <span><strong>Distance:</strong> Stand 2-3 meters away from lens.</span>
+                      <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', alignItems: 'start' }}>
+                        {/* Left Column: Live Camera Preview */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            📷 Live Camera Preview
+                          </span>
+                          <div style={{ width: '100%', height: '240px', background: '#05040a', borderRadius: '8px', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {cameraStream ? (
+                              <video ref={setVideoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', justifyContent: 'center', color: 'rgba(76,201,240,0.8)' }}>
+                                <div style={{ width: '40px', height: '40px', border: '2px dashed #4cc9f0', borderRadius: '50%', animation: 'spinSlow 3s linear infinite' }} />
+                                <span style={{ fontSize: '0.65rem', letterSpacing: '0.1em' }}>MOCK VIDEO SCAN ACTIVE</span>
+                              </div>
+                            )}
+                            
+                            {/* Watermark/Overlay */}
+                            <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(16,185,129,0.95)', color: '#fff', padding: '3px 8px', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <span style={{ width: '6px', height: '6px', background: '#fff', borderRadius: '50%', display: 'inline-block', animation: 'pulse-glow 1s infinite' }}></span> PREVIEW ACTIVE
+                            </div>
                           </div>
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span style={{ color: 'var(--primary)' }}>•</span>
-                            <span><strong>Lighting:</strong> Stand in bright lighting.</span>
-                          </div>
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span style={{ color: 'var(--primary)' }}>•</span>
-                            <span><strong>Background:</strong> Stand against plain wall.</span>
-                          </div>
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span style={{ color: 'var(--primary)' }}>•</span>
-                            <span><strong>Feet:</strong> Barefoot, flat on the floor.</span>
-                          </div>
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span style={{ color: 'var(--primary)' }}>•</span>
-                            <span><strong>Posture:</strong> A-pose, arms slightly away.</span>
-                          </div>
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span style={{ color: 'var(--primary)' }}>•</span>
-                            <span><strong>Clothing:</strong> Wear fitted, tight garments.</span>
-                          </div>
+                          <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Align yourself so your head and feet are visible within the frame.</span>
                         </div>
-                        <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Visible from head to toe.</span>
-                          <button type="button" className="btn btn-primary" style={{ padding: '6px 14px', fontSize: '0.76rem' }} onClick={() => {
-                            if (!cameraStream) startCamera();
-                            setAiScanStep('capturing_front');
-                          }}>
-                            Start Auto-Capture sequence
-                          </button>
+
+                        {/* Right Column: Instructions & Action */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', height: '100%', justifyContent: 'space-between' }}>
+                          <div>
+                            <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--accent)' }}>📐 Scan Posture Instructions</span>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: '1.4', marginTop: '10px' }}>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{ color: 'var(--primary)' }}>•</span>
+                                <span><strong>Distance:</strong> Stand 2-3 meters away from lens.</span>
+                              </div>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{ color: 'var(--primary)' }}>•</span>
+                                <span><strong>Lighting:</strong> Stand in bright lighting.</span>
+                              </div>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{ color: 'var(--primary)' }}>•</span>
+                                <span><strong>Background:</strong> Stand against plain wall.</span>
+                              </div>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{ color: 'var(--primary)' }}>•</span>
+                                <span><strong>Feet:</strong> Barefoot, flat on the floor.</span>
+                              </div>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{ color: 'var(--primary)' }}>•</span>
+                                <span><strong>Posture:</strong> A-pose, arms slightly away.</span>
+                              </div>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{ color: 'var(--primary)' }}>•</span>
+                                <span><strong>Clothing:</strong> Wear fitted, tight garments.</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '12px', marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            <button type="button" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '0.8rem', width: '100%' }} onClick={() => {
+                              if (!cameraStream) startCamera();
+                              setAiScanStep('capturing_front');
+                            }}>
+                              Start Auto-Capture sequence
+                            </button>
+                            <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textAlign: 'center' }}>Auto-captures front, left, right, and back profiles.</span>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -1707,7 +1737,7 @@ export default function CustomerView({
                       <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
                         <div style={{ width: '100%', height: '200px', background: '#05040a', borderRadius: '8px', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           {cameraStream ? (
-                            <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <video ref={setVideoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           ) : (
                             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', justifyContent: 'center', color: 'rgba(76,201,240,0.8)' }}>
                               <div style={{ width: '40px', height: '40px', border: '2px dashed #4cc9f0', borderRadius: '50%', animation: 'spinSlow 3s linear infinite' }} />
