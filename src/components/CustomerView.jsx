@@ -95,6 +95,31 @@ export default function CustomerView({
   
   // Height and estimations
   const [aiHeight, setAiHeight] = useState(175);
+  const [heightInputMode, setHeightInputMode] = useState('cm'); // 'cm' | 'ft'
+  const [heightFt, setHeightFt] = useState(5);
+  const [heightIn, setHeightIn] = useState(9);
+
+  const cmToFtIn = (cm) => {
+    const totalInches = cm / 2.54;
+    const feet = Math.floor(totalInches / 12);
+    const inches = Math.round(totalInches % 12);
+    return { feet, inches: inches === 12 ? 11 : inches };
+  };
+
+  const handleFtInChange = (feet, inches) => {
+    setHeightFt(feet);
+    setHeightIn(inches);
+    const cm = Math.round((feet * 12 + inches) * 2.54);
+    setAiHeight(cm);
+  };
+
+  const selectHeightPreset = (cm) => {
+    setAiHeight(cm);
+    const { feet, inches } = cmToFtIn(cm);
+    setHeightFt(feet);
+    setHeightIn(inches);
+  };
+
   const [aiGender, setAiGender] = useState('Male');
   const [aiAge, setAiAge] = useState(28);
   const [aiWeight, setAiWeight] = useState(70);
@@ -1923,15 +1948,122 @@ export default function CustomerView({
 
                     {/* STEP 5: HEIGHT INPUT */}
                     {aiScanStep === 'input_height' && (
-                      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                         <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--primary)' }}>ℹ️ Sizing Engine Parameter calibration</span>
                         <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                          Contours captured! Provide your exact height. The Sizing Engine automatically estimates gender, age, weight, and shape curves without asking.
+                          Contours captured! Provide your height. If you don't know your exact height, you can use our quick presets or estimate using your average height range.
                         </p>
                         
-                        <div className="form-group" style={{ marginBottom: 0 }}>
-                          <label className="form-label">Client Height (cm) *</label>
-                          <input type="number" min="100" max="250" className="form-input" value={aiHeight} onChange={e => setAiHeight(parseInt(e.target.value) || 170)} required />
+                        {/* Tab Selector: cm vs ft/in */}
+                        <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '2px' }}>
+                          <button
+                            type="button"
+                            onClick={() => setHeightInputMode('cm')}
+                            style={{
+                              padding: '6px 12px', fontSize: '0.75rem', background: 'none', border: 'none', cursor: 'pointer',
+                              color: heightInputMode === 'cm' ? 'var(--primary)' : 'var(--text-secondary)',
+                              borderBottom: heightInputMode === 'cm' ? '2px solid var(--primary)' : 'none',
+                              fontWeight: heightInputMode === 'cm' ? 'bold' : 'normal'
+                            }}
+                          >
+                            Centimeters (cm)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setHeightInputMode('ft')}
+                            style={{
+                              padding: '6px 12px', fontSize: '0.75rem', background: 'none', border: 'none', cursor: 'pointer',
+                              color: heightInputMode === 'ft' ? 'var(--primary)' : 'var(--text-secondary)',
+                              borderBottom: heightInputMode === 'ft' ? '2px solid var(--primary)' : 'none',
+                              fontWeight: heightInputMode === 'ft' ? 'bold' : 'normal'
+                            }}
+                          >
+                            Feet & Inches (ft/in)
+                          </button>
+                        </div>
+
+                        {/* Height Form Input */}
+                        {heightInputMode === 'cm' ? (
+                          <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label className="form-label" style={{ fontSize: '0.72rem' }}>Client Height (cm) *</label>
+                            <input 
+                              type="number" 
+                              min="100" 
+                              max="250" 
+                              className="form-input" 
+                              value={aiHeight} 
+                              onChange={e => {
+                                const val = parseInt(e.target.value) || 170;
+                                setAiHeight(val);
+                                const { feet, inches } = cmToFtIn(val);
+                                setHeightFt(feet);
+                                setHeightIn(inches);
+                              }} 
+                              required 
+                            />
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                              <label className="form-label" style={{ fontSize: '0.72rem' }}>Feet *</label>
+                              <select 
+                                className="form-select" 
+                                style={{ padding: '6px', fontSize: '0.75rem' }} 
+                                value={heightFt} 
+                                onChange={e => handleFtInChange(parseInt(e.target.value), heightIn)}
+                              >
+                                {[3, 4, 5, 6, 7].map(f => <option key={f} value={f}>{f} ft</option>)}
+                              </select>
+                            </div>
+                            <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                              <label className="form-label" style={{ fontSize: '0.72rem' }}>Inches *</label>
+                              <select 
+                                className="form-select" 
+                                style={{ padding: '6px', fontSize: '0.75rem' }} 
+                                value={heightIn} 
+                                onChange={e => handleFtInChange(heightFt, parseInt(e.target.value))}
+                              >
+                                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(i => <option key={i} value={i}>{i} in</option>)}
+                              </select>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Conversions Output helper */}
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Converted Value: <strong>{aiHeight} cm</strong></span>
+                          <span>({Math.floor(aiHeight / 30.48)}' {Math.round((aiHeight % 30.48) / 2.54)}")</span>
+                        </div>
+
+                        {/* Presets / Height Helper presets */}
+                        <div style={{ padding: '10px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '6px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <span style={{ fontSize: '0.65rem', fontWeight: 'bold', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Estimation Presets (If exact height is unknown)</span>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              style={{ padding: '4px 8px', fontSize: '0.65rem', minHeight: 'auto' }}
+                              onClick={() => selectHeightPreset(162)}
+                            >
+                              👩 Female Avg (162 cm / 5'4")
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              style={{ padding: '4px 8px', fontSize: '0.65rem', minHeight: 'auto' }}
+                              onClick={() => selectHeightPreset(175)}
+                            >
+                              👨 Male Avg (175 cm / 5'9")
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              style={{ padding: '4px 8px', fontSize: '0.65rem', minHeight: 'auto' }}
+                              onClick={() => selectHeightPreset(168)}
+                            >
+                              ⚡ Average Preset (168 cm / 5'6")
+                            </button>
+                          </div>
                         </div>
 
                         {/* Interactive testing toggles */}
