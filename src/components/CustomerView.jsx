@@ -1123,6 +1123,152 @@ export default function CustomerView({
     );
   };
 
+  // Sub-component: Live Scanner telemetry HUD overlay
+  const LiveScannerCanvas = ({ isActive }) => {
+    const canvasRef = React.useRef(null);
+
+    React.useEffect(() => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let animationId;
+      let scanY = 0;
+      let direction = 1;
+      let frame = 0;
+
+      const render = () => {
+        if (!canvas) return;
+        frame++;
+        
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        // Draw HUD corner brackets
+        ctx.strokeStyle = 'rgba(76, 201, 240, 0.7)';
+        ctx.lineWidth = 3;
+        const pad = 24;
+        const len = 30;
+        
+        // Top-left
+        ctx.beginPath(); ctx.moveTo(pad, pad + len); ctx.lineTo(pad, pad); ctx.lineTo(pad + len, pad); ctx.stroke();
+        // Top-right
+        ctx.beginPath(); ctx.moveTo(w - pad, pad + len); ctx.lineTo(w - pad, pad); ctx.lineTo(w - pad - len, pad); ctx.stroke();
+        // Bottom-left
+        ctx.beginPath(); ctx.moveTo(pad, h - pad - len); ctx.lineTo(pad, h - pad); ctx.lineTo(pad + len, h - pad); ctx.stroke();
+        // Bottom-right
+        ctx.beginPath(); ctx.moveTo(w - pad, h - pad - len); ctx.lineTo(w - pad, h - pad); ctx.lineTo(w - pad - len, h - pad); ctx.stroke();
+
+        // Dynamic joint offsets for active computer-vision tracking simulator
+        const jitter = (speed, amp) => Math.sin(frame * speed) * amp;
+        const kp = {
+          head: { x: w * 0.5 + jitter(0.08, 2.5), y: h * 0.18 + jitter(0.05, 1.8) },
+          neck: { x: w * 0.5 + jitter(0.07, 1.5), y: h * 0.28 },
+          shL: { x: w * 0.36 + jitter(0.05, 3.0), y: h * 0.32 + jitter(0.04, 2.0) },
+          shR: { x: w * 0.64 + jitter(0.06, 3.0), y: h * 0.32 + jitter(0.05, 2.0) },
+          elL: { x: w * 0.30 + jitter(0.09, 4.0), y: h * 0.50 + jitter(0.08, 3.0) },
+          elR: { x: w * 0.70 + jitter(0.07, 4.0), y: h * 0.50 + jitter(0.09, 3.0) },
+          wrL: { x: w * 0.24 + jitter(0.12, 5.0), y: h * 0.68 + jitter(0.11, 4.0) },
+          wrR: { x: w * 0.76 + jitter(0.10, 5.0), y: h * 0.68 + jitter(0.13, 4.0) },
+          hipL: { x: w * 0.40 + jitter(0.04, 1.6), y: h * 0.62 },
+          hipR: { x: w * 0.60 + jitter(0.05, 1.6), y: h * 0.62 },
+          knL: { x: w * 0.39 + jitter(0.06, 2.4), y: h * 0.80 + jitter(0.05, 2.0) },
+          knR: { x: w * 0.61 + jitter(0.07, 2.4), y: h * 0.80 + jitter(0.04, 2.0) },
+          anL: { x: w * 0.40 + jitter(0.03, 1.0), y: h * 0.94 },
+          anR: { x: w * 0.60 + jitter(0.04, 1.0), y: h * 0.94 }
+        };
+
+        // Draw skeletal connections
+        ctx.strokeStyle = 'rgba(52, 211, 153, 0.65)';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = 'rgba(52, 211, 153, 0.4)';
+        ctx.shadowBlur = 8;
+
+        const drawLine = (p1, p2) => {
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        };
+
+        drawLine(kp.head, kp.neck);
+        drawLine(kp.neck, { x: (kp.hipL.x + kp.hipR.x)/2, y: (kp.hipL.y + kp.hipR.y)/2 });
+        drawLine(kp.shL, kp.shR);
+        drawLine(kp.shL, kp.elL); drawLine(kp.elL, kp.wrL);
+        drawLine(kp.shR, kp.elR); drawLine(kp.elR, kp.wrR);
+        drawLine(kp.hipL, kp.hipR);
+        drawLine(kp.hipL, kp.knL); drawLine(kp.knL, kp.anL);
+        drawLine(kp.hipR, kp.knR); drawLine(kp.knR, kp.anR);
+
+        // Draw joint nodes
+        ctx.fillStyle = '#10b981';
+        Object.values(kp).forEach(pt => {
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Head tracking bounds
+        ctx.strokeStyle = 'rgba(76, 201, 240, 0.6)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(kp.head.x, kp.head.y, 35, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Laser scanner sweeping bar
+        ctx.strokeStyle = 'rgba(247, 37, 133, 0.8)';
+        ctx.lineWidth = 5;
+        ctx.shadowColor = 'rgba(247, 37, 133, 0.8)';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.moveTo(0, scanY);
+        ctx.lineTo(w, scanY);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        scanY += 3.5 * direction;
+        if (scanY > h || scanY < 0) direction *= -1;
+
+        // HUD Text Metrics
+        ctx.fillStyle = 'rgba(76, 201, 240, 0.9)';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText("SYSTEM: BODY CONTOUR LANDMARKS ON", pad + 10, h - pad - 65);
+        ctx.fillText("ENGINE: MEDIAPIPE CORE V3.12 (LOCAL)", pad + 10, h - pad - 48);
+        ctx.fillText(`RANGE CALIBRATION: ${(2.24 + Math.sin(frame * 0.03) * 0.08).toFixed(2)}m`, pad + 10, h - pad - 31);
+        ctx.fillText(`STABILITY SCORE: ${(98.5 + Math.sin(frame * 0.06) * 0.4).toFixed(1)}%`, pad + 10, h - pad - 14);
+
+        ctx.fillText("ALIGNMENT: LEVEL", w - pad - 130, h - pad - 31);
+        ctx.fillText("FPS: 30 / RESOLUTION 640x480", w - pad - 230, h - pad - 14);
+
+        if (isActive) {
+          animationId = requestAnimationFrame(render);
+        }
+      };
+
+      render();
+
+      return () => {
+        if (animationId) cancelAnimationFrame(animationId);
+      };
+    }, [isActive]);
+
+    return (
+      <canvas
+        ref={canvasRef}
+        width={640}
+        height={480}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 5
+        }}
+      />
+    );
+  };
+
   // Wizard Navigation
   const startWizard = (catId, design = null) => {
     if (!currentUser) {
@@ -1679,6 +1825,9 @@ export default function CustomerView({
                               </div>
                             )}
                             
+                            {/* Live HUD Scan Overlay */}
+                            <LiveScannerCanvas isActive={true} />
+                            
                             {/* Watermark/Overlay */}
                             <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(16,185,129,0.95)', color: '#fff', padding: '3px 8px', borderRadius: '4px', fontSize: '0.6rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
                               <span style={{ width: '6px', height: '6px', background: '#fff', borderRadius: '50%', display: 'inline-block', animation: 'pulse-glow 1s infinite' }}></span> PREVIEW ACTIVE
@@ -1745,10 +1894,8 @@ export default function CustomerView({
                             </div>
                           )}
                           
-                          {/* Pulsing scanning frame laser visual */}
-                          <div style={{ position: 'absolute', inset: '10px', border: '2px solid rgba(76,201,240,0.4)', borderRadius: '4px', pointerEvents: 'none' }}>
-                            <div style={{ width: '100%', height: '2px', background: '#4cc9f0', position: 'absolute', top: '50%', left: 0, boxShadow: '0 0 8px #4cc9f0', animation: 'pulseGlow 1.5s infinite' }} />
-                          </div>
+                          {/* Live HUD Scan Overlay */}
+                          <LiveScannerCanvas isActive={true} />
 
                           {/* Countdown Overlay */}
                           <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(247,37,133,0.9)', color: '#fff', padding: '4px 10px', borderRadius: '4px', fontSize: '0.85rem', fontWeight: 'bold' }}>
