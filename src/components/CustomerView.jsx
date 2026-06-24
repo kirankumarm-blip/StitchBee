@@ -1140,15 +1140,15 @@ export default function CustomerView({
         if (!canvas) return;
         frame++;
         
-        const w = canvas.width;
-        const h = canvas.height;
+        const w = canvas.width;  // 320
+        const h = canvas.height; // 420
         ctx.clearRect(0, 0, w, h);
 
         // Draw HUD corner brackets
         ctx.strokeStyle = 'rgba(76, 201, 240, 0.7)';
-        ctx.lineWidth = 3;
-        const pad = 24;
-        const len = 30;
+        ctx.lineWidth = 2;
+        const pad = 12;
+        const len = 15;
         
         // Top-left
         ctx.beginPath(); ctx.moveTo(pad, pad + len); ctx.lineTo(pad, pad); ctx.lineTo(pad + len, pad); ctx.stroke();
@@ -1159,30 +1159,30 @@ export default function CustomerView({
         // Bottom-right
         ctx.beginPath(); ctx.moveTo(w - pad, h - pad - len); ctx.lineTo(w - pad, h - pad); ctx.lineTo(w - pad - len, h - pad); ctx.stroke();
 
-        // Dynamic joint offsets for active computer-vision tracking simulator
+        // Dynamic joint offsets for active computer-vision tracking simulator (proportional to 320x420)
         const jitter = (speed, amp) => Math.sin(frame * speed) * amp;
         const kp = {
-          head: { x: w * 0.5 + jitter(0.08, 2.5), y: h * 0.18 + jitter(0.05, 1.8) },
-          neck: { x: w * 0.5 + jitter(0.07, 1.5), y: h * 0.28 },
-          shL: { x: w * 0.36 + jitter(0.05, 3.0), y: h * 0.32 + jitter(0.04, 2.0) },
-          shR: { x: w * 0.64 + jitter(0.06, 3.0), y: h * 0.32 + jitter(0.05, 2.0) },
-          elL: { x: w * 0.30 + jitter(0.09, 4.0), y: h * 0.50 + jitter(0.08, 3.0) },
-          elR: { x: w * 0.70 + jitter(0.07, 4.0), y: h * 0.50 + jitter(0.09, 3.0) },
-          wrL: { x: w * 0.24 + jitter(0.12, 5.0), y: h * 0.68 + jitter(0.11, 4.0) },
-          wrR: { x: w * 0.76 + jitter(0.10, 5.0), y: h * 0.68 + jitter(0.13, 4.0) },
-          hipL: { x: w * 0.40 + jitter(0.04, 1.6), y: h * 0.62 },
-          hipR: { x: w * 0.60 + jitter(0.05, 1.6), y: h * 0.62 },
-          knL: { x: w * 0.39 + jitter(0.06, 2.4), y: h * 0.80 + jitter(0.05, 2.0) },
-          knR: { x: w * 0.61 + jitter(0.07, 2.4), y: h * 0.80 + jitter(0.04, 2.0) },
-          anL: { x: w * 0.40 + jitter(0.03, 1.0), y: h * 0.94 },
-          anR: { x: w * 0.60 + jitter(0.04, 1.0), y: h * 0.94 }
+          head: { x: w * 0.5 + jitter(0.08, 1.2), y: h * 0.15 + jitter(0.05, 0.9) },
+          neck: { x: w * 0.5 + jitter(0.07, 0.7), y: h * 0.22 },
+          shL: { x: w * 0.35 + jitter(0.05, 1.5), y: h * 0.26 + jitter(0.04, 1.0) },
+          shR: { x: w * 0.65 + jitter(0.06, 1.5), y: h * 0.26 + jitter(0.05, 1.0) },
+          elL: { x: w * 0.28 + jitter(0.09, 2.0), y: h * 0.44 + jitter(0.08, 1.5) },
+          elR: { x: w * 0.72 + jitter(0.07, 2.0), y: h * 0.44 + jitter(0.09, 1.5) },
+          wrL: { x: w * 0.22 + jitter(0.12, 2.5), y: h * 0.62 + jitter(0.11, 2.0) },
+          wrR: { x: w * 0.78 + jitter(0.10, 2.5), y: h * 0.62 + jitter(0.13, 2.0) },
+          hipL: { x: w * 0.38 + jitter(0.04, 0.8), y: h * 0.55 },
+          hipR: { x: w * 0.62 + jitter(0.05, 0.8), y: h * 0.55 },
+          knL: { x: w * 0.37 + jitter(0.06, 1.2), y: h * 0.75 + jitter(0.05, 1.0) },
+          knR: { x: w * 0.63 + jitter(0.07, 1.2), y: h * 0.75 + jitter(0.04, 1.0) },
+          anL: { x: w * 0.38 + jitter(0.03, 0.5), y: h * 0.92 },
+          anR: { x: w * 0.62 + jitter(0.04, 0.5), y: h * 0.92 }
         };
 
         // Draw skeletal connections
         ctx.strokeStyle = 'rgba(52, 211, 153, 0.65)';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 2;
         ctx.shadowColor = 'rgba(52, 211, 153, 0.4)';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
 
         const drawLine = (p1, p2) => {
           ctx.beginPath();
@@ -1204,41 +1204,41 @@ export default function CustomerView({
         ctx.fillStyle = '#10b981';
         Object.values(kp).forEach(pt => {
           ctx.beginPath();
-          ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
+          ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
           ctx.fill();
         });
 
         // Head tracking bounds
         ctx.strokeStyle = 'rgba(76, 201, 240, 0.6)';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.arc(kp.head.x, kp.head.y, 35, 0, Math.PI * 2);
+        ctx.arc(kp.head.x, kp.head.y, 20, 0, Math.PI * 2);
         ctx.stroke();
 
         // Laser scanner sweeping bar
         ctx.strokeStyle = 'rgba(247, 37, 133, 0.8)';
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 3;
         ctx.shadowColor = 'rgba(247, 37, 133, 0.8)';
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 10;
         ctx.beginPath();
         ctx.moveTo(0, scanY);
         ctx.lineTo(w, scanY);
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        scanY += 3.5 * direction;
+        scanY += 2.5 * direction;
         if (scanY > h || scanY < 0) direction *= -1;
 
-        // HUD Text Metrics
+        // HUD Text Metrics (compact size for 320x420)
         ctx.fillStyle = 'rgba(76, 201, 240, 0.9)';
-        ctx.font = 'bold 13px monospace';
-        ctx.fillText("SYSTEM: BODY CONTOUR LANDMARKS ON", pad + 10, h - pad - 65);
-        ctx.fillText("ENGINE: MEDIAPIPE CORE V3.12 (LOCAL)", pad + 10, h - pad - 48);
-        ctx.fillText(`RANGE CALIBRATION: ${(2.24 + Math.sin(frame * 0.03) * 0.08).toFixed(2)}m`, pad + 10, h - pad - 31);
-        ctx.fillText(`STABILITY SCORE: ${(98.5 + Math.sin(frame * 0.06) * 0.4).toFixed(1)}%`, pad + 10, h - pad - 14);
+        ctx.font = 'bold 8.5px monospace';
+        ctx.fillText("AI ENGINE: ACTIVE", pad + 6, h - pad - 50);
+        ctx.fillText("MODEL: MEDIAPIPE L3", pad + 6, h - pad - 39);
+        ctx.fillText(`DEPTH: ${(2.24 + Math.sin(frame * 0.03) * 0.08).toFixed(2)}m`, pad + 6, h - pad - 28);
+        ctx.fillText(`STABILITY: ${(98.5 + Math.sin(frame * 0.06) * 0.4).toFixed(1)}%`, pad + 6, h - pad - 17);
 
-        ctx.fillText("ALIGNMENT: LEVEL", w - pad - 130, h - pad - 31);
-        ctx.fillText("FPS: 30 / RESOLUTION 640x480", w - pad - 230, h - pad - 14);
+        ctx.fillText("ALIGN: OK", w - pad - 60, h - pad - 28);
+        ctx.fillText("FPS: 30 / 3:4", w - pad - 72, h - pad - 17);
 
         if (isActive) {
           animationId = requestAnimationFrame(render);
@@ -1255,8 +1255,8 @@ export default function CustomerView({
     return (
       <canvas
         ref={canvasRef}
-        width={640}
-        height={480}
+        width={320}
+        height={420}
         style={{
           position: 'absolute',
           inset: 0,
@@ -1811,11 +1811,11 @@ export default function CustomerView({
                     {aiScanStep === 'instructions' && (
                       <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', alignItems: 'start' }}>
                         {/* Left Column: Live Camera Preview */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: '700', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '6px', alignSelf: 'flex-start' }}>
                             📷 Live Camera Preview
                           </span>
-                          <div style={{ width: '100%', height: '240px', background: '#05040a', borderRadius: '8px', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <div style={{ width: '320px', height: '420px', background: '#05040a', borderRadius: '16px', border: '2px solid var(--primary)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(247,37,133,0.2)' }}>
                             {cameraStream ? (
                               <video ref={setVideoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
@@ -1884,7 +1884,7 @@ export default function CustomerView({
                     {/* STEP 4: TIMELINE AUTO-CAPTURE ENGINES */}
                     {aiScanStep.startsWith('capturing_') && (
                       <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-                        <div style={{ width: '100%', height: '200px', background: '#05040a', borderRadius: '8px', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ width: '320px', height: '420px', background: '#05040a', borderRadius: '16px', border: '2px solid var(--primary)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(247,37,133,0.2)' }}>
                           {cameraStream ? (
                             <video ref={setVideoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           ) : (
