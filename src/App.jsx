@@ -21,7 +21,7 @@ export default function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalConfig, setAuthModalConfig] = useState({ role: 'customer', tab: 'login' });
   const [customerCategory, setCustomerCategory] = useState('all');
-  const [customerHub, setCustomerHub] = useState('fabrics');
+  const [customerHub, setCustomerHub] = useState('home');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
 
   // Geolocation & Interactive Map States
@@ -554,168 +554,171 @@ export default function App() {
     <div className="app-container">
       
       {/* Top sticky navigation bar */}
-      <header className="top-nav">
-        <div className="logo" onClick={() => setRole('landing')}>
-          <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
-          <span className="logo-text">StitchBee</span>
-        </div>
-        
-        <div className="role-switcher">
-
-
-          <div className="nav-item-relative">
-            <button 
-              className="role-btn" 
-              onClick={(e) => { 
-                e.stopPropagation(); 
-                setActiveDropdown(activeDropdown === 'services' ? null : 'services'); 
-              }}
-            >
-              Services ▼
-            </button>
-            <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
-              <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
-            </ul>
+      {/* Top sticky navigation bar */}
+      {role !== 'customer' && (
+        <header className="top-nav">
+          <div className="logo" onClick={() => setRole('landing')}>
+            <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
+            <span className="logo-text">StitchBee</span>
           </div>
-
-          <button 
-            className="role-btn"
-            onClick={() => navigateToSection('how-it-works')}
-          >
-            How It Works
-          </button>
-
-          <button 
-            className="role-btn"
-            onClick={() => navigateToSection('tailors-near-you')}
-          >
-            Tailors Near You
-          </button>
-
-          <button 
-            className="role-btn"
-            onClick={() => navigateToSection('pricing-section')}
-          >
-            Pricing
-          </button>
-
-          <button 
-            className="role-btn"
-            onClick={handleTrackOrder}
-          >
-            Track Order
-          </button>
-
-          <div className="nav-item-relative">
-            <button 
-              className="role-btn" 
-              onClick={(e) => { 
-                e.stopPropagation(); 
-                setActiveDropdown(activeDropdown === 'earn' ? null : 'earn'); 
-              }}
-            >
-              Earn With StitchBee ▼
-            </button>
-            <ul className={`nav-dropdown-menu earn-dropdown-menu ${activeDropdown === 'earn' ? 'show' : ''}`}>
-              <li className={`dropdown-item ${role === 'become-tailor' || role === 'tailor' ? 'active' : ''}`} onClick={() => {
-                if (currentUser && currentUser.role === 'tailor') {
-                  setRole('tailor');
-                } else {
-                  setRole('become-tailor');
-                }
-                setActiveDropdown(null);
-              }}>Become a Tailor</li>
-              <li className={`dropdown-item ${role === 'become-delivery' || (role === 'student' && currentUser && currentUser.role === 'student') ? 'active' : ''}`} onClick={() => {
-                if (currentUser && currentUser.role === 'student') {
-                  setRole('student');
-                } else {
-                  setRole('become-delivery');
-                }
-                setActiveDropdown(null);
-              }}>Become a Delivery Partner</li>
-              <li className={`dropdown-item ${role === 'become-student' ? 'active' : ''}`} onClick={() => {
-                if (currentUser && currentUser.role === 'student') {
-                  setRole('student');
-                } else {
-                  setRole('become-student');
-                }
-                setActiveDropdown(null);
-              }}>Student Gigs</li>
-            </ul>
-          </div>
-
-          <button 
-            className={`role-btn ${role === 'blogs' ? 'active' : ''}`}
-            onClick={() => setRole('blogs')}
-          >
-            Blogs
-          </button>
-
-          <button 
-            className="role-btn"
-            onClick={() => navigateToSection('contact-footer')}
-          >
-            Contact
-          </button>
-        </div>
-
-        {/* User Profile / Auth Area */}
-        <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button 
-            className="btn btn-secondary" 
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
-          </button>
-
-          {currentUser ? (
-            <div className="user-profile-nav">
-              <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
-                <div className="user-profile-avatar">
-                  {currentUser.name.charAt(0).toUpperCase()}
-                </div>
-                <span>{currentUser.name}</span>
-                <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
-              </div>
+          
+          <div className="role-switcher">
+  
+  
+            <div className="nav-item-relative">
               <button 
-                className="btn btn-secondary" 
-                style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
-                onClick={handleLogout}
+                className="role-btn" 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  setActiveDropdown(activeDropdown === 'services' ? null : 'services'); 
+                }}
               >
-                Logout
+                Services ▼
               </button>
+              <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
+              </ul>
             </div>
-          ) : (
-            <>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('how-it-works')}
+            >
+              How It Works
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('tailors-near-you')}
+            >
+              Tailors Near You
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('pricing-section')}
+            >
+              Pricing
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={handleTrackOrder}
+            >
+              Track Order
+            </button>
+  
+            <div className="nav-item-relative">
               <button 
-                className="btn btn-secondary" 
-                style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
-                onClick={() => openAuthModal('customer', 'login')}
+                className="role-btn" 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  setActiveDropdown(activeDropdown === 'earn' ? null : 'earn'); 
+                }}
               >
-                Login
+                Earn With StitchBee ▼
               </button>
-              <button 
-                className="btn btn-primary" 
-                style={{ padding: '6px 16px', fontSize: '0.85rem', minHeight: '32px' }} 
-                onClick={() => openAuthModal('customer', 'signup')}
-              >
-                Sign Up
-              </button>
-            </>
-          )}
-        </div>
-      </header>
+              <ul className={`nav-dropdown-menu earn-dropdown-menu ${activeDropdown === 'earn' ? 'show' : ''}`}>
+                <li className={`dropdown-item ${role === 'become-tailor' || role === 'tailor' ? 'active' : ''}`} onClick={() => {
+                  if (currentUser && currentUser.role === 'tailor') {
+                    setRole('tailor');
+                  } else {
+                    setRole('become-tailor');
+                  }
+                  setActiveDropdown(null);
+                }}>Become a Tailor</li>
+                <li className={`dropdown-item ${role === 'become-delivery' || (role === 'student' && currentUser && currentUser.role === 'student') ? 'active' : ''}`} onClick={() => {
+                  if (currentUser && currentUser.role === 'student') {
+                    setRole('student');
+                  } else {
+                    setRole('become-delivery');
+                  }
+                  setActiveDropdown(null);
+                }}>Become a Delivery Partner</li>
+                <li className={`dropdown-item ${role === 'become-student' ? 'active' : ''}`} onClick={() => {
+                  if (currentUser && currentUser.role === 'student') {
+                    setRole('student');
+                  } else {
+                    setRole('become-student');
+                  }
+                  setActiveDropdown(null);
+                }}>Student Gigs</li>
+              </ul>
+            </div>
+  
+            <button 
+              className={`role-btn ${role === 'blogs' ? 'active' : ''}`}
+              onClick={() => setRole('blogs')}
+            >
+              Blogs
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('contact-footer')}
+            >
+              Contact
+            </button>
+          </div>
+  
+          {/* User Profile / Auth Area */}
+          <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button 
+              className="btn btn-secondary" 
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
+            </button>
+  
+            {currentUser ? (
+              <div className="user-profile-nav">
+                <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
+                  <div className="user-profile-avatar">
+                    {currentUser.name.charAt(0).toUpperCase()}
+                  </div>
+                  <span>{currentUser.name}</span>
+                  <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
+                </div>
+                <button 
+                  className="btn btn-secondary" 
+                  style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <button 
+                  className="btn btn-secondary" 
+                  style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
+                  onClick={() => openAuthModal('customer', 'login')}
+                >
+                  Login
+                </button>
+                <button 
+                  className="btn btn-primary" 
+                  style={{ padding: '6px 16px', fontSize: '0.85rem', minHeight: '32px' }} 
+                  onClick={() => openAuthModal('customer', 'signup')}
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
+          </div>
+        </header>
+      )}
 
       {/* Main Content Area */}
       {role === 'landing' && (
@@ -1446,6 +1449,12 @@ export default function App() {
           initialCategory={customerCategory}
           initialHub={customerHub}
           onLoginRequired={() => openAuthModal('customer', 'login')}
+          onLogout={handleLogout}
+          setRole={setRole}
+          setCustomerHub={setCustomerHub}
+          setCustomerCategory={setCustomerCategory}
+          theme={theme}
+          setTheme={setTheme}
         />
       )}
 
@@ -1484,7 +1493,7 @@ export default function App() {
       )}
 
       {/* Global Premium Footer on landing/about/blogs roles */}
-      {(role === 'landing' || role === 'about' || role === 'blogs' || role === 'become-tailor' || role === 'become-delivery' || role === 'become-student') && (
+      {(role === 'landing' || role === 'about' || role === 'blogs' || role === 'become-tailor' || role === 'become-delivery' || role === 'become-student' || role === 'customer') && (
         <footer id="contact-footer" className="premium-footer">
           <div className="landing-container">
             <div className="footer-content">
