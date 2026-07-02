@@ -776,8 +776,8 @@ export default function App() {
       {role === 'landing' && (
         <div className="animate-fade-in">
           {/* Fold 1: Hero Carousel Banner & Stats Fold */}
-          <section style={{ padding: '1.5rem 0', width: '100%', margin: '0 auto' }}>
-            <div className="landing-container">
+          <section style={{ padding: '1.5rem 0 0.5rem 0', width: '100%', margin: '0 auto' }}>
+            <div className="landing-container" style={{ padding: '0 10px' }}>
               
               {/* Full-width Carousel Banner Card */}
               <div 
@@ -789,9 +789,11 @@ export default function App() {
                   flexDirection: 'column', 
                   justifyContent: 'center', 
                   padding: 0,
-                  height: '400px',
-                  borderRadius: '20px',
-                  boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
+                  width: '100%',
+                  aspectRatio: '1024 / 315',
+                  height: 'auto',
+                  borderRadius: '16px',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.06)',
                   cursor: 'pointer',
                   border: 'none',
                   background: '#f8fafc'
@@ -812,7 +814,7 @@ export default function App() {
                       top: 0,
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: 'fill',
                       opacity: currentLandingSlide === idx ? 1 : 0,
                       transition: 'opacity 0.8s ease-in-out',
                       pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
@@ -820,77 +822,17 @@ export default function App() {
                   />
                 ))}
 
-                {/* Left/Right Arrow Controls */}
-                <button 
-                  type="button"
-                  className="carousel-arrow left"
-                  style={{
-                    position: 'absolute',
-                    left: '20px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.92)',
-                    border: 'none',
-                    color: '#000',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                    cursor: 'pointer',
-                    zIndex: 20,
-                    transition: 'all 0.2s ease'
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    prevLandingSlide();
-                  }}
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button 
-                  type="button"
-                  className="carousel-arrow right"
-                  style={{
-                    position: 'absolute',
-                    right: '20px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.92)',
-                    border: 'none',
-                    color: '#000',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                    cursor: 'pointer',
-                    zIndex: 20,
-                    transition: 'all 0.2s ease'
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    nextLandingSlide();
-                  }}
-                >
-                  <ChevronRight size={20} />
-                </button>
-
                 {/* Dot Indicators */}
                 <div style={{
                   position: 'absolute',
-                  bottom: '20px',
+                  bottom: '16px',
                   left: '50%',
                   transform: 'translateX(-50%)',
                   display: 'flex',
-                  gap: '8px',
+                  gap: '6px',
                   zIndex: 20,
-                  background: 'rgba(0,0,0,0.3)',
-                  padding: '6px 16px',
+                  background: 'rgba(0,0,0,0.25)',
+                  padding: '5px 12px',
                   borderRadius: '20px'
                 }}>
                   {guestLandingBanners.map((_, idx) => (
@@ -901,8 +843,8 @@ export default function App() {
                         setCurrentLandingSlide(idx);
                       }}
                       style={{
-                        width: '8px',
-                        height: '8px',
+                        width: '6px',
+                        height: '6px',
                         borderRadius: '50%',
                         background: currentLandingSlide === idx ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
                         cursor: 'pointer',
@@ -923,60 +865,60 @@ export default function App() {
                   background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff', 
                   border: `1px solid var(--border-color)`, 
                   borderRadius: '16px', 
-                  padding: '24px 16px', 
-                  marginTop: '24px',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+                  padding: '20px 16px', 
+                  marginTop: '20px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.01)',
                   flexWrap: 'wrap',
                   gap: '16px'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
-                    <Users size={20} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
+                    <Users size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>500+</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Expert Tailors</span>
+                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>500+</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Expert Tailors</span>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
-                    <Heart size={20} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
+                    <Heart size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>50K+</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Happy Customers</span>
+                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>50K+</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Happy Customers</span>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(251,191,36,0.15)', color: '#fbbf24' }}>
-                    <Star size={20} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(251,191,36,0.15)', color: '#fbbf24' }}>
+                    <Star size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>4.8 ★</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Average Rating</span>
+                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>4.8 ★</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Average Rating</span>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
-                    <ShieldCheck size={20} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
+                    <ShieldCheck size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>100%</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Quality Assurance</span>
+                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>100%</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Quality Assurance</span>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(6,182,212,0.1)', color: '#06b6d4' }}>
-                    <Headphones size={20} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(6,182,212,0.1)', color: '#06b6d4' }}>
+                    <Headphones size={18} />
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>24/7</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Customer Support</span>
+                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>24/7</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Customer Support</span>
                   </div>
                 </div>
               </div>
