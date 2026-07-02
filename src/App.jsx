@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import CustomerView from './components/CustomerView';
 import TailorView from './components/TailorView';
@@ -23,6 +23,25 @@ export default function App() {
   const [customerCategory, setCustomerCategory] = useState('all');
   const [customerHub, setCustomerHub] = useState('home');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
+
+  // Guest landing banner carousel states
+  const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
+  const [pauseLandingCarousel, setPauseLandingCarousel] = useState(false);
+  const guestLandingBanners = [
+    '/banners/Banner1.png',
+    '/banners/Banner2.png',
+    '/banners/Banner3.jpg',
+    '/banners/Banner4.jpg',
+    '/banners/Banner5.jpg',
+    '/banners/Banner6.jpg',
+    '/banners/banner7.jpg',
+    '/banners/banner8.jpg',
+    '/banners/Banner9.png',
+    '/banners/Banner10.jpg',
+    '/banners/Banner11.jpg',
+    '/banners/Banner12.png'
+  ];
+
 
   // Geolocation & Interactive Map States
   const [locationStatus, setLocationStatus] = useState('prompt'); // 'prompt' | 'fetching' | 'success' | 'denied'
@@ -448,6 +467,36 @@ export default function App() {
     }
   }, []);
 
+  // Guest landing banner carousel auto-scroll every 5 seconds (5000ms)
+  useEffect(() => {
+    if (pauseLandingCarousel || role !== 'landing') return;
+    const interval = setInterval(() => {
+      setCurrentLandingSlide((prev) => (prev + 1) % 12);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [pauseLandingCarousel, role]);
+
+  const nextLandingSlide = () => {
+    setCurrentLandingSlide((prev) => (prev + 1) % 12);
+  };
+
+  const prevLandingSlide = () => {
+    setCurrentLandingSlide((prev) => (prev - 1 + 12) % 12);
+  };
+
+  const handleLandingBannerClick = () => {
+    if (!currentUser) {
+      openAuthModal('customer', 'login');
+    } else {
+      setRole('customer');
+      setCustomerHub('tailors');
+      // If fabrics slide is active (Banner 4 / index 3), open fabrics
+      if (currentLandingSlide === 3) {
+        setCustomerHub('fabrics');
+      }
+    }
+  };
+
   // 2. Synchronize Storage
   const updateTailorsState = (newTailors) => {
     setTailors(newTailors);
@@ -726,47 +775,212 @@ export default function App() {
       {/* Main Content Area */}
       {role === 'landing' && (
         <div className="animate-fade-in">
-          {/* Fold 1: Hero split fold */}
-          <section style={{ padding: '2rem 0', width: '100%', margin: '0 auto' }}>
+          {/* Fold 1: Hero Carousel Banner & Stats Fold */}
+          <section style={{ padding: '1.5rem 0', width: '100%', margin: '0 auto' }}>
             <div className="landing-container">
-              <div className="hero-split-grid">
-              <div className="hero-content-left">
-                <span className="badge badge-primary" style={{ width: 'fit-content', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', fontWeight: 'bold' }}>
-                  ✨ ATELIER D'ARTISANS
-                </span>
-                <h1 className="hero-headline">
-                  Custom Tailoring<br/>at Your Doorstep
-                </h1>
-                <p className="hero-subheadline">
-                  Book stitching, choose fabrics, schedule home measurements, and get your outfit delivered. Experience the luxury of custom-fitted clothing without leaving home.
-                </p>
-                <div className="slide-cta-row" style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
-                  <button 
-                    className="btn btn-primary" 
-                    onClick={() => {
-                      if (!currentUser) {
-                        openAuthModal('customer', 'login');
-                      } else {
-                        setRole('customer');
-                        setCustomerHub('tailors');
-                      }
+              
+              {/* Full-width Carousel Banner Card */}
+              <div 
+                className="welcome-hero-banner-card" 
+                style={{ 
+                  position: 'relative', 
+                  overflow: 'hidden', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'center', 
+                  padding: 0,
+                  height: '400px',
+                  borderRadius: '20px',
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: '#f8fafc'
+                }}
+                onMouseEnter={() => setPauseLandingCarousel(true)}
+                onMouseLeave={() => setPauseLandingCarousel(false)}
+                onClick={handleLandingBannerClick}
+              >
+                {/* Slides */}
+                {guestLandingBanners.map((banner, idx) => (
+                  <img 
+                    key={idx}
+                    src={banner} 
+                    alt={`banner-${idx+1}`} 
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      opacity: currentLandingSlide === idx ? 1 : 0,
+                      transition: 'opacity 0.8s ease-in-out',
+                      pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
                     }}
-                  >
-                    Book Stitching
-                  </button>
-                  <button 
-                    className="btn btn-secondary"
-                    onClick={() => navigateToSection('popular-designs')}
-                  >
-                    Explore Designs
-                  </button>
+                  />
+                ))}
+
+                {/* Left/Right Arrow Controls */}
+                <button 
+                  type="button"
+                  className="carousel-arrow left"
+                  style={{
+                    position: 'absolute',
+                    left: '20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.92)',
+                    border: 'none',
+                    color: '#000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    cursor: 'pointer',
+                    zIndex: 20,
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevLandingSlide();
+                  }}
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button 
+                  type="button"
+                  className="carousel-arrow right"
+                  style={{
+                    position: 'absolute',
+                    right: '20px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.92)',
+                    border: 'none',
+                    color: '#000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    cursor: 'pointer',
+                    zIndex: 20,
+                    transition: 'all 0.2s ease'
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextLandingSlide();
+                  }}
+                >
+                  <ChevronRight size={20} />
+                </button>
+
+                {/* Dot Indicators */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  gap: '8px',
+                  zIndex: 20,
+                  background: 'rgba(0,0,0,0.3)',
+                  padding: '6px 16px',
+                  borderRadius: '20px'
+                }}>
+                  {guestLandingBanners.map((_, idx) => (
+                    <span 
+                      key={idx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentLandingSlide(idx);
+                      }}
+                      style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        background: currentLandingSlide === idx ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
-              
-              <div className="hero-animation-container" style={{ display: 'flex', flexDirection: 'column', height: '400px' }}>
-                <DressCustomizer360 minimal={true} />
+
+              {/* Horizontal statistics / features bar */}
+              <div 
+                className="landing-stats-bar" 
+                style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-around', 
+                  alignItems: 'center',
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff', 
+                  border: `1px solid var(--border-color)`, 
+                  borderRadius: '16px', 
+                  padding: '24px 16px', 
+                  marginTop: '24px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+                  flexWrap: 'wrap',
+                  gap: '16px'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>500+</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Expert Tailors</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
+                    <Heart size={20} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>50K+</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Happy Customers</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(251,191,36,0.15)', color: '#fbbf24' }}>
+                    <Star size={20} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>4.8 ★</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Average Rating</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
+                    <ShieldCheck size={20} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>100%</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Quality Assurance</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(6,182,212,0.1)', color: '#06b6d4' }}>
+                    <Headphones size={20} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>24/7</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Customer Support</span>
+                  </div>
+                </div>
               </div>
-            </div>
+
             </div>
           </section>
 
