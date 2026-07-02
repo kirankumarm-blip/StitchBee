@@ -5661,19 +5661,6 @@ body.light-theme .welcome-hero-banner-card {
   box-shadow: var(--shadow-md);
   border-color: rgba(247, 37, 133, 0.2);
 }
-.welcome-hero-banner-card .carousel-arrow {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: all 0.2s ease !important;
-}
-.welcome-hero-banner-card:hover .carousel-arrow {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-.welcome-hero-banner-card .carousel-arrow:hover {
-  background: #ffffff !important;
-  transform: translateY(-50%) scale(1.1) !important;
-}
 .welcome-hero-banner-card h1 {
   color: #f8fafc !important;
 }
