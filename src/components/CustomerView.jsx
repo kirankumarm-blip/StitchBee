@@ -60,6 +60,23 @@ export default function CustomerView({
   const designerCarouselRef = React.useRef(null);
   const [activeHub, setActiveHub] = useState(initialHub); // 'tailors' | 'fabrics' | 'sarees' | 'designers' | 'articles' | 'history' | 'home' | 'wishlist'
   
+  // Landing page banner carousel states
+  const [currentBannerIdx, setCurrentBannerIdx] = useState(0);
+  const [pauseBanner, setPauseBanner] = useState(false);
+  const landingBanners = [
+    '/banners/banner1.png',
+    '/banners/banner2.png',
+    '/banners/banner3.png',
+    '/banners/banner4.png',
+    '/banners/banner5.png',
+    '/banners/banner6.png',
+    '/banners/banner7.png',
+    '/banners/banner8.png',
+    '/banners/banner9.png',
+    '/banners/banner10.png'
+  ];
+
+  
   // My Orders filter & sort states
   const [ordersFilter, setOrdersFilter] = useState('all'); // 'all' | 'in-progress' | 'completed' | 'cancelled'
   const [ordersTimeframe, setOrdersTimeframe] = useState('Last 6 Months');
@@ -797,6 +814,56 @@ export default function CustomerView({
       clearInterval(designerInterval);
     };
   }, []);
+
+  // Landing page banner carousel auto-scroll every 5 seconds (5000ms)
+  useEffect(() => {
+    if (pauseBanner) return;
+    const interval = setInterval(() => {
+      setCurrentBannerIdx((prev) => (prev + 1) % 10);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [pauseBanner]);
+
+  const nextBanner = () => {
+    setCurrentBannerIdx((prev) => (prev + 1) % 10);
+  };
+
+  const prevBanner = () => {
+    setCurrentBannerIdx((prev) => (prev - 1 + 10) % 10);
+  };
+
+  const handleBannerClick = () => {
+    switch (currentBannerIdx) {
+      case 0: // Banner 1
+      case 1: // Banner 2
+      case 2: // Banner 3
+      case 4: // Banner 5
+        // Open standard tailor select booking wizard
+        setActiveHub('tailors');
+        setSelectedCategory('mens');
+        setWizardOpen(true);
+        setWizardStep(1);
+        break;
+      case 3: // Banner 4
+        setActiveHub('fabrics');
+        break;
+      case 5: // Banner 6
+      case 9: // Banner 10
+        setActiveHub('sarees'); // Ready designs
+        break;
+      case 6: // Banner 7
+        setActiveHub('history'); // Track orders
+        break;
+      case 7: // Banner 8
+        alert("Launching 3D Outfit Design Studio workspace...");
+        break;
+      case 8: // Banner 9
+        alert("Showing customer success feedback ledger...");
+        break;
+      default:
+        break;
+    }
+  };
 
   // Categories list with background images
   const categoryCards = [
@@ -4219,109 +4286,196 @@ export default function CustomerView({
       {activeHub === 'home' && (
         <div className="home-dashboard-container animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '36px', marginTop: '24px' }}>
           
+          {/* Top Greeting Message */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h2 style={{ margin: 0, fontSize: '1.8rem', fontWeight: '800', color: colorTextPrimary }}>
+                Welcome back, <span style={{ color: 'var(--primary)' }}>Kiran</span> 👋
+              </h2>
+              <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: colorTextSecondary }}>
+                Ready for your next perfect outfit? Your style, your fit, your way.
+              </p>
+            </div>
+          </div>
+
           {/* FOLD 1: Hero Section (Welcome Banner & Active Order side-by-side) */}
           <div className="hero-grid-layout" style={{ width: '100%' }}>
-            {/* Welcome Banner */}
-            <div className="welcome-hero-banner-card" style={{ position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '32px' }}>
-              {/* Rotating Background Suit Images */}
-              {heroBgs.map((bg, idx) => (
+            {/* Welcome Carousel Banner Card */}
+            <div 
+              className="welcome-hero-banner-card" 
+              style={{ 
+                position: 'relative', 
+                overflow: 'hidden', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'center', 
+                padding: 0,
+                minHeight: '290px',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={() => setPauseBanner(true)}
+              onMouseLeave={() => setPauseBanner(false)}
+              onClick={handleBannerClick}
+            >
+              {/* Slides */}
+              {landingBanners.map((banner, idx) => (
                 <img 
                   key={idx}
-                  src={bg} 
-                  alt="hero-bg" 
+                  src={banner} 
+                  alt={`banner-${idx+1}`} 
                   style={{
                     position: 'absolute',
-                    right: '0',
-                    top: '0',
-                    bottom: '0',
-                    width: '45%',
+                    left: 0,
+                    top: 0,
+                    width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    objectPosition: 'top center',
-                    opacity: heroBgIdx === idx ? 1 : 0,
-                    pointerEvents: 'none',
-                    transition: 'opacity 1.5s ease-in-out',
-                    maskImage: 'linear-gradient(to left, black 50%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to left, black 50%, transparent 100%)'
+                    opacity: currentBannerIdx === idx ? 1 : 0,
+                    transition: 'opacity 0.8s ease-in-out',
+                    pointerEvents: currentBannerIdx === idx ? 'auto' : 'none'
                   }}
                 />
               ))}
 
-              <div style={{ zIndex: 10 }}>
-                <h1 style={{ fontSize: '2.5rem', fontWeight: '800', margin: '0 0 10px 0', color: colorTextPrimary }}>
-                  Welcome back, <span style={{ color: 'var(--primary)' }}>Kiran</span> 👋
-                </h1>
-                <p style={{ fontSize: '1.2rem', margin: '0 0 10px 0', fontWeight: '600', color: colorTextSecondary }}>
-                  Ready for your next perfect outfit?
-                </p>
-                <p style={{ fontSize: '0.9rem', color: colorTextMuted, margin: '0 0 24px 0' }}>
-                  Your style. Your fit. Your way.
-                </p>
-                
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--primary)', border: 'none', padding: '12px 24px', fontWeight: 'bold' }} onClick={() => {
-                    setActiveHub('tailors');
-                    setSelectedCategory('mens');
-                    setWizardOpen(true);
-                    setWizardStep(1);
-                  }}>
-                    Continue Order →
-                  </button>
-                  <button className="btn btn-secondary" style={{ background: bgCard, color: colorTextPrimary, border: `1px solid ${borderColor}`, padding: '12px 24px', fontWeight: 'bold' }} onClick={() => {
-                    setActiveHub('tailors');
-                    setSelectedCategory('mens');
-                    setWizardOpen(true);
-                    setWizardStep(1);
-                  }}>
-                    Book New Stitching
-                  </button>
+              {/* Left/Right Arrow Controls */}
+              <button 
+                type="button"
+                className="carousel-arrow left"
+                style={{
+                  position: 'absolute',
+                  left: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.9)',
+                  border: 'none',
+                  color: '#000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  cursor: 'pointer',
+                  zIndex: 20,
+                  transition: 'all 0.2s ease'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevBanner();
+                }}
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button 
+                type="button"
+                className="carousel-arrow right"
+                style={{
+                  position: 'absolute',
+                  right: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.9)',
+                  border: 'none',
+                  color: '#000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  cursor: 'pointer',
+                  zIndex: 20,
+                  transition: 'all 0.2s ease'
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextBanner();
+                }}
+              >
+                <ChevronRight size={18} />
+              </button>
+
+              {/* Dot Indicators */}
+              <div style={{
+                position: 'absolute',
+                bottom: '16px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                gap: '8px',
+                zIndex: 20,
+                background: 'rgba(0,0,0,0.25)',
+                padding: '6px 12px',
+                borderRadius: '20px'
+              }}>
+                {landingBanners.map((_, idx) => (
+                  <span 
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentBannerIdx(idx);
+                    }}
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: currentBannerIdx === idx ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Statistics Row Card for Grid Alignment */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', height: '100%' }}>
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', flexShrink: 0 }}>
+                    <Clock size={20} />
+                  </div>
+                  <div>
+                    <h5 style={{ fontSize: '1.4rem', fontWeight: '800', color: colorTextPrimary, margin: 0 }}>{activeOrders?.length || 1}</h5>
+                    <span style={{ fontSize: '0.75rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '4px' }}>Active Orders</span>
+                  </div>
+                </div>
+
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', flexShrink: 0 }}>
+                    <Heart size={20} />
+                  </div>
+                  <div>
+                    <h5 style={{ fontSize: '1.4rem', fontWeight: '800', color: colorTextPrimary, margin: 0 }}>{wishlist?.length || 2}</h5>
+                    <span style={{ fontSize: '0.75rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '4px' }}>Saved Designs</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Statistics Row at the bottom of the card */}
-              <div className="hero-stats-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginTop: '36px', width: '100%', zIndex: 10 }}>
-                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', flexShrink: 0 }}>
-                    <Clock size={16} />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', flexShrink: 0 }}>
+                    <Layers size={20} />
                   </div>
-                  <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{activeOrders?.length || 1}</h5>
-                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Active Orders</span>
-                  </div>
-                </div>
-
-                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', flexShrink: 0 }}>
-                    <Heart size={16} />
-                  </div>
-                  <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{wishlist?.length || 2}</h5>
-                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Saved Designs</span>
+                  <div>
+                    <h5 style={{ fontSize: '1.4rem', fontWeight: '800', color: colorTextPrimary, margin: 0 }}>3</h5>
+                    <span style={{ fontSize: '0.75rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '4px' }}>Saved Fabrics</span>
                   </div>
                 </div>
 
-                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', flexShrink: 0 }}>
-                    <Layers size={16} />
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', boxShadow: 'var(--shadow-sm)', flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', flexShrink: 0 }}>
+                    <Star size={20} />
                   </div>
-                  <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>3</h5>
-                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Saved Fabrics</span>
-                  </div>
-                </div>
-
-                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', flexShrink: 0 }}>
-                    <Star size={16} />
-                  </div>
-                  <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{rewardPoints || 120}</h5>
-                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Reward Points</span>
+                  <div>
+                    <h5 style={{ fontSize: '1.4rem', fontWeight: '800', color: colorTextPrimary, margin: 0 }}>{rewardPoints || 120}</h5>
+                    <span style={{ fontSize: '0.75rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '4px' }}>Reward Points</span>
                   </div>
                 </div>
               </div>
             </div>
-
             {/* Right: Active Order Tracker */}
             <div className="active-order-tracking-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '24px' }}>
               <div className="flex-row-between" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '12px' }}>
