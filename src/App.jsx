@@ -440,7 +440,11 @@ export default function App() {
     // Load user session
     const savedUser = localStorage.getItem('stitchbee_user');
     if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
+      const parsed = JSON.parse(savedUser);
+      setCurrentUser(parsed);
+      if (parsed.role) {
+        setRole(parsed.role);
+      }
     }
   }, []);
 
@@ -554,8 +558,7 @@ export default function App() {
     <div className="app-container">
       
       {/* Top sticky navigation bar */}
-      {/* Top sticky navigation bar */}
-      {role !== 'customer' && (
+      {!['customer', 'tailor', 'student', 'admin'].includes(role) && (
         <header className="top-nav">
           <div className="logo" onClick={() => setRole('landing')}>
             <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
@@ -908,13 +911,15 @@ export default function App() {
                       const videoEl = e.currentTarget.querySelector('video');
                       if (videoEl) videoEl.pause();
                     }}
-                    onClick={() => {
-                      if (!currentUser) {
-                        openAuthModal('customer', 'login');
-                      } else {
-                        setCustomerCategory(reel.cat);
-                        setCustomerHub('designers');
-                        setRole('customer');
+                    onClick={(e) => {
+                      const videoEl = e.currentTarget.querySelector('video');
+                      if (videoEl) {
+                        if (videoEl.paused) {
+                          videoEl.muted = false;
+                          videoEl.play().catch(() => {});
+                        } else {
+                          videoEl.pause();
+                        }
                       }
                     }}
                   >
@@ -924,10 +929,36 @@ export default function App() {
                       </svg>
                     </div>
                     <video className="reel-video" src={reel.videoUrl} muted loop playsInline />
-                    <div className="reel-info-overlay">
-                      <span className="badge" style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.65rem', marginBottom: '4px', width: 'fit-content' }}>
-                        ₹{reel.price}
-                      </span>
+                    <div className="reel-info-overlay" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                        <span className="badge" style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.65rem', margin: 0, width: 'fit-content' }}>
+                          ₹{reel.price}
+                        </span>
+                        <button 
+                          className="btn btn-primary" 
+                          style={{ 
+                            padding: '3px 8px', 
+                            fontSize: '0.65rem', 
+                            background: 'var(--primary)', 
+                            border: 'none', 
+                            borderRadius: '4px',
+                            fontWeight: 'bold',
+                            cursor: 'pointer'
+                          }} 
+                          onClick={(e) => { 
+                            e.stopPropagation(); 
+                            if (!currentUser) { 
+                              openAuthModal('customer', 'login'); 
+                            } else { 
+                              setCustomerCategory(reel.cat); 
+                              setCustomerHub('designers'); 
+                              setRole('customer'); 
+                            } 
+                          }}
+                        >
+                          Book Now
+                        </button>
+                      </div>
                       <div className="reel-designer">
                         <div className="reel-designer-avatar">{reel.designer.charAt(0)}</div>
                         <span className="reel-designer-name">By {reel.designer}</span>
@@ -1464,6 +1495,10 @@ export default function App() {
           setTailors={updateTailorsState}
           orders={orders}
           updateOrderStatus={updateOrderStatus}
+          theme={theme}
+          setTheme={setTheme}
+          currentUser={currentUser}
+          onLogout={handleLogout}
         />
       )}
 

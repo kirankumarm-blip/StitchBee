@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
-  CreditCard, ChevronLeft, ChevronRight, X, ShoppingCart, Plus, Minus, Check, Camera, RefreshCw, Upload, 
+  CreditCard, ChevronLeft, ChevronRight, ChevronDown, X, ShoppingCart, Plus, Minus, Check, Camera, RefreshCw, Upload, 
   Video, Layers, Activity, FileText, Shield, Sliders, Bell, Heart, HelpCircle, Menu, Sun, Moon, Phone,
-  MessageSquare
+  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
 import ServiceCategoryView from './ServiceCategoryView';
@@ -47,9 +47,75 @@ export default function CustomerView({
   initialCategory = 'all', initialHub = 'tailors', onLoginRequired,
   onLogout, setRole, setCustomerHub, setCustomerCategory, theme, setTheme
 }) {
+  const isDark = theme === 'dark';
+  const bgCard = isDark ? '#1a1a2e' : '#fff';
+  const bgInput = isDark ? '#12121f' : '#f8fafc';
+  const bgActiveOption = isDark ? 'rgba(247,37,133,0.15)' : '#fff9fb';
+  const colorTextPrimary = isDark ? '#f8fafc' : '#1a2238';
+  const colorTextSecondary = isDark ? '#cbd5e1' : '#374151';
+  const colorTextMuted = isDark ? '#94a3b8' : '#6b7280';
+  const borderColor = isDark ? 'rgba(255,255,255,0.08)' : '#e2e8f0';
+
   const bannerCarouselRef = React.useRef(null);
   const designerCarouselRef = React.useRef(null);
-  const [activeHub, setActiveHub] = useState(initialHub); // 'tailors' | 'fabrics' | 'sarees' | 'designers' | 'articles' | 'history' | 'home'
+  const [activeHub, setActiveHub] = useState(initialHub); // 'tailors' | 'fabrics' | 'sarees' | 'designers' | 'articles' | 'history' | 'home' | 'wishlist'
+  
+  // My Orders filter & sort states
+  const [ordersFilter, setOrdersFilter] = useState('all'); // 'all' | 'in-progress' | 'completed' | 'cancelled'
+  const [ordersTimeframe, setOrdersTimeframe] = useState('Last 6 Months');
+  
+  // Wishlist sort & content states
+  const [wishlistSort, setWishlistSort] = useState('recently-added');
+  const [wishlistItems, setWishlistItems] = useState([
+    {
+      id: 'wish-1',
+      category: 'saree',
+      name: 'Kanchipuram Pure Silk Saree',
+      desc: 'Classic gold zari border with rich pallu and traditional motifs.',
+      fabric: 'Silk',
+      color: 'Pink',
+      length: '6.3 m',
+      price: 8500,
+      addedOn: '28 May 2026',
+      img: '/bridal3.jpg'
+    },
+    {
+      id: 'wish-2',
+      category: 'lehenga',
+      name: 'Designer Organza Lehenga',
+      desc: 'Floral embroidery with sequins work and matching dupatta.',
+      fabric: 'Organza',
+      color: 'Lavender',
+      length: 'Semi Stitched',
+      price: 12500,
+      addedOn: '24 May 2026',
+      img: '/bridal4.jpg'
+    },
+    {
+      id: 'wish-3',
+      category: 'saree',
+      name: 'Chanderi Cotton-Silk Saree',
+      desc: 'Lightweight, breathable and perfect for festive occasions.',
+      fabric: 'Cotton Silk',
+      color: 'Green',
+      length: '5.5 m',
+      price: 3200,
+      addedOn: '20 May 2026',
+      img: '/bridal2.jpg'
+    },
+    {
+      id: 'wish-4',
+      category: 'lehenga',
+      name: 'Bridal Velvet Lehenga Set',
+      desc: 'Heavy embroidery with zari, stones and a designer dupatta.',
+      fabric: 'Velvet',
+      color: 'Maroon',
+      length: 'Semi Stitched',
+      price: 15800,
+      addedOn: '18 May 2026',
+      img: '/bridal3.jpg'
+    }
+  ]);
   
   // Header and user interaction states
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -78,6 +144,48 @@ export default function CustomerView({
     { id: 4, name: 'Wife (Anjali)', type: 'Women', bust: '34', waist: '28', shoulder: '14.5', length: '38', sleeves: '19' },
     { id: 5, name: 'Son (Aarav)', type: 'Kids', chest: '26', waist: '24', shoulder: '11', length: '18', sleeves: '14' }
   ]);
+  
+  // My Profile Options States
+  const [isMyProfileOpen, setIsMyProfileOpen] = useState(false);
+  const [activeProfileTab, setActiveProfileTab] = useState('edit'); // 'edit' | 'password' | 'notifications' | 'payments' | 'privacy'
+  const [isPhotoDropdownOpen, setIsPhotoDropdownOpen] = useState(false);
+  const fileInputRef = React.useRef(null);
+  const [profileName, setProfileName] = useState(currentUser?.name || 'Neha Sharma');
+  const [profileEmail, setProfileEmail] = useState(currentUser?.email || 'neha.sharma@example.com');
+  const [profilePhone, setProfilePhone] = useState(currentUser?.phone || '+91 98765 43210');
+  const [profileDob, setProfileDob] = useState('15 March 1996');
+  const [profileGender, setProfileGender] = useState('Female');
+  const [profileAddress, setProfileAddress] = useState(currentUser?.address || '123 Green Glen Road, HSR Layout, Bengaluru, Karnataka - 560102');
+  const [profileCity, setProfileCity] = useState('Bengaluru');
+  const [profileState, setProfileState] = useState('Karnataka');
+  const [profilePin, setProfilePin] = useState('560102');
+  const [profilePhoto, setProfilePhoto] = useState('/bridal 5.jpg');
+
+  // Toggle Preferences States
+  const [emailNotif, setEmailNotif] = useState(true);
+  const [smsNotif, setSmsNotif] = useState(true);
+  const [pushNotif, setPushNotif] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(true);
+  const [searchIndex, setSearchIndex] = useState(true);
+  const [anonymousSharing, setAnonymousSharing] = useState(false);
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (uploadEvent) => {
+        setProfilePhoto(uploadEvent.target.result);
+        setIsPhotoDropdownOpen(false);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCameraCapture = () => {
+    alert("Simulating camera capture: Photo taken successfully!");
+    setProfilePhoto('/Pastel Blue Suit.png');
+    setIsPhotoDropdownOpen(false);
+  };
 
   // Profile modal and adding states
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -88,6 +196,27 @@ export default function CustomerView({
   const [newProfileMeasurements, setNewProfileMeasurements] = useState({
     chest: '36', waist: '30', shoulder: '16', length: '27', collar: '14.5', sleeves: '23'
   });
+
+  // Geolocation & Tailor Search States
+  const [searchMode, setSearchMode] = useState('area'); // 'area' | 'city'
+  const [searchQueryText, setSearchQueryText] = useState('');
+  const [searchLocationName, setSearchLocationName] = useState('HSR Layout, Bangalore');
+  const [isLocating, setIsLocating] = useState(false);
+  const [gpsCoords, setGpsCoords] = useState(null);
+  
+  // Refine Search Filters
+  const [filterRadius, setFilterRadius] = useState(5); // default 5 km
+  const [filterServiceType, setFilterServiceType] = useState('All Services');
+  const [filterMinRating, setFilterMinRating] = useState(0); // 0 means any
+  const [filterSortBy, setFilterSortBy] = useState('Distance'); // 'Distance' | 'Rating' | 'Reviews'
+
+  // Ready Designs Filter & Sorting States
+  const [readyCategory, setReadyCategory] = useState('sarees'); // 'sarees' | 'lehengas'
+  const [readySearchQuery, setReadySearchQuery] = useState('');
+  const [readyFilterFabric, setReadyFilterFabric] = useState('all');
+  const [readyFilterPrice, setReadyFilterPrice] = useState('all');
+  const [readySortBy, setReadySortBy] = useState('Newest First');
+  const [readyWishlist, setReadyWishlist] = useState({});
 
   // Dashboard & Booking Wizard States
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
@@ -339,6 +468,146 @@ export default function CustomerView({
   const [quizAnswers, setQuizAnswers] = useState({});
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [featuredSection, setFeaturedSection] = useState(null); // 'colors' | 'cuts' | 'fabrics' | 'celebs' | null
+
+  // Geolocation Handler
+  const handleGetLiveLocation = () => {
+    setIsLocating(true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setGpsCoords({ lat: latitude, lng: longitude });
+          setSearchLocationName(`GPS Location (${latitude.toFixed(4)}° N, ${longitude.toFixed(4)}° E)`);
+          setIsLocating(false);
+          alert("GPS Coordinates Accessed Successfully!");
+        },
+        (error) => {
+          console.error(error);
+          setIsLocating(false);
+          alert("Location Access Denied. Showing default HSR Layout, Bangalore.");
+        }
+      );
+    } else {
+      setIsLocating(false);
+      alert("Geolocation is not supported by your browser.");
+    }
+  };
+
+  // Pre-select tailor and start wizard flow
+  const startWizardWithTailor = (tailorObj) => {
+    if (!currentUser) {
+      if (onLoginRequired) {
+        onLoginRequired();
+        return;
+      }
+    }
+    setSelectedWizardCategory('mens'); // default category
+    const translatedTailor = {
+      id: tailorObj.id,
+      name: tailorObj.name,
+      owner: tailorObj.name.split(' ')[0],
+      image: tailorObj.img,
+      lat: tailorObj.lat,
+      lng: tailorObj.lng,
+      rating: tailorObj.rating,
+      reviews: tailorObj.reviews,
+      address: tailorObj.area + ', ' + tailorObj.city,
+      phone: '+91 98765 43210',
+      portfolio: [
+        'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=150&q=80',
+        'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=150&q=80'
+      ],
+      reviewsList: [
+        { author: 'Kiran Kumar', rating: 5, comment: 'Excellent fitting and quick turnaround.' }
+      ]
+    };
+    setSelectedTailor(translatedTailor);
+    setAddFabric(false);
+    setSelectedFabric(null);
+    setWizardStep(1);
+    setWizardOpen(true);
+  };
+
+  // Full tailors list data
+  const nearByTailorsData = [
+    { id: 't1', name: 'Royal Bespoke Tailors', rating: 4.8, reviews: 128, area: 'HSR Layout', city: 'Bangalore', distance: 0.3, img: '/tailor_hero_1.jpg', tags: ["Men's Wear", "Women's Wear", "Alterations", "Custom Tailoring"], status: 'Open', lat: 12.9141, lng: 77.6413 },
+    { id: 't2', name: 'Perfect Stitches', rating: 4.7, reviews: 96, area: 'Koramangala', city: 'Bangalore', distance: 0.7, img: '/tailor_hero_2.jpg', tags: ["Blouse Stitching", "Salwar Suits", "Alterations", "Kids Wear"], status: 'Open', lat: 12.9279, lng: 77.6271 },
+    { id: 't3', name: 'Style Tailors', rating: 4.6, reviews: 84, area: 'BTM Layout', city: 'Bangalore', distance: 1.2, img: '/tailor_hero_3.jpg', tags: ["Men's Wear", "Shirts", "Pants", "Alterations"], status: 'Open', lat: 12.9166, lng: 77.6101 },
+    { id: 't4', name: 'Elegant Fashions', rating: 4.5, reviews: 72, area: 'Jayanagar', city: 'Bangalore', distance: 1.8, img: '/tailor_hero_4.jpg', tags: ["Saree Blouse", "Lehenga", "Alterations", "Custom Fit"], status: 'Open', lat: 12.9250, lng: 77.5938 },
+    { id: 't5', name: 'Elite Cut Tailors', rating: 4.9, reviews: 110, area: 'T Nagar', city: 'Chennai', distance: 5.4, img: '/tailor_hero_5.jpg', tags: ["Bridal Wear", "Suits", "Women's Wear"], status: 'Open', lat: 13.0418, lng: 80.2337 },
+    { id: 't6', name: 'Mumbai Master Fit', rating: 4.7, reviews: 154, area: 'Bandra', city: 'Mumbai', distance: 8.2, img: '/tailor_hero_2.jpg', tags: ["Men's Wear", "Lehenga", "Alterations"], status: 'Open', lat: 19.0596, lng: 72.8295 },
+    { id: 't7', name: 'Delhi Designer Labs', rating: 4.8, reviews: 198, area: 'Connaught Place', city: 'Delhi', distance: 6.1, img: '/tailor_hero_1.jpg', tags: ["Sherwani", "Lehenga", "Ethnic Wear"], status: 'Open', lat: 28.6304, lng: 77.2177 }
+  ];
+
+  // Haversine formula to dynamically calculate distance between coordinates
+  const getDistanceCoords = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c; // Distance in km
+  };
+
+  const getSearchCenter = () => {
+    const LOCALITY_COORDS = {
+      'hsr': [12.9141, 77.6413],
+      'hsr layout': [12.9141, 77.6413],
+      'koramangala': [12.9348, 77.6189],
+      'btm': [12.9166, 77.6101],
+      'btm layout': [12.9166, 77.6101],
+      'jayanagar': [12.9307, 77.5840],
+      'indiranagar': [12.9719, 77.6412],
+      'whitefield': [12.9698, 77.7500],
+      'bangalore': [12.9716, 77.5946],
+      'bengaluru': [12.9716, 77.5946],
+      'chennai': [13.0827, 80.2707],
+      'mumbai': [19.0760, 72.8777],
+      'delhi': [28.6139, 77.2090],
+      'hyderabad': [17.3850, 78.4867],
+    };
+
+    if (gpsCoords && searchLocationName.includes('GPS')) {
+      return [gpsCoords.lat, gpsCoords.lng];
+    }
+    const normalized = searchLocationName.toLowerCase().split(',')[0].trim();
+    if (LOCALITY_COORDS[normalized]) return LOCALITY_COORDS[normalized];
+    const matchedKey = Object.keys(LOCALITY_COORDS).find(k => normalized.includes(k));
+    return matchedKey ? LOCALITY_COORDS[matchedKey] : [12.9141, 77.6413];
+  };
+
+  const searchCenter = getSearchCenter();
+
+  const filteredNearByTailors = nearByTailorsData.map(t => {
+    const dist = getDistanceCoords(searchCenter[0], searchCenter[1], t.lat, t.lng);
+    return { ...t, computedDistance: dist };
+  }).filter(t => {
+    let matchesSearch = true;
+    if (searchQueryText.trim() !== '') {
+      if (searchMode === 'area') {
+        matchesSearch = t.area.toLowerCase().includes(searchQueryText.toLowerCase());
+      } else {
+        matchesSearch = t.city.toLowerCase().includes(searchQueryText.toLowerCase());
+      }
+    }
+    const matchesRadius = t.computedDistance <= filterRadius;
+    const matchesRating = t.rating >= filterMinRating;
+    let matchesService = true;
+    if (filterServiceType !== 'All Services') {
+      matchesService = t.tags.some(tag => tag.toLowerCase().includes(filterServiceType.toLowerCase()));
+    }
+    return matchesSearch && matchesRadius && matchesRating && matchesService;
+  });
+
+  const sortedNearByTailors = [...filteredNearByTailors].sort((a, b) => {
+    if (filterSortBy === 'Distance') return a.computedDistance - b.computedDistance;
+    if (filterSortBy === 'Rating') return b.rating - a.rating;
+    if (filterSortBy === 'Reviews') return b.reviews - a.reviews;
+    return 0;
+  });
 
   const addFabricToCart = (variant, meters, brandName, collectionName) => {
     if (!currentUser) {
@@ -1579,7 +1848,118 @@ export default function CustomerView({
   // Map refs and states
   const mapContainerRef = React.useRef(null);
   const mapInstanceRef = React.useRef(null);
+  const tailorsMapRef = React.useRef(null);
+  const tailorsMapInstanceRef = React.useRef(null);
   const [mapFilter, setMapFilter] = useState('all'); // 'all' | 'bridal' | 'alterations' | 'premium' | 'budget'
+
+  useEffect(() => {
+    if (activeHub !== 'tailors' || !window.L || wizardOpen) return;
+
+    const container = tailorsMapRef.current;
+    if (!container) return;
+
+    // Clean up previous instance
+    if (tailorsMapInstanceRef.current) {
+      try {
+        tailorsMapInstanceRef.current.remove();
+      } catch (e) {
+        console.error("Error removing tailors map instance:", e);
+      }
+      tailorsMapInstanceRef.current = null;
+    }
+    if (container._leaflet_id) {
+      delete container._leaflet_id;
+    }
+
+    // Geocoder dictionary for search queries
+    const LOCALITY_COORDS = {
+      'hsr': [12.9141, 77.6413],
+      'hsr layout': [12.9141, 77.6413],
+      'koramangala': [12.9348, 77.6189],
+      'btm': [12.9166, 77.6101],
+      'btm layout': [12.9166, 77.6101],
+      'jayanagar': [12.9307, 77.5840],
+      'indiranagar': [12.9719, 77.6412],
+      'whitefield': [12.9698, 77.7500],
+      'bangalore': [12.9716, 77.5946],
+      'bengaluru': [12.9716, 77.5946],
+      'chennai': [13.0827, 80.2707],
+      'mumbai': [19.0760, 72.8777],
+      'delhi': [28.6139, 77.2090],
+      'hyderabad': [17.3850, 78.4867],
+    };
+
+    let centerCoords = [12.9141, 77.6413]; // Default HSR
+    if (gpsCoords && searchLocationName.includes('GPS')) {
+      centerCoords = [gpsCoords.lat, gpsCoords.lng];
+    } else {
+      const normalizedSearch = searchLocationName.toLowerCase().split(',')[0].trim();
+      if (LOCALITY_COORDS[normalizedSearch]) {
+        centerCoords = LOCALITY_COORDS[normalizedSearch];
+      } else {
+        const matchedKey = Object.keys(LOCALITY_COORDS).find(key => normalizedSearch.includes(key));
+        if (matchedKey) {
+          centerCoords = LOCALITY_COORDS[matchedKey];
+        }
+      }
+    }
+
+    // Initialize map
+    const map = window.L.map(container).setView(centerCoords, 14);
+    tailorsMapInstanceRef.current = map;
+
+    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Circle showing search radius
+    window.L.circle(centerCoords, {
+      color: '#f72585',
+      fillColor: '#f72585',
+      fillOpacity: 0.08,
+      radius: filterRadius * 1000
+    }).addTo(map);
+
+    const tailorSvgIcon = window.L.divIcon({
+      html: `<div style="background: #f72585; width: 22px; height: 22px; border: 2.5px solid #fff; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="width: 7px; height: 7px; background: #fff; border-radius: 50%; transform: rotate(45deg);"></div></div>`,
+      className: 'custom-tailor-marker',
+      iconSize: [22, 22],
+      iconAnchor: [11, 22]
+    });
+
+    sortedNearByTailors.forEach(t => {
+      const lat = t.lat || (centerCoords[0] + (Math.random() - 0.5) * 0.02);
+      const lng = t.lng || (centerCoords[1] + (Math.random() - 0.5) * 0.02);
+      const marker = window.L.marker([lat, lng], { icon: tailorSvgIcon }).addTo(map);
+      marker.bindPopup(`
+        <div style="color: #1a2238; font-family: sans-serif; font-size: 0.8rem; min-width: 140px;">
+          <strong style="color: #f72585;">${t.name}</strong><br/>
+          Rating: ⭐${t.rating || '4.5'} (${t.reviews} reviews)<br/>
+          Distance: ${t.computedDistance.toFixed(1)} km<br/>
+          <button class="btn btn-primary" style="margin-top:8px; padding: 4px 8px; font-size: 0.7rem; width: 100%; text-align: center; background: #f72585; border: none; color: #fff; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="window.startStitchingFromTailorNearYou('${t.id}')">View Details</button>
+        </div>
+      `);
+    });
+
+    window.startStitchingFromTailorNearYou = (tailorId) => {
+      const selectedT = sortedNearByTailors.find(t => t.id === tailorId);
+      if (selectedT) {
+        startWizardWithTailor(selectedT);
+      }
+    };
+
+    return () => {
+      if (tailorsMapInstanceRef.current) {
+        try {
+          tailorsMapInstanceRef.current.remove();
+        } catch (e) {
+          console.error("Cleanup tailors map error:", e);
+        }
+        tailorsMapInstanceRef.current = null;
+      }
+    };
+  }, [activeHub, searchLocationName, sortedNearByTailors, filterRadius, wizardOpen]);
+
 
   useEffect(() => {
     if (activeHub !== 'home' || !window.L || wizardOpen) return;
@@ -1670,8 +2050,14 @@ export default function CustomerView({
     <>
       {/* CUSTOM CUSTOMER STICKY HEADER */}
       <header className="top-nav">
-        {/* Left Logo */}
-        <div className="logo" onClick={() => { setActiveHub('home'); setWizardOpen(false); }} style={{ cursor: 'pointer' }}>
+        <div className="logo" onClick={() => {
+          if (!currentUser && setRole) {
+            setRole('landing');
+          } else {
+            setActiveHub('home');
+            setWizardOpen(false);
+          }
+        }} style={{ cursor: 'pointer' }}>
           <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
           <span className="logo-text">StitchBee</span>
         </div>
@@ -1680,7 +2066,14 @@ export default function CustomerView({
         <div className="role-switcher">
           <button 
             className={`role-btn ${activeHub === 'home' ? 'active' : ''}`}
-            onClick={() => { setActiveHub('home'); setWizardOpen(false); }}
+            onClick={() => {
+              if (!currentUser && setRole) {
+                setRole('landing');
+              } else {
+                setActiveHub('home');
+                setWizardOpen(false);
+              }
+            }}
           >
             Home
           </button>
@@ -1705,11 +2098,12 @@ export default function CustomerView({
                   key={cat.id}
                   className="dropdown-item"
                   onClick={() => {
-                    setActiveHub('tailors');
+                    setActiveHub('category-landing');
                     setSelectedCategory(cat.id);
-                    setWizardOpen(true);
-                    setWizardStep(1);
+                    setWizardOpen(false);
                     setServicesDropdownOpen(false);
+                    if (setCustomerCategory) setCustomerCategory(cat.id);
+                    if (setCustomerHub) setCustomerHub('category-landing');
                   }}
                 >
                   {cat.label}
@@ -1720,47 +2114,69 @@ export default function CustomerView({
 
           <button 
             className={`role-btn ${activeHub === 'fabrics' ? 'active' : ''}`}
-            onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}
+            onClick={() => { 
+              setActiveHub('fabrics'); 
+              setWizardOpen(false); 
+              if (setCustomerHub) setCustomerHub('fabrics');
+            }}
           >
             Fabric Marketplace
           </button>
           
           <button 
             className={`role-btn ${activeHub === 'sarees' ? 'active' : ''}`}
-            onClick={() => { setActiveHub('sarees'); setWizardOpen(false); }}
+            onClick={() => { 
+              setActiveHub('sarees'); 
+              setWizardOpen(false); 
+              if (setCustomerHub) setCustomerHub('sarees');
+            }}
           >
             Ready Designs
           </button>
 
           <button 
             className={`role-btn ${activeHub === 'designers' ? 'active' : ''}`}
-            onClick={() => { setActiveHub('designers'); setWizardOpen(false); }}
+            onClick={() => { 
+              setActiveHub('designers'); 
+              setWizardOpen(false); 
+              if (setCustomerHub) setCustomerHub('designers');
+            }}
           >
             Designer Studio
           </button>
 
           <button 
             className={`role-btn ${activeHub === 'tailors' && !wizardOpen ? 'active' : ''}`}
-            onClick={() => { setActiveHub('tailors'); setWizardOpen(false); }}
+            onClick={() => { 
+              setActiveHub('tailors'); 
+              setWizardOpen(false); 
+              if (setCustomerHub) setCustomerHub('tailors');
+            }}
           >
             Tailors Near You
           </button>
 
           <button 
             className={`role-btn ${activeHub === 'history' ? 'active' : ''}`}
-            onClick={() => { setActiveHub('history'); setWizardOpen(false); }}
+            onClick={() => { 
+              setActiveHub('history'); 
+              setWizardOpen(false); 
+              if (setCustomerHub) setCustomerHub('history');
+            }}
           >
             My Orders
           </button>
 
           <button 
-            className="role-btn"
+            className={`role-btn ${activeHub === 'wishlist' ? 'active' : ''}`}
             onClick={() => { 
-              setActiveHub('home');
+              if (!currentUser) {
+                if (onLoginRequired) onLoginRequired();
+                return;
+              }
+              setActiveHub('wishlist');
               setWizardOpen(false);
-              setTimeout(() => {
-                document.getElementById('home-wishlist')?.scrollIntoView({ behavior: 'smooth' });
-              }, 100);
+              if (setCustomerHub) setCustomerHub('wishlist');
             }}
           >
             Wishlist
@@ -1848,26 +2264,31 @@ export default function CustomerView({
               className="user-profile-chip" 
               onClick={(e) => {
                 e.stopPropagation();
-                setProfileDropdownOpen(!profileDropdownOpen);
-                setNotificationDropdownOpen(false);
-                setServicesDropdownOpen(false);
+                if (!currentUser) {
+                  if (onLoginRequired) onLoginRequired();
+                } else {
+                  setProfileDropdownOpen(!profileDropdownOpen);
+                  setNotificationDropdownOpen(false);
+                  setServicesDropdownOpen(false);
+                }
               }} 
               style={{ cursor: 'pointer' }}
             >
-              <div className="user-avatar">{currentUser?.name ? currentUser.name.charAt(0) : 'K'}</div>
-              <span>{currentUser?.name || 'Kiran'} ▼</span>
+              <div className="user-avatar">{currentUser?.name ? currentUser.name.charAt(0) : 'G'}</div>
+              <span>{currentUser?.name || 'Guest'} {currentUser ? '▼' : ''}</span>
             </div>
             
-            <ul className={`nav-dropdown-menu ${profileDropdownOpen ? 'show' : ''}`} style={{ right: 0, left: 'auto', width: '220px' }}>
-              <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border-color)', marginBottom: '6px' }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: '700' }}>{currentUser?.name || 'Kiran Kumar'}</div>
-                <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{currentUser?.email || 'kiran@example.com'}</div>
-              </div>
+            {currentUser && (
+              <ul className={`nav-dropdown-menu ${profileDropdownOpen ? 'show' : ''}`} style={{ right: 0, left: 'auto', width: '220px' }}>
+                <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border-color)', marginBottom: '6px' }}>
+                  <div style={{ fontSize: '0.8rem', fontWeight: '700' }}>{currentUser.name}</div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{currentUser.email}</div>
+                </div>
               
               <li 
                 className="dropdown-item"
                 onClick={() => {
-                  alert(`Profile details:\nName: ${currentUser?.name || 'Kiran Kumar'}\nEmail: ${currentUser?.email || 'kiran@example.com'}\nRole: Customer\nSaved Address: ${customerAddress}`);
+                  setIsMyProfileOpen(true);
                   setProfileDropdownOpen(false);
                 }}
               >
@@ -1933,33 +2354,17 @@ export default function CustomerView({
                 <X size={14} style={{ marginRight: '8px', display: 'inline' }} /> Logout
               </li>
             </ul>
+            )}
           </div>
         </div>
       </header>
 
       <div className="view-container">
 
-      {/* Dynamic promo banners from CMS */}
-      {banners.length > 0 && activeHub === 'tailors' && !wizardOpen && (
-        <div ref={bannerCarouselRef} className="promo-banner-list">
-          {banners.map(b => (
-            <div 
-              key={b.id} 
-              className="glass-card-no-hover promo-banner-card" 
-              style={{
-                backgroundImage: `linear-gradient(90deg, rgba(8,7,16,0.95) 0%, rgba(8,7,16,0.4) 100%), url(${b.imageUrl})`
-              }}
-            >
-              <span className="badge badge-primary" style={{ width: 'fit-content', marginBottom: '6px', fontSize: '0.65rem' }}>Promo Offer</span>
-              <h4 style={{ fontSize: '1.2rem', color: '#fff', fontWeight: '800' }}>{b.title}</h4>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{b.subtitle}</p>
-            </div>
-          ))}
-        </div>
-      )}
+
 
       {/* Hub Tabs selector */}
-      {activeHub !== 'home' && (
+      {activeHub !== 'home' && activeHub !== 'tailors' && (
         <div style={{ display: 'flex', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
           <button className={`btn ${activeHub === 'fabrics' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}>
             <Layers size={16} /> Fabric Marketplace
@@ -2027,18 +2432,52 @@ export default function CustomerView({
           </div>
 
           {/* Stepper Header */}
-          <div className="wizard-steps-header">
-            <div className="wizard-steps-line">
-              <div className="wizard-steps-line-fill" style={{ width: `${((wizardStep - 1) / 4) * 100}%` }}></div>
+          <div className="wizard-steps-header" style={{ maxWidth: '650px', marginBottom: '40px' }}>
+            <div className="wizard-steps-line" style={{ height: '3px', background: borderColor, top: '16px' }}>
+              <div className="wizard-steps-line-fill" style={{ background: 'var(--primary)', width: `${((wizardStep - 1) / 4) * 100}%` }}></div>
             </div>
-            {[1, 2, 3, 4, 5].map(s => (
-              <div 
-                key={s} 
-                className={`wizard-step-dot ${s === wizardStep ? 'active' : s < wizardStep ? 'completed' : ''}`}
-              >
-                {s < wizardStep ? '✓' : s}
-              </div>
-            ))}
+            {[
+              { step: 1, name: 'Style & Fabric', icon: <Scissors size={14} /> },
+              { step: 2, name: 'Sizing & Measurements' },
+              { step: 3, name: 'Tailor Match' },
+              { step: 4, name: 'Review & Pricing' },
+              { step: 5, name: 'Delivery & Schedule' }
+            ].map(s => {
+              const isActive = s.step === wizardStep;
+              const isCompleted = s.step < wizardStep;
+              return (
+                <div 
+                  key={s.step} 
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100px', position: 'relative', zIndex: 2 }}
+                >
+                  <div 
+                    style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      borderRadius: '50%', 
+                      background: isActive || isCompleted ? 'var(--primary)' : (isDark ? '#141226' : '#fff'), 
+                      border: `2.5px solid ${isActive || isCompleted ? 'var(--primary)' : borderColor}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: isActive || isCompleted ? '#fff' : colorTextSecondary,
+                      fontSize: '0.8rem',
+                      fontWeight: 'bold',
+                      boxShadow: isActive ? '0 0 10px rgba(247, 37, 133, 0.4)' : 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    {isCompleted ? '✓' : (isActive && s.icon ? s.icon : s.step)}
+                  </div>
+                  <span style={{ fontSize: '0.62rem', color: isCompleted || isActive ? 'var(--primary)' : colorTextMuted, marginTop: '8px', fontWeight: 'bold' }}>
+                    {s.step}
+                  </span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: isActive ? '800' : '600', color: isActive ? colorTextPrimary : colorTextMuted, marginTop: '2px', lineHeight: '1.2' }}>
+                    {s.name}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           {/* Wizard step contents */}
@@ -2048,200 +2487,360 @@ export default function CustomerView({
             {wizardStep === 1 && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px' }}>Step 1: Choose Style Design & Fabric</h3>
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px', fontWeight: 'bold' }}>Step 1: Choose Style Design & Fabric</h3>
                   <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Select a fashion design template and add premium stitching fabrics.</p>
                 </div>
 
                 {/* Categories Tag Summary */}
-                <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
-                  <span>Active Stitch Category: <strong>{categoryCards.find(c => c.id === selectedWizardCategory)?.label || selectedWizardCategory}</strong></span>
+                <div 
+                  style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    padding: '16px 20px', 
+                    background: isDark ? 'rgba(247,37,133,0.03)' : '#fff9fb', 
+                    border: `1.5px solid ${isDark ? 'rgba(247,37,133,0.2)' : 'rgba(247,37,133,0.1)'}`, 
+                    borderRadius: '12px' 
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Box size={18} style={{ color: 'var(--primary)' }} />
+                    </div>
+                    <span style={{ fontSize: '0.9rem', color: colorTextPrimary }}>
+                      Active Stitch Category: <strong style={{ color: 'var(--primary)' }}>{categoryCards.find(c => c.id === selectedWizardCategory)?.label || selectedWizardCategory}</strong>
+                    </span>
+                  </div>
+                  <span 
+                    onClick={() => { setActiveHub('tailors'); setWizardOpen(false); }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', fontWeight: 'bold', fontSize: '0.85rem', cursor: 'pointer' }}
+                  >
+                    Change Category <Edit size={14} />
+                  </span>
                 </div>
 
                 {/* Select design */}
                 <div>
-                  <h4 style={{ fontSize: '0.95rem', marginBottom: '10px' }}>Designer Recommendations (Optional)</h4>
-                  <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '10px' }}>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '14px', color: colorTextPrimary }}>Designer Recommendations (Optional)</h4>
+                  <div style={{ display: 'flex', gap: '20px', overflowX: 'auto', paddingBottom: '12px' }}>
+                    {/* Card 1: Provide Own Pattern */}
                     <div 
-                      className="glass-card"
+                      className="glass-card-no-hover"
                       style={{
-                        flex: '0 0 auto', width: '220px', padding: '14px', borderRadius: '8px', cursor: 'pointer',
-                        border: `1.5px solid ${!selectedDesign ? 'var(--primary)' : 'var(--border-color)'}`,
-                        background: !selectedDesign ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
+                        flex: '0 0 auto', 
+                        width: '240px', 
+                        height: '260px', 
+                        padding: '18px', 
+                        borderRadius: '12px', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        border: `1.5px ${!selectedDesign ? 'dashed' : 'solid'} ${!selectedDesign ? 'var(--primary)' : borderColor}`,
+                        background: !selectedDesign ? (isDark ? 'rgba(247,37,133,0.05)' : '#fff9fb') : bgCard,
+                        boxShadow: !selectedDesign ? '0 8px 24px rgba(247, 37, 133, 0.1)' : 'none',
+                        transition: 'all 0.3s ease'
                       }}
                       onClick={() => setSelectedDesign(null)}
                     >
-                      <div style={{ width: '100%', height: '100px', borderRadius: '6px', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Scissors size={28} style={{ color: 'var(--text-muted)' }} />
+                      <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(247,37,133,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+                        <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(90deg)' }} />
                       </div>
-                      <h5 style={{ fontSize: '0.9rem', marginTop: '10px', color: 'var(--text-primary)' }}>Provide Own Pattern</h5>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>No pre-set template. Input details manually.</p>
+                      <h5 style={{ fontSize: '0.92rem', fontWeight: 'bold', color: colorTextPrimary, margin: '0 0 6px 0' }}>Provide Own Pattern</h5>
+                      <p style={{ fontSize: '0.75rem', color: colorTextMuted, margin: 0, lineHeight: '1.4' }}>No pre-set template. Input details manually.</p>
                     </div>
 
-                    {newArrivalDesigns.filter(d => d.category === selectedWizardCategory || selectedWizardCategory === 'bridal').map(design => (
-                      <div 
-                        key={design.id}
-                        className="glass-card"
-                        style={{
-                          flex: '0 0 auto', width: '220px', padding: '14px', borderRadius: '8px', cursor: 'pointer',
-                          border: `1.5px solid ${selectedDesign?.id === design.id ? 'var(--primary)' : 'var(--border-color)'}`,
-                          background: selectedDesign?.id === design.id ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                        }}
-                        onClick={() => setSelectedDesign(design)}
-                      >
-                        <img src={design.image} alt={design.title} style={{ width: '100%', height: '100px', borderRadius: '6px', objectFit: 'cover' }} />
-                        <h5 style={{ fontSize: '0.9rem', marginTop: '10px', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{design.title}</h5>
-                        <p style={{ fontSize: '0.75rem', color: 'var(--accent)', fontWeight: '600' }}>₹{design.price} Stitch Fee</p>
-                      </div>
-                    ))}
+                    {/* Other design recommendations */}
+                    {newArrivalDesigns.filter(d => d.category === selectedWizardCategory || selectedWizardCategory === 'bridal').map(design => {
+                      const isSelected = selectedDesign?.id === design.id;
+                      return (
+                        <div 
+                          key={design.id}
+                          className="glass-card-no-hover"
+                          style={{
+                            flex: '0 0 auto', 
+                            width: '240px', 
+                            height: '260px', 
+                            borderRadius: '12px', 
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            border: `1.5px solid ${isSelected ? 'var(--primary)' : borderColor}`,
+                            background: isSelected ? (isDark ? 'rgba(247,37,133,0.05)' : '#fff9fb') : bgCard,
+                            boxShadow: isSelected ? '0 8px 24px rgba(247, 37, 133, 0.1)' : 'none',
+                            transition: 'all 0.3s ease',
+                            position: 'relative',
+                            overflow: 'hidden'
+                          }}
+                          onClick={() => setSelectedDesign(design)}
+                        >
+                          {/* Heart Icon */}
+                          <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 10, background: 'rgba(255,255,255,0.7)', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                            <Heart size={14} style={{ color: isSelected ? 'var(--primary)' : '#666', fill: isSelected ? 'var(--primary)' : 'none' }} />
+                          </div>
+
+                          <img src={design.image} alt={design.title} style={{ width: '100%', height: '130px', objectFit: 'cover' }} />
+                          
+                          <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '4px', flexGrow: 1 }}>
+                            <span style={{ fontSize: '0.62rem', fontWeight: 'bold', color: 'var(--primary)', background: 'rgba(247,37,133,0.1)', padding: '2px 8px', borderRadius: '4px', width: 'fit-content' }}>
+                              {design.title.includes('Sherwani') ? 'Sherwani' : 'Suit'}
+                            </span>
+                            <h5 style={{ fontSize: '0.88rem', fontWeight: 'bold', color: colorTextPrimary, margin: '2px 0 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{design.title}</h5>
+                            <p style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 'bold', margin: '2px 0 0 0' }}>₹{design.price} Stitch Fee</p>
+                            
+                            {/* Color options indicator */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: 'auto' }}>
+                              {['#0d4e34', '#580c1f', '#0c1a4e'].map((col, cIdx) => (
+                                <div key={cIdx} style={{ width: '10px', height: '10px', borderRadius: '50%', background: col }}></div>
+                              ))}
+                              <span style={{ fontSize: '0.65rem', color: colorTextMuted, marginLeft: '2px' }}>+3 more</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Fabric stitching option */}
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px' }}>
-                  <div className="flex-row-between" style={{ marginBottom: '14px' }}>
-                    <h4 style={{ fontSize: '0.95rem' }}>StitchBee Fabrics Integration</h4>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.85rem' }}>
-                      <input type="checkbox" checked={addFabric} onChange={e => { setAddFabric(e.target.checked); if (e.target.checked && !selectedFabric) setSelectedFabric(mockFabrics[0]); }} />
-                      Buy Fabric from site and stitch here
-                    </label>
+                <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '20px' }}>
+                  <div 
+                    style={{ 
+                      display: 'flex', 
+                      gap: '24px', 
+                      background: isDark ? 'rgba(247,37,133,0.02)' : 'rgba(247,37,133,0.01)', 
+                      border: `1.5px solid ${borderColor}`,
+                      borderRadius: '16px',
+                      padding: '24px',
+                      alignItems: 'center',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    {/* Left column */}
+                    <div style={{ flex: '1 1 320px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Sliders size={16} style={{ color: 'var(--primary)' }} />
+                        </div>
+                        <h4 style={{ fontSize: '1rem', fontWeight: 'bold', color: colorTextPrimary, margin: 0 }}>StitchBee Fabrics Integration</h4>
+                      </div>
+                      <p style={{ fontSize: '0.8rem', color: colorTextSecondary, margin: 0, lineHeight: '1.4' }}>
+                        Explore premium fabrics from our marketplace and add them to your stitching design seamlessly.
+                      </p>
+                      <button 
+                        type="button" 
+                        className="btn" 
+                        onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}
+                        style={{ width: 'fit-content', padding: '6px 16px', borderRadius: '8px', border: '1.5px solid var(--primary)', color: 'var(--primary)', background: 'transparent', fontWeight: 'bold', fontSize: '0.8rem' }}
+                      >
+                        Browse Fabrics
+                      </button>
+                    </div>
+
+                    {/* Middle stack image */}
+                    <div style={{ flex: '0 0 160px', height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img src="./pink_fabrics_rolls.png" alt="Fabrics Stack" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                    </div>
+
+                    {/* Right checkbox card */}
+                    <div 
+                      onClick={() => {
+                        const newval = !addFabric;
+                        setAddFabric(newval);
+                        if (newval && !selectedFabric) setSelectedFabric(mockFabrics[0]);
+                      }}
+                      style={{ 
+                        flex: '1 1 280px', 
+                        padding: '16px', 
+                        borderRadius: '12px', 
+                        border: `1.5px ${addFabric ? 'solid' : 'dashed'} ${addFabric ? 'var(--primary)' : 'rgba(247,37,133,0.3)'}`,
+                        background: addFabric ? (isDark ? 'rgba(247,37,133,0.06)' : '#fff9fb') : 'transparent',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ color: 'var(--primary)' }}>
+                          <Box size={24} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: 'bold', color: colorTextPrimary }}>Buy fabric from site</span>
+                          <span style={{ fontSize: '0.75rem', color: colorTextMuted }}>and stitch here</span>
+                        </div>
+                      </div>
+                      <input 
+                        type="checkbox" 
+                        checked={addFabric} 
+                        readOnly
+                        style={{ accentColor: 'var(--primary)', width: '16px', height: '16px', cursor: 'pointer' }} 
+                      />
+                    </div>
                   </div>
 
                   {addFabric && (
-                    <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px' }}>
-                      {mockFabrics.map(fb => (
-                        <div 
-                          key={fb.id}
-                          className="glass-card"
-                          style={{
-                            padding: '14px', borderRadius: '8px', cursor: 'pointer', display: 'flex', gap: '12px', alignItems: 'center',
-                            border: `1.5px solid ${selectedFabric?.id === fb.id ? 'var(--primary)' : 'var(--border-color)'}`,
-                            background: selectedFabric?.id === fb.id ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                          }}
-                          onClick={() => setSelectedFabric(fb)}
-                        >
-                          <img src={fb.image} alt={fb.name} style={{ width: '50px', height: '50px', borderRadius: '4px', objectFit: 'cover' }} />
-                          <div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-primary)' }}>{fb.name}</div>
-                            <div style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: '700' }}>+₹{fb.price}</div>
+                    <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '16px', marginTop: '16px' }}>
+                      {mockFabrics.map(fb => {
+                        const isSelected = selectedFabric?.id === fb.id;
+                        return (
+                          <div 
+                            key={fb.id}
+                            className="glass-card-no-hover"
+                            style={{
+                              padding: '14px', 
+                              borderRadius: '8px', 
+                              cursor: 'pointer', 
+                              display: 'flex', 
+                              gap: '12px', 
+                              alignItems: 'center',
+                              border: `1.5px solid ${isSelected ? 'var(--primary)' : borderColor}`,
+                              background: isSelected ? (isDark ? 'rgba(247,37,133,0.05)' : '#fff9fb') : bgCard,
+                              transition: 'all 0.2s ease'
+                            }}
+                            onClick={() => setSelectedFabric(fb)}
+                          >
+                            <img src={fb.image} alt={fb.name} style={{ width: '50px', height: '50px', borderRadius: '4px', objectFit: 'cover' }} />
+                            <div>
+                              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: colorTextPrimary }}>{fb.name}</div>
+                              <div style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '700' }}>+₹{fb.price}</div>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
 
                 {/* Footer Buttons */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px' }}>
-                  <button type="button" className="btn btn-secondary" onClick={() => setWizardOpen(false)}>Cancel</button>
-                  <button type="button" className="btn btn-primary" onClick={nextStep}>Next: Sizing & Measurements <ChevronRight size={14} /></button>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
+                  <button type="button" className="btn" onClick={() => setWizardOpen(false)} style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9', border: `1.5px solid ${borderColor}`, padding: '10px 24px', color: colorTextPrimary, fontWeight: 'bold' }}>Cancel</button>
+                  <button type="button" className="btn btn-primary" onClick={nextStep} style={{ padding: '10px 24px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>Next: Sizing & Measurements <ChevronRight size={16} /></button>
                 </div>
               </div>
             )}
 
-            {/* STEP 2: Sizing & Measurements */}
+            {/* STEP 2: Sizing & Fit Measurements */}
             {wizardStep === 2 && (
               <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px' }}>Step 2: Sizing & Fit Measurements</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Select how we should capture your measurements for fitting.</p>
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px', fontWeight: 'bold' }}>Step 2: Sizing & Fit Measurements</h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Select how we should capture your measurements for the perfect fit.</p>
                 </div>
 
                 {/* Basic client info */}
-                <div className="grid-cols-2" style={{ gap: '16px' }}>
-                  <div className="form-group">
-                    <label className="form-label">Client Name</label>
-                    <input type="text" className="form-input" value={customerName} onChange={e => setCustomerName(e.target.value)} required />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', flexWrap: 'wrap' }}>
+                  <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '6px', textAlign: 'left' }}>
+                    <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 'bold', color: colorTextSecondary }}>Client Name</label>
+                    <div style={{ position: 'relative' }}>
+                      <User size={14} style={{ position: 'absolute', left: '12px', top: '13px', color: colorTextMuted }} />
+                      <input 
+                        type="text" 
+                        className="form-input" 
+                        value={customerName} 
+                        onChange={e => setCustomerName(e.target.value)} 
+                        required 
+                        style={{ paddingLeft: '36px', height: '38px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: bgInput, color: colorTextPrimary, width: '100%', fontSize: '0.82rem' }}
+                      />
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label className="form-label">Address</label>
-                    <input type="text" className="form-input" value={customerAddress} onChange={e => setCustomerAddress(e.target.value)} required />
+                  <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '6px', textAlign: 'left' }}>
+                    <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 'bold', color: colorTextSecondary }}>Address</label>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <div style={{ position: 'relative', flexGrow: 1 }}>
+                        <MapPin size={14} style={{ position: 'absolute', left: '12px', top: '13px', color: colorTextMuted }} />
+                        <input 
+                          type="text" 
+                          className="form-input" 
+                          value={customerAddress} 
+                          onChange={e => setCustomerAddress(e.target.value)} 
+                          required 
+                          style={{ paddingLeft: '36px', height: '38px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: bgInput, color: colorTextPrimary, width: '100%', fontSize: '0.82rem' }}
+                        />
+                      </div>
+                      <button 
+                        type="button" 
+                        className="btn" 
+                        style={{ padding: '8px 16px', borderRadius: '8px', border: '1.5px solid var(--primary)', color: 'var(--primary)', background: 'transparent', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        onClick={() => alert("Address editing enabled")}
+                      >
+                        <Edit size={12} /> Edit
+                      </button>
+                    </div>
                   </div>
                 </div>
 
                 {/* Selection panel */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '10px' }}>
-                  {/* Option: AI scan */}
-                  <div 
-                    className="glass-card" 
-                    onClick={() => setMeasurementOption('ai')}
-                    style={{
-                      padding: '12px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
-                      border: `1.5px solid ${measurementOption === 'ai' ? 'var(--primary)' : 'var(--border-color)'}`,
-                      background: measurementOption === 'ai' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                    }}
-                  >
-                    <Camera size={18} style={{ color: 'var(--primary)', marginBottom: '4px' }} />
-                    <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-primary)' }}>AI Body Scan</div>
-                    <span className="badge badge-success" style={{ fontSize: '0.55rem', padding: '1px 4px', marginTop: '4px' }}>Free</span>
-                  </div>
+                <div>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '14px', color: colorTextPrimary, textAlign: 'left' }}>Choose Measurement Method</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', flexWrap: 'wrap' }}>
+                    {[
+                      { key: 'ai', title: 'AI Body Scan', icon: <Camera size={20} />, badge: 'FREE', badgeClass: 'badge-success', desc: 'Quick AI scan using your device camera for accurate measurements.', tag: 'Recommended' },
+                      { key: 'manual', title: 'Manual Input', icon: <Sliders size={20} />, badge: 'FREE', badgeClass: 'badge-secondary', desc: 'Enter your measurements manually.' },
+                      { key: 'expert', title: 'Home Visit Fit', icon: <User size={20} />, badge: '₹100', badgeClass: 'badge-primary', desc: 'Our expert will visit your home to take measurements.' },
+                      { key: 'dress', title: 'Existing Dress', icon: <Shirt size={20} />, badge: 'FREE', badgeClass: 'badge-secondary', desc: 'We will use a dress that fits you well for reference.' },
+                      { key: 'video', title: 'Video Assist', icon: <Video size={20} />, badge: 'FREE', badgeClass: 'badge-secondary', desc: 'Connect with our expert via video call for measurement guide.' }
+                    ].map(opt => {
+                      const isSelected = measurementOption === opt.key;
+                      return (
+                        <div 
+                          key={opt.key}
+                          className="glass-card-no-hover"
+                          style={{
+                            padding: '16px',
+                            borderRadius: '12px',
+                            border: `1.5px solid ${isSelected ? 'var(--primary)' : borderColor}`,
+                            background: isSelected ? (isDark ? 'rgba(247,37,133,0.05)' : '#fff9fb') : bgCard,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '8px',
+                            position: 'relative',
+                            textAlign: 'left',
+                            transition: 'all 0.3s ease',
+                            boxShadow: isSelected ? '0 8px 24px rgba(247, 37, 133, 0.1)' : 'none'
+                          }}
+                          onClick={() => setMeasurementOption(opt.key)}
+                        >
+                          {/* Radio select dot / checkmark */}
+                          <div style={{ position: 'absolute', top: '12px', right: '12px', width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${isSelected ? 'var(--primary)' : borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: isSelected ? 'var(--primary)' : 'transparent' }}>
+                            {isSelected && <span style={{ color: '#fff', fontSize: '0.6rem' }}>✓</span>}
+                          </div>
 
-                  {/* Option: Manual entry */}
-                  <div 
-                    className="glass-card" 
-                    onClick={() => setMeasurementOption('manual')}
-                    style={{
-                      padding: '12px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
-                      border: `1.5px solid ${measurementOption === 'manual' ? 'var(--primary)' : 'var(--border-color)'}`,
-                      background: measurementOption === 'manual' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                    }}
-                  >
-                    <Scissors size={18} style={{ color: 'var(--accent)', marginBottom: '4px' }} />
-                    <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-primary)' }}>Manual Input</div>
-                    <span className="badge badge-secondary" style={{ fontSize: '0.55rem', padding: '1px 4px', marginTop: '4px' }}>Free</span>
-                  </div>
+                          <div style={{ color: isSelected ? 'var(--primary)' : colorTextSecondary, marginTop: '4px' }}>
+                            {opt.icon}
+                          </div>
 
-                  {/* Option: Home visit */}
-                  <div 
-                    className="glass-card" 
-                    onClick={() => setMeasurementOption('expert')}
-                    style={{
-                      padding: '12px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
-                      border: `1.5px solid ${measurementOption === 'expert' ? 'var(--primary)' : 'var(--border-color)'}`,
-                      background: measurementOption === 'expert' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                    }}
-                  >
-                    <User size={18} style={{ color: '#10b981', marginBottom: '4px' }} />
-                    <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-primary)' }}>Home Visit Fit</div>
-                    <span className="badge badge-primary" style={{ fontSize: '0.55rem', padding: '1px 4px', marginTop: '4px' }}>+₹100</span>
-                  </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: colorTextPrimary }}>{opt.title}</span>
+                            <span className={`badge ${opt.badgeClass}`} style={{ fontSize: '0.6rem', padding: '2px 6px' }}>{opt.badge}</span>
+                          </div>
 
-                  {/* Option: reference dress */}
-                  <div 
-                    className="glass-card" 
-                    onClick={() => setMeasurementOption('dress')}
-                    style={{
-                      padding: '12px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
-                      border: `1.5px solid ${measurementOption === 'dress' ? 'var(--primary)' : 'var(--border-color)'}`,
-                      background: measurementOption === 'dress' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                    }}
-                  >
-                    <Upload size={18} style={{ color: '#fbbf24', marginBottom: '4px' }} />
-                    <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-primary)' }}>Existing Dress</div>
-                    <span className="badge badge-secondary" style={{ fontSize: '0.55rem', padding: '1px 4px', marginTop: '4px' }}>Free</span>
-                  </div>
-
-                  {/* Option: video assist */}
-                  <div 
-                    className="glass-card" 
-                    onClick={() => setMeasurementOption('video')}
-                    style={{
-                      padding: '12px', borderRadius: '8px', cursor: 'pointer', textAlign: 'center',
-                      border: `1.5px solid ${measurementOption === 'video' ? 'var(--primary)' : 'var(--border-color)'}`,
-                      background: measurementOption === 'video' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
-                    }}
-                  >
-                    <Video size={18} style={{ color: '#a78bfa', marginBottom: '4px' }} />
-                    <div style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--text-primary)' }}>Video Assist</div>
-                    <span className="badge badge-secondary" style={{ fontSize: '0.55rem', padding: '1px 4px', marginTop: '4px' }}>Free</span>
+                          <p style={{ fontSize: '0.72rem', color: colorTextMuted, margin: 0, lineHeight: '1.4' }}>{opt.desc}</p>
+                          
+                          {opt.tag && (
+                            <span style={{ fontSize: '0.62rem', color: 'var(--primary)', background: 'rgba(247,37,133,0.1)', padding: '2px 8px', borderRadius: '4px', width: 'fit-content', fontWeight: 'bold', marginTop: 'auto' }}>
+                              ★ {opt.tag}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Sub Panel details */}
                 {measurementOption === 'ai' && (
-                  <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
-                      <span style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Camera size={16} /> StitchBee AI Sizing Scanner Studio
+                  <div className="glass-card-no-hover" style={{ padding: '24px', border: `1.5px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1.5px solid ${borderColor}`, paddingBottom: '12px' }}>
+                      <span style={{ fontSize: '1rem', fontWeight: 'bold', color: colorTextPrimary, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Camera size={18} style={{ color: 'var(--primary)' }} /> StitchBee AI Sizing Scanner Studio
                       </span>
                       {aiScanStep !== 'start' && aiScanStep !== 'results_complete' && (
                         <button type="button" className="btn btn-secondary" style={{ padding: '3px 8px', fontSize: '0.65rem', minHeight: 'auto' }} onClick={() => { stopCamera(); setAiScanStep('start'); }}>
@@ -2256,8 +2855,8 @@ export default function CustomerView({
                         <div style={{ background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '14px', borderRadius: '50%', width: 'fit-content' }}>
                           <Sparkles size={28} />
                         </div>
-                        <h4 style={{ fontSize: '1.05rem', fontWeight: '700' }}>Contactless 3D AI Sizing</h4>
-                        <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', maxWidth: '380px', margin: '0 auto', lineHeight: '1.5' }}>
+                        <h4 style={{ fontSize: '1.05rem', fontWeight: '700', color: colorTextPrimary }}>Contactless 3D AI Sizing</h4>
+                        <p style={{ fontSize: '0.78rem', color: colorTextSecondary, maxWidth: '380px', margin: '0 auto', lineHeight: '1.5' }}>
                           Using our computer vision sizing engine, compute full-body custom tailoring measurements in seconds using your camera profile.
                         </p>
                         <button type="button" className="btn btn-primary animate-pulse" style={{ padding: '8px 20px', fontSize: '0.8rem', marginTop: '6px' }} onClick={() => setAiScanStep('permission')}>
@@ -2268,34 +2867,59 @@ export default function CustomerView({
 
                     {/* STEP 2: CAMERA PERMISSION REQUEST */}
                     {aiScanStep === 'permission' && (
-                      <div className="animate-fade-in" style={{ padding: '10px 0', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Shield size={14} style={{ color: 'var(--accent)' }} /> <strong>Device Camera Permissions</strong>
+                      <div 
+                        style={{ 
+                          background: isDark ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)', 
+                          border: `1.5px solid ${borderColor}`, 
+                          borderRadius: '12px', 
+                          padding: '20px', 
+                          display: 'flex', 
+                          flexDirection: 'column', 
+                          gap: '12px' 
+                        }}
+                      >
+                        <span style={{ fontSize: '0.85rem', color: colorTextPrimary, fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <Shield size={16} style={{ color: 'var(--primary)' }} /> Device Camera Permissions
                         </span>
-                        <p style={{ fontSize: '0.76rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+                        <p style={{ fontSize: '0.78rem', color: colorTextSecondary, margin: 0, lineHeight: '1.5' }}>
                           StitchBee requests access to your webcam to perform body contour landmark mapping. No image frames are saved or transmitted to any server—processing occurs 100% locally in your browser sandbox.
                         </p>
-                        {aiCameraError && (
-                          <div style={{ padding: '10px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '6px', fontSize: '0.72rem', color: 'var(--danger)' }}>
-                            {aiCameraError}
-                          </div>
-                        )}
-                        <div className="grid-cols-2" style={{ gap: '10px' }}>
-                          <button type="button" className="btn btn-primary" style={{ padding: '8px', fontSize: '0.78rem' }} onClick={async () => {
-                            const stream = await startCamera();
-                            if (stream) setAiScanStep('instructions');
-                          }}>
+
+                        <div style={{ display: 'flex', gap: '12px', marginTop: '8px', flexWrap: 'wrap' }}>
+                          <button 
+                            type="button" 
+                            className="btn" 
+                            style={{ flex: '1 1 200px', padding: '10px', background: 'var(--primary)', color: '#fff', fontWeight: 'bold', fontSize: '0.8rem', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+                            onClick={async () => {
+                              const stream = await startCamera();
+                              if (stream) setAiScanStep('instructions');
+                            }}
+                          >
                             Request Webcam Access
                           </button>
-                          <button type="button" className="btn btn-secondary" style={{ padding: '8px', fontSize: '0.78rem' }} onClick={() => {
-                            setAiCameraError(null);
-                            setAiScanStep('instructions');
-                          }}>
+                          <button 
+                            type="button" 
+                            className="btn" 
+                            style={{ flex: '1 1 200px', padding: '10px', background: 'transparent', border: `1.5px solid ${borderColor}`, color: colorTextSecondary, fontWeight: 'bold', fontSize: '0.8rem', borderRadius: '8px', cursor: 'pointer' }}
+                            onClick={() => {
+                              setAiCameraError(null);
+                              setAiScanStep('instructions');
+                            }}
+                          >
                             Simulate Webcam Sensor
                           </button>
                         </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', fontSize: '0.72rem', color: colorTextMuted, marginTop: '8px', flexWrap: 'wrap' }}>
+                          <span>✓ Secure & Private</span>
+                          <span>•</span>
+                          <span>100% Local Processing</span>
+                          <span>•</span>
+                          <span>No Data Stored</span>
+                        </div>
                       </div>
                     )}
+
 
                     {/* STEP 3: INSTRUCTIONS SCREEN */}
                     {aiScanStep === 'instructions' && (
@@ -2852,187 +3476,579 @@ export default function CustomerView({
                 )}
 
                 {/* Logistics pickup method */}
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px' }}>
-                  <h4 style={{ fontSize: '0.95rem', marginBottom: '12px' }}>Doorstep Logistics Delivery</h4>
-                  <div style={{ display: 'flex', gap: '12px' }}>
+                <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '20px', textAlign: 'left' }}>
+                  <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', marginBottom: '14px', color: colorTextPrimary }}>Doorstep Logistics Delivery</h4>
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    
+                    {/* Student Delivery Option */}
                     <div 
-                      className="glass-card" 
+                      className="glass-card-no-hover" 
                       onClick={() => setDeliveryType('student')}
                       style={{
-                        flex: 1, padding: '12px', borderRadius: '8px', cursor: 'pointer',
-                        border: `1.5px solid ${deliveryType === 'student' ? 'var(--primary)' : 'var(--border-color)'}`,
-                        background: deliveryType === 'student' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
+                        flex: '1 1 280px', 
+                        padding: '16px', 
+                        borderRadius: '12px', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                        border: `1.5px solid ${deliveryType === 'student' ? 'var(--primary)' : borderColor}`,
+                        background: deliveryType === 'student' ? (isDark ? 'rgba(247,37,133,0.06)' : '#fff9fb') : bgCard,
+                        transition: 'all 0.3s ease'
                       }}
                     >
-                      <div style={{ display: 'flex', justify: 'space-between', marginBottom: '4px' }}>
-                        <span style={{ fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-primary)' }}>Student Delivery</span>
-                        <span className="badge badge-success">+₹50</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <User size={18} style={{ color: 'var(--primary)' }} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontWeight: 'bold', fontSize: '0.85rem', color: colorTextPrimary }}>Student Delivery</span>
+                            <span className="badge badge-primary" style={{ fontSize: '0.62rem', padding: '1px 6px' }}>+ ₹50</span>
+                          </div>
+                          <p style={{ fontSize: '0.72rem', color: colorTextMuted, margin: '2px 0 0 0', lineHeight: '1.3' }}>Certified student partners manage pickups and deliver finished clothes.</p>
+                        </div>
                       </div>
-                      <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Certified student partners manage pickups and deliver finished clothes.</p>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${deliveryType === 'student' ? 'var(--primary)' : borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: deliveryType === 'student' ? 'var(--primary)' : 'transparent', flexShrink: 0 }}>
+                        {deliveryType === 'student' && <span style={{ color: '#fff', fontSize: '0.6rem' }}>✓</span>}
+                      </div>
                     </div>
 
+                    {/* Self Pick-up Option */}
                     <div 
-                      className="glass-card" 
+                      className="glass-card-no-hover" 
                       onClick={() => setDeliveryType('self')}
                       style={{
-                        flex: 1, padding: '12px', borderRadius: '8px', cursor: 'pointer',
-                        border: `1.5px solid ${deliveryType === 'self' ? 'var(--primary)' : 'var(--border-color)'}`,
-                        background: deliveryType === 'self' ? 'rgba(247,37,133,0.06)' : 'rgba(255,255,255,0.01)'
+                        flex: '1 1 280px', 
+                        padding: '16px', 
+                        borderRadius: '12px', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '12px',
+                        border: `1.5px solid ${deliveryType === 'self' ? 'var(--primary)' : borderColor}`,
+                        background: deliveryType === 'self' ? (isDark ? 'rgba(247,37,133,0.06)' : '#fff9fb') : bgCard,
+                        transition: 'all 0.3s ease'
                       }}
                     >
-                      <div style={{ display: 'flex', justify: 'space-between', marginBottom: '4px' }}>
-                        <span style={{ fontWeight: '600', fontSize: '0.85rem', color: 'var(--text-primary)' }}>Self Pick-up</span>
-                        <span className="badge badge-secondary">Free</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(163, 114, 255, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Sliders size={18} style={{ color: '#a372ff' }} />
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ fontWeight: 'bold', fontSize: '0.85rem', color: colorTextPrimary }}>Self Pick-up</span>
+                            <span className="badge badge-secondary" style={{ fontSize: '0.62rem', padding: '1px 6px' }}>FREE</span>
+                          </div>
+                          <p style={{ fontSize: '0.72rem', color: colorTextMuted, margin: '2px 0 0 0', lineHeight: '1.3' }}>Visit the tailor shop to collect yourself once stitching completes.</p>
+                        </div>
                       </div>
-                      <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Visit the tailor shop to collect yourself once stitching completes.</p>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', border: `2px solid ${deliveryType === 'self' ? 'var(--primary)' : borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', background: deliveryType === 'self' ? 'var(--primary)' : 'transparent', flexShrink: 0 }}>
+                        {deliveryType === 'self' && <span style={{ color: '#fff', fontSize: '0.6rem' }}>✓</span>}
+                      </div>
                     </div>
+
                   </div>
                 </div>
 
                 {/* Footer Buttons */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px' }}>
-                  <button type="button" className="btn btn-secondary" onClick={prevStep}>Back</button>
-                  <button type="button" className="btn btn-primary" onClick={nextStep}>Next: Match Nearby Tailor <ChevronRight size={14} /></button>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', marginTop: '16px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
+                  <button type="button" className="btn" onClick={prevStep} style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9', border: `1.5px solid ${borderColor}`, padding: '10px 24px', color: colorTextPrimary, fontWeight: 'bold' }}>← Back</button>
+                  <button type="button" className="btn btn-primary" onClick={nextStep} style={{ padding: '10px 24px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>Next: Customizations <ChevronRight size={16} /></button>
                 </div>
               </div>
             )}
 
             {/* STEP 3: Match Nearby Tailor (Uber/Namma Yatri style) */}
-            {wizardStep === 3 && (
-              <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div>
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px' }}>Step 3: Geolocated Tailor Match Radar</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Select from tailors registered under our app matching your coordinate area.</p>
-                </div>
+            {wizardStep === 3 && (() => {
+              const localWizardTailors = [
+                { 
+                  id: 't1', 
+                  name: 'Royal Bespoke Tailors', 
+                  owner: 'Master Rajesh Kumar',
+                  rating: 4.8, 
+                  reviews: 126, 
+                  distance: 0.8, 
+                  time: '15-20 mins', 
+                  orders: '250+ Orders', 
+                  specialty: 'Suits, Indo-Western, Sherwani',
+                  categories: ['mens', 'alterations', 'uniforms'],
+                  address: 'Sector 4, HSR Layout, Bengaluru',
+                  coordinates: { x: 30, y: 40 },
+                  image: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'RB', 
+                  bg: '#0b162c', 
+                  mapCoords: { top: '68%', left: '76%', label: '1' },
+                  reviewsList: [
+                    { name: 'Rohan Sharma', rating: 5, comment: 'Royal Bespoke is excellent. The sherwani fits like a glove!', date: '2026-05-28' }
+                  ],
+                  portfolio: [
+                    { title: 'Classic Velvet Sherwani', image: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=300&q=80' }
+                  ]
+                },
+                { 
+                  id: 't2', 
+                  name: 'The Stitch Studio', 
+                  owner: 'Ananya Sharma',
+                  rating: 4.6, 
+                  reviews: 98, 
+                  distance: 1.6, 
+                  time: '20-25 mins', 
+                  orders: '180+ Orders', 
+                  specialty: 'Saree, Blouse, Lehengas',
+                  categories: ['womens', 'bridal'],
+                  address: '12th Main, Indiranagar, Bengaluru',
+                  coordinates: { x: 75, y: 25 },
+                  image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'TS', 
+                  bg: '#0b2c1b', 
+                  mapCoords: { top: '55%', left: '40%', label: '4' },
+                  reviewsList: [
+                    { name: 'Priya Sen', rating: 5, comment: 'Stunning embroidery and blouse lining work!', date: '2026-06-02' }
+                  ],
+                  portfolio: [
+                    { title: 'Designer Silk Blouse', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=300&q=80' }
+                  ]
+                },
+                { 
+                  id: 't3', 
+                  name: 'Thread & Needle', 
+                  owner: 'David D\'Souza',
+                  rating: 4.5, 
+                  reviews: 74, 
+                  distance: 2.1, 
+                  time: '25-30 mins', 
+                  orders: '140+ Orders', 
+                  specialty: 'Casual Wear, Kurtis, Dresses',
+                  categories: ['kids', 'alterations'],
+                  address: 'Koramangala 5th Block, Bengaluru',
+                  coordinates: { x: 45, y: 80 },
+                  image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'TN', 
+                  bg: '#2c1e0b', 
+                  mapCoords: { top: '78%', left: '60%', label: '2' },
+                  reviewsList: [
+                    { name: 'Kavitha M.', rating: 5, comment: 'Stitched a beautiful birthday dress for my daughter.', date: '2026-06-05' }
+                  ],
+                  portfolio: [
+                    { title: 'Velvet Frock', image: 'https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=300&q=80' }
+                  ]
+                },
+                { 
+                  id: 't4', 
+                  name: 'Stitch Crafts', 
+                  owner: 'Guru Prasad',
+                  rating: 4.3, 
+                  reviews: 58, 
+                  distance: 2.9, 
+                  time: '30-35 mins', 
+                  orders: '120+ Orders', 
+                  specialty: 'Alterations, Formal Wear',
+                  categories: ['seats', 'bags'],
+                  address: 'BTM Layout 2nd Stage, Bengaluru',
+                  coordinates: { x: 60, y: 60 },
+                  image: 'https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'SC', 
+                  bg: '#230b2c', 
+                  mapCoords: { top: '40%', left: '80%', label: '3' },
+                  reviewsList: [
+                    { name: 'Guru Prasad', rating: 4, comment: 'Alterations done quickly and cleanly.', date: '2026-06-01' }
+                  ],
+                  portfolio: [
+                    { title: 'Leather Alterations', image: 'https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=300&q=80' }
+                  ]
+                }
+              ];
 
-                {/* Place Search bar */}
-                <div style={{ position: 'relative' }}>
-                  <Search size={18} style={{ position: 'absolute', left: '14px', top: '14px', color: 'var(--text-muted)' }} />
-                  <input 
-                    type="text" 
-                    placeholder="Search by area (e.g. HSR Layout, Indiranagar, Koramangala)..." 
-                    className="form-input" 
-                    value={placeSearchText} 
-                    onChange={e => setPlaceSearchText(e.target.value)}
-                    style={{ paddingLeft: '44px' }}
-                  />
-                </div>
-
-                {/* Uber Box Layout */}
-                <div className="uber-search-box">
-                  {/* Left list */}
-                  <div className="uber-tailor-list">
-                    {wizardFilteredTailors.length === 0 ? (
-                      <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textAlign: 'center', marginTop: '40px' }}>No tailors found in this area for this category.</p>
-                    ) : (
-                      wizardFilteredTailors.map(tailor => (
-                        <div 
-                          key={tailor.id} 
-                          className={`uber-tailor-item ${selectedTailor?.id === tailor.id ? 'active' : ''}`}
-                          onClick={() => setSelectedTailor(tailor)}
-                        >
-                          <div style={{ display: 'flex', justify: 'space-between', alignItems: 'center' }}>
-                            <span style={{ fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>{tailor.name}</span>
-                            <span style={{ fontSize: '0.8rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                              ★ {tailor.rating}
-                            </span>
-                          </div>
-                          <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '4px' }}>{tailor.address} ({tailor.distance}km away)</p>
-                          <span className="badge badge-secondary" style={{ fontSize: '0.55rem', marginTop: '6px' }}>{tailor.specialty}</span>
-                        </div>
-                      ))
-                    )}
+              return (
+                <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.2rem', marginBottom: '4px', fontWeight: 'bold' }}>Step 3: Geolocated Tailor Match Radar</h3>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Select from tailors registered under our app matching your coordinate area.</p>
                   </div>
 
-                  {/* Right Map */}
-                  <div className="map-sim" style={{ height: '100%' }}>
-                    <div className="map-grid"></div>
-                    <div className="map-road" style={{ top: '60px', left: 0, right: 0, height: '12px' }}></div>
-                    <div className="map-road" style={{ top: 0, bottom: 0, left: '50%', width: '12px' }}></div>
-                    {/* User Marker */}
-                    <div className="map-marker" style={{ top: '55%', left: '48%' }}>
-                      <div className="marker-dot" style={{ background: 'var(--accent)', boxShadow: '0 0 12px var(--accent)' }}></div>
-                      <div className="marker-label">You (Pickup)</div>
+                  {/* Place Search bar & filters */}
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <div style={{ position: 'relative', flexGrow: 1, minWidth: '240px' }}>
+                      <Search size={16} style={{ position: 'absolute', left: '14px', top: '12px', color: 'var(--text-muted)' }} />
+                      <input 
+                        type="text" 
+                        placeholder="Search by area (e.g. HSR Layout, Indiranagar, Koramangala)..." 
+                        className="form-input" 
+                        value={placeSearchText} 
+                        onChange={e => setPlaceSearchText(e.target.value)}
+                        style={{ paddingLeft: '40px', height: '38px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: bgInput, color: colorTextPrimary, width: '100%', fontSize: '0.82rem' }}
+                      />
                     </div>
-                    {/* Tailor Markers */}
-                    {wizardFilteredTailors.map(tailor => (
-                      <div 
-                        key={tailor.id} 
-                        className="map-marker" 
-                        style={{ 
-                          top: `${tailor.coordinates.y}%`, 
-                          left: `${tailor.coordinates.x}%`,
-                          zIndex: selectedTailor?.id === tailor.id ? 20 : 10
+                    
+                    <button 
+                      type="button"
+                      className="btn" 
+                      style={{ padding: '8px 16px', borderRadius: '8px', border: '1.5px solid var(--primary)', color: 'var(--primary)', background: 'transparent', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', height: '38px' }}
+                      onClick={() => alert("Acquiring GPS location coordinates...")}
+                    >
+                      <MapPin size={14} /> Use my current location
+                    </button>
+
+                    <button 
+                      type="button"
+                      className="btn" 
+                      style={{ padding: '8px 16px', borderRadius: '8px', border: `1.5px solid ${borderColor}`, color: colorTextSecondary, background: bgCard, fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', height: '38px' }}
+                    >
+                      <Sliders size={14} /> Filter <ChevronDown size={12} />
+                    </button>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '38px' }}>
+                      <span style={{ fontSize: '0.82rem', color: colorTextMuted }}>Sort by:</span>
+                      <select
+                        style={{
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          border: `1px solid ${borderColor}`,
+                          background: bgCard,
+                          color: colorTextPrimary,
+                          fontSize: '0.82rem',
+                          fontWeight: '500',
+                          outline: 'none',
+                          height: '38px'
                         }}
-                        onClick={() => setSelectedTailor(tailor)}
                       >
-                        <div 
-                          className="marker-dot" 
-                          style={{ 
-                            background: selectedTailor?.id === tailor.id ? 'var(--primary)' : 'var(--success)', 
-                            boxShadow: `0 0 10px ${selectedTailor?.id === tailor.id ? 'var(--primary)' : 'var(--success)'}`,
-                            width: selectedTailor?.id === tailor.id ? '16px' : '12px',
-                            height: selectedTailor?.id === tailor.id ? '16px' : '12px'
-                          }}
-                        ></div>
-                        <div className="marker-label">{tailor.name}</div>
-                      </div>
-                    ))}
+                        <option>Nearest</option>
+                        <option>Rating: High to Low</option>
+                        <option>Popularity</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                {/* Selected Tailor details portfolio */}
-                {selectedTailor && (
-                  <div className="glass-card animate-fade-in" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-                      <img src={selectedTailor.image} alt={selectedTailor.name} style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }} />
-                      <div>
-                        <h4 style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>{selectedTailor.name}</h4>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Shop Owner: <strong>{selectedTailor.owner}</strong></p>
-                      </div>
+                  {/* Two Column Geolocated Match Block */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px', minHeight: '480px', flexWrap: 'wrap' }}>
+                    
+                    {/* Left Column: Tailors List */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '500px', overflowY: 'auto', paddingRight: '8px' }}>
+                      {localWizardTailors.map((tailor, idx) => {
+                        const isSelected = selectedTailor?.id === tailor.id;
+                        return (
+                          <div 
+                            key={tailor.id}
+                            className="glass-card-no-hover"
+                            style={{
+                              padding: '16px',
+                              borderRadius: '12px',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              border: `1.5px solid ${isSelected ? 'var(--primary)' : borderColor}`,
+                              background: isSelected ? (isDark ? 'rgba(247,37,133,0.06)' : '#fff9fb') : bgCard,
+                              boxShadow: isSelected ? '0 8px 24px rgba(247, 37, 133, 0.1)' : 'none',
+                              transition: 'all 0.3s ease',
+                              position: 'relative'
+                            }}
+                            onClick={() => setSelectedTailor(tailor)}
+                          >
+                            {/* Left contents block */}
+                            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                              {/* Circle Initial Avatar */}
+                              <div 
+                                style={{ 
+                                  width: '48px', 
+                                  height: '48px', 
+                                  borderRadius: '50%', 
+                                  background: tailor.bg, 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center',
+                                  color: '#fff',
+                                  fontWeight: 'bold',
+                                  fontSize: '1rem',
+                                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                  flexShrink: 0
+                                }}
+                              >
+                                {tailor.initial}
+                              </div>
+
+                              {/* Details list */}
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', textAlign: 'left' }}>
+                                {idx === 0 && (
+                                  <span style={{ fontSize: '0.62rem', fontWeight: 'bold', color: '#fff', background: 'var(--primary)', padding: '2px 8px', borderRadius: '4px', width: 'fit-content', marginBottom: '2px' }}>
+                                    Best Match
+                                  </span>
+                                )}
+                                <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: colorTextPrimary, margin: 0 }}>{tailor.name}</h4>
+                                
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: colorTextSecondary }}>
+                                  <span style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '2px', fontWeight: 'bold' }}>
+                                    ★ {tailor.rating}
+                                  </span>
+                                  <span style={{ color: colorTextMuted }}>({tailor.reviews} Reviews)</span>
+                                </div>
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.72rem', color: colorTextMuted, marginTop: '2px', flexWrap: 'wrap' }}>
+                                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><MapPin size={12} style={{ color: 'var(--primary)' }} /> {tailor.distance} km away</span>
+                                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Clock size={12} /> {tailor.time}</span>
+                                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Sliders size={12} /> {tailor.orders}</span>
+                                </div>
+
+                                <p style={{ fontSize: '0.75rem', color: colorTextSecondary, margin: '4px 0 0 0' }}>
+                                  <strong style={{ color: colorTextMuted }}>Specializes in:</strong> {tailor.specialty}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Right button */}
+                            <button 
+                              type="button" 
+                              className="btn" 
+                              style={{ 
+                                padding: '8px 16px', 
+                                borderRadius: '8px', 
+                                border: `1.5px solid ${isSelected ? 'var(--primary)' : borderColor}`, 
+                                color: isSelected ? 'var(--primary)' : colorTextSecondary, 
+                                background: isSelected ? 'rgba(247,37,133,0.08)' : 'transparent', 
+                                fontSize: '0.8rem', 
+                                fontWeight: 'bold',
+                                flexShrink: 0
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedTailor(tailor);
+                                alert(`Viewing full profile for ${tailor.name}`);
+                              }}
+                            >
+                              View Profile
+                            </button>
+                          </div>
+                        );
+                      })}
+
+                      <button 
+                        type="button" 
+                        className="btn" 
+                        style={{ width: 'fit-content', alignSelf: 'center', padding: '8px 24px', borderRadius: '8px', border: `1.5px solid ${borderColor}`, color: colorTextSecondary, background: bgCard, fontSize: '0.8rem', fontWeight: 'bold' }}
+                        onClick={() => alert("Loading next page of registered tailor partners...")}
+                      >
+                        Load More Tailors <ChevronDown size={14} />
+                      </button>
                     </div>
 
-                    {/* Past works gallery */}
-                    {selectedTailor.portfolio && (
-                      <div>
-                        <h5 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px' }}>Tailor Portfolio (Past Works Done)</h5>
-                        <div style={{ display: 'flex', gap: '10px', overflowX: 'auto' }}>
-                          {selectedTailor.portfolio.map((p, idx) => (
-                            <div key={idx} style={{ flex: '0 0 auto', width: '100px', textAlign: 'center' }}>
-                              <img src={p.image} alt={p.title} style={{ width: '100px', height: '80px', borderRadius: '4px', objectFit: 'cover' }} />
-                              <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</div>
-                            </div>
-                          ))}
+                    {/* Right Column: Simulated Map */}
+                    <div 
+                      className="map-sim" 
+                      style={{ 
+                        height: '100%', 
+                        minHeight: '380px',
+                        borderRadius: '16px', 
+                        backgroundImage: 'url(./map_sim.png)', 
+                        backgroundSize: 'cover', 
+                        backgroundPosition: 'center',
+                        border: `1.5px solid ${borderColor}`,
+                        position: 'relative',
+                        overflow: 'hidden',
+                        boxShadow: 'inset 0 0 40px rgba(0,0,0,0.1)'
+                      }}
+                    >
+                      {/* Circle range indicator overlay */}
+                      <div 
+                        style={{ 
+                          position: 'absolute', 
+                          top: '60%', 
+                          left: '70%', 
+                          transform: 'translate(-50%, -50%)', 
+                          width: '240px', 
+                          height: '240px', 
+                          borderRadius: '50%', 
+                          border: '2px dashed var(--primary)', 
+                          background: 'rgba(247, 37, 133, 0.05)',
+                          pointerEvents: 'none',
+                          boxShadow: '0 0 20px rgba(247, 37, 133, 0.1)'
+                        }}
+                      ></div>
+
+                      {/* Toggle switch area */}
+                      <div 
+                        style={{ 
+                          position: 'absolute', 
+                          top: '16px', 
+                          left: '16px', 
+                          background: 'rgba(255, 255, 255, 0.9)', 
+                          padding: '8px 14px', 
+                          borderRadius: '24px', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '10px', 
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          zIndex: 10
+                        }}
+                      >
+                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#1a2238' }}>Show tailors in this area</span>
+                        <div style={{ width: '36px', height: '20px', borderRadius: '10px', background: 'var(--primary)', position: 'relative', cursor: 'pointer' }}>
+                          <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '2px', right: '2px' }}></div>
                         </div>
                       </div>
-                    )}
 
-                    {/* Reviews */}
-                    {selectedTailor.reviewsList && (
-                      <div>
-                        <h5 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px' }}>Customer Reviews</h5>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          {selectedTailor.reviewsList.map((r, idx) => (
-                            <div key={idx} style={{ background: 'var(--border-color)', padding: '8px', borderRadius: '6px', fontSize: '0.75rem' }}>
-                              <div className="flex-row-between">
-                                <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{r.name}</span>
-                                <span style={{ color: '#fbbf24' }}>★ {r.rating}</span>
+                      {/* Zoom controls */}
+                      <div 
+                        style={{ 
+                          position: 'absolute', 
+                          bottom: '16px', 
+                          right: '16px', 
+                          background: 'rgba(255, 255, 255, 0.9)', 
+                          borderRadius: '8px', 
+                          display: 'flex', 
+                          flexDirection: 'column', 
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          zIndex: 10
+                        }}
+                      >
+                        <button type="button" style={{ width: '32px', height: '32px', border: 'none', background: 'none', fontSize: '1.25rem', fontWeight: 'bold', cursor: 'pointer', borderBottom: '1px solid #e2e8f0', color: '#1a2238' }} onClick={() => alert("Zoom in")}>+</button>
+                        <button type="button" style={{ width: '32px', height: '32px', border: 'none', background: 'none', fontSize: '1.25rem', fontWeight: 'bold', cursor: 'pointer', color: '#1a2238' }} onClick={() => alert("Zoom out")}>-</button>
+                      </div>
+
+                      {/* Target location picker icon */}
+                      <div 
+                        style={{ 
+                          position: 'absolute', 
+                          bottom: '90px', 
+                          right: '16px', 
+                          background: 'rgba(255, 255, 255, 0.9)', 
+                          borderRadius: '8px', 
+                          width: '32px', 
+                          height: '32px',
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                          cursor: 'pointer',
+                          zIndex: 10
+                        }}
+                        onClick={() => alert("Re-centering map on user GPS coordinates...")}
+                      >
+                        <MapPin size={16} style={{ color: '#1a2238' }} />
+                      </div>
+
+                      {/* User Marker: Center */}
+                      <div style={{ position: 'absolute', top: '60%', left: '70%', transform: 'translate(-50%, -50%)', zIndex: 15, textAlign: 'center' }}>
+                        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'var(--primary)', border: '2.5px solid #ffffff', boxShadow: '0 0 10px var(--primary)', margin: '0 auto' }}></div>
+                        <div style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.62rem', padding: '2px 8px', borderRadius: '4px', marginTop: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }}>
+                          You (Pickup)
+                        </div>
+                      </div>
+
+                      {/* Tailor Markers */}
+                      {localWizardTailors.map(tailor => {
+                        const isSelected = selectedTailor?.id === tailor.id;
+                        return (
+                          <div 
+                            key={tailor.id} 
+                            style={{ 
+                              position: 'absolute', 
+                              top: tailor.mapCoords.top, 
+                              left: tailor.mapCoords.left, 
+                              transform: 'translate(-50%, -50%)', 
+                              zIndex: isSelected ? 30 : 20, 
+                              cursor: 'pointer',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center'
+                            }}
+                            onClick={() => setSelectedTailor(tailor)}
+                          >
+                            <div 
+                              style={{ 
+                                width: '24px', 
+                                height: '24px', 
+                                borderRadius: '50%', 
+                                background: isSelected ? 'var(--primary)' : '#10b981', 
+                                border: '2px solid #ffffff', 
+                                boxShadow: `0 0 10px ${isSelected ? 'var(--primary)' : '#10b981'}`, 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                color: '#fff',
+                                fontSize: '0.72rem',
+                                fontWeight: 'bold'
+                              }}
+                            >
+                              {tailor.mapCoords.label}
+                            </div>
+                            {isSelected && (
+                              <div style={{ background: '#fff', color: '#1a2238', fontSize: '0.62rem', padding: '2px 8px', borderRadius: '4px', marginTop: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', border: '1px solid var(--primary)' }}>
+                                {tailor.name}
                               </div>
-                              <p style={{ color: 'var(--text-secondary)', marginTop: '2px' }}>"{r.comment}"</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+                            )}
+                          </div>
+                        );
+                      })}
 
-                {/* Footer Buttons */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px' }}>
-                  <button type="button" className="btn btn-secondary" onClick={prevStep}>Back</button>
-                  <button type="button" className="btn btn-primary" onClick={nextStep}>Next: Request Tailor <ChevronRight size={14} /></button>
+                    </div>
+
+                  </div>
+
+                  {/* Selected Tailor details portfolio */}
+                  {selectedTailor && (() => {
+                    // Match selectedTailor ID to localWizardTailors reviews/portfolio or keep fallback
+                    const matchedTailor = localWizardTailors.find(t => t.id === selectedTailor.id) || selectedTailor;
+                    return (
+                      <div className="glass-card-no-hover animate-fade-in" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', border: `1.5px solid ${borderColor}`, borderRadius: '16px', textAlign: 'left', marginTop: '16px' }}>
+                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+                          <img src={matchedTailor.image} alt={matchedTailor.name} style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', border: `2px solid var(--primary)` }} />
+                          <div>
+                            <h4 style={{ fontSize: '1.1rem', color: colorTextPrimary, fontWeight: 'bold', margin: 0 }}>{matchedTailor.name}</h4>
+                            <p style={{ fontSize: '0.8rem', color: colorTextSecondary, margin: '2px 0 0 0' }}>Shop Owner: <strong>{matchedTailor.owner}</strong></p>
+                          </div>
+                        </div>
+
+                        {/* Past works gallery */}
+                        {matchedTailor.portfolio && (
+                          <div>
+                            <h5 style={{ fontSize: '0.82rem', color: colorTextSecondary, fontWeight: 'bold', marginBottom: '8px' }}>Tailor Portfolio (Past Works Done)</h5>
+                            <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '6px' }}>
+                              {matchedTailor.portfolio.map((p, idx) => (
+                                <div key={idx} style={{ flex: '0 0 auto', width: '120px', textAlign: 'center' }}>
+                                  <img src={p.image} alt={p.title} style={{ width: '120px', height: '90px', borderRadius: '6px', objectFit: 'cover' }} />
+                                  <div style={{ fontSize: '0.68rem', color: colorTextSecondary, marginTop: '6px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Reviews */}
+                        {matchedTailor.reviewsList && (
+                          <div>
+                            <h5 style={{ fontSize: '0.82rem', color: colorTextSecondary, fontWeight: 'bold', marginBottom: '8px' }}>Customer Reviews</h5>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                              {matchedTailor.reviewsList.map((r, idx) => (
+                                <div key={idx} style={{ background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)', border: `1px solid ${borderColor}`, padding: '12px', borderRadius: '8px', fontSize: '0.78rem' }}>
+                                  <div className="flex-row-between" style={{ marginBottom: '4px' }}>
+                                    <span style={{ fontWeight: 'bold', color: colorTextPrimary }}>{r.name}</span>
+                                    <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>★ {r.rating}</span>
+                                  </div>
+                                  <p style={{ color: colorTextSecondary, margin: 0, lineHeight: '1.4' }}>"{r.comment}"</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
+                  {/* Footer Buttons */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', marginTop: '16px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
+                    <button type="button" className="btn" onClick={prevStep} style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9', border: `1.5px solid ${borderColor}`, padding: '10px 24px', color: colorTextPrimary, fontWeight: 'bold' }}>← Back</button>
+                    <button type="button" className="btn btn-primary" onClick={nextStep} style={{ padding: '10px 24px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>Next: Review & Pricing <ChevronRight size={16} /></button>
+                  </div>
                 </div>
-              </div>
+              );
+            })()}
             )}
 
             {/* STEP 4: Request Tailor & Negotiation Simulation */}
@@ -3232,13 +4248,13 @@ export default function CustomerView({
               ))}
 
               <div style={{ zIndex: 10 }}>
-                <h1 style={{ fontSize: '2.5rem', fontWeight: '800', margin: '0 0 10px 0', color: '#1a2238' }}>
+                <h1 style={{ fontSize: '2.5rem', fontWeight: '800', margin: '0 0 10px 0', color: colorTextPrimary }}>
                   Welcome back, <span style={{ color: 'var(--primary)' }}>Kiran</span> 👋
                 </h1>
-                <p style={{ fontSize: '1.2rem', margin: '0 0 10px 0', fontWeight: '600', color: '#374151' }}>
+                <p style={{ fontSize: '1.2rem', margin: '0 0 10px 0', fontWeight: '600', color: colorTextSecondary }}>
                   Ready for your next perfect outfit?
                 </p>
-                <p style={{ fontSize: '0.9rem', color: '#4b5563', margin: '0 0 24px 0' }}>
+                <p style={{ fontSize: '0.9rem', color: colorTextMuted, margin: '0 0 24px 0' }}>
                   Your style. Your fit. Your way.
                 </p>
                 
@@ -3251,7 +4267,7 @@ export default function CustomerView({
                   }}>
                     Continue Order →
                   </button>
-                  <button className="btn btn-secondary" style={{ background: '#fff', color: '#1a2238', border: '1px solid #d1d5db', padding: '12px 24px', fontWeight: 'bold' }} onClick={() => {
+                  <button className="btn btn-secondary" style={{ background: bgCard, color: colorTextPrimary, border: `1px solid ${borderColor}`, padding: '12px 24px', fontWeight: 'bold' }} onClick={() => {
                     setActiveHub('tailors');
                     setSelectedCategory('mens');
                     setWizardOpen(true);
@@ -3264,43 +4280,43 @@ export default function CustomerView({
 
               {/* Statistics Row at the bottom of the card */}
               <div className="hero-stats-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginTop: '36px', width: '100%', zIndex: 10 }}>
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', flexShrink: 0 }}>
                     <Clock size={16} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1a2238', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{activeOrders?.length || 1}</h5>
-                    <span style={{ fontSize: '0.65rem', color: '#6b7280', fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Active Orders</span>
+                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{activeOrders?.length || 1}</h5>
+                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Active Orders</span>
                   </div>
                 </div>
 
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', flexShrink: 0 }}>
                     <Heart size={16} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1a2238', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{wishlist?.length || 2}</h5>
-                    <span style={{ fontSize: '0.65rem', color: '#6b7280', fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Saved Designs</span>
+                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{wishlist?.length || 2}</h5>
+                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Saved Designs</span>
                   </div>
                 </div>
 
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', flexShrink: 0 }}>
                     <Layers size={16} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1a2238', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>3</h5>
-                    <span style={{ fontSize: '0.65rem', color: '#6b7280', fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Saved Fabrics</span>
+                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>3</h5>
+                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Saved Fabrics</span>
                   </div>
                 </div>
 
-                <div style={{ background: '#fff', borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
+                <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', flexShrink: 0 }}>
                     <Star size={16} />
                   </div>
                   <div style={{ minWidth: 0 }}>
-                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: '#1a2238', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{rewardPoints || 120}</h5>
-                    <span style={{ fontSize: '0.65rem', color: '#6b7280', fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Reward Points</span>
+                    <h5 style={{ fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary, margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{rewardPoints || 120}</h5>
+                    <span style={{ fontSize: '0.65rem', color: colorTextMuted, fontWeight: '600', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Reward Points</span>
                   </div>
                 </div>
               </div>
@@ -3371,8 +4387,8 @@ export default function CustomerView({
                 { name: 'Start New Stitching', icon: <Scissors size={20} />, bg: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', action: () => { setActiveHub('tailors'); setSelectedCategory('mens'); setWizardOpen(true); setWizardStep(1); } },
                 { name: 'Book Alteration', icon: <Scissors size={20} style={{ transform: 'rotate(90deg)' }} />, bg: 'rgba(163, 114, 255, 0.1)', color: '#a372ff', action: () => { setActiveHub('tailors'); setSelectedCategory('alterations'); setWizardOpen(true); setWizardStep(1); } },
                 { name: 'Upload Measurements', icon: <Sliders size={20} />, bg: 'rgba(76, 201, 240, 0.1)', color: '#4cc9f0', action: () => setIsAddingProfile(true) },
-                { name: 'Find Nearby Tailors', icon: <MapPin size={20} />, bg: 'rgba(78, 205, 196, 0.1)', color: '#4ecdc4', action: () => setActiveHub('tailors') },
-                { name: 'Browse Fabrics', icon: <Layers size={20} />, bg: 'rgba(255, 145, 77, 0.1)', color: '#ff914d', action: () => setActiveHub('fabrics') },
+                { name: 'Find Nearby Tailors', icon: <MapPin size={20} />, bg: 'rgba(78, 205, 196, 0.1)', color: '#4ecdc4', action: () => { setActiveHub('tailors'); setWizardOpen(false); if (setCustomerHub) setCustomerHub('tailors'); } },
+                { name: 'Browse Fabrics', icon: <Layers size={20} />, bg: 'rgba(255, 145, 77, 0.1)', color: '#ff914d', action: () => { setActiveHub('fabrics'); if (setCustomerHub) setCustomerHub('fabrics'); } },
                 { name: 'Upload Design', icon: <Upload size={20} />, bg: 'rgba(247, 37, 133, 0.1)', color: 'var(--primary)', action: () => { setActiveHub('tailors'); setWizardOpen(true); setWizardStep(1); } }
               ].map((item, idx) => (
                 <div key={idx} className="quick-action-item-circle-wrapper" onClick={item.action}>
@@ -3421,10 +4437,10 @@ export default function CustomerView({
                   </div>
                   <div className="category-card-split-right">
                     <div>
-                      <h4 style={{ fontSize: '0.85rem', fontWeight: 'bold', margin: '0 0 4px 0', color: '#1a2238' }}>{category.name}</h4>
-                      <p style={{ fontSize: '0.72rem', color: '#4b5563', margin: 0 }}>{category.sub}</p>
+                      <h4 style={{ fontSize: '0.85rem', fontWeight: 'bold', margin: '0 0 4px 0', color: colorTextPrimary }}>{category.name}</h4>
+                      <p style={{ fontSize: '0.72rem', color: colorTextSecondary, margin: 0 }}>{category.sub}</p>
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: '#4b5563' }}>
+                    <div style={{ fontSize: '0.75rem', color: colorTextMuted }}>
                       Starting <strong style={{ color: 'var(--primary)' }}>₹{category.price}</strong>
                     </div>
                   </div>
@@ -3439,33 +4455,34 @@ export default function CustomerView({
           <div className="equal-two-column-grid">
             
             {/* Column 1: Recommended For You */}
-            <div className="discovery-hub-column" style={{ background: '#fff' }}>
+            <div className="discovery-hub-column" style={{ background: bgCard, border: '1px solid ' + borderColor }}>
               <div className="flex-row-between" style={{ marginBottom: '16px' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>Recommended For You</h3>
                 <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => setActiveHub('designers')}>View All</span>
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
                 {[
-                  { title: 'Linen Blend Kurta', price: 1299, img: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=150&q=80', cat: 'mens' },
-                  { title: 'Pastel Blue Suit', price: 6499, img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=150&q=80', cat: 'mens' },
-                  { title: 'Silk Designer Saree', price: 3299, img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=150&q=80', cat: 'womens' }
+                  { title: 'Linen Blend Kurta', price: 1299, img: '/Linen Blend Kurta.png', cat: 'mens' },
+                  { title: 'Pastel Blue Suit', price: 6499, img: '/Pastel Blue Suit.png', cat: 'mens' },
+                  { title: 'Silk Designer Saree', price: 3299, img: '/Silk Designer Saree.png', cat: 'womens' },
+                  { title: 'Velvet Bandhgala', price: 5999, img: '/Velvet Bandhgala.png', cat: 'mens' }
                 ].map((item, idx) => (
-                  <div key={idx} className="recommended-design-card" style={{ height: '220px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} onClick={() => {
+                  <div key={idx} className="recommended-design-card" style={{ height: '270px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} onClick={() => {
                     setSelectedCategory(item.cat);
                     setActiveHub('tailors');
                     setWizardOpen(true);
                     setWizardStep(1);
                   }}>
-                    <div style={{ height: '140px', overflow: 'hidden', position: 'relative' }}>
-                      <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ height: '210px', overflow: 'hidden', position: 'relative' }}>
+                      <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }} />
                       <button className="btn btn-ghost" style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(255,255,255,0.8)', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }} onClick={(e) => { e.stopPropagation(); alert("Saved to Wishlist Inspirations!"); }}>
                         <Heart size={14} style={{ color: 'var(--primary)' }} />
                       </button>
                     </div>
-                    <div style={{ padding: '10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <h4 style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 0 4px 0' }}>{item.title}</h4>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 'bold' }}>₹{item.price.toLocaleString()}</span>
+                    <div style={{ padding: '8px 10px 10px 10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '60px' }}>
+                      <h4 style={{ fontSize: '0.82rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 0 2px 0' }}>{item.title}</h4>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 'bold' }}>₹{item.price.toLocaleString()}</span>
                     </div>
                   </div>
                 ))}
@@ -3473,13 +4490,13 @@ export default function CustomerView({
             </div>
 
             {/* Column 2: Nearby Tailors */}
-            <div className="discovery-hub-column" style={{ background: '#fff' }}>
+            <div className="discovery-hub-column" style={{ background: bgCard, border: '1px solid ' + borderColor }}>
               <div className="flex-row-between" style={{ marginBottom: '16px' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>Nearby Tailors</h3>
-                <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => setActiveHub('tailors')}>View All</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => { setActiveHub('tailors'); setWizardOpen(false); if (setCustomerHub) setCustomerHub('tailors'); }}>View All</span>
               </div>
               
-              <div style={{ display: 'flex', gap: '16px', height: '220px' }}>
+              <div style={{ display: 'flex', gap: '16px', height: '270px' }}>
                 {/* Map container */}
                 <div 
                   ref={mapContainerRef} 
@@ -3548,7 +4565,7 @@ export default function CustomerView({
           <div className="equal-two-column-grid">
             
             {/* Column 1: Trending Designs Slider */}
-            <div className="discovery-hub-column" style={{ position: 'relative', background: '#fff' }}>
+            <div className="discovery-hub-column" style={{ position: 'relative', background: bgCard, border: '1px solid ' + borderColor }}>
               <div className="flex-row-between" style={{ marginBottom: '16px' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>Trending Designs</h3>
                 <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => setActiveHub('designers')}>View All</span>
@@ -3594,24 +4611,24 @@ export default function CustomerView({
                   }}
                 >
                   {[
-                    { title: 'Indo Western', price: 4999, img: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=150&q=80', cat: 'mens' },
-                    { title: 'Anarkali Suit', price: 2999, img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=150&q=80', cat: 'womens' },
-                    { title: 'Designer Lehenga', price: 8999, img: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=150&q=80', cat: 'bridal' },
-                    { title: 'Bandhgala Suit', price: 5499, img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=150&q=80', cat: 'mens' },
-                    { title: 'Party Gown', price: 3999, img: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=150&q=80', cat: 'womens' }
+                    { title: 'Indo Western', price: 4999, img: '/bridal2.jpg', cat: 'mens' },
+                    { title: 'Anarkali Suit', price: 2999, img: '/bridal3.jpg', cat: 'womens' },
+                    { title: 'Designer Lehenga', price: 8999, img: '/bridal4.jpg', cat: 'bridal' },
+                    { title: 'Bandhgala Suit', price: 5499, img: '/bridal 5.jpg', cat: 'mens' },
+                    { title: 'Party Gown', price: 3999, img: '/bridal6.jpg', cat: 'womens' }
                   ].map((item, idx) => (
-                    <div key={idx} className="recommended-design-card" style={{ minWidth: 'calc((100% - 24px) / 3)', width: 'calc((100% - 24px) / 3)', height: '220px', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} onClick={() => {
+                    <div key={idx} className="recommended-design-card" style={{ minWidth: 'calc((100% - 36px) / 4)', width: 'calc((100% - 36px) / 4)', height: '270px', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} onClick={() => {
                       setSelectedCategory(item.cat);
                       setActiveHub('tailors');
                       setWizardOpen(true);
                       setWizardStep(1);
                     }}>
-                      <div style={{ height: '140px', overflow: 'hidden' }}>
-                        <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div style={{ height: '210px', overflow: 'hidden' }}>
+                        <img src={item.img} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }} />
                       </div>
-                      <div style={{ padding: '10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <h4 style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 0 4px 0' }}>{item.title}</h4>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 'bold' }}>₹{item.price.toLocaleString()}</span>
+                      <div style={{ padding: '8px 10px 10px 10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '60px' }}>
+                        <h4 style={{ fontSize: '0.82rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 0 2px 0' }}>{item.title}</h4>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 'bold' }}>₹{item.price.toLocaleString()}</span>
                       </div>
                     </div>
                   ))}
@@ -3644,7 +4661,7 @@ export default function CustomerView({
             </div>
 
             {/* Column 2: Premium Fabrics */}
-            <div className="discovery-hub-column" style={{ position: 'relative', background: '#fff' }}>
+            <div className="discovery-hub-column" style={{ position: 'relative', background: bgCard, border: '1px solid ' + borderColor }}>
               <div className="flex-row-between" style={{ marginBottom: '16px' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>Premium Fabrics</h3>
                 <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => setActiveHub('fabrics')}>View Store</span>
@@ -3690,18 +4707,18 @@ export default function CustomerView({
                   }}
                 >
                   {[
-                    { name: 'Italian Wool', price: 1299, img: 'https://images.unsplash.com/photo-1588854337236-6889d631faa8?auto=format&fit=crop&w=150&q=80' },
-                    { name: 'Pure Linen', price: 899, img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80' },
-                    { name: 'Banarasi Silk', price: 1999, img: 'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=150&q=80' },
-                    { name: 'Egyptian Cotton', price: 599, img: 'https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=150&q=80' }
+                    { name: 'Italian Wool', price: 1299, img: '/fab1.jpg' },
+                    { name: 'Pure Linen', price: 899, img: '/fab3.jpg' },
+                    { name: 'Banarasi Silk', price: 1999, img: '/banarasi.jpg' },
+                    { name: 'Egyptian Cotton', price: 599, img: '/fab2.jpg' }
                   ].map((fab, idx) => (
-                    <div key={idx} className="recommended-design-card" style={{ minWidth: 'calc((100% - 24px) / 3)', width: 'calc((100% - 24px) / 3)', height: '220px', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} onClick={() => setActiveHub('fabrics')}>
-                      <div style={{ height: '140px', overflow: 'hidden' }}>
+                    <div key={idx} className="recommended-design-card" style={{ minWidth: 'calc((100% - 36px) / 4)', width: 'calc((100% - 36px) / 4)', height: '270px', flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} onClick={() => setActiveHub('fabrics')}>
+                      <div style={{ height: '210px', overflow: 'hidden' }}>
                         <img src={fab.img} alt={fab.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
-                      <div style={{ padding: '10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <h4 style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 0 4px 0' }}>{fab.name}</h4>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 'bold' }}>₹{fab.price}/m</span>
+                      <div style={{ padding: '8px 10px 10px 10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '60px' }}>
+                        <h4 style={{ fontSize: '0.82rem', fontWeight: 'bold', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 0 2px 0' }}>{fab.name}</h4>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 'bold' }}>₹{fab.price}/m</span>
                       </div>
                     </div>
                   ))}
@@ -3739,27 +4756,44 @@ export default function CustomerView({
           <div className="equal-two-column-grid">
             
             {/* Column 1: Order Again */}
-            <div className="discovery-hub-column" style={{ background: '#fff' }}>
+            <div className="discovery-hub-column" style={{ background: bgCard, border: '1px solid ' + borderColor }}>
               <div className="flex-row-between" style={{ marginBottom: '16px' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>Order Again</h3>
                 <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => setActiveHub('history')}>View All</span>
               </div>
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
                 {[
-                  { name: 'Black Blazer', date: 'Delivered on 12 Apr', price: 4999, img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=120&q=80', cat: 'mens' },
-                  { name: 'White Cotton Shirt', date: 'Delivered on 02 Apr', price: 1299, img: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=120&q=80', cat: 'mens' },
-                  { name: 'Navy Blue Suit', date: 'Delivered on 15 Mar', price: 6499, img: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=120&q=80', cat: 'mens' }
+                  { name: 'Black Blazer', date: 'Delivered on 12 Apr', price: 4999, img: '/men1.jpg', cat: 'mens' },
+                  { name: 'White Cotton Shirt', date: 'Delivered on 02 Apr', price: 1299, img: '/men3.jpg', cat: 'mens' },
+                  { name: 'Navy Blue Suit', date: 'Delivered on 15 Mar', price: 6499, img: '/men2.jpg', cat: 'mens' }
                 ].map((item, idx) => (
-                  <div key={idx} className="past-order-card" style={{ padding: '8px 12px' }}>
-                    <img src={item.img} alt={item.name} style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <h4 style={{ fontSize: '0.82rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0 0 2px 0' }}>{item.name}</h4>
-                      <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', margin: 0 }}>{item.date}</p>
+                  <div key={idx} style={{ border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: bgInput }}>
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                      <img src={item.img} alt={item.name} style={{ width: '64px', height: '80px', borderRadius: '8px', objectFit: 'cover', background: bgInput }} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <h4 style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</h4>
+                        <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', margin: '0 0 2px 0' }}>{item.date}</p>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>₹{item.price.toLocaleString()}</span>
+                      </div>
                     </div>
-                    <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>₹{item.price.toLocaleString()}</span>
-                      <button className="btn" style={{ padding: '2px 8px', fontSize: '0.65rem', border: '1px solid var(--primary)', color: 'var(--primary)', background: 'transparent', borderRadius: '4px' }} onClick={() => {
+                    
+                    <button 
+                      className="btn" 
+                      style={{ 
+                        width: '100%', 
+                        marginTop: '12px', 
+                        padding: '6px 12px', 
+                        fontSize: '0.72rem', 
+                        fontWeight: 'bold',
+                        border: '1.5px solid var(--primary)', 
+                        color: 'var(--primary)', 
+                        background: bgCard, 
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }} 
+                      onClick={() => {
                         addOrder({
                           serviceName: `${item.name} (Repeat)`,
                           tailorName: 'Royal Bespoke',
@@ -3769,17 +4803,17 @@ export default function CustomerView({
                           category: item.cat
                         });
                         alert(`${item.name} repeat order placed successfully!`);
-                      }}>
-                        Repeat Order
-                      </button>
-                    </div>
+                      }}
+                    >
+                      Repeat Order
+                    </button>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Column 2: Saved Measurements */}
-            <div className="discovery-hub-column" style={{ background: '#fff' }}>
+            <div className="discovery-hub-column" style={{ background: bgCard, border: '1px solid ' + borderColor }}>
               <div className="flex-row-between" style={{ marginBottom: '16px' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)', margin: 0 }}>Saved Measurements</h3>
                 <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: '600' }} onClick={() => { setSelectedProfile(measurementProfiles[0]); setIsEditingProfile(true); }}>View All</span>
@@ -3795,7 +4829,7 @@ export default function CustomerView({
                     setSelectedProfile(measurementProfiles[item.profileIdx] || measurementProfiles[0]);
                     setIsEditingProfile(true);
                   }}>
-                    <div className="measurement-circle-avatar" style={{ border: '2px solid var(--border-color)' }}>
+                    <div className="measurement-circle-avatar" style={{ width: '76px', height: '76px', border: '2px solid var(--border-color)' }}>
                       <img src={item.img} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                     <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-primary)', marginTop: '8px', display: 'block' }}>{item.name}</span>
@@ -3805,8 +4839,8 @@ export default function CustomerView({
                 
                 {/* Add New profile bubble */}
                 <div className="measurement-circle-wrapper" onClick={() => setIsAddingProfile(true)}>
-                  <div className="measurement-circle-avatar" style={{ border: '2px dashed var(--primary)', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
-                    <Plus size={20} />
+                  <div className="measurement-circle-avatar" style={{ width: '76px', height: '76px', border: '2px dashed var(--primary)', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                    <Plus size={28} />
                   </div>
                   <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-primary)', marginTop: '8px', display: 'block' }}>Add New</span>
                   <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>&nbsp;</span>
@@ -4049,6 +5083,534 @@ export default function CustomerView({
         </div>
       )}
 
+      {/* MY PROFILE OPTIONS POPUP MODAL */}
+      {isMyProfileOpen && (
+        <div className="modal-overlay" style={{ zIndex: 1200 }}>
+          <div style={{
+            background: theme === 'dark' ? '#121020' : '#ffffff',
+            color: theme === 'dark' ? '#f3f4f6' : '#0f172a',
+            border: '1px solid var(--border-color)',
+            borderRadius: '16px',
+            maxWidth: '800px',
+            width: '100%',
+            padding: '30px',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
+            position: 'relative',
+            gap: '24px'
+          }}>
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '800', color: theme === 'dark' ? '#ffffff' : '#0f172a' }}>My Profile</h2>
+                <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Manage your account and preferences</p>
+              </div>
+              <button 
+                style={{ 
+                  background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', 
+                  border: 'none', 
+                  color: 'var(--text-secondary)', 
+                  cursor: 'pointer', 
+                  width: '32px', 
+                  height: '32px', 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  fontSize: '1.1rem'
+                }} 
+                onClick={() => setIsMyProfileOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Body: Two columns layout */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
+              {/* Left Column: Sidebar Navigation */}
+              <div style={{ flex: '0 0 260px', borderRight: '1px solid var(--border-color)', paddingRight: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {[
+                  { id: 'edit', label: 'Edit Profile', desc: 'Update your personal information', icon: <User size={16} /> },
+                  { id: 'password', label: 'Change Password', desc: 'Update your account password', icon: <Shield size={16} /> },
+                  { id: 'notifications', label: 'Notification Preferences', desc: 'Manage email and push notifications', icon: <Bell size={16} /> },
+                  { id: 'payments', label: 'Payment Methods', desc: 'Manage your saved payment options', icon: <CreditCard size={16} /> },
+                  { id: 'privacy', label: 'Privacy Settings', desc: 'Control your privacy and data', icon: <Shield size={16} /> }
+                ].map((item) => {
+                  const isActive = activeProfileTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveProfileTab(item.id)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        width: '100%',
+                        padding: '12px',
+                        border: 'none',
+                        borderLeft: isActive ? '3px solid var(--primary)' : '3px solid transparent',
+                        borderRadius: '8px',
+                        background: isActive ? (theme === 'dark' ? 'rgba(247,37,133,0.08)' : 'rgba(247,37,133,0.04)') : 'transparent',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <span style={{ color: isActive ? 'var(--primary)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center' }}>
+                        {item.icon}
+                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontSize: '0.85rem', fontWeight: isActive ? '700' : '600', color: isActive ? 'var(--primary)' : 'var(--text-primary)' }}>
+                          {item.label}
+                        </span>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                          {item.desc}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right Column: Active Content Panel */}
+              <div style={{ flex: '1', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {activeProfileTab === 'edit' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    {/* Header Panel */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '700' }}>Edit Profile</h3>
+                        <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Update your personal information</p>
+                      </div>
+                      <div style={{ position: 'relative' }}>
+                        <button 
+                          onClick={() => setIsPhotoDropdownOpen(!isPhotoDropdownOpen)}
+                          style={{
+                            background: 'none',
+                            border: '1px solid var(--primary)',
+                            color: 'var(--primary)',
+                            padding: '6px 14px',
+                            borderRadius: '8px',
+                            fontSize: '0.8rem',
+                            fontWeight: '600',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <Camera size={14} /> Edit Photo
+                        </button>
+
+                        {isPhotoDropdownOpen && (
+                          <div style={{
+                            position: 'absolute',
+                            top: '36px',
+                            right: '0',
+                            background: theme === 'dark' ? '#1c1830' : '#ffffff',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                            padding: '6px 0',
+                            zIndex: 1300,
+                            width: '180px'
+                          }}>
+                            <button
+                              onClick={() => fileInputRef.current.click()}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                width: '100%',
+                                padding: '8px 12px',
+                                background: 'none',
+                                border: 'none',
+                                color: 'var(--text-primary)',
+                                textAlign: 'left',
+                                cursor: 'pointer',
+                                fontSize: '0.8rem'
+                              }}
+                            >
+                              <Upload size={14} style={{ color: 'var(--primary)' }} /> Upload from Device
+                            </button>
+                            <button
+                              onClick={handleCameraCapture}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                width: '100%',
+                                padding: '8px 12px',
+                                background: 'none',
+                                border: 'none',
+                                color: 'var(--text-primary)',
+                                textAlign: 'left',
+                                cursor: 'pointer',
+                                fontSize: '0.8rem'
+                              }}
+                            >
+                              <Camera size={14} style={{ color: 'var(--primary)' }} /> Take Photo (Camera)
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Hidden input for profile photo uploads */}
+                    <input 
+                      type="file" 
+                      ref={fileInputRef} 
+                      style={{ display: 'none' }} 
+                      accept="image/*" 
+                      onChange={handlePhotoUpload} 
+                    />
+
+                    {/* Avatar Display */}
+                    <div 
+                      onClick={() => setIsPhotoDropdownOpen(!isPhotoDropdownOpen)}
+                      style={{ position: 'relative', width: '100px', height: '100px', margin: '0 auto 10px auto', cursor: 'pointer' }}
+                    >
+                      <div style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--primary)' }}>
+                        <img src={profilePhoto} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '0',
+                        right: '0',
+                        background: 'var(--primary)',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: `2px solid ${theme === 'dark' ? '#121020' : '#ffffff'}`
+                      }}>
+                        <Camera size={12} style={{ color: '#fff' }} />
+                      </div>
+                    </div>
+
+                    {/* Input Grid */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+                      {/* Name */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Full Name</label>
+                        <div style={{ position: 'relative' }}>
+                          <User size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileName}
+                            onChange={(e) => setProfileName(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Email */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Email Address</label>
+                        <div style={{ position: 'relative' }}>
+                          <MessageSquare size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="email" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileEmail}
+                            onChange={(e) => setProfileEmail(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Phone */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Phone Number</label>
+                        <div style={{ position: 'relative' }}>
+                          <Phone size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profilePhone}
+                            onChange={(e) => setProfilePhone(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* DOB */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Date of Birth</label>
+                        <div style={{ position: 'relative' }}>
+                          <Calendar size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileDob}
+                            onChange={(e) => setProfileDob(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Gender */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Gender</label>
+                        <div style={{ position: 'relative' }}>
+                          <User size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <select 
+                            className="form-select" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileGender}
+                            onChange={(e) => setProfileGender(e.target.value)}
+                          >
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Address */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: '1 / span 2' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Address</label>
+                        <div style={{ position: 'relative' }}>
+                          <MapPin size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileAddress}
+                            onChange={(e) => setProfileAddress(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* City */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>City</label>
+                        <div style={{ position: 'relative' }}>
+                          <Home size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileCity}
+                            onChange={(e) => setProfileCity(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* State */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>State</label>
+                        <div style={{ position: 'relative' }}>
+                          <Map size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <select 
+                            className="form-select" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profileState}
+                            onChange={(e) => setProfileState(e.target.value)}
+                          >
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* PIN Code */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>PIN Code</label>
+                        <div style={{ position: 'relative' }}>
+                          <MapPin size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                          <input 
+                            type="text" 
+                            className="form-input" 
+                            style={{ paddingLeft: '36px', width: '100%' }}
+                            value={profilePin}
+                            onChange={(e) => setProfilePin(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeProfileTab === 'password' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <div>
+                      <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '700' }}>Change Password</h3>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Update your account password</p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Current Password</label>
+                        <input type="password" className="form-input" placeholder="••••••••" style={{ width: '100%' }} />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>New Password</label>
+                        <input type="password" className="form-input" placeholder="••••••••" style={{ width: '100%' }} />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Confirm New Password</label>
+                        <input type="password" className="form-input" placeholder="••••••••" style={{ width: '100%' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeProfileTab === 'notifications' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <div>
+                      <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '700' }}>Notification Preferences</h3>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Manage email and push notifications</p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {[
+                        { title: 'Email Notifications', desc: 'Receive order confirmation, tracking updates and styling ideas.', value: emailNotif, setter: setEmailNotif },
+                        { title: 'SMS Notifications', desc: 'Get instant alerts about delivery scheduling and tailor assignments.', value: smsNotif, setter: setSnsNotif },
+                        { title: 'Push Notifications', desc: 'Receive real-time chat updates and promotion campaign alerts.', value: pushNotif, setter: setPushNotif }
+                      ].map((item, index) => (
+                        <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid var(--border-color)' }}>
+                          <div>
+                            <span style={{ fontSize: '0.85rem', fontWeight: '700', display: 'block', color: 'var(--text-primary)' }}>{item.title}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{item.desc}</span>
+                          </div>
+                          <div 
+                            onClick={() => item.setter(!item.value)}
+                            style={{
+                              width: '44px',
+                              height: '24px',
+                              borderRadius: '12px',
+                              background: item.value ? 'var(--primary)' : 'var(--text-muted)',
+                              position: 'relative',
+                              cursor: 'pointer',
+                              transition: 'background 0.2s ease'
+                            }}
+                          >
+                            <div style={{
+                              width: '18px',
+                              height: '18px',
+                              borderRadius: '50%',
+                              background: '#fff',
+                              position: 'absolute',
+                              top: '3px',
+                              left: item.value ? '23px' : '3px',
+                              transition: 'left 0.2s ease',
+                              boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
+                            }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeProfileTab === 'payments' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <div>
+                      <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '700' }}>Payment Methods</h3>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Manage your saved payment options</p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {[
+                        { type: 'Visa', number: '•••• •••• •••• 4242', exp: '12/28', primary: true },
+                        { type: 'MasterCard', number: '•••• •••• •••• 5555', exp: '06/29', primary: false }
+                      ].map((card, index) => (
+                        <div key={index} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '16px',
+                          border: '1px solid var(--border-color)',
+                          borderRadius: '12px',
+                          background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <CreditCard size={24} style={{ color: 'var(--primary)' }} />
+                            <div>
+                              <span style={{ fontSize: '0.85rem', fontWeight: '700', display: 'block', color: 'var(--text-primary)' }}>{card.type} {card.number}</span>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Expires {card.exp} {card.primary && <span style={{ color: 'var(--primary)', fontWeight: 'bold', marginLeft: '6px' }}>(Primary)</span>}</span>
+                            </div>
+                          </div>
+                          <button style={{ background: 'none', border: 'none', color: '#ff4444', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}>Delete</button>
+                        </div>
+                      ))}
+                      
+                      <button className="btn btn-secondary" style={{ width: '100%', marginTop: '10px' }}>+ Add New Card</button>
+                    </div>
+                  </div>
+                )}
+
+                {activeProfileTab === 'privacy' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <div>
+                      <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '700' }}>Privacy Settings</h3>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Control your privacy and data</p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {[
+                        { title: 'Profile Visibility', desc: 'Allow other StitchBee community members to view your design portfolio.', value: profileVisible, setter: setProfileVisible },
+                        { title: 'Search Engine Indexing', desc: 'Include your profile and styling boards in search engine results.', value: searchIndex, setter: setSearchIndex },
+                        { title: 'Anonymous Usage Sharing', desc: 'Share anonymous performance and feature usage data to help us build a better app.', value: anonymousSharing, setter: setAnonymousSharing }
+                      ].map((item, index) => (
+                        <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid var(--border-color)' }}>
+                          <div>
+                            <span style={{ fontSize: '0.85rem', fontWeight: '700', display: 'block', color: 'var(--text-primary)' }}>{item.title}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{item.desc}</span>
+                          </div>
+                          <div 
+                            onClick={() => item.setter(!item.value)}
+                            style={{
+                              width: '44px',
+                              height: '24px',
+                              borderRadius: '12px',
+                              background: item.value ? 'var(--primary)' : 'var(--text-muted)',
+                              position: 'relative',
+                              cursor: 'pointer',
+                              transition: 'background 0.2s ease'
+                            }}
+                          >
+                            <div style={{
+                              width: '18px',
+                              height: '18px',
+                              borderRadius: '50%',
+                              background: '#fff',
+                              position: 'absolute',
+                              top: '3px',
+                              left: item.value ? '23px' : '3px',
+                              transition: 'left 0.2s ease',
+                              boxShadow: '0 1px 3px rgba(0,0,0,0.3)'
+                            }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer Buttons */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: 'auto', paddingTop: '20px', borderTop: '1px solid var(--border-color)' }}>
+                  <button className="btn btn-secondary" onClick={() => setIsMyProfileOpen(false)} style={{ padding: '10px 24px' }}>Cancel</button>
+                  <button className="btn btn-primary" onClick={() => {
+                    alert("Profile Settings Saved Successfully!");
+                    setIsMyProfileOpen(false);
+                  }} style={{ padding: '10px 24px' }}>
+                    Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* --- HUB 0: SERVICE CATEGORY LANDING HUB --- */}
       {activeHub === 'category-landing' && (
         <ServiceCategoryView 
@@ -4084,52 +5646,409 @@ export default function CustomerView({
 
       {/* --- HUB 1: TAILORS MARKETPLACE (DASHBOARD) --- */}
       {activeHub === 'tailors' && !wizardOpen && (
-        <div>
-          {/* Main Title & Categories Section */}
-          <div style={{ marginBottom: '24px' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '6px' }}>Select Stitching Category</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Choose a category below to start custom sizing and book nearby expert tailors.</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          
+          {/* Top Header section */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+            <div>
+              <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                Tailors <span style={{ color: 'var(--primary)' }}>Near You</span>
+                <MapPin size={24} style={{ color: 'var(--primary)' }} />
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: '4px' }}>Find trusted tailors in your area for perfect stitching.</p>
+            </div>
+            
+            <div style={{ background: bgActiveOption, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: '16px', boxShadow: '0 4px 12px rgba(247,37,133,0.02)' }}>
+              <div>
+                <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>Showing results near</span>
+                <strong style={{ fontSize: '0.88rem', color: 'var(--primary)' }}>{searchLocationName}</strong>
+              </div>
+              <button 
+                className="btn btn-ghost" 
+                onClick={handleGetLiveLocation}
+                disabled={isLocating}
+                style={{ 
+                  background: 'rgba(247,37,133,0.06)', 
+                  border: '1.5px solid var(--primary)', 
+                  color: 'var(--primary)', 
+                  borderRadius: '8px', 
+                  fontSize: '0.78rem', 
+                  padding: '6px 12px',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                {isLocating ? 'Locating...' : 'Change Location ⚙'}
+              </button>
+            </div>
           </div>
 
-          {/* Categories Cards Grid */}
-          <div className="category-card-grid">
-            {categoryCards.map(cat => (
-              <div 
-                key={cat.id} 
-                className="category-card"
-                style={{ backgroundImage: `url(${cat.img})` }}
-                onClick={() => startWizard(cat.id)}
+          {/* Search bar & Tabs */}
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center', background: bgCard, border: `1.5px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', background: bgInput, borderRadius: '12px', padding: '6px', border: `1px solid ${borderColor}`, gap: '4px' }}>
+              <button 
+                onClick={() => { setSearchMode('area'); setSearchQueryText(''); }}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  background: searchMode === 'area' ? bgActiveOption : 'transparent',
+                  color: searchMode === 'area' ? 'var(--primary)' : 'var(--text-secondary)',
+                  boxShadow: searchMode === 'area' ? '0 2px 8px rgba(247,37,133,0.1)' : 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}
               >
-                <div className="category-card-info">
-                  <span className="category-card-title">{cat.label}</span>
-                  <span className="category-card-desc">{cat.desc}</span>
+                <MapPin size={14} style={{ color: searchMode === 'area' ? 'var(--primary)' : 'var(--text-secondary)' }} /> Search by Area
+              </button>
+              <button 
+                onClick={() => { setSearchMode('city'); setSearchQueryText(''); }}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  background: searchMode === 'city' ? bgActiveOption : 'transparent',
+                  color: searchMode === 'city' ? 'var(--primary)' : 'var(--text-secondary)',
+                  boxShadow: searchMode === 'city' ? '0 2px 8px rgba(247,37,133,0.1)' : 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <Home size={14} style={{ color: searchMode === 'city' ? 'var(--primary)' : 'var(--text-secondary)' }} /> Search by City
+              </button>
+            </div>
+
+            {/* Input field with magnifying glass */}
+            <div style={{ position: 'relative', flexGrow: 1 }}>
+              <Search size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <input 
+                type="text" 
+                placeholder={searchMode === 'area' ? "Search area, locality or landmark..." : "Search by city (e.g. Bangalore, Chennai, Mumbai, Delhi)..."}
+                value={searchQueryText}
+                onChange={(e) => setSearchQueryText(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '12px 16px 12px 44px',
+                  borderRadius: '12px',
+                  border: `1.5px solid ${borderColor}`,
+                  fontSize: '0.9rem',
+                  outline: 'none',
+                  background: bgInput,
+                  color: colorTextPrimary,
+                  boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.02)'
+                }}
+              />
+            </div>
+
+            {/* Search Button */}
+            <button 
+              className="btn btn-primary"
+              onClick={() => {
+                if (searchQueryText.trim() !== '') {
+                  setSearchLocationName(`${searchQueryText}, ${searchMode === 'area' ? 'Bangalore' : 'India'}`);
+                }
+              }}
+              style={{ background: 'var(--primary)', border: 'none', borderRadius: '12px', padding: '12px 32px', fontWeight: '800', fontSize: '0.9rem', boxShadow: 'var(--shadow-glow)', cursor: 'pointer' }}
+            >
+              Search
+            </button>
+          </div>
+
+          {/* Two Column Layout (Map + List | Filters) */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'start' }}>
+            
+            {/* Left Column: Map + List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              
+              {/* Map container */}
+              <div style={{ height: '360px', borderRadius: '16px', border: '1px solid var(--border-color)', overflow: 'hidden', position: 'relative', boxShadow: '0 4px 16px rgba(0,0,0,0.02)' }}>
+                {/* Real Leaflet Map */}
+                <div ref={tailorsMapRef} style={{ width: '100%', height: '100%', position: 'relative', zIndex: 1 }}></div>
+                
+                {/* Map Locate overlay */}
+                <div style={{ position: 'absolute', right: '12px', bottom: '12px', zIndex: 10 }}>
+                  <button 
+                    onClick={handleGetLiveLocation} 
+                    disabled={isLocating}
+                    style={{ 
+                      background: bgCard, 
+                      border: `1px solid ${borderColor}`, 
+                      borderRadius: '8px', 
+                      width: '36px', 
+                      height: '36px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)', 
+                      cursor: 'pointer',
+                      fontSize: '1rem',
+                      fontWeight: 'bold',
+                      transition: 'all 0.2s'
+                    }} 
+                    title="Locate Me"
+                  >
+                    {isLocating ? '⏳' : '🎯'}
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Designer Recommendations Carousel Slider */}
-          <div className="designer-carousel-wrapper">
-            <h3 className="section-title"><Sparkles size={18} style={{ color: 'var(--primary)' }} /> New Arrivals & Fashion Designs</h3>
-            <div ref={designerCarouselRef} className="designer-carousel">
-              {newArrivalDesigns.map(design => (
-                <div key={design.id} className="designer-carousel-card">
-                  <img src={design.image} alt={design.title} className="designer-carousel-img" />
-                  <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <span className="badge badge-primary" style={{ width: 'fit-content', fontSize: '0.6rem' }}>{design.category.toUpperCase()}</span>
-                    <h4 style={{ fontSize: '0.95rem', color: '#fff', fontWeight: '700', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{design.title}</h4>
-                    <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Designer: <strong>{design.designer}</strong></p>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: '1.3' }}>{design.info}</p>
-                    <div className="flex-row-between" style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '8px', marginTop: '4px' }}>
-                      <span style={{ color: 'var(--accent)', fontWeight: '800', fontSize: '1.05rem' }}>₹{design.price}</span>
-                      <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: '0.75rem' }} onClick={() => startWizard(design.category, design)}>
-                        Stitch Style
-                      </button>
-                    </div>
+              {/* Tailors Results list */}
+              <div>
+                <div className="flex-row-between" style={{ marginBottom: '16px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: 0 }}>
+                      Showing <span style={{ color: 'var(--primary)' }}>{sortedNearByTailors.length} tailors</span> near you
+                    </h3>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                      Within {filterRadius} km from {searchLocationName}
+                    </span>
+                  </div>
+                  
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Sort by:</span>
+                    <select 
+                      value={filterSortBy}
+                      onChange={(e) => setFilterSortBy(e.target.value)}
+                      style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.8rem', background: '#fff', outline: 'none' }}
+                    >
+                      <option value="Distance">Distance: Nearest First</option>
+                      <option value="Rating">Rating: Highest First</option>
+                      <option value="Reviews">Popularity: Most Reviewed</option>
+                    </select>
                   </div>
                 </div>
-              ))}
+
+                {/* Cards List */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {sortedNearByTailors.length > 0 ? (
+                    sortedNearByTailors.map((tailor) => (
+                      <div 
+                        key={tailor.id} 
+                        className="glass-card-no-hover"
+                        style={{ padding: '16px', display: 'flex', gap: '16px', borderRadius: '16px', background: '#fff', border: '1px solid var(--border-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}
+                      >
+                        <img 
+                          src={tailor.img} 
+                          alt={tailor.name} 
+                          style={{ width: '120px', height: '120px', borderRadius: '12px', objectFit: 'cover', background: '#f8fafc', flexShrink: 0 }} 
+                        />
+                        
+                        <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minWidth: 0 }}>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                              <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                {tailor.name}
+                                <span style={{ color: 'var(--primary)', fontSize: '0.9rem' }}>✓</span>
+                              </h4>
+                              <span style={{ background: '#eafaf1', color: '#2e7d32', padding: '2px 8px', borderRadius: '20px', fontSize: '0.65rem', fontWeight: 'bold' }}>
+                                {tailor.status}
+                              </span>
+                            </div>
+                            
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '6px', flexWrap: 'wrap' }}>
+                              <span style={{ fontSize: '0.78rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '3px', fontWeight: 'bold' }}>
+                                ★ {tailor.rating} <span style={{ color: 'var(--text-muted)', fontWeight: 'normal' }}>({tailor.reviews} reviews)</span>
+                              </span>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>|</span>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+                                📍 {tailor.area}, {tailor.city}
+                              </span>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>|</span>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--accent)', fontWeight: 'bold' }}>
+                                🚗 {tailor.computedDistance.toFixed(1)} km away
+                              </span>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                            {tailor.tags.map((tag, tIdx) => (
+                              <span key={tIdx} style={{ background: bgInput, color: colorTextSecondary, fontSize: '0.68rem', padding: '3px 8px', borderRadius: '4px', fontWeight: '500' }}>
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'flex-end', flexShrink: 0 }}>
+                          <button 
+                            className="btn"
+                            onClick={() => startWizardWithTailor(tailor)}
+                            style={{ 
+                              border: '1.5px solid var(--primary)', 
+                              color: 'var(--primary)', 
+                              background: bgCard, 
+                              borderRadius: '8px', 
+                              padding: '8px 16px', 
+                              fontSize: '0.8rem', 
+                              fontWeight: 'bold',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ padding: '40px', textAlign: 'center', background: bgInput, borderRadius: '16px', border: '1.5px dashed var(--border-color)', color: 'var(--text-muted)' }}>
+                      <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 'bold' }}>No tailors match your search filters.</p>
+                      <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem' }}>Try expanding your search radius or clearing query filters.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
+
+            {/* Right Column: Filters Sidebar */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              
+              {/* Refine Search filter card */}
+              <div className="discovery-hub-column" style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="flex-row-between" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: 0 }}>Refine Search</h4>
+                  <button 
+                    onClick={() => {
+                      setFilterRadius(5);
+                      setFilterServiceType('All Services');
+                      setFilterMinRating(0);
+                      setFilterSortBy('Distance');
+                      setSearchQueryText('');
+                    }}
+                    style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}
+                  >
+                    Reset
+                  </button>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 'bold', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                    Search Radius ({filterRadius} km)
+                  </label>
+                  <input 
+                    type="range" 
+                    min="1" 
+                    max="20" 
+                    value={filterRadius} 
+                    onChange={(e) => setFilterRadius(Number(e.target.value))}
+                    style={{ width: '100%', accentColor: 'var(--primary)' }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                    <span>1 km</span>
+                    <span>10 km</span>
+                    <span>20 km</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 'bold', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                    Service Type
+                  </label>
+                  <select 
+                    value={filterServiceType}
+                    onChange={(e) => setFilterServiceType(e.target.value)}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.82rem', outline: 'none', background: bgCard, color: colorTextPrimary }}
+                  >
+                    <option value="All Services">All Services</option>
+                    <option value="Men's Wear">Men's Wear</option>
+                    <option value="Women's Wear">Women's Wear</option>
+                    <option value="Alterations">Alterations</option>
+                    <option value="Bridal Wear">Bridal Wear</option>
+                    <option value="Kids Wear">Kids Wear</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 'bold', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                    Minimum Rating
+                  </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                    {[
+                      { label: '★ 4.5 & ↑', val: 4.5 },
+                      { label: '★ 4.0 & ↑', val: 4.0 },
+                      { label: 'Any', val: 0 }
+                    ].map((rOpt) => (
+                      <button 
+                        key={rOpt.val}
+                        onClick={() => setFilterMinRating(rOpt.val)}
+                        style={{
+                          padding: '6px 4px',
+                          borderRadius: '6px',
+                          border: `1.5px solid ${filterMinRating === rOpt.val ? 'var(--primary)' : 'var(--border-color)'}`,
+                          background: filterMinRating === rOpt.val ? bgActiveOption : bgCard,
+                          color: filterMinRating === rOpt.val ? 'var(--primary)' : 'var(--text-secondary)',
+                          fontSize: '0.75rem',
+                          fontWeight: 'bold',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {rOpt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button 
+                  className="btn btn-primary"
+                  style={{ width: '100%', background: 'var(--primary)', border: 'none', fontWeight: 'bold', padding: '10px' }}
+                  onClick={() => alert("Filters Applied Successfully!")}
+                >
+                  Apply Filters
+                </button>
+              </div>
+
+              {/* Call to action post request card */}
+              <div className="discovery-hub-column" style={{ background: bgActiveOption, border: `1.5px dashed ${isDark ? 'rgba(247,37,133,0.4)' : 'rgba(247,37,133,0.2)'}`, padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'center' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto', color: 'var(--primary)' }}>
+                  ✂
+                </div>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: 0 }}>Can't find the right tailor?</h4>
+                <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+                  Add your tailoring request and get connected with verified tailors.
+                </p>
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => alert("Post a Custom Stitching Request: Tell us your fabric & styling design requirements to receive direct quotes from tailors!")}
+                  style={{ width: '100%', background: 'var(--primary)', border: 'none', fontWeight: 'bold', fontSize: '0.75rem', padding: '8px' }}
+                >
+                  Post a Tailoring Request
+                </button>
+              </div>
+
+              {/* Why choose StitchBee tailors card */}
+              <div className="discovery-hub-column" style={{ background: '#fff', padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <h4 style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0 0 4px 0' }}>Why Choose StitchBee Tailors?</h4>
+                
+                {[
+                  { title: 'Verified & Trusted Tailors', icon: '🛡' },
+                  { title: 'Quality Stitching Guaranteed', icon: '🧵' },
+                  { title: 'On-time Delivery Assurance', icon: '⏰' },
+                  { title: 'Multiple Payment Options', icon: '💳' }
+                ].map((benefit, bIdx) => (
+                  <div key={bIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: '#374151' }}>
+                    <span style={{ fontSize: '1rem' }}>{benefit.icon}</span>
+                    <strong>{benefit.title}</strong>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </div>
+          
+          {/* Bottom disclaimer */}
+          <div style={{ textAlign: 'center', padding: '12px', background: '#f8fafc', borderRadius: '10px', color: 'var(--text-muted)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            🛡 All tailors are background verified for your safety and trust.
           </div>
         </div>
       )}
@@ -4842,9 +6761,8 @@ export default function CustomerView({
             </div>
           )}
 
-          {/* COMPARE MODAL OVERLAY */}
           {compareModalOpen && (
-            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'flex-start', paddingTop: '3rem', overflowY: 'auto', justifyContent: 'center', zIndex: 1000 }}>
               <div className="glass-card" style={{ width: '800px', maxWidth: '90%', padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <button 
                   onClick={() => {
@@ -4918,45 +6836,400 @@ export default function CustomerView({
         </div>
       )}
 
-      {/* --- HUB 3: SAREES SHOP --- */}
-      {activeHub === 'sarees' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Sarees & Lehenga Fabrics</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Buy sarees or lehenga materials online, and dispatch them to nearby boutiques for stitching.</p>
-          </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-            <div className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <img src="https://images.unsplash.com/photo-1610030470352-78d10b7b12d5?auto=format&fit=crop&w=300&q=80" alt="Kanchipuram Silk" style={{ width: '100%', height: '160px', borderRadius: '8px', objectFit: 'cover' }} />
+      {/* --- HUB 3: READY DESIGNS --- */}
+      {activeHub === 'sarees' && (() => {
+        const readyDesignsData = [
+          // Sarees
+          { id: 'rd-s1', name: 'Kanchipuram Pure Silk Saree', price: 8500, category: 'sarees', fabric: 'Silk', img: '/ReadyDesignSilkSarees/837c5912e2b3c6bdaaf96a1ad2a1976c.jpg', desc: 'Classic gold zari work wedding special.', isNew: true },
+          { id: 'rd-s2', name: 'Chanderi Cotton-Silk Saree', price: 3200, category: 'sarees', fabric: 'Cotton-Silk', img: '/ReadyDesignSilkSarees/b7441408c8405386bf77d3c66f13d17e.jpg', desc: 'Lightweight sheer texture, comfortable and festive wear.', isNew: true },
+          { id: 'rd-s3', name: 'Organza Floral Saree', price: 4900, category: 'sarees', fabric: 'Organza', img: '/ReadyDesignSilkSarees/image_zoom.jpeg', desc: 'Elegant floral embroidery with premium organza.', isNew: true },
+          { id: 'rd-s4', name: 'Banarasi Brocade Saree', price: 9800, category: 'sarees', fabric: 'Silk', img: '/ReadyDesignSilkSarees/images.jpg', desc: 'Traditional heavy gold brocade detailing.', isNew: false },
+          { id: 'rd-s5', name: 'Georgette Designer Saree', price: 4200, category: 'sarees', fabric: 'Georgette', img: '/ReadyDesignSilkSarees/images (1).jpg', desc: 'Trendy lightweight designer drape with borders.', isNew: false },
+          { id: 'rd-s6', name: 'Raw Silk Festive Saree', price: 5600, category: 'sarees', fabric: 'Raw Silk', img: '/ReadyDesignSilkSarees/images (2).jpg', desc: 'Rich raw silk texture with vibrant colors.', isNew: true },
+          { id: 'rd-s7', name: 'Mysore Crepe Silk Saree', price: 7200, category: 'sarees', fabric: 'Silk', img: '/ReadyDesignSilkSarees/images (3).jpg', desc: 'Soft crepe silk drape with gold thread borders.', isNew: false },
+          { id: 'rd-s8', name: 'Cotton Silk Block Print Saree', price: 2800, category: 'sarees', fabric: 'Cotton-Silk', img: '/ReadyDesignSilkSarees/images (4).jpg', desc: 'Elegant block prints for casual & formal occasions.', isNew: false },
+
+          // Lehengas
+          { id: 'rd-l1', name: 'Bridal Lehenga Set', price: 12500, category: 'lehengas', fabric: 'Velvet', img: '/ReadyDesignsLehengas/bridal 5.jpg', desc: 'Heavy embroidery lehenga with matching dupatta.', isNew: true },
+          { id: 'rd-l2', name: 'Pastel Pink Lehenga', price: 7800, category: 'lehengas', fabric: 'Georgette', img: '/ReadyDesignsLehengas/bridal2.jpg', desc: 'Trendy pastel design for festive occasions.', isNew: true },
+          { id: 'rd-l3', name: 'Designer Silk Lehenga', price: 9200, category: 'lehengas', fabric: 'Silk', img: '/ReadyDesignsLehengas/b1.jpg', desc: 'Rich banarasi silk print with raw silk blouse.', isNew: true },
+          { id: 'rd-l4', name: 'Floral Organza Lehenga', price: 6500, category: 'lehengas', fabric: 'Organza', img: '/ReadyDesignsLehengas/b2.jpg', desc: 'Sheer floral prints with sequin handwork.', isNew: false },
+          { id: 'rd-l5', name: 'Net Ruffle Lehenga', price: 8200, category: 'lehengas', fabric: 'Net', img: '/ReadyDesignsLehengas/bridal3.jpg', desc: 'Modern tiered net design with heavy borders.', isNew: false },
+          { id: 'rd-l6', name: 'Traditional Zardosi Lehenga', price: 15400, category: 'lehengas', fabric: 'Silk', img: '/ReadyDesignsLehengas/bridal4.jpg', desc: 'Exquisite hand-done zardosi fit special.', isNew: true },
+          { id: 'rd-l7', name: 'Sequined Reception Gown Lehenga', price: 11000, category: 'lehengas', fabric: 'Georgette', img: '/ReadyDesignsLehengas/bridal6.jpg', desc: 'Vibrant shine borders with structured flare.', isNew: false },
+          { id: 'rd-l8', name: 'Mirror Work Festive Lehenga', price: 8900, category: 'lehengas', fabric: 'Raw Silk', img: '/ReadyDesignsLehengas/bridal7.jpg', desc: 'Intricate glass mirror work on bright fabrics.', isNew: false }
+        ];
+
+        // Filter and sort logic
+        const filteredReadyDesigns = readyDesignsData.filter(item => {
+          if (item.category !== readyCategory) return false;
+          if (readySearchQuery.trim() !== '') {
+            const q = readySearchQuery.toLowerCase();
+            const matchName = item.name.toLowerCase().includes(q);
+            const matchDesc = item.desc.toLowerCase().includes(q);
+            const matchFabric = item.fabric.toLowerCase().includes(q);
+            if (!matchName && !matchDesc && !matchFabric) return false;
+          }
+          if (readyFilterFabric !== 'all' && item.fabric.toLowerCase() !== readyFilterFabric.toLowerCase()) return false;
+          if (readyFilterPrice !== 'all') {
+            if (readyFilterPrice === 'under-5000' && item.price >= 5000) return false;
+            if (readyFilterPrice === '5000-10000' && (item.price < 5000 || item.price > 10000)) return false;
+            if (readyFilterPrice === 'above-10000' && item.price <= 10000) return false;
+          }
+          return true;
+        });
+
+        const sortedReadyDesigns = [...filteredReadyDesigns].sort((a, b) => {
+          if (readySortBy === 'Price: Low to High') return a.price - b.price;
+          if (readySortBy === 'Price: High to Low') return b.price - a.price;
+          if (readySortBy === 'Newest First') return b.isNew - a.isNew;
+          return 0;
+        });
+
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            
+            {/* Header section with Vector mannequin */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '20px' }}>
               <div>
-                <h4 style={{ fontSize: '1rem', color: '#fff' }}>Kanchipuram Pure Silk Saree</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Classic gold zari border wedding special.</p>
+                <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+                  Ready Designs
+                </h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: '4px' }}>
+                  Discover beautiful ready-made sarees, lehengas and fabrics.
+                </p>
               </div>
-              <div className="flex-row-between" style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px' }}>
-                <span style={{ color: 'var(--accent)', fontWeight: '800', fontSize: '1.1rem' }}>₹8500</span>
-                <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.8rem' }} onClick={() => handleAddToCart({ id: 's1', name: 'Kanchipuram Silk Saree', price: 8500, image: 'https://images.unsplash.com/photo-1610030470352-78d10b7b12d5?auto=format&fit=crop&w=300&q=80' }, 'saree')}>
-                  Add to Cart
-                </button>
+              
+              {/* Mannequin Image with fading mask */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '110px', width: '260px', overflow: 'hidden' }}>
+                <img 
+                  src="/ready_designs_hero.png" 
+                  alt="Mannequin" 
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover', 
+                    borderRadius: '8px',
+                    maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+                    WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)'
+                  }} 
+                />
               </div>
             </div>
 
-            <div className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=300&q=80" alt="Chanderi Silk" style={{ width: '100%', height: '160px', borderRadius: '8px', objectFit: 'cover' }} />
-              <div>
-                <h4 style={{ fontSize: '1rem', color: '#fff' }}>Chanderi Cotton-Silk Saree</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>Lightweight sheer texture, comfortable office/ethnic wear.</p>
-              </div>
-              <div className="flex-row-between" style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px' }}>
-                <span style={{ color: 'var(--accent)', fontWeight: '800', fontSize: '1.1rem' }}>₹3200</span>
-                <button className="btn btn-primary" style={{ padding: '6px 12px', fontSize: '0.8rem' }} onClick={() => handleAddToCart({ id: 's2', name: 'Chanderi Saree', price: 3200, image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=300&q=80' }, 'saree')}>
-                  Add to Cart
+            {/* Filter Bar */}
+            <div 
+              className="glass-card-no-hover"
+              style={{ 
+                display: 'flex', 
+                gap: '16px', 
+                alignItems: 'center', 
+                flexWrap: 'wrap', 
+                padding: '16px', 
+                borderRadius: '16px',
+                border: `1.5px solid ${borderColor}`,
+                background: bgCard,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.02)'
+              }}
+            >
+              {/* Category tabs */}
+              <div style={{ display: 'flex', background: bgInput, borderRadius: '12px', padding: '6px', border: `1px solid ${borderColor}`, gap: '4px' }}>
+                <button 
+                  onClick={() => setReadyCategory('sarees')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    background: readyCategory === 'sarees' ? bgActiveOption : 'transparent',
+                    color: readyCategory === 'sarees' ? 'var(--primary)' : 'var(--text-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <Sparkles size={14} /> Sarees
+                </button>
+                <button 
+                  onClick={() => setReadyCategory('lehengas')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '0.85rem',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    background: readyCategory === 'lehengas' ? bgActiveOption : 'transparent',
+                    color: readyCategory === 'lehengas' ? 'var(--primary)' : 'var(--text-secondary)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <Layers size={14} /> Lehengas
                 </button>
               </div>
+
+              {/* Search field */}
+              <div style={{ position: 'relative', flexGrow: 1, minWidth: '240px' }}>
+                <input 
+                  type="text" 
+                  placeholder="Search by product, fabric, design..."
+                  value={readySearchQuery}
+                  onChange={(e) => setReadySearchQuery(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 40px 10px 16px',
+                    borderRadius: '12px',
+                    border: `1.5px solid ${borderColor}`,
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    background: bgInput,
+                    color: colorTextPrimary,
+                    fontWeight: '500'
+                  }}
+                />
+                <Search size={16} style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              </div>
+
+              {/* Fabric Select */}
+              <div style={{ display: 'flex', flexDirection: 'column', minWidth: '130px' }}>
+                <select 
+                  className="form-input" 
+                  value={readyFilterFabric} 
+                  onChange={(e) => setReadyFilterFabric(e.target.value)}
+                  style={{ borderRadius: '12px', padding: '10px 12px', border: `1.5px solid ${borderColor}`, fontSize: '0.88rem', background: bgCard, color: colorTextPrimary }}
+                >
+                  <option value="all">Fabric: All</option>
+                  <option value="Silk">Silk</option>
+                  <option value="Cotton-Silk">Cotton-Silk</option>
+                  <option value="Organza">Organza</option>
+                  <option value="Georgette">Georgette</option>
+                  <option value="Velvet">Velvet</option>
+                  <option value="Net">Net</option>
+                  <option value="Raw Silk">Raw Silk</option>
+                </select>
+              </div>
+
+              {/* Price range select */}
+              <div style={{ display: 'flex', flexDirection: 'column', minWidth: '140px' }}>
+                <select 
+                  className="form-input" 
+                  value={readyFilterPrice} 
+                  onChange={(e) => setReadyFilterPrice(e.target.value)}
+                  style={{ borderRadius: '12px', padding: '10px 12px', border: `1.5px solid ${borderColor}`, fontSize: '0.88rem', background: bgCard, color: colorTextPrimary }}
+                >
+                  <option value="all">Price: All</option>
+                  <option value="under-5000">Under ₹5,000</option>
+                  <option value="5000-10000">₹5,000 - ₹10,000</option>
+                  <option value="above-10000">Above ₹10,000</option>
+                </select>
+              </div>
+
+              {/* Reset Filter Button */}
+              <button 
+                onClick={() => {
+                  setReadySearchQuery('');
+                  setReadyFilterFabric('all');
+                  setReadyFilterPrice('all');
+                }}
+                className="btn btn-ghost"
+                style={{ 
+                  borderRadius: '12px', 
+                  padding: '10px 16px', 
+                  border: '1.5px solid var(--primary)', 
+                  color: 'var(--primary)', 
+                  fontWeight: 'bold', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '6px',
+                  cursor: 'pointer'
+                }}
+              >
+                <Sliders size={14} /> Reset
+              </button>
+            </div>
+
+            {/* Results count & Sort by */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginTop: '8px' }}>
+              <div>
+                <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+                  Showing <span style={{ color: 'var(--primary)' }}>{sortedReadyDesigns.length}</span> Results
+                </span>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '2px' }}>
+                  High quality fabrics & designs from trusted boutiques
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>Sort by:</span>
+                <select 
+                  className="form-input" 
+                  value={readySortBy} 
+                  onChange={(e) => setReadySortBy(e.target.value)}
+                  style={{ borderRadius: '10px', padding: '6px 12px', border: '1.5px solid #e2e8f0', fontSize: '0.85rem' }}
+                >
+                  <option value="Newest First">Newest First</option>
+                  <option value="Price: Low to High">Price: Low to High</option>
+                  <option value="Price: High to Low">Price: High to Low</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Product Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(285px, 1fr))', gap: '24px', marginTop: '16px' }}>
+              {sortedReadyDesigns.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="glass-card-no-hover"
+                  style={{ 
+                    padding: '16px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '12px', 
+                    borderRadius: '20px', 
+                    background: bgCard, 
+                    border: `1.5px solid ${borderColor}`, 
+                    position: 'relative',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.015)',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {/* Badges container */}
+                  {item.isNew && (
+                    <span 
+                      style={{ 
+                        position: 'absolute', 
+                        top: '26px', 
+                        left: '26px', 
+                        background: 'var(--primary)', 
+                        color: '#fff', 
+                        padding: '4px 10px', 
+                        borderRadius: '20px', 
+                        fontSize: '0.7rem', 
+                        fontWeight: '800',
+                        zIndex: 2,
+                        boxShadow: '0 2px 6px rgba(247,37,133,0.3)'
+                      }}
+                    >
+                      New
+                    </span>
+                  )}
+
+                  {/* Heart icon */}
+                  <button 
+                    onClick={() => {
+                      setReadyWishlist(prev => ({
+                        ...prev,
+                        [item.id]: !prev[item.id]
+                      }));
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '26px',
+                      right: '26px',
+                      background: 'rgba(255,255,255,0.85)',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '32px',
+                      height: '32px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      zIndex: 2,
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.08)'
+                    }}
+                  >
+                    <Heart 
+                      size={16} 
+                      fill={readyWishlist[item.id] ? 'var(--primary)' : 'none'} 
+                      stroke={readyWishlist[item.id] ? 'var(--primary)' : '#475569'} 
+                    />
+                  </button>
+
+                  <img 
+                    src={item.img} 
+                    alt={item.name} 
+                    style={{ 
+                      width: '100%', 
+                      height: '240px', 
+                      borderRadius: '16px', 
+                      objectFit: 'cover',
+                      background: '#f8fafc'
+                    }} 
+                  />
+
+                  <div>
+                    <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: 0 }}>
+                      {item.name}
+                    </h4>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.4' }}>
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div 
+                    style={{ 
+                      marginTop: 'auto', 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center', 
+                      borderTop: '1px solid var(--border-color)', 
+                      paddingTop: '12px' 
+                    }}
+                  >
+                    <span style={{ color: 'var(--text-primary)', fontWeight: '800', fontSize: '1.2rem' }}>
+                      ₹{item.price}
+                    </span>
+                    <button 
+                      className="btn btn-primary" 
+                      style={{ padding: '8px 16px', fontSize: '0.82rem', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '6px' }} 
+                      onClick={() => handleAddToCart({ id: item.id, name: item.name, price: item.price, image: item.img }, item.category === 'sarees' ? 'saree' : 'lehenga')}
+                    >
+                      <ShoppingCart size={14} /> Add to Cart
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer USP features panel */}
+            <div 
+              style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
+                gap: '16px', 
+                background: bgActiveOption, 
+                border: `1.5px solid ${borderColor}`, 
+                borderRadius: '16px', 
+                padding: '20px', 
+                marginTop: '40px' 
+              }}
+            >
+              {[
+                { title: 'Premium Quality', desc: 'Handpicked fabrics & designs', icon: '🏆' },
+                { title: 'Secure Payments', desc: '100% safe & secure checkout', icon: '💳' },
+                { title: 'Fast Delivery', desc: 'Quick delivery to your doorstep', icon: '⚡' },
+                { title: '24/7 Support', desc: "We're here to help you anytime", icon: '💬' }
+              ].map((usp, uIdx) => (
+                <div key={uIdx} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ fontSize: '2rem' }}>{usp.icon}</span>
+                  <div>
+                    <h5 style={{ margin: 0, fontWeight: 'bold', color: 'var(--text-primary)', fontSize: '0.92rem' }}>{usp.title}</h5>
+                    <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.78rem', marginTop: '2px' }}>{usp.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* --- HUB 4: DESIGNERS TAB --- */}
       {activeHub === 'designers' && (() => {
@@ -5760,7 +8033,7 @@ export default function CustomerView({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', textAlign: 'left' }}>
             
             {/* 1. Featured Article (Hero) */}
-            <div className="glass-card-no-hover" style={{ padding: '24px', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '32px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="glass-card-no-hover articles-hero-grid" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                   <span className="badge badge-primary">EDITORIAL HERO</span>
@@ -5822,7 +8095,7 @@ export default function CustomerView({
             </div>
 
             {/* Two-Column Layout for Main Content & Sidebar */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: '32px', alignItems: 'start', flexWrap: 'wrap' }}>
+            <div className="articles-main-grid">
               
               {/* Left Column: Filtered Articles & Quizzes */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
@@ -5854,7 +8127,7 @@ export default function CustomerView({
                   
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {filteredArticlesList.map(art => (
-                      <div key={art.id} className="glass-card" style={{ display: 'flex', gap: '16px', padding: '16px', cursor: 'pointer' }} onClick={() => setSelectedArticle(art)}>
+                      <div key={art.id} className="glass-card article-row-card" onClick={() => setSelectedArticle(art)}>
                         <div style={{ width: '130px', height: '110px', borderRadius: '6px', overflow: 'hidden', flexShrink: 0, background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <img src={art.img} alt={art.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                         </div>
@@ -5977,43 +8250,743 @@ export default function CustomerView({
       })()}
 
       {/* --- HUB 6: HISTORY & INVOICES TAB --- */}
-      {activeHub === 'history' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Invoices & Order History</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Access past completed orders, invoices, and billing transaction details.</p>
-          </div>
+      {activeHub === 'history' && (() => {
+        const allOrdersList = [
+          {
+            id: 'ORD-101',
+            title: 'Premium 2-Piece Suit',
+            tailor: 'Vogue Craft Tailors',
+            size: 'M',
+            qty: 1,
+            price: 4500,
+            deliveryDate: '28 May 2026',
+            status: 'In Progress',
+            img: '/bridal2.jpg',
+            steps: [
+              { name: 'Order Placed', date: '12 May 2026', completed: true },
+              { name: 'Fabric Picked', date: '13 May 2026', completed: true },
+              { name: 'Stitching', date: 'In Progress', active: true },
+              { name: 'QC Check', date: 'Pending', pending: true },
+              { name: 'Out for Delivery', date: 'Pending', pending: true }
+            ]
+          },
+          {
+            id: 'ORD-098',
+            title: 'Designer Lehenga Set',
+            tailor: 'Royal Bespoke',
+            size: 'L',
+            qty: 1,
+            price: 12500,
+            deliveryDate: '14 May 2026',
+            status: 'Out for Delivery',
+            img: '/bridal4.jpg',
+            steps: [
+              { name: 'Order Placed', date: '02 May 2026', completed: true },
+              { name: 'Fabric Picked', date: '03 May 2026', completed: true },
+              { name: 'Stitching', date: '06 May 2026', completed: true },
+              { name: 'QC Check', date: '10 May 2026', completed: true },
+              { name: 'Out for Delivery', date: '12 May 2026', active: true }
+            ]
+          },
+          {
+            id: 'ORD-095',
+            title: 'Kanchipuram Silk Saree',
+            tailor: 'Ethnic Stitches',
+            size: 'Free',
+            qty: 1,
+            price: 8500,
+            deliveryDate: '28 Apr 2026',
+            status: 'Completed',
+            img: '/bridal3.jpg',
+            steps: [
+              { name: 'Order Placed', date: '20 Apr 2026', completed: true },
+              { name: 'Fabric Picked', date: '21 Apr 2026', completed: true },
+              { name: 'Stitching', date: '24 Apr 2026', completed: true },
+              { name: 'QC Check', date: '26 Apr 2026', completed: true },
+              { name: 'Delivered', date: '28 Apr 2026', active: true }
+            ]
+          },
+          {
+            id: 'ORD-092',
+            title: 'Bridal Lehenga Set',
+            tailor: 'Stitch Bee Studio',
+            size: 'XL',
+            qty: 1,
+            price: 15800,
+            deliveryDate: '11 Apr 2026',
+            status: 'Cancelled',
+            img: '/bridal2.jpg',
+            steps: [
+              { name: 'Order Placed', date: '10 Apr 2026', completed: true },
+              { name: 'Cancelled', date: '11 Apr 2026', active: true, cancelled: true }
+            ]
+          }
+        ];
 
-          {completedOrders.length === 0 ? (
-            <div className="glass-card-no-hover" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-              No completed orders on record.
+        const filteredOrders = allOrdersList.filter(o => {
+          if (ordersFilter === 'all') return true;
+          if (ordersFilter === 'in-progress') return o.status === 'In Progress' || o.status === 'Out for Delivery';
+          if (ordersFilter === 'completed') return o.status === 'Completed';
+          if (ordersFilter === 'cancelled') return o.status === 'Cancelled';
+          return true;
+        });
+
+        const getBadgeStyle = (status) => {
+          switch(status) {
+            case 'In Progress':
+              return { background: 'rgba(16,185,129,0.1)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)' };
+            case 'Out for Delivery':
+              return { background: 'rgba(59,130,246,0.1)', color: '#3b82f6', border: '1px solid rgba(59,130,246,0.2)' };
+            case 'Completed':
+              return { background: 'rgba(16,185,129,0.15)', color: '#10b981', border: '1px solid rgba(16,185,129,0.3)' };
+            case 'Cancelled':
+              return { background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)' };
+            default:
+              return {};
+          }
+        };
+
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* Header info */}
+            <div>
+              <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: colorTextPrimary, margin: '0 0 4px 0' }}>My Orders</h2>
+              <p style={{ color: colorTextSecondary, fontSize: '0.88rem', margin: 0 }}>Track, manage and reorder your stitching orders.</p>
             </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {completedOrders.map(order => (
-                <div key={order.id} className="glass-card-no-hover" style={{ padding: '20px' }}>
-                  <div className="flex-row-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '12px', marginBottom: '12px' }}>
-                    <div>
-                      <span style={{ fontWeight: '700', color: '#fff' }}>Order #{order.id}</span>
-                      <span className="badge badge-success" style={{ marginLeft: '10px' }}>Closed</span>
-                    </div>
-                    <span style={{ color: 'var(--accent)', fontWeight: '800' }}>₹{order.price}</span>
+
+            {/* Layout Grid */}
+            <div className="orders-wishlist-layout">
+              {/* Left Column: Orders list */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* Filter bar */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    padding: '12px 20px', 
+                    borderRadius: '16px', 
+                    border: `1.5px solid ${borderColor}`, 
+                    background: bgCard,
+                    flexWrap: 'wrap',
+                    gap: '12px'
+                  }}
+                >
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    {['all', 'in-progress', 'completed', 'cancelled'].map((fKey) => (
+                      <button
+                        key={fKey}
+                        onClick={() => setOrdersFilter(fKey)}
+                        style={{
+                          padding: '6px 14px',
+                          borderRadius: '8px',
+                          border: 'none',
+                          fontSize: '0.85rem',
+                          fontWeight: 'bold',
+                          cursor: 'pointer',
+                          background: ordersFilter === fKey ? 'var(--primary)' : 'transparent',
+                          color: ordersFilter === fKey ? '#fff' : colorTextSecondary,
+                          textTransform: 'capitalize',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        {fKey === 'all' ? 'All Orders' : fKey.replace('-', ' ')}
+                      </button>
+                    ))}
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    <div><strong>Service:</strong> {order.serviceName}</div>
-                    <div><strong>Tailor Shop:</strong> {order.tailorName}</div>
-                    <div><strong>Date Completed:</strong> {order.date}</div>
-                  </div>
-                  <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(255,255,255,0.02)', borderRadius: '6px', fontSize: '0.75rem', border: '1px solid var(--border-color)', display: 'flex', justify: 'space-between' }}>
-                    <span style={{ color: 'var(--text-muted)' }}>Payment: Card/UPI online transaction cleared</span>
-                    <span style={{ color: 'var(--success)', fontWeight: '600' }}>Invoice Generated</span>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <select
+                      value={ordersTimeframe}
+                      onChange={(e) => setOrdersTimeframe(e.target.value)}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '8px',
+                        border: `1px solid ${borderColor}`,
+                        background: bgInput,
+                        color: colorTextPrimary,
+                        fontSize: '0.82rem',
+                        fontWeight: '500',
+                        outline: 'none'
+                      }}
+                    >
+                      <option value="Last 30 Days">Last 30 Days</option>
+                      <option value="Last 6 Months">Last 6 Months</option>
+                      <option value="Last Year">Last Year</option>
+                    </select>
+
+                    <button
+                      className="btn"
+                      onClick={() => alert(`Applied filters for orders in timeframe: ${ordersTimeframe}`)}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '8px',
+                        border: '1.5px solid var(--primary)',
+                        color: 'var(--primary)',
+                        background: bgCard,
+                        fontSize: '0.82rem',
+                        fontWeight: 'bold',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Filter
+                    </button>
                   </div>
                 </div>
-              ))}
+
+                {/* Orders cards */}
+                {filteredOrders.length === 0 ? (
+                  <div className="glass-card-no-hover" style={{ padding: '60px', textAlign: 'center', color: colorTextMuted, background: bgCard, border: `1.5px solid ${borderColor}`, borderRadius: '16px' }}>
+                    <FileText size={48} style={{ strokeWidth: 1, marginBottom: '12px', color: 'var(--primary)' }} />
+                    <p style={{ margin: 0, fontWeight: 'bold' }}>No matching orders found.</p>
+                  </div>
+                ) : (
+                  filteredOrders.map((order) => (
+                    <div 
+                      key={order.id} 
+                      className="glass-card-no-hover order-card-grid" 
+                      style={{ 
+                        padding: '20px', 
+                        background: bgCard, 
+                        border: `1.5px solid ${borderColor}`, 
+                        borderRadius: '16px'
+                      }}
+                    >
+                      {/* Product thumbnail */}
+                      <img 
+                        src={order.img} 
+                        alt={order.title} 
+                        style={{ 
+                          width: '90px', 
+                          height: '110px', 
+                          borderRadius: '10px', 
+                          objectFit: 'cover',
+                          background: bgInput 
+                        }} 
+                      />
+
+                      {/* Product details & Timeline */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: 0 }}>
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                            <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: colorTextPrimary, margin: 0 }}>Order #{order.id}</h4>
+                            <span 
+                              style={{ 
+                                padding: '2px 8px', 
+                                borderRadius: '20px', 
+                                fontSize: '0.7rem', 
+                                fontWeight: 'bold',
+                                ...getBadgeStyle(order.status)
+                              }}
+                            >
+                              {order.status}
+                            </span>
+                          </div>
+                          <p style={{ fontSize: '0.8rem', color: colorTextSecondary, margin: '4px 0 0 0' }}>{order.title} | {order.tailor}</p>
+                          <div style={{ display: 'flex', gap: '12px', fontSize: '0.78rem', color: colorTextMuted, marginTop: '4px' }}>
+                            <span>Size: <strong>{order.size}</strong></span>
+                            <span>Qty: <strong>{order.qty}</strong></span>
+                          </div>
+                        </div>
+
+                        {/* Progress Tracker */}
+                        <div style={{ display: 'flex', alignItems: 'center', position: 'relative', marginTop: '4px', width: '100%', padding: '0 8px' }}>
+                          {/* Background connector line */}
+                          <div 
+                            style={{ 
+                              position: 'absolute', 
+                              left: '8px', 
+                              right: '8px', 
+                              top: '10px', 
+                              height: '3px', 
+                              background: order.status === 'Cancelled' ? '#ef4444' : borderColor, 
+                              zIndex: 1 
+                            }} 
+                          />
+                          {/* Fill connector line for active steps */}
+                          {order.status !== 'Cancelled' && (
+                            <div 
+                              style={{ 
+                                position: 'absolute', 
+                                left: '8px', 
+                                top: '10px', 
+                                height: '3px', 
+                                background: 'var(--primary)', 
+                                zIndex: 1, 
+                                width: order.status === 'In Progress' ? '40%' : order.status === 'Out for Delivery' ? '80%' : '100%' 
+                              }} 
+                            />
+                          )}
+
+                          {/* Steps Nodes */}
+                          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', zIndex: 2 }}>
+                            {order.steps.map((st, sIdx) => (
+                              <div key={sIdx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '60px' }}>
+                                <div 
+                                  style={{ 
+                                    width: '20px', 
+                                    height: '20px', 
+                                    borderRadius: '50%', 
+                                    background: st.cancelled ? '#ef4444' : (st.completed || st.active ? 'var(--primary)' : bgInput), 
+                                    border: `2px solid ${st.cancelled ? '#ef4444' : (st.completed || st.active ? 'var(--primary)' : borderColor)}`,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#fff',
+                                    fontSize: '0.65rem',
+                                    fontWeight: 'bold'
+                                  }}
+                                >
+                                  {st.cancelled ? '✕' : (st.completed ? '✓' : st.active ? '★' : '')}
+                                </div>
+                                <span style={{ fontSize: '0.62rem', fontWeight: 'bold', color: st.completed || st.active ? colorTextPrimary : colorTextMuted, marginTop: '6px', whiteSpace: 'nowrap' }}>
+                                  {st.name}
+                                </span>
+                                <span style={{ fontSize: '0.55rem', color: colorTextMuted, marginTop: '2px' }}>
+                                  {st.date}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Pricing and Actions */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', paddingLeft: '20px', borderLeft: `1px solid ${borderColor}` }}>
+                        <div style={{ textAlign: 'right' }}>
+                          <span style={{ fontSize: '1.25rem', fontWeight: '800', color: colorTextPrimary }}>₹{order.price.toLocaleString()}</span>
+                          <p style={{ fontSize: '0.68rem', color: colorTextMuted, margin: '2px 0 0 0' }}>
+                            {order.status === 'Completed' ? 'Delivered on' : order.status === 'Cancelled' ? 'Cancelled on' : 'Est. Delivery'}<br/>
+                            <strong style={{ color: colorTextSecondary }}>{order.deliveryDate}</strong>
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            if (order.status === 'Completed') {
+                              addOrder({
+                                serviceName: `${order.title} (Repeat)`,
+                                tailorName: order.tailor,
+                                price: order.price,
+                                date: 'June 28, 2026',
+                                status: 'order_placed',
+                                category: 'custom'
+                              });
+                              alert(`Successfully requested repeat stitching for ${order.title}!`);
+                            } else {
+                              alert(`Order Details:\nID: #${order.id}\nTailor: ${order.tailor}\nPrice: ₹${order.price}`);
+                            }
+                          }}
+                          style={{
+                            width: '100%',
+                            padding: '8px 12px',
+                            borderRadius: '8px',
+                            border: '1.5px solid var(--primary)',
+                            color: 'var(--primary)',
+                            background: bgCard,
+                            fontSize: '0.78rem',
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            marginTop: '16px',
+                            textAlign: 'center'
+                          }}
+                        >
+                          {order.status === 'Completed' ? 'Reorder' : order.status === 'Out for Delivery' ? 'Track Order' : 'View Details'}
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Right Column: Summary & Need Help */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {/* Order Summary card */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 'bold', color: colorTextPrimary, margin: '0 0 16px 0', borderBottom: `1px solid ${borderColor}`, paddingBottom: '10px' }}>Order Summary</h4>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {[
+                      { label: 'Total Orders', value: 12, color: 'var(--primary)' },
+                      { label: 'In Progress', value: 3, color: '#10b981' },
+                      { label: 'Out for Delivery', value: 2, color: '#3b82f6' },
+                      { label: 'Completed', value: 6, color: '#10b981' },
+                      { label: 'Cancelled', value: 1, color: '#ef4444' }
+                    ].map((sum, sIdx) => (
+                      <div key={sIdx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                        <span style={{ color: colorTextSecondary }}>{sum.label}</span>
+                        <strong style={{ color: sum.color }}>{sum.value}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Need Help card */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '20px', 
+                    background: isDark ? 'linear-gradient(135deg, rgba(20, 17, 38, 0.9) 0%, rgba(247,37,133,0.05) 100%)' : '#fff9fb', 
+                    border: '1.5px dashed rgba(247,37,133,0.2)', 
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}
+                >
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                    <HelpCircle size={20} />
+                  </div>
+                  <h4 style={{ fontSize: '0.98rem', fontWeight: 'bold', color: colorTextPrimary, margin: 0 }}>Need Help?</h4>
+                  <p style={{ fontSize: '0.78rem', color: colorTextSecondary, margin: 0, lineHeight: '1.4' }}>
+                    Our support team is here to help you anytime.
+                  </p>
+                  
+                  {/* Small absolute mannequin illustration */}
+                  <img 
+                    src="./media__1782584739193.png" 
+                    alt="Mannequin" 
+                    style={{ 
+                      width: '45px', 
+                      height: '80px', 
+                      objectFit: 'contain', 
+                      opacity: 0.15, 
+                      position: 'absolute', 
+                      right: '12px', 
+                      bottom: '8px',
+                      pointerEvents: 'none'
+                    }} 
+                  />
+
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => alert("Connecting with support... Please email support@stitchbee.com or call +91-98765-43210")}
+                    style={{ width: '100%', background: 'var(--primary)', border: 'none', fontWeight: 'bold', fontSize: '0.8rem', padding: '10px', marginTop: '4px' }}
+                  >
+                    Contact Support
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        );
+      })()}
+
+      {/* --- HUB 6B: WISHLIST TAB --- */}
+      {activeHub === 'wishlist' && (() => {
+        const sortedWishlist = [...wishlistItems].sort((a, b) => {
+          if (wishlistSort === 'price-low-high') return a.price - b.price;
+          if (wishlistSort === 'price-high-low') return b.price - a.price;
+          return 0; // Default: recently added (keeps original order)
+        });
+
+        const recList = [
+          { id: 'rec-1', name: 'Banarasi Silk Saree', price: 9200, rating: 4.8, reviews: 128, img: '/bridal2.jpg' },
+          { id: 'rec-2', name: 'Net Embroidered Lehenga', price: 11200, rating: 4.7, reviews: 96, img: '/bridal4.jpg' }
+        ];
+
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {/* Title row */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h2 style={{ fontSize: '1.8rem', fontWeight: '800', color: colorTextPrimary, margin: '0 0 4px 0' }}>My Wishlist <Heart size={20} fill="var(--primary)" style={{ color: 'var(--primary)', display: 'inline', verticalAlign: 'middle', marginLeft: '6px' }} /></h2>
+                <p style={{ color: colorTextSecondary, fontSize: '0.88rem', margin: 0 }}>Your saved designs and fabrics you love.</p>
+              </div>
+
+              <button
+                onClick={() => alert(`Share link copied to clipboard!\nhttp://localhost:5173/share/wishlist/${currentUser?.name || 'guest'}`)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  borderRadius: '10px',
+                  border: `1.5px solid ${borderColor}`,
+                  background: bgCard,
+                  color: colorTextPrimary,
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                <Share2 size={14} /> Share Wishlist
+              </button>
+            </div>
+
+            {/* Sorting Row */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '10px', margin: '-8px 0' }}>
+              <span style={{ fontSize: '0.82rem', color: colorTextMuted }}>Sort by:</span>
+              <select
+                value={wishlistSort}
+                onChange={(e) => setWishlistSort(e.target.value)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  border: `1px solid ${borderColor}`,
+                  background: bgCard,
+                  color: colorTextPrimary,
+                  fontSize: '0.82rem',
+                  fontWeight: '500',
+                  outline: 'none'
+                }}
+              >
+                <option value="recently-added">Recently Added</option>
+                <option value="price-low-high">Price: Low to High</option>
+                <option value="price-high-low">Price: High to Low</option>
+              </select>
+            </div>
+
+            {/* Layout Grid */}
+            <div className="orders-wishlist-layout">
+              {/* Left Column: Wishlist Items */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {wishlistItems.length === 0 ? (
+                  <div className="glass-card-no-hover" style={{ padding: '60px', textAlign: 'center', color: colorTextMuted, background: bgCard, border: `1.5px solid ${borderColor}`, borderRadius: '16px' }}>
+                    <Heart size={48} style={{ strokeWidth: 1, marginBottom: '12px', color: 'var(--primary)' }} />
+                    <p style={{ margin: 0, fontWeight: 'bold' }}>Your Wishlist is empty.</p>
+                  </div>
+                ) : (
+                  sortedWishlist.map((item) => (
+                    <div
+                      key={item.id}
+                      className="glass-card-no-hover wishlist-card-grid"
+                      style={{
+                        padding: '16px',
+                        background: bgCard,
+                        border: `1.5px solid ${borderColor}`,
+                        borderRadius: '16px'
+                      }}
+                    >
+                      {/* Product Image */}
+                      <img 
+                        src={item.img} 
+                        alt={item.name} 
+                        style={{ 
+                          width: '90px', 
+                          height: '110px', 
+                          borderRadius: '10px', 
+                          objectFit: 'cover',
+                          background: bgInput 
+                        }} 
+                      />
+
+                      {/* Description & specs */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div>
+                          <span 
+                            style={{ 
+                              padding: '2px 8px', 
+                              borderRadius: '20px', 
+                              fontSize: '0.62rem', 
+                              fontWeight: '800',
+                              background: item.category === 'saree' ? 'rgba(247,37,133,0.08)' : 'rgba(114,9,183,0.08)', 
+                              color: item.category === 'saree' ? 'var(--primary)' : 'var(--secondary)',
+                              textTransform: 'capitalize'
+                            }}
+                          >
+                            {item.category}
+                          </span>
+                          <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: colorTextPrimary, margin: '4px 0 2px 0' }}>{item.name}</h4>
+                          <p style={{ fontSize: '0.78rem', color: colorTextSecondary, margin: 0, lineHeight: '1.3' }}>{item.desc}</p>
+                        </div>
+                        <div style={{ display: 'flex', gap: '12px', fontSize: '0.75rem', color: colorTextMuted, flexWrap: 'wrap' }}>
+                          <span>🧵 {item.fabric}</span>
+                          <span>🎨 {item.color}</span>
+                          <span>📏 {item.length}</span>
+                        </div>
+                      </div>
+
+                      {/* Price & Actions */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', paddingLeft: '16px', borderLeft: `1px solid ${borderColor}` }}>
+                        <div style={{ textAlign: 'right' }}>
+                          <span style={{ fontSize: '1.2rem', fontWeight: '800', color: colorTextPrimary }}>₹{item.price.toLocaleString()}</span>
+                          <p style={{ fontSize: '0.68rem', color: colorTextMuted, margin: '2px 0 0 0' }}>Added on {item.addedOn}</p>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '8px', width: '100%', marginTop: '16px' }}>
+                          <button
+                            className="btn"
+                            onClick={() => alert(`Showing design specs for ${item.name}`)}
+                            style={{
+                              flex: 1,
+                              padding: '8px 4px',
+                              borderRadius: '8px',
+                              border: '1.5px solid var(--primary)',
+                              color: 'var(--primary)',
+                              background: bgCard,
+                              fontSize: '0.72rem',
+                              fontWeight: 'bold',
+                              cursor: 'pointer',
+                              textAlign: 'center'
+                            }}
+                          >
+                            View Details
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              // Toggle heart active
+                              alert(`${item.name} is already in your wishlist!`);
+                            }}
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '8px',
+                              border: `1.5px solid ${borderColor}`,
+                              background: bgInput,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              color: 'var(--primary)'
+                            }}
+                          >
+                            <Heart size={14} fill="var(--primary)" />
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setWishlistItems(prev => prev.filter(w => w.id !== item.id));
+                              alert(`${item.name} removed from Wishlist.`);
+                            }}
+                            style={{
+                              width: '32px',
+                              height: '32px',
+                              borderRadius: '8px',
+                              border: `1px solid ${borderColor}`,
+                              background: bgInput,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              color: colorTextMuted
+                            }}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Right Column: Wishlist Summary & recommendations */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {/* Summary Card */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
+                  <h4 style={{ fontSize: '1rem', fontWeight: 'bold', color: colorTextPrimary, margin: '0 0 16px 0', borderBottom: `1px solid ${borderColor}`, paddingBottom: '10px' }}>Wishlist Summary</h4>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+                    {[
+                      { label: 'Total Items', value: wishlistItems.length },
+                      { label: 'Sarees', value: wishlistItems.filter(i => item => item.category === 'saree').length || 2 },
+                      { label: 'Lehengas', value: wishlistItems.filter(i => item => item.category === 'lehenga').length || 2 },
+                      { label: 'Fabrics', value: 2 }
+                    ].map((sum, sIdx) => (
+                      <div key={sIdx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                        <span style={{ color: colorTextSecondary }}>{sum.label}</span>
+                        <strong style={{ color: colorTextPrimary }}>{sum.value}</strong>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        wishlistItems.forEach(item => {
+                          handleAddToCart({ id: item.id, name: item.name, price: item.price, image: item.img }, item.category);
+                        });
+                        alert("Successfully moved all items to cart!");
+                      }}
+                      style={{ width: '100%', background: 'var(--primary)', border: 'none', fontWeight: 'bold', fontSize: '0.8rem', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                    >
+                      <ShoppingCart size={14} /> Move All to Cart
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        setWishlistItems([]);
+                        alert("Cleared all items from Wishlist.");
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        border: `1.5px solid ${borderColor}`,
+                        background: bgCard,
+                        color: colorTextSecondary,
+                        fontSize: '0.8rem',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Trash2 size={14} /> Clear Wishlist
+                    </button>
+                  </div>
+                </div>
+
+                {/* You May Also Like Card */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                    <h4 style={{ fontSize: '0.92rem', fontWeight: 'bold', color: colorTextPrimary, margin: 0 }}>You May Also Like</h4>
+                    <span 
+                      style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }}
+                      onClick={() => setActiveHub('sarees')}
+                    >
+                      View All
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {recList.map((rec) => (
+                      <div key={rec.id} style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
+                        <img src={rec.img} alt={rec.name} style={{ width: '56px', height: '70px', borderRadius: '6px', objectFit: 'cover', background: bgInput }} />
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <h5 style={{ fontSize: '0.78rem', fontWeight: 'bold', color: colorTextPrimary, margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{rec.name}</h5>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 'bold', color: 'var(--primary)', display: 'block' }}>₹{rec.price.toLocaleString()}</span>
+                          <span style={{ fontSize: '0.68rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '2px', marginTop: '2px' }}>
+                            <Star size={10} fill="#fbbf24" style={{ color: '#fbbf24' }} /> {rec.rating} ({rec.reviews})
+                          </span>
+                        </div>
+                        
+                        <button
+                          onClick={() => {
+                            handleAddToCart({ id: rec.id, name: rec.name, price: rec.price, image: rec.img }, 'saree');
+                            alert(`${rec.name} added to cart!`);
+                          }}
+                          style={{
+                            padding: '6px 8px',
+                            borderRadius: '6px',
+                            border: `1.2px solid ${borderColor}`,
+                            background: bgCard,
+                            color: colorTextPrimary,
+                            fontSize: '0.68rem',
+                            fontWeight: 'bold',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Add
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* --- HUB 7: CUSTOM DESIGN UPLOAD --- */}
       {activeHub === 'design-upload' && (
@@ -6350,11 +9323,11 @@ export default function CustomerView({
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '20px', padding: '14px', background: 'rgba(0,0,0,0.15)', borderRadius: '6px', fontSize: '0.8rem', marginTop: '10px' }}>
                       <div>
                         <p><strong>Stitching:</strong> {order.serviceName} (₹{order.price})</p>
-                        <p><strong>Sizing Method:</strong> {order.measurementType.toUpperCase()}</p>
+                        <p><strong>Sizing Method:</strong> {order.measurementType?.toUpperCase() || 'STANDARD'}</p>
                       </div>
                       <div>
                         <p><strong>Delivery:</strong> {order.deliveryType === 'student' ? 'Student Agent Delivery' : 'Pickup at shop'}</p>
-                        <p><strong>Fittings Specs:</strong> Chest: {order.measurements.chest}", Waist: {order.measurements.waist}", Shoulder: {order.measurements.shoulder}"</p>
+                        <p><strong>Fittings Specs:</strong> Chest: {order.measurements?.chest || 0}", Waist: {order.measurements?.waist || 0}", Shoulder: {order.measurements?.shoulder || 0}"</p>
                       </div>
                     </div>
 

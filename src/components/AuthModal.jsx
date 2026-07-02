@@ -58,8 +58,20 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialRole
         userRole = 'student';
       } else if (lowerEmail === 'customer@stitchbee.com') {
         userRole = 'customer';
+      } else {
+        // Try to look up from registered users list
+        try {
+          const registeredUsers = JSON.parse(localStorage.getItem('stitchbee_users') || '[]');
+          const found = registeredUsers.find(u => u.email === lowerEmail);
+          if (found) {
+            userRole = found.role;
+          }
+        } catch (err) {
+          console.error("Error reading registered users:", err);
+        }
       }
     }
+
     const displayName = tab === 'login' 
       ? (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)) 
       : name;
@@ -71,8 +83,22 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialRole
       address: userRole === 'customer' ? address || '123 Green Glen Road, HSR Layout, Bengaluru' : ''
     };
 
-    // Store in localStorage
+    // Store current session in localStorage
     localStorage.setItem('stitchbee_user', JSON.stringify(userData));
+
+    // Save to list of registered users if sign up
+    if (tab === 'signup') {
+      try {
+        const registeredUsers = JSON.parse(localStorage.getItem('stitchbee_users') || '[]');
+        if (!registeredUsers.some(u => u.email === userData.email)) {
+          registeredUsers.push({ email: userData.email, role: userData.role });
+          localStorage.setItem('stitchbee_users', JSON.stringify(registeredUsers));
+        }
+      } catch (err) {
+        console.error("Error saving registered user:", err);
+      }
+    }
+
     onLoginSuccess(userData);
     onClose();
   };
