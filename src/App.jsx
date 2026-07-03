@@ -908,43 +908,133 @@ export default function App() {
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
               <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick Service Categories</h2>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Select from our premium custom tailoring categories</p>
-            </div>
+                <h2 style={{ fontSize: '2.0rem', fontWeight: '800', color: 'var(--text-primary)' }}>Choose from our wide range of custom tailoring services</h2>
+              </div>
             
-            <div className="categories-grid-v2">
-              {[
-                { name: "Men's Tailoring", img: "./mens_tailoring.jpg", price: "399", cat: "mens" },
-                { name: "Women's Tailoring", img: "./womens_tailoring_v2.jpg", price: "499", cat: "womens" },
-                { name: "Bridal Wear", img: "./bridal_wear.jpg", price: "1999", cat: "bridal" },
-                { name: "Alterations & Fit", img: "./alterations_fit_v2.jpg", price: "149", cat: "alterations" },
-                { name: "Uniform Stitching", img: "./uniform_stitching.jpg", price: "299", cat: "uniforms" },
-                { name: "Custom Design", img: "./custom_design.jpg", price: "899", cat: "all" },
-                { name: "Kids Wear", img: "./kids_wear_v2.jpg", price: "249", cat: "kids" },
-                { name: "Bags & Leathers", img: "./bags_leathers.jpg", price: "599", cat: "bags" },
-                { name: "Shoes & Slippers", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80", price: "499", cat: "shoes" },
-                { name: "Vehicle Seat Covers", img: "./vehicle_seats.jpg", price: "999", cat: "seats" }
-              ].map((category, idx) => (
-                <div key={idx} className="category-card-v2" onClick={() => {
-                  setCustomerCategory(category.cat);
-                  setCustomerHub('category-landing');
-                  setRole('customer');
-                }}>
-                  <div className="category-card-img-wrapper">
-                    <img src={category.img} alt={category.name} className="category-card-img" />
-                  </div>
-                  <div className="category-card-content">
-                    <h3 style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{category.name}</h3>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
-                      <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Stitching from <strong style={{ color: 'var(--accent)' }}>₹{category.price}</strong></span>
-                      <button className="btn btn-ghost" style={{ padding: '4px 8px', fontSize: '0.75rem', border: '1px solid var(--border-color)' }}>
-                        Book Now
-                      </button>
+              <div className="categories-grid-v2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+                {[
+                  { 
+                    name: "Men's Ethnic Wear", 
+                    img: "./mens_tailoring.jpg", 
+                    desc: "Sherwani, Kurta Pajama, Nehru Jacket and more.", 
+                    cat: "mens",
+                    icon: <span style={{ fontSize: '1.2rem', fontWeight: 'bold', lineHeight: 1 }}>♂</span>
+                  },
+                  { 
+                    name: "Women's Ethnic Wear", 
+                    img: "./womens_tailoring_v2.jpg", 
+                    desc: "Sarees, Lehengas, Anarkali, Suits and more.", 
+                    cat: "womens",
+                    icon: <span style={{ fontSize: '1.2rem', fontWeight: 'bold', lineHeight: 1 }}>♀</span>
+                  },
+                  { 
+                    name: "Bridal Wear", 
+                    img: "./bridal_wear.jpg", 
+                    desc: "Exquisite bridal outfits for your special day.", 
+                    cat: "bridal",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2L9 7h6z M9 7l-2 15h10L15 7z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Custom Blouses", 
+                    img: "./w_women2.jpg", 
+                    desc: "Perfect fit blouses tailored to your style and comfort.", 
+                    cat: "womens",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l1.08 5.4a2 2 0 00.99 1.42L9 15v5a2 2 0 002 2h2a2 2 0 002-2v-5l4.65-2.49a2 2 0 00.99-1.42l1.08-5.4a2 2 0 00-1.34-2.23z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Alterations & Fit", 
+                    img: "./alterations_fit_v2.jpg", 
+                    desc: "Resizing, alterations & perfect fit solutions.", 
+                    cat: "alterations",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="7" width="20" height="10" rx="2" ry="2" />
+                        <line x1="6" y1="7" x2="6" y2="12" />
+                        <line x1="10" y1="7" x2="10" y2="12" />
+                        <line x1="14" y1="7" x2="14" y2="12" />
+                        <line x1="18" y1="7" x2="18" y2="12" />
+                      </svg>
+                    )
+                  }
+                ].map((category, idx) => (
+                  <div 
+                    key={idx} 
+                    className="category-card-v2" 
+                    onClick={() => {
+                      setCustomerCategory(category.cat);
+                      setCustomerHub('category-landing');
+                      setRole('customer');
+                    }}
+                    style={{
+                      background: theme === 'dark' ? '#1a1a2e' : '#ffffff',
+                      borderRadius: '16px',
+                      overflow: 'hidden',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9'}`,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      position: 'relative'
+                    }}
+                  >
+                    {/* Image wrapper */}
+                    <div style={{ position: 'relative', width: '100%', height: '160px', overflow: 'hidden' }}>
+                      <img 
+                        src={category.img} 
+                        alt={category.name} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      />
+                      {/* Overlapping Badge Icon */}
+                      <div 
+                        style={{
+                          position: 'absolute',
+                          left: '16px',
+                          bottom: '-18px',
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '8px',
+                          background: theme === 'dark' ? '#24243e' : '#ffffff',
+                          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'var(--primary)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                          zIndex: 10
+                        }}
+                      >
+                        {category.icon}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div style={{ padding: '24px 16px 16px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div>
+                        <h3 style={{ fontSize: '1.05rem', fontWeight: '800', color: 'var(--text-primary)', margin: '0 0 6px 0' }}>
+                          {category.name}
+                        </h3>
+                        <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.4' }}>
+                          {category.desc}
+                        </p>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontSize: '0.82rem', fontWeight: '700' }}>
+                        <span>Explore</span>
+                        <ChevronRight size={14} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
             </div>
           </section>
 
