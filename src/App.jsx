@@ -780,7 +780,6 @@ export default function App() {
               
               {/* Full-width Carousel Banner Card */}
               <div 
-                className="welcome-hero-banner-card" 
                 style={{ 
                   position: 'relative', 
                   overflow: 'hidden', 
@@ -792,10 +791,9 @@ export default function App() {
                   aspectRatio: '1024 / 315',
                   height: 'auto',
                   borderRadius: '16px',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.06)',
                   cursor: 'pointer',
                   border: 'none',
-                  background: '#f8fafc'
+                  background: 'transparent'
                 }}
                 onMouseEnter={() => setPauseLandingCarousel(true)}
                 onMouseLeave={() => setPauseLandingCarousel(false)}
@@ -861,12 +859,12 @@ export default function App() {
                   display: 'flex', 
                   justifyContent: 'space-around', 
                   alignItems: 'center',
-                  background: theme === 'dark' ? 'rgba(247, 37, 133, 0.06)' : '#FFF5F7', 
-                  border: `1px solid rgba(247, 37, 133, 0.15)`, 
+                  background: 'transparent', 
+                  border: 'none', 
                   borderRadius: '16px', 
-                  padding: '20px 16px', 
-                  marginTop: '20px',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.01)',
+                  padding: '16px 0', 
+                  marginTop: '16px',
+                  boxShadow: 'none',
                   flexWrap: 'wrap',
                   gap: '16px'
                 }}
@@ -888,8 +886,8 @@ export default function App() {
                       flex: 1,
                       justifyContent: 'center',
                       minWidth: '160px',
-                      borderRight: idx < 4 ? (theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(247, 37, 133, 0.12)') : 'none',
-                      paddingRight: idx < 4 ? '12px' : 0
+                      borderRight: 'none',
+                      paddingRight: 0
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '50%', background: item.bg, color: item.color, flexShrink: 0 }}>
