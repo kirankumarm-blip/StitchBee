@@ -862,8 +862,8 @@ export default function App() {
                   display: 'flex', 
                   justifyContent: 'space-around', 
                   alignItems: 'center',
-                  background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff', 
-                  border: `1px solid var(--border-color)`, 
+                  background: theme === 'dark' ? 'rgba(247, 37, 133, 0.06)' : '#FFF5F7', 
+                  border: `1px solid rgba(247, 37, 133, 0.15)`, 
                   borderRadius: '16px', 
                   padding: '20px 16px', 
                   marginTop: '20px',
@@ -872,55 +872,36 @@ export default function App() {
                   gap: '16px'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
-                    <Users size={18} />
+                {[
+                  { icon: <Users size={18} />, value: "500+", label: "Expert Tailors", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
+                  { icon: <Heart size={18} />, value: "50K+", label: "Happy Customers", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
+                  { icon: <Star size={18} />, value: "4.8 ★", label: "Average Rating", bg: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' },
+                  { icon: <ShieldCheck size={18} />, value: "100%", label: "Quality Assurance", bg: 'rgba(16, 185, 129, 0.1)', color: '#10b981' },
+                  { icon: <Headphones size={18} />, value: "24/7", label: "Customer Support", bg: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }
+                ].map((item, idx) => (
+                  <div 
+                    key={idx} 
+                    className="stats-bar-item"
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '12px',
+                      flex: 1,
+                      justifyContent: 'center',
+                      minWidth: '160px',
+                      borderRight: idx < 4 ? (theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(247, 37, 133, 0.12)') : 'none',
+                      paddingRight: idx < 4 ? '12px' : 0
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '38px', height: '38px', borderRadius: '50%', background: item.bg, color: item.color, flexShrink: 0 }}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>{item.value}</h4>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{item.label}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>500+</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Expert Tailors</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
-                    <Heart size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>50K+</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Happy Customers</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(251,191,36,0.15)', color: '#fbbf24' }}>
-                    <Star size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>4.8 ★</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Average Rating</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
-                    <ShieldCheck size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>100%</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Quality Assurance</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(6,182,212,0.1)', color: '#06b6d4' }}>
-                    <Headphones size={18} />
-                  </div>
-                  <div>
-                    <h4 style={{ fontSize: '1.15rem', fontWeight: '800', margin: 0, color: 'var(--text-primary)' }}>24/7</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Customer Support</span>
-                  </div>
-                </div>
+                ))}
               </div>
 
             </div>
