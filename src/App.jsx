@@ -790,7 +790,7 @@ export default function App() {
                   width: '100%',
                   aspectRatio: '1024 / 315',
                   height: 'auto',
-                  borderRadius: '16px',
+                  borderRadius: '0px',
                   cursor: 'pointer',
                   border: 'none',
                   background: 'transparent'
@@ -1027,6 +1027,62 @@ export default function App() {
                         <circle cx="12" cy="12" r="10" />
                         <line x1="12" y1="2" x2="12" y2="22" />
                         <line x1="2" y1="12" x2="22" y2="12" />
+                      </svg>
+                    )
+                  },
+                  {
+                    name: "Pets",
+                    img: "./Pets.png",
+                    desc: "Custom stitched dresses & outfits for your furry friends.",
+                    cat: "all",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                        <circle cx="7.5" cy="8.5" r="2.5" />
+                        <circle cx="12" cy="6" r="2.5" />
+                        <circle cx="16.5" cy="8.5" r="2.5" />
+                        <path d="M12 13c-2.5 0-4.5 2-4.5 4.5S9.5 22 12 22s4.5-2 4.5-4.5S14.5 13 12 13z" />
+                      </svg>
+                    )
+                  },
+                  {
+                    name: "Hand Made Gifts",
+                    img: "./why_join_4.png",
+                    desc: "Personalized stitching, fabric gifts & embroidered crafts.",
+                    cat: "all",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 12 20 22 4 22 4 12" />
+                        <rect x="2" y="7" width="20" height="5" />
+                        <line x1="12" y1="22" x2="12" y2="7" />
+                        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                      </svg>
+                    )
+                  },
+                  {
+                    name: "Bulk Orders",
+                    img: "./Uniform.png",
+                    desc: "Wholesale uniform stitching, corporate garments & event orders.",
+                    cat: "uniforms",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg>
+                    )
+                  },
+                  {
+                    name: "Sofas",
+                    img: "./Vehicle Seat Covers.png",
+                    desc: "Custom fitted sofa covers, cushions & upholstery stitching.",
+                    cat: "seats",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 10V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v5a4 4 0 0 0-4 4v4a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-4a4 4 0 0 0-4-4z" />
+                        <line x1="6" y1="18" x2="6" y2="21" />
+                        <line x1="18" y1="18" x2="18" y2="21" />
                       </svg>
                     )
                   }
