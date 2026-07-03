@@ -28,18 +28,17 @@ export default function App() {
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
   const [pauseLandingCarousel, setPauseLandingCarousel] = useState(false);
   const guestLandingBanners = [
-    '/banners/Banner1.png',
-    '/banners/Banner2.png',
-    '/banners/Banner3.jpg',
-    '/banners/Banner4.jpg',
-    '/banners/Banner5.jpg',
-    '/banners/Banner6.jpg',
-    '/banners/banner7.jpg',
-    '/banners/banner8.jpg',
-    '/banners/Banner9.png',
-    '/banners/Banner10.jpg',
-    '/banners/Banner11.jpg',
-    '/banners/Banner12.png'
+    '/banners/banner1.png',
+    '/banners/banner2.png',
+    '/banners/banner3.png',
+    '/banners/banner4.png',
+    '/banners/banner5.png',
+    '/banners/banner6.png',
+    '/banners/banner7.png',
+    '/banners/banner8.png',
+    '/banners/banner9.png',
+    '/banners/banner10.png',
+    '/banners/Banner11.png'
   ];
 
 
@@ -471,17 +470,17 @@ export default function App() {
   useEffect(() => {
     if (pauseLandingCarousel || role !== 'landing') return;
     const interval = setInterval(() => {
-      setCurrentLandingSlide((prev) => (prev + 1) % 12);
+      setCurrentLandingSlide((prev) => (prev + 1) % guestLandingBanners.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [pauseLandingCarousel, role]);
 
   const nextLandingSlide = () => {
-    setCurrentLandingSlide((prev) => (prev + 1) % 12);
+    setCurrentLandingSlide((prev) => (prev + 1) % guestLandingBanners.length);
   };
 
   const prevLandingSlide = () => {
-    setCurrentLandingSlide((prev) => (prev - 1 + 12) % 12);
+    setCurrentLandingSlide((prev) => (prev - 1 + guestLandingBanners.length) % guestLandingBanners.length);
   };
 
   const handleLandingBannerClick = () => {
