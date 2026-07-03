@@ -908,29 +908,30 @@ export default function App() {
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
               <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '2.0rem', fontWeight: '800', color: 'var(--text-primary)' }}>Choose from our wide range of custom tailoring services</h2>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick Service Categories</h2>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Select from our premium custom tailoring categories</p>
               </div>
             
-              <div className="categories-grid-v2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+              <div className="categories-grid-v2" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
                 {[
                   { 
-                    name: "Men's Ethnic Wear", 
+                    name: "Men's Tailoring", 
                     img: "./mens_tailoring.jpg", 
-                    desc: "Sherwani, Kurta Pajama, Nehru Jacket and more.", 
+                    desc: "Custom shirts, suits, trousers, kurtas & traditional wear.", 
                     cat: "mens",
                     icon: <span style={{ fontSize: '1.2rem', fontWeight: 'bold', lineHeight: 1 }}>♂</span>
                   },
                   { 
-                    name: "Women's Ethnic Wear", 
+                    name: "Women's Tailoring", 
                     img: "./womens_tailoring_v2.jpg", 
-                    desc: "Sarees, Lehengas, Anarkali, Suits and more.", 
+                    desc: "Stitched kurtis, lehengas, suits, and daily-wear ethnic outfits.", 
                     cat: "womens",
                     icon: <span style={{ fontSize: '1.2rem', fontWeight: 'bold', lineHeight: 1 }}>♀</span>
                   },
                   { 
                     name: "Bridal Wear", 
                     img: "./bridal_wear.jpg", 
-                    desc: "Exquisite bridal outfits for your special day.", 
+                    desc: "Exquisite wedding lehengas, heavy embroidered gowns, and luxury wear.", 
                     cat: "bridal",
                     icon: (
                       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -939,20 +940,9 @@ export default function App() {
                     )
                   },
                   { 
-                    name: "Custom Blouses", 
-                    img: "./w_women2.jpg", 
-                    desc: "Perfect fit blouses tailored to your style and comfort.", 
-                    cat: "womens",
-                    icon: (
-                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l1.08 5.4a2 2 0 00.99 1.42L9 15v5a2 2 0 002 2h2a2 2 0 002-2v-5l4.65-2.49a2 2 0 00.99-1.42l1.08-5.4a2 2 0 00-1.34-2.23z" />
-                      </svg>
-                    )
-                  },
-                  { 
                     name: "Alterations & Fit", 
                     img: "./alterations_fit_v2.jpg", 
-                    desc: "Resizing, alterations & perfect fit solutions.", 
+                    desc: "Expert alterations, sizing corrections, and perfect custom-fit styling.", 
                     cat: "alterations",
                     icon: (
                       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -961,6 +951,82 @@ export default function App() {
                         <line x1="10" y1="7" x2="10" y2="12" />
                         <line x1="14" y1="7" x2="14" y2="12" />
                         <line x1="18" y1="7" x2="18" y2="12" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Uniform Stitching", 
+                    img: "./uniform_stitching.jpg", 
+                    desc: "Perfect school, college, corporate and professional uniforms.", 
+                    cat: "uniforms",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l1.08 5.4a2 2 0 00.99 1.42L9 15v5a2 2 0 002 2h2a2 2 0 002-2v-5l4.65-2.49a2 2 0 00.99-1.42l1.08-5.4a2 2 0 00-1.34-2.23z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Custom Design", 
+                    img: "./custom_design.jpg", 
+                    desc: "Collaborate with designers for one-of-a-kind bespoke creations.", 
+                    cat: "all",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="6" cy="6" r="3" />
+                        <circle cx="6" cy="18" r="3" />
+                        <line x1="20" y1="4" x2="8.12" y2="15.88" />
+                        <line x1="14.47" y1="14.48" x2="20" y2="20" />
+                        <line x1="8.12" y1="8.12" x2="12" y2="12" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Kids Wear", 
+                    img: "./kids_wear_v2.jpg", 
+                    desc: "Comfortable and cute clothes for children of all ages.", 
+                    cat: "kids",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22a10 10 0 100-20 10 10 0 000 20z" />
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                        <line x1="9" y1="9" x2="9.01" y2="9" />
+                        <line x1="15" y1="9" x2="15.01" y2="9" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Bags & Leathers", 
+                    img: "./bags_leathers.jpg", 
+                    desc: "Premium tailored leather jackets, custom travel bags, and goods.", 
+                    cat: "bags",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="9" width="18" height="11" rx="2" ry="2" />
+                        <path d="M16 9V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v4" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Shoes & Slippers", 
+                    img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80", 
+                    desc: "Custom fitted boots, sandals, loafers and traditional footwear.", 
+                    cat: "shoes",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 12h18M3 12a9 9 0 009 9h6a3 3 0 003-3v-6a9 9 0 00-9-9H6a3 3 0 00-3 3v6z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    name: "Vehicle Seat Covers", 
+                    img: "./vehicle_seats.jpg", 
+                    desc: "Tailored car & bike seat covers, matching interior trims & styling.", 
+                    cat: "seats",
+                    icon: (
+                      <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="2" x2="12" y2="22" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
                       </svg>
                     )
                   }
