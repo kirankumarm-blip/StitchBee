@@ -4,7 +4,7 @@ import {
   Trash2, Clock, Send, MessageSquare, ShieldAlert, Calendar, ShieldCheck, Database, 
   Bell, Sun, Moon, Sparkles, Star, Edit, Upload, User, Video, MapPin, Map, CreditCard, 
   ChevronDown, ChevronRight, ChevronLeft, X, Info, Heart, List, HelpCircle, Activity, FileText, Filter, Users, Eye,
-  Layers, Sliders, Truck, Search
+  Layers, Sliders, Truck, Search, Mail, Smile
 } from 'lucide-react';
 
 export default function TailorView({ 
@@ -318,9 +318,53 @@ export default function TailorView({
 
   // Mock Reviews
   const [reviewsList, setReviewsList] = useState([
-    { id: 1, author: 'Priya Sharma', rating: 5, date: '1 week ago', text: 'Rajesh did an outstanding job on my wedding lehenga! The fit is perfect, and the zari work is extremely premium.' },
-    { id: 2, author: 'Amit Verma', rating: 4, date: '2 weeks ago', text: 'Great sherwani stitching, fits very well. Deliver was delayed by a couple of hours but overall very good service.' }
+    { 
+      id: 1, 
+      author: 'Priya Sharma', 
+      rating: 5, 
+      date: '1 week ago', 
+      orderNo: '#ORD-1024', 
+      tag: 'Wedding Lehenga', 
+      avatar: '/why_join_1.jpg',
+      text: 'Rajesh did an outstanding job on my wedding lehenga! The fit is perfect, and the zari work is extremely premium.' 
+    },
+    { 
+      id: 2, 
+      author: 'Amit Verma', 
+      rating: 4, 
+      date: '2 weeks ago', 
+      orderNo: '#ORD-1023', 
+      tag: 'Sherwani', 
+      avatar: '/tailor_hero_3.jpg',
+      text: 'Great sherwani stitching, fits very well. Deliver was delayed by a couple of hours but overall very good service.' 
+    },
+    { 
+      id: 3, 
+      author: 'Neha Singh', 
+      rating: 5, 
+      date: '3 weeks ago', 
+      orderNo: '#ORD-1022', 
+      tag: 'Blouse', 
+      avatar: '/why_join_2.jpg',
+      text: 'Loved the blouse stitching. The finishing and fitting is top notch. Highly recommended!' 
+    },
+    { 
+      id: 4, 
+      author: 'Rahul Mehta', 
+      rating: 5, 
+      date: '1 month ago', 
+      orderNo: '#ORD-1021', 
+      tag: 'Kurta Pajama', 
+      avatar: '/tailor_hero_4.jpg',
+      text: 'Very professional and polite. The kurta pajama stitching was perfect. Will definitely order again.' 
+    }
   ]);
+
+  // Tailor reviews tab filter & sort states
+  const [reviewsFilter, setReviewsFilter] = useState('all'); // 'all' | '5' | '4' | '3' | '1-2'
+  const [reviewsSort, setReviewsSort] = useState('latest'); // 'latest' | 'highest' | 'lowest'
+  const [reviewsDateRange, setReviewsDateRange] = useState('2 Jun - 8 Jun 2026');
+  const [showRequestReviewModal, setShowRequestReviewModal] = useState(false);
 
   // Handle stitching queue updates
   const handleUpdateProgress = (orderId, amount) => {
@@ -440,10 +484,12 @@ export default function TailorView({
             { id: 'dashboard', label: 'Dashboard' },
             { id: 'orders', label: 'Orders' },
             { id: 'measurements', label: 'Measurements' },
+            { id: 'inventory', label: 'Inventory' },
             { id: 'calendar', label: 'Calendar' },
             { id: 'earnings', label: 'Earnings' },
             { id: 'chat', label: 'Chat Center' },
-            { id: 'reviews', label: 'Reviews' }
+            { id: 'reviews', label: 'Reviews' },
+            { id: 'profile', label: 'Profile & Settings' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -3609,53 +3655,509 @@ export default function TailorView({
         )}
 
         {/* TAB 8: REVIEWS */}
-        {activeTab === 'reviews' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Ratings & Customer Feedback</h3>
+        {activeTab === 'reviews' && (() => {
+          const bgCard = theme === 'dark' ? '#120f26' : '#ffffff';
+          const borderColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0';
+          const colorTextPrimary = theme === 'dark' ? '#f3f4f6' : '#0f172a';
+          const colorTextSecondary = theme === 'dark' ? '#9ca3af' : '#475569';
+          const colorTextMuted = theme === 'dark' ? '#6b7280' : '#94a3b8';
+          const isDark = theme === 'dark';
 
-            {/* Overall summary */}
-            <div className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '40px', flexWrap: 'wrap' }}>
-              <div style={{ textAlign: 'center' }}>
-                <h4 style={{ margin: 0, fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)' }}>4.8</h4>
-                <div style={{ color: '#fbbf24', margin: '4px 0' }}>★★★★★</div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>120 Total Reviews</span>
-              </div>
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {[
-                  { star: '5 Stars', pct: '85%' },
-                  { star: '4 Stars', pct: '12%' },
-                  { star: '3 Stars', pct: '3%' },
-                  { star: '2 Stars', pct: '0%' },
-                  { star: '1 Star', pct: '0%' }
-                ].map((r, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem' }}>
-                    <span style={{ width: '50px' }}>{r.star}</span>
-                    <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ width: r.pct, height: '100%', background: '#fbbf24' }}></div>
-                    </div>
-                    <span style={{ width: '30px', textAlign: 'right' }}>{r.pct}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+          // Filter logic
+          const filteredReviews = reviewsList.filter(rev => {
+            if (reviewsFilter === 'all') return true;
+            if (reviewsFilter === '5') return rev.rating === 5;
+            if (reviewsFilter === '4') return rev.rating === 4;
+            if (reviewsFilter === '3') return rev.rating === 3;
+            if (reviewsFilter === '1-2') return rev.rating <= 2;
+            return true;
+          });
 
-            {/* Reviews list */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {reviewsList.map(review => (
-                <div key={review.id} className="glass-card-no-hover" style={{ padding: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <div>
-                      <strong style={{ fontSize: '0.85rem' }}>{review.author}</strong>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '10px' }}>{review.date}</span>
-                    </div>
-                    <span style={{ color: '#fbbf24' }}>{'★'.repeat(review.rating)}</span>
-                  </div>
-                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{review.text}</p>
+          // Sort logic
+          const sortedReviews = [...filteredReviews].sort((a, b) => {
+            if (reviewsSort === 'highest') return b.rating - a.rating;
+            if (reviewsSort === 'lowest') return a.rating - b.rating;
+            // Default latest (by ID/ordering)
+            return a.id - b.id;
+          });
+
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              
+              {/* PAGE TITLE AREA */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '800' }}>Customer Reviews & Ratings</h3>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>See what your customers say about your stitching services</span>
                 </div>
-              ))}
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.8rem' }}>
+                    <Calendar size={14} /> {reviewsDateRange} <ChevronDown size={14} />
+                  </button>
+                  <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.8rem' }} onClick={() => setShowFilterDropdown(!showFilterDropdown)}>
+                    <Filter size={14} /> Filter
+                  </button>
+                  <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px', fontSize: '0.8rem', fontWeight: 'bold', background: 'var(--primary)', border: 'none' }} onClick={() => setShowRequestReviewModal(true)}>
+                    <Mail size={14} /> Request Review
+                  </button>
+                </div>
+              </div>
+
+              {/* FOLD 1: SUMMARY CARDS (ROW OF 4 CARDS) */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
+                
+                {/* CARD 1: Overall Rating */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', height: '190px' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700', color: colorTextMuted }}>Overall Rating</span>
+                      <span style={{ fontSize: '0.75rem', background: 'rgba(247,37,133,0.08)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>Excellent</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '12px' }}>
+                      <h4 style={{ fontSize: '2.5rem', fontWeight: '800', margin: 0, color: colorTextPrimary }}>4.8</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ color: '#fbbf24', fontSize: '0.95rem' }}>★★★★★</span>
+                        <span style={{ fontSize: '0.68rem', color: colorTextMuted }}>120 Total Reviews</span>
+                      </div>
+                    </div>
+                  </div>
+                  {/* SVG Vector Gauge */}
+                  <div style={{ display: 'flex', justifyContent: 'center', height: '65px', overflow: 'hidden', marginTop: '-10px' }}>
+                    <svg viewBox="0 0 100 50" width="120px" height="60px">
+                      <defs>
+                        <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="#7209b7" />
+                          <stop offset="100%" stopColor="#f72585" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#e2e8f0'} strokeWidth="7" strokeLinecap="round" />
+                      <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="url(#gaugeGrad)" strokeWidth="7" strokeLinecap="round" strokeDasharray="110" strokeDashoffset="8" />
+                      <polygon points="50,22 52,27 58,27 53,30 55,36 50,33 45,36 47,30 42,27 48,27" fill="#f72585" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* CARD 2: Star Breakdown */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', height: '190px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    {[
+                      { star: '5 Stars', pct: '85%', count: '102 Reviews' },
+                      { star: '4 Stars', pct: '12%', count: '14 Reviews' },
+                      { star: '3 Stars', pct: '3%', count: '4 Reviews' },
+                      { star: '2 Stars', pct: '0%', count: '0 Reviews' },
+                      { star: '1 Star', pct: '0%', count: '0 Reviews' }
+                    ].map((r, idx) => (
+                      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.72rem' }}>
+                        <span style={{ width: '42px', color: colorTextSecondary, fontWeight: '600' }}>{r.star}</span>
+                        <div style={{ flex: 1, height: '6px', background: isDark ? 'rgba(255,255,255,0.05)' : '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
+                          <div style={{ width: r.pct, height: '100%', background: 'var(--primary)', borderRadius: '3px' }}></div>
+                        </div>
+                        <span style={{ width: '60px', color: colorTextMuted, textAlign: 'right', fontSize: '0.65rem' }}>{r.pct} ({r.count.split(' ')[0]})</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CARD 3: New Reviews */}
+                <div className="glass-card-no-hover" style={{ padding: '20px 20px 10px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', height: '190px', overflow: 'hidden' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700', color: colorTextMuted }}>New Reviews</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(114,9,183,0.1)', color: 'var(--secondary)' }}>
+                        <MessageSquare size={14} />
+                      </div>
+                    </div>
+                    <h4 style={{ fontSize: '2.0rem', fontWeight: '800', margin: '8px 0 0 0', color: colorTextPrimary }}>12</h4>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '0.72rem' }}>
+                      <span style={{ color: colorTextSecondary }}>This Week</span>
+                      <span style={{ color: '#10b981', fontWeight: '700' }}>↑ 20% from last week</span>
+                    </div>
+                  </div>
+                  {/* Real Vector Sparkline */}
+                  <div style={{ height: '60px', width: 'calc(100% + 40px)', margin: '0 -20px -10px -20px' }}>
+                    <svg viewBox="0 0 200 60" width="100%" height="100%" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="purpleSpark" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#7209b7" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="#7209b7" stopOpacity="0.00" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 0 50 C 30 45, 60 55, 90 40 C 120 25, 150 45, 200 20 L 200 60 L 0 60 Z" fill="url(#purpleSpark)" />
+                      <path d="M 0 50 C 30 45, 60 55, 90 40 C 120 25, 150 45, 200 20" fill="none" stroke="#7209b7" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* CARD 4: Happy Customers */}
+                <div className="glass-card-no-hover" style={{ padding: '20px 20px 10px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', height: '190px', overflow: 'hidden' }}>
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.78rem', fontWeight: '700', color: colorTextMuted }}>Happy Customers</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
+                        <Smile size={14} />
+                      </div>
+                    </div>
+                    <h4 style={{ fontSize: '2.0rem', fontWeight: '800', margin: '8px 0 0 0', color: colorTextPrimary }}>98%</h4>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '0.72rem' }}>
+                      <span style={{ color: colorTextSecondary }}>Would recommend you</span>
+                      <span style={{ color: '#10b981', fontWeight: '700' }}>↑ 8% from last week</span>
+                    </div>
+                  </div>
+                  {/* Real Vector Sparkline */}
+                  <div style={{ height: '60px', width: 'calc(100% + 40px)', margin: '0 -20px -10px -20px' }}>
+                    <svg viewBox="0 0 200 60" width="100%" height="100%" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="greenSpark" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="#10b981" stopOpacity="0.00" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 0 45 C 35 48, 70 38, 105 42 C 140 45, 170 25, 200 15 L 200 60 L 0 60 Z" fill="url(#greenSpark)" />
+                      <path d="M 0 45 C 35 48, 70 38, 105 42 C 140 45, 170 25, 200 15" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* BOTTOM GRID SPLIT LAYOUT */}
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px', alignItems: 'start' }} className="reviews-bottom-grid">
+                
+                {/* LEFT COLUMN: RECENT REVIEWS */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <div className="glass-card-no-hover" style={{ padding: '24px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
+                    
+                    {/* Header + Filter Tabs + Sort Dropdown */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '16px', marginBottom: '16px' }}>
+                      <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary }}>Recent Reviews</h4>
+                      
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                        {/* Star categories tabs */}
+                        <div style={{ display: 'flex', background: isDark ? 'rgba(255,255,255,0.02)' : '#f1f5f9', padding: '3px', borderRadius: '8px', border: `1px solid ${borderColor}` }}>
+                          {[
+                            { id: 'all', label: `All (${reviewsList.length})` },
+                            { id: '5', label: `5 ★ (${reviewsList.filter(r => r.rating === 5).length})` },
+                            { id: '4', label: `4 ★ (${reviewsList.filter(r => r.rating === 4).length})` },
+                            { id: '3', label: `3 ★ (${reviewsList.filter(r => r.rating === 3).length})` },
+                            { id: '1-2', label: `1-2 ★ (${reviewsList.filter(r => r.rating <= 2).length})` }
+                          ].map(tab => (
+                            <button
+                              key={tab.id}
+                              onClick={() => setReviewsFilter(tab.id)}
+                              style={{
+                                padding: '4px 10px',
+                                fontSize: '0.7rem',
+                                fontWeight: '700',
+                                border: 'none',
+                                background: reviewsFilter === tab.id ? (isDark ? 'var(--primary)' : '#ffffff') : 'transparent',
+                                color: reviewsFilter === tab.id ? (isDark ? '#ffffff' : 'var(--primary)') : colorTextMuted,
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                boxShadow: reviewsFilter === tab.id && !isDark ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                                transition: 'all 0.2s'
+                              }}
+                            >
+                              {tab.label}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Sort selector dropdown */}
+                        <select 
+                          className="form-select" 
+                          style={{ width: '100px', fontSize: '0.72rem', padding: '6px 10px', height: '28px' }}
+                          value={reviewsSort}
+                          onChange={e => setReviewsSort(e.target.value)}
+                        >
+                          <option value="latest">Latest</option>
+                          <option value="highest">Highest</option>
+                          <option value="lowest">Lowest</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* REVIEWS LIST */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {sortedReviews.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '40px 0', color: colorTextMuted }}>
+                          <MessageSquare size={32} style={{ marginBottom: '10px', opacity: 0.5 }} />
+                          <p style={{ margin: 0, fontSize: '0.85rem' }}>No reviews match the selected star filter.</p>
+                        </div>
+                      ) : (
+                        sortedReviews.map(review => (
+                          <div 
+                            key={review.id} 
+                            style={{ 
+                              display: 'flex', 
+                              gap: '16px', 
+                              paddingBottom: '16px', 
+                              borderBottom: `1px solid ${borderColor}`,
+                              position: 'relative'
+                            }}
+                          >
+                            {/* Avatar */}
+                            <div style={{ width: '44px', height: '44px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: `2px solid ${borderColor}` }}>
+                              <img src={review.avatar} alt={review.author} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </div>
+
+                            {/* Content body */}
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div>
+                                  <strong style={{ fontSize: '0.88rem', color: colorTextPrimary }}>{review.author}</strong>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold' }}>{review.orderNo}</span>
+                                    <span style={{ fontSize: '0.65rem', background: 'rgba(16,185,129,0.08)', color: '#10b981', padding: '1px 6px', borderRadius: '4px', fontWeight: 'bold' }}>✓ Verified Customer</span>
+                                  </div>
+                                </div>
+                                <span style={{ fontSize: '0.72rem', color: colorTextMuted }}>{review.date}</span>
+                              </div>
+
+                              {/* Stars rating */}
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                                <span style={{ color: '#fbbf24', fontSize: '0.88rem', letterSpacing: '2px' }}>
+                                  {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+                                </span>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: colorTextPrimary }}>{review.rating.toFixed(1)}</span>
+                              </div>
+
+                              {/* Review Text */}
+                              <p style={{ margin: '0 0 10px 0', fontSize: '0.82rem', color: colorTextSecondary, lineHeight: '1.5' }}>{review.text}</p>
+                              
+                              {/* Tag pill */}
+                              {review.tag && (
+                                <span style={{ fontSize: '0.7rem', background: isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9', color: colorTextSecondary, padding: '4px 10px', borderRadius: '20px', border: `1px solid ${borderColor}` }}>
+                                  {review.tag}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Options dropdown button */}
+                            <button 
+                              style={{ background: 'transparent', border: 'none', color: colorTextMuted, cursor: 'pointer', padding: '4px' }} 
+                              onClick={() => alert(`Options for review by ${review.author}`)}
+                            >
+                              ⋮
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    {/* View All Reviews Button */}
+                    <div style={{ textAlign: 'center', marginTop: '16px' }}>
+                      <button className="btn btn-ghost" style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 'bold' }} onClick={() => alert("Showing all reviews database records...")}>
+                        View All Reviews <ChevronDown size={14} />
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* RIGHT COLUMN: INSIGHTS SIDEBAR */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  
+                  {/* WIDGET 1: Rating Breakdown */}
+                  <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Rating Breakdown</h4>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '600', cursor: 'pointer' }} onClick={() => alert("Stars distribution detailed sheet")}>View Details</span>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '16px' }}>
+                      <h3 style={{ fontSize: '2.0rem', fontWeight: '800', margin: 0, color: colorTextPrimary }}>4.8</h3>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ color: '#fbbf24', fontSize: '0.85rem' }}>★★★★★</span>
+                        <span style={{ fontSize: '0.65rem', color: colorTextMuted }}>120 Total Reviews</span>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {[
+                        { label: '5 Stars', pct: 85, color: 'var(--primary)', count: '102' },
+                        { label: '4 Stars', pct: 12, color: 'var(--primary)', count: '14' },
+                        { label: '3 Stars', pct: 3, color: 'var(--primary)', count: '4' },
+                        { label: '2 Stars', pct: 0, color: '#94a3b8', count: '0' },
+                        { label: '1 Star', pct: 0, color: '#94a3b8', count: '0' }
+                      ].map((star, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.72rem' }}>
+                          <span style={{ width: '40px', color: colorTextSecondary }}>{star.label}</span>
+                          <div style={{ flex: 1, height: '4px', background: isDark ? 'rgba(255,255,255,0.05)' : '#f1f5f9', borderRadius: '2px' }}>
+                            <div style={{ width: `${star.pct}%`, height: '100%', background: star.color, borderRadius: '2px' }}></div>
+                          </div>
+                          <span style={{ width: '45px', color: colorTextMuted, textAlign: 'right', fontSize: '0.68rem' }}>{star.count} ({star.pct}%)</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* WIDGET 2: What Customers Love */}
+                  <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>What Customers Love</h4>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '600', cursor: 'pointer' }} onClick={() => alert("Customer feedback analysis")}>View All</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {[
+                        { title: 'Quality of Stitching', desc: '96% customers rated 5 stars', bg: 'rgba(247,37,133,0.1)', color: 'var(--primary)', icon: <Scissors size={14} /> },
+                        { title: 'Perfect Fit', desc: '93% customers rated 5 stars', bg: 'rgba(114,9,183,0.1)', color: 'var(--secondary)', icon: <Layers size={14} /> },
+                        { title: 'On-time Delivery', desc: '90% customers rated 5 stars', bg: 'rgba(251,191,36,0.15)', color: '#fbbf24', icon: <Clock size={14} /> }
+                      ].map((love, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '50%', background: love.bg, color: love.color, flexShrink: 0 }}>
+                            {love.icon}
+                          </div>
+                          <div>
+                            <h5 style={{ margin: 0, fontSize: '0.8rem', fontWeight: '800', color: colorTextPrimary }}>{love.title}</h5>
+                            <span style={{ fontSize: '0.68rem', color: colorTextMuted }}>{love.desc}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* WIDGET 3: Need More Reviews Promo */}
+                  <div 
+                    style={{ 
+                      padding: '20px', 
+                      background: isDark ? 'linear-gradient(135deg, rgba(247,37,133,0.06) 0%, rgba(114,9,183,0.06) 100%)' : '#FFF0F5', 
+                      border: `1.5px dashed rgba(247,37,133,0.25)`, 
+                      borderRadius: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '12px',
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <h4 style={{ margin: '0 0 4px 0', fontSize: '0.9rem', fontWeight: '800', color: 'var(--primary)' }}>Need More Reviews?</h4>
+                      <p style={{ margin: '0 0 16px 0', fontSize: '0.72rem', color: colorTextSecondary, lineHeight: '1.4' }}>Request reviews from your recent customers to boost storefront rankings.</p>
+                      
+                      <button 
+                        className="btn btn-secondary" 
+                        style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '6px', 
+                          padding: '6px 12px', 
+                          fontSize: '0.75rem', 
+                          fontWeight: 'bold', 
+                          border: `1px solid var(--primary)`, 
+                          color: 'var(--primary)',
+                          background: 'transparent'
+                        }}
+                        onClick={() => setShowRequestReviewModal(true)}
+                      >
+                        <Mail size={12} /> Request Review
+                      </button>
+                    </div>
+
+                    {/* Decorative Envelope Graphic */}
+                    <div style={{ position: 'relative', width: '70px', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ fontSize: '2.5rem', transform: 'rotate(15deg)', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>✉️</div>
+                      <div style={{ position: 'absolute', top: '10px', right: '5px', fontSize: '0.8rem' }}>⭐</div>
+                      <div style={{ position: 'absolute', bottom: '10px', left: '0px', fontSize: '0.8rem' }}>⭐</div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* REQUEST REVIEW MODAL POPUP */}
+              {showRequestReviewModal && (
+                <div style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(0, 0, 0, 0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 9999,
+                  padding: '20px'
+                }}>
+                  <div style={{
+                    background: bgCard,
+                    border: `1px solid ${borderColor}`,
+                    borderRadius: '16px',
+                    padding: '24px',
+                    width: '100%',
+                    maxWidth: '440px',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '800', color: colorTextPrimary }}>Request Customer Review</h4>
+                      <button 
+                        style={{ background: 'transparent', border: 'none', fontSize: '1.25rem', color: colorTextMuted, cursor: 'pointer' }}
+                        onClick={() => setShowRequestReviewModal(false)}
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                    <p style={{ margin: 0, fontSize: '0.8rem', color: colorTextSecondary, lineHeight: '1.5' }}>
+                      Choose a customer from your recent orders to send an automated review link via SMS, email, and app notification.
+                    </p>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '200px', overflowY: 'auto' }}>
+                      {[
+                        { name: 'Ananya Goel', order: '#ORD-1025', date: 'Yesterday' },
+                        { name: 'Priya Sen', order: '#ORD-1020', date: '3 days ago' },
+                        { name: 'Megha Reddy', order: '#ORD-1018', date: '1 week ago' },
+                        { name: 'Sanjay Mehta', order: '#ORD-1015', date: '2 weeks ago' }
+                      ].map((cust, idx) => (
+                        <div 
+                          key={idx} 
+                          style={{ 
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            alignItems: 'center', 
+                            padding: '10px 12px', 
+                            border: `1px solid ${borderColor}`, 
+                            borderRadius: '8px',
+                            background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc'
+                          }}
+                        >
+                          <div>
+                            <strong style={{ fontSize: '0.82rem', color: colorTextPrimary, display: 'block' }}>{cust.name}</strong>
+                            <span style={{ fontSize: '0.68rem', color: colorTextMuted }}>Order: {cust.order} • Completed {cust.date}</span>
+                          </div>
+                          <button 
+                            className="btn btn-primary" 
+                            style={{ padding: '6px 12px', fontSize: '0.72rem', fontWeight: 'bold' }}
+                            onClick={() => {
+                              alert(`Review request notification successfully sent to ${cust.name}!`);
+                              setShowRequestReviewModal(false);
+                            }}
+                          >
+                            Send
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
+                      <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.8rem' }} onClick={() => setShowRequestReviewModal(false)}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* TAB 9: PROFILE & SETTINGS */}
         {activeTab === 'profile' && (
