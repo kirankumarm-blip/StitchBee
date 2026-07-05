@@ -298,7 +298,7 @@ export default function TailorView({
   const [chatFilter, setChatFilter] = useState('all'); // 'all' | 'unread' | 'priority' | 'groups'
   const [rightSidebarTab, setRightSidebarTab] = useState('details'); // 'details' | 'timeline' | 'files' | 'ai_assistant'
   const [showQuickReplies, setShowQuickReplies] = useState(false);
-  const [mobileChatView, setMobileChatView] = useState('middle'); // 'left' | 'middle' | 'right'
+  const [mobileChatView, setMobileChatView] = useState('left'); // 'left' | 'middle' | 'right'
 
   const [chatHistory, setChatHistory] = useState({
     priya: [
@@ -3681,17 +3681,6 @@ export default function TailorView({
           return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: 'calc(100vh - 120px)' }}>
               
-              {/* Header Storefront Indicator */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', background: bgCard, border: `1px solid ${borderColor}`, padding: '10px 20px', borderRadius: '12px' }}>
-                <span style={{ fontSize: '0.82rem', color: colorTextSecondary, fontWeight: '700' }}>
-                  Storefront: Vogue Craft Tailors <span style={{ color: 'var(--primary)', cursor: 'pointer', marginLeft: '4px' }}>View Store →</span>
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                  <span style={{ color: colorTextSecondary }}>🪙 Credits Balance: ₹150</span>
-                  <span style={{ color: '#10b981' }}>✓ VERIFIED PARTNER</span>
-                </div>
-              </div>
-
               {/* Responsive main layout container */}
               <div 
                 style={{ 
@@ -3702,7 +3691,7 @@ export default function TailorView({
                   overflow: 'hidden',
                   position: 'relative'
                 }}
-                className="chat-center-grid-layout"
+                className={`chat-center-grid-layout mobile-view-${mobileChatView}`}
               >
                 
                 {/* 1. LEFT COLUMN: CHAT LIST SIDEBAR */}
@@ -4214,6 +4203,17 @@ export default function TailorView({
                   className="chat-sidebar-right"
                 >
                   
+                  {/* Mobile Back trigger in right sidebar */}
+                  <div className="mobile-only-chat-trigger" style={{ padding: '8px 16px', borderBottom: `1px solid ${borderColor}`, alignItems: 'center', gap: '8px', background: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc', width: '100%' }}>
+                    <button 
+                      className="btn btn-ghost" 
+                      style={{ padding: '6px 12px', fontSize: '0.75rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--primary)' }}
+                      onClick={() => setMobileChatView('middle')}
+                    >
+                      ← Back to Chat
+                    </button>
+                  </div>
+
                   {/* Tabs header */}
                   <div style={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
                     {[
@@ -4668,11 +4668,11 @@ export default function TailorView({
                                 fontSize: '0.7rem',
                                 fontWeight: '700',
                                 border: 'none',
-                                background: reviewsFilter === tab.id ? (isDark ? 'var(--primary)' : '#ffffff') : 'transparent',
-                                color: reviewsFilter === tab.id ? (isDark ? '#ffffff' : 'var(--primary)') : colorTextMuted,
+                                background: reviewsFilter === tab.id ? 'var(--primary)' : 'transparent',
+                                color: reviewsFilter === tab.id ? '#ffffff' : colorTextMuted,
                                 borderRadius: '6px',
                                 cursor: 'pointer',
-                                boxShadow: reviewsFilter === tab.id && !isDark ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                                boxShadow: reviewsFilter === tab.id ? '0 2px 4px rgba(247,37,133,0.2)' : 'none',
                                 transition: 'all 0.2s'
                               }}
                             >

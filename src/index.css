@@ -6150,6 +6150,43 @@ body.light-theme .customer-scroll-list::-webkit-scrollbar-thumb {
   }
 }
 
+/* Responsive Chat Center Styles */
+.mobile-only-chat-trigger {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .mobile-only-chat-trigger {
+    display: inline-flex !important;
+  }
+  
+  .chat-center-grid-layout {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* If mobileChatView is NOT left, hide left sidebar */
+  .chat-center-grid-layout.mobile-view-middle .chat-sidebar-left,
+  .chat-center-grid-layout.mobile-view-right .chat-sidebar-left {
+    display: none !important;
+  }
+  
+  /* If mobileChatView is NOT middle, hide middle workspace */
+  .chat-center-grid-layout.mobile-view-left .chat-workspace-middle,
+  .chat-center-grid-layout.mobile-view-right .chat-workspace-middle {
+    display: none !important;
+  }
+  
+  /* If mobileChatView is NOT right, hide right sidebar */
+  .chat-center-grid-layout.mobile-view-left .chat-sidebar-right,
+  .chat-center-grid-layout.mobile-view-middle .chat-sidebar-right {
+    display: none !important;
+  }
+  
+  .reviews-bottom-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 
 
 
