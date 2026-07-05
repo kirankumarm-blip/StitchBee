@@ -4,7 +4,7 @@ import {
   Trash2, Clock, Send, MessageSquare, ShieldAlert, Calendar, ShieldCheck, Database, 
   Bell, Sun, Moon, Sparkles, Star, Edit, Upload, User, Video, MapPin, Map, CreditCard, 
   ChevronDown, ChevronRight, ChevronLeft, X, Info, Heart, List, HelpCircle, Activity, FileText, Filter, Users, Eye,
-  Layers, Sliders, Truck, Search, Mail, Smile
+  Layers, Sliders, Truck, Search, Mail, Smile, Phone, Paperclip
 } from 'lucide-react';
 
 export default function TailorView({ 
@@ -293,18 +293,45 @@ export default function TailorView({
 
   // Chat window state
   const [typedMessage, setTypedMessage] = useState('');
-  const [activeChatLogs, setActiveChatLogs] = useState({
-    customer: [
-      { sender: 'customer', text: 'Hi, is my suit stitching ready?', time: '14:24' },
-      { sender: 'tailor', text: 'Stitching is in progress, our student agent will deliver it soon.', time: '14:26' }
+  const [activeChatUser, setActiveChatUser] = useState('priya'); // 'priya' | 'amit' | 'sneha' | 'neha' | 'rahul' | 'admin_support' | 'delivery_partner' | 'ai_assistant'
+  const [chatSearch, setChatSearch] = useState('');
+  const [chatFilter, setChatFilter] = useState('all'); // 'all' | 'unread' | 'priority' | 'groups'
+  const [rightSidebarTab, setRightSidebarTab] = useState('details'); // 'details' | 'timeline' | 'files' | 'ai_assistant'
+  const [showQuickReplies, setShowQuickReplies] = useState(false);
+  const [mobileChatView, setMobileChatView] = useState('middle'); // 'left' | 'middle' | 'right'
+
+  const [chatHistory, setChatHistory] = useState({
+    priya: [
+      { sender: 'customer', text: 'Hi, is my suit stitching ready?', time: '11:30 AM' },
+      { sender: 'tailor', text: "Hello Priya! \uD83D\uDE0A Yes, your stitching is completed. We're doing final quality check. We will share photos with you shortly.", time: '11:32 AM', status: 'read' },
+      { sender: 'tailor', type: 'order-card', orderNo: '#SB-1024', status: 'In Progress', item: 'Bridal Lehenga', desc: 'Peach • Net Fabric', progress: 80, due: '22 Jun 2024', amount: '₹8,500', time: '11:33 AM', statusCheck: 'read' }
     ],
-    admin: [
-      { sender: 'admin', text: 'Please verify your Aadhaar card details.', time: '10:00' },
-      { sender: 'tailor', text: 'Documents uploaded, please approve shop.', time: '10:05' }
+    amit: [
+      { sender: 'customer', text: 'Thanks! Please share the final photo when completed.', time: 'Yesterday' },
+      { sender: 'tailor', text: 'Sure Amit, will share it by tomorrow afternoon.', time: 'Yesterday', status: 'read' }
     ],
-    delivery: [
-      { sender: 'delivery', text: 'Arrived at the shop to pick up Order #ORD-1023.', time: '11:15' },
-      { sender: 'tailor', text: 'Great, here is the package and customer invoice.', time: '11:17' }
+    sneha: [
+      { sender: 'customer', text: 'Payment received, thank you!', time: 'Yesterday' },
+      { sender: 'tailor', text: 'Great! Your delivery has been dispatched.', time: 'Yesterday', status: 'read' }
+    ],
+    neha: [
+      { sender: 'customer', text: 'Please call me when free.', time: '2 days ago' },
+      { sender: 'tailor', text: 'Will call you in 10 minutes.', time: '2 days ago', status: 'read' }
+    ],
+    rahul: [
+      { sender: 'customer', text: 'Ok, noted. See you tomorrow.', time: '2 days ago' },
+      { sender: 'tailor', text: 'Perfect, see you.', time: '2 days ago', status: 'read' }
+    ],
+    admin_support: [
+      { sender: 'admin', text: 'Aadhaar card verification completed. Shop status is active.', time: '3 days ago' },
+      { sender: 'tailor', text: 'Thank you for the verification approval.', time: '3 days ago', status: 'read' }
+    ],
+    delivery_partner: [
+      { sender: 'delivery', text: 'I am on my way to deliver Order #SB-1024.', time: 'Today' },
+      { sender: 'tailor', text: 'Excellent, the package is ready at the shop.', time: 'Today', status: 'read' }
+    ],
+    ai_assistant: [
+      { sender: 'ai', text: 'Hello! I am your StitchBee AI Assistant. How can I help you manage your stitching orders today?', time: 'Today' }
     ]
   });
 
@@ -448,14 +475,37 @@ export default function TailorView({
   const handleSendMessage = () => {
     if (!typedMessage) return;
     const now = new Date();
-    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-    const newMsg = { sender: 'tailor', text: typedMessage, time: timeStr };
+    const hrs = now.getHours();
+    const mins = now.getMinutes().toString().padStart(2, '0');
+    const ampm = hrs >= 12 ? 'PM' : 'AM';
+    const hr12 = hrs % 12 || 12;
+    const timeStr = `${hr12}:${mins} ${ampm}`;
+    const newMsg = { sender: 'tailor', text: typedMessage, time: timeStr, status: 'read' };
 
-    setActiveChatLogs({
-      ...activeChatLogs,
-      [chatSubTab]: [...activeChatLogs[chatSubTab], newMsg]
-    });
+    setChatHistory(prev => ({
+      ...prev,
+      [activeChatUser]: [...(prev[activeChatUser] || []), newMsg]
+    }));
     setTypedMessage('');
+
+    // Simulated auto-reply
+    setTimeout(() => {
+      let replyText = "Alright! Let me double check that and get back to you.";
+      if (activeChatUser === 'ai_assistant') {
+        replyText = "I've analyzed your request. I can assist in setting order status updates, calculating measurements, or reviewing fabric options.";
+      }
+      const replyMsg = { 
+        sender: activeChatUser === 'ai_assistant' ? 'ai' : 
+                (activeChatUser === 'admin_support' ? 'admin' : 
+                 (activeChatUser === 'delivery_partner' ? 'delivery' : 'customer')), 
+        text: replyText, 
+        time: timeStr 
+      };
+      setChatHistory(prev => ({
+        ...prev,
+        [activeChatUser]: [...(prev[activeChatUser] || []), replyMsg]
+      }));
+    }, 1500);
   };
 
   return (
@@ -3591,68 +3641,836 @@ export default function TailorView({
         })()}
 
         {/* TAB 7: CHAT CENTER */}
-        {activeTab === 'chat' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>StitchBee Tailor Chat Center</h3>
-            <div className="glass-card-no-hover" style={{ padding: '20px', display: 'grid', gridTemplateColumns: '200px 1fr', gap: '20px', height: '480px' }}>
-              {/* Chat Categories sidebar */}
-              <div style={{ borderRight: '1px solid var(--border-color)', paddingRight: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {[
-                  { id: 'customer', label: 'Customer Chats', icon: <User size={16} /> },
-                  { id: 'admin', label: 'Admin Support', icon: <ShieldAlert size={16} /> },
-                  { id: 'delivery', label: 'Delivery Partner', icon: <Truck size={16} /> }
-                ].map(sub => (
-                  <button
-                    key={sub.id}
-                    className={`btn ${chatSubTab === sub.id ? 'btn-primary' : 'btn-ghost'}`}
-                    style={{ padding: '10px', fontSize: '0.8rem', width: '100%', justifyContent: 'flex-start', gap: '8px' }}
-                    onClick={() => setChatSubTab(sub.id)}
-                  >
-                    {sub.icon}
-                    {sub.label}
-                  </button>
-                ))}
+        {activeTab === 'chat' && (() => {
+          const bgCard = theme === 'dark' ? '#120f26' : '#ffffff';
+          const borderColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0';
+          const colorTextPrimary = theme === 'dark' ? '#f3f4f6' : '#0f172a';
+          const colorTextSecondary = theme === 'dark' ? '#9ca3af' : '#475569';
+          const colorTextMuted = theme === 'dark' ? '#6b7280' : '#94a3b8';
+          const isDark = theme === 'dark';
+
+          // Contacts database
+          const contacts = [
+            { id: 'priya', name: 'Priya Sharma', avatar: '/why_join_1.jpg', lastMsg: 'Is my suit stitching ready?', orderNo: 'Order #SB-1024', time: '2m ago', unread: 3, online: true, category: 'customer', phone: '+91 98765 43210', email: 'priya.sharma@email.com', address: 'Mumbai, Maharashtra', tag: 'Premium Customer', total: '₹8,500', garment: 'Bridal Lehenga', fabric: 'Peach • Net Fabric', due: '22 Jun 2024' },
+            { id: 'amit', name: 'Amit Verma', avatar: '/tailor_hero_3.jpg', lastMsg: 'Thanks! Please share the final...', orderNo: 'Order #SB-0998', time: 'Yesterday', unread: 1, online: true, category: 'customer', phone: '+91 98765 43222', email: 'amit.verma@email.com', address: 'Pune, Maharashtra', tag: 'Regular Customer', total: '₹4,200', garment: 'Sherwani', fabric: 'Gold • Silk Fabric', due: '30 Jun 2024' },
+            { id: 'sneha', name: 'Sneha Iyer', avatar: '/why_join_2.jpg', lastMsg: 'Payment received, thank you!', orderNo: 'Order #SB-0987', time: 'Yesterday', unread: 0, online: false, category: 'customer', phone: '+91 98765 43233', email: 'sneha.iyer@email.com', address: 'Thane, Maharashtra', tag: 'New Customer', total: '₹2,100', garment: 'Blouse', fabric: 'Red • Cotton Fabric', due: '28 Jun 2024' },
+            { id: 'neha', name: 'Neha Kapoor', avatar: '/why_join_3.jpg', lastMsg: 'Please call me when free.', orderNo: 'Order #SB-1011', time: '2 days ago', unread: 0, online: false, category: 'customer', phone: '+91 98765 43244', email: 'neha.kapoor@email.com', address: 'Mumbai, Maharashtra', tag: 'Regular Customer', total: '₹3,500', garment: 'Anarkali Suit', fabric: 'Blue • Georgette', due: '05 Jul 2024' },
+            { id: 'rahul', name: 'Rahul Mehta', avatar: '/tailor_hero_4.jpg', lastMsg: 'Ok, noted. See you tomorrow.', orderNo: 'Order #SB-1003', time: '2 days ago', unread: 0, online: false, category: 'customer', phone: '+91 98765 43255', email: 'rahul.mehta@email.com', address: 'Mumbai, Maharashtra', tag: 'Regular Customer', total: '₹1,800', garment: 'Kurta Pajama', fabric: 'White • Linen', due: '12 Jul 2024' }
+          ];
+
+          const groupsSupport = [
+            { id: 'admin_support', name: 'Admin Support', avatar: '🛡️', lastMsg: 'Aadhaar card verification completed. Shop status is active.', time: '3 days ago', unread: 2, category: 'support' },
+            { id: 'delivery_partner', name: 'Delivery Partner', avatar: '🛵', lastMsg: 'I am on my way to deliver Order #SB-1024.', time: 'Today', unread: 1, category: 'support' },
+            { id: 'ai_assistant', name: 'AI Assistant', avatar: '🤖', lastMsg: 'Hello! I am your StitchBee AI Assistant.', time: 'Today', unread: 0, category: 'support' }
+          ];
+
+          const activeContact = [...contacts, ...groupsSupport].find(c => c.id === activeChatUser) || contacts[0];
+
+          // Filter contact list
+          const filteredContacts = contacts.filter(c => {
+            const matchesSearch = c.name.toLowerCase().includes(chatSearch.toLowerCase()) || c.orderNo.toLowerCase().includes(chatSearch.toLowerCase());
+            if (!matchesSearch) return false;
+            if (chatFilter === 'all') return true;
+            if (chatFilter === 'unread') return c.unread > 0;
+            if (chatFilter === 'priority') return c.tag === 'Premium Customer';
+            return true;
+          });
+
+          const currentMessages = chatHistory[activeChatUser] || [];
+
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: 'calc(100vh - 120px)' }}>
+              
+              {/* Header Storefront Indicator */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', background: bgCard, border: `1px solid ${borderColor}`, padding: '10px 20px', borderRadius: '12px' }}>
+                <span style={{ fontSize: '0.82rem', color: colorTextSecondary, fontWeight: '700' }}>
+                  Storefront: Vogue Craft Tailors <span style={{ color: 'var(--primary)', cursor: 'pointer', marginLeft: '4px' }}>View Store →</span>
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                  <span style={{ color: colorTextSecondary }}>🪙 Credits Balance: ₹150</span>
+                  <span style={{ color: '#10b981' }}>✓ VERIFIED PARTNER</span>
+                </div>
               </div>
 
-              {/* Chat logs feed */}
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                <div style={{ flex: 1, overflowY: 'auto', padding: '14px', background: 'rgba(0,0,0,0.15)', borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '14px' }}>
-                  {activeChatLogs[chatSubTab].map((msg, idx) => (
-                    <div key={idx} style={{ alignSelf: msg.sender === 'tailor' ? 'flex-end' : 'flex-start', maxWidth: '70%' }}>
-                      <div 
+              {/* Responsive main layout container */}
+              <div 
+                style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: '280px 1fr 300px', 
+                  gap: '16px', 
+                  height: '100%', 
+                  overflow: 'hidden',
+                  position: 'relative'
+                }}
+                className="chat-center-grid-layout"
+              >
+                
+                {/* 1. LEFT COLUMN: CHAT LIST SIDEBAR */}
+                <div 
+                  style={{ 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '16px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    overflow: 'hidden',
+                    height: '100%'
+                  }}
+                  className="chat-sidebar-left"
+                >
+                  {/* Search Bar */}
+                  <div style={{ padding: '16px 16px 8px 16px', position: 'relative' }}>
+                    <div style={{ position: 'relative' }}>
+                      <input 
+                        type="text" 
+                        placeholder="Search customers..." 
+                        className="form-input" 
+                        value={chatSearch}
+                        onChange={e => setChatSearch(e.target.value)}
+                        style={{ width: '100%', paddingLeft: '32px', fontSize: '0.8rem', height: '36px' }}
+                      />
+                      <Search size={14} style={{ position: 'absolute', left: '10px', top: '11px', color: colorTextMuted }} />
+                      <Filter size={14} style={{ position: 'absolute', right: '10px', top: '11px', color: colorTextMuted, cursor: 'pointer' }} onClick={() => setChatFilter(chatFilter === 'all' ? 'unread' : 'all')} />
+                    </div>
+                  </div>
+
+                  {/* Filter Pills */}
+                  <div style={{ display: 'flex', gap: '6px', padding: '0 16px 10px 16px', borderBottom: `1px solid ${borderColor}`, overflowX: 'auto' }}>
+                    {[
+                      { id: 'all', label: 'All' },
+                      { id: 'unread', label: 'Unread', badge: 3 },
+                      { id: 'priority', label: 'Priority' },
+                      { id: 'groups', label: 'Groups' }
+                    ].map(pill => (
+                      <button
+                        key={pill.id}
+                        onClick={() => setChatFilter(pill.id)}
                         style={{
-                          padding: '10px 14px', borderRadius: '12px', fontSize: '0.8rem',
-                          background: msg.sender === 'tailor' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                          color: '#fff'
+                          padding: '4px 10px',
+                          fontSize: '0.7rem',
+                          fontWeight: '700',
+                          border: 'none',
+                          borderRadius: '16px',
+                          background: chatFilter === pill.id ? 'var(--primary)' : (isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9'),
+                          color: chatFilter === pill.id ? '#ffffff' : colorTextSecondary,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          whiteSpace: 'nowrap'
                         }}
                       >
-                        {msg.text}
-                      </div>
-                      <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', marginTop: '2px', display: 'block', textAlign: msg.sender === 'tailor' ? 'right' : 'left' }}>
-                        {msg.time}
-                      </span>
+                        {pill.label}
+                        {pill.badge !== undefined && pill.badge > 0 && (
+                          <span style={{ fontSize: '0.62rem', background: '#f72585', color: '#fff', width: '14px', height: '14px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {pill.badge}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Chats list area */}
+                  <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+                    
+                    {/* Customers group list */}
+                    <div style={{ padding: '8px 0' }}>
+                      {filteredContacts.map(c => (
+                        <div
+                          key={c.id}
+                          onClick={() => {
+                            setActiveChatUser(c.id);
+                            setMobileChatView('middle');
+                          }}
+                          style={{
+                            display: 'flex',
+                            gap: '12px',
+                            padding: '12px 16px',
+                            cursor: 'pointer',
+                            background: activeChatUser === c.id ? (isDark ? 'rgba(255,255,255,0.04)' : '#FFF0F5') : 'transparent',
+                            borderBottom: `1px solid ${borderColor}`,
+                            transition: 'all 0.2s',
+                            position: 'relative'
+                          }}
+                        >
+                          {/* Left boundary active indicator */}
+                          {activeChatUser === c.id && (
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', background: 'var(--primary)' }}></div>
+                          )}
+
+                          {/* Avatar with online dot */}
+                          <div style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+                            <img src={c.avatar} alt={c.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            {c.online && (
+                              <div style={{ position: 'absolute', bottom: '1px', right: '1px', width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', border: `2px solid ${bgCard}` }}></div>
+                            )}
+                          </div>
+
+                          {/* Info panel */}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '2px' }}>
+                              <strong style={{ fontSize: '0.8rem', color: colorTextPrimary, fontWeight: '700' }}>{c.name}</strong>
+                              <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>{c.time}</span>
+                            </div>
+                            <p style={{ margin: 0, fontSize: '0.72rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {c.lastMsg}
+                            </p>
+                            <span style={{ fontSize: '0.65rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '2px', display: 'block' }}>{c.orderNo}</span>
+                          </div>
+
+                          {/* Unread badge */}
+                          {c.unread > 0 && (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--primary)', color: '#fff', borderRadius: '50%', width: '16px', height: '16px', fontSize: '0.65rem', fontWeight: 'bold', alignSelf: 'center', flexShrink: 0 }}>
+                              {c.unread}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+
+                    {/* Support Channels */}
+                    <div style={{ borderTop: `2px solid ${borderColor}`, padding: '10px 0' }}>
+                      <span style={{ fontSize: '0.68rem', fontWeight: 'bold', color: colorTextMuted, padding: '0 16px 8px 16px', display: 'block', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Groups & Support</span>
+                      
+                      {groupsSupport.map(g => (
+                        <div
+                          key={g.id}
+                          onClick={() => {
+                            setActiveChatUser(g.id);
+                            setMobileChatView('middle');
+                          }}
+                          style={{
+                            display: 'flex',
+                            gap: '12px',
+                            padding: '10px 16px',
+                            cursor: 'pointer',
+                            background: activeChatUser === g.id ? (isDark ? 'rgba(255,255,255,0.04)' : '#FFF0F5') : 'transparent',
+                            transition: 'all 0.2s',
+                            position: 'relative'
+                          }}
+                        >
+                          {activeChatUser === g.id && (
+                            <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', background: 'var(--primary)' }}></div>
+                          )}
+
+                          <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0, border: `1px solid ${borderColor}` }}>
+                            {g.avatar}
+                          </div>
+
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1px' }}>
+                              <strong style={{ fontSize: '0.78rem', color: colorTextPrimary, fontWeight: '700' }}>{g.name}</strong>
+                              <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>{g.time}</span>
+                            </div>
+                            <p style={{ margin: 0, fontSize: '0.7rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {g.lastMsg}
+                            </p>
+                          </div>
+
+                          {g.unread > 0 && (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--primary)', color: '#fff', borderRadius: '50%', width: '16px', height: '16px', fontSize: '0.65rem', fontWeight: 'bold', alignSelf: 'center', flexShrink: 0 }}>
+                              {g.unread}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                  </div>
+
+                  {/* Add New Chat Button */}
+                  <div style={{ padding: '16px', borderTop: `1px solid ${borderColor}` }}>
+                    <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'center', fontSize: '0.78rem', fontWeight: 'bold', color: 'var(--primary)', border: `1.5px dashed var(--primary)`, background: 'transparent' }} onClick={() => alert("Search directories to start a new chat thread...")}>
+                      + New Chat
+                    </button>
+                  </div>
+
                 </div>
 
-                {/* Message input */}
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <input 
-                    type="text" 
-                    placeholder="Type message..." 
-                    className="form-input" 
-                    value={typedMessage} 
-                    onChange={e => setTypedMessage(e.target.value)} 
-                    style={{ padding: '10px' }}
-                  />
-                  <button className="btn btn-primary" style={{ padding: '10px 20px' }} onClick={handleSendMessage}>
-                    <Send size={16} />
-                  </button>
+                {/* 2. MIDDLE COLUMN: ACTIVE CHAT WORKSPACE */}
+                <div 
+                  style={{ 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '16px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    overflow: 'hidden',
+                    height: '100%'
+                  }}
+                  className="chat-workspace-middle"
+                >
+                  
+                  {/* WORKSPACE HEADER */}
+                  <div style={{ padding: '16px 20px', borderBottom: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      
+                      {/* Mobile back trigger */}
+                      <button className="btn btn-ghost mobile-only-chat-trigger" style={{ padding: '6px', marginRight: '-6px' }} onClick={() => setMobileChatView('left')}>
+                        ←
+                      </button>
+
+                      <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', position: 'relative', border: `2px solid ${borderColor}` }}>
+                        {activeContact.avatar.startsWith('/') ? (
+                          <img src={activeContact.avatar} alt={activeContact.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', background: isDark ? '#1a1a2e' : '#f1f5f9' }}>{activeContact.avatar}</div>
+                        )}
+                      </div>
+
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <strong style={{ fontSize: '0.88rem', color: colorTextPrimary, fontWeight: '700' }}>{activeContact.name}</strong>
+                          {activeContact.online && (
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.65rem', color: '#10b981', fontWeight: 'bold' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }}></span> Online
+                            </span>
+                          )}
+                        </div>
+                        
+                        {/* Subtitle details */}
+                        {activeContact.category === 'customer' && (
+                          <span style={{ fontSize: '0.68rem', color: colorTextSecondary }}>
+                            {activeContact.orderNo} • {activeContact.garment} • Delivery: {activeContact.due}
+                          </span>
+                        )}
+                        {activeContact.category === 'support' && (
+                          <span style={{ fontSize: '0.68rem', color: colorTextSecondary }}>StitchBee Support & Helper Channel</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right side contact action buttons */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {activeContact.category === 'customer' && (
+                        <>
+                          <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', fontSize: '0.72rem' }} onClick={() => alert(`Calling ${activeContact.name} via phone...`)}>
+                            <Phone size={12} /> Call
+                          </button>
+                          <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', fontSize: '0.72rem' }} onClick={() => alert(`Initiating direct high-definition video call with ${activeContact.name}...`)}>
+                            <Video size={12} /> Video
+                          </button>
+                          <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 12px', fontSize: '0.72rem' }} onClick={() => setRightSidebarTab('files')}>
+                            <Paperclip size={12} /> Files
+                          </button>
+                        </>
+                      )}
+
+                      {/* Mobile detail view toggle */}
+                      <button className="btn btn-secondary mobile-only-chat-trigger" style={{ padding: '6px' }} onClick={() => setMobileChatView('right')}>
+                        ℹ️
+                      </button>
+
+                      <button className="btn btn-secondary" style={{ padding: '6px 10px' }} onClick={() => alert("Actions list opened")}>⋮</button>
+                    </div>
+                  </div>
+
+                  {/* MESSAGES LOG FEED */}
+                  <div 
+                    style={{ 
+                      flex: 1, 
+                      overflowY: 'auto', 
+                      padding: '20px', 
+                      background: isDark ? '#0b0914' : '#faf9f5',
+                      backgroundImage: `radial-gradient(${isDark ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.02)'} 1.5px, transparent 1.5px)`,
+                      backgroundSize: '16px 16px',
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      gap: '16px' 
+                    }}
+                  >
+                    
+                    {/* Timestamp Tag */}
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <span style={{ fontSize: '0.65rem', fontWeight: 'bold', background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)', color: colorTextMuted, padding: '4px 12px', borderRadius: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        Today
+                      </span>
+                    </div>
+
+                    {/* Messages bubbles mapping */}
+                    {currentMessages.map((msg, idx) => {
+                      if (msg.type === 'order-card') {
+                        // Render System Order Progress Card Bubble
+                        return (
+                          <div key={idx} style={{ alignSelf: 'flex-end', maxWidth: '340px', width: '100%', marginTop: '8px' }}>
+                            <div 
+                              style={{ 
+                                background: isDark ? '#1a1a2e' : '#ffffff', 
+                                border: `1.5px solid var(--primary)`, 
+                                borderRadius: '16px', 
+                                padding: '16px',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.06)'
+                              }}
+                            >
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                                <span style={{ fontSize: '0.78rem', fontWeight: '800', color: 'var(--primary)' }}>{msg.orderNo}</span>
+                                <span style={{ fontSize: '0.65rem', background: 'rgba(247,37,133,0.08)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>{msg.status}</span>
+                              </div>
+
+                              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                <div style={{ width: '48px', height: '48px', borderRadius: '8px', overflow: 'hidden', background: '#f1f5f9', border: `1px solid ${borderColor}`, flexShrink: 0 }}>
+                                  <img src="/bridal_wear.jpg" alt={msg.item} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                </div>
+                                <div>
+                                  <h6 style={{ margin: 0, fontSize: '0.8rem', fontWeight: '800', color: colorTextPrimary }}>{msg.item}</h6>
+                                  <span style={{ fontSize: '0.68rem', color: colorTextSecondary }}>{msg.desc}</span>
+                                </div>
+                              </div>
+
+                              {/* Progress bar */}
+                              <div style={{ margin: '12px 0' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', fontWeight: 'bold', color: colorTextSecondary, marginBottom: '4px' }}>
+                                  <span>Progress</span>
+                                  <span>{msg.progress}%</span>
+                                </div>
+                                <div style={{ height: '6px', background: isDark ? 'rgba(255,255,255,0.05)' : '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
+                                  <div style={{ width: `${msg.progress}%`, height: '100%', background: 'var(--primary)', borderRadius: '3px' }}></div>
+                                </div>
+                              </div>
+
+                              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${borderColor}`, paddingTop: '10px', fontSize: '0.68rem', color: colorTextSecondary }}>
+                                <span>📅 Due: {msg.due}</span>
+                                <span>💰 {msg.amount}</span>
+                              </div>
+
+                              <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => { setActiveTab('orders'); setOrdersSubTab('active'); }}>
+                                  View Order Details
+                                </span>
+                              </div>
+
+                            </div>
+                            
+                            <span style={{ fontSize: '0.6rem', color: colorTextMuted, marginTop: '4px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}>
+                              {msg.time} <span style={{ color: 'var(--primary)' }}>✓✓</span>
+                            </span>
+                          </div>
+                        );
+                      }
+
+                      const isTailor = msg.sender === 'tailor';
+                      return (
+                        <div 
+                          key={idx} 
+                          style={{ 
+                            display: 'flex', 
+                            gap: '10px', 
+                            alignSelf: isTailor ? 'flex-end' : 'flex-start', 
+                            maxWidth: '75%',
+                            position: 'relative'
+                          }}
+                        >
+                          {/* Show avatar for incoming messages */}
+                          {!isTailor && (
+                            <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, alignSelf: 'flex-end', border: `1px solid ${borderColor}` }}>
+                              {activeContact.avatar.startsWith('/') ? (
+                                <img src={activeContact.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              ) : (
+                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', background: '#f1f5f9' }}>{activeContact.avatar}</div>
+                              )}
+                            </div>
+                          )}
+
+                          <div>
+                            <div 
+                              style={{
+                                padding: '10px 14px',
+                                borderRadius: isTailor ? '16px 16px 2px 16px' : '16px 16px 16px 2px',
+                                fontSize: '0.82rem',
+                                background: isTailor ? (isDark ? '#3d0a25' : '#FFF0F5') : (isDark ? '#1a1a2e' : '#ffffff'),
+                                color: colorTextPrimary,
+                                border: isTailor ? `1px solid rgba(247,37,133,0.15)` : `1px solid ${borderColor}`,
+                                boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+                                lineHeight: '1.4',
+                                position: 'relative'
+                              }}
+                            >
+                              {msg.text}
+
+                              {/* Overlapping Scissors icon badge for tailor messages */}
+                              {isTailor && idx === 1 && (
+                                <div style={{ position: 'absolute', right: '-12px', top: '50%', transform: 'translateY(-50%)', width: '22px', height: '22px', borderRadius: '50%', background: 'var(--primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem' }}>
+                                  ✂️
+                                </div>
+                              )}
+                            </div>
+
+                            <span 
+                              style={{ 
+                                fontSize: '0.6rem', 
+                                color: colorTextMuted, 
+                                marginTop: '4px', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: '4px',
+                                justifyContent: isTailor ? 'flex-end' : 'flex-start' 
+                              }}
+                            >
+                              {msg.time} {isTailor && <span style={{ color: 'var(--primary)' }}>✓✓</span>}
+                            </span>
+                          </div>
+
+                        </div>
+                      );
+                    })}
+
+                  </div>
+
+                  {/* BOTTOM WORKSPACE TEXT INPUT */}
+                  <div style={{ borderTop: `1px solid ${borderColor}`, padding: '12px 16px' }}>
+                    
+                    {/* Action Bar */}
+                    <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '8px', borderBottom: `1px solid ${borderColor}` }}>
+                      
+                      {/* Quick Replies Dropdown */}
+                      <div style={{ position: 'relative' }}>
+                        <button 
+                          className="btn btn-secondary" 
+                          style={{ fontSize: '0.72rem', color: 'var(--primary)', border: `1px solid rgba(247,37,133,0.15)`, padding: '6px 12px', fontWeight: 'bold' }}
+                          onClick={() => setShowQuickReplies(!showQuickReplies)}
+                        >
+                          ⚡ Quick Replies ▾
+                        </button>
+                        {showQuickReplies && (
+                          <div style={{ position: 'absolute', bottom: '34px', left: 0, background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '8px', width: '220px', zIndex: 10, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                            {[
+                              "Yes, your suit stitching is ready!",
+                              "We are currently working on cutting fabric.",
+                              "Direct pick up is scheduled for tomorrow.",
+                              "Can you confirm the sleeve measurement details?"
+                            ].map((rep, idx) => (
+                              <div 
+                                key={idx} 
+                                style={{ padding: '8px 12px', fontSize: '0.72rem', cursor: 'pointer', borderBottom: `1px solid ${borderColor}`, color: colorTextPrimary }}
+                                onClick={() => {
+                                  setTypedMessage(rep);
+                                  setShowQuickReplies(false);
+                                }}
+                              >
+                                {rep}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', padding: '6px 12px' }} onClick={() => { setTypedMessage("Measurements list: Chest: 36, Waist: 28, Hip: 38 (inches)."); }}>
+                        📏 Measurements
+                      </button>
+                      <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', padding: '6px 12px' }} onClick={() => alert("Photo selector window opened")}>
+                        📷 Send Photos
+                      </button>
+                      <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', padding: '6px 12px' }} onClick={() => {
+                        const newCard = { sender: 'tailor', type: 'order-card', orderNo: '#SB-1024', status: 'Stitching Started', item: 'Bridal Lehenga', desc: 'Peach • Net Fabric', progress: 50, due: '22 Jun 2024', amount: '₹8,500', time: '11:45 AM', statusCheck: 'read' };
+                        setChatHistory(prev => ({
+                          ...prev,
+                          [activeChatUser]: [...(prev[activeChatUser] || []), newCard]
+                        }));
+                      }}>
+                        📦 Order Update
+                      </button>
+                      <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', padding: '6px 12px' }} onClick={() => { setTypedMessage("Please pay outstanding invoice amount: ₹8,500."); }}>
+                        ₹ Payment
+                      </button>
+                      <button className="btn btn-secondary" style={{ padding: '6px 10px' }}>•• More</button>
+                    </div>
+
+                    {/* Text box + send */}
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                      <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
+                        <input 
+                          type="text" 
+                          placeholder="Type your message..." 
+                          className="form-input" 
+                          value={typedMessage} 
+                          onChange={e => setTypedMessage(e.target.value)} 
+                          onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+                          style={{ padding: '10px 40px 10px 40px', width: '100%', fontSize: '0.82rem', height: '40px' }}
+                        />
+                        <span style={{ position: 'absolute', left: '12px', cursor: 'pointer', fontSize: '1.1rem' }} onClick={() => setTypedMessage(prev => prev + "😊")}>😊</span>
+                        <span style={{ position: 'absolute', right: '12px', cursor: 'pointer', color: colorTextMuted }} onClick={() => alert("Select file to upload")}>📎</span>
+                      </div>
+                      
+                      <button className="btn btn-primary" style={{ padding: '10px 20px', background: 'var(--primary)', border: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', height: '40px' }} onClick={handleSendMessage}>
+                        <Send size={14} /> Send
+                      </button>
+                    </div>
+
+                  </div>
+
                 </div>
+
+                {/* 3. RIGHT COLUMN: CUSTOMER DETAILS / TIMELINE SIDEBAR */}
+                <div 
+                  style={{ 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '16px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    overflow: 'hidden',
+                    height: '100%'
+                  }}
+                  className="chat-sidebar-right"
+                >
+                  
+                  {/* Tabs header */}
+                  <div style={{ display: 'flex', borderBottom: `1px solid ${borderColor}`, background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
+                    {[
+                      { id: 'details', label: 'Details' },
+                      { id: 'timeline', label: 'Timeline' },
+                      { id: 'files', label: 'Files' },
+                      { id: 'ai_assistant', label: 'AI Assistant' }
+                    ].map(tab => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setRightSidebarTab(tab.id)}
+                        style={{
+                          flex: 1,
+                          padding: '12px 6px',
+                          fontSize: '0.68rem',
+                          fontWeight: '800',
+                          border: 'none',
+                          borderBottom: rightSidebarTab === tab.id ? '2px solid var(--primary)' : '2px solid transparent',
+                          background: 'transparent',
+                          color: rightSidebarTab === tab.id ? 'var(--primary)' : colorTextMuted,
+                          cursor: 'pointer',
+                          textAlign: 'center'
+                        }}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* TAB CONTENTS */}
+                  <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    
+                    {rightSidebarTab === 'details' && (
+                      <>
+                        {/* Profile Header card */}
+                        <div style={{ textAlign: 'center', paddingBottom: '16px', borderBottom: `1px solid ${borderColor}` }}>
+                          <div style={{ width: '60px', height: '60px', borderRadius: '50%', overflow: 'hidden', margin: '0 auto 10px auto', position: 'relative', border: `2.5px solid var(--primary)` }}>
+                            {activeContact.avatar.startsWith('/') ? (
+                              <img src={activeContact.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            ) : (
+                              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', background: '#f1f5f9' }}>{activeContact.avatar}</div>
+                            )}
+                          </div>
+                          
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                            <strong style={{ fontSize: '0.88rem', color: colorTextPrimary, fontWeight: '800' }}>{activeContact.name}</strong>
+                            <span style={{ color: 'var(--primary)', cursor: 'pointer', fontSize: '0.9rem' }}>☆</span>
+                          </div>
+
+                          {activeContact.category === 'customer' && (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginTop: '6px' }}>
+                              <span style={{ fontSize: '0.62rem', border: '1px solid #fbbf24', color: '#fbbf24', padding: '1px 6px', borderRadius: '10px', fontWeight: 'bold' }}>{activeContact.tag}</span>
+                              <span style={{ fontSize: '0.62rem', border: '1px solid var(--primary)', color: 'var(--primary)', padding: '1px 6px', borderRadius: '10px', fontWeight: 'bold' }}>Total: {activeContact.total}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Customer Info lines */}
+                        {activeContact.category === 'customer' && (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.75rem', paddingBottom: '16px', borderBottom: `1px solid ${borderColor}` }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colorTextSecondary }}>
+                              <span>📞</span> <span>{activeContact.phone}</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colorTextSecondary }}>
+                              <span>✉️</span> <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{activeContact.email}</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colorTextSecondary }}>
+                              <span>📍</span> <span>{activeContact.address}</span>
+                            </div>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer', marginTop: '4px' }} onClick={() => { setActiveTab('measurements'); setSelectedCustomerId('CUST-1024'); }}>
+                              View Full Profile →
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Active Order Overview Widget */}
+                        {activeContact.category === 'customer' && (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingBottom: '16px', borderBottom: `1px solid ${borderColor}` }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                              <span style={{ fontSize: '0.78rem', fontWeight: '800', color: colorTextPrimary }}>Order Overview</span>
+                              <span style={{ fontSize: '0.68rem', color: 'var(--primary)', cursor: 'pointer' }} onClick={() => { setActiveTab('orders'); setOrdersSubTab('active'); }}>View All Orders</span>
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '10px', padding: '10px', background: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc', border: `1px solid ${borderColor}`, borderRadius: '8px', alignItems: 'center' }}>
+                              <div style={{ width: '40px', height: '40px', borderRadius: '4px', overflow: 'hidden', background: '#e2e8f0', flexShrink: 0 }}>
+                                <img src="/bridal_wear.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              </div>
+                              <div style={{ minWidth: 0, flex: 1 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                  <strong style={{ fontSize: '0.7rem', color: 'var(--primary)' }}>{activeContact.orderNo}</strong>
+                                  <span style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: 'bold' }}>In Progress</span>
+                                </div>
+                                <h6 style={{ margin: 0, fontSize: '0.75rem', fontWeight: '800', color: colorTextPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{activeContact.garment}</h6>
+                                <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>Due Date: {activeContact.due}</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Timeline snippet */}
+                        {activeContact.category === 'customer' && (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                              <span style={{ fontSize: '0.78rem', fontWeight: '800', color: colorTextPrimary }}>Timeline</span>
+                              <span style={{ fontSize: '0.68rem', color: 'var(--primary)', cursor: 'pointer' }} onClick={() => setRightSidebarTab('timeline')}>View All</span>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingLeft: '8px', borderLeft: `1px solid ${borderColor}`, marginLeft: '6px', marginTop: '6px' }}>
+                              <div style={{ position: 'relative', fontSize: '0.7rem', color: colorTextSecondary }}>
+                                <div style={{ position: 'absolute', left: '-12px', top: '3px', width: '7px', height: '7px', borderRadius: '50%', background: '#10b981' }}></div>
+                                <strong style={{ display: 'block', color: colorTextPrimary }}>Order Confirmed</strong>
+                                <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>10 Jun 2024, 10:30 AM</span>
+                              </div>
+                              <div style={{ position: 'relative', fontSize: '0.7rem', color: colorTextSecondary }}>
+                                <div style={{ position: 'absolute', left: '-12px', top: '3px', width: '7px', height: '7px', borderRadius: '50%', background: '#10b981' }}></div>
+                                <strong style={{ display: 'block', color: colorTextPrimary }}>Measurements Added</strong>
+                                <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>10 Jun 2024, 11:15 AM</span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                      </>
+                    )}
+
+                    {rightSidebarTab === 'timeline' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                        <h5 style={{ margin: 0, fontSize: '0.8rem', fontWeight: '800', color: colorTextPrimary }}>Full Order Lifecycle</h5>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingLeft: '10px', borderLeft: `1.5px solid ${borderColor}`, marginLeft: '6px' }}>
+                          {[
+                            { title: 'Order Confirmed', date: '10 Jun 2024, 10:30 AM', status: 'completed' },
+                            { title: 'Measurements Added', date: '10 Jun 2024, 11:15 AM', status: 'completed' },
+                            { title: 'Fabric Selected', date: '11 Jun 2024, 09:40 AM', status: 'completed' },
+                            { title: 'Stitching Started', date: '12 Jun 2024, 10:00 AM', status: 'completed' },
+                            { title: 'Quality Check', date: 'In Progress', status: 'active' },
+                            { title: 'Out for Delivery', date: 'Pending', status: 'pending' }
+                          ].map((step, idx) => (
+                            <div key={idx} style={{ position: 'relative', fontSize: '0.72rem', color: colorTextSecondary }}>
+                              <div 
+                                style={{ 
+                                  position: 'absolute', 
+                                  left: '-15px', 
+                                  top: '2px', 
+                                  width: '9px', 
+                                  height: '9px', 
+                                  borderRadius: '50%', 
+                                  background: step.status === 'completed' ? '#10b981' : (step.status === 'active' ? 'var(--secondary)' : '#94a3b8'),
+                                  border: `2px solid ${bgCard}`
+                                }}
+                              ></div>
+                              <strong style={{ display: 'block', color: step.status === 'active' ? 'var(--secondary)' : colorTextPrimary }}>{step.title}</strong>
+                              <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>{step.date}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {rightSidebarTab === 'files' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <h5 style={{ margin: 0, fontSize: '0.8rem', fontWeight: '800', color: colorTextPrimary }}>Shared Files & Designs</h5>
+                        
+                        {[
+                          { name: 'lehenga_design_sketch.jpg', size: '2.4 MB', date: '11 Jun 2024' },
+                          { name: 'fabric_sample_peach.png', size: '1.8 MB', date: '11 Jun 2024' },
+                          { name: 'invoice_ORD1024.pdf', size: '320 KB', date: '10 Jun 2024' }
+                        ].map((file, idx) => (
+                          <div 
+                            key={idx} 
+                            style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: '10px', 
+                              padding: '8px 10px', 
+                              border: `1px solid ${borderColor}`, 
+                              borderRadius: '8px',
+                              background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc',
+                              cursor: 'pointer'
+                            }}
+                            onClick={() => alert(`Downloading file: ${file.name}`)}
+                          >
+                            <span style={{ fontSize: '1.2rem' }}>📁</span>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <strong style={{ display: 'block', fontSize: '0.72rem', color: colorTextPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</strong>
+                              <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>{file.size} • {file.date}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {rightSidebarTab === 'ai_assistant' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <h5 style={{ margin: 0, fontSize: '0.8rem', fontWeight: '800', color: colorTextPrimary }}>AI Smart Suggestions</h5>
+                        
+                        <div style={{ padding: '12px', background: isDark ? 'rgba(247,37,133,0.05)' : '#FFF0F5', border: `1px dashed rgba(247,37,133,0.25)`, borderRadius: '8px', fontSize: '0.72rem', color: colorTextSecondary, lineHeight: '1.4' }}>
+                          💡 <strong>Suggestion:</strong> Customer inquired about delivery readiness. Her delivery date is set to <strong>22 Jun 2024</strong>. You can trigger an automated update: <em>"Stitching Completed & Undergoing Quality Check"</em>.
+                        </div>
+
+                        <button 
+                          className="btn btn-primary" 
+                          style={{ width: '100%', fontSize: '0.75rem', fontWeight: 'bold' }}
+                          onClick={() => {
+                            setTypedMessage("Hello! Just wanted to let you know that the fabric is selected and stitching has officially started. Let me know if you have any questions!");
+                            setRightSidebarTab('details');
+                          }}
+                        >
+                          Use Suggestion reply
+                        </button>
+                      </div>
+                    )}
+
+                  </div>
+
+                  {/* Quick Actions Footer Panel */}
+                  <div style={{ padding: '16px', borderTop: `1px solid ${borderColor}`, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <span style={{ fontSize: '0.68rem', fontWeight: 'bold', color: colorTextMuted, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Quick Actions</span>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                      <button 
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', padding: '10px 4px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#ffffff', cursor: 'pointer', transition: 'all 0.2s' }}
+                        onClick={() => alert("Direct design sketch board layout opened...")}
+                      >
+                        <span style={{ fontSize: '1.2rem' }}>🎨</span>
+                        <span style={{ fontSize: '0.68rem', color: colorTextPrimary, fontWeight: '700' }}>Send Design</span>
+                      </button>
+                      <button 
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', padding: '10px 4px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#ffffff', cursor: 'pointer', transition: 'all 0.2s' }}
+                        onClick={() => alert("Automated update requested from tailoring student agent...")}
+                      >
+                        <span style={{ fontSize: '1.2rem' }}>🔄</span>
+                        <span style={{ fontSize: '0.68rem', color: colorTextPrimary, fontWeight: '700' }}>Request Update</span>
+                      </button>
+                      <button 
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', padding: '10px 4px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#ffffff', cursor: 'pointer', transition: 'all 0.2s' }}
+                        onClick={() => alert("Order invoice PDF compiled and sent to customer chat...")}
+                      >
+                        <span style={{ fontSize: '1.2rem' }}>📄</span>
+                        <span style={{ fontSize: '0.68rem', color: colorTextPrimary, fontWeight: '700' }}>Send Invoice</span>
+                      </button>
+                      <button 
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', padding: '10px 4px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#ffffff', cursor: 'pointer', transition: 'all 0.2s' }}
+                        onClick={() => alert("Scheduling fit testing and trial session calendar window...")}
+                      >
+                        <span style={{ fontSize: '1.2rem' }}>📅</span>
+                        <span style={{ fontSize: '0.68rem', color: colorTextPrimary, fontWeight: '700' }}>Schedule Trial</span>
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
+
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* TAB 8: REVIEWS */}
         {activeTab === 'reviews' && (() => {
