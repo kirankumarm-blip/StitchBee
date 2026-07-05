@@ -6187,6 +6187,32 @@ body.light-theme .customer-scroll-list::-webkit-scrollbar-thumb {
   }
 }
 
+/* Delivery Partner Responsive Styles */
+.mobile-bottom-nav {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .desktop-header-nav {
+    display: none !important;
+  }
+  
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+  
+  .delivery-home-grid,
+  .delivery-nav-grid,
+  .delivery-profile-grid,
+  .earnings-bottom-layout {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .delivery-nav-grid {
+    height: auto !important;
+  }
+}
+
 
 
 

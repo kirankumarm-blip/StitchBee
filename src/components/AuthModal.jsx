@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { X, Lock, Mail, User, MapPin, Sparkles, ShieldCheck } from 'lucide-react';
+import { X, Lock, Mail, User, MapPin, Sparkles, ShieldCheck, Truck } from 'lucide-react';
 
 export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialRole = 'customer', initialTab = 'login' }) {
   const [tab, setTab] = useState(initialTab); // 'login' | 'signup'
-  const [role, setRole] = useState(initialRole); // 'customer' | 'tailor' | 'student'
+  const [role, setRole] = useState(initialRole); // 'customer' | 'tailor' | 'student' | 'delivery'
   
   // Form States
   const [name, setName] = useState('');
@@ -56,6 +56,8 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialRole
         userRole = 'tailor';
       } else if (lowerEmail === 'student@stitchbee.com') {
         userRole = 'student';
+      } else if (lowerEmail === 'delivery@stitchbee.com') {
+        userRole = 'delivery';
       } else if (lowerEmail === 'customer@stitchbee.com') {
         userRole = 'customer';
       } else {
@@ -226,6 +228,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, initialRole
                   >
                     <Sparkles size={20} />
                     <span>Student Partner</span>
+                  </div>
+                  <div 
+                    className={`auth-role-card ${role === 'delivery' ? 'active' : ''}`}
+                    onClick={() => setRole('delivery')}
+                  >
+                    <Truck size={20} />
+                    <span>Delivery Partner</span>
                   </div>
                 </div>
               </div>

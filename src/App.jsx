@@ -11,6 +11,7 @@ import BlogsView from './components/BlogsView';
 import BecomeTailorView from './components/BecomeTailorView';
 import BecomeDeliveryView from './components/BecomeDeliveryView';
 import BecomeStudentView from './components/BecomeStudentView';
+import DeliveryView from './components/DeliveryView';
 // Removed ghostly ThreeDBackground import
 import DressCustomizer360 from './components/DressCustomizer360';
 import FabricMarketplace from './components/FabricMarketplace';
@@ -1805,7 +1806,7 @@ export default function App() {
       )}
 
       {role === 'become-delivery' && (
-        <BecomeDeliveryView onJoinClick={() => openAuthModal('student', 'signup')} />
+        <BecomeDeliveryView onJoinClick={() => openAuthModal('delivery', 'signup')} />
       )}
 
       {role === 'become-student' && (
@@ -1841,6 +1842,15 @@ export default function App() {
           setTailors={updateTailorsState}
           orders={orders}
           updateOrderStatus={updateOrderStatus}
+          theme={theme}
+          setTheme={setTheme}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      )}
+
+      {role === 'delivery' && (
+        <DeliveryView 
           theme={theme}
           setTheme={setTheme}
           currentUser={currentUser}
