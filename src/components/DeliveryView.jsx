@@ -3,7 +3,7 @@ import {
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
   Phone, AlertTriangle, CheckCircle, Navigation, Send, Calendar, 
   Clock, Check, ChevronRight, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
-  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText
+  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power
 } from 'lucide-react';
 
 export default function DeliveryView({ theme, setTheme, currentUser, onLogout, setRole }) {
@@ -748,12 +748,12 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
             className="delivery-main-dashboard-grid" 
             style={{ 
               display: 'grid', 
-              gridTemplateColumns: '300px 1fr', 
+              gridTemplateColumns: '250px 1fr', 
               gap: '20px' 
             }}
           >
             {/* LEFT COLUMN: Far-Left Sidebar Card (Go Online & Start Delivering) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '250px' }}>
               <div 
                 className="glass-card-no-hover" 
                 style={{ 
@@ -763,79 +763,100 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
-                  padding: '20px',
-                  gap: '16px',
+                  padding: '20px 0 0 0',
+                  height: '660px',
+                  justifyContent: 'space-between',
                   color: '#ffffff'
                 }}
               >
-                <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: '800', textAlign: 'center', color: '#ffffff' }}>Go Online & Start Delivering</h4>
+                <h4 style={{ margin: '0 20px', fontSize: '0.95rem', fontWeight: '800', textAlign: 'left', color: '#ffffff', lineHeight: '1.4' }}>Go Online & Start Delivering</h4>
                 
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px' }}>
                   <img 
                     src="/rider_3d.jpg" 
                     alt="Rider 3D" 
                     style={{ 
-                      width: '100%', 
-                      height: '180px', 
+                      width: '90%', 
+                      height: '160px', 
                       objectFit: 'contain'
                     }} 
                   />
                 </div>
                 
-                {/* White floating card inside the gradient background */}
+                {/* White floating card inside the gradient background - flush end-to-end */}
                 <div 
                   style={{ 
                     background: '#ffffff', 
                     color: '#0f172a',
-                    borderRadius: '20px', 
-                    padding: '16px',
+                    borderTopLeftRadius: '24px', 
+                    borderTopRightRadius: '24px',
+                    padding: '20px 20px 24px 20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '14px',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                    gap: '16px',
+                    boxShadow: '0 -4px 15px rgba(0,0,0,0.05)'
                   }}
                 >
                   {/* Online status badge */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isOnline ? '#10b981' : '#6b7280' }}></span>
-                    <strong style={{ fontSize: '0.8rem', color: isOnline ? '#10b981' : '#6b7280' }}>
+                    <strong style={{ fontSize: '0.82rem', color: isOnline ? '#10b981' : '#6b7280' }}>
                       {isOnline ? 'You are Online' : 'You are Offline'}
                     </strong>
                   </div>
 
                   {/* Stats List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.75rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Clock size={14} style={{ color: '#7209b7' }} /> Working Time
-                      </span>
-                      <strong style={{ color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {/* Row 1: Working Time */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Clock size={16} style={{ color: '#7209b7' }} />
+                      </div>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Working Time</span>
+                        <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <ShoppingBag size={14} style={{ color: '#7209b7' }} /> Orders Completed
-                      </span>
-                      <strong style={{ color: '#0f172a' }}>11 Deliveries</strong>
+
+                    {/* Row 2: Orders Completed */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <ShoppingBag size={16} style={{ color: '#7209b7' }} />
+                      </div>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Orders Completed</span>
+                        <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>11 Deliveries</strong>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Wallet size={14} style={{ color: '#7209b7' }} /> Earnings Today
-                      </span>
-                      <strong style={{ color: '#0f172a' }}>₹1,820</strong>
+
+                    {/* Row 3: Earnings Today */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Wallet size={16} style={{ color: '#10b981' }} />
+                      </div>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Earnings Today</span>
+                        <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>₹1,820</strong>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Star size={14} fill="#fbbf24" style={{ color: '#fbbf24' }} /> Rider Rating
-                      </span>
-                      <strong style={{ color: '#0f172a', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                        4.9
-                      </strong>
+
+                    {/* Row 4: Rider Rating */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingBottom: '2px' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(249, 115, 22, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Star size={16} style={{ color: '#f97316' }} />
+                      </div>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Rider Rating</span>
+                        <strong style={{ display: 'flex', fontSize: '0.8rem', color: '#0f172a', alignItems: 'center', gap: '3px' }}>
+                          4.9 <Star size={10} fill="#fbbf24" style={{ color: '#fbbf24' }} />
+                        </strong>
+                      </div>
                     </div>
                   </div>
 
                   {/* Offline / Online Action Button */}
                   <button 
-                    className={`btn ${isOnline ? 'btn-outline-red' : 'btn-outline-green'}`} 
+                    className="btn" 
                     onClick={() => setIsOnline(!isOnline)}
                     style={{ 
                       width: '100%', 
@@ -844,13 +865,17 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: '8px',
-                      padding: '8px',
-                      borderRadius: '10px',
-                      cursor: 'pointer'
+                      gap: '6px',
+                      padding: '10px',
+                      borderRadius: '24px',
+                      cursor: 'pointer',
+                      background: '#ffffff',
+                      color: isOnline ? '#f72585' : '#10b981',
+                      border: `1.5px solid ${isOnline ? '#f72585' : '#10b981'}`,
+                      transition: 'all 0.2s ease'
                     }}
                   >
-                    <span>⭕</span> {isOnline ? 'Go Offline' : 'Go Online'}
+                    <Power size={12} /> {isOnline ? 'Go Offline' : 'Go Online'}
                   </button>
                 </div>
               </div>
@@ -990,7 +1015,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    height: '460px'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
@@ -1001,7 +1027,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
 
                   {/* Real Leaflet Map Container */}
-                  <div style={{ flex: 1, minHeight: '180px', height: '180px', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${borderColor}`, position: 'relative', marginTop: '12px', marginBottom: '12px' }}>
+                  <div style={{ flex: 1, minHeight: '280px', height: '280px', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${borderColor}`, position: 'relative', marginTop: '12px', marginBottom: '12px' }}>
                     <div ref={homeMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
                   </div>
 
@@ -1059,7 +1085,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    height: '460px'
                   }}
                 >
                   <div>
@@ -1173,7 +1200,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    height: '460px'
                   }}
                 >
                   <div>
@@ -1185,7 +1213,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </div>
 
                     {/* Scheduled stops list */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.72rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', fontSize: '0.72rem' }}>
                       {[
                         { time: '09:00 AM', type: 'Pickup', store: 'Vogue Craft Tailors', tag: 'Now', num: 1 },
                         { time: '10:00 AM', type: 'Delivery', store: 'Priya Sharma', tag: '3.4 km', num: 2 },
