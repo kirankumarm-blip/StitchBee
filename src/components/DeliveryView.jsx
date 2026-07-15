@@ -753,7 +753,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
             }}
           >
             {/* LEFT COLUMN: Far-Left Sidebar Card (Go Online & Start Delivering) */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div 
                 className="glass-card-no-hover" 
                 style={{ 
@@ -765,7 +765,6 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   flexDirection: 'column',
                   padding: '20px',
                   gap: '16px',
-                  height: '100%',
                   color: '#ffffff'
                 }}
               >
@@ -853,6 +852,60 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   >
                     <span>⭕</span> {isOnline ? 'Go Offline' : 'Go Online'}
                   </button>
+                </div>
+              </div>
+
+              {/* Today's Performance Card */}
+              <div 
+                className="glass-card-no-hover" 
+                style={{ 
+                  padding: '20px', 
+                  background: bgCard, 
+                  border: `1px solid ${borderColor}`, 
+                  borderRadius: '20px', 
+                  display: 'flex', 
+                  flexDirection: 'column' 
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Performance</h4>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setActiveTab('profile')}>
+                    View Report
+                  </span>
+                </div>
+
+                {/* Performance stats row */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+                  {[
+                    { label: 'Acceptance Rate', val: '98%', icon: <Target size={16} />, color: '#10b981', bg: 'rgba(16,185,129,0.05)' },
+                    { label: 'On-Time Rate', val: '96%', icon: <Clock size={16} />, color: 'var(--primary)', bg: 'rgba(247,37,133,0.05)' },
+                    { label: 'Completion Rate', val: '92%', icon: <Shield size={16} />, color: '#3b82f6', bg: 'rgba(59,130,246,0.05)' },
+                    { label: 'Customer Rating', val: '4.9', icon: <Star size={16} fill="#fbbf24" style={{ stroke: '#fbbf24' }} />, color: '#fbbf24', bg: 'rgba(245,158,11,0.05)' }
+                  ].map((perf, pIdx) => (
+                    <div key={pIdx} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                      <div 
+                        style={{ 
+                          width: '36px', 
+                          height: '36px', 
+                          borderRadius: '50%', 
+                          background: perf.bg, 
+                          color: perf.color, 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                          border: `1.5px solid ${perf.color}`
+                        }}
+                      >
+                        {perf.icon}
+                      </div>
+                      <span style={{ fontSize: '0.58rem', color: colorTextMuted, display: 'block', height: '24px', overflow: 'hidden', lineHeight: '1.1' }}>{perf.label}</span>
+                      <strong style={{ fontSize: '0.88rem', color: colorTextPrimary, display: 'block' }}>{perf.val}</strong>
+                      <div style={{ height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : '#e2e8f0', borderRadius: '1.5px', overflow: 'hidden', width: '100%' }}>
+                        <div style={{ width: perf.val.includes('%') ? perf.val : '95%', height: '100%', background: perf.color }}></div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1180,61 +1233,16 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                 </div>
               </div>
 
-              {/* Row 3: Lower Performance / Earnings Chart / Notifications Grid */}
+              {/* Row 3: Earnings Chart / Notifications Grid */}
               <div 
                 className="delivery-home-layout-grid" 
                 style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: '1fr 1.2fr 1fr', 
+                  gridTemplateColumns: '1.4fr 1fr', 
                   gap: '20px' 
                 }}
               >
-                {/* Col 3.1: Today's Performance */}
-                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Performance</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setActiveTab('profile')}>
-                      View Report
-                    </span>
-                  </div>
-
-                  {/* Performance stats row */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', flex: 1, alignItems: 'center' }}>
-                    {[
-                      { label: 'Acceptance Rate', val: '98%', icon: '🎯', color: '#10b981', bg: 'rgba(16,185,129,0.05)' },
-                      { label: 'On-Time Rate', val: '96%', icon: '🕒', color: 'var(--primary)', bg: 'rgba(247,37,133,0.05)' },
-                      { label: 'Completion Rate', val: '92%', icon: '🛡️', color: '#3b82f6', bg: 'rgba(59,130,246,0.05)' },
-                      { label: 'Customer Rating', val: '4.9', icon: '⭐', color: '#fbbf24', bg: 'rgba(245,158,11,0.05)' }
-                    ].map((perf, pIdx) => (
-                      <div key={pIdx} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                        <div 
-                          style={{ 
-                            width: '40px', 
-                            height: '40px', 
-                            borderRadius: '50%', 
-                            background: perf.bg, 
-                            color: perf.color, 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            justifyContent: 'center',
-                            fontSize: '1.2rem',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                            border: `1.5px solid ${perf.color}`
-                          }}
-                        >
-                          {perf.icon}
-                        </div>
-                        <span style={{ fontSize: '0.6rem', color: colorTextMuted, display: 'block', height: '24px', overflow: 'hidden' }}>{perf.label}</span>
-                        <strong style={{ fontSize: '0.98rem', color: colorTextPrimary, display: 'block' }}>{perf.val}</strong>
-                        <div style={{ height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : '#e2e8f0', borderRadius: '1.5px', overflow: 'hidden', width: '100%' }}>
-                          <div style={{ width: perf.val.includes('%') ? perf.val : '95%', height: '100%', background: perf.color }}></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Col 3.2: Earnings Summary (Spline Chart) */}
+                {/* Col 3.1: Earnings Summary (Spline Chart) */}
                 <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px', marginBottom: '14px' }}>
                     <div>
@@ -1277,7 +1285,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
                 </div>
 
-                {/* Col 3.3: Recent Notifications */}
+                {/* Col 3.2: Recent Notifications */}
                 <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                     <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Recent Notifications</h4>
