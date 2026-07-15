@@ -6318,6 +6318,11 @@ body.light-theme button.btn-outline-green.btn * {
   color: #10b981 !important;
 }
 
+body.light-theme button.quick-action-btn,
+body.light-theme button.quick-action-btn * {
+  color: var(--quick-action-color) !important;
+}
+
 
 
 

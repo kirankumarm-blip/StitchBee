@@ -1294,7 +1294,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                   <div style={{ display: 'flex', gap: '16px', marginTop: '12px', flex: 1, alignItems: 'center' }}>
                     {/* Left stats */}
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div style={{ flex: '0 0 115px', width: '115px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                       <h3 style={{ margin: 0, fontSize: '1.65rem', fontWeight: '900', color: colorTextPrimary, letterSpacing: '-0.5px' }}>₹11,250</h3>
                       <span style={{ fontSize: '0.72rem', color: colorTextSecondary, fontWeight: '800', marginTop: '2px', display: 'block' }}>Total Earnings</span>
                       <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: '700', marginTop: '8px', display: 'flex', alignItems: 'center', gap: '3px' }}>
@@ -1302,10 +1302,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       </span>
                     </div>
                     
-                    {/* Right graphics: SVG Spline Chart */}
-                    <div style={{ width: '160px', height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    {/* Right graphics: SVG Spline Chart - Stretched dynamically */}
+                    <div style={{ flex: 1, height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                       <div style={{ height: '75px', position: 'relative' }}>
-                        <svg viewBox="0 0 160 75" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                        <svg viewBox="0 0 240 75" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
                           <defs>
                             <linearGradient id="pinkChartGrad" x1="0" y1="0" x2="0" y2="1">
                               <stop offset="0%" stopColor="#f72585" stopOpacity="0.22" />
@@ -1313,23 +1313,23 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             </linearGradient>
                           </defs>
                           <path 
-                            d="M 10 65 Q 25 55, 35 52 T 60 38 T 85 45 T 110 32 T 135 22 T 150 12" 
+                            d="M 10 65 Q 27.5 58.5, 45 52 T 80 38 T 115 45 T 150 32 T 190 22 T 235 8" 
                             fill="none" 
                             stroke="#f72585" 
                             strokeWidth="2.5" 
                             strokeLinecap="round"
                           />
                           <path 
-                            d="M 10 65 Q 25 55, 35 52 T 60 38 T 85 45 T 110 32 T 135 22 T 150 12 L 150 75 L 10 75 Z" 
+                            d="M 10 65 Q 27.5 58.5, 45 52 T 80 38 T 115 45 T 150 32 T 190 22 T 235 8 L 235 75 L 10 75 Z" 
                             fill="url(#pinkChartGrad)" 
                           />
                           <circle cx="10" cy="65" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="35" cy="52" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="60" cy="38" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="85" cy="45" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="110" cy="32" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="135" cy="22" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="150" cy="12" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="45" cy="52" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="80" cy="38" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="115" cy="45" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="150" cy="32" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="190" cy="22" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="235" cy="8" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
                         </svg>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: colorTextMuted, fontWeight: '700', padding: '0 4px 2px 4px' }}>
@@ -1413,7 +1413,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   ].map((act, aIdx) => (
                     <button 
                       key={aIdx}
-                      className="btn"
+                      className="btn quick-action-btn"
                       onClick={() => {
                         if (act.label === 'Support Chat') setActiveTab('support');
                         else if (act.label === 'Earnings Details') setActiveTab('earnings');
@@ -1423,6 +1423,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         border: 'none',
                         color: act.color,
                         background: act.bg,
+                        '--quick-action-color': act.color,
                         fontSize: '0.75rem',
                         fontWeight: '800',
                         padding: '12px 10px',
