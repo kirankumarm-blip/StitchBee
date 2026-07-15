@@ -744,14 +744,15 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
         
         {/* MODULE 1: HOME (DASHBOARD) */}
         {activeTab === 'home' && (
-          <div 
-            className="delivery-main-dashboard-grid" 
-            style={{ 
-              display: 'grid', 
-              gridTemplateColumns: '250px 1fr', 
-              gap: '20px' 
-            }}
-          >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div 
+              className="delivery-main-dashboard-grid" 
+              style={{ 
+                display: 'grid', 
+                gridTemplateColumns: '250px 1fr', 
+                gap: '20px' 
+              }}
+            >
             {/* LEFT COLUMN: Far-Left Sidebar Card (Go Online & Start Delivering) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '250px' }}>
               <div 
@@ -1205,9 +1206,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
 
-              {/* Row 3: Earnings Chart / Notifications Grid */}
-              {/* Row 3: Today's Performance / Earnings Chart / Notifications Grid */}
+          {/* Row 3: Today's Performance / Earnings Chart / Notifications Grid */}
               <div 
                 className="delivery-home-layout-grid" 
                 style={{ 
@@ -1447,9 +1449,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
               </div>
 
             </div>
-
-          </div>
-        )}
+          )}
 
         {/* MODULE 2: ORDERS LIST */}
         {activeTab === 'orders' && (() => {
