@@ -1991,7 +1991,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       {/* Section 5: Bottom action footer bar */}
                       <div style={{ display: 'flex', gap: '12px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }} className="order-details-actions">
                         <button 
-                          className="btn" 
+                          className="btn btn-solid-purple" 
                           onClick={() => setActiveTab('navigation')}
                           style={{ 
                             flex: 1, 
@@ -2003,16 +2003,13 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             alignItems: 'center', 
                             justifyContent: 'center', 
                             gap: '8px', 
-                            background: '#7209b7', 
-                            color: '#fff', 
-                            border: 'none',
                             cursor: 'pointer'
                           }}
                         >
                           <Navigation size={14} style={{ transform: 'rotate(45deg)' }} /> Navigate
                         </button>
                         <button 
-                          className="btn" 
+                          className="btn btn-solid-pink" 
                           onClick={() => alert(`Calling customer: ${selectedOrder.deliveryPhone}`)}
                           style={{ 
                             flex: 1, 
@@ -2024,16 +2021,13 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             alignItems: 'center', 
                             justifyContent: 'center', 
                             gap: '8px', 
-                            background: '#f72585', 
-                            color: '#fff', 
-                            border: 'none',
                             cursor: 'pointer'
                           }}
                         >
                           <Phone size={14} /> Call Customer
                         </button>
                         <button 
-                          className="btn" 
+                          className="btn btn-solid-purple" 
                           onClick={() => alert(`Calling tailor: ${selectedOrder.pickupPhone}`)}
                           style={{ 
                             flex: 1, 
@@ -2045,9 +2039,6 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             alignItems: 'center', 
                             justifyContent: 'center', 
                             gap: '8px', 
-                            background: '#7209b7', 
-                            color: '#fff', 
-                            border: 'none',
                             cursor: 'pointer'
                           }}
                         >
@@ -2078,20 +2069,22 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         {selectedOrder.status === 'upcoming' && (
                           <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
                             <button 
+                              className="btn btn-text-white-force"
                               onClick={() => {
                                 alert(`Task accepted! Navigating to Pickup point.`);
                                 const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
                                 setOrdersList(updated);
                                 setSelectedOrder({ ...selectedOrder, status: 'active', taskStatus: 'In Progress' });
                               }}
-                              style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px', cursor: 'pointer' }}
+                              style={{ flex: 1, background: 'transparent', border: 'none', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 0', cursor: 'pointer', boxShadow: 'none' }}
                             >
                               <Check size={14} /> Accept Task
                             </button>
                             <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
                             <button 
+                              className="btn-text-white-force"
                               onClick={() => alert("More options: Reject Task, View details")}
-                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center' }}
+                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
                             >
                               <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
                             </button>
@@ -2101,20 +2094,22 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         {selectedOrder.status === 'active' && (selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Pickup Pending') && (
                           <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
                             <button 
+                              className="btn btn-text-white-force"
                               onClick={() => {
                                 alert(`Order picked up! Now navigating to delivery point.`);
                                 const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, taskStatus: 'In Progress' } : o);
                                 setOrdersList(updated);
                                 setSelectedOrder({ ...selectedOrder, taskStatus: 'In Progress' });
                               }}
-                              style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px', cursor: 'pointer' }}
+                              style={{ flex: 1, background: 'transparent', border: 'none', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px 0', cursor: 'pointer', boxShadow: 'none' }}
                             >
                               <Check size={14} /> Picked Up
                             </button>
                             <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
                             <button 
+                              className="btn-text-white-force"
                               onClick={() => alert("More options: Delay Pickup, Issue at Tailor")}
-                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center' }}
+                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
                             >
                               <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
                             </button>
@@ -2124,6 +2119,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         {selectedOrder.status === 'active' && selectedOrder.taskStatus === 'In Progress' && (
                           <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
                             <button 
+                              className="btn btn-text-white-force"
                               onClick={() => {
                                 const code = prompt("Enter customer Delivery OTP to verify delivery:");
                                 if (code === selectedOrder.deliveryOtp) {
@@ -2135,14 +2131,15 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                   alert("Incorrect OTP code. Verification failed.");
                                 }
                               }}
-                              style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px', cursor: 'pointer' }}
+                              style={{ flex: 1, background: 'transparent', border: 'none', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px 0', cursor: 'pointer', boxShadow: 'none' }}
                             >
                               <Check size={14} /> Delivered
                             </button>
                             <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
                             <button 
+                              className="btn-text-white-force"
                               onClick={() => alert("More options: Customer Not Available, Delay Delivery, Issue")}
-                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center' }}
+                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
                             >
                               <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
                             </button>

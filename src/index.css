@@ -6237,6 +6237,45 @@ body.light-theme .customer-scroll-list::-webkit-scrollbar-thumb {
   }
 }
 
+/* StitchBee Delivery Actions Custom Button Overrides */
+.btn-solid-purple {
+  background: #7209b7 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.btn-solid-purple *, .btn-solid-purple svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.btn-solid-pink {
+  background: #f72585 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.btn-solid-pink *, .btn-solid-pink svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.btn-solid-green {
+  background: #10b981 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+.btn-solid-green *, .btn-solid-green svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.btn-text-white-force {
+  color: #ffffff !important;
+}
+.btn-text-white-force *, .btn-text-white-force svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
 
 
 
