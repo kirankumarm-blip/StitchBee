@@ -878,60 +878,6 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </button>
                 </div>
               </div>
-
-              {/* Today's Performance Card */}
-              <div 
-                className="glass-card-no-hover" 
-                style={{ 
-                  padding: '20px', 
-                  background: bgCard, 
-                  border: `1px solid ${borderColor}`, 
-                  borderRadius: '20px', 
-                  display: 'flex', 
-                  flexDirection: 'column' 
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Performance</h4>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setActiveTab('profile')}>
-                    View Report
-                  </span>
-                </div>
-
-                {/* Performance stats row */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
-                  {[
-                    { label: 'Acceptance Rate', val: '98%', icon: <Target size={16} />, color: '#10b981', bg: 'rgba(16,185,129,0.05)' },
-                    { label: 'On-Time Rate', val: '96%', icon: <Clock size={16} />, color: 'var(--primary)', bg: 'rgba(247,37,133,0.05)' },
-                    { label: 'Completion Rate', val: '92%', icon: <Shield size={16} />, color: '#3b82f6', bg: 'rgba(59,130,246,0.05)' },
-                    { label: 'Customer Rating', val: '4.9', icon: <Star size={16} fill="#fbbf24" style={{ stroke: '#fbbf24' }} />, color: '#fbbf24', bg: 'rgba(245,158,11,0.05)' }
-                  ].map((perf, pIdx) => (
-                    <div key={pIdx} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                      <div 
-                        style={{ 
-                          width: '36px', 
-                          height: '36px', 
-                          borderRadius: '50%', 
-                          background: perf.bg, 
-                          color: perf.color, 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                          border: `1.5px solid ${perf.color}`
-                        }}
-                      >
-                        {perf.icon}
-                      </div>
-                      <span style={{ fontSize: '0.58rem', color: colorTextMuted, display: 'block', height: '24px', overflow: 'hidden', lineHeight: '1.1' }}>{perf.label}</span>
-                      <strong style={{ fontSize: '0.88rem', color: colorTextPrimary, display: 'block' }}>{perf.val}</strong>
-                      <div style={{ height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : '#e2e8f0', borderRadius: '1.5px', overflow: 'hidden', width: '100%' }}>
-                        <div style={{ width: perf.val.includes('%') ? perf.val : '95%', height: '100%', background: perf.color }}></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* RIGHT COLUMN: KPI cards, Map, active delivery, timeline list, perform charts, quick actions */}
@@ -1261,82 +1207,183 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
               </div>
 
               {/* Row 3: Earnings Chart / Notifications Grid */}
+              {/* Row 3: Today's Performance / Earnings Chart / Notifications Grid */}
               <div 
                 className="delivery-home-layout-grid" 
                 style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: '1.4fr 1fr', 
-                  gap: '20px' 
+                  gridTemplateColumns: '1.45fr 1.45fr 1.1fr', 
+                  gap: '20px',
+                  alignItems: 'stretch'
                 }}
               >
-                {/* Col 3.1: Earnings Summary (Spline Chart) */}
-                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px', marginBottom: '14px' }}>
-                    <div>
-                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Earnings Summary</h4>
-                      <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>Weekly Performance overview</span>
+                {/* Col 3.1: Today's Performance Card */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '16px 20px', 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '20px', 
+                    display: 'flex', 
+                    flexDirection: 'column',
+                    height: '210px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Performance</h4>
+                    <span style={{ fontSize: '0.72rem', color: '#f72585', cursor: 'pointer', fontWeight: '800' }} onClick={() => setActiveTab('profile')}>
+                      View Report
+                    </span>
+                  </div>
+
+                  {/* Performance stats row */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '12px', flex: 1, alignItems: 'center' }}>
+                    {[
+                      { label: 'Acceptance Rate', val: '98%', icon: <Target size={18} />, color: '#10b981', bg: 'rgba(16, 185, 129, 0.08)' },
+                      { label: 'On-Time Rate', val: '96%', icon: <Clock size={18} />, color: '#f72585', bg: 'rgba(247, 37, 133, 0.08)' },
+                      { label: 'Completion Rate', val: '92%', icon: <Shield size={18} />, color: '#4361ee', bg: 'rgba(67, 97, 238, 0.08)' },
+                      { label: 'Customer Rating', val: '4.9', icon: <Star size={18} fill="#f97316" style={{ color: '#f97316' }} />, color: '#f97316', bg: 'rgba(249, 115, 22, 0.08)' }
+                    ].map((perf, pIdx) => (
+                      <div key={pIdx} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <div 
+                          style={{ 
+                            width: '40px', 
+                            height: '40px', 
+                            borderRadius: '12px', 
+                            background: perf.bg, 
+                            color: perf.color, 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            marginBottom: '8px'
+                          }}
+                        >
+                          {perf.icon}
+                        </div>
+                        <span style={{ fontSize: '0.62rem', color: colorTextMuted, display: 'block', fontWeight: '600', marginBottom: '4px', height: '24px', lineHeight: '1.2' }}>{perf.label}</span>
+                        <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, display: 'block', fontWeight: '800' }}>{perf.val}</strong>
+                        <div style={{ width: '45px', height: '4px', background: perf.color, borderRadius: '2px', margin: '8px auto 0 auto' }}></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Col 3.2: Earnings Summary (Spline Chart) */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '16px 20px', 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '210px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Earnings Summary</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: isDark ? 'rgba(255,255,255,0.05)' : '#f8fafc', border: `1.5px solid ${borderColor}`, padding: '4px 8px', borderRadius: '8px', cursor: 'pointer' }}>
+                      <span style={{ fontSize: '0.68rem', color: colorTextSecondary, fontWeight: '700' }}>This Week</span>
+                      <span style={{ fontSize: '0.6rem', color: colorTextSecondary }}>▼</span>
                     </div>
-                    <select className="form-select" style={{ width: '100px', fontSize: '0.7rem', padding: '4px 8px', height: '24px' }}>
-                      <option>This Week</option>
-                      <option>Last Week</option>
-                    </select>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.35rem', fontWeight: '800', color: colorTextPrimary }}>₹11,250</h3>
-                    <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: 'bold' }}>▲ +12.5% vs last week</span>
-                  </div>
-
-                  {/* SVG Spline Wave Chart */}
-                  <div style={{ height: '120px', width: '100%' }}>
-                    <svg viewBox="0 0 400 120" style={{ width: '100%', height: '100%' }}>
-                      <defs>
-                        <linearGradient id="gradientRedesign" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.2" />
-                          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                      <line x1="0" y1="20" x2="400" y2="20" stroke={borderColor} strokeWidth="0.5" />
-                      <line x1="0" y1="60" x2="400" y2="60" stroke={borderColor} strokeWidth="0.5" />
-                      <line x1="0" y1="100" x2="400" y2="100" stroke={borderColor} strokeWidth="0.5" />
-                      
-                      <path d="M 0 100 C 60 90, 120 70, 180 50 C 240 30, 300 80, 360 40 C 380 20, 400 30, 400 30 L 400 120 L 0 120 Z" fill="url(#gradientRedesign)" />
-                      <path d="M 0 100 C 60 90, 120 70, 180 50 C 240 30, 300 80, 360 40 C 380 20, 400 30, 400 30" fill="none" stroke="var(--primary)" strokeWidth="3" />
-                      
-                      <circle cx="180" cy="50" r="4" fill="var(--primary)" />
-                      <circle cx="360" cy="40" r="4" fill="var(--primary)" />
-                    </svg>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.58rem', color: colorTextMuted, marginTop: '4px' }}>
-                      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                  <div style={{ display: 'flex', gap: '16px', marginTop: '12px', flex: 1, alignItems: 'center' }}>
+                    {/* Left stats */}
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                      <h3 style={{ margin: 0, fontSize: '1.65rem', fontWeight: '900', color: colorTextPrimary, letterSpacing: '-0.5px' }}>₹11,250</h3>
+                      <span style={{ fontSize: '0.72rem', color: colorTextSecondary, fontWeight: '800', marginTop: '2px', display: 'block' }}>Total Earnings</span>
+                      <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: '700', marginTop: '8px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        ▲ +12.5% <span style={{ color: colorTextMuted, fontWeight: 'normal' }}>vs last week</span>
+                      </span>
+                    </div>
+                    
+                    {/* Right graphics: SVG Spline Chart */}
+                    <div style={{ width: '160px', height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div style={{ height: '75px', position: 'relative' }}>
+                        <svg viewBox="0 0 160 75" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                          <defs>
+                            <linearGradient id="pinkChartGrad" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stopColor="#f72585" stopOpacity="0.22" />
+                              <stop offset="100%" stopColor="#f72585" stopOpacity="0" />
+                            </linearGradient>
+                          </defs>
+                          <path 
+                            d="M 10 65 Q 25 55, 35 52 T 60 38 T 85 45 T 110 32 T 135 22 T 150 12" 
+                            fill="none" 
+                            stroke="#f72585" 
+                            strokeWidth="2.5" 
+                            strokeLinecap="round"
+                          />
+                          <path 
+                            d="M 10 65 Q 25 55, 35 52 T 60 38 T 85 45 T 110 32 T 135 22 T 150 12 L 150 75 L 10 75 Z" 
+                            fill="url(#pinkChartGrad)" 
+                          />
+                          <circle cx="10" cy="65" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="35" cy="52" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="60" cy="38" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="85" cy="45" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="110" cy="32" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="135" cy="22" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                          <circle cx="150" cy="12" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
+                        </svg>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: colorTextMuted, fontWeight: '700', padding: '0 4px 2px 4px' }}>
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                        <span>Sat</span>
+                        <span>Sun</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Col 3.2: Recent Notifications */}
-                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                {/* Col 3.3: Recent Notifications */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '16px 20px', 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '210px',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Recent Notifications</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setActiveTab('profile')}>
+                    <span style={{ fontSize: '0.72rem', color: '#f72585', cursor: 'pointer', fontWeight: '800' }} onClick={() => setActiveTab('profile')}>
                       View All
                     </span>
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px', flex: 1, justifyContent: 'center' }}>
                     {[
-                      { label: 'New Order Assigned', desc: '#SB-1025 has been assigned to you.', time: '2m ago', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' },
-                      { label: 'Customer Called', desc: 'Priya Sharma tried to call you.', time: '10m ago', color: 'var(--primary)', bg: 'rgba(247,37,133,0.1)' },
-                      { label: 'Incentive Earned', desc: 'You earned ₹50 incentive.', time: '1h ago', color: '#10b981', bg: 'rgba(16,185,129,0.1)' }
+                      { label: 'New Order Assigned', desc: '#SB-1025 has been assigned to you.', time: '2m ago', color: '#f72585', bg: 'rgba(247, 37, 133, 0.06)', icon: <ShoppingBag size={12} /> },
+                      { label: 'Customer Called', desc: 'Priya Sharma tried to call you.', time: '10m ago', color: '#7209b7', bg: 'rgba(114, 9, 183, 0.06)', icon: <Phone size={12} /> },
+                      { label: 'Incentive Earned', desc: 'You earned ₹50 incentive.', time: '1h ago', color: '#f97316', bg: 'rgba(249, 115, 22, 0.06)', icon: <Gift size={12} /> }
                     ].map((notif, nIdx) => (
-                      <div key={nIdx} style={{ display: 'flex', gap: '8px', padding: '8px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
-                        <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: notif.bg, color: notif.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 }}>
-                          🔔
+                      <div key={nIdx} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: notif.bg, color: notif.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          {notif.icon}
                         </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', marginBottom: '1px' }}>
-                            <strong style={{ color: colorTextPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{notif.label}</strong>
-                            <span style={{ color: colorTextMuted, fontSize: '0.58rem', flexShrink: 0 }}>{notif.time}</span>
+                        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                            <strong style={{ fontSize: '0.72rem', color: colorTextPrimary, fontWeight: '700' }}>{notif.label}</strong>
+                            <span style={{ fontSize: '0.58rem', color: colorTextMuted, flexShrink: 0 }}>{notif.time}</span>
                           </div>
-                          <p style={{ margin: 0, fontSize: '0.62rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{notif.desc}</p>
+                          <span style={{ fontSize: '0.62rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: '1px' }}>
+                            {notif.desc}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -1345,39 +1392,54 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
               </div>
 
               {/* Row 4: Quick Actions Bar */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
-                <h4 style={{ margin: '0 0 14px 0', fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Quick Actions</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
+              <div 
+                className="glass-card-no-hover" 
+                style={{ 
+                  padding: '20px', 
+                  background: bgCard, 
+                  border: `1px solid ${borderColor}`, 
+                  borderRadius: '20px' 
+                }}
+              >
+                <h4 style={{ margin: '0 0 16px 0', fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Quick Actions</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}>
                   {[
-                    { label: 'Scan Package', border: 'rgba(247,37,133,0.3)', color: 'var(--primary)', bg: 'rgba(247,37,133,0.05)' },
-                    { label: 'Upload Proof', border: 'rgba(114,9,183,0.3)', color: '#7209b7', bg: 'rgba(114,9,183,0.05)' },
-                    { label: 'Emergency', border: 'rgba(239,68,68,0.3)', color: '#ef4444', bg: 'rgba(239,68,68,0.05)' },
-                    { label: 'Earnings Details', border: 'rgba(16,185,129,0.3)', color: '#10b981', bg: 'rgba(16,185,129,0.05)' },
-                    { label: 'Support Chat', border: 'rgba(59,130,246,0.3)', color: '#3b82f6', bg: 'rgba(59,130,246,0.05)' },
-                    { label: 'Refer & Earn', border: 'rgba(245,158,11,0.3)', color: '#f59e0b', bg: 'rgba(245,158,11,0.05)' }
+                    { label: 'Scan Package', color: '#f72585', bg: 'rgba(247, 37, 133, 0.05)', icon: <Scan size={15} /> },
+                    { label: 'Upload Proof', color: '#7209b7', bg: 'rgba(114, 9, 183, 0.05)', icon: <Camera size={15} /> },
+                    { label: 'Emergency', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.05)', icon: <AlertTriangle size={15} /> },
+                    { label: 'Earnings Details', color: '#10b981', bg: 'rgba(16, 185, 129, 0.05)', icon: <Wallet size={15} /> },
+                    { label: 'Support Chat', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.05)', icon: <Headphones size={15} /> },
+                    { label: 'Refer & Earn', color: '#f97316', bg: 'rgba(249, 115, 22, 0.05)', icon: <UserPlus size={15} /> }
                   ].map((act, aIdx) => (
                     <button 
                       key={aIdx}
-                      className="btn btn-secondary"
+                      className="btn"
                       onClick={() => {
                         if (act.label === 'Support Chat') setActiveTab('support');
                         else if (act.label === 'Earnings Details') setActiveTab('earnings');
                         else alert(`Dispatched quick action: ${act.label}`);
                       }}
                       style={{ 
-                        border: `1.5px solid ${act.border}`,
+                        border: 'none',
                         color: act.color,
                         background: act.bg,
-                        fontSize: '0.72rem',
-                        fontWeight: 'bold',
-                        padding: '8px',
-                        borderRadius: '10px',
+                        fontSize: '0.75rem',
+                        fontWeight: '800',
+                        padding: '12px 10px',
+                        borderRadius: '12px',
                         cursor: 'pointer',
-                        textAlign: 'center',
-                        transition: 'all 0.2s'
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        transition: 'all 0.2s ease',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.01)'
                       }}
+                      onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(0.96)'}
+                      onMouseLeave={(e) => e.currentTarget.style.filter = 'none'}
                     >
-                      {act.label}
+                      {act.icon}
+                      <span>{act.label}</span>
                     </button>
                   ))}
                 </div>
