@@ -1,19 +1,299 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
   Phone, AlertTriangle, CheckCircle, Navigation, Send, Calendar, 
-  Clock, Check, ChevronRight, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors
+  Clock, Check, ChevronRight, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
+  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText
 } from 'lucide-react';
 
-export default function DeliveryView({ theme, setTheme, currentUser, onLogout }) {
+export default function DeliveryView({ theme, setTheme, currentUser, onLogout, setRole }) {
+  const isDark = theme === 'dark';
+  const bgCard = theme === 'dark' ? '#120f26' : '#ffffff';
+  const borderColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0';
+  const colorTextPrimary = theme === 'dark' ? '#f3f4f6' : '#0f172a';
+  const colorTextSecondary = theme === 'dark' ? '#9ca3af' : '#475569';
+  const colorTextMuted = theme === 'dark' ? '#6b7280' : '#94a3b8';
+
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'orders' | 'navigation' | 'earnings' | 'support' | 'profile'
   const [isOnline, setIsOnline] = useState(true);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false); // floating dropdown state
   const [ordersSubTab, setOrdersSubTab] = useState('active'); // 'active' | 'upcoming' | 'completed' | 'cancelled' | 'returned'
   const [earningsPeriod, setEarningsPeriod] = useState('daily'); // 'daily' | 'weekly' | 'monthly'
   const [selectedOrder, setSelectedOrder] = useState(null); // Detailed order modal/view
+  const [orderSearchText, setOrderSearchText] = useState(''); // Search query for orders list
   const [typedMessage, setTypedMessage] = useState('');
-  const [supportContact, setSupportContact] = useState('customer'); // 'customer' | 'tailor' | 'admin' | 'ai'
+    const [supportContact, setSupportContact] = useState('customer'); // 'customer' | 'tailor' | 'admin' | 'ai'
   
+  // Interactive Map References
+  const homeMapRef = useRef(null);
+  const navMapRef = useRef(null);
+  const orderMapRef = useRef(null);
+  const homeMapInstance = useRef(null);
+  const navMapInstance = useRef(null);
+  const orderMapInstance = useRef(null);
+
+  useEffect(() => {
+    // Load Leaflet CSS dynamically if not present
+    if (!document.getElementById('leaflet-css-cdn')) {
+      const link = document.createElement('link');
+      link.id = 'leaflet-css-cdn';
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+    }
+
+    const initMap = (L) => {
+      // 1. Handle Home Map
+      if (activeTab === 'home' && homeMapRef.current) {
+        if (homeMapInstance.current) {
+          try {
+            homeMapInstance.current.remove();
+          } catch (e) {
+            console.error("Error removing home map:", e);
+          }
+          homeMapInstance.current = null;
+        }
+        if (homeMapRef.current._leaflet_id) {
+          delete homeMapRef.current._leaflet_id;
+        }
+
+        const map = L.map(homeMapRef.current, {
+          zoomControl: false,
+          scrollWheelZoom: true
+        }).setView([12.9716, 77.5946], 13);
+        homeMapInstance.current = map;
+
+        // Google Maps styled tiles
+        const tileUrl = isDark 
+          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+          : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+        L.tileLayer(tileUrl, {
+          attribution: '&copy; Google Maps &copy; OpenStreetMap'
+        }).addTo(map);
+
+        // Coordinates around HSR / Brookefield Layout Bengaluru matching second image flow (Start -> Shop -> Stop 2 -> Stop 3 -> Stop 4 -> Home)
+        const points = [
+          { lat: 12.9500, lng: 77.6800, label: 'Start Point', isStart: true },
+          { lat: 12.9592, lng: 77.6974, label: '🏪 Vogue Craft Tailors (Pickup)', isShop: true },
+          { lat: 12.9610, lng: 77.7060, label: 'Stop 2', num: 2 },
+          { lat: 12.9550, lng: 77.7120, label: 'Stop 3', num: 3 },
+          { lat: 12.9680, lng: 77.7200, label: 'Stop 4', num: 4 },
+          { lat: 12.9660, lng: 77.7320, label: '🏠 Priya Sharma (Delivery)', isHome: true }
+        ];
+
+        const latLngs = points.map(p => [p.lat, p.lng]);
+        map.fitBounds(L.latLngBounds(latLngs), { padding: [30, 30] });
+
+        // Purple-pink polyline matching second image
+        L.polyline(latLngs, {
+          color: '#d946ef',
+          weight: 5,
+          opacity: 0.95
+        }).addTo(map);
+
+        // Add custom markers matching second image
+        points.forEach((p) => {
+          let html = '';
+          let iconSize = [34, 42];
+          let iconAnchor = [17, 42];
+
+          if (p.isStart) {
+            html = `
+              <div style="display:flex; align-items:center; justify-content:center; width:22px; height:22px; background:rgba(59,130,246,0.25); border-radius:50%;">
+                <div style="background:#3b82f6; border:3px solid #fff; width:16px; height:16px; border-radius:50%; box-shadow:0 0 8px rgba(59,130,246,0.85);"></div>
+              </div>
+            `;
+            iconSize = [22, 22];
+            iconAnchor = [11, 11];
+          } else if (p.isShop) {
+            html = `
+              <div style="position:relative; display:flex; flex-direction:column; align-items:center; width:34px; height:42px;">
+                <div style="background:#e91e63; color:#fff; width:34px; height:34px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; box-shadow:0 3px 6px rgba(0,0,0,0.3); border:2px solid #fff;">
+                  <span style="transform:rotate(45deg); font-size:14px; display:block; line-height:1; margin-top:-2px; margin-left:-2px;">🏪</span>
+                </div>
+              </div>
+            `;
+          } else if (p.isHome) {
+            html = `
+              <div style="position:relative; display:flex; flex-direction:column; align-items:center; width:34px; height:42px;">
+                <div style="background:#10b981; color:#fff; width:34px; height:34px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; box-shadow:0 3px 6px rgba(0,0,0,0.3); border:2px solid #fff;">
+                  <span style="transform:rotate(45deg); font-size:14px; display:block; line-height:1; margin-top:-2px; margin-left:-2px;">🏠</span>
+                </div>
+              </div>
+            `;
+          } else {
+            html = `
+              <div style="position:relative; display:flex; flex-direction:column; align-items:center; width:34px; height:42px;">
+                <div style="background:#f97316; color:#fff; width:34px; height:34px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); display:flex; align-items:center; justify-content:center; box-shadow:0 3px 6px rgba(0,0,0,0.3); border:2px solid #fff;">
+                  <span style="transform:rotate(45deg); font-size:13px; font-weight:800; display:block; line-height:1; margin-top:-2px; margin-left:-2px;">${p.num}</span>
+                </div>
+              </div>
+            `;
+          }
+
+          const divIcon = L.divIcon({
+            html: html,
+            className: '',
+            iconSize: iconSize,
+            iconAnchor: iconAnchor
+          });
+
+          L.marker([p.lat, p.lng], { icon: divIcon })
+            .addTo(map)
+            .bindPopup(`<strong>${p.label}</strong>`);
+        });
+      }
+
+      // 2. Handle Navigation Map
+      if (activeTab === 'navigation' && navMapRef.current) {
+        if (navMapInstance.current) {
+          try {
+            navMapInstance.current.remove();
+          } catch (e) {
+            console.error("Error removing nav map:", e);
+          }
+          navMapInstance.current = null;
+        }
+        if (navMapRef.current._leaflet_id) {
+          delete navMapRef.current._leaflet_id;
+        }
+
+        const map = L.map(navMapRef.current).setView([12.9592, 77.6974], 14);
+        navMapInstance.current = map;
+
+        const tileUrl = isDark 
+          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+          : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+        L.tileLayer(tileUrl, {
+          attribution: '&copy; Google Maps &copy; OpenStreetMap'
+        }).addTo(map);
+
+        const pickup = [12.9592, 77.6974];
+        const deliver = [12.9660, 77.7320];
+
+        map.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [40, 40] });
+
+        // Route line
+        L.polyline([pickup, deliver], {
+          color: '#f72585',
+          weight: 6,
+          opacity: 0.95
+        }).addTo(map);
+
+        // Pickup Marker
+        const pickupIcon = L.divIcon({
+          html: `<div style="background:#7209b7; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-size:14px;">🏪</div>`,
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        });
+        L.marker(pickup, { icon: pickupIcon }).addTo(map).bindPopup("<strong>Pickup: Vogue Craft Tailors</strong>");
+
+        // Delivery Marker
+        const deliverIcon = L.divIcon({
+          html: `<div style="background:#10b981; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-size:14px;">🏠</div>`,
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        });
+        L.marker(deliver, { icon: deliverIcon }).addTo(map).bindPopup("<strong>Deliver: Priya Sharma</strong>");
+      }
+
+      // 3. Handle Order Details Map
+      if (activeTab === 'orders' && selectedOrder && orderMapRef.current) {
+        if (orderMapInstance.current) {
+          try {
+            orderMapInstance.current.remove();
+          } catch (e) {
+            console.error("Error removing order map:", e);
+          }
+          orderMapInstance.current = null;
+        }
+        if (orderMapRef.current._leaflet_id) {
+          delete orderMapRef.current._leaflet_id;
+        }
+
+        const pickupCoords = selectedOrder.pickupCoords || [12.9592, 77.6974];
+        const deliveryCoords = selectedOrder.deliveryCoords || [12.9660, 77.7320];
+
+        const map = L.map(orderMapRef.current, {
+          zoomControl: false,
+          attributionControl: false
+        }).setView(pickupCoords, 14);
+        orderMapInstance.current = map;
+
+        L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+          maxZoom: 20
+        }).addTo(map);
+
+        map.fitBounds(L.latLngBounds([pickupCoords, deliveryCoords]), { padding: [30, 30] });
+
+        // Route polyline
+        L.polyline([pickupCoords, deliveryCoords], {
+          color: '#7209b7',
+          weight: 4,
+          opacity: 0.9,
+          dashArray: '4, 4'
+        }).addTo(map);
+
+        // Custom markers
+        const pickupIconHtml = L.divIcon({
+          html: `<div style="background:#7209b7; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-size:14px; font-weight:bold;">🏪</div>`,
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        });
+        L.marker(pickupCoords, { icon: pickupIconHtml }).addTo(map).bindPopup(`<strong>Pickup: ${selectedOrder.pickup}</strong>`);
+
+        const deliverIconHtml = L.divIcon({
+          html: `<div style="background:#f72585; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-size:14px; font-weight:bold;">🏠</div>`,
+          className: '',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        });
+        L.marker(deliveryCoords, { icon: deliverIconHtml }).addTo(map).bindPopup(`<strong>Deliver: ${selectedOrder.deliverTo}</strong>`);
+      }
+    };
+
+    if (window.L) {
+      initMap(window.L);
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = () => {
+        if (window.L) initMap(window.L);
+      };
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      if (homeMapInstance.current) {
+        try {
+          homeMapInstance.current.remove();
+        } catch (e) {
+          console.error(e);
+        }
+        homeMapInstance.current = null;
+      }
+      if (navMapInstance.current) {
+        try {
+          navMapInstance.current.remove();
+        } catch (e) {
+          console.error(e);
+        }
+        navMapInstance.current = null;
+      }
+      if (orderMapInstance.current) {
+        try {
+          orderMapInstance.current.remove();
+        } catch (e) {
+          console.error(e);
+        }
+        orderMapInstance.current = null;
+      }
+    };
+  }, [activeTab, isDark, selectedOrder]);
+
   // Wallet state
   const [walletBalance, setWalletBalance] = useState(8500);
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -26,14 +306,6 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout })
     "5 Minutes Away",
     "Delivered successfully!"
   ];
-
-  // Theme styling definitions
-  const bgCard = theme === 'dark' ? '#120f26' : '#ffffff';
-  const borderColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0';
-  const colorTextPrimary = theme === 'dark' ? '#f3f4f6' : '#0f172a';
-  const colorTextSecondary = theme === 'dark' ? '#9ca3af' : '#475569';
-  const colorTextMuted = theme === 'dark' ? '#6b7280' : '#94a3b8';
-  const isDark = theme === 'dark';
 
   // Mock Active Order for Nav
   const activeOrder = {
@@ -55,12 +327,223 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout })
 
   // Mock Orders list
   const [ordersList, setOrdersList] = useState([
-    { id: '#SB-1024', pickup: 'Vogue Craft Tailors', deliverTo: 'Priya Sharma', item: 'Lehenga', fee: '₹120', distance: '3.2 KM', status: 'active' },
-    { id: '#SB-0998', pickup: 'Elite Threads', deliverTo: 'Amit Verma', item: 'Sherwani', fee: '₹150', distance: '4.8 KM', status: 'upcoming' },
-    { id: '#SB-0987', pickup: 'Rose Boutique', deliverTo: 'Sneha Iyer', item: 'Anarkali Suit', fee: '₹100', distance: '2.5 KM', status: 'upcoming' },
-    { id: '#SB-0950', pickup: 'Vogue Craft Tailors', deliverTo: 'Neha Kapoor', item: 'Kurtis', fee: '₹95', distance: '3.0 KM', status: 'completed' },
-    { id: '#SB-0921', pickup: 'Vogue Craft Tailors', deliverTo: 'Rahul Mehta', item: 'Suit Pant', fee: '₹110', distance: '3.5 KM', status: 'cancelled' }
+    {
+      id: '#SB-1024',
+      status: 'active',
+      taskStatus: 'Ready', // 'Ready', 'In Progress', 'Pickup Pending'
+      pickup: 'Vogue Craft Tailors',
+      pickupAddress: '23, 4th Main, 1st Cross, Brookefield, Bengaluru, Karnataka 560037',
+      pickupPhone: '+91 98765 43210',
+      pickupContactName: 'Rajesh Kumar',
+      pickupTime: 'Open till 9:00 PM',
+      deliverTo: 'Priya Sharma',
+      deliveryAddress: '12, Prestige Lakeside, Whitefield, Bengaluru, Karnataka 560066',
+      deliveryPhone: '+91 87654 32109',
+      deliveryOtp: '7842',
+      item: 'Lehenga',
+      weight: '2.3 KG',
+      type: 'Clothing',
+      fragile: 'Yes',
+      handleNote: 'Embroidered work',
+      customerNote: 'Please call before arriving. Gate No. 4, Flat 507. Ring the bell twice.',
+      paymentType: 'Prepaid',
+      orderValue: '₹5,200',
+      payout: '₹150',
+      distance: '3.2 KM',
+      estTime: '18 mins',
+      traffic: 'Light',
+      bestRoute: 'Via ITPL Main Rd',
+      pickupCoords: [12.9592, 77.6974],
+      deliveryCoords: [12.9660, 77.7320]
+    },
+    {
+      id: '#SB-1025',
+      status: 'active',
+      taskStatus: 'In Progress',
+      pickup: 'Rose Boutique',
+      pickupAddress: '456, 80 Feet Rd, Koramangala 4th Block, Bengaluru, Karnataka 560034',
+      pickupPhone: '+91 98765 43211',
+      pickupContactName: 'Anita Singh',
+      pickupTime: 'Open till 8:30 PM',
+      deliverTo: 'Sneha Iyer',
+      deliveryAddress: '78, 19th Main, HSR Layout Sector 3, Bengaluru, Karnataka 560102',
+      deliveryPhone: '+91 87654 32110',
+      deliveryOtp: '3941',
+      item: 'Saree',
+      weight: '1.8 KG',
+      type: 'Clothing',
+      fragile: 'No',
+      handleNote: 'Delicate silk material',
+      customerNote: 'Leave at reception desk if not available.',
+      paymentType: 'COD',
+      orderValue: '₹4,500',
+      payout: '₹180',
+      distance: '5.4 KM',
+      estTime: '26 mins',
+      traffic: 'Moderate',
+      bestRoute: 'Via Outer Ring Rd',
+      pickupCoords: [12.9348, 77.6272],
+      deliveryCoords: [12.9100, 77.6450]
+    },
+    {
+      id: '#SB-1026',
+      status: 'active',
+      taskStatus: 'Pickup Pending',
+      pickup: 'Elite Threads',
+      pickupAddress: '89, 100 Feet Rd, Indiranagar, Bengaluru, Karnataka 560038',
+      pickupPhone: '+91 98765 43212',
+      pickupContactName: 'Vikram Rao',
+      pickupTime: 'Open till 9:30 PM',
+      deliverTo: 'Amit Verma',
+      deliveryAddress: '34, Spice Garden Layout, Marathahalli, Bengaluru, Karnataka 560037',
+      deliveryPhone: '+91 87654 32111',
+      deliveryOtp: '5682',
+      item: 'Kurta Set',
+      weight: '1.2 KG',
+      type: 'Clothing',
+      fragile: 'No',
+      handleNote: 'Standard packing',
+      customerNote: 'Call upon reaching the gate for gate pass entry code.',
+      paymentType: 'Prepaid',
+      orderValue: '₹2,800',
+      payout: '₹120',
+      distance: '4.6 KM',
+      estTime: '20 mins',
+      traffic: 'Heavy',
+      bestRoute: 'Via HAL Old Airport Rd',
+      pickupCoords: [12.9719, 77.6412],
+      deliveryCoords: [12.9562, 77.7011]
+    },
+    {
+      id: '#SB-0998',
+      status: 'upcoming',
+      taskStatus: 'Ready',
+      pickup: 'Vogue Craft Tailors',
+      pickupAddress: '23, 4th Main, 1st Cross, Brookefield, Bengaluru, Karnataka 560037',
+      pickupPhone: '+91 98765 43210',
+      pickupContactName: 'Rajesh Kumar',
+      pickupTime: 'Open till 9:00 PM',
+      deliverTo: 'Amit Verma',
+      deliveryAddress: '34, Spice Garden Layout, Marathahalli, Bengaluru, Karnataka 560037',
+      deliveryPhone: '+91 87654 32111',
+      deliveryOtp: '9081',
+      item: 'Sherwani',
+      weight: '3.5 KG',
+      type: 'Clothing',
+      fragile: 'Yes',
+      handleNote: 'Heavy work garment',
+      customerNote: 'Please deliver before 8 PM.',
+      paymentType: 'Prepaid',
+      orderValue: '₹12,500',
+      payout: '₹150',
+      distance: '4.8 KM',
+      estTime: '22 mins',
+      traffic: 'Light',
+      bestRoute: 'Via Marathahalli Bridge',
+      pickupCoords: [12.9592, 77.6974],
+      deliveryCoords: [12.9562, 77.7011]
+    },
+    {
+      id: '#SB-0987',
+      status: 'upcoming',
+      taskStatus: 'Pickup Pending',
+      pickup: 'Rose Boutique',
+      pickupAddress: '456, 80 Feet Rd, Koramangala 4th Block, Bengaluru, Karnataka 560034',
+      pickupPhone: '+91 98765 43211',
+      pickupContactName: 'Anita Singh',
+      pickupTime: 'Open till 8:30 PM',
+      deliverTo: 'Sneha Iyer',
+      deliveryAddress: '78, 19th Main, HSR Layout Sector 3, Bengaluru, Karnataka 560102',
+      deliveryPhone: '+91 87654 32110',
+      deliveryOtp: '4481',
+      item: 'Anarkali Suit',
+      weight: '2.0 KG',
+      type: 'Clothing',
+      fragile: 'No',
+      handleNote: 'Embroidered outfit',
+      customerNote: 'Call husband if phone is busy.',
+      paymentType: 'Prepaid',
+      orderValue: '₹3,400',
+      payout: '₹100',
+      distance: '2.5 KM',
+      estTime: '12 mins',
+      traffic: 'Light',
+      bestRoute: 'Via 14th Main Rd',
+      pickupCoords: [12.9348, 77.6272],
+      deliveryCoords: [12.9100, 77.6450]
+    },
+    {
+      id: '#SB-0950',
+      status: 'completed',
+      taskStatus: 'Delivered',
+      pickup: 'Vogue Craft Tailors',
+      pickupAddress: '23, 4th Main, 1st Cross, Brookefield, Bengaluru, Karnataka 560037',
+      pickupPhone: '+91 98765 43210',
+      pickupContactName: 'Rajesh Kumar',
+      pickupTime: 'Open till 9:00 PM',
+      deliverTo: 'Neha Kapoor',
+      deliveryAddress: '88, Palm Meadows, Whitefield, Bengaluru, Karnataka 560066',
+      deliveryPhone: '+91 87654 32112',
+      deliveryOtp: '1234',
+      item: 'Kurtis',
+      weight: '1.0 KG',
+      type: 'Clothing',
+      fragile: 'No',
+      handleNote: 'None',
+      customerNote: 'Leave with guard.',
+      paymentType: 'Prepaid',
+      orderValue: '₹1,500',
+      payout: '₹95',
+      distance: '3.0 KM',
+      estTime: '15 mins',
+      traffic: 'Light',
+      bestRoute: 'Via Whitefield Main Rd',
+      pickupCoords: [12.9592, 77.6974],
+      deliveryCoords: [12.9698, 77.7499]
+    },
+    {
+      id: '#SB-0921',
+      status: 'cancelled',
+      taskStatus: 'Cancelled',
+      pickup: 'Vogue Craft Tailors',
+      pickupAddress: '23, 4th Main, 1st Cross, Brookefield, Bengaluru, Karnataka 560037',
+      pickupPhone: '+91 98765 43210',
+      pickupContactName: 'Rajesh Kumar',
+      pickupTime: 'Open till 9:00 PM',
+      deliverTo: 'Rahul Mehta',
+      deliveryAddress: '15, Rustam Bagh, HAL Road, Bengaluru, Karnataka 560017',
+      deliveryPhone: '+91 87654 32113',
+      deliveryOtp: '4321',
+      item: 'Suit Pant',
+      weight: '2.5 KG',
+      type: 'Clothing',
+      fragile: 'No',
+      handleNote: 'Premium suit pack',
+      customerNote: 'Call 10 mins before arrival.',
+      paymentType: 'Prepaid',
+      orderValue: '₹8,900',
+      payout: '₹110',
+      distance: '3.5 KM',
+      estTime: '18 mins',
+      traffic: 'Moderate',
+      bestRoute: 'Via HAL Rd',
+      pickupCoords: [12.9592, 77.6974],
+      deliveryCoords: [12.9620, 77.6710]
+    }
   ]);
+
+  // Sync selectedOrder with sub-tab selection
+  useEffect(() => {
+    const filtered = ordersList.filter(o => o.status === ordersSubTab);
+    if (filtered.length > 0) {
+      const exists = filtered.find(o => o.id === selectedOrder?.id);
+      if (!exists) {
+        setSelectedOrder(filtered[0]);
+      }
+    } else {
+      setSelectedOrder(null);
+    }
+  }, [ordersSubTab, ordersList]);
 
   // Support messages timeline
   const [chatHistory, setChatHistory] = useState({
@@ -124,67 +607,42 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout })
         color: colorTextPrimary, 
         minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column',
-        fontFamily: 'Inter, sans-serif'
+        flexDirection: 'column'
       }}
     >
       {/* 1. TOP HEADER NAVIGATION BAR */}
-      <header 
-        style={{ 
-          background: bgCard, 
-          borderBottom: `1px solid ${borderColor}`, 
-          position: 'sticky', 
-          top: 0, 
-          zIndex: 100,
-          padding: '12px 24px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
-        }}
-      >
+      <header className="top-nav">
         {/* Logo and Brand */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ background: 'var(--primary)', color: '#fff', padding: '6px', borderRadius: '8px', display: 'flex' }}>
-            <Scissors size={18} />
-          </div>
-          <span style={{ fontWeight: '800', fontSize: '1.2rem', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>StitchBee</span>
-          <span style={{ fontSize: '0.65rem', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px' }}>RIDER PORTAL</span>
+        <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
+          <span className="logo-text">StitchBee</span>
+          <span style={{ fontSize: '0.65rem', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '4px' }}>RIDER PORTAL</span>
         </div>
 
         {/* Desktop Tabs Header Menu */}
-        <nav className="desktop-header-nav" style={{ display: 'flex', gap: '8px' }}>
+        <div className="role-switcher desktop-header-nav" style={{ display: 'flex', gap: '4px' }}>
           {[
             { id: 'home', label: 'Home', icon: <Home size={15} /> },
             { id: 'orders', label: 'Orders', icon: <ShoppingBag size={15} /> },
             { id: 'navigation', label: 'Navigation', icon: <Compass size={15} /> },
             { id: 'earnings', label: 'Earnings', icon: <DollarSign size={15} /> },
-            { id: 'support', label: 'Support', icon: <MessageSquare size={15} /> },
-            { id: 'profile', label: 'Profile', icon: <User size={15} /> }
+            { id: 'support', label: 'Support', icon: <MessageSquare size={15} /> }
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
+              className={`role-btn ${activeTab === tab.id ? 'active' : ''}`}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
-                fontSize: '0.8rem',
-                fontWeight: '700',
-                borderRadius: '8px',
-                border: 'none',
-                background: activeTab === tab.id ? 'var(--primary)' : 'transparent',
-                color: activeTab === tab.id ? '#ffffff' : colorTextSecondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s'
+                gap: '6px'
               }}
             >
               {tab.icon}
               {tab.label}
             </button>
           ))}
-        </nav>
+        </div>
 
         {/* Right Info: Online status, Theme selector, Profile */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -218,201 +676,634 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout })
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          {/* User Profile Avatar */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* User Profile Avatar with Dropdown */}
+          <div 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', position: 'relative' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setProfileDropdownOpen(!profileDropdownOpen);
+            }}
+          >
             <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: `2px solid var(--primary)` }}>
               <img src="/tailor_hero_4.jpg" alt="Rider" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', fontSize: '0.7rem' }}>
-              <strong style={{ color: colorTextPrimary }}>Rajesh Rider</strong>
+            <div style={{ display: 'flex', flexDirection: 'column', fontSize: '0.7rem', textAlign: 'left' }} className="desktop-header-nav">
+              <strong style={{ color: colorTextPrimary, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                Rajesh Rider <ChevronRight size={10} style={{ transform: 'rotate(90deg)', marginLeft: '2px' }} />
+              </strong>
               <span style={{ color: colorTextMuted }}>Rider Partner</span>
             </div>
+
+            {/* Floating Dropdown menu */}
+            {profileDropdownOpen && (
+              <ul 
+                className="nav-dropdown-menu show" 
+                style={{ 
+                  position: 'absolute', 
+                  top: '40px', 
+                  right: 0, 
+                  minWidth: '150px', 
+                  background: bgCard, 
+                  border: `1px solid ${borderColor}`,
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  zIndex: 200,
+                  listStyle: 'none',
+                  padding: '8px 0',
+                  margin: 0
+                }}
+              >
+                <li 
+                  className="dropdown-item" 
+                  style={{ padding: '8px 16px', fontSize: '0.8rem', color: colorTextPrimary }}
+                  onClick={() => {
+                    setActiveTab('profile');
+                    setProfileDropdownOpen(false);
+                  }}
+                >
+                  👤 View Profile
+                </li>
+                <li 
+                  className="dropdown-item" 
+                  style={{ padding: '8px 16px', fontSize: '0.8rem', color: 'var(--primary)' }}
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    onLogout();
+                  }}
+                >
+                  🚪 Log Out
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </header>
 
       {/* Main content body */}
-      <main style={{ flex: 1, padding: '20px', overflowY: 'auto', paddingBottom: '90px' }}>
+      <main style={{ flex: 1, padding: activeTab === 'orders' ? '12px 16px' : '20px', overflowY: 'auto', paddingBottom: activeTab === 'orders' ? '12px' : '90px' }}>
         
         {/* MODULE 1: HOME (DASHBOARD) */}
         {activeTab === 'home' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1.2fr', gap: '20px' }} className="delivery-home-grid">
-            
-            {/* Left Column Dashboard */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
-              {/* Header Greeting */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Good Morning 👋 Rajesh</h3>
-                  <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: colorTextSecondary }}>Ready for today's deliveries? Stay safe on the road!</p>
+          <div 
+            className="delivery-main-dashboard-grid" 
+            style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '300px 1fr', 
+              gap: '20px' 
+            }}
+          >
+            {/* LEFT COLUMN: Far-Left Sidebar Card (Go Online & Start Delivering) */}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div 
+                className="glass-card-no-hover" 
+                style={{ 
+                  background: 'linear-gradient(135deg, #7209b7 0%, #f72585 100%)', 
+                  border: 'none', 
+                  borderRadius: '24px', 
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  padding: '20px',
+                  gap: '16px',
+                  height: '100%',
+                  color: '#ffffff'
+                }}
+              >
+                <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem', fontWeight: '800', textAlign: 'center', color: '#ffffff' }}>Go Online & Start Delivering</h4>
+                
+                <div style={{ textAlign: 'center' }}>
+                  <img 
+                    src="/rider_3d.jpg" 
+                    alt="Rider 3D" 
+                    style={{ 
+                      width: '100%', 
+                      height: '180px', 
+                      objectFit: 'contain'
+                    }} 
+                  />
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>SYSTEM STATUS:</span>
-                  <span style={{ fontSize: '0.8rem', background: '#10b981', color: '#fff', padding: '4px 10px', borderRadius: '12px', fontWeight: 'bold' }}>ACTIVE</span>
+                
+                {/* White floating card inside the gradient background */}
+                <div 
+                  style={{ 
+                    background: '#ffffff', 
+                    color: '#0f172a',
+                    borderRadius: '20px', 
+                    padding: '16px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '14px',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  {/* Online status badge */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isOnline ? '#10b981' : '#6b7280' }}></span>
+                    <strong style={{ fontSize: '0.8rem', color: isOnline ? '#10b981' : '#6b7280' }}>
+                      {isOnline ? 'You are Online' : 'You are Offline'}
+                    </strong>
+                  </div>
+
+                  {/* Stats List */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.75rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#64748b' }}>⏱️ Working Time</span>
+                      <strong style={{ color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#64748b' }}>📦 Orders Completed</span>
+                      <strong style={{ color: '#0f172a' }}>11 Deliveries</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#64748b' }}>💰 Earnings Today</span>
+                      <strong style={{ color: '#0f172a' }}>₹1,820</strong>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#64748b' }}>⭐ Rider Rating</span>
+                      <strong style={{ color: '#0f172a', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        4.9 <span style={{ color: '#f59e0b' }}>★</span>
+                      </strong>
+                    </div>
+                  </div>
+
+                  {/* Offline / Online Action Button */}
+                  <button 
+                    className="btn" 
+                    onClick={() => setIsOnline(!isOnline)}
+                    style={{ 
+                      width: '100%', 
+                      border: `1.5px solid ${isOnline ? '#ef4444' : '#10b981'}`,
+                      background: 'transparent',
+                      color: isOnline ? '#ef4444' : '#10b981',
+                      fontWeight: 'bold',
+                      fontSize: '0.78rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      padding: '8px',
+                      borderRadius: '10px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <span>⭕</span> {isOnline ? 'Go Offline' : 'Go Online'}
+                  </button>
                 </div>
               </div>
+            </div>
 
-              {/* Today's KPI Metrics Row */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
+            {/* RIGHT COLUMN: KPI cards, Map, active delivery, timeline list, perform charts, quick actions */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              
+              {/* Row 1: KPI Stats Summary Grid */}
+              <div 
+                style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+                  gap: '12px' 
+                }}
+              >
                 {[
-                  { label: "Today's Earnings", val: "₹1,820", sub: "+₹150 Incentives", color: '#fbbf24' },
-                  { label: "Today's Orders", val: "16", sub: "Goal: 20", color: 'var(--primary)' },
-                  { label: "Completed", val: "11", sub: "80% Success Rate", color: '#10b981' },
-                  { label: "Pending", val: "5", sub: "Route Planned", color: '#3b82f6' },
-                  { label: "Wallet Balance", val: `₹${walletBalance}`, sub: "Instantly Withdraw", color: '#a78bfa' },
-                  { label: "Rider Rating", val: "⭐ 4.9", sub: "Top Tier Rider", color: '#f59e0b' }
+                  { label: "Today's Earnings", val: "₹1,820", sub: "+₹150 incentives", subColor: '#10b981', icon: '👛', iconBg: 'rgba(247,37,133,0.05)', iconBorder: 'rgba(247,37,133,0.15)', iconColor: 'var(--primary)' },
+                  { label: "Today's Orders", val: "16", sub: "Goal: 20", subColor: colorTextMuted, icon: '📋', iconBg: 'rgba(59,130,246,0.05)', iconBorder: 'rgba(59,130,246,0.15)', iconColor: '#3b82f6' },
+                  { label: "Completed", val: "11", sub: "69% Success Rate", subColor: colorTextMuted, icon: '✅', iconBg: 'rgba(16,185,129,0.05)', iconBorder: 'rgba(16,185,129,0.15)', iconColor: '#10b981' },
+                  { label: "Pending", val: "5", sub: "View Details >", subColor: '#ef4444', icon: '🕒', iconBg: 'rgba(245,158,11,0.05)', iconBorder: 'rgba(245,158,11,0.15)', iconColor: '#f59e0b', clickAction: () => setActiveTab('orders') },
+                  { label: "Wallet Balance", val: "₹8,500", sub: "Withdraw >", subColor: '#ef4444', icon: '💳', iconBg: 'rgba(139,92,246,0.05)', iconBorder: 'rgba(139,92,246,0.15)', iconColor: '#7209b7', clickAction: () => setActiveTab('earnings') },
+                  { label: "Rider Rating", val: "4.9", sub: "Top Tier Rider", subColor: colorTextMuted, icon: '⭐', iconBg: 'rgba(251,191,36,0.05)', iconBorder: 'rgba(251,191,36,0.15)', iconColor: '#fbbf24' }
                 ].map((kpi, idx) => (
-                  <div key={idx} className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', textAlign: 'center' }}>
-                    <span style={{ fontSize: '0.72rem', color: colorTextSecondary, fontWeight: '700', textTransform: 'uppercase' }}>{kpi.label}</span>
-                    <h2 style={{ margin: '6px 0', fontSize: '1.4rem', fontWeight: '800', color: kpi.color }}>{kpi.val}</h2>
-                    <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>{kpi.sub}</span>
+                  <div 
+                    key={idx} 
+                    className="glass-card-no-hover" 
+                    style={{ 
+                      padding: '12px 14px', 
+                      background: bgCard, 
+                      border: `1px solid ${borderColor}`, 
+                      borderRadius: '16px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '12px',
+                      cursor: kpi.clickAction ? 'pointer' : 'default',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                    }}
+                    onClick={kpi.clickAction}
+                  >
+                    <div 
+                      style={{ 
+                        width: '36px', 
+                        height: '36px', 
+                        borderRadius: '10px', 
+                        background: kpi.iconBg, 
+                        border: `1px solid ${kpi.iconBorder}`,
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        fontSize: '1.1rem',
+                        color: kpi.iconColor,
+                        flexShrink: 0
+                      }}
+                    >
+                      {kpi.icon}
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '0.68rem', color: colorTextMuted, display: 'block', fontWeight: '700' }}>{kpi.label}</span>
+                      <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, display: 'block', margin: '2px 0' }}>{kpi.val}</strong>
+                      <span style={{ fontSize: '0.62rem', color: kpi.subColor, fontWeight: 'bold' }}>{kpi.sub}</span>
+                    </div>
                   </div>
                 ))}
               </div>
 
-              {/* Start Delivery: Current Active Order */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '0.82rem', fontWeight: '800', color: 'var(--primary)' }}>⚡ ACTIVE ORDER IN PROGRESS</span>
-                  <span style={{ fontSize: '0.75rem', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>{activeOrder.id}</span>
-                </div>
-
-                {/* Delivery Flow Map Visual representation */}
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'space-around', padding: '10px 0', position: 'relative' }}>
-                  {/* Pickup */}
-                  <div style={{ textAlign: 'center', flex: 1 }}>
-                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(114,9,183,0.1)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto', fontWeight: 'bold' }}>🏪</div>
-                    <strong style={{ fontSize: '0.78rem', display: 'block' }}>Pickup</strong>
-                    <span style={{ fontSize: '0.7rem', color: colorTextSecondary }}>{activeOrder.pickup}</span>
+              {/* Row 2: Today's Route Overview, Active Delivery & Delivery Schedule Grid */}
+              <div 
+                className="delivery-home-layout-grid" 
+                style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: '1.2fr 1fr 1fr', 
+                  gap: '20px' 
+                }}
+              >
+                {/* Col 2.1: Today's Route Overview */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '20px', 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Route Overview</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setActiveTab('navigation')}>
+                      View Full Route
+                    </span>
                   </div>
 
-                  {/* Connect arrow */}
-                  <div style={{ fontSize: '1.2rem', color: 'var(--primary)', flexShrink: 0 }}>➡️</div>
+                  {/* SVG Route Overview Map (Simulating stylized Google Maps) */}
+                  <div style={{ flex: 1, background: isDark ? '#14142b' : '#eaf2f8', border: `1px solid ${borderColor}`, borderRadius: '12px', overflow: 'hidden', minHeight: '180px', position: 'relative' }}>
+                    <svg viewBox="0 0 400 240" style={{ width: '100%', height: '100%' }}>
+                      {/* Water bodies */}
+                      <path d="M 0 40 Q 60 80 120 40 T 240 60 T 360 30 T 400 50 L 400 0 L 0 0 Z" fill={isDark ? '#1d2c4e' : '#d0e1f9'} opacity="0.6" />
+                      
+                      {/* Green Parks */}
+                      <rect x="50" y="80" width="80" height="50" rx="8" fill={isDark ? '#1c3d27' : '#e2f0d9'} />
+                      <rect x="250" y="140" width="100" height="60" rx="8" fill={isDark ? '#1c3d27' : '#e2f0d9'} />
 
-                  {/* Deliver */}
-                  <div style={{ textAlign: 'center', flex: 1 }}>
-                    <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px auto', fontWeight: 'bold' }}>🏠</div>
-                    <strong style={{ fontSize: '0.78rem', display: 'block' }}>Destination</strong>
-                    <span style={{ fontSize: '0.7rem', color: colorTextSecondary }}>{activeOrder.deliverTo}</span>
+                      {/* Secondary streets */}
+                      <line x1="80" y1="0" x2="80" y2="240" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
+                      <line x1="280" y1="0" x2="280" y2="240" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
+                      <line x1="0" y1="90" x2="400" y2="90" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
+                      <line x1="0" y1="170" x2="400" y2="170" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
+
+                      {/* Main roads layout */}
+                      <line x1="180" y1="0" x2="180" y2="240" stroke={isDark ? '#475569' : '#cbd5e1'} strokeWidth="14" />
+                      <line x1="0" y1="130" x2="400" y2="130" stroke={isDark ? '#475569' : '#cbd5e1'} strokeWidth="14" />
+
+                      {/* Route line */}
+                      <path d="M 80 200 L 80 130 L 180 130 L 180 90 L 280 90 L 280 130 L 340 130" fill="none" stroke="#f72585" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+
+                      {/* Start Pin - Blue Dot */}
+                      <circle cx="80" cy="200" r="8" fill="#3a86ff" stroke="#ffffff" strokeWidth="2" />
+                      <circle cx="80" cy="200" r="3" fill="#ffffff" />
+
+                      {/* Stop 1 - Pink Pin */}
+                      <circle cx="80" cy="130" r="10" fill="#f72585" stroke="#ffffff" strokeWidth="1.5" />
+                      <text x="80" y="133" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">🏪</text>
+
+                      {/* Stop 2 - Orange Dot */}
+                      <circle cx="180" cy="130" r="8" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
+                      <text x="180" y="133" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">2</text>
+
+                      {/* Stop 3 - Orange Dot */}
+                      <circle cx="180" cy="90" r="8" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
+                      <text x="180" y="93" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">3</text>
+
+                      {/* Stop 4 - Orange Dot */}
+                      <circle cx="280" cy="90" r="8" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
+                      <text x="280" y="93" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">4</text>
+
+                      {/* Stop 5 - Green Home Pin */}
+                      <circle cx="340" cy="130" r="10" fill="#10b981" stroke="#ffffff" strokeWidth="1.5" />
+                      <text x="340" y="133" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">🏠</text>
+                    </svg>
                   </div>
 
-                  {/* Details stats */}
-                  <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '20px', flex: 1 }}>
-                    <div style={{ fontSize: '0.75rem', color: colorTextSecondary, marginBottom: '4px' }}>🗺️ Distance: <strong>{activeOrder.distance}</strong></div>
-                    <div style={{ fontSize: '0.75rem', color: colorTextSecondary, marginBottom: '4px' }}>⏱️ ETA: <strong>{activeOrder.eta}</strong></div>
-                    <div style={{ fontSize: '0.75rem', color: colorTextSecondary }}>📦 Item: <strong>{activeOrder.item}</strong></div>
+                  {/* Bottom Stats & Button */}
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '14px', borderTop: `1px solid ${borderColor}`, paddingTop: '14px' }}>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.72rem' }}>
+                      <span style={{ color: colorTextMuted }}>Total Distance: <strong>48.6 KM</strong></span>
+                      <span style={{ color: colorTextMuted }}>Total Stops: <strong>7 Stops</strong></span>
+                      <span style={{ color: colorTextMuted }}>Est. Time: <strong>3h 20m</strong></span>
+                    </div>
+                    <button 
+                      className="btn btn-primary" 
+                      style={{ fontSize: '0.75rem', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '4px', borderRadius: '8px' }}
+                      onClick={() => setActiveTab('navigation')}
+                    >
+                      Start Route <ChevronRight size={14} />
+                    </button>
                   </div>
                 </div>
 
-                {/* Footer Active actions */}
-                <div style={{ display: 'flex', gap: '10px', marginTop: '20px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
-                  <button className="btn btn-primary" style={{ flex: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => setActiveTab('navigation')}>
-                    <Navigation size={14} /> Navigate on Map
-                  </button>
-                  <button className="btn btn-secondary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => alert(`Calling Customer ${activeOrder.deliverTo} at ${activeOrder.phone}`)}>
-                    <Phone size={14} /> Call Customer
-                  </button>
-                  <button className="btn btn-secondary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}>
-                    <MessageSquare size={14} /> Chat
-                  </button>
-                </div>
-              </div>
+                {/* Col 2.2: Current Active Delivery */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '20px', 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Current Active Delivery</h4>
+                      <span style={{ fontSize: '0.65rem', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>
+                        #SB-1024
+                      </span>
+                    </div>
 
-              {/* Upcoming Deliveries Section */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '14px' }}>
-                  <h4 style={{ margin: 0, fontSize: '0.98rem', fontWeight: '800' }}>Upcoming Scheduled Deliveries</h4>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--primary)', cursor: 'pointer' }} onClick={() => { setActiveTab('orders'); setOrdersSubTab('upcoming'); }}>View Route List</span>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {ordersList.filter(o => o.status === 'upcoming').map((order, idx) => (
-                    <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
-                      <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>{order.id}</strong>
-                          <span style={{ fontSize: '0.62rem', background: '#3b82f6', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>Queued</span>
+                    {/* Pickup and Delivery details */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.75rem' }}>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(114,9,183,0.1)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          🏪
                         </div>
-                        <span style={{ fontSize: '0.7rem', color: colorTextSecondary, display: 'block', marginTop: '2px' }}>🏪 {order.pickup} ➡️ 🏠 {order.deliverTo}</span>
+                        <div>
+                          <strong style={{ display: 'block', color: colorTextPrimary }}>Pickup From</strong>
+                          <span style={{ fontWeight: 'bold', color: colorTextSecondary }}>Vogue Craft Tailors</span>
+                          <p style={{ margin: '2px 0 0 0', color: colorTextMuted, fontSize: '0.68rem' }}>23, 4th Main, 1st Cross, Brookefield, Bengaluru 560037</p>
+                        </div>
                       </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--primary)', display: 'block' }}>Payout: {order.fee}</span>
-                        <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>{order.distance}</span>
+
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          🏠
+                        </div>
+                        <div>
+                          <strong style={{ display: 'block', color: colorTextPrimary }}>Deliver To</strong>
+                          <span style={{ fontWeight: 'bold', color: colorTextSecondary }}>Priya Sharma</span>
+                          <p style={{ margin: '2px 0 0 0', color: colorTextMuted, fontSize: '0.68rem' }}>12, Prestige Lakeside, Whitefield, Bengaluru 560066</p>
+                        </div>
                       </div>
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Specs and action buttons */}
+                  <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '12px', marginTop: '12px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: colorTextMuted, marginBottom: '10px' }}>
+                      <span>🗺️ <strong>3.4 km</strong></span>
+                      <span>⏱️ <strong>14 mins</strong></span>
+                      <span>📦 <strong>Lehenga & Blouse</strong></span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button className="btn btn-primary" style={{ flex: 1.5, fontSize: '0.72rem', padding: '8px' }} onClick={() => setActiveTab('navigation')}>
+                        Navigate
+                      </button>
+                      <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.72rem', padding: '8px' }} onClick={() => alert(`Calling customer: ${activeOrder.phone}`)}>
+                        Call
+                      </button>
+                      <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.72rem', padding: '8px' }} onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}>
+                        Chat
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Col 2.3: Today's Delivery Schedule */}
+                <div 
+                  className="glass-card-no-hover" 
+                  style={{ 
+                    padding: '20px', 
+                    background: bgCard, 
+                    border: `1px solid ${borderColor}`, 
+                    borderRadius: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Delivery Schedule</h4>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => { setActiveTab('orders'); setOrdersSubTab('active'); }}>
+                        View All
+                      </span>
+                    </div>
+
+                    {/* Scheduled stops list */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.72rem' }}>
+                      {[
+                        { time: '09:00 AM', type: 'Pickup', store: 'Vogue Craft Tailors', tag: 'Now', num: 1 },
+                        { time: '10:00 AM', type: 'Delivery', store: 'Priya Sharma', tag: '3.4 km', num: 2 },
+                        { time: '11:30 AM', type: 'Pickup', store: 'Elite Threads', tag: '6.2 km', num: 3 },
+                        { time: '01:15 PM', type: 'Delivery', store: 'Amit Verma', tag: '8.1 km', num: 4 },
+                        { time: '02:45 PM', type: 'Delivery', store: 'Sneha Iyer', tag: '5.4 km', num: 5 }
+                      ].map((step, sIdx) => (
+                        <div key={sIdx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ color: colorTextMuted, width: '55px' }}>{step.time}</span>
+                            <span style={{ width: '16px', height: '16px', borderRadius: '50%', background: step.type === 'Pickup' ? '#7209b7' : 'var(--primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem', fontWeight: 'bold' }}>
+                              {step.num}
+                            </span>
+                            <div>
+                              <strong style={{ display: 'block', color: colorTextPrimary }}>{step.type}</strong>
+                              <span style={{ color: colorTextSecondary, fontSize: '0.65rem' }}>{step.store}</span>
+                            </div>
+                          </div>
+                          <span style={{ fontSize: '0.62rem', background: step.tag === 'Now' ? '#10b981' : 'rgba(255,255,255,0.05)', color: step.tag === 'Now' ? '#fff' : colorTextMuted, padding: '1px 6px', borderRadius: '4px', fontWeight: 'bold' }}>
+                            {step.tag}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom stats and optimize button */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${borderColor}`, paddingTop: '12px', marginTop: '12px' }}>
+                    <span style={{ fontSize: '0.72rem', color: colorTextMuted }}>Total <strong>7 Stops</strong></span>
+                    <button 
+                      className="btn btn-ghost" 
+                      style={{ fontSize: '0.7rem', color: 'var(--primary)', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      onClick={() => alert("Route schedule optimized!")}
+                    >
+                      📍 Optimize Route
+                    </button>
+                  </div>
                 </div>
               </div>
 
-            </div>
+              {/* Row 3: Lower Performance / Earnings Chart / Notifications Grid */}
+              <div 
+                className="delivery-home-layout-grid" 
+                style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: '1fr 1.2fr 1fr', 
+                  gap: '20px' 
+                }}
+              >
+                {/* Col 3.1: Today's Performance */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Performance</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setActiveTab('profile')}>
+                      View Report
+                    </span>
+                  </div>
 
-            {/* Right Column Dashboard: Performance and Notifications */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
-              {/* Today's Performance Card */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
-                <h4 style={{ margin: '0 0 16px 0', fontSize: '0.98rem', fontWeight: '800' }}>Today's Performance</h4>
-                
-                {/* SVG Performance Graph */}
-                <div style={{ height: '110px', width: '100%', background: isDark ? 'rgba(0,0,0,0.1)' : '#f8fafc', border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '8px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '0.65rem', color: colorTextSecondary, fontWeight: 'bold' }}>DELIVERIES HOURLY PROGRESS</span>
-                  <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end', gap: '8px', padding: '10px 0' }}>
-                    {[20, 45, 30, 80, 55, 90, 70, 95].map((height, idx) => (
-                      <div key={idx} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                        <div style={{ width: '100%', height: `${height}%`, background: 'linear-gradient(0deg, #7209b7 0%, #f72585 100%)', borderRadius: '4px 4px 0 0' }}></div>
-                        <span style={{ fontSize: '0.55rem', color: colorTextMuted }}>{idx + 9}h</span>
+                  {/* Performance stats row */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', flex: 1, alignItems: 'center' }}>
+                    {[
+                      { label: 'Acceptance Rate', val: '98%', icon: '🎯', color: '#10b981', bg: 'rgba(16,185,129,0.05)' },
+                      { label: 'On-Time Rate', val: '96%', icon: '🕒', color: 'var(--primary)', bg: 'rgba(247,37,133,0.05)' },
+                      { label: 'Completion Rate', val: '92%', icon: '🛡️', color: '#3b82f6', bg: 'rgba(59,130,246,0.05)' },
+                      { label: 'Customer Rating', val: '4.9', icon: '⭐', color: '#fbbf24', bg: 'rgba(245,158,11,0.05)' }
+                    ].map((perf, pIdx) => (
+                      <div key={pIdx} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                        <div 
+                          style={{ 
+                            width: '40px', 
+                            height: '40px', 
+                            borderRadius: '50%', 
+                            background: perf.bg, 
+                            color: perf.color, 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            fontSize: '1.2rem',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                            border: `1.5px solid ${perf.color}`
+                          }}
+                        >
+                          {perf.icon}
+                        </div>
+                        <span style={{ fontSize: '0.6rem', color: colorTextMuted, display: 'block', height: '24px', overflow: 'hidden' }}>{perf.label}</span>
+                        <strong style={{ fontSize: '0.98rem', color: colorTextPrimary, display: 'block' }}>{perf.val}</strong>
+                        <div style={{ height: '3px', background: isDark ? 'rgba(255,255,255,0.05)' : '#e2e8f0', borderRadius: '1.5px', overflow: 'hidden', width: '100%' }}>
+                          <div style={{ width: perf.val.includes('%') ? perf.val : '95%', height: '100%', background: perf.color }}></div>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Accuracy Metrics */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px' }}>
-                      <span>Acceptance Rate</span>
-                      <span style={{ color: '#10b981' }}>98%</span>
+                {/* Col 3.2: Earnings Summary (Spline Chart) */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px', marginBottom: '14px' }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Earnings Summary</h4>
+                      <span style={{ fontSize: '0.62rem', color: colorTextMuted }}>Weekly Performance overview</span>
                     </div>
-                    <div style={{ height: '6px', background: isDark ? 'rgba(255,255,255,0.05)' : '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ width: '98%', height: '100%', background: '#10b981' }}></div>
+                    <select className="form-select" style={{ width: '100px', fontSize: '0.7rem', padding: '4px 8px', height: '24px' }}>
+                      <option>This Week</option>
+                      <option>Last Week</option>
+                    </select>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
+                    <h3 style={{ margin: 0, fontSize: '1.35rem', fontWeight: '800', color: colorTextPrimary }}>₹11,250</h3>
+                    <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: 'bold' }}>▲ +12.5% vs last week</span>
+                  </div>
+
+                  {/* SVG Spline Wave Chart */}
+                  <div style={{ height: '120px', width: '100%' }}>
+                    <svg viewBox="0 0 400 120" style={{ width: '100%', height: '100%' }}>
+                      <defs>
+                        <linearGradient id="gradientRedesign" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.2" />
+                          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <line x1="0" y1="20" x2="400" y2="20" stroke={borderColor} strokeWidth="0.5" />
+                      <line x1="0" y1="60" x2="400" y2="60" stroke={borderColor} strokeWidth="0.5" />
+                      <line x1="0" y1="100" x2="400" y2="100" stroke={borderColor} strokeWidth="0.5" />
+                      
+                      <path d="M 0 100 C 60 90, 120 70, 180 50 C 240 30, 300 80, 360 40 C 380 20, 400 30, 400 30 L 400 120 L 0 120 Z" fill="url(#gradientRedesign)" />
+                      <path d="M 0 100 C 60 90, 120 70, 180 50 C 240 30, 300 80, 360 40 C 380 20, 400 30, 400 30" fill="none" stroke="var(--primary)" strokeWidth="3" />
+                      
+                      <circle cx="180" cy="50" r="4" fill="var(--primary)" />
+                      <circle cx="360" cy="40" r="4" fill="var(--primary)" />
+                    </svg>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.58rem', color: colorTextMuted, marginTop: '4px' }}>
+                      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
                     </div>
                   </div>
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '4px' }}>
-                      <span>On-Time Rate</span>
-                      <span style={{ color: 'var(--primary)' }}>96%</span>
-                    </div>
-                    <div style={{ height: '6px', background: isDark ? 'rgba(255,255,255,0.05)' : '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ width: '96%', height: '100%', background: 'var(--primary)' }}></div>
-                    </div>
+                </div>
+
+                {/* Col 3.3: Recent Notifications */}
+                <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Recent Notifications</h4>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setActiveTab('profile')}>
+                      View All
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {[
+                      { label: 'New Order Assigned', desc: '#SB-1025 has been assigned to you.', time: '2m ago', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' },
+                      { label: 'Customer Called', desc: 'Priya Sharma tried to call you.', time: '10m ago', color: 'var(--primary)', bg: 'rgba(247,37,133,0.1)' },
+                      { label: 'Incentive Earned', desc: 'You earned ₹50 incentive.', time: '1h ago', color: '#10b981', bg: 'rgba(16,185,129,0.1)' }
+                    ].map((notif, nIdx) => (
+                      <div key={nIdx} style={{ display: 'flex', gap: '8px', padding: '8px', border: `1px solid ${borderColor}`, borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
+                        <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: notif.bg, color: notif.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 }}>
+                          🔔
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', marginBottom: '1px' }}>
+                            <strong style={{ color: colorTextPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{notif.label}</strong>
+                            <span style={{ color: colorTextMuted, fontSize: '0.58rem', flexShrink: 0 }}>{notif.time}</span>
+                          </div>
+                          <p style={{ margin: 0, fontSize: '0.62rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{notif.desc}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Swiggy-like Recent Alerts and Notifications */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px' }}>
-                <h4 style={{ margin: '0 0 14px 0', fontSize: '0.98rem', fontWeight: '800' }}>Recent Notifications</h4>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {/* Row 4: Quick Actions Bar */}
+              <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px' }}>
+                <h4 style={{ margin: '0 0 14px 0', fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Quick Actions</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
                   {[
-                    { title: "New Order Assigned!", text: "Order #SB-1024 ready for HSR Layout delivery.", time: "2m ago", type: "order" },
-                    { title: "Tailor Updated Order", text: "Vogue Craft Tailors marked #SB-1024 complete.", time: "10m ago", type: "tailor" },
-                    { title: "Incentive Reward Earned", text: "₹50 credited for early morning weekend delivery.", time: "1h ago", type: "incentive" },
-                    { title: "Route Adjusted", text: "Avoid Outer Ring Road due to flooding water logging.", time: "2h ago", type: "traffic" }
-                  ].map((notif, idx) => (
-                    <div key={idx} style={{ display: 'flex', gap: '10px', padding: '10px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
-                      <span style={{ fontSize: '1.1rem' }}>
-                        {notif.type === 'order' ? '🔔' : (notif.type === 'tailor' ? '🏪' : (notif.type === 'incentive' ? '💰' : '🚨'))}
-                      </span>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '2px' }}>
-                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>{notif.title}</strong>
-                          <span style={{ fontSize: '0.58rem', color: colorTextMuted }}>{notif.time}</span>
-                        </div>
-                        <p style={{ margin: 0, fontSize: '0.68rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis' }}>{notif.text}</p>
-                      </div>
-                    </div>
+                    { label: 'Scan Package', border: 'rgba(247,37,133,0.3)', color: 'var(--primary)', bg: 'rgba(247,37,133,0.05)' },
+                    { label: 'Upload Proof', border: 'rgba(114,9,183,0.3)', color: '#7209b7', bg: 'rgba(114,9,183,0.05)' },
+                    { label: 'Emergency', border: 'rgba(239,68,68,0.3)', color: '#ef4444', bg: 'rgba(239,68,68,0.05)' },
+                    { label: 'Earnings Details', border: 'rgba(16,185,129,0.3)', color: '#10b981', bg: 'rgba(16,185,129,0.05)' },
+                    { label: 'Support Chat', border: 'rgba(59,130,246,0.3)', color: '#3b82f6', bg: 'rgba(59,130,246,0.05)' },
+                    { label: 'Refer & Earn', border: 'rgba(245,158,11,0.3)', color: '#f59e0b', bg: 'rgba(245,158,11,0.05)' }
+                  ].map((act, aIdx) => (
+                    <button 
+                      key={aIdx}
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        if (act.label === 'Support Chat') setActiveTab('support');
+                        else if (act.label === 'Earnings Details') setActiveTab('earnings');
+                        else alert(`Dispatched quick action: ${act.label}`);
+                      }}
+                      style={{ 
+                        border: `1.5px solid ${act.border}`,
+                        color: act.color,
+                        background: act.bg,
+                        fontSize: '0.72rem',
+                        fontWeight: 'bold',
+                        padding: '8px',
+                        borderRadius: '10px',
+                        cursor: 'pointer',
+                        textAlign: 'center',
+                        transition: 'all 0.2s'
+                      }}
+                    >
+                      {act.label}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -423,175 +1314,756 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout })
         )}
 
         {/* MODULE 2: ORDERS LIST */}
-        {activeTab === 'orders' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            
-            {/* Category tabs */}
-            <div style={{ display: 'flex', gap: '6px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '10px', overflowX: 'auto' }}>
-              {[
-                { id: 'active', label: 'Active Tasks' },
-                { id: 'upcoming', label: 'Upcoming queued' },
-                { id: 'completed', label: 'Completed logs' },
-                { id: 'cancelled', label: 'Cancelled tasks' },
-                { id: 'returned', label: 'Returned packages' }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setOrdersSubTab(tab.id)}
-                  style={{
-                    padding: '6px 14px',
-                    fontSize: '0.78rem',
-                    fontWeight: '700',
-                    borderRadius: '16px',
-                    border: 'none',
-                    background: ordersSubTab === tab.id ? 'var(--primary)' : (isDark ? 'rgba(255,255,255,0.03)' : '#f1f5f9'),
-                    color: ordersSubTab === tab.id ? '#ffffff' : colorTextSecondary,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+        {activeTab === 'orders' && (() => {
+          // Filter orders dynamically based on selected sub-tab and search query
+          const filteredOrders = ordersList.filter(order => {
+            const matchesTab = order.status === ordersSubTab;
+            const query = orderSearchText.toLowerCase().trim();
+            const matchesSearch = !query ? true : (
+              order.id.toLowerCase().includes(query) ||
+              order.deliverTo.toLowerCase().includes(query) ||
+              order.pickup.toLowerCase().includes(query)
+            );
+            return matchesTab && matchesSearch;
+          });
 
-            {/* List panel */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px' }}>
-              {ordersList.filter(o => o.status === ordersSubTab).map((order, idx) => (
-                <div key={idx} className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', position: 'relative' }}>
-                  
-                  {/* Card Header */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '10px', marginBottom: '10px' }}>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--primary)' }}>{order.id}</strong>
-                    <span style={{ fontSize: '0.62rem', background: '#10b981', color: '#fff', padding: '1px 6px', borderRadius: '4px' }}>Ready</span>
-                  </div>
+          const orderKpis = [
+            { 
+              label: "Today's Orders", 
+              val: "12", 
+              sub: "+2 vs yesterday", 
+              subColor: '#10b981', 
+              color: '#7209b7', 
+              bg: 'rgba(114,9,183,0.06)', 
+              icon: <FileText size={15} /> 
+            },
+            { 
+              label: "Completed", 
+              val: "8", 
+              sub: "66%", 
+              subColor: colorTextMuted, 
+              color: '#10b981', 
+              bg: 'rgba(16,185,129,0.06)', 
+              icon: <CheckCircle size={15} /> 
+            },
+            { 
+              label: "Pending", 
+              val: "4", 
+              sub: "34%", 
+              subColor: colorTextMuted, 
+              color: '#f97316', 
+              bg: 'rgba(249,115,22,0.06)', 
+              icon: <FileText size={15} /> 
+            },
+            { 
+              label: "Today's Earnings", 
+              val: "₹1,450", 
+              sub: "+₹230 vs yesterday", 
+              subColor: '#10b981', 
+              color: '#3b82f6', 
+              bg: 'rgba(59,130,246,0.06)', 
+              icon: <Wallet size={15} /> 
+            },
+            { 
+              label: "Average Delivery Time", 
+              val: "18 mins", 
+              sub: "+2 mins", 
+              subColor: '#f72585', 
+              color: '#f72585', 
+              bg: 'rgba(247,37,133,0.06)', 
+              icon: <Clock size={15} /> 
+            },
+            { 
+              label: "Acceptance Rate", 
+              val: "98%", 
+              sub: "Excellent", 
+              subColor: '#10b981', 
+              color: '#10b981', 
+              bg: 'rgba(16,185,129,0.06)', 
+              icon: <TrendingUp size={15} /> 
+            },
+            { 
+              label: "Rider Rating", 
+              val: "4.9", 
+              sub: "Top Tier Rider", 
+              subColor: colorTextMuted, 
+              color: '#fbbf24', 
+              bg: 'rgba(251,191,36,0.06)', 
+              icon: <Star size={15} /> 
+            }
+          ];
 
-                  {/* Flow info */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem', color: colorTextSecondary }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ background: '#7209b7', color: '#fff', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem' }}>P</span>
-                      <span>Pickup: <strong>{order.pickup}</strong></span>
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              
+              {/* TOP SECTION: Unified 7 KPI Cards Row */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }} className="order-kpi-grid">
+                {orderKpis.map((kpi, idx) => (
+                  <div 
+                    key={idx} 
+                    className="kpi-card-flat" 
+                    style={{ 
+                      padding: '8px 12px', 
+                      background: bgCard, 
+                      border: `1px solid ${borderColor}`, 
+                      borderRadius: '12px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px',
+                      boxShadow: 'none'
+                    }}
+                  >
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '8px',
+                      background: kpi.bg,
+                      color: kpi.color,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      {kpi.icon}
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: colorTextMuted, paddingLeft: '8px' }}>↓</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ background: 'var(--primary)', color: '#fff', width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem' }}>D</span>
-                      <span>Deliver: <strong>{order.deliverTo}</strong></span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', marginLeft: '6px' }}>
+                      <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: '700', whiteSpace: 'nowrap' }}>{kpi.label}</span>
+                      <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, fontWeight: '800', lineHeight: '1.1' }}>{kpi.val}</strong>
+                      <span style={{ fontSize: '0.58rem', color: kpi.subColor, fontWeight: 'bold', whiteSpace: 'nowrap' }}>{kpi.sub}</span>
                     </div>
                   </div>
+                ))}
+              </div>
 
-                  {/* Specs */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', margin: '14px 0 10px 0', borderTop: `1px solid ${borderColor}`, paddingTop: '10px', fontSize: '0.75rem', color: colorTextMuted }}>
-                    <span>📦 Item: {order.item}</span>
-                    <span>🗺️ Distance: {order.distance}</span>
-                  </div>
-
-                  {/* Interactive Button row */}
-                  <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-                    {order.status === 'active' ? (
-                      <>
-                        <button className="btn btn-primary" style={{ flex: 1.5, fontSize: '0.72rem', padding: '6px' }} onClick={() => setSelectedOrder(activeOrder)}>
-                          Inspect Details
-                        </button>
-                        <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.72rem', padding: '6px' }} onClick={() => setActiveTab('navigation')}>
-                          Navigate
-                        </button>
-                        <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.72rem', padding: '6px' }} onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}>
-                          Chat
-                        </button>
-                      </>
-                    ) : (
-                      <button className="btn btn-ghost" style={{ width: '100%', fontSize: '0.72rem', color: 'var(--primary)', border: `1.5px dashed var(--primary)` }} onClick={() => {
-                        const updated = ordersList.map(o => o.id === order.id ? { ...o, status: 'active' } : o);
-                        setOrdersList(updated);
-                        alert(`Order ${order.id} accepted! Navigate to Pickup.`);
-                      }}>
-                        Swipe Right or Tap to Accept task
-                      </button>
-                    )}
-                  </div>
-
+              {/* MIDDLE SECTION: Filters & Search bar row */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }} className="order-filters-row">
+                <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px' }}>
+                  {[
+                    { id: 'active', label: 'Active Tasks', count: ordersList.filter(o => o.status === 'active').length },
+                    { id: 'upcoming', label: 'Upcoming Queued', count: ordersList.filter(o => o.status === 'upcoming').length },
+                    { id: 'completed', label: 'Completed', count: ordersList.filter(o => o.status === 'completed').length },
+                    { id: 'cancelled', label: 'Cancelled', count: ordersList.filter(o => o.status === 'cancelled').length },
+                    { id: 'returned', label: 'Returned', count: ordersList.filter(o => o.status === 'returned').length }
+                  ].map(tab => {
+                    const isTabActive = ordersSubTab === tab.id;
+                    return (
+                      <div
+                        key={tab.id}
+                        role="button"
+                        onClick={() => setOrdersSubTab(tab.id)}
+                        style={{
+                          padding: '6px 12px',
+                          fontSize: '0.72rem',
+                          fontWeight: '700',
+                          borderRadius: '12px',
+                          border: isTabActive ? '1.5px solid #f72585' : `1px solid ${borderColor}`,
+                          background: isTabActive ? (isDark ? 'rgba(247,37,133,0.08)' : '#ffffff') : (isDark ? 'rgba(255,255,255,0.02)' : '#ffffff'),
+                          color: isTabActive ? '#f72585' : colorTextSecondary,
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                          transition: 'all 0.2s',
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        {tab.label}
+                        <span style={{ 
+                          marginLeft: '6px', 
+                          background: isTabActive ? '#f72585' : (isDark ? 'rgba(255,255,255,0.08)' : 'rgba(247,37,133,0.06)'), 
+                          color: isTabActive ? '#ffffff' : (isDark ? colorTextSecondary : '#f72585'),
+                          width: '16px',
+                          height: '16px',
+                          borderRadius: '50%',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.62rem',
+                          fontWeight: 'bold'
+                        }}>
+                          {tab.count}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
 
-            {/* Detailed Order popup sheet */}
-            {selectedOrder && (
-              <div className="modal-overlay" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 110 }}>
-                <div className="glass-card-no-hover" style={{ padding: '24px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px', maxWidth: '440px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
-                  
-                  {/* Header */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '14px', marginBottom: '16px' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '800' }}>Order Details {selectedOrder.id}</h3>
-                    <button className="btn btn-ghost" style={{ padding: '4px' }} onClick={() => setSelectedOrder(null)}>✕</button>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div style={{ position: 'relative' }}>
+                    <input 
+                      type="text" 
+                      placeholder="Search by Order ID / Customer" 
+                      value={orderSearchText}
+                      onChange={(e) => setOrderSearchText(e.target.value)}
+                      style={{
+                        padding: '6px 10px 6px 26px',
+                        fontSize: '0.72rem',
+                        borderRadius: '8px',
+                        border: `1px solid ${borderColor}`,
+                        background: bgCard,
+                        color: colorTextPrimary,
+                        width: '210px'
+                      }}
+                    />
+                    <span style={{ position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)', color: colorTextMuted, fontSize: '10px' }}>🔍</span>
                   </div>
-
-                  {/* Customer summary */}
-                  <div style={{ display: 'flex', gap: '14px', alignItems: 'center', marginBottom: '16px' }}>
-                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden' }}>
-                      <img src="/why_join_1.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                    <div>
-                      <strong style={{ display: 'block', fontSize: '0.88rem' }}>{selectedOrder.deliverTo}</strong>
-                      <span style={{ fontSize: '0.72rem', color: colorTextSecondary }}>Phone: {selectedOrder.phone}</span>
-                    </div>
-                  </div>
-
-                  {/* Pickup section */}
-                  <div style={{ border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', marginBottom: '12px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
-                    <strong style={{ fontSize: '0.75rem', color: 'var(--primary)', display: 'block', marginBottom: '4px' }}>🏪 PICKUP FROM TAILOR</strong>
-                    <h5 style={{ margin: '2px 0', fontSize: '0.8rem', fontWeight: 'bold' }}>{selectedOrder.pickup}</h5>
-                    <p style={{ margin: '4px 0', fontSize: '0.72rem', color: colorTextSecondary }}>📍 Address: {selectedOrder.pickupAddress}</p>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold' }}>🔑 Pickup OTP: {selectedOrder.pickupOtp}</span>
-                  </div>
-
-                  {/* Deliver details */}
-                  <div style={{ border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', marginBottom: '12px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc' }}>
-                    <strong style={{ fontSize: '0.75rem', color: '#10b981', display: 'block', marginBottom: '4px' }}>🏠 DELIVER TO CUSTOMER</strong>
-                    <h5 style={{ margin: '2px 0', fontSize: '0.8rem', fontWeight: 'bold' }}>{selectedOrder.deliverTo}</h5>
-                    <p style={{ margin: '4px 0', fontSize: '0.72rem', color: colorTextSecondary }}>📍 Address: {selectedOrder.deliveryAddress}</p>
-                    <span style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 'bold' }}>🔑 Delivery OTP: {selectedOrder.deliveryOtp}</span>
-                  </div>
-
-                  {/* Items list */}
-                  <div style={{ border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', marginBottom: '16px' }}>
-                    <strong style={{ fontSize: '0.75rem', color: colorTextMuted, display: 'block', marginBottom: '6px' }}>📦 INCLUDED ITEMS</strong>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.75rem', color: colorTextSecondary }}>
-                      <span>• 1 Bridal Lehenga (Peach)</span>
-                      <span>• 2 Designer Blouses</span>
-                      <span>• Fabric Sizing Bag</span>
-                    </div>
-                  </div>
-
-                  {/* Action buttons */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                      <button className="btn btn-primary" style={{ flex: 1, fontSize: '0.78rem' }} onClick={() => {
-                        alert("Verification Photo uploaded successfully!");
-                      }}>
-                        📷 Upload Photo
-                      </button>
-                      <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.78rem' }} onClick={() => {
-                        const code = prompt("Enter customer delivery OTP code to verify:");
-                        if (code === selectedOrder.deliveryOtp) {
-                          alert("OTP verified! Delivery marked completed.");
-                          const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'completed' } : o);
-                          setOrdersList(updated);
-                          setSelectedOrder(null);
-                        } else {
-                          alert("Incorrect OTP code. Verification failed.");
-                        }
-                      }}>
-                        Mark Delivered
-                      </button>
-                    </div>
-                  </div>
-
+                  <button 
+                    className="btn btn-secondary" 
+                    onClick={() => {
+                      setOrderSearchText('');
+                      alert("Filters reset!");
+                    }}
+                    style={{ fontSize: '0.7rem', padding: '6px 10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                  >
+                    <span>⚙️</span> Filter
+                  </button>
                 </div>
               </div>
-            )}
 
-          </div>
-        )}
+              {/* BOTTOM SECTION: Two-column grid workspace */}
+              <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: '12px', alignItems: 'stretch', height: 'calc(100vh - 220px)' }} className="orders-workspace-layout">
+                
+                {/* Left Column: List of Category Orders */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', height: '100%', overflowY: 'auto', paddingRight: '4px' }}>
+                  {filteredOrders.length > 0 ? (
+                    filteredOrders.map((order, oIdx) => {
+                      const isSelected = selectedOrder && selectedOrder.id === order.id;
+                      const getCleanAddr = (addrStr) => {
+                        if (!addrStr) return '';
+                        const parts = addrStr.split(',');
+                        if (parts.length >= 4) {
+                          const blrIdx = parts.findIndex(p => p.toLowerCase().includes('bengaluru'));
+                          if (blrIdx > 0) {
+                            return `${parts[blrIdx - 1].trim()}, Bengaluru`;
+                          }
+                          return `${parts[parts.length - 3].trim()}, ${parts[parts.length - 2].trim()}`;
+                        }
+                        return addrStr;
+                      };
+                      return (
+                        <div 
+                          key={oIdx}
+                          onClick={() => setSelectedOrder(order)}
+                          className="kpi-card-flat"
+                          style={{
+                            padding: '14px 16px',
+                            height: '220px',
+                            boxSizing: 'border-box',
+                            background: bgCard,
+                            border: isSelected ? '1.5px solid #f72585' : `1px solid ${borderColor}`,
+                            borderRadius: '16px',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            justifyContent: 'space-between',
+                            boxShadow: isSelected ? '0 4px 16px rgba(247,37,133,0.06)' : 'none'
+                          }}
+                        >
+                          {/* Order ID & Status Badge */}
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <strong style={{ fontSize: '0.9rem', color: isSelected ? '#f72585' : colorTextPrimary, fontWeight: 'bold' }}>{order.id}</strong>
+                            <span style={{ 
+                              fontSize: '0.7rem', 
+                              background: order.taskStatus === 'Ready' ? '#10b981' : (order.taskStatus === 'In Progress' ? 'rgba(249,115,22,0.1)' : 'rgba(59,130,246,0.1)'), 
+                              color: order.taskStatus === 'Ready' ? '#ffffff' : (order.taskStatus === 'In Progress' ? '#f97316' : '#3b82f6'),
+                              padding: '4px 10px', 
+                              borderRadius: '12px', 
+                              fontWeight: 'bold' 
+                            }}>
+                              {order.taskStatus}
+                            </span>
+                          </div>
+
+                          {/* Middle Row: Left timeline, Right stats */}
+                          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'space-between' }}>
+                            
+                            {/* Left Side: Custom Timeline */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, position: 'relative' }}>
+                              
+                              {/* Pickup row */}
+                              <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                                <div style={{ 
+                                  width: '32px', 
+                                  height: '32px', 
+                                  borderRadius: '50%', 
+                                  background: 'rgba(114,9,183,0.06)', 
+                                  color: '#7209b7', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center', 
+                                  flexShrink: 0 
+                                }}>
+                                  <ShoppingBag size={14} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                                  <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: 'bold', textTransform: 'uppercase' }}>Pickup</span>
+                                  <strong style={{ fontSize: '0.78rem', color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{order.pickup}</strong>
+                                  <span style={{ fontSize: '0.68rem', color: colorTextSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getCleanAddr(order.pickupAddress)}</span>
+                                </div>
+                              </div>
+
+                              {/* Down Arrow separator */}
+                              <div style={{ paddingLeft: '10px', margin: '-4px 0', color: colorTextMuted, display: 'flex', alignItems: 'center', height: '12px' }}>
+                                <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>↓</span>
+                              </div>
+
+                              {/* Delivery row */}
+                              <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                                <div style={{ 
+                                  width: '32px', 
+                                  height: '32px', 
+                                  borderRadius: '50%', 
+                                  background: 'rgba(247,37,133,0.06)', 
+                                  color: '#f72585', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center', 
+                                  flexShrink: 0 
+                                }}>
+                                  <User size={14} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                                  <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: 'bold', textTransform: 'uppercase' }}>Delivery</span>
+                                  <strong style={{ fontSize: '0.78rem', color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{order.deliverTo}</strong>
+                                  <span style={{ fontSize: '0.68rem', color: colorTextSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getCleanAddr(order.deliveryAddress)}</span>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            {/* Right Side: Separator and Vertical Metrics block */}
+                            <div style={{ 
+                              display: 'flex', 
+                              flexDirection: 'column', 
+                              gap: '10px', 
+                              paddingLeft: '12px', 
+                              borderLeft: `1px solid ${borderColor}`,
+                              width: '80px',
+                              alignItems: 'flex-end',
+                              textAlign: 'right'
+                            }}>
+                              <div>
+                                <strong style={{ color: '#f72585', fontSize: '0.88rem', display: 'block', lineHeight: '1.2' }}>{order.payout}</strong>
+                                <span style={{ color: colorTextMuted, fontSize: '0.6rem', fontWeight: 'bold' }}>Payout</span>
+                              </div>
+                              <div>
+                                <strong style={{ color: colorTextPrimary, fontSize: '0.8rem', display: 'block', lineHeight: '1.2' }}>{order.distance}</strong>
+                                <span style={{ color: colorTextMuted, fontSize: '0.6rem', fontWeight: 'bold' }}>Distance</span>
+                              </div>
+                              <div>
+                                <strong style={{ color: colorTextPrimary, fontSize: '0.8rem', display: 'block', lineHeight: '1.2' }}>{order.estTime}</strong>
+                                <span style={{ color: colorTextMuted, fontSize: '0.6rem', fontWeight: 'bold' }}>Est. Time</span>
+                              </div>
+                            </div>
+
+                          </div>
+
+                          {/* Bottom Bar: Gray Card Fill containing Package Item and Payment details */}
+                          <div style={{ 
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            alignItems: 'center', 
+                            background: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc',
+                            padding: '8px 12px',
+                            borderRadius: '12px',
+                            fontSize: '0.72rem'
+                          }}>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: colorTextSecondary, fontWeight: '700' }}>
+                              📦 {order.item}
+                            </span>
+                            <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                              <span style={{ 
+                                background: order.paymentType === 'COD' ? 'rgba(247,37,133,0.06)' : 'rgba(16,185,129,0.06)', 
+                                color: order.paymentType === 'COD' ? '#f72585' : '#10b981', 
+                                padding: '2px 8px', 
+                                borderRadius: '6px', 
+                                fontWeight: 'bold',
+                                fontSize: '0.62rem'
+                              }}>
+                                {order.paymentType}
+                              </span>
+                              <div style={{ 
+                                background: bgCard, 
+                                border: `1px solid ${borderColor}`,
+                                padding: '2px 6px',
+                                borderRadius: '6px',
+                                fontWeight: '800',
+                                color: colorTextPrimary,
+                                fontSize: '0.68rem'
+                              }}>
+                                {order.paymentType === 'COD' ? order.orderValue : '₹0'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div style={{ padding: '20px', textAlign: 'center', color: colorTextMuted, fontSize: '0.78rem' }}>
+                      No tasks found.
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '0.75rem', color: colorTextMuted }}>
+                    <span>Can't find an order?</span>
+                    <button className="btn btn-ghost" style={{ fontSize: '0.75rem', padding: '4px 8px', color: '#f72585', fontWeight: 'bold' }} onClick={() => alert("Refreshed tasks list!")}>
+                      🔄 Refresh
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Column: Detailed selected order panel */}
+                <div style={{ flex: 1, minWidth: 0 }} className="order-details-right-panel">
+                  {selectedOrder ? (
+                    <div className="glass-card-no-hover" style={{ padding: '12px 16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      
+                      {/* Section 1: Detail Header */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.id}</h3>
+                          <span style={{ 
+                            fontSize: '0.65rem', 
+                            background: selectedOrder.taskStatus === 'Ready' ? 'rgba(16,185,129,0.06)' : (selectedOrder.taskStatus === 'In Progress' ? 'rgba(249,115,22,0.06)' : 'rgba(59,130,246,0.06)'), 
+                            color: selectedOrder.taskStatus === 'Ready' ? '#10b981' : (selectedOrder.taskStatus === 'In Progress' ? '#f97316' : '#3b82f6'),
+                            padding: '2px 8px', 
+                            borderRadius: '10px', 
+                            fontWeight: 'bold' 
+                          }}>
+                            {selectedOrder.taskStatus}
+                          </span>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ fontSize: '0.62rem', color: colorTextMuted, display: 'block' }}>Order Payout</span>
+                            <strong style={{ fontSize: '1.1rem', color: '#f72585' }}>{selectedOrder.payout}</strong>
+                          </div>
+                          <button 
+                            className="btn btn-secondary" 
+                            onClick={() => alert(`Details for ${selectedOrder.id}`)}
+                            style={{ fontSize: '0.72rem', padding: '6px 12px', borderRadius: '8px', fontWeight: '700' }}
+                          >
+                            📑 Order Details
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Section 2: Progress timeline stepper */}
+                      <div style={{ padding: '0 16px', position: 'relative', margin: '4px 0' }}>
+                        <div style={{
+                          position: 'absolute',
+                          left: '36px',
+                          right: '36px',
+                          top: '11px',
+                          height: '2px',
+                          background: isDark ? 'rgba(255,255,255,0.08)' : '#cbd5e1',
+                          zIndex: 0
+                        }}>
+                          {/* Progress Fill */}
+                          <div style={{
+                            width: selectedOrder.taskStatus === 'Delivered' ? '100%' : (selectedOrder.taskStatus === 'Ready' ? '33%' : (selectedOrder.taskStatus === 'In Progress' ? '66%' : '0%')),
+                            height: '100%',
+                            background: '#f72585',
+                            transition: 'width 0.4s'
+                          }}></div>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', zIndex: 1, position: 'relative' }}>
+                          {[
+                            { label: 'Assigned', active: true },
+                            { label: 'Reached Tailor', active: selectedOrder.taskStatus === 'In Progress' || selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
+                            { label: 'Picked Up', active: selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
+                            { label: 'Delivered', active: selectedOrder.taskStatus === 'Delivered' }
+                          ].map((step, idx) => (
+                            <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80px', textAlign: 'center' }}>
+                              <div style={{ 
+                                width: '22px', 
+                                height: '22px', 
+                                borderRadius: '50%', 
+                                background: step.active ? '#f72585' : (isDark ? '#2e2e4e' : '#cbd5e1'), 
+                                color: '#fff',
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                fontSize: '10px',
+                                fontWeight: 'bold',
+                                boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+                              }}>
+                                {step.active ? '✓' : idx + 1}
+                              </div>
+                              <span style={{ fontSize: '0.62rem', color: step.active ? colorTextPrimary : colorTextMuted, fontWeight: '700', marginTop: '4px' }}>{step.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Section 3: Detail cards row 1 */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.2fr', gap: '10px' }} className="order-details-row1">
+                        {/* Pickup details */}
+                        <div className="glass-card-no-hover" style={{ padding: '10px 12px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc', border: `1px solid ${borderColor}`, borderRadius: '12px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(114,9,183,0.06)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.75rem' }}>🏪</div>
+                              <strong style={{ fontSize: '0.72rem', color: colorTextPrimary }}>Pickup Details</strong>
+                            </div>
+                            <button 
+                              className="btn btn-secondary" 
+                              onClick={() => alert(`Calling Tailor: ${selectedOrder.pickupPhone}`)}
+                              style={{ fontSize: '0.65rem', padding: '4px 10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#7209b7', border: '1px solid rgba(114,9,183,0.15)' }}
+                            >
+                              📞 Call
+                            </button>
+                          </div>
+                          <h5 style={{ margin: '0 0 2px 0', fontSize: '0.82rem', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.pickup}</h5>
+                          <span style={{ fontSize: '0.68rem', color: colorTextSecondary, display: 'block', fontWeight: '600', marginBottom: '4px' }}>
+                            {selectedOrder.pickupContactName} • {selectedOrder.pickupPhone}
+                          </span>
+                          <p style={{ margin: 0, fontSize: '0.68rem', color: colorTextMuted, lineHeight: '1.3' }}>{selectedOrder.pickupAddress}</p>
+                          <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 'bold', display: 'block', marginTop: '6px' }}>⏰ {selectedOrder.pickupTime}</span>
+                        </div>
+
+                        {/* Delivery details */}
+                        <div className="glass-card-no-hover" style={{ padding: '10px 12px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc', border: `1px solid ${borderColor}`, borderRadius: '12px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(247,37,133,0.06)', color: '#f72585', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.75rem' }}>🏠</div>
+                              <strong style={{ fontSize: '0.72rem', color: colorTextPrimary }}>Delivery Details</strong>
+                            </div>
+                            <button 
+                              className="btn btn-secondary" 
+                              onClick={() => alert(`Calling Customer: ${selectedOrder.deliveryPhone}`)}
+                              style={{ fontSize: '0.65rem', padding: '3px 8px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '4px', color: '#f72585', border: '1px solid rgba(247,37,133,0.15)' }}
+                            >
+                              📞 Call
+                            </button>
+                          </div>
+                          <h5 style={{ margin: '0 0 2px 0', fontSize: '0.82rem', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.deliverTo}</h5>
+                          <span style={{ fontSize: '0.68rem', color: colorTextSecondary, display: 'block', fontWeight: '600', marginBottom: '4px' }}>
+                            {selectedOrder.deliveryPhone}
+                          </span>
+                          <p style={{ margin: '0 0 6px 0', fontSize: '0.68rem', color: colorTextMuted, lineHeight: '1.3' }}>{selectedOrder.deliveryAddress}</p>
+                          
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(247,37,133,0.04)', padding: '4px 8px', borderRadius: '6px', border: '1px dashed rgba(247,37,133,0.15)' }}>
+                            <span style={{ fontSize: '0.62rem', color: '#f72585', fontWeight: 'bold' }}>🔑 OTP Required</span>
+                            <strong style={{ fontSize: '0.72rem', color: '#f72585' }}>{selectedOrder.deliveryOtp}</strong>
+                          </div>
+                        </div>
+
+                        {/* Route Overview map card */}
+                        <div className="glass-card-no-hover" style={{ padding: '10px 12px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <strong style={{ fontSize: '0.72rem', color: colorTextPrimary }}>Route Overview</strong>
+                            <span style={{ fontSize: '0.68rem', color: '#f72585', fontWeight: 'bold' }}>{selectedOrder.distance} • {selectedOrder.estTime}</span>
+                          </div>
+
+                          {/* Leaflet map container */}
+                          <div style={{ flex: 1, minHeight: '110px', height: '110px', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${borderColor}`, position: 'relative' }}>
+                            <div ref={orderMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
+                            <button 
+                              onClick={() => {
+                                try {
+                                  const pickup = selectedOrder.pickupCoords || [12.9592, 77.6974];
+                                  const deliver = selectedOrder.deliveryCoords || [12.9660, 77.7320];
+                                  const L = window.L;
+                                  if (orderMapInstance.current && L) {
+                                    orderMapInstance.current.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [15, 15] });
+                                  }
+                                } catch (e) {
+                                  console.error("Map fitBounds failed", e);
+                                }
+                              }}
+                              style={{
+                                position: 'absolute',
+                                bottom: '6px',
+                                right: '6px',
+                                background: 'rgba(255,255,255,0.9)',
+                                border: 'none',
+                                borderRadius: '4px',
+                                padding: '3px 6px',
+                                fontSize: '0.58rem',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                zIndex: 10,
+                                color: '#333',
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.15)'
+                              }}
+                            >
+                              📍 Live Location
+                            </button>
+                          </div>
+
+                          {/* Map specs footer */}
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1.2fr', gap: '6px', fontSize: '0.62rem', borderTop: `1px solid ${borderColor}`, paddingTop: '6px' }}>
+                            <div>
+                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>Distance</span>
+                              <strong style={{ color: colorTextPrimary }}>{selectedOrder.distance}</strong>
+                            </div>
+                            <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '6px' }}>
+                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>ETA</span>
+                              <strong style={{ color: colorTextPrimary }}>{selectedOrder.estTime}</strong>
+                            </div>
+                            <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '6px' }}>
+                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>Traffic</span>
+                              <strong style={{ color: selectedOrder.traffic === 'Light' ? '#10b981' : (selectedOrder.traffic === 'Moderate' ? '#f97316' : '#ef4444') }}>
+                                ● {selectedOrder.traffic}
+                              </strong>
+                            </div>
+                            <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '6px', overflow: 'hidden' }}>
+                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>Best Route</span>
+                              <strong style={{ color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{selectedOrder.bestRoute}</strong>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Section 4: Detail cards row 2 */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }} className="order-details-row2">
+                        {/* Package Details */}
+                        <div className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                          <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                              <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(114,9,183,0.06)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>📦</div>
+                              <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>Package Details</strong>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.72rem' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
+                                <span style={{ color: colorTextMuted }}>Item</span>
+                                <strong style={{ color: colorTextPrimary }}>{selectedOrder.item}</strong>
+                              </div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
+                                <span style={{ color: colorTextMuted }}>Weight</span>
+                                <strong style={{ color: colorTextPrimary }}>{selectedOrder.weight}</strong>
+                              </div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
+                                <span style={{ color: colorTextMuted }}>Type</span>
+                                <strong style={{ color: colorTextPrimary }}>{selectedOrder.type}</strong>
+                              </div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px' }}>
+                                <span style={{ color: colorTextMuted }}>Fragile</span>
+                                <span style={{ background: selectedOrder.fragile === 'Yes' ? 'rgba(247,37,133,0.06)' : 'rgba(16,185,129,0.06)', color: selectedOrder.fragile === 'Yes' ? '#f72585' : '#10b981', padding: '1px 6px', borderRadius: '4px', fontWeight: 'bold', fontSize: '0.62rem' }}>
+                                  {selectedOrder.fragile}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style={{ background: 'rgba(114,9,183,0.04)', padding: '6px 10px', borderRadius: '8px', border: '1px solid rgba(114,9,183,0.12)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
+                            <span>🛡️</span>
+                            <span style={{ fontSize: '0.68rem', color: '#7209b7', fontWeight: 'bold' }}>{selectedOrder.handleNote}</span>
+                          </div>
+                      </div>
+
+                    {/* Customer Note */}
+                        <div className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(249,115,22,0.06)', color: '#f97316', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>📝</div>
+                            <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>Customer Note</strong>
+                          </div>
+                          <p style={{ margin: 0, fontSize: '0.75rem', color: colorTextSecondary, lineHeight: '1.5', flex: 1 }}>
+                            "{selectedOrder.customerNote}"
+                          </p>
+                        </div>
+
+                        {/* Payment Details */}
+                        <div className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16,185,129,0.06)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>💵</div>
+                            <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>Payment Details</strong>
+                          </div>
+
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.75rem', flex: 1, justifyContent: 'center' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span style={{ color: colorTextMuted }}>Payment Type</span>
+                              <span style={{ background: selectedOrder.paymentType === 'Prepaid' ? 'rgba(16,185,129,0.06)' : 'rgba(247,37,133,0.06)', color: selectedOrder.paymentType === 'Prepaid' ? '#10b981' : '#f72585', padding: '2px 8px', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.65rem' }}>
+                                {selectedOrder.paymentType}
+                              </span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span style={{ color: colorTextMuted }}>Order Value</span>
+                              <strong style={{ color: colorTextPrimary, fontSize: '0.85rem' }}>{selectedOrder.orderValue}</strong>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Section 5: Bottom action footer bar */}
+                      <div style={{ display: 'flex', gap: '12px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }} className="order-details-actions">
+                        <button 
+                          className="btn btn-secondary" 
+                          onClick={() => setActiveTab('navigation')}
+                          style={{ flex: 1, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                        >
+                          <Navigation size={14} style={{ transform: 'rotate(45deg)' }} /> Navigate
+                        </button>
+                        <button 
+                          className="btn btn-secondary" 
+                          onClick={() => alert(`Calling customer: ${selectedOrder.deliveryPhone}`)}
+                          style={{ flex: 1, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'rgba(247,37,133,0.05)', color: '#f72585', border: '1px solid rgba(247,37,133,0.15)' }}
+                        >
+                          📞 Call Customer
+                        </button>
+                        <button 
+                          className="btn btn-secondary" 
+                          onClick={() => alert(`Calling tailor: ${selectedOrder.pickupPhone}`)}
+                          style={{ flex: 1, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'rgba(114,9,183,0.05)', color: '#7209b7', border: '1px solid rgba(114,9,183,0.15)' }}
+                        >
+                          📞 Call Tailor
+                        </button>
+                        <button 
+                          className="btn btn-secondary" 
+                          onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
+                          style={{ flex: 0.8, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                        >
+                          💬 Chat
+                        </button>
+                        
+                        {selectedOrder.status === 'active' && selectedOrder.taskStatus !== 'Delivered' && (
+                          <button 
+                            className="btn btn-primary" 
+                            onClick={() => {
+                              const code = prompt("Enter customer Delivery OTP to verify delivery:");
+                              if (code === selectedOrder.deliveryOtp) {
+                                alert("OTP Verified! Order marked completed.");
+                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'completed', taskStatus: 'Delivered' } : o);
+                                setOrdersList(updated);
+                              } else {
+                                alert("Incorrect OTP code. Verification failed.");
+                              }
+                            }}
+                            style={{ flex: 1.5, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#10b981', border: 'none', color: '#fff' }}
+                          >
+                            ✓ Delivered
+                          </button>
+                        )}
+
+                        {selectedOrder.status === 'upcoming' && (
+                          <button 
+                            className="btn btn-primary" 
+                            onClick={() => {
+                              alert(`Task accepted! Navigating to Pickup point.`);
+                              const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
+                              setOrdersList(updated);
+                            }}
+                            style={{ flex: 1.5, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'var(--primary)', border: 'none', color: '#fff' }}
+                          >
+                            Accept Task
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="glass-card-no-hover" style={{ padding: '40px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '24px', textAlign: 'center', color: colorTextMuted }}>
+                      No task selected. Select a task from the list on the left to view detailed information.
+                    </div>
+                  )}
+                </div>
+              </div>
+
+            </div>
+        );
+      })()}
 
         {/* MODULE 3: NAVIGATION & LIVE ROUTE PLANNER */}
         {activeTab === 'navigation' && (

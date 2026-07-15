@@ -607,7 +607,7 @@ export default function App() {
     <div className="app-container">
       
       {/* Top sticky navigation bar */}
-      {!['customer', 'tailor', 'student', 'admin'].includes(role) && (
+      {!['customer', 'tailor', 'student', 'admin', 'delivery'].includes(role) && (
         <header className="top-nav">
           <div className="logo" onClick={() => setRole('landing')}>
             <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
@@ -1855,6 +1855,7 @@ export default function App() {
           setTheme={setTheme}
           currentUser={currentUser}
           onLogout={handleLogout}
+          setRole={setRole}
         />
       )}
 
