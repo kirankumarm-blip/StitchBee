@@ -763,13 +763,13 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
-                  padding: '20px',
-                  height: '620px',
+                  padding: '16px',
+                  height: '580px',
                   justifyContent: 'space-between',
                   color: '#ffffff'
                 }}
               >
-                <h4 style={{ margin: '0 0 4px 0', fontSize: '0.95rem', fontWeight: '800', textAlign: 'left', color: '#ffffff', lineHeight: '1.4' }}>Go Online & Start Delivering</h4>
+                <h4 style={{ margin: '0 0 2px 0', fontSize: '0.92rem', fontWeight: '800', textAlign: 'left', color: '#ffffff', lineHeight: '1.4' }}>Go Online & Start Delivering</h4>
                 
                 <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <img 
@@ -777,7 +777,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     alt="Rider 3D" 
                     style={{ 
                       width: '95%', 
-                      height: '185px', 
+                      height: '160px', 
                       objectFit: 'contain'
                     }} 
                   />
@@ -788,65 +788,65 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   style={{ 
                     background: '#ffffff', 
                     color: '#0f172a',
-                    borderRadius: '20px',
-                    padding: '16px',
+                    borderRadius: '18px',
+                    padding: '12px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '12px',
+                    gap: '10px',
                     boxShadow: '0 4px 15px rgba(0,0,0,0.08)'
                   }}
                 >
                   {/* Online status badge */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isOnline ? '#10b981' : '#6b7280' }}></span>
-                    <strong style={{ fontSize: '0.82rem', color: isOnline ? '#10b981' : '#6b7280' }}>
+                    <strong style={{ fontSize: '0.8rem', color: isOnline ? '#10b981' : '#6b7280' }}>
                       {isOnline ? 'You are Online' : 'You are Offline'}
                     </strong>
                   </div>
 
                   {/* Stats List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {/* Row 1: Working Time */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
-                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Clock size={16} style={{ color: '#7209b7' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Clock size={14} style={{ color: '#7209b7' }} />
                       </div>
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Working Time</span>
-                        <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
+                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Working Time</span>
+                        <strong style={{ display: 'block', fontSize: '0.78rem', color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
                       </div>
                     </div>
 
                     {/* Row 2: Orders Completed */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
-                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <ShoppingBag size={16} style={{ color: '#7209b7' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <ShoppingBag size={14} style={{ color: '#7209b7' }} />
                       </div>
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Orders Completed</span>
-                        <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>11 Deliveries</strong>
+                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Orders Completed</span>
+                        <strong style={{ display: 'block', fontSize: '0.78rem', color: '#0f172a' }}>11 Deliveries</strong>
                       </div>
                     </div>
 
                     {/* Row 3: Earnings Today */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
-                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Wallet size={16} style={{ color: '#10b981' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Wallet size={14} style={{ color: '#10b981' }} />
                       </div>
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Earnings Today</span>
-                        <strong style={{ display: 'block', fontSize: '0.8rem', color: '#0f172a' }}>₹1,820</strong>
+                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Earnings Today</span>
+                        <strong style={{ display: 'block', fontSize: '0.78rem', color: '#0f172a' }}>₹1,820</strong>
                       </div>
                     </div>
 
                     {/* Row 4: Rider Rating */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(249, 115, 22, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Star size={16} style={{ color: '#f97316' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(249, 115, 22, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Star size={14} style={{ color: '#f97316' }} />
                       </div>
                       <div>
-                        <span style={{ display: 'block', fontSize: '0.62rem', color: '#64748b', fontWeight: 'bold' }}>Rider Rating</span>
-                        <strong style={{ display: 'flex', fontSize: '0.8rem', color: '#0f172a', alignItems: 'center', gap: '3px' }}>
+                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Rider Rating</span>
+                        <strong style={{ display: 'flex', fontSize: '0.78rem', color: '#0f172a', alignItems: 'center', gap: '3px' }}>
                           4.9 <Star size={10} fill="#fbbf24" style={{ color: '#fbbf24' }} />
                         </strong>
                       </div>
@@ -860,13 +860,13 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     style={{ 
                       width: '100%', 
                       fontWeight: 'bold',
-                      fontSize: '0.78rem',
+                      fontSize: '0.75rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '6px',
-                      padding: '10px',
-                      borderRadius: '24px',
+                      padding: '8px',
+                      borderRadius: '20px',
                       cursor: 'pointer',
                       background: '#ffffff',
                       color: isOnline ? '#f72585' : '#10b981',
