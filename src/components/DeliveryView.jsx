@@ -764,7 +764,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   display: 'flex',
                   flexDirection: 'column',
                   padding: '20px',
-                  height: '650px',
+                  height: '620px',
                   justifyContent: 'space-between',
                   color: '#ffffff'
                 }}
@@ -776,8 +776,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     src="/rider_3d.jpg" 
                     alt="Rider 3D" 
                     style={{ 
-                      width: '90%', 
-                      height: '150px', 
+                      width: '95%', 
+                      height: '185px', 
                       objectFit: 'contain'
                     }} 
                   />
