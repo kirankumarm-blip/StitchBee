@@ -763,38 +763,37 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
-                  padding: '20px 0 0 0',
-                  height: '660px',
+                  padding: '20px',
+                  height: '650px',
                   justifyContent: 'space-between',
                   color: '#ffffff'
                 }}
               >
-                <h4 style={{ margin: '0 20px', fontSize: '0.95rem', fontWeight: '800', textAlign: 'left', color: '#ffffff', lineHeight: '1.4' }}>Go Online & Start Delivering</h4>
+                <h4 style={{ margin: '0 0 4px 0', fontSize: '0.95rem', fontWeight: '800', textAlign: 'left', color: '#ffffff', lineHeight: '1.4' }}>Go Online & Start Delivering</h4>
                 
-                <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 10px' }}>
+                <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <img 
                     src="/rider_3d.jpg" 
                     alt="Rider 3D" 
                     style={{ 
                       width: '90%', 
-                      height: '160px', 
+                      height: '150px', 
                       objectFit: 'contain'
                     }} 
                   />
                 </div>
                 
-                {/* White floating card inside the gradient background - flush end-to-end */}
+                {/* White floating card inside the gradient background - floating style */}
                 <div 
                   style={{ 
                     background: '#ffffff', 
                     color: '#0f172a',
-                    borderTopLeftRadius: '24px', 
-                    borderTopRightRadius: '24px',
-                    padding: '20px 20px 24px 20px',
+                    borderRadius: '20px',
+                    padding: '16px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '16px',
-                    boxShadow: '0 -4px 15px rgba(0,0,0,0.05)'
+                    gap: '12px',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.08)'
                   }}
                 >
                   {/* Online status badge */}
@@ -806,10 +805,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
 
                   {/* Stats List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {/* Row 1: Working Time */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
+                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <Clock size={16} style={{ color: '#7209b7' }} />
                       </div>
                       <div>
@@ -819,8 +818,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </div>
 
                     {/* Row 2: Orders Completed */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
+                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <ShoppingBag size={16} style={{ color: '#7209b7' }} />
                       </div>
                       <div>
@@ -830,8 +829,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </div>
 
                     {/* Row 3: Earnings Today */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', borderBottom: '1px solid #f1f5f9', paddingBottom: '8px' }}>
+                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <Wallet size={16} style={{ color: '#10b981' }} />
                       </div>
                       <div>
@@ -841,8 +840,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </div>
 
                     {/* Row 4: Rider Rating */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingBottom: '2px' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(249, 115, 22, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: 'rgba(249, 115, 22, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <Star size={16} style={{ color: '#f97316' }} />
                       </div>
                       <div>
