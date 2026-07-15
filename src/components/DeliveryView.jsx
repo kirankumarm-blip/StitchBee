@@ -2082,7 +2082,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             </button>
                             <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
                             <button 
-                              className="btn-text-white-force"
+                              className="btn btn-text-white-force"
                               onClick={() => alert("More options: Reject Task, View details")}
                               style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
                             >
@@ -2107,7 +2107,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             </button>
                             <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
                             <button 
-                              className="btn-text-white-force"
+                              className="btn btn-text-white-force"
                               onClick={() => alert("More options: Delay Pickup, Issue at Tailor")}
                               style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
                             >
@@ -2137,7 +2137,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             </button>
                             <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
                             <button 
-                              className="btn-text-white-force"
+                              className="btn btn-text-white-force"
                               onClick={() => alert("More options: Customer Not Available, Delay Delivery, Issue")}
                               style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
                             >

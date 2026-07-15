@@ -6238,40 +6238,60 @@ body.light-theme .customer-scroll-list::-webkit-scrollbar-thumb {
 }
 
 /* StitchBee Delivery Actions Custom Button Overrides */
-.btn-solid-purple {
+body button.btn-solid-purple,
+body.light-theme button.btn-solid-purple.btn {
   background: #7209b7 !important;
   color: #ffffff !important;
   border: none !important;
 }
-.btn-solid-purple *, .btn-solid-purple svg {
+body button.btn-solid-purple *,
+body button.btn-solid-purple svg,
+body.light-theme button.btn-solid-purple.btn *,
+body.light-theme button.btn-solid-purple.btn svg {
   color: #ffffff !important;
   stroke: #ffffff !important;
 }
 
-.btn-solid-pink {
+body button.btn-solid-pink,
+body.light-theme button.btn-solid-pink.btn {
   background: #f72585 !important;
   color: #ffffff !important;
   border: none !important;
 }
-.btn-solid-pink *, .btn-solid-pink svg {
+body button.btn-solid-pink *,
+body button.btn-solid-pink svg,
+body.light-theme button.btn-solid-pink.btn *,
+body.light-theme button.btn-solid-pink.btn svg {
   color: #ffffff !important;
   stroke: #ffffff !important;
 }
 
-.btn-solid-green {
+body button.btn-solid-green,
+body.light-theme button.btn-solid-green.btn {
   background: #10b981 !important;
   color: #ffffff !important;
   border: none !important;
 }
-.btn-solid-green *, .btn-solid-green svg {
+body button.btn-solid-green *,
+body button.btn-solid-green svg,
+body.light-theme button.btn-solid-green.btn *,
+body.light-theme button.btn-solid-green.btn svg {
   color: #ffffff !important;
   stroke: #ffffff !important;
 }
 
-.btn-text-white-force {
+body button.btn-text-white-force,
+body.light-theme button.btn-text-white-force,
+body.light-theme button.btn-text-white-force.btn,
+body.light-theme .btn-text-white-force {
   color: #ffffff !important;
 }
-.btn-text-white-force *, .btn-text-white-force svg {
+body button.btn-text-white-force *,
+body button.btn-text-white-force svg,
+body.light-theme button.btn-text-white-force.btn *,
+body.light-theme button.btn-text-white-force.btn svg,
+body.light-theme .btn-text-white-force *,
+body.light-theme .btn-text-white-force svg {
   color: #ffffff !important;
   stroke: #ffffff !important;
 }
