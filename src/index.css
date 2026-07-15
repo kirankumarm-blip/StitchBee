@@ -6296,10 +6296,27 @@ body.light-theme .btn-text-white-force svg {
   stroke: #ffffff !important;
 }
 
+body button.btn-outline-red,
+body.light-theme button.btn-outline-red.btn {
+  border: 1.5px solid #ef4444 !important;
+  color: #ef4444 !important;
+  background: transparent !important;
+}
+body button.btn-outline-red *,
+body.light-theme button.btn-outline-red.btn * {
+  color: #ef4444 !important;
+}
 
-
-
-
+body button.btn-outline-green,
+body.light-theme button.btn-outline-green.btn {
+  border: 1.5px solid #10b981 !important;
+  color: #10b981 !important;
+  background: transparent !important;
+}
+body button.btn-outline-green *,
+body.light-theme button.btn-outline-green.btn * {
+  color: #10b981 !important;
+}
 
 
 

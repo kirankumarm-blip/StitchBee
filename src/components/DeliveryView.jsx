@@ -806,35 +806,40 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                   {/* Stats List */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.75rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#64748b' }}>⏱️ Working Time</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Clock size={14} style={{ color: '#7209b7' }} /> Working Time
+                      </span>
                       <strong style={{ color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#64748b' }}>📦 Orders Completed</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <ShoppingBag size={14} style={{ color: '#7209b7' }} /> Orders Completed
+                      </span>
                       <strong style={{ color: '#0f172a' }}>11 Deliveries</strong>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#64748b' }}>💰 Earnings Today</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Wallet size={14} style={{ color: '#7209b7' }} /> Earnings Today
+                      </span>
                       <strong style={{ color: '#0f172a' }}>₹1,820</strong>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#64748b' }}>⭐ Rider Rating</span>
+                      <span style={{ color: '#64748b', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Star size={14} fill="#fbbf24" style={{ color: '#fbbf24' }} /> Rider Rating
+                      </span>
                       <strong style={{ color: '#0f172a', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                        4.9 <span style={{ color: '#f59e0b' }}>★</span>
+                        4.9
                       </strong>
                     </div>
                   </div>
 
                   {/* Offline / Online Action Button */}
                   <button 
-                    className="btn" 
+                    className={`btn ${isOnline ? 'btn-outline-red' : 'btn-outline-green'}`} 
                     onClick={() => setIsOnline(!isOnline)}
                     style={{ 
                       width: '100%', 
-                      border: `1.5px solid ${isOnline ? '#ef4444' : '#10b981'}`,
-                      background: 'transparent',
-                      color: isOnline ? '#ef4444' : '#10b981',
                       fontWeight: 'bold',
                       fontSize: '0.78rem',
                       display: 'flex',
@@ -864,12 +869,12 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                 }}
               >
                 {[
-                  { label: "Today's Earnings", val: "₹1,820", sub: "+₹150 incentives", subColor: '#10b981', icon: '👛', iconBg: 'rgba(247,37,133,0.05)', iconBorder: 'rgba(247,37,133,0.15)', iconColor: 'var(--primary)' },
-                  { label: "Today's Orders", val: "16", sub: "Goal: 20", subColor: colorTextMuted, icon: '📋', iconBg: 'rgba(59,130,246,0.05)', iconBorder: 'rgba(59,130,246,0.15)', iconColor: '#3b82f6' },
-                  { label: "Completed", val: "11", sub: "69% Success Rate", subColor: colorTextMuted, icon: '✅', iconBg: 'rgba(16,185,129,0.05)', iconBorder: 'rgba(16,185,129,0.15)', iconColor: '#10b981' },
-                  { label: "Pending", val: "5", sub: "View Details >", subColor: '#ef4444', icon: '🕒', iconBg: 'rgba(245,158,11,0.05)', iconBorder: 'rgba(245,158,11,0.15)', iconColor: '#f59e0b', clickAction: () => setActiveTab('orders') },
-                  { label: "Wallet Balance", val: "₹8,500", sub: "Withdraw >", subColor: '#ef4444', icon: '💳', iconBg: 'rgba(139,92,246,0.05)', iconBorder: 'rgba(139,92,246,0.15)', iconColor: '#7209b7', clickAction: () => setActiveTab('earnings') },
-                  { label: "Rider Rating", val: "4.9", sub: "Top Tier Rider", subColor: colorTextMuted, icon: '⭐', iconBg: 'rgba(251,191,36,0.05)', iconBorder: 'rgba(251,191,36,0.15)', iconColor: '#fbbf24' }
+                  { label: "Today's Earnings", val: "₹1,820", sub: "+₹150 incentives", subColor: '#10b981', icon: <Wallet size={18} style={{ color: '#f72585' }} />, iconBg: 'rgba(247,37,133,0.05)', iconBorder: 'rgba(247,37,133,0.15)', iconColor: '#f72585' },
+                  { label: "Today's Orders", val: "16", sub: "Goal: 20", subColor: colorTextMuted, icon: <FileText size={18} style={{ color: '#3b82f6' }} />, iconBg: 'rgba(59,130,246,0.05)', iconBorder: 'rgba(59,130,246,0.15)', iconColor: '#3b82f6' },
+                  { label: "Completed", val: "11", sub: "69% Success Rate", subColor: colorTextMuted, icon: <CheckCircle size={18} style={{ color: '#10b981' }} />, iconBg: 'rgba(16,185,129,0.05)', iconBorder: 'rgba(16,185,129,0.15)', iconColor: '#10b981' },
+                  { label: "Pending", val: "5", sub: "View Details >", subColor: '#ef4444', icon: <Clock size={18} style={{ color: '#f59e0b' }} />, iconBg: 'rgba(245,158,11,0.05)', iconBorder: 'rgba(245,158,11,0.15)', iconColor: '#f59e0b', clickAction: () => setActiveTab('orders') },
+                  { label: "Wallet Balance", val: "₹8,500", sub: "Withdraw >", subColor: '#ef4444', icon: <Wallet size={18} style={{ color: '#7209b7' }} />, iconBg: 'rgba(114,9,183,0.05)', iconBorder: 'rgba(114,9,183,0.15)', iconColor: '#7209b7', clickAction: () => setActiveTab('earnings') },
+                  { label: "Rider Rating", val: "4.9", sub: "Top Tier Rider", subColor: colorTextMuted, icon: <Star size={18} fill="#fbbf24" style={{ color: '#fbbf24' }} />, iconBg: 'rgba(251,191,36,0.05)', iconBorder: 'rgba(251,191,36,0.15)', iconColor: '#fbbf24' }
                 ].map((kpi, idx) => (
                   <div 
                     key={idx} 
@@ -942,68 +947,51 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </span>
                   </div>
 
-                  {/* SVG Route Overview Map (Simulating stylized Google Maps) */}
-                  <div style={{ flex: 1, background: isDark ? '#14142b' : '#eaf2f8', border: `1px solid ${borderColor}`, borderRadius: '12px', overflow: 'hidden', minHeight: '180px', position: 'relative' }}>
-                    <svg viewBox="0 0 400 240" style={{ width: '100%', height: '100%' }}>
-                      {/* Water bodies */}
-                      <path d="M 0 40 Q 60 80 120 40 T 240 60 T 360 30 T 400 50 L 400 0 L 0 0 Z" fill={isDark ? '#1d2c4e' : '#d0e1f9'} opacity="0.6" />
-                      
-                      {/* Green Parks */}
-                      <rect x="50" y="80" width="80" height="50" rx="8" fill={isDark ? '#1c3d27' : '#e2f0d9'} />
-                      <rect x="250" y="140" width="100" height="60" rx="8" fill={isDark ? '#1c3d27' : '#e2f0d9'} />
-
-                      {/* Secondary streets */}
-                      <line x1="80" y1="0" x2="80" y2="240" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
-                      <line x1="280" y1="0" x2="280" y2="240" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
-                      <line x1="0" y1="90" x2="400" y2="90" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
-                      <line x1="0" y1="170" x2="400" y2="170" stroke={isDark ? '#2e2e4e' : '#ffffff'} strokeWidth="10" />
-
-                      {/* Main roads layout */}
-                      <line x1="180" y1="0" x2="180" y2="240" stroke={isDark ? '#475569' : '#cbd5e1'} strokeWidth="14" />
-                      <line x1="0" y1="130" x2="400" y2="130" stroke={isDark ? '#475569' : '#cbd5e1'} strokeWidth="14" />
-
-                      {/* Route line */}
-                      <path d="M 80 200 L 80 130 L 180 130 L 180 90 L 280 90 L 280 130 L 340 130" fill="none" stroke="#f72585" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-
-                      {/* Start Pin - Blue Dot */}
-                      <circle cx="80" cy="200" r="8" fill="#3a86ff" stroke="#ffffff" strokeWidth="2" />
-                      <circle cx="80" cy="200" r="3" fill="#ffffff" />
-
-                      {/* Stop 1 - Pink Pin */}
-                      <circle cx="80" cy="130" r="10" fill="#f72585" stroke="#ffffff" strokeWidth="1.5" />
-                      <text x="80" y="133" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">🏪</text>
-
-                      {/* Stop 2 - Orange Dot */}
-                      <circle cx="180" cy="130" r="8" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
-                      <text x="180" y="133" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">2</text>
-
-                      {/* Stop 3 - Orange Dot */}
-                      <circle cx="180" cy="90" r="8" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
-                      <text x="180" y="93" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">3</text>
-
-                      {/* Stop 4 - Orange Dot */}
-                      <circle cx="280" cy="90" r="8" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.5" />
-                      <text x="280" y="93" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">4</text>
-
-                      {/* Stop 5 - Green Home Pin */}
-                      <circle cx="340" cy="130" r="10" fill="#10b981" stroke="#ffffff" strokeWidth="1.5" />
-                      <text x="340" y="133" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">🏠</text>
-                    </svg>
+                  {/* Real Leaflet Map Container */}
+                  <div style={{ flex: 1, minHeight: '180px', height: '180px', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${borderColor}`, position: 'relative', marginTop: '12px', marginBottom: '12px' }}>
+                    <div ref={homeMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
                   </div>
 
                   {/* Bottom Stats & Button */}
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '14px', borderTop: `1px solid ${borderColor}`, paddingTop: '14px' }}>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.72rem' }}>
-                      <span style={{ color: colorTextMuted }}>Total Distance: <strong>48.6 KM</strong></span>
-                      <span style={{ color: colorTextMuted }}>Total Stops: <strong>7 Stops</strong></span>
-                      <span style={{ color: colorTextMuted }}>Est. Time: <strong>3h 20m</strong></span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '14px', borderTop: `1px solid ${borderColor}`, paddingTop: '14px' }}>
+                    <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(114,9,183,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Compass size={14} style={{ color: '#7209b7' }} />
+                        </div>
+                        <div>
+                          <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted }}>Total Distance</span>
+                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>48.6 KM</strong>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(249,115,22,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Target size={14} style={{ color: '#f97316' }} />
+                        </div>
+                        <div>
+                          <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted }}>Total Stops</span>
+                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>7 Stops</strong>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16,185,129,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Clock size={14} style={{ color: '#10b981' }} />
+                        </div>
+                        <div>
+                          <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted }}>Estimated Time</span>
+                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>3h 20m</strong>
+                        </div>
+                      </div>
                     </div>
+
                     <button 
-                      className="btn btn-primary" 
-                      style={{ fontSize: '0.75rem', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '4px', borderRadius: '8px' }}
+                      className="btn btn-solid-pink" 
+                      style={{ fontSize: '0.72rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '4px', borderRadius: '8px', fontWeight: 'bold' }}
                       onClick={() => setActiveTab('navigation')}
                     >
-                      Start Route <ChevronRight size={14} />
+                      Start Route <ChevronRight size={12} />
                     </button>
                   </div>
                 </div>
@@ -1033,7 +1021,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.75rem' }}>
                       <div style={{ display: 'flex', gap: '10px' }}>
                         <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(114,9,183,0.1)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          🏪
+                          <ShoppingBag size={12} style={{ color: '#7209b7' }} />
                         </div>
                         <div>
                           <strong style={{ display: 'block', color: colorTextPrimary }}>Pickup From</strong>
@@ -1043,8 +1031,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       </div>
 
                       <div style={{ display: 'flex', gap: '10px' }}>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          🏠
+                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Home size={12} style={{ color: '#10b981' }} />
                         </div>
                         <div>
                           <strong style={{ display: 'block', color: colorTextPrimary }}>Deliver To</strong>
@@ -1057,21 +1045,66 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                   {/* Specs and action buttons */}
                   <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '12px', marginTop: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: colorTextMuted, marginBottom: '10px' }}>
-                      <span>🗺️ <strong>3.4 km</strong></span>
-                      <span>⏱️ <strong>14 mins</strong></span>
-                      <span>📦 <strong>Lehenga & Blouse</strong></span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: colorTextMuted, marginBottom: '14px' }}>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted, textTransform: 'uppercase', marginBottom: '2px' }}>Distance</span>
+                        <strong style={{ color: colorTextPrimary, fontSize: '0.8rem' }}>3.4 km</strong>
+                      </div>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted, textTransform: 'uppercase', marginBottom: '2px' }}>ETA</span>
+                        <strong style={{ color: colorTextPrimary, fontSize: '0.8rem' }}>14 mins</strong>
+                      </div>
+                      <div>
+                        <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted, textTransform: 'uppercase', marginBottom: '2px' }}>Item</span>
+                        <strong style={{ color: colorTextPrimary, fontSize: '0.8rem' }}>Lehenga & Blouse</strong>
+                      </div>
                     </div>
                     
-                    <div style={{ display: 'flex', gap: '6px' }}>
-                      <button className="btn btn-primary" style={{ flex: 1.5, fontSize: '0.72rem', padding: '8px' }} onClick={() => setActiveTab('navigation')}>
-                        Navigate
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button 
+                        className="btn btn-solid-pink" 
+                        style={{ flex: 1.5, fontSize: '0.72rem', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', fontWeight: 'bold' }} 
+                        onClick={() => setActiveTab('navigation')}
+                      >
+                        <Navigation size={12} style={{ transform: 'rotate(45deg)' }} /> Navigate
                       </button>
-                      <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.72rem', padding: '8px' }} onClick={() => alert(`Calling customer: ${activeOrder.phone}`)}>
-                        Call
+                      <button 
+                        className="btn" 
+                        style={{ 
+                          flex: 1, 
+                          fontSize: '0.72rem', 
+                          padding: '8px 12px', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          gap: '4px',
+                          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15, 23, 42, 0.05)',
+                          color: colorTextPrimary,
+                          border: `1px solid ${borderColor}`,
+                          cursor: 'pointer'
+                        }} 
+                        onClick={() => alert(`Calling customer: ${activeOrder.phone}`)}
+                      >
+                        <Phone size={12} /> Call
                       </button>
-                      <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.72rem', padding: '8px' }} onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}>
-                        Chat
+                      <button 
+                        className="btn" 
+                        style={{ 
+                          flex: 1, 
+                          fontSize: '0.72rem', 
+                          padding: '8px 12px', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          gap: '4px',
+                          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15, 23, 42, 0.05)',
+                          color: colorTextPrimary,
+                          border: `1px solid ${borderColor}`,
+                          cursor: 'pointer'
+                        }} 
+                        onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
+                      >
+                        <MessageSquare size={12} /> Chat
                       </button>
                     </div>
                   </div>
@@ -1110,7 +1143,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         <div key={sIdx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <span style={{ color: colorTextMuted, width: '55px' }}>{step.time}</span>
-                            <span style={{ width: '16px', height: '16px', borderRadius: '50%', background: step.type === 'Pickup' ? '#7209b7' : 'var(--primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem', fontWeight: 'bold' }}>
+                            <span style={{ width: '18px', height: '18px', borderRadius: '50%', background: step.num === 1 ? '#f72585' : '#f97316', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', fontWeight: 'bold' }}>
                               {step.num}
                             </span>
                             <div>
@@ -1118,7 +1151,14 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <span style={{ color: colorTextSecondary, fontSize: '0.65rem' }}>{step.store}</span>
                             </div>
                           </div>
-                          <span style={{ fontSize: '0.62rem', background: step.tag === 'Now' ? '#10b981' : 'rgba(255,255,255,0.05)', color: step.tag === 'Now' ? '#fff' : colorTextMuted, padding: '1px 6px', borderRadius: '4px', fontWeight: 'bold' }}>
+                          <span style={{ 
+                            fontSize: '0.62rem', 
+                            background: step.tag === 'Now' ? '#f72585' : 'rgba(15, 23, 42, 0.04)', 
+                            color: step.tag === 'Now' ? '#fff' : colorTextMuted, 
+                            padding: '2px 8px', 
+                            borderRadius: '6px', 
+                            fontWeight: 'bold' 
+                          }}>
                             {step.tag}
                           </span>
                         </div>
@@ -1131,10 +1171,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <span style={{ fontSize: '0.72rem', color: colorTextMuted }}>Total <strong>7 Stops</strong></span>
                     <button 
                       className="btn btn-ghost" 
-                      style={{ fontSize: '0.7rem', color: 'var(--primary)', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      style={{ fontSize: '0.72rem', color: '#f72585', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
                       onClick={() => alert("Route schedule optimized!")}
                     >
-                      📍 Optimize Route
+                      <Compass size={12} style={{ color: '#f72585' }} /> Optimize Route
                     </button>
                   </div>
                 </div>
