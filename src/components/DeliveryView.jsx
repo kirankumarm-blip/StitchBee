@@ -1991,65 +1991,162 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       {/* Section 5: Bottom action footer bar */}
                       <div style={{ display: 'flex', gap: '12px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }} className="order-details-actions">
                         <button 
-                          className="btn btn-secondary" 
+                          className="btn" 
                           onClick={() => setActiveTab('navigation')}
-                          style={{ flex: 1, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                          style={{ 
+                            flex: 1, 
+                            padding: '12px', 
+                            borderRadius: '12px', 
+                            fontSize: '0.8rem', 
+                            fontWeight: '700', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '8px', 
+                            background: '#7209b7', 
+                            color: '#fff', 
+                            border: 'none',
+                            cursor: 'pointer'
+                          }}
                         >
                           <Navigation size={14} style={{ transform: 'rotate(45deg)' }} /> Navigate
                         </button>
                         <button 
-                          className="btn btn-secondary" 
+                          className="btn" 
                           onClick={() => alert(`Calling customer: ${selectedOrder.deliveryPhone}`)}
-                          style={{ flex: 1, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'rgba(247,37,133,0.05)', color: '#f72585', border: '1px solid rgba(247,37,133,0.15)' }}
+                          style={{ 
+                            flex: 1, 
+                            padding: '12px', 
+                            borderRadius: '12px', 
+                            fontSize: '0.8rem', 
+                            fontWeight: '700', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '8px', 
+                            background: '#f72585', 
+                            color: '#fff', 
+                            border: 'none',
+                            cursor: 'pointer'
+                          }}
                         >
-                          📞 Call Customer
+                          <Phone size={14} /> Call Customer
                         </button>
                         <button 
-                          className="btn btn-secondary" 
+                          className="btn" 
                           onClick={() => alert(`Calling tailor: ${selectedOrder.pickupPhone}`)}
-                          style={{ flex: 1, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'rgba(114,9,183,0.05)', color: '#7209b7', border: '1px solid rgba(114,9,183,0.15)' }}
+                          style={{ 
+                            flex: 1, 
+                            padding: '12px', 
+                            borderRadius: '12px', 
+                            fontSize: '0.8rem', 
+                            fontWeight: '700', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '8px', 
+                            background: '#7209b7', 
+                            color: '#fff', 
+                            border: 'none',
+                            cursor: 'pointer'
+                          }}
                         >
-                          📞 Call Tailor
+                          <Phone size={14} /> Call Tailor
                         </button>
                         <button 
-                          className="btn btn-secondary" 
+                          className="btn" 
                           onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
-                          style={{ flex: 0.8, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                          style={{ 
+                            flex: 0.8, 
+                            padding: '12px', 
+                            borderRadius: '12px', 
+                            fontSize: '0.8rem', 
+                            fontWeight: '700', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            gap: '8px', 
+                            background: isDark ? 'rgba(114,9,183,0.15)' : '#f5f3ff', 
+                            color: '#7209b7', 
+                            border: isDark ? '1px solid rgba(114,9,183,0.3)' : '1px solid rgba(114,9,183,0.15)',
+                            cursor: 'pointer'
+                          }}
                         >
-                          💬 Chat
+                          <MessageSquare size={14} /> Chat
                         </button>
                         
-                        {selectedOrder.status === 'active' && selectedOrder.taskStatus !== 'Delivered' && (
-                          <button 
-                            className="btn btn-primary" 
-                            onClick={() => {
-                              const code = prompt("Enter customer Delivery OTP to verify delivery:");
-                              if (code === selectedOrder.deliveryOtp) {
-                                alert("OTP Verified! Order marked completed.");
-                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'completed', taskStatus: 'Delivered' } : o);
+                        {selectedOrder.status === 'upcoming' && (
+                          <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
+                            <button 
+                              onClick={() => {
+                                alert(`Task accepted! Navigating to Pickup point.`);
+                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
                                 setOrdersList(updated);
-                              } else {
-                                alert("Incorrect OTP code. Verification failed.");
-                              }
-                            }}
-                            style={{ flex: 1.5, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#10b981', border: 'none', color: '#fff' }}
-                          >
-                            ✓ Delivered
-                          </button>
+                                setSelectedOrder({ ...selectedOrder, status: 'active', taskStatus: 'In Progress' });
+                              }}
+                              style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px', cursor: 'pointer' }}
+                            >
+                              <Check size={14} /> Accept Task
+                            </button>
+                            <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
+                            <button 
+                              onClick={() => alert("More options: Reject Task, View details")}
+                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center' }}
+                            >
+                              <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
+                            </button>
+                          </div>
                         )}
 
-                        {selectedOrder.status === 'upcoming' && (
-                          <button 
-                            className="btn btn-primary" 
-                            onClick={() => {
-                              alert(`Task accepted! Navigating to Pickup point.`);
-                              const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
-                              setOrdersList(updated);
-                            }}
-                            style={{ flex: 1.5, padding: '12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'var(--primary)', border: 'none', color: '#fff' }}
-                          >
-                            Accept Task
-                          </button>
+                        {selectedOrder.status === 'active' && (selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Pickup Pending') && (
+                          <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
+                            <button 
+                              onClick={() => {
+                                alert(`Order picked up! Now navigating to delivery point.`);
+                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, taskStatus: 'In Progress' } : o);
+                                setOrdersList(updated);
+                                setSelectedOrder({ ...selectedOrder, taskStatus: 'In Progress' });
+                              }}
+                              style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px', cursor: 'pointer' }}
+                            >
+                              <Check size={14} /> Picked Up
+                            </button>
+                            <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
+                            <button 
+                              onClick={() => alert("More options: Delay Pickup, Issue at Tailor")}
+                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center' }}
+                            >
+                              <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
+                            </button>
+                          </div>
+                        )}
+
+                        {selectedOrder.status === 'active' && selectedOrder.taskStatus === 'In Progress' && (
+                          <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
+                            <button 
+                              onClick={() => {
+                                const code = prompt("Enter customer Delivery OTP to verify delivery:");
+                                if (code === selectedOrder.deliveryOtp) {
+                                  alert("OTP Verified! Order marked completed.");
+                                  const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'completed', taskStatus: 'Delivered' } : o);
+                                  setOrdersList(updated);
+                                  setSelectedOrder({ ...selectedOrder, status: 'completed', taskStatus: 'Delivered' });
+                                } else {
+                                  alert("Incorrect OTP code. Verification failed.");
+                                }
+                              }}
+                              style={{ flex: 1, background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px', cursor: 'pointer' }}
+                            >
+                              <Check size={14} /> Delivered
+                            </button>
+                            <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
+                            <button 
+                              onClick={() => alert("More options: Customer Not Available, Delay Delivery, Issue")}
+                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center' }}
+                            >
+                              <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
+                            </button>
+                          </div>
                         )}
                       </div>
                     </div>
