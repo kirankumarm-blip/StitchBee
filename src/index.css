@@ -6324,5 +6324,85 @@ body.light-theme button.quick-action-btn * {
 }
 
 
+/* StitchBee Rider Portal Orders Page Responsive Design overrides */
+.order-details-split-container {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+.order-details-left-col {
+  flex: 0 0 calc(60% - 12px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.order-details-right-col {
+  flex: 0 0 calc(40% - 12px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-details-row1-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.order-details-row2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  /* On tablets and smaller screens, the side-by-side split stacks vertically */
+  .orders-workspace-layout {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+  }
+  
+  .order-details-split-container {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  .order-details-left-col, .order-details-right-col {
+    flex: none !important;
+    width: 100% !important;
+    overflow-y: visible !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Stack the detail cards vertically on smaller devices */
+  .order-details-row1-grid, .order-details-row2-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .order-details-actions {
+    flex-wrap: wrap !important;
+  }
+  
+  .order-details-actions button {
+    flex: 1 1 calc(50% - 8px) !important;
+    height: 52px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-details-actions button {
+    flex: 1 1 100% !important;
+  }
+}
+
+
 
 

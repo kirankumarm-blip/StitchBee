@@ -1852,128 +1852,130 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
                 </div>
 
-                {/* Right Column: Detailed selected order panel */}
                 <div style={{ flex: 1, minWidth: 0 }} className="order-details-right-panel">
                   {selectedOrder ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
-                      
-                      {/* Section 1 & 2: Header payouts & Stepper Progress (Fixed top) */}
-                      <div style={{ 
-                        background: bgCard, 
-                        border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
-                        borderRadius: '20px', 
-                        padding: '24px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '20px',
-                        boxShadow: '0 6px 20px rgba(0,0,0,0.02)'
-                      }}>
-                        {/* Ready + Order Payout Section */}
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '16px', borderBottom: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}` }}>
-                          {/* Left side */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <h3 style={{ margin: 0, fontSize: '36px', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.id}</h3>
-                            <span style={{ 
-                              fontSize: '14px', 
-                              background: selectedOrder.taskStatus === 'Ready' ? '#EAFBF3' : (selectedOrder.taskStatus === 'In Progress' ? 'rgba(255,159,67,0.1)' : 'rgba(122,62,240,0.1)'), 
-                              color: selectedOrder.taskStatus === 'Ready' ? '#22C55E' : (selectedOrder.taskStatus === 'In Progress' ? '#FF9F43' : '#7A3EF0'),
-                              padding: '6px 14px', 
-                              borderRadius: '8px', 
-                              fontWeight: '700' 
-                            }}>
-                              {selectedOrder.taskStatus}
-                            </span>
-                          </div>
-
-                          {/* Right side */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                            <div style={{ textAlign: 'right' }}>
-                              <span style={{ fontSize: '13px', color: '#6B7280', display: 'block', fontWeight: '600' }}>Order Payout</span>
-                              <strong style={{ fontSize: '34px', color: '#FF2E83', fontWeight: '800', display: 'block', marginTop: '2px', lineHeight: '1' }}>{selectedOrder.payout}</strong>
-                            </div>
-                            <button 
-                              className="btn" 
-                              onClick={() => alert(`Details for ${selectedOrder.id}`)}
-                              style={{ 
-                                height: '44px',
-                                padding: '0 20px', 
-                                borderRadius: '22px', 
-                                border: `1.5px solid #FF2E83`,
-                                background: 'transparent',
-                                color: '#FF2E83',
-                                fontSize: '14px',
-                                fontWeight: '700',
-                                cursor: 'pointer',
-                                transition: 'all 0.2s'
-                              }}
-                              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 46, 131, 0.05)' }}
-                              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
-                            >
-                              Order Details
-                            </button>
-                          </div>
+                    <div 
+                      className="glass-card-no-hover"
+                      style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: '24px', 
+                        height: '100%',
+                        background: bgCard,
+                        border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
+                        borderRadius: '20px',
+                        padding: '28px',
+                        boxShadow: '0 8px 30px rgba(0,0,0,0.04)',
+                        boxSizing: 'border-box'
+                      }}
+                    >
+                      {/* Ready + Order Payout Section */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '16px', borderBottom: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}` }}>
+                        {/* Left side */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#FF2E83' }}>{selectedOrder.id}</h3>
+                          <span style={{ 
+                            fontSize: '14px', 
+                            background: selectedOrder.taskStatus === 'Ready' ? '#EAFBF3' : (selectedOrder.taskStatus === 'In Progress' ? 'rgba(255,159,67,0.1)' : 'rgba(122,62,240,0.1)'), 
+                            color: selectedOrder.taskStatus === 'Ready' ? '#22C55E' : (selectedOrder.taskStatus === 'In Progress' ? '#FF9F43' : '#7A3EF0'),
+                            padding: '6px 14px', 
+                            borderRadius: '8px', 
+                            fontWeight: '700' 
+                          }}>
+                            {selectedOrder.taskStatus}
+                          </span>
                         </div>
 
-                        {/* Delivery Progress timeline stepper */}
-                        <div style={{ padding: '0', position: 'relative', margin: '4px 0', maxWidth: '380px' }}>
-                          {/* Connecting line */}
-                          <div style={{
-                            position: 'absolute',
-                            left: '40px',
-                            right: '40px',
-                            top: '10px', // centered vertically to the 20px circles
-                            height: '3px',
-                            background: isDark ? 'rgba(255,255,255,0.08)' : '#E9EEF5',
-                            zIndex: 0
-                          }}>
-                            {/* Progress Fill */}
-                            <div style={{
-                              width: selectedOrder.taskStatus === 'Delivered' ? '100%' : (selectedOrder.taskStatus === 'Ready' ? '33%' : (selectedOrder.taskStatus === 'In Progress' ? '66%' : '0%')),
-                              height: '100%',
-                              background: '#FF2E83',
-                              transition: 'width 0.4s'
-                            }}></div>
+                        {/* Right side */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ fontSize: '13px', color: '#6B7280', display: 'block', fontWeight: '600' }}>Order Payout</span>
+                            <strong style={{ fontSize: '34px', color: '#FF2E83', fontWeight: '800', display: 'block', marginTop: '2px', lineHeight: '1' }}>{selectedOrder.payout}</strong>
                           </div>
-
-                          <div style={{ display: 'flex', justifyContent: 'space-between', zIndex: 1, position: 'relative' }}>
-                            {[
-                              { label: 'Assigned', active: true },
-                              { label: 'Reached Tailor', active: selectedOrder.taskStatus === 'In Progress' || selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
-                              { label: 'Picked Up', active: selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
-                              { label: 'Delivered', active: selectedOrder.taskStatus === 'Delivered' }
-                            ].map((step, idx) => (
-                              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80px', textAlign: 'center' }}>
-                                <div style={{ 
-                                  width: '20px', 
-                                  height: '20px', 
-                                  borderRadius: '50%', 
-                                  background: step.active ? '#FF2E83' : (isDark ? '#2e2e4e' : '#E9EEF5'), 
-                                  color: '#ffffff',
-                                  display: 'flex', 
-                                  alignItems: 'center', 
-                                  justifyContent: 'center',
-                                  fontSize: '10px',
-                                  fontWeight: '700',
-                                  boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-                                  border: step.active ? 'none' : `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`
-                                }}>
-                                  {step.active ? '✓' : '•'}
-                                </div>
-                                <span style={{ fontSize: '11px', color: step.active ? colorTextPrimary : '#6B7280', fontWeight: '600', marginTop: '6px' }}>{step.label}</span>
-                              </div>
-                            ))}
-                          </div>
+                          <button 
+                            className="btn" 
+                            onClick={() => alert(`Details for ${selectedOrder.id}`)}
+                            style={{ 
+                              height: '44px',
+                              padding: '0 20px', 
+                              borderRadius: '22px', 
+                              border: `1.5px solid #FF2E83`,
+                              background: 'transparent',
+                              color: '#FF2E83',
+                              fontSize: '14px',
+                              fontWeight: '700',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 46, 131, 0.05)' }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+                          >
+                            Order Details
+                          </button>
                         </div>
                       </div>
 
+                      {/* Delivery Progress timeline stepper */}
+                      <div style={{ padding: '0', position: 'relative', margin: '4px 0', maxWidth: '380px' }}>
+                        {/* Connecting line */}
+                        <div style={{
+                          position: 'absolute',
+                          left: '40px',
+                          right: '40px',
+                          top: '10px', // centered vertically to the 20px circles
+                          height: '3px',
+                          background: isDark ? 'rgba(255,255,255,0.08)' : '#E9EEF5',
+                          zIndex: 0
+                        }}>
+                          {/* Progress Fill */}
+                          <div style={{
+                            width: selectedOrder.taskStatus === 'Delivered' ? '100%' : (selectedOrder.taskStatus === 'Ready' ? '33%' : (selectedOrder.taskStatus === 'In Progress' ? '66%' : '0%')),
+                            height: '100%',
+                            background: '#FF2E83',
+                            transition: 'width 0.4s'
+                          }}></div>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', zIndex: 1, position: 'relative' }}>
+                          {[
+                            { label: 'Assigned', active: true },
+                            { label: 'Reached Tailor', active: selectedOrder.taskStatus === 'In Progress' || selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
+                            { label: 'Picked Up', active: selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
+                            { label: 'Delivered', active: selectedOrder.taskStatus === 'Delivered' }
+                          ].map((step, idx) => (
+                            <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80px', textAlign: 'center' }}>
+                              <div style={{ 
+                                width: '20px', 
+                                height: '20px', 
+                                borderRadius: '50%', 
+                                background: step.active ? '#FF2E83' : (isDark ? '#2e2e4e' : '#E9EEF5'), 
+                                color: '#ffffff',
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                fontSize: '10px',
+                                fontWeight: '700',
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+                                border: step.active ? 'none' : `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`
+                              }}>
+                                {step.active ? '✓' : '•'}
+                              </div>
+                              <span style={{ fontSize: '11px', color: step.active ? colorTextPrimary : '#6B7280', fontWeight: '600', marginTop: '6px' }}>{step.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <hr style={{ border: 'none', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, margin: '4px 0 0 0' }} />
+
                       {/* Main workspace details content: Left Details / Right Map split */}
-                      <div style={{ display: 'flex', gap: '24px', flex: 1, minHeight: 0 }}>
+                      <div className="order-details-split-container">
                         
                         {/* LEFT COLUMN: Details Cards Grid */}
-                        <div style={{ flex: '0 0 calc(60% - 12px)', display: 'flex', flexDirection: 'column', gap: '20px', overflowY: 'auto', paddingRight: '4px' }}>
+                        <div className="order-details-left-col">
                           
                           {/* Row 1: Pickup Details & Delivery Details */}
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                          <div className="order-details-row1-grid">
                             {/* Pickup Details */}
                             <div 
                               className="glass-card-no-hover" 
@@ -2084,7 +2086,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           </div>
 
                           {/* Row 2: Package Details, Customer Note, Payment Details */}
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                          <div className="order-details-row2-grid">
                             {/* Package Details */}
                             <div 
                               className="glass-card-no-hover" 
@@ -2203,7 +2205,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         </div>
 
                         {/* RIGHT COLUMN: Route Overview Map */}
-                        <div style={{ flex: '0 0 calc(40% - 12px)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                        <div className="order-details-right-col">
                           <div 
                             className="glass-card-no-hover" 
                             style={{ 
@@ -2285,7 +2287,6 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             </div>
                           </div>
                         </div>
-
                       </div>
 
                       {/* Section 5: Bottom action footer bar */}
