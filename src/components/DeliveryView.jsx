@@ -1535,48 +1535,39 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               
               {/* TOP SECTION: Unified 7 KPI Cards Row */}
-              <div style={{ display: 'flex', gap: '20px', overflowX: 'auto', paddingBottom: '12px', justifyContent: 'space-between' }} className="order-kpi-grid">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }} className="order-kpi-grid">
                 {orderKpis.map((kpi, idx) => (
                   <div 
                     key={idx} 
                     className="kpi-card-flat" 
                     style={{ 
-                      padding: '10px', 
+                      padding: '8px 12px', 
                       background: bgCard, 
                       border: `1px solid ${borderColor}`, 
-                      borderRadius: '16px', 
+                      borderRadius: '12px', 
                       display: 'flex', 
-                      flexDirection: 'column', 
-                      justifyContent: 'center',
-                      height: '80px',
-                      width: '220px',
-                      boxSizing: 'border-box',
-                      flexShrink: 0,
+                      alignItems: 'center', 
+                      gap: '4px',
                       boxShadow: 'none'
                     }}
                   >
-                    {/* Top: Icon + Title */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div style={{
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '6px',
-                        background: kpi.bg,
-                        color: kpi.color,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                      }}>
-                        {kpi.icon}
-                      </div>
-                      <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '600', whiteSpace: 'nowrap' }}>{kpi.label}</span>
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '8px',
+                      background: kpi.bg,
+                      color: kpi.color,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      {kpi.icon}
                     </div>
-                    
-                    {/* Bottom: Value + Subtitle */}
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '4px' }}>
-                      <strong style={{ fontSize: '34px', color: colorTextPrimary, fontWeight: '700', lineHeight: '1' }}>{kpi.val}</strong>
-                      <span style={{ fontSize: '13px', color: kpi.subColor, fontWeight: '600', whiteSpace: 'nowrap' }}>{kpi.sub}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', marginLeft: '6px' }}>
+                      <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: '700', whiteSpace: 'nowrap' }}>{kpi.label}</span>
+                      <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, fontWeight: '800', lineHeight: '1.1' }}>{kpi.val}</strong>
+                      <span style={{ fontSize: '0.58rem', color: kpi.subColor, fontWeight: 'bold', whiteSpace: 'nowrap' }}>{kpi.sub}</span>
                     </div>
                   </div>
                 ))}
