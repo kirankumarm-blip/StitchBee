@@ -1541,7 +1541,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     key={idx} 
                     className="kpi-card-flat" 
                     style={{ 
-                      padding: '13px 12px', 
+                      padding: '18px 12px', 
                       background: bgCard, 
                       border: `1px solid ${borderColor}`, 
                       borderRadius: '12px', 
