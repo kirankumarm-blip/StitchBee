@@ -1915,14 +1915,14 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         </div>
 
                         {/* Delivery Progress timeline stepper */}
-                        <div style={{ padding: '0 24px', position: 'relative', margin: '4px 0' }}>
+                        <div style={{ padding: '0', position: 'relative', margin: '4px 0', maxWidth: '380px' }}>
                           {/* Connecting line */}
                           <div style={{
                             position: 'absolute',
-                            left: '48px',
-                            right: '48px',
-                            top: '16px', // centered vertically to the 32px circles
-                            height: '4px',
+                            left: '40px',
+                            right: '40px',
+                            top: '10px', // centered vertically to the 20px circles
+                            height: '3px',
                             background: isDark ? 'rgba(255,255,255,0.08)' : '#E9EEF5',
                             zIndex: 0
                           }}>
@@ -1942,24 +1942,24 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               { label: 'Picked Up', active: selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
                               { label: 'Delivered', active: selectedOrder.taskStatus === 'Delivered' }
                             ].map((step, idx) => (
-                              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '90px', textAlign: 'center' }}>
+                              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80px', textAlign: 'center' }}>
                                 <div style={{ 
-                                  width: '32px', 
-                                  height: '32px', 
+                                  width: '20px', 
+                                  height: '20px', 
                                   borderRadius: '50%', 
                                   background: step.active ? '#FF2E83' : (isDark ? '#2e2e4e' : '#E9EEF5'), 
                                   color: '#ffffff',
                                   display: 'flex', 
                                   alignItems: 'center', 
                                   justifyContent: 'center',
-                                  fontSize: '13px',
+                                  fontSize: '10px',
                                   fontWeight: '700',
-                                  boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+                                  boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
                                   border: step.active ? 'none' : `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`
                                 }}>
-                                  {step.active ? '✓' : idx + 1}
+                                  {step.active ? '✓' : '•'}
                                 </div>
-                                <span style={{ fontSize: '13px', color: step.active ? colorTextPrimary : '#6B7280', fontWeight: '600', marginTop: '8px' }}>{step.label}</span>
+                                <span style={{ fontSize: '11px', color: step.active ? colorTextPrimary : '#6B7280', fontWeight: '600', marginTop: '6px' }}>{step.label}</span>
                               </div>
                             ))}
                           </div>
