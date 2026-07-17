@@ -3,7 +3,7 @@ import {
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
   Phone, AlertTriangle, CheckCircle, Navigation, Send, Calendar, 
   Clock, Check, ChevronRight, ChevronDown, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
-  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power, RotateCw
+  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power
 } from 'lucide-react';
 
 export default function DeliveryView({ theme, setTheme, currentUser, onLogout, setRole }) {
@@ -1541,20 +1541,19 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     key={idx} 
                     className="kpi-card-flat" 
                     style={{ 
-                      padding: '12px 18px', 
+                      padding: '8px 12px', 
                       background: bgCard, 
                       border: `1px solid ${borderColor}`, 
-                      borderRadius: '14px', 
+                      borderRadius: '12px', 
                       display: 'flex', 
                       alignItems: 'center', 
-                      gap: '8px',
-                      boxShadow: 'none',
-                      boxSizing: 'border-box'
+                      gap: '4px',
+                      boxShadow: 'none'
                     }}
                   >
                     <div style={{
-                      width: '36px',
-                      height: '36px',
+                      width: '32px',
+                      height: '32px',
                       borderRadius: '8px',
                       background: kpi.bg,
                       color: kpi.color,
@@ -1565,10 +1564,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     }}>
                       {kpi.icon}
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginLeft: '8px' }}>
-                      <span style={{ fontSize: '0.68rem', color: colorTextMuted, fontWeight: '700', whiteSpace: 'nowrap' }}>{kpi.label}</span>
-                      <strong style={{ fontSize: '1.22rem', color: colorTextPrimary, fontWeight: '800', lineHeight: '1.1' }}>{kpi.val}</strong>
-                      <span style={{ fontSize: '0.64rem', color: kpi.subColor, fontWeight: 'bold', whiteSpace: 'nowrap' }}>{kpi.sub}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', marginLeft: '6px' }}>
+                      <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: '700', whiteSpace: 'nowrap' }}>{kpi.label}</span>
+                      <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, fontWeight: '800', lineHeight: '1.1' }}>{kpi.val}</strong>
+                      <span style={{ fontSize: '0.58rem', color: kpi.subColor, fontWeight: 'bold', whiteSpace: 'nowrap' }}>{kpi.sub}</span>
                     </div>
                   </div>
                 ))}
@@ -1845,37 +1844,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </div>
                   )}
 
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    marginTop: '16px', 
-                    fontSize: '14px', 
-                    background: isDark ? 'rgba(255, 255, 255, 0.03)' : '#F8FAFC',
-                    border: `1px solid ${isDark ? borderColor : '#E9EEF5'}`,
-                    padding: '12px 18px',
-                    borderRadius: '12px',
-                    boxSizing: 'border-box',
-                    width: '100%'
-                  }}>
-                    <span style={{ fontWeight: '600', color: colorTextPrimary }}>Can't find an order?</span>
-                    <button 
-                      className="btn" 
-                      style={{ 
-                        fontSize: '14px', 
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#FF2E83', 
-                        fontWeight: '700',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        cursor: 'pointer',
-                        padding: 0
-                      }} 
-                      onClick={() => alert("Refreshed tasks list!")}
-                    >
-                      <RotateCw size={14} style={{ color: '#FF2E83' }} /> Refresh
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '14px', color: colorTextMuted }}>
+                    <span>Can't find an order?</span>
+                    <button className="btn btn-ghost" style={{ fontSize: '14px', padding: '4px 8px', color: '#FF2E83', fontWeight: 'bold' }} onClick={() => alert("Refreshed tasks list!")}>
+                      🔄 Refresh
                     </button>
                   </div>
                 </div>
@@ -1996,123 +1968,123 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                       <hr style={{ border: 'none', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, margin: '4px 0 0 0' }} />
 
-                      {/* Row 1: Pickup Details & Delivery Details (Spans full width above the split container) */}
-                      <div className="order-details-row1-grid" style={{ marginBottom: '20px' }}>
-                        {/* Pickup Details */}
-                        <div 
-                          className="glass-card-no-hover" 
-                          style={{ 
-                            padding: '24px', 
-                            background: bgCard, 
-                            border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
-                            borderRadius: '16px',
-                            height: '230px',
-                            boxSizing: 'border-box',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
-                          }}
-                        >
-                          <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(122, 62, 240, 0.08)', color: '#7A3EF0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>🏪</div>
-                                <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Pickup Details</strong>
-                              </div>
-                              <button 
-                                className="btn" 
-                                onClick={() => alert(`Calling Tailor: ${selectedOrder.pickupPhone}`)}
-                                style={{ 
-                                  height: '32px',
-                                  padding: '0 16px', 
-                                  borderRadius: '16px', 
-                                  border: '1.5px solid #7A3EF0',
-                                  background: 'transparent',
-                                  color: '#7A3EF0',
-                                  fontSize: '13px',
-                                  fontWeight: '700',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '6px',
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                📞 Call
-                              </button>
-                            </div>
-                            <h5 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '700', color: colorTextPrimary }}>{selectedOrder.pickup}</h5>
-                            <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'block', fontWeight: '500', marginBottom: '8px' }}>
-                              {selectedOrder.pickupContactName} • {selectedOrder.pickupPhone}
-                            </span>
-                            <p style={{ margin: 0, fontSize: '14px', color: colorTextMuted, lineHeight: '1.4' }}>{selectedOrder.pickupAddress}</p>
-                          </div>
-                          <span style={{ fontSize: '13px', color: '#22C55E', fontWeight: '700', display: 'block', marginTop: '8px' }}>⏰ Open till {selectedOrder.pickupTime || '9:00 PM'}</span>
-                        </div>
-
-                        {/* Delivery Details */}
-                        <div 
-                          className="glass-card-no-hover" 
-                          style={{ 
-                            padding: '24px', 
-                            background: bgCard, 
-                            border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
-                            borderRadius: '16px',
-                            height: '230px',
-                            boxSizing: 'border-box',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
-                          }}
-                        >
-                          <div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255, 46, 131, 0.08)', color: '#FF2E83', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>🏠</div>
-                                <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Delivery Details</strong>
-                              </div>
-                              <button 
-                                className="btn" 
-                                onClick={() => alert(`Calling Customer: ${selectedOrder.deliveryPhone}`)}
-                                style={{ 
-                                  height: '32px',
-                                  padding: '0 16px', 
-                                  borderRadius: '16px', 
-                                  border: '1.5px solid #FF2E83',
-                                  background: 'transparent',
-                                  color: '#FF2E83',
-                                  fontSize: '13px',
-                                  fontWeight: '700',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '6px',
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                📞 Call
-                              </button>
-                            </div>
-                            <h5 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '700', color: colorTextPrimary }}>{selectedOrder.deliverTo}</h5>
-                            <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'block', fontWeight: '500', marginBottom: '8px' }}>
-                              {selectedOrder.deliveryPhone}
-                            </span>
-                            <p style={{ margin: 0, fontSize: '14px', color: colorTextMuted, lineHeight: '1.4' }}>{selectedOrder.deliveryAddress}</p>
-                          </div>
-                          
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,46,131,0.04)', padding: '6px 12px', borderRadius: '8px', border: '1px dashed rgba(255,46,131,0.15)', marginTop: '8px' }}>
-                            <span style={{ fontSize: '13px', color: '#FF2E83', fontWeight: '700' }}>🔑 OTP Required</span>
-                            <strong style={{ fontSize: '15px', color: '#FF2E83', letterSpacing: '1px' }}>{selectedOrder.deliveryOtp}</strong>
-                          </div>
-                        </div>
-                      </div>
-
                       {/* Main workspace details content: Left Details / Right Map split */}
                       <div className="order-details-split-container">
                         
                         {/* LEFT COLUMN: Details Cards Grid */}
-                        <div className="order-details-left-col" style={{ overflowY: 'visible' }}>
+                        <div className="order-details-left-col">
                           
+                          {/* Row 1: Pickup Details & Delivery Details */}
+                          <div className="order-details-row1-grid">
+                            {/* Pickup Details */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(122, 62, 240, 0.08)', color: '#7A3EF0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>🏪</div>
+                                    <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Pickup Details</strong>
+                                  </div>
+                                  <button 
+                                    className="btn" 
+                                    onClick={() => alert(`Calling Tailor: ${selectedOrder.pickupPhone}`)}
+                                    style={{ 
+                                      height: '32px',
+                                      padding: '0 16px', 
+                                      borderRadius: '16px', 
+                                      border: '1.5px solid #7A3EF0',
+                                      background: 'transparent',
+                                      color: '#7A3EF0',
+                                      fontSize: '13px',
+                                      fontWeight: '700',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '6px',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                    📞 Call
+                                  </button>
+                                </div>
+                                <h5 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '700', color: colorTextPrimary }}>{selectedOrder.pickup}</h5>
+                                <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                                  {selectedOrder.pickupContactName} • {selectedOrder.pickupPhone}
+                                </span>
+                                <p style={{ margin: 0, fontSize: '14px', color: colorTextMuted, lineHeight: '1.4' }}>{selectedOrder.pickupAddress}</p>
+                              </div>
+                              <span style={{ fontSize: '13px', color: '#22C55E', fontWeight: '700', display: 'block', marginTop: '8px' }}>⏰ Open till {selectedOrder.pickupTime || '9:00 PM'}</span>
+                            </div>
+
+                            {/* Delivery Details */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255, 46, 131, 0.08)', color: '#FF2E83', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>🏠</div>
+                                    <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Delivery Details</strong>
+                                  </div>
+                                  <button 
+                                    className="btn" 
+                                    onClick={() => alert(`Calling Customer: ${selectedOrder.deliveryPhone}`)}
+                                    style={{ 
+                                      height: '32px',
+                                      padding: '0 16px', 
+                                      borderRadius: '16px', 
+                                      border: '1.5px solid #FF2E83',
+                                      background: 'transparent',
+                                      color: '#FF2E83',
+                                      fontSize: '13px',
+                                      fontWeight: '700',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '6px',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                    📞 Call
+                                  </button>
+                                </div>
+                                <h5 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '700', color: colorTextPrimary }}>{selectedOrder.deliverTo}</h5>
+                                <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                                  {selectedOrder.deliveryPhone}
+                                </span>
+                                <p style={{ margin: 0, fontSize: '14px', color: colorTextMuted, lineHeight: '1.4' }}>{selectedOrder.deliveryAddress}</p>
+                              </div>
+                              
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,46,131,0.04)', padding: '6px 12px', borderRadius: '8px', border: '1px dashed rgba(255,46,131,0.15)', marginTop: '8px' }}>
+                                <span style={{ fontSize: '13px', color: '#FF2E83', fontWeight: '700' }}>🔑 OTP Required</span>
+                                <strong style={{ fontSize: '15px', color: '#FF2E83', letterSpacing: '1px' }}>{selectedOrder.deliveryOtp}</strong>
+                              </div>
+                            </div>
+                          </div>
+
                           {/* Row 2: Package Details, Customer Note, Payment Details */}
                           <div className="order-details-row2-grid">
                             {/* Package Details */}
@@ -2123,7 +2095,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                 background: bgCard, 
                                 border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
                                 borderRadius: '16px',
-                                height: '270px',
+                                height: '230px',
                                 boxSizing: 'border-box',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -2169,7 +2141,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                 background: bgCard, 
                                 border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
                                 borderRadius: '16px',
-                                height: '270px',
+                                height: '230px',
                                 boxSizing: 'border-box',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -2193,7 +2165,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                 background: bgCard, 
                                 border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
                                 borderRadius: '16px',
-                                height: '270px',
+                                height: '230px',
                                 boxSizing: 'border-box',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -2237,25 +2209,24 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           <div 
                             className="glass-card-no-hover" 
                             style={{ 
-                              padding: '16px 20px', 
+                              padding: '24px', 
                               background: bgCard, 
                               border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
                               borderRadius: '16px', 
                               display: 'flex', 
                               flexDirection: 'column', 
-                              height: '270px',
-                              boxSizing: 'border-box',
+                              flex: 1,
                               justifyContent: 'space-between',
                               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
                             }}
                           >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                              <strong style={{ fontSize: '16px', fontWeight: '600', color: colorTextPrimary }}>Route Overview</strong>
-                              <span style={{ fontSize: '13px', color: '#FF2E83', fontWeight: '700' }}>{selectedOrder.distance} • {selectedOrder.estTime}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                              <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Route Overview</strong>
+                              <span style={{ fontSize: '15px', color: '#FF2E83', fontWeight: '700' }}>{selectedOrder.distance} • {selectedOrder.estTime}</span>
                             </div>
 
                             {/* Leaflet map container */}
-                            <div style={{ flex: 1, minHeight: '130px', height: '130px', borderRadius: '12px', overflow: 'hidden', border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, position: 'relative' }}>
+                            <div style={{ flex: 1, minHeight: '360px', height: '360px', borderRadius: '16px', overflow: 'hidden', border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, position: 'relative' }}>
                               <div ref={orderMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
                               <button 
                                 onClick={() => {
@@ -2264,7 +2235,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                     const deliver = selectedOrder.deliveryCoords || [12.9660, 77.7320];
                                     const L = window.L;
                                     if (orderMapInstance.current && L) {
-                                      orderMapInstance.current.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [15, 15] });
+                                      orderMapInstance.current.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [24, 24] });
                                     }
                                   } catch (e) {
                                     console.error("Map fitBounds failed", e);
@@ -2272,46 +2243,46 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                 }}
                                 style={{
                                   position: 'absolute',
-                                  bottom: '8px',
-                                  right: '8px',
+                                  bottom: '12px',
+                                  right: '12px',
                                   background: 'rgba(255,255,255,0.95)',
                                   border: 'none',
-                                  borderRadius: '6px',
-                                  padding: '4px 8px',
-                                  fontSize: '11px',
+                                  borderRadius: '8px',
+                                  padding: '8px 12px',
+                                  fontSize: '13px',
                                   fontWeight: '700',
                                   cursor: 'pointer',
                                   zIndex: 10,
                                   color: '#1E293B',
-                                  boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+                                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                                   display: 'flex',
                                   alignItems: 'center',
-                                  gap: '3px'
+                                  gap: '4px'
                                 }}
                               >
-                                📍 Live
+                                📍 Live Location
                               </button>
                             </div>
 
                             {/* Map specs footer */}
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingTop: '8px', marginTop: '8px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingTop: '16px', marginTop: '16px' }}>
                               <div>
-                                <span style={{ color: '#6B7280', display: 'block', fontSize: '11px', fontWeight: '600' }}>Distance</span>
-                                <strong style={{ color: colorTextPrimary, fontSize: '13px', fontWeight: '700', marginTop: '2px', display: 'block' }}>{selectedOrder.distance}</strong>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>Distance</span>
+                                <strong style={{ color: colorTextPrimary, fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block' }}>{selectedOrder.distance}</strong>
                               </div>
-                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '8px' }}>
-                                <span style={{ color: '#6B7280', display: 'block', fontSize: '11px', fontWeight: '600' }}>ETA</span>
-                                <strong style={{ color: colorTextPrimary, fontSize: '13px', fontWeight: '700', marginTop: '2px', display: 'block' }}>{selectedOrder.estTime}</strong>
+                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '12px' }}>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>ETA</span>
+                                <strong style={{ color: colorTextPrimary, fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block' }}>{selectedOrder.estTime}</strong>
                               </div>
-                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '8px' }}>
-                                <span style={{ color: '#6B7280', display: 'block', fontSize: '11px', fontWeight: '600' }}>Traffic</span>
-                                <strong style={{ color: selectedOrder.traffic === 'Light' ? '#22C55E' : (selectedOrder.traffic === 'Moderate' ? '#FF9F43' : '#FF2E83'), fontSize: '13px', fontWeight: '700', marginTop: '2px', display: 'block' }}>
+                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '12px' }}>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>Traffic</span>
+                                <strong style={{ color: selectedOrder.traffic === 'Light' ? '#22C55E' : (selectedOrder.traffic === 'Moderate' ? '#FF9F43' : '#FF2E83'), fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block' }}>
                                   ● {selectedOrder.traffic}
                                 </strong>
                               </div>
-                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '8px' }}>
-                                <span style={{ color: '#6B7280', display: 'block', fontSize: '11px', fontWeight: '600' }}>Best Route</span>
-                                <strong style={{ color: colorTextPrimary, fontSize: '13px', fontWeight: '700', marginTop: '2px', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{selectedOrder.bestRoute}</strong>
+                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '12px' }}>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>Best Route</span>
+                                <strong style={{ color: colorTextPrimary, fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{selectedOrder.bestRoute}</strong>
                               </div>
                             </div>
                           </div>
@@ -2325,8 +2296,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           onClick={() => setActiveTab('navigation')}
                           style={{ 
                             flex: 1, 
-                            height: '48px',
-                            borderRadius: '12px', 
+                            height: '46px',
+                            borderRadius: '10px', 
                             fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
@@ -2337,7 +2308,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             color: '#ffffff',
                             border: 'none',
                             cursor: 'pointer',
-                            boxShadow: '0 4px 14px rgba(122, 62, 240, 0.25)'
+                            boxShadow: '0 4px 12px rgba(122, 62, 240, 0.2)'
                           }}
                         >
                           <Navigation size={18} style={{ transform: 'rotate(45deg)' }} /> Navigate
@@ -2348,8 +2319,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           onClick={() => alert(`Calling customer: ${selectedOrder.deliveryPhone}`)}
                           style={{ 
                             flex: 1, 
-                            height: '48px',
-                            borderRadius: '12px', 
+                            height: '46px',
+                            borderRadius: '10px', 
                             fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
@@ -2360,7 +2331,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             color: '#ffffff',
                             border: 'none',
                             cursor: 'pointer',
-                            boxShadow: '0 4px 14px rgba(255, 46, 131, 0.25)'
+                            boxShadow: '0 4px 12px rgba(255, 46, 131, 0.2)'
                           }}
                         >
                           <Phone size={18} /> Call Customer
@@ -2371,8 +2342,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           onClick={() => alert(`Calling tailor: ${selectedOrder.pickupPhone}`)}
                           style={{ 
                             flex: 1, 
-                            height: '48px',
-                            borderRadius: '12px', 
+                            height: '46px',
+                            borderRadius: '10px', 
                             fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
@@ -2383,7 +2354,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             color: '#ffffff',
                             border: 'none',
                             cursor: 'pointer',
-                            boxShadow: '0 4px 14px rgba(122, 62, 240, 0.25)'
+                            boxShadow: '0 4px 12px rgba(122, 62, 240, 0.2)'
                           }}
                         >
                           <Phone size={18} /> Call Tailor
@@ -2394,17 +2365,17 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
                           style={{ 
                             flex: 1, 
-                            height: '48px',
-                            borderRadius: '12px', 
+                            height: '46px',
+                            borderRadius: '10px', 
                             fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
                             gap: '8px', 
-                            background: isDark ? 'rgba(122, 62, 240, 0.15)' : 'rgba(122, 62, 240, 0.08)',
+                            background: 'rgba(122, 62, 240, 0.08)',
                             color: '#7A3EF0', 
-                            border: `1px solid ${isDark ? 'rgba(122, 62, 240, 0.3)' : 'rgba(122, 62, 240, 0.15)'}`,
+                            border: '1px solid rgba(122, 62, 240, 0.15)',
                             cursor: 'pointer'
                           }}
                         >
@@ -2422,8 +2393,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             }}
                             style={{ 
                               flex: 1.2, 
-                              height: '48px',
-                              borderRadius: '12px', 
+                              height: '46px',
+                              borderRadius: '10px', 
                               fontSize: '14px', 
                               fontWeight: '700', 
                               display: 'flex', 
@@ -2434,7 +2405,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               color: '#ffffff',
                               border: 'none',
                               cursor: 'pointer',
-                              boxShadow: '0 4px 14px rgba(34, 197, 94, 0.25)'
+                              boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
                             }}
                           >
                             <Check size={18} /> Accept Task
@@ -2442,7 +2413,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         )}
 
                         {selectedOrder.status === 'active' && (selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Pickup Pending') && (
-                          <div style={{ display: 'flex', flex: 1.2, height: '48px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 14px rgba(31, 199, 126, 0.25)' }}>
+                          <div style={{ display: 'flex', flex: 1.2, height: '46px', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(31, 199, 126, 0.2)' }}>
                             <button 
                               className="btn-text-white-force"
                               onClick={() => {
@@ -2505,8 +2476,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             }}
                             style={{ 
                               flex: 1.2, 
-                              height: '48px',
-                              borderRadius: '12px', 
+                              height: '46px',
+                              borderRadius: '10px', 
                               fontSize: '14px', 
                               fontWeight: '700', 
                               display: 'flex', 
@@ -2517,7 +2488,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               color: '#ffffff',
                               border: 'none',
                               cursor: 'pointer',
-                              boxShadow: '0 4px 14px rgba(34, 197, 94, 0.25)'
+                              boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
                             }}
                           >
                             <Check size={18} /> Delivered
