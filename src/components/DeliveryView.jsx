@@ -1684,7 +1684,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           className="kpi-card-flat"
                           style={{
                             padding: '16px 20px',
-                            height: '240px',
+                            height: '260px',
                             boxSizing: 'border-box',
                             background: bgCard,
                             border: isSelected ? '2px solid #FF2E83' : `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
