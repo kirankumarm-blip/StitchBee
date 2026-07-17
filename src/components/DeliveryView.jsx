@@ -827,138 +827,301 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
         {/* MODULE 1: HOME (DASHBOARD) */}
         {activeTab === 'home' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div 
-              className="delivery-main-dashboard-grid" 
-              style={{ 
-                display: 'grid', 
-                gridTemplateColumns: '250px 1fr', 
-                gap: '20px' 
-              }}
-            >
+            <div className="dashboard-main-grid">
             {/* LEFT COLUMN: Far-Left Sidebar Card (Go Online & Start Delivering) */}
-            <div className="delivery-dashboard-sidebar-wrapper">
+            <div className="delivery-dashboard-sidebar-wrapper" style={{ position: 'sticky', top: '20px', alignSelf: 'start' }}>
               <div 
-                className="glass-card-no-hover" 
+                className="dashboard-premium-card" 
                 style={{ 
-                  background: 'linear-gradient(135deg, #7209b7 0%, #f72585 100%)', 
+                  background: isDark ? 'linear-gradient(135deg, #1A153B 0%, #0F0B26 100%)' : 'linear-gradient(135deg, #7C3AED 0%, #FF2E83 100%)', 
                   border: 'none', 
                   borderRadius: '24px', 
                   overflow: 'hidden',
                   display: 'flex',
                   flexDirection: 'column',
-                  padding: '16px',
-                  height: '580px',
+                  padding: '20px',
+                  height: '660px',
                   justifyContent: 'space-between',
-                  color: '#ffffff'
+                  color: '#ffffff',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.12)'
                 }}
               >
-                <h4 style={{ margin: '0 0 2px 0', fontSize: '0.92rem', fontWeight: '800', textAlign: 'left', color: '#ffffff', lineHeight: '1.4' }}>Go Online & Start Delivering</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', textAlign: 'left' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '800', color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Partner Portal</h4>
+                    <span style={{ fontSize: '10px', background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>V4.2</span>
+                  </div>
+
+                  {/* Level Badge Widget */}
+                  <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '6px', border: '1px solid rgba(255,255,255,0.15)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', boxShadow: '0 2px 8px rgba(245, 158, 11, 0.4)' }}>
+                        <Award size={14} />
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: '12px', color: '#fff', display: 'block' }}>Gold Rider Tier</strong>
+                        <span style={{ fontSize: '9px', color: 'rgba(255,255,255,0.7)' }}>XP: 8,500 / 10,000 (85%)</span>
+                      </div>
+                    </div>
+                    {/* Progress bar */}
+                    <div style={{ height: '5px', background: 'rgba(255,255,255,0.15)', borderRadius: '3px', overflow: 'hidden', marginTop: '2px' }}>
+                      <div style={{ width: '85%', height: '100%', background: 'linear-gradient(90deg, #F59E0B, #FF9F43)', borderRadius: '3px' }} />
+                    </div>
+                  </div>
+                </div>
                 
-                <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* 3D Illustration Widget */}
+                <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '14px 0' }}>
                   <img 
                     src="/rider_3d.jpg" 
                     alt="Rider 3D" 
                     style={{ 
                       width: '95%', 
-                      height: '160px', 
-                      objectFit: 'contain'
+                      height: '170px', 
+                      objectFit: 'contain',
+                      filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.15))'
                     }} 
                   />
                 </div>
                 
-                {/* White floating card inside the gradient background - floating style */}
+                {/* Info and Actions Area */}
                 <div 
                   style={{ 
-                    background: '#ffffff', 
-                    color: '#0f172a',
-                    borderRadius: '18px',
-                    padding: '12px',
+                    background: isDark ? '#120f26' : '#ffffff', 
+                    color: colorTextPrimary,
+                    borderRadius: '20px',
+                    padding: '16px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '10px',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.08)'
+                    gap: '12px',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.06)',
+                    border: `1px solid ${borderColor}`
                   }}
                 >
-                  {/* Online status badge */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isOnline ? '#10b981' : '#6b7280' }}></span>
-                    <strong style={{ fontSize: '0.8rem', color: isOnline ? '#10b981' : '#6b7280' }}>
-                      {isOnline ? 'You are Online' : 'You are Offline'}
-                    </strong>
-                  </div>
-
-                  {/* Stats List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {/* Row 1: Working Time */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Clock size={14} style={{ color: '#7209b7' }} />
-                      </div>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Working Time</span>
-                        <strong style={{ display: 'block', fontSize: '0.78rem', color: '#0f172a' }}>{isOnline ? '04h 18m' : '00h 00m'}</strong>
-                      </div>
-                    </div>
-
-                    {/* Row 2: Orders Completed */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(114, 9, 183, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <ShoppingBag size={14} style={{ color: '#7209b7' }} />
-                      </div>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Orders Completed</span>
-                        <strong style={{ display: 'block', fontSize: '0.78rem', color: '#0f172a' }}>11 Deliveries</strong>
-                      </div>
-                    </div>
-
-                    {/* Row 3: Earnings Today */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Wallet size={14} style={{ color: '#10b981' }} />
-                      </div>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Earnings Today</span>
-                        <strong style={{ display: 'block', fontSize: '0.78rem', color: '#0f172a' }}>₹1,820</strong>
-                      </div>
-                    </div>
-
-                    {/* Row 4: Rider Rating */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(249, 115, 22, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Star size={14} style={{ color: '#f97316' }} />
-                      </div>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.6rem', color: '#64748b', fontWeight: 'bold' }}>Rider Rating</span>
-                        <strong style={{ display: 'flex', fontSize: '0.78rem', color: '#0f172a', alignItems: 'center', gap: '3px' }}>
-                          4.9 <Star size={10} fill="#fbbf24" style={{ color: '#fbbf24' }} />
+                  {/* Status Indicator & Weather & Traffic Badges */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', borderBottom: `1.5px solid ${borderColor}`, paddingBottom: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: isOnline ? '#22C55E' : '#9CA3AF' }} className={isOnline ? 'pulse-marker' : ''}></span>
+                        <strong style={{ fontSize: '11px', color: isOnline ? '#22C55E' : colorTextMuted }}>
+                          {isOnline ? 'ONLINE' : 'OFFLINE'}
                         </strong>
                       </div>
+                      <span style={{ fontSize: '10px', background: 'rgba(245, 158, 11, 0.1)', color: '#F59E0B', padding: '2px 6px', borderRadius: '6px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <Sun size={10} /> 31°C Sunny
+                      </span>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '9px', color: colorTextMuted, fontWeight: 'bold' }}>
+                      <span>TRAFFIC: <strong style={{ color: '#F59E0B' }}>MODERATE</strong></span>
+                      <span>BOOST MULTIPLIER: <strong style={{ color: '#22C55E' }}>1.2x</strong></span>
                     </div>
                   </div>
 
-                  {/* Offline / Online Action Button */}
+                  {/* Today's Goal Badge */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', fontWeight: 'bold' }}>
+                      <span style={{ color: colorTextSecondary }}>Today's Goal</span>
+                      <span style={{ color: '#FF2E83' }}>16 / 20 Orders</span>
+                    </div>
+                    <div style={{ height: '6px', background: isDark ? 'rgba(255,255,255,0.06)' : '#E2E8F0', borderRadius: '3px', overflow: 'hidden' }}>
+                      <div style={{ width: '80%', height: '100%', background: 'linear-gradient(90deg, #7C3AED, #FF2E83)', borderRadius: '3px' }} />
+                    </div>
+                  </div>
+
+                  {/* Metrics Stats List */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '10px', textAlign: 'left', marginTop: '2px' }}>
+                    <div style={{ background: isDark ? 'rgba(255,255,255,0.02)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}` }}>
+                      <span style={{ color: colorTextMuted, display: 'block' }}>Today's Pay</span>
+                      <strong style={{ color: '#22C55E', fontSize: '12px' }}>₹1,820</strong>
+                    </div>
+                    <div style={{ background: isDark ? 'rgba(255,255,255,0.02)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}` }}>
+                      <span style={{ color: colorTextMuted, display: 'block' }}>Rating</span>
+                      <strong style={{ color: '#F59E0B', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        4.95 <Star size={10} fill="#F59E0B" style={{ color: '#F59E0B' }} />
+                      </strong>
+                    </div>
+                  </div>
+
+                  {/* Offline / Online Floating Power Action Button */}
                   <button 
                     className="btn" 
                     onClick={() => setIsOnline(!isOnline)}
                     style={{ 
                       width: '100%', 
-                      fontWeight: 'bold',
-                      fontSize: '0.75rem',
+                      fontWeight: '800',
+                      fontSize: '11px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: '6px',
-                      padding: '8px',
-                      borderRadius: '20px',
+                      gap: '8px',
+                      padding: '10px',
+                      borderRadius: '16px',
                       cursor: 'pointer',
-                      background: '#ffffff',
-                      color: isOnline ? '#f72585' : '#10b981',
-                      border: `1.5px solid ${isOnline ? '#f72585' : '#10b981'}`,
+                      background: isOnline ? 'linear-gradient(135deg, #EF4444, #C53030)' : 'linear-gradient(135deg, #22C55E, #16A34A)',
+                      color: '#ffffff',
+                      border: 'none',
+                      boxShadow: isOnline ? '0 4px 12px rgba(239, 68, 68, 0.2)' : '0 4px 12px rgba(34, 197, 94, 0.2)',
                       transition: 'all 0.2s ease'
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
                   >
-                    <Power size={12} /> {isOnline ? 'Go Offline' : 'Go Online'}
+                    <Power size={14} /> {isOnline ? 'Go Offline' : 'Go Online'}
                   </button>
+                </div>
+              </div>
+
+              {/* Recent Earnings Card */}
+              <div 
+                className="dashboard-premium-card earning-slide-in" 
+                style={{ 
+                  background: bgCard, 
+                  border: `1.5px solid ${borderColor}`, 
+                  borderRadius: '20px', 
+                  padding: '16px 20px',
+                  height: '320px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.04)',
+                  textAlign: 'left'
+                }}
+              >
+                {/* Header */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '14px', fontWeight: '700', color: colorTextPrimary, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span>💰</span> Recent Earnings
+                  </span>
+                  <span 
+                    style={{ fontSize: '12px', color: '#FF2E83', fontWeight: 'bold', cursor: 'pointer' }}
+                    onClick={() => setActiveTab('earnings')}
+                  >
+                    View All
+                  </span>
+                </div>
+
+                {/* Earnings List */}
+                <div 
+                  className="earnings-mini-list"
+                  style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '8px', 
+                    overflowY: 'auto',
+                    flex: 1,
+                    margin: '10px 0',
+                    paddingRight: '2px'
+                  }}
+                >
+                  {[
+                    { id: '#SB-1025', from: 'Whitefield', to: 'HSR Layout', time: '8 mins ago', amt: 180, method: 'Online', isLatest: true },
+                    { id: '#SB-1023', from: 'Indiranagar', to: 'Koramangala', time: '24 mins ago', amt: 150, method: 'Cash' },
+                    { id: '#SB-1022', from: 'Brookfield', to: 'Marathahalli', time: '1h ago', amt: 210, method: 'Online' },
+                    { id: '#SB-1021', from: 'Domlur', to: 'Bellandur', time: '2h ago', amt: 130, method: 'Cash' },
+                    { id: '#SB-1020', from: 'HSR Layout', to: 'Bellandur', time: '3h ago', amt: 160, method: 'Online' }
+                  ].map((item, idx) => (
+                    <div 
+                      key={idx}
+                      className="earning-row-item earning-slide-in"
+                      style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center',
+                        paddingBottom: '6px',
+                        borderBottom: idx === 4 ? 'none' : `1px solid ${borderColor}`,
+                        animationDelay: `${idx * 0.15}s`
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                        {/* Gradient circular icon with green check marker */}
+                        <div 
+                          style={{ 
+                            width: '26px', 
+                            height: '26px', 
+                            borderRadius: '50%', 
+                            background: item.method === 'Cash' 
+                              ? 'linear-gradient(135deg, #22C55E 0%, #10B981 100%)' 
+                              : 'linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%)',
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            color: '#ffffff',
+                            flexShrink: 0
+                          }}
+                        >
+                          <Check size={12} strokeWidth={3} />
+                        </div>
+
+                        {/* Text details */}
+                        <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                            <strong style={{ fontSize: '12px', color: colorTextPrimary }}>Order {item.id}</strong>
+                            <FileText size={10} style={{ color: colorTextMuted }} />
+                            {item.isLatest && (
+                              <span 
+                                className="just-now-pulse" 
+                                style={{ 
+                                  width: '6px', 
+                                  height: '6px', 
+                                  borderRadius: '50%', 
+                                  background: '#22C55E', 
+                                  display: 'inline-block',
+                                  marginLeft: '2px'
+                                }} 
+                                title="Just Now"
+                              />
+                            )}
+                          </div>
+                          <span style={{ fontSize: '10px', color: colorTextSecondary, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                            {item.from} → {item.to}
+                          </span>
+                          <span style={{ fontSize: '9px', color: colorTextMuted }}>
+                            Completed {item.time}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Payout & Payment Method badge */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '2px' }}>
+                        <strong style={{ fontSize: '13px', color: '#22C55E' }}>+₹{item.amt}</strong>
+                        <span 
+                          style={{ 
+                            fontSize: '8px', 
+                            padding: '1px 6px', 
+                            borderRadius: '8px',
+                            fontWeight: 'bold',
+                            background: item.method === 'Cash' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+                            color: item.method === 'Cash' ? '#22C55E' : '#3B82F6'
+                          }}
+                        >
+                          {item.method}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Footer summary panel */}
+                <div 
+                  style={{ 
+                    background: isDark ? 'rgba(255, 46, 131, 0.04)' : 'linear-gradient(135deg, rgba(255, 46, 131, 0.05) 0%, rgba(255, 46, 131, 0.01) 100%)',
+                    border: '1px solid rgba(255, 46, 131, 0.15)',
+                    borderRadius: '16px',
+                    padding: '8px 12px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div>
+                    <span style={{ fontSize: '10px', color: colorTextMuted, display: 'block', fontWeight: 'bold' }}>TODAY'S EARNINGS</span>
+                    <strong style={{ fontSize: '14px', color: colorTextPrimary }}>₹1,820</strong>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span style={{ fontSize: '10px', color: '#FF2E83', display: 'block', fontWeight: 'bold' }}>11 Deliveries</span>
+                    <span style={{ fontSize: '9px', color: colorTextSecondary }}>Avg: ₹165/order</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -967,252 +1130,316 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               
               {/* Row 1: KPI Stats Summary Grid */}
-              <div 
-                style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
-                  gap: '12px' 
-                }}
-              >
+              <div className="dashboard-kpi-grid">
                 {[
-                  { label: "Today's Earnings", val: "₹1,820", sub: "+₹150 incentives", subColor: '#10b981', icon: <Wallet size={18} style={{ color: '#f72585' }} />, iconBg: 'rgba(247,37,133,0.05)', iconBorder: 'rgba(247,37,133,0.15)', iconColor: '#f72585' },
-                  { label: "Today's Orders", val: "16", sub: "Goal: 20", subColor: colorTextMuted, icon: <FileText size={18} style={{ color: '#3b82f6' }} />, iconBg: 'rgba(59,130,246,0.05)', iconBorder: 'rgba(59,130,246,0.15)', iconColor: '#3b82f6' },
-                  { label: "Completed", val: "11", sub: "69% Success Rate", subColor: colorTextMuted, icon: <CheckCircle size={18} style={{ color: '#10b981' }} />, iconBg: 'rgba(16,185,129,0.05)', iconBorder: 'rgba(16,185,129,0.15)', iconColor: '#10b981' },
-                  { label: "Pending", val: "5", sub: "View Details >", subColor: '#ef4444', icon: <Clock size={18} style={{ color: '#f59e0b' }} />, iconBg: 'rgba(245,158,11,0.05)', iconBorder: 'rgba(245,158,11,0.15)', iconColor: '#f59e0b', clickAction: () => setActiveTab('orders') },
-                  { label: "Wallet Balance", val: "₹8,500", sub: "Withdraw >", subColor: '#ef4444', icon: <Wallet size={18} style={{ color: '#7209b7' }} />, iconBg: 'rgba(114,9,183,0.05)', iconBorder: 'rgba(114,9,183,0.15)', iconColor: '#7209b7', clickAction: () => setActiveTab('earnings') },
-                  { label: "Rider Rating", val: "4.9", sub: "Top Tier Rider", subColor: colorTextMuted, icon: <Star size={18} fill="#fbbf24" style={{ color: '#fbbf24' }} />, iconBg: 'rgba(251,191,36,0.05)', iconBorder: 'rgba(251,191,36,0.15)', iconColor: '#fbbf24' }
+                  { 
+                    label: "Today's Earnings", 
+                    val: "₹1,820", 
+                    sub: "+₹150 Incentives", 
+                    subColor: '#22C55E', 
+                    sparkColor: '#FF2E83',
+                    sparkData: [400, 700, 500, 900, 1200, 1820],
+                    icon: <Wallet size={16} />, 
+                    grad: 'linear-gradient(135deg, rgba(255, 46, 131, 0.05) 0%, rgba(255, 46, 131, 0.01) 100%)', 
+                    border: 'rgba(255, 46, 131, 0.15)',
+                    color: '#FF2E83'
+                  },
+                  { 
+                    label: "Today's Orders", 
+                    val: "16 Orders", 
+                    sub: "Goal: 20 Orders", 
+                    subColor: colorTextSecondary, 
+                    sparkColor: '#3B82F6',
+                    sparkData: [3, 6, 8, 11, 14, 16],
+                    icon: <FileText size={16} />, 
+                    grad: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(59, 130, 246, 0.01) 100%)', 
+                    border: 'rgba(59, 130, 246, 0.15)',
+                    color: '#3B82F6' 
+                  },
+                  { 
+                    label: "Completed", 
+                    val: "11 Orders", 
+                    sub: "69% Success Rate", 
+                    subColor: '#22C55E', 
+                    sparkColor: '#22C55E',
+                    sparkData: [2, 4, 6, 8, 10, 11],
+                    icon: <CheckCircle size={16} />, 
+                    grad: 'linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.01) 100%)', 
+                    border: 'rgba(34, 197, 94, 0.15)',
+                    color: '#22C55E' 
+                  },
+                  { 
+                    label: "Pending", 
+                    val: "5 Orders", 
+                    sub: "View Active >", 
+                    subColor: '#EF4444', 
+                    sparkColor: '#F59E0B',
+                    sparkData: [1, 2, 2, 3, 4, 5],
+                    icon: <Clock size={16} />, 
+                    grad: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.01) 100%)', 
+                    border: 'rgba(245, 158, 11, 0.15)',
+                    color: '#F59E0B', 
+                    clickAction: () => setActiveTab('orders') 
+                  },
+                  { 
+                    label: "Wallet Balance", 
+                    val: "₹8,500", 
+                    sub: "Instant Withdraw >", 
+                    subColor: '#7C3AED', 
+                    sparkColor: '#7C3AED',
+                    sparkData: [5000, 6200, 5800, 7100, 8000, 8500],
+                    icon: <Wallet size={16} />, 
+                    grad: 'linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(124, 58, 237, 0.01) 100%)', 
+                    border: 'rgba(124, 58, 237, 0.15)',
+                    color: '#7C3AED', 
+                    clickAction: () => setActiveTab('earnings') 
+                  },
+                  { 
+                    label: "Rider Rating", 
+                    val: "4.95", 
+                    sub: "Top Tier Partner", 
+                    subColor: '#F59E0B', 
+                    sparkColor: '#F59E0B',
+                    sparkData: [4.8, 4.85, 4.88, 4.9, 4.93, 4.95],
+                    icon: <Star size={16} fill="#F59E0B" style={{ color: '#F59E0B' }} />, 
+                    grad: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.01) 100%)', 
+                    border: 'rgba(245, 158, 11, 0.15)',
+                    color: '#F59E0B' 
+                  }
                 ].map((kpi, idx) => (
                   <div 
                     key={idx} 
-                    className="glass-card-no-hover" 
+                    className="dashboard-premium-card" 
                     style={{ 
-                      padding: '12px 14px', 
+                      padding: '14px', 
                       background: bgCard, 
-                      border: `1px solid ${borderColor}`, 
-                      borderRadius: '16px', 
+                      border: `1.5px solid ${borderColor}`, 
+                      borderRadius: '20px', 
                       display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '12px',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
                       cursor: kpi.clickAction ? 'pointer' : 'default',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+                      height: '135px',
+                      transition: 'all 0.25s ease',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.01)'
                     }}
                     onClick={kpi.clickAction}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.04)';
+                      e.currentTarget.style.borderColor = kpi.color;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.01)';
+                      e.currentTarget.style.borderColor = borderColor;
+                    }}
                   >
-                    <div 
-                      style={{ 
-                        width: '36px', 
-                        height: '36px', 
-                        borderRadius: '10px', 
-                        background: kpi.iconBg, 
-                        border: `1px solid ${kpi.iconBorder}`,
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        fontSize: '1.1rem',
-                        color: kpi.iconColor,
-                        flexShrink: 0
-                      }}
-                    >
-                      {kpi.icon}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div 
+                        style={{ 
+                          width: '32px', 
+                          height: '32px', 
+                          borderRadius: '8px', 
+                          background: kpi.grad, 
+                          border: `1.5px solid ${kpi.border}`,
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          color: kpi.color,
+                          flexShrink: 0
+                        }}
+                      >
+                        {kpi.icon}
+                      </div>
+                      
+                      {/* Mini Sparkline Visualization */}
+                      <div style={{ width: '55px', height: '24px' }}>
+                        <svg width="100%" height="100%" viewBox="0 0 50 20">
+                          <polyline
+                            fill="none"
+                            stroke={kpi.sparkColor}
+                            strokeWidth="2"
+                            points={kpi.sparkData.map((val, sIdx) => {
+                              const min = Math.min(...kpi.sparkData);
+                              const max = Math.max(...kpi.sparkData);
+                              const range = max - min || 1;
+                              const x = (sIdx / (kpi.sparkData.length - 1)) * 50;
+                              const y = 18 - ((val - min) / range) * 16;
+                              return `${x},${y}`;
+                            }).join(' ')}
+                          />
+                        </svg>
+                      </div>
                     </div>
-                    <div>
-                      <span style={{ fontSize: '0.68rem', color: colorTextMuted, display: 'block', fontWeight: '700' }}>{kpi.label}</span>
-                      <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, display: 'block', margin: '2px 0' }}>{kpi.val}</strong>
-                      <span style={{ fontSize: '0.62rem', color: kpi.subColor, fontWeight: 'bold' }}>{kpi.sub}</span>
+
+                    <div style={{ textAlign: 'left', marginTop: '10px' }}>
+                      <span style={{ fontSize: '10px', color: colorTextMuted, display: 'block', fontWeight: 'bold' }}>{kpi.label}</span>
+                      <strong style={{ fontSize: '18px', color: colorTextPrimary, display: 'block', margin: '2px 0' }}>{kpi.val}</strong>
+                      <span style={{ fontSize: '10px', color: kpi.subColor, fontWeight: 'bold' }}>{kpi.sub}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Row 2: Today's Route Overview, Active Delivery & Delivery Schedule Grid */}
-              <div 
-                className="delivery-home-layout-grid" 
-                style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '1.2fr 1fr 1fr', 
-                  gap: '20px' 
-                }}
-              >
+              {/* Row 2: Today's Optimized Route */}
+              <div className="dashboard-row-two-grid">
                 {/* Col 2.1: Today's Route Overview */}
                 <div 
-                  className="glass-card-no-hover" 
+                  className="dashboard-premium-card" 
                   style={{ 
                     padding: '20px', 
                     background: bgCard, 
-                    border: `1px solid ${borderColor}`, 
+                    border: `1.5px solid ${borderColor}`, 
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    height: '460px'
+                    height: '480px',
+                    textAlign: 'left'
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Route Overview</h4>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setActiveTab('navigation')}>
-                      View Full Route
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h4 className="dashboard-card-title" style={{ margin: 0, color: colorTextPrimary }}>Today's Optimized Route</h4>
+                    <span style={{ fontSize: '11px', color: '#FF2E83', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setActiveTab('navigation')}>
+                      Full Map
                     </span>
                   </div>
 
-                  {/* Real Leaflet Map Container */}
-                  <div style={{ flex: 1, minHeight: '280px', height: '280px', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${borderColor}`, position: 'relative', marginTop: '12px', marginBottom: '12px' }}>
+                  {/* Leaflet Map Container */}
+                  <div style={{ flex: 1, minHeight: '270px', borderRadius: '14px', overflow: 'hidden', border: `1.5px solid ${borderColor}`, position: 'relative', margin: '10px 0' }}>
                     <div ref={homeMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
                   </div>
 
-                  {/* Bottom Stats & Button */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '14px', borderTop: `1px solid ${borderColor}`, paddingTop: '14px' }}>
-                    <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                  {/* Bottom Stats & Optimization Action Button */}
+                  <div style={{ borderTop: `1.5px solid ${borderColor}`, paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(114,9,183,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Compass size={14} style={{ color: '#7209b7' }} />
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(124, 58, 237, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#7C3AED', flexShrink: 0 }}>
+                          <Compass size={14} />
                         </div>
                         <div>
-                          <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted }}>Total Distance</span>
-                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>48.6 KM</strong>
+                          <span style={{ display: 'block', fontSize: '9px', color: colorTextMuted, fontWeight: 'bold' }}>DISTANCE</span>
+                          <strong style={{ fontSize: '11px', color: colorTextPrimary }}>48.6 KM</strong>
                         </div>
                       </div>
 
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(249,115,22,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Target size={14} style={{ color: '#f97316' }} />
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#F59E0B', flexShrink: 0 }}>
+                          <Target size={14} />
                         </div>
                         <div>
-                          <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted }}>Total Stops</span>
-                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>7 Stops</strong>
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16,185,129,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Clock size={14} style={{ color: '#10b981' }} />
-                        </div>
-                        <div>
-                          <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted }}>Estimated Time</span>
-                          <strong style={{ fontSize: '0.75rem', color: colorTextPrimary }}>3h 20m</strong>
+                          <span style={{ display: 'block', fontSize: '9px', color: colorTextMuted, fontWeight: 'bold' }}>EST TIME</span>
+                          <strong style={{ fontSize: '11px', color: colorTextPrimary }}>2h 45m</strong>
                         </div>
                       </div>
                     </div>
-
-                    <button 
-                      className="btn btn-solid-pink" 
-                      style={{ fontSize: '0.72rem', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: '4px', borderRadius: '8px', fontWeight: 'bold' }}
-                      onClick={() => setActiveTab('navigation')}
-                    >
-                      Start Route <ChevronRight size={12} />
-                    </button>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10px', color: colorTextSecondary }}>
+                      <span>Fuel Est: <strong>1.5L</strong></span>
+                      <span>Traffic: <strong style={{ color: '#F59E0B' }}>Moderate</strong></span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Col 2.2: Current Active Delivery */}
+                {/* Col 2.2: Active Delivery Details */}
                 <div 
-                  className="glass-card-no-hover" 
+                  className="dashboard-premium-card" 
                   style={{ 
                     padding: '20px', 
                     background: bgCard, 
-                    border: `1px solid ${borderColor}`, 
+                    border: `1.5px solid ${borderColor}`, 
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    height: '460px'
+                    height: '480px',
+                    textAlign: 'left'
                   }}
                 >
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Current Active Delivery</h4>
-                      <span style={{ fontSize: '0.65rem', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>
-                        #SB-1024
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                      <h4 className="dashboard-card-title" style={{ margin: 0, color: colorTextPrimary }}>Active Delivery</h4>
+                      <span style={{ fontSize: '11px', background: 'rgba(255, 46, 131, 0.1)', color: '#FF2E83', padding: '2px 8px', borderRadius: '12px', fontWeight: 'bold' }}>
+                        {activeOrder.id}
                       </span>
                     </div>
 
-                    {/* Pickup and Delivery details */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.75rem' }}>
-                      <div style={{ display: 'flex', gap: '10px' }}>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(114,9,183,0.1)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <ShoppingBag size={12} style={{ color: '#7209b7' }} />
-                        </div>
-                        <div>
-                          <strong style={{ display: 'block', color: colorTextPrimary }}>Pickup From</strong>
-                          <span style={{ fontWeight: 'bold', color: colorTextSecondary }}>Vogue Craft Tailors</span>
-                          <p style={{ margin: '2px 0 0 0', color: colorTextMuted, fontSize: '0.68rem' }}>23, 4th Main, 1st Cross, Brookefield, Bengaluru 560037</p>
-                        </div>
+                    {/* Delivery Address & Customer details */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px' }}>
+                        <span style={{ color: colorTextMuted }}>Deliver To</span>
+                        <strong style={{ color: colorTextPrimary }}>{activeOrder.deliverTo}</strong>
                       </div>
+                      <p style={{ margin: 0, fontSize: '11px', color: colorTextSecondary, lineHeight: '1.4', background: isDark ? 'rgba(255,255,255,0.02)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}` }}>
+                        {activeOrder.deliveryAddress}
+                      </p>
+                    </div>
 
-                      <div style={{ display: 'flex', gap: '10px' }}>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <Home size={12} style={{ color: '#10b981' }} />
-                        </div>
-                        <div>
-                          <strong style={{ display: 'block', color: colorTextPrimary }}>Deliver To</strong>
-                          <span style={{ fontWeight: 'bold', color: colorTextSecondary }}>Priya Sharma</span>
-                          <p style={{ margin: '2px 0 0 0', color: colorTextMuted, fontSize: '0.68rem' }}>12, Prestige Lakeside, Whitefield, Bengaluru 560066</p>
+                    {/* Timeline Tracker */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '14px' }}>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, fontWeight: 'bold', textTransform: 'uppercase' }}>Delivery Timeline</span>
+                      <div style={{ display: 'flex', gap: '8px', position: 'relative' }}>
+                        <div style={{ width: '2px', background: borderColor, position: 'absolute', top: '10px', bottom: '10px', left: '7px', zIndex: 1 }} />
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', zIndex: 2, width: '100%' }}>
+                          {[
+                            { title: 'Package Picked Up', desc: 'At Vogue Craft Tailors', done: true },
+                            { title: 'Out for Delivery', desc: 'ETA: 20 mins', active: true }
+                          ].map((step, idx) => (
+                            <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'start' }}>
+                              <span style={{ 
+                                width: '16px', 
+                                height: '16px', 
+                                borderRadius: '50%', 
+                                background: step.done ? '#22C55E' : step.active ? '#FF2E83' : '#6B7280',
+                                border: '3px solid ' + bgCard,
+                                display: 'inline-block',
+                                flexShrink: 0
+                              }} />
+                              <div>
+                                <strong style={{ fontSize: '11px', color: step.active ? '#FF2E83' : colorTextPrimary, display: 'block' }}>{step.title}</strong>
+                                <span style={{ fontSize: '9px', color: colorTextSecondary }}>{step.desc}</span>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Specs and action buttons */}
-                  <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '12px', marginTop: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: colorTextMuted, marginBottom: '14px' }}>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted, textTransform: 'uppercase', marginBottom: '2px' }}>Distance</span>
-                        <strong style={{ color: colorTextPrimary, fontSize: '0.8rem' }}>3.4 km</strong>
-                      </div>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted, textTransform: 'uppercase', marginBottom: '2px' }}>ETA</span>
-                        <strong style={{ color: colorTextPrimary, fontSize: '0.8rem' }}>14 mins</strong>
-                      </div>
-                      <div>
-                        <span style={{ display: 'block', fontSize: '0.58rem', color: colorTextMuted, textTransform: 'uppercase', marginBottom: '2px' }}>Item</span>
-                        <strong style={{ color: colorTextPrimary, fontSize: '0.8rem' }}>Lehenga & Blouse</strong>
-                      </div>
-                    </div>
-                    
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                  {/* Actions Grid */}
+                  <div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px', marginBottom: '8px' }}>
                       <button 
-                        className="btn btn-solid-pink" 
-                        style={{ flex: 1.5, fontSize: '0.72rem', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', fontWeight: 'bold' }} 
-                        onClick={() => setActiveTab('navigation')}
+                        className="btn" 
+                        onClick={() => alert(`Starting Live Navigation via Google Maps...`)}
+                        style={{ fontSize: '11px', padding: '8px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', fontWeight: 'bold', background: '#7C3AED', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
                       >
-                        <Navigation size={12} style={{ transform: 'rotate(45deg)' }} /> Navigate
+                        <Navigation size={12} /> Map
                       </button>
                       <button 
                         className="btn" 
-                        style={{ 
-                          flex: 1, 
-                          fontSize: '0.72rem', 
-                          padding: '8px 12px', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center', 
-                          gap: '4px',
-                          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15, 23, 42, 0.05)',
-                          color: colorTextPrimary,
-                          border: `1px solid ${borderColor}`,
-                          cursor: 'pointer'
-                        }} 
-                        onClick={() => alert(`Calling customer: ${activeOrder.phone}`)}
+                        onClick={() => alert(`Calling customer: ${activeOrder.deliveryPhone}`)}
+                        style={{ fontSize: '11px', padding: '8px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', fontWeight: 'bold', background: bgCard, color: colorTextPrimary, border: `1.5px solid ${borderColor}`, borderRadius: '10px', cursor: 'pointer' }}
                       >
                         <Phone size={12} /> Call
                       </button>
                       <button 
                         className="btn" 
-                        style={{ 
-                          flex: 1, 
-                          fontSize: '0.72rem', 
-                          padding: '8px 12px', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center', 
-                          gap: '4px',
-                          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(15, 23, 42, 0.05)',
-                          color: colorTextPrimary,
-                          border: `1px solid ${borderColor}`,
-                          cursor: 'pointer'
-                        }} 
                         onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
+                        style={{ fontSize: '11px', padding: '8px 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', fontWeight: 'bold', background: bgCard, color: colorTextPrimary, border: `1.5px solid ${borderColor}`, borderRadius: '10px', cursor: 'pointer' }}
                       >
                         <MessageSquare size={12} /> Chat
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button 
+                        onClick={() => alert("Verification OTP screen loading...")}
+                        className="btn" 
+                        style={{ flex: 1, fontSize: '11px', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', fontWeight: 'bold', background: '#22C55E', color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
+                      >
+                        <CheckCircle size={12} /> Complete Delivery
                       </button>
                     </div>
                   </div>
@@ -1220,53 +1447,66 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                 {/* Col 2.3: Today's Delivery Schedule */}
                 <div 
-                  className="glass-card-no-hover" 
+                  className="dashboard-premium-card" 
                   style={{ 
-                    padding: '20px', 
-                    background: bgCard, 
-                    border: `1px solid ${borderColor}`, 
-                    borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    height: '460px'
+                    height: '480px',
+                    padding: '20px',
+                    background: bgCard,
+                    border: `1.5px solid ${borderColor}`,
+                    borderRadius: '20px',
+                    textAlign: 'left'
                   }}
                 >
                   <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                      <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Delivery Schedule</h4>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => { setActiveTab('orders'); setOrdersSubTab('active'); }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                      <h4 className="dashboard-card-title" style={{ margin: 0, color: colorTextPrimary }}>Today's Delivery Schedule</h4>
+                      <span style={{ fontSize: '11px', color: '#FF2E83', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => { setActiveTab('orders'); setOrdersSubTab('active'); }}>
                         View All
                       </span>
                     </div>
 
                     {/* Scheduled stops list */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', fontSize: '0.72rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '11px' }}>
                       {[
-                        { time: '09:00 AM', type: 'Pickup', store: 'Vogue Craft Tailors', tag: 'Now', num: 1 },
+                        { time: '09:00 AM', type: 'Pickup', store: 'Vogue Craft Tailors', tag: 'Now', num: 1, active: true },
                         { time: '10:00 AM', type: 'Delivery', store: 'Priya Sharma', tag: '3.4 km', num: 2 },
                         { time: '11:30 AM', type: 'Pickup', store: 'Elite Threads', tag: '6.2 km', num: 3 },
                         { time: '01:15 PM', type: 'Delivery', store: 'Amit Verma', tag: '8.1 km', num: 4 },
                         { time: '02:45 PM', type: 'Delivery', store: 'Sneha Iyer', tag: '5.4 km', num: 5 }
                       ].map((step, sIdx) => (
-                        <div key={sIdx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span style={{ color: colorTextMuted, width: '55px' }}>{step.time}</span>
-                            <span style={{ width: '18px', height: '18px', borderRadius: '50%', background: step.num === 1 ? '#f72585' : '#f97316', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', fontWeight: 'bold' }}>
+                        <div 
+                          key={sIdx} 
+                          style={{ 
+                            display: 'flex', 
+                            justifyContent: 'space-between', 
+                            alignItems: 'center',
+                            padding: '6px 8px',
+                            background: step.active ? 'rgba(255, 46, 131, 0.08)' : 'transparent',
+                            borderRadius: '10px',
+                            border: step.active ? '1.5px solid rgba(255, 46, 131, 0.15)' : '1.5px solid transparent'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, textAlign: 'left' }}>
+                            <span style={{ color: colorTextMuted, width: '52px', fontSize: '9px', fontWeight: 'bold', flexShrink: 0 }}>{step.time}</span>
+                            <span style={{ width: '18px', height: '18px', borderRadius: '50%', background: step.active ? '#FF2E83' : '#7C3AED', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px', fontWeight: 'bold', flexShrink: 0 }}>
                               {step.num}
                             </span>
-                            <div>
-                              <strong style={{ display: 'block', color: colorTextPrimary }}>{step.type}</strong>
-                              <span style={{ color: colorTextSecondary, fontSize: '0.65rem' }}>{step.store}</span>
+                            <div style={{ minWidth: 0 }}>
+                              <strong style={{ display: 'block', color: colorTextPrimary, fontSize: '11px', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{step.type}</strong>
+                              <span style={{ color: colorTextSecondary, fontSize: '10px', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{step.store}</span>
                             </div>
                           </div>
                           <span style={{ 
-                            fontSize: '0.62rem', 
-                            background: step.tag === 'Now' ? '#f72585' : 'rgba(15, 23, 42, 0.04)', 
-                            color: step.tag === 'Now' ? '#fff' : colorTextMuted, 
-                            padding: '2px 8px', 
+                            fontSize: '9px', 
+                            background: step.active ? '#FF2E83' : 'rgba(15, 23, 42, 0.04)', 
+                            color: step.active ? '#fff' : colorTextMuted, 
+                            padding: '2px 6px', 
                             borderRadius: '6px', 
-                            fontWeight: 'bold' 
+                            fontWeight: 'bold',
+                            flexShrink: 0
                           }}>
                             {step.tag}
                           </span>
@@ -1276,48 +1516,39 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
 
                   {/* Bottom stats and optimize button */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${borderColor}`, paddingTop: '12px', marginTop: '12px' }}>
-                    <span style={{ fontSize: '0.72rem', color: colorTextMuted }}>Total <strong>7 Stops</strong></span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1.5px solid ${borderColor}`, paddingTop: '10px' }}>
+                    <span style={{ fontSize: '12px', color: colorTextMuted }}>Total <strong>7 Stops</strong></span>
                     <button 
                       className="btn btn-ghost" 
-                      style={{ fontSize: '0.72rem', color: '#f72585', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      style={{ fontSize: '11px', color: '#FF2E83', border: 'none', background: 'transparent', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
                       onClick={() => alert("Route schedule optimized!")}
                     >
-                      <Compass size={12} style={{ color: '#f72585' }} /> Optimize Route
+                      <Compass size={12} style={{ color: '#FF2E83' }} /> Optimize Route
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
           {/* Row 3: Today's Performance / Earnings Chart / Notifications Grid */}
-              <div 
-                className="delivery-home-layout-grid" 
-                style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '1.45fr 1.45fr 1.1fr', 
-                  gap: '20px',
-                  alignItems: 'stretch'
-                }}
-              >
+              <div className="dashboard-row-three-grid">
                 {/* Col 3.1: Today's Performance Card */}
                 <div 
-                  className="glass-card-no-hover" 
+                  className="dashboard-premium-card" 
                   style={{ 
-                    padding: '16px 20px', 
+                    padding: '20px', 
                     background: bgCard, 
-                    border: `1px solid ${borderColor}`, 
+                    border: `1.5px solid ${borderColor}`, 
                     borderRadius: '20px', 
                     display: 'flex', 
                     flexDirection: 'column',
-                    height: '210px',
-                    justifyContent: 'space-between'
+                    height: '240px',
+                    justifyContent: 'space-between',
+                    textAlign: 'left'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Today's Performance</h4>
-                    <span style={{ fontSize: '0.72rem', color: '#f72585', cursor: 'pointer', fontWeight: '800' }} onClick={() => setActiveTab('profile')}>
+                    <h4 className="dashboard-card-title" style={{ margin: 0, color: colorTextPrimary }}>Today's Performance</h4>
+                    <span style={{ fontSize: '11px', color: '#FF2E83', cursor: 'pointer', fontWeight: '800' }} onClick={() => setActiveTab('profile')}>
                       View Report
                     </span>
                   </div>
@@ -1325,136 +1556,122 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   {/* Performance stats row */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginTop: '12px', flex: 1, alignItems: 'center' }}>
                     {[
-                      { label: 'Acceptance Rate', val: '98%', icon: <Target size={18} />, color: '#10b981', bg: 'rgba(16, 185, 129, 0.08)' },
-                      { label: 'On-Time Rate', val: '96%', icon: <Clock size={18} />, color: '#f72585', bg: 'rgba(247, 37, 133, 0.08)' },
-                      { label: 'Completion Rate', val: '92%', icon: <Shield size={18} />, color: '#4361ee', bg: 'rgba(67, 97, 238, 0.08)' },
-                      { label: 'Customer Rating', val: '4.9', icon: <Star size={18} fill="#f97316" style={{ color: '#f97316' }} />, color: '#f97316', bg: 'rgba(249, 115, 22, 0.08)' }
+                      { label: 'Acceptance', val: '98%', icon: <Target size={16} />, color: '#22C55E', bg: 'rgba(34, 197, 148, 0.08)' },
+                      { label: 'On-Time', val: '96%', icon: <Clock size={16} />, color: '#FF2E83', bg: 'rgba(255, 46, 131, 0.08)' },
+                      { label: 'Completion', val: '92%', icon: <Shield size={16} />, color: '#7C3AED', bg: 'rgba(124, 58, 237, 0.08)' },
+                      { label: 'Rating', val: '4.95', icon: <Star size={16} fill="#F59E0B" style={{ color: '#F59E0B' }} />, color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.08)' }
                     ].map((perf, pIdx) => (
                       <div key={pIdx} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <div 
                           style={{ 
-                            width: '40px', 
-                            height: '40px', 
-                            borderRadius: '12px', 
+                            width: '36px', 
+                            height: '36px', 
+                            borderRadius: '10px', 
                             background: perf.bg, 
                             color: perf.color, 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center',
-                            marginBottom: '8px'
+                            marginBottom: '6px'
                           }}
                         >
                           {perf.icon}
                         </div>
-                        <span style={{ fontSize: '0.62rem', color: colorTextMuted, display: 'block', fontWeight: '600', marginBottom: '4px', height: '24px', lineHeight: '1.2' }}>{perf.label}</span>
-                        <strong style={{ fontSize: '1.05rem', color: colorTextPrimary, display: 'block', fontWeight: '800' }}>{perf.val}</strong>
-                        <div style={{ width: '45px', height: '4px', background: perf.color, borderRadius: '2px', margin: '8px auto 0 auto' }}></div>
+                        <span style={{ fontSize: '9px', color: colorTextMuted, display: 'block', fontWeight: 'bold', marginBottom: '2px', height: '24px', lineHeight: '1.2' }}>{perf.label}</span>
+                        <strong style={{ fontSize: '14px', color: colorTextPrimary, display: 'block', fontWeight: '800' }}>{perf.val}</strong>
+                        <div style={{ width: '35px', height: '3px', background: perf.color, borderRadius: '1.5px', marginTop: '6px' }} />
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Col 3.2: Earnings Summary (Spline Chart) */}
+                {/* Col 3.2: Earnings Summary (AreaChart Chart) */}
                 <div 
-                  className="glass-card-no-hover" 
+                  className="dashboard-premium-card" 
                   style={{ 
-                    padding: '16px 20px', 
+                    padding: '20px', 
                     background: bgCard, 
-                    border: `1px solid ${borderColor}`, 
+                    border: `1.5px solid ${borderColor}`, 
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    height: '210px',
-                    justifyContent: 'space-between'
+                    height: '240px',
+                    justifyContent: 'space-between',
+                    textAlign: 'left'
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Earnings Summary</h4>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: isDark ? 'rgba(255,255,255,0.05)' : '#f8fafc', border: `1.5px solid ${borderColor}`, padding: '4px 8px', borderRadius: '8px', cursor: 'pointer' }}>
-                      <span style={{ fontSize: '0.68rem', color: colorTextSecondary, fontWeight: '700' }}>This Week</span>
-                      <span style={{ fontSize: '0.6rem', color: colorTextSecondary }}>▼</span>
-                    </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h4 className="dashboard-card-title" style={{ margin: 0, color: colorTextPrimary }}>Weekly Earnings</h4>
+                    <span style={{ fontSize: '11px', color: '#22C55E', fontWeight: 'bold' }}>
+                      Total: ₹11,250
+                    </span>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '16px', marginTop: '12px', flex: 1, alignItems: 'center' }}>
-                    {/* Left stats */}
-                    <div style={{ flex: '0 0 115px', width: '115px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                      <h3 style={{ margin: 0, fontSize: '1.65rem', fontWeight: '900', color: colorTextPrimary, letterSpacing: '-0.5px' }}>₹11,250</h3>
-                      <span style={{ fontSize: '0.72rem', color: colorTextSecondary, fontWeight: '800', marginTop: '2px', display: 'block' }}>Total Earnings</span>
-                      <span style={{ fontSize: '0.68rem', color: '#10b981', fontWeight: '700', marginTop: '8px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        ▲ +12.5% <span style={{ color: colorTextMuted, fontWeight: 'normal' }}>vs last week</span>
-                      </span>
-                    </div>
-                    
-                    {/* Right graphics: SVG Spline Chart - Stretched dynamically */}
-                    <div style={{ flex: 1, height: '100px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div style={{ height: '75px', position: 'relative' }}>
-                        <svg viewBox="0 0 240 75" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-                          <defs>
-                            <linearGradient id="pinkChartGrad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="#f72585" stopOpacity="0.22" />
-                              <stop offset="100%" stopColor="#f72585" stopOpacity="0" />
-                            </linearGradient>
-                          </defs>
-                          <path 
-                            d="M 10 65 Q 27.5 58.5, 45 52 T 80 38 T 115 45 T 150 32 T 190 22 T 235 8" 
-                            fill="none" 
-                            stroke="#f72585" 
-                            strokeWidth="2.5" 
-                            strokeLinecap="round"
-                          />
-                          <path 
-                            d="M 10 65 Q 27.5 58.5, 45 52 T 80 38 T 115 45 T 150 32 T 190 22 T 235 8 L 235 75 L 10 75 Z" 
-                            fill="url(#pinkChartGrad)" 
-                          />
-                          <circle cx="10" cy="65" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="45" cy="52" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="80" cy="38" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="115" cy="45" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="150" cy="32" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="190" cy="22" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                          <circle cx="235" cy="8" r="3.5" fill="#f72585" stroke="#ffffff" strokeWidth="1" />
-                        </svg>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.55rem', color: colorTextMuted, fontWeight: '700', padding: '0 4px 2px 4px' }}>
-                        <span>Mon</span>
-                        <span>Tue</span>
-                        <span>Wed</span>
-                        <span>Thu</span>
-                        <span>Fri</span>
-                        <span>Sat</span>
-                        <span>Sun</span>
-                      </div>
-                    </div>
+                  <div style={{ flex: 1, minHeight: '130px', position: 'relative' }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={[
+                          { name: 'Mon', earnings: 1200 },
+                          { name: 'Tue', earnings: 1800 },
+                          { name: 'Wed', earnings: 1400 },
+                          { name: 'Thu', earnings: 2100 },
+                          { name: 'Fri', earnings: 1600 },
+                          { name: 'Sat', earnings: 2500 },
+                          { name: 'Sun', earnings: 1820 }
+                        ]}
+                        margin={{ top: 5, right: 5, left: -25, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient id="earningsGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#FF2E83" stopOpacity={0.2}/>
+                            <stop offset="95%" stopColor="#FF2E83" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={borderColor} />
+                        <XAxis dataKey="name" tick={{ fontSize: 9, fill: colorTextMuted }} tickLine={false} axisLine={false} />
+                        <YAxis tick={{ fontSize: 9, fill: colorTextMuted }} tickLine={false} axisLine={false} />
+                        <RechartsTooltip 
+                          contentStyle={{ 
+                            background: bgCard, 
+                            border: `1.5px solid ${borderColor}`,
+                            borderRadius: '8px',
+                            fontSize: '11px',
+                            color: colorTextPrimary
+                          }}
+                        />
+                        <Area type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={2} fillOpacity={1} fill="url(#earningsGrad)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
 
                 {/* Col 3.3: Recent Notifications */}
                 <div 
-                  className="glass-card-no-hover" 
+                  className="dashboard-premium-card" 
                   style={{ 
-                    padding: '16px 20px', 
+                    padding: '20px', 
                     background: bgCard, 
-                    border: `1px solid ${borderColor}`, 
+                    border: `1.5px solid ${borderColor}`, 
                     borderRadius: '20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    height: '210px',
-                    justifyContent: 'space-between'
+                    height: '240px',
+                    justifyContent: 'space-between',
+                    textAlign: 'left'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Recent Notifications</h4>
-                    <span style={{ fontSize: '0.72rem', color: '#f72585', cursor: 'pointer', fontWeight: '800' }} onClick={() => setActiveTab('profile')}>
+                    <h4 className="dashboard-card-title" style={{ margin: 0, color: colorTextPrimary }}>Recent Notifications</h4>
+                    <span style={{ fontSize: '11px', color: '#FF2E83', cursor: 'pointer', fontWeight: '800' }} onClick={() => setActiveTab('profile')}>
                       View All
                     </span>
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px', flex: 1, justifyContent: 'center' }}>
                     {[
-                      { label: 'New Order Assigned', desc: '#SB-1025 has been assigned to you.', time: '2m ago', color: '#f72585', bg: 'rgba(247, 37, 133, 0.06)', icon: <ShoppingBag size={12} /> },
-                      { label: 'Customer Called', desc: 'Priya Sharma tried to call you.', time: '10m ago', color: '#7209b7', bg: 'rgba(114, 9, 183, 0.06)', icon: <Phone size={12} /> },
-                      { label: 'Incentive Earned', desc: 'You earned ₹50 incentive.', time: '1h ago', color: '#f97316', bg: 'rgba(249, 115, 22, 0.06)', icon: <Gift size={12} /> }
+                      { label: 'New Order Assigned', desc: '#SB-1025 assigned to you.', time: '2m ago', color: '#FF2E83', bg: 'rgba(255, 46, 131, 0.06)', icon: <ShoppingBag size={12} /> },
+                      { label: 'Customer Called', desc: 'Priya Sharma tried to call.', time: '10m ago', color: '#7C3AED', bg: 'rgba(124, 58, 237, 0.06)', icon: <Phone size={12} /> },
+                      { label: 'Incentive Earned', desc: 'You earned ₹50 incentive.', time: '1h ago', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.06)', icon: <Gift size={12} /> }
                     ].map((notif, nIdx) => (
                       <div key={nIdx} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: notif.bg, color: notif.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -1462,10 +1679,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         </div>
                         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                            <strong style={{ fontSize: '0.72rem', color: colorTextPrimary, fontWeight: '700' }}>{notif.label}</strong>
-                            <span style={{ fontSize: '0.58rem', color: colorTextMuted, flexShrink: 0 }}>{notif.time}</span>
+                            <strong style={{ fontSize: '11px', color: colorTextPrimary, fontWeight: '700' }}>{notif.label}</strong>
+                            <span style={{ fontSize: '8px', color: colorTextMuted, flexShrink: 0 }}>{notif.time}</span>
                           </div>
-                          <span style={{ fontSize: '0.62rem', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: '1px' }}>
+                          <span style={{ fontSize: '10px', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: '1px' }}>
                             {notif.desc}
                           </span>
                         </div>
@@ -1477,23 +1694,25 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
               {/* Row 4: Quick Actions Bar */}
               <div 
-                className="glass-card-no-hover" 
+                className="dashboard-premium-card" 
                 style={{ 
                   padding: '20px', 
                   background: bgCard, 
-                  border: `1px solid ${borderColor}`, 
-                  borderRadius: '20px' 
+                  border: `1.5px solid ${borderColor}`, 
+                  borderRadius: '20px',
+                  width: '100%',
+                  textAlign: 'left'
                 }}
               >
-                <h4 style={{ margin: '0 0 16px 0', fontSize: '0.92rem', fontWeight: '800', color: colorTextPrimary }}>Quick Actions</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}>
+                <h4 className="dashboard-card-title" style={{ margin: '0 0 16px 0', color: colorTextPrimary }}>Quick Actions</h4>
+                <div className="dashboard-quick-actions-grid">
                   {[
-                    { label: 'Scan Package', color: '#f72585', bg: 'rgba(247, 37, 133, 0.05)', icon: <Scan size={15} /> },
-                    { label: 'Upload Proof', color: '#7209b7', bg: 'rgba(114, 9, 183, 0.05)', icon: <Camera size={15} /> },
-                    { label: 'Emergency', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.05)', icon: <AlertTriangle size={15} /> },
-                    { label: 'Earnings Details', color: '#10b981', bg: 'rgba(16, 185, 129, 0.05)', icon: <Wallet size={15} /> },
-                    { label: 'Support Chat', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.05)', icon: <Headphones size={15} /> },
-                    { label: 'Refer & Earn', color: '#f97316', bg: 'rgba(249, 115, 22, 0.05)', icon: <UserPlus size={15} /> }
+                    { label: 'Scan Package', color: '#FF2E83', bg: 'rgba(255, 46, 131, 0.06)', icon: <Scan size={16} /> },
+                    { label: 'Upload Proof', color: '#7C3AED', bg: 'rgba(124, 58, 237, 0.06)', icon: <Camera size={16} /> },
+                    { label: 'Emergency', color: '#EF4444', bg: 'rgba(239, 68, 68, 0.06)', icon: <AlertTriangle size={16} /> },
+                    { label: 'Earnings Details', color: '#22C55E', bg: 'rgba(34, 197, 148, 0.06)', icon: <Wallet size={16} /> },
+                    { label: 'Support Chat', color: '#3B82F6', bg: 'rgba(59, 130, 246, 0.06)', icon: <Headphones size={16} /> },
+                    { label: 'Refer & Earn', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.06)', icon: <UserPlus size={16} /> }
                   ].map((act, aIdx) => (
                     <button 
                       key={aIdx}
@@ -1504,14 +1723,13 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         else alert(`Dispatched quick action: ${act.label}`);
                       }}
                       style={{ 
-                        border: 'none',
+                        border: `1.5px solid ${borderColor}`,
                         color: act.color,
-                        background: act.bg,
-                        '--quick-action-color': act.color,
-                        fontSize: '0.75rem',
+                        background: bgCard,
+                        fontSize: '12px',
                         fontWeight: '800',
                         padding: '12px 10px',
-                        borderRadius: '12px',
+                        borderRadius: '14px',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
@@ -1520,8 +1738,16 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         transition: 'all 0.2s ease',
                         boxShadow: '0 2px 6px rgba(0,0,0,0.01)'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(0.96)'}
-                      onMouseLeave={(e) => e.currentTarget.style.filter = 'none'}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = act.bg;
+                        e.currentTarget.style.borderColor = act.color;
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = bgCard;
+                        e.currentTarget.style.borderColor = borderColor;
+                        e.currentTarget.style.transform = 'none';
+                      }}
                     >
                       {act.icon}
                       <span>{act.label}</span>
@@ -1531,7 +1757,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
               </div>
 
             </div>
-          )}
+          </div>
+        </div>
+      )}
 
         {/* MODULE 2: ORDERS LIST */}
         {activeTab === 'orders' && (() => {
