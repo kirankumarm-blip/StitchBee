@@ -3,7 +3,7 @@ import {
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
   Phone, AlertTriangle, CheckCircle, Navigation, Send, Calendar, 
   Clock, Check, ChevronRight, ChevronDown, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
-  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power
+  Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power, RefreshCw
 } from 'lucide-react';
 
 export default function DeliveryView({ theme, setTheme, currentUser, onLogout, setRole }) {
@@ -1844,10 +1844,41 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '14px', color: colorTextMuted }}>
-                    <span>Can't find an order?</span>
-                    <button className="btn btn-ghost" style={{ fontSize: '14px', padding: '4px 8px', color: '#FF2E83', fontWeight: 'bold' }} onClick={() => alert("Refreshed tasks list!")}>
-                      🔄 Refresh
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    marginTop: '16px', 
+                    padding: '14px 20px', 
+                    borderRadius: '12px', 
+                    background: isDark ? 'rgba(255,255,255,0.03)' : '#FAFBFD', 
+                    border: `1px solid ${isDark ? borderColor : '#E9EEF5'}`,
+                  }}>
+                    <span style={{ 
+                      fontSize: '14px', 
+                      fontWeight: '600', 
+                      color: isDark ? '#f3f4f6' : '#334155' 
+                    }}>
+                      Can't find an order?
+                    </span>
+                    <button 
+                      className="btn" 
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '8px', 
+                        fontSize: '14px', 
+                        padding: '0', 
+                        color: '#FF2E83', 
+                        fontWeight: '700', 
+                        background: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }} 
+                      onClick={() => alert("Refreshed tasks list!")}
+                    >
+                      <RefreshCw size={15} style={{ color: '#FF2E83' }} />
+                      <span>Refresh</span>
                     </button>
                   </div>
                 </div>
