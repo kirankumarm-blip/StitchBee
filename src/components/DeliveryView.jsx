@@ -1658,10 +1658,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
               </div>
 
               {/* BOTTOM SECTION: Two-column grid workspace */}
-              <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: '12px', alignItems: 'stretch', height: 'calc(100vh - 220px)' }} className="orders-workspace-layout">
+              <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '24px', height: 'calc(100vh - 250px)' }} className="orders-workspace-layout">
                 
                 {/* Left Column: List of Category Orders */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', height: '100%', overflowY: 'auto', paddingRight: '4px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%', overflowY: 'auto', paddingRight: '4px' }}>
                   {filteredOrders.length > 0 ? (
                     filteredOrders.map((order, oIdx) => {
                       const isSelected = selectedOrder && selectedOrder.id === order.id;
@@ -1683,11 +1683,11 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                           onClick={() => setSelectedOrder(order)}
                           className="kpi-card-flat"
                           style={{
-                            padding: '14px 16px',
+                            padding: '16px 20px',
                             height: '240px',
                             boxSizing: 'border-box',
                             background: bgCard,
-                            border: isSelected ? '1.5px solid #f72585' : `1px solid ${borderColor}`,
+                            border: isSelected ? '2px solid #FF2E83' : `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
                             borderRadius: '16px',
                             cursor: 'pointer',
                             transition: 'all 0.2s',
@@ -1695,29 +1695,29 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             flexDirection: 'column',
                             alignItems: 'stretch',
                             justifyContent: 'space-between',
-                            boxShadow: isSelected ? '0 4px 16px rgba(247,37,133,0.06)' : 'none'
+                            boxShadow: isSelected ? '0 8px 24px rgba(255, 46, 131, 0.08)' : '0 4px 12px rgba(0,0,0,0.01)'
                           }}
                         >
                           {/* Order ID & Status Badge */}
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <strong style={{ fontSize: '0.9rem', color: isSelected ? '#f72585' : colorTextPrimary, fontWeight: 'bold' }}>{order.id}</strong>
+                            <strong style={{ fontSize: '18px', color: isSelected ? '#FF2E83' : colorTextPrimary, fontWeight: '700' }}>{order.id}</strong>
                             <span style={{ 
-                              fontSize: '0.7rem', 
-                              background: order.taskStatus === 'Ready' ? '#10b981' : (order.taskStatus === 'In Progress' ? 'rgba(249,115,22,0.1)' : 'rgba(59,130,246,0.1)'), 
-                              color: order.taskStatus === 'Ready' ? '#ffffff' : (order.taskStatus === 'In Progress' ? '#f97316' : '#3b82f6'),
-                              padding: '4px 10px', 
-                              borderRadius: '12px', 
-                              fontWeight: 'bold' 
+                              fontSize: '12px', 
+                              background: order.taskStatus === 'Ready' ? '#EAFBF3' : (order.taskStatus === 'In Progress' ? 'rgba(255,159,67,0.1)' : 'rgba(122,62,240,0.1)'), 
+                              color: order.taskStatus === 'Ready' ? '#22C55E' : (order.taskStatus === 'In Progress' ? '#FF9F43' : '#7A3EF0'),
+                              padding: '4px 12px', 
+                              borderRadius: '8px', 
+                              fontWeight: '700' 
                             }}>
                               {order.taskStatus}
                             </span>
                           </div>
 
                           {/* Middle Row: Left timeline, Right stats */}
-                          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'space-between' }}>
                             
                             {/* Left Side: Custom Timeline */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1, position: 'relative' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, position: 'relative', minWidth: 0 }}>
                               
                               {/* Pickup row */}
                               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
@@ -1725,8 +1725,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                   width: '32px', 
                                   height: '32px', 
                                   borderRadius: '50%', 
-                                  background: 'rgba(114,9,183,0.06)', 
-                                  color: '#7209b7', 
+                                  background: 'rgba(122,62,240,0.06)', 
+                                  color: '#7A3EF0', 
                                   display: 'flex', 
                                   alignItems: 'center', 
                                   justifyContent: 'center', 
@@ -1735,15 +1735,15 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                   <ShoppingBag size={14} />
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                                  <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: 'bold', textTransform: 'uppercase' }}>Pickup</span>
-                                  <strong style={{ fontSize: '0.78rem', color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{order.pickup}</strong>
-                                  <span style={{ fontSize: '0.68rem', color: colorTextSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getCleanAddr(order.pickupAddress)}</span>
+                                  <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase' }}>Pickup</span>
+                                  <strong style={{ fontSize: '14px', color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: '600' }}>{order.pickup}</strong>
+                                  <span style={{ fontSize: '12px', color: colorTextSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getCleanAddr(order.pickupAddress)}</span>
                                 </div>
                               </div>
 
                               {/* Down Arrow separator */}
-                              <div style={{ paddingLeft: '10px', margin: '-4px 0', color: colorTextMuted, display: 'flex', alignItems: 'center', height: '12px' }}>
-                                <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>↓</span>
+                              <div style={{ paddingLeft: '10px', margin: '-6px 0', color: colorTextMuted, display: 'flex', alignItems: 'center', height: '12px' }}>
+                                <span style={{ fontSize: '12px', fontWeight: 'bold' }}>↓</span>
                               </div>
 
                               {/* Delivery row */}
@@ -1752,8 +1752,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                   width: '32px', 
                                   height: '32px', 
                                   borderRadius: '50%', 
-                                  background: 'rgba(247,37,133,0.06)', 
-                                  color: '#f72585', 
+                                  background: 'rgba(255,46,131,0.06)', 
+                                  color: '#FF2E83', 
                                   display: 'flex', 
                                   alignItems: 'center', 
                                   justifyContent: 'center', 
@@ -1762,36 +1762,37 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                                   <User size={14} />
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                                  <span style={{ fontSize: '0.62rem', color: colorTextMuted, fontWeight: 'bold', textTransform: 'uppercase' }}>Delivery</span>
-                                  <strong style={{ fontSize: '0.78rem', color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{order.deliverTo}</strong>
-                                  <span style={{ fontSize: '0.68rem', color: colorTextSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getCleanAddr(order.deliveryAddress)}</span>
+                                  <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase' }}>Delivery</span>
+                                  <strong style={{ fontSize: '14px', color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: '600' }}>{order.deliverTo}</strong>
+                                  <span style={{ fontSize: '12px', color: colorTextSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{getCleanAddr(order.deliveryAddress)}</span>
                                 </div>
                               </div>
 
                             </div>
 
-                            {/* Right Side: Separator and Vertical Metrics block */}
+                            {/* Right Side: Metrics block */}
                             <div style={{ 
                               display: 'flex', 
                               flexDirection: 'column', 
-                              gap: '10px', 
-                              paddingLeft: '12px', 
-                              borderLeft: `1px solid ${borderColor}`,
-                              width: '80px',
+                              gap: '6px', 
+                              paddingLeft: '16px', 
+                              borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
+                              width: '90px',
                               alignItems: 'flex-end',
-                              textAlign: 'right'
+                              textAlign: 'right',
+                              justifyContent: 'center'
                             }}>
                               <div>
-                                <strong style={{ color: '#f72585', fontSize: '0.88rem', display: 'block', lineHeight: '1.2' }}>{order.payout}</strong>
-                                <span style={{ color: colorTextMuted, fontSize: '0.6rem', fontWeight: 'bold' }}>Payout</span>
+                                <strong style={{ color: '#FF2E83', fontSize: '15px', display: 'block', fontWeight: '700' }}>{order.payout}</strong>
+                                <span style={{ color: '#6B7280', fontSize: '12px', fontWeight: '600' }}>Payout</span>
                               </div>
-                              <div>
-                                <strong style={{ color: colorTextPrimary, fontSize: '0.8rem', display: 'block', lineHeight: '1.2' }}>{order.distance}</strong>
-                                <span style={{ color: colorTextMuted, fontSize: '0.6rem', fontWeight: 'bold' }}>Distance</span>
+                              <div style={{ marginTop: '4px' }}>
+                                <strong style={{ color: colorTextPrimary, fontSize: '13px', display: 'block', fontWeight: '700' }}>{order.distance}</strong>
+                                <span style={{ color: '#6B7280', fontSize: '12px', fontWeight: '600' }}>Distance</span>
                               </div>
-                              <div>
-                                <strong style={{ color: colorTextPrimary, fontSize: '0.8rem', display: 'block', lineHeight: '1.2' }}>{order.estTime}</strong>
-                                <span style={{ color: colorTextMuted, fontSize: '0.6rem', fontWeight: 'bold' }}>Est. Time</span>
+                              <div style={{ marginTop: '4px' }}>
+                                <strong style={{ color: colorTextPrimary, fontSize: '13px', display: 'block', fontWeight: '700' }}>{order.estTime}</strong>
+                                <span style={{ color: '#6B7280', fontSize: '12px', fontWeight: '600' }}>Est. Time</span>
                               </div>
                             </div>
 
@@ -1804,31 +1805,31 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             alignItems: 'center', 
                             background: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc',
                             padding: '8px 12px',
-                            borderRadius: '12px',
-                            fontSize: '0.72rem'
+                            borderRadius: '10px',
+                            fontSize: '13px'
                           }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: colorTextSecondary, fontWeight: '700' }}>
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: colorTextSecondary, fontWeight: '600' }}>
                               📦 {order.item}
                             </span>
                             <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                               <span style={{ 
-                                background: order.paymentType === 'COD' ? 'rgba(247,37,133,0.06)' : 'rgba(16,185,129,0.06)', 
-                                color: order.paymentType === 'COD' ? '#f72585' : '#10b981', 
+                                background: order.paymentType === 'COD' ? 'rgba(255,46,131,0.06)' : 'rgba(34,197,94,0.06)', 
+                                color: order.paymentType === 'COD' ? '#FF2E83' : '#22C55E', 
                                 padding: '2px 8px', 
                                 borderRadius: '6px', 
-                                fontWeight: 'bold',
-                                fontSize: '0.62rem'
+                                fontWeight: '700',
+                                fontSize: '11px'
                               }}>
                                 {order.paymentType}
                               </span>
                               <div style={{ 
                                 background: bgCard, 
-                                border: `1px solid ${borderColor}`,
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
                                 padding: '2px 6px',
                                 borderRadius: '6px',
-                                fontWeight: '800',
+                                fontWeight: '700',
                                 color: colorTextPrimary,
-                                fontSize: '0.68rem'
+                                fontSize: '12px'
                               }}>
                                 {order.paymentType === 'COD' ? order.orderValue : '₹0'}
                               </div>
@@ -1838,14 +1839,14 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       );
                     })
                   ) : (
-                    <div style={{ padding: '20px', textAlign: 'center', color: colorTextMuted, fontSize: '0.78rem' }}>
+                    <div style={{ padding: '20px', textAlign: 'center', color: colorTextMuted, fontSize: '14px' }}>
                       No tasks found.
                     </div>
                   )}
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '0.75rem', color: colorTextMuted }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '14px', color: colorTextMuted }}>
                     <span>Can't find an order?</span>
-                    <button className="btn btn-ghost" style={{ fontSize: '0.75rem', padding: '4px 8px', color: '#f72585', fontWeight: 'bold' }} onClick={() => alert("Refreshed tasks list!")}>
+                    <button className="btn btn-ghost" style={{ fontSize: '14px', padding: '4px 8px', color: '#FF2E83', fontWeight: 'bold' }} onClick={() => alert("Refreshed tasks list!")}>
                       🔄 Refresh
                     </button>
                   </div>
@@ -1854,434 +1855,618 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                 {/* Right Column: Detailed selected order panel */}
                 <div style={{ flex: 1, minWidth: 0 }} className="order-details-right-panel">
                   {selectedOrder ? (
-                    <div className="glass-card-no-hover" style={{ padding: '12px 16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', height: '100%' }}>
                       
-                      {/* Section 1: Detail Header */}
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${borderColor}`, paddingBottom: '8px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.id}</h3>
-                          <span style={{ 
-                            fontSize: '0.65rem', 
-                            background: selectedOrder.taskStatus === 'Ready' ? 'rgba(16,185,129,0.06)' : (selectedOrder.taskStatus === 'In Progress' ? 'rgba(249,115,22,0.06)' : 'rgba(59,130,246,0.06)'), 
-                            color: selectedOrder.taskStatus === 'Ready' ? '#10b981' : (selectedOrder.taskStatus === 'In Progress' ? '#f97316' : '#3b82f6'),
-                            padding: '2px 8px', 
-                            borderRadius: '10px', 
-                            fontWeight: 'bold' 
-                          }}>
-                            {selectedOrder.taskStatus}
-                          </span>
-                        </div>
-
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                          <div style={{ textAlign: 'right' }}>
-                            <span style={{ fontSize: '0.62rem', color: colorTextMuted, display: 'block' }}>Order Payout</span>
-                            <strong style={{ fontSize: '1.1rem', color: '#f72585' }}>{selectedOrder.payout}</strong>
+                      {/* Section 1 & 2: Header payouts & Stepper Progress (Fixed top) */}
+                      <div style={{ 
+                        background: bgCard, 
+                        border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                        borderRadius: '20px', 
+                        padding: '24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '20px',
+                        boxShadow: '0 6px 20px rgba(0,0,0,0.02)'
+                      }}>
+                        {/* Ready + Order Payout Section */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '16px', borderBottom: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}` }}>
+                          {/* Left side */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <h3 style={{ margin: 0, fontSize: '36px', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.id}</h3>
+                            <span style={{ 
+                              fontSize: '14px', 
+                              background: selectedOrder.taskStatus === 'Ready' ? '#EAFBF3' : (selectedOrder.taskStatus === 'In Progress' ? 'rgba(255,159,67,0.1)' : 'rgba(122,62,240,0.1)'), 
+                              color: selectedOrder.taskStatus === 'Ready' ? '#22C55E' : (selectedOrder.taskStatus === 'In Progress' ? '#FF9F43' : '#7A3EF0'),
+                              padding: '6px 14px', 
+                              borderRadius: '8px', 
+                              fontWeight: '700' 
+                            }}>
+                              {selectedOrder.taskStatus}
+                            </span>
                           </div>
-                          <button 
-                            className="btn btn-secondary" 
-                            onClick={() => alert(`Details for ${selectedOrder.id}`)}
-                            style={{ fontSize: '0.72rem', padding: '6px 12px', borderRadius: '8px', fontWeight: '700' }}
-                          >
-                            📑 Order Details
-                          </button>
-                        </div>
-                      </div>
 
-                      {/* Section 2: Progress timeline stepper */}
-                      <div style={{ padding: '0 16px', position: 'relative', margin: '4px 0' }}>
-                        <div style={{
-                          position: 'absolute',
-                          left: '36px',
-                          right: '36px',
-                          top: '11px',
-                          height: '2px',
-                          background: isDark ? 'rgba(255,255,255,0.08)' : '#cbd5e1',
-                          zIndex: 0
-                        }}>
-                          {/* Progress Fill */}
-                          <div style={{
-                            width: selectedOrder.taskStatus === 'Delivered' ? '100%' : (selectedOrder.taskStatus === 'Ready' ? '33%' : (selectedOrder.taskStatus === 'In Progress' ? '66%' : '0%')),
-                            height: '100%',
-                            background: '#f72585',
-                            transition: 'width 0.4s'
-                          }}></div>
-                        </div>
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between', zIndex: 1, position: 'relative' }}>
-                          {[
-                            { label: 'Assigned', active: true },
-                            { label: 'Reached Tailor', active: selectedOrder.taskStatus === 'In Progress' || selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
-                            { label: 'Picked Up', active: selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
-                            { label: 'Delivered', active: selectedOrder.taskStatus === 'Delivered' }
-                          ].map((step, idx) => (
-                            <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '80px', textAlign: 'center' }}>
-                              <div style={{ 
-                                width: '22px', 
-                                height: '22px', 
-                                borderRadius: '50%', 
-                                background: step.active ? '#f72585' : (isDark ? '#2e2e4e' : '#cbd5e1'), 
-                                color: '#fff',
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                fontSize: '10px',
-                                fontWeight: 'bold',
-                                boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
-                              }}>
-                                {step.active ? '✓' : idx + 1}
-                              </div>
-                              <span style={{ fontSize: '0.62rem', color: step.active ? colorTextPrimary : colorTextMuted, fontWeight: '700', marginTop: '4px' }}>{step.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Section 3: Detail cards row 1 */}
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.2fr', gap: '10px' }} className="order-details-row1">
-                        {/* Pickup details */}
-                        <div className="glass-card-no-hover" style={{ padding: '10px 12px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc', border: `1px solid ${borderColor}`, borderRadius: '12px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(114,9,183,0.06)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.75rem' }}>🏪</div>
-                              <strong style={{ fontSize: '0.72rem', color: colorTextPrimary }}>Pickup Details</strong>
+                          {/* Right side */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+                            <div style={{ textAlign: 'right' }}>
+                              <span style={{ fontSize: '13px', color: '#6B7280', display: 'block', fontWeight: '600' }}>Order Payout</span>
+                              <strong style={{ fontSize: '34px', color: '#FF2E83', fontWeight: '800', display: 'block', marginTop: '2px', lineHeight: '1' }}>{selectedOrder.payout}</strong>
                             </div>
                             <button 
-                              className="btn btn-secondary" 
-                              onClick={() => alert(`Calling Tailor: ${selectedOrder.pickupPhone}`)}
-                              style={{ fontSize: '0.65rem', padding: '4px 10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#7209b7', border: '1px solid rgba(114,9,183,0.15)' }}
-                            >
-                              📞 Call
-                            </button>
-                          </div>
-                          <h5 style={{ margin: '0 0 2px 0', fontSize: '0.82rem', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.pickup}</h5>
-                          <span style={{ fontSize: '0.68rem', color: colorTextSecondary, display: 'block', fontWeight: '600', marginBottom: '4px' }}>
-                            {selectedOrder.pickupContactName} • {selectedOrder.pickupPhone}
-                          </span>
-                          <p style={{ margin: 0, fontSize: '0.68rem', color: colorTextMuted, lineHeight: '1.3' }}>{selectedOrder.pickupAddress}</p>
-                          <span style={{ fontSize: '0.65rem', color: '#10b981', fontWeight: 'bold', display: 'block', marginTop: '6px' }}>⏰ {selectedOrder.pickupTime}</span>
-                        </div>
-
-                        {/* Delivery details */}
-                        <div className="glass-card-no-hover" style={{ padding: '10px 12px', background: isDark ? 'rgba(255,255,255,0.01)' : '#f8fafc', border: `1px solid ${borderColor}`, borderRadius: '12px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(247,37,133,0.06)', color: '#f72585', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.75rem' }}>🏠</div>
-                              <strong style={{ fontSize: '0.72rem', color: colorTextPrimary }}>Delivery Details</strong>
-                            </div>
-                            <button 
-                              className="btn btn-secondary" 
-                              onClick={() => alert(`Calling Customer: ${selectedOrder.deliveryPhone}`)}
-                              style={{ fontSize: '0.65rem', padding: '3px 8px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '4px', color: '#f72585', border: '1px solid rgba(247,37,133,0.15)' }}
-                            >
-                              📞 Call
-                            </button>
-                          </div>
-                          <h5 style={{ margin: '0 0 2px 0', fontSize: '0.82rem', fontWeight: '800', color: colorTextPrimary }}>{selectedOrder.deliverTo}</h5>
-                          <span style={{ fontSize: '0.68rem', color: colorTextSecondary, display: 'block', fontWeight: '600', marginBottom: '4px' }}>
-                            {selectedOrder.deliveryPhone}
-                          </span>
-                          <p style={{ margin: '0 0 6px 0', fontSize: '0.68rem', color: colorTextMuted, lineHeight: '1.3' }}>{selectedOrder.deliveryAddress}</p>
-                          
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(247,37,133,0.04)', padding: '4px 8px', borderRadius: '6px', border: '1px dashed rgba(247,37,133,0.15)' }}>
-                            <span style={{ fontSize: '0.62rem', color: '#f72585', fontWeight: 'bold' }}>🔑 OTP Required</span>
-                            <strong style={{ fontSize: '0.72rem', color: '#f72585' }}>{selectedOrder.deliveryOtp}</strong>
-                          </div>
-                        </div>
-
-                        {/* Route Overview map card */}
-                        <div className="glass-card-no-hover" style={{ padding: '10px 12px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <strong style={{ fontSize: '0.72rem', color: colorTextPrimary }}>Route Overview</strong>
-                            <span style={{ fontSize: '0.68rem', color: '#f72585', fontWeight: 'bold' }}>{selectedOrder.distance} • {selectedOrder.estTime}</span>
-                          </div>
-
-                          {/* Leaflet map container */}
-                          <div style={{ flex: 1, minHeight: '110px', height: '110px', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${borderColor}`, position: 'relative' }}>
-                            <div ref={orderMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
-                            <button 
-                              onClick={() => {
-                                try {
-                                  const pickup = selectedOrder.pickupCoords || [12.9592, 77.6974];
-                                  const deliver = selectedOrder.deliveryCoords || [12.9660, 77.7320];
-                                  const L = window.L;
-                                  if (orderMapInstance.current && L) {
-                                    orderMapInstance.current.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [15, 15] });
-                                  }
-                                } catch (e) {
-                                  console.error("Map fitBounds failed", e);
-                                }
-                              }}
-                              style={{
-                                position: 'absolute',
-                                bottom: '6px',
-                                right: '6px',
-                                background: 'rgba(255,255,255,0.9)',
-                                border: 'none',
-                                borderRadius: '4px',
-                                padding: '3px 6px',
-                                fontSize: '0.58rem',
-                                fontWeight: 'bold',
+                              className="btn" 
+                              onClick={() => alert(`Details for ${selectedOrder.id}`)}
+                              style={{ 
+                                height: '44px',
+                                padding: '0 20px', 
+                                borderRadius: '22px', 
+                                border: `1.5px solid #FF2E83`,
+                                background: 'transparent',
+                                color: '#FF2E83',
+                                fontSize: '14px',
+                                fontWeight: '700',
                                 cursor: 'pointer',
-                                zIndex: 10,
-                                color: '#333',
-                                boxShadow: '0 2px 4px rgba(0,0,0,0.15)'
+                                transition: 'all 0.2s'
                               }}
+                              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 46, 131, 0.05)' }}
+                              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
                             >
-                              📍 Live Location
+                              Order Details
                             </button>
                           </div>
+                        </div>
 
-                          {/* Map specs footer */}
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1.2fr', gap: '6px', fontSize: '0.62rem', borderTop: `1px solid ${borderColor}`, paddingTop: '6px' }}>
-                            <div>
-                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>Distance</span>
-                              <strong style={{ color: colorTextPrimary }}>{selectedOrder.distance}</strong>
-                            </div>
-                            <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '6px' }}>
-                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>ETA</span>
-                              <strong style={{ color: colorTextPrimary }}>{selectedOrder.estTime}</strong>
-                            </div>
-                            <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '6px' }}>
-                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>Traffic</span>
-                              <strong style={{ color: selectedOrder.traffic === 'Light' ? '#10b981' : (selectedOrder.traffic === 'Moderate' ? '#f97316' : '#ef4444') }}>
-                                ● {selectedOrder.traffic}
-                              </strong>
-                            </div>
-                            <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '6px', overflow: 'hidden' }}>
-                              <span style={{ color: colorTextMuted, display: 'block', fontSize: '0.55rem' }}>Best Route</span>
-                              <strong style={{ color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{selectedOrder.bestRoute}</strong>
-                            </div>
+                        {/* Delivery Progress timeline stepper */}
+                        <div style={{ padding: '0 24px', position: 'relative', margin: '4px 0' }}>
+                          {/* Connecting line */}
+                          <div style={{
+                            position: 'absolute',
+                            left: '48px',
+                            right: '48px',
+                            top: '16px', // centered vertically to the 32px circles
+                            height: '4px',
+                            background: isDark ? 'rgba(255,255,255,0.08)' : '#E9EEF5',
+                            zIndex: 0
+                          }}>
+                            {/* Progress Fill */}
+                            <div style={{
+                              width: selectedOrder.taskStatus === 'Delivered' ? '100%' : (selectedOrder.taskStatus === 'Ready' ? '33%' : (selectedOrder.taskStatus === 'In Progress' ? '66%' : '0%')),
+                              height: '100%',
+                              background: '#FF2E83',
+                              transition: 'width 0.4s'
+                            }}></div>
+                          </div>
+
+                          <div style={{ display: 'flex', justifyContent: 'space-between', zIndex: 1, position: 'relative' }}>
+                            {[
+                              { label: 'Assigned', active: true },
+                              { label: 'Reached Tailor', active: selectedOrder.taskStatus === 'In Progress' || selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
+                              { label: 'Picked Up', active: selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Delivered' },
+                              { label: 'Delivered', active: selectedOrder.taskStatus === 'Delivered' }
+                            ].map((step, idx) => (
+                              <div key={idx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '90px', textAlign: 'center' }}>
+                                <div style={{ 
+                                  width: '32px', 
+                                  height: '32px', 
+                                  borderRadius: '50%', 
+                                  background: step.active ? '#FF2E83' : (isDark ? '#2e2e4e' : '#E9EEF5'), 
+                                  color: '#ffffff',
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center',
+                                  fontSize: '13px',
+                                  fontWeight: '700',
+                                  boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+                                  border: step.active ? 'none' : `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`
+                                }}>
+                                  {step.active ? '✓' : idx + 1}
+                                </div>
+                                <span style={{ fontSize: '13px', color: step.active ? colorTextPrimary : '#6B7280', fontWeight: '600', marginTop: '8px' }}>{step.label}</span>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
 
-                      {/* Section 4: Detail cards row 2 */}
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }} className="order-details-row2">
-                        {/* Package Details */}
-                        <div className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                          <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                              <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(114,9,183,0.06)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>📦</div>
-                              <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>Package Details</strong>
-                            </div>
-
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.72rem' }}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
-                                <span style={{ color: colorTextMuted }}>Item</span>
-                                <strong style={{ color: colorTextPrimary }}>{selectedOrder.item}</strong>
-                              </div>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
-                                <span style={{ color: colorTextMuted }}>Weight</span>
-                                <strong style={{ color: colorTextPrimary }}>{selectedOrder.weight}</strong>
-                              </div>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
-                                <span style={{ color: colorTextMuted }}>Type</span>
-                                <strong style={{ color: colorTextPrimary }}>{selectedOrder.type}</strong>
-                              </div>
-                              <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px' }}>
-                                <span style={{ color: colorTextMuted }}>Fragile</span>
-                                <span style={{ background: selectedOrder.fragile === 'Yes' ? 'rgba(247,37,133,0.06)' : 'rgba(16,185,129,0.06)', color: selectedOrder.fragile === 'Yes' ? '#f72585' : '#10b981', padding: '1px 6px', borderRadius: '4px', fontWeight: 'bold', fontSize: '0.62rem' }}>
-                                  {selectedOrder.fragile}
+                      {/* Main workspace details content: Left Details / Right Map split */}
+                      <div style={{ display: 'flex', gap: '24px', flex: 1, minHeight: 0 }}>
+                        
+                        {/* LEFT COLUMN: Details Cards Grid */}
+                        <div style={{ flex: '0 0 calc(60% - 12px)', display: 'flex', flexDirection: 'column', gap: '20px', overflowY: 'auto', paddingRight: '4px' }}>
+                          
+                          {/* Row 1: Pickup Details & Delivery Details */}
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                            {/* Pickup Details */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(122, 62, 240, 0.08)', color: '#7A3EF0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>🏪</div>
+                                    <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Pickup Details</strong>
+                                  </div>
+                                  <button 
+                                    className="btn" 
+                                    onClick={() => alert(`Calling Tailor: ${selectedOrder.pickupPhone}`)}
+                                    style={{ 
+                                      height: '32px',
+                                      padding: '0 16px', 
+                                      borderRadius: '16px', 
+                                      border: '1.5px solid #7A3EF0',
+                                      background: 'transparent',
+                                      color: '#7A3EF0',
+                                      fontSize: '13px',
+                                      fontWeight: '700',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '6px',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                    📞 Call
+                                  </button>
+                                </div>
+                                <h5 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '700', color: colorTextPrimary }}>{selectedOrder.pickup}</h5>
+                                <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                                  {selectedOrder.pickupContactName} • {selectedOrder.pickupPhone}
                                 </span>
+                                <p style={{ margin: 0, fontSize: '14px', color: colorTextMuted, lineHeight: '1.4' }}>{selectedOrder.pickupAddress}</p>
+                              </div>
+                              <span style={{ fontSize: '13px', color: '#22C55E', fontWeight: '700', display: 'block', marginTop: '8px' }}>⏰ Open till {selectedOrder.pickupTime || '9:00 PM'}</span>
+                            </div>
+
+                            {/* Delivery Details */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255, 46, 131, 0.08)', color: '#FF2E83', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>🏠</div>
+                                    <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Delivery Details</strong>
+                                  </div>
+                                  <button 
+                                    className="btn" 
+                                    onClick={() => alert(`Calling Customer: ${selectedOrder.deliveryPhone}`)}
+                                    style={{ 
+                                      height: '32px',
+                                      padding: '0 16px', 
+                                      borderRadius: '16px', 
+                                      border: '1.5px solid #FF2E83',
+                                      background: 'transparent',
+                                      color: '#FF2E83',
+                                      fontSize: '13px',
+                                      fontWeight: '700',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      gap: '6px',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
+                                    📞 Call
+                                  </button>
+                                </div>
+                                <h5 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '700', color: colorTextPrimary }}>{selectedOrder.deliverTo}</h5>
+                                <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'block', fontWeight: '500', marginBottom: '8px' }}>
+                                  {selectedOrder.deliveryPhone}
+                                </span>
+                                <p style={{ margin: 0, fontSize: '14px', color: colorTextMuted, lineHeight: '1.4' }}>{selectedOrder.deliveryAddress}</p>
+                              </div>
+                              
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,46,131,0.04)', padding: '6px 12px', borderRadius: '8px', border: '1px dashed rgba(255,46,131,0.15)', marginTop: '8px' }}>
+                                <span style={{ fontSize: '13px', color: '#FF2E83', fontWeight: '700' }}>🔑 OTP Required</span>
+                                <strong style={{ fontSize: '15px', color: '#FF2E83', letterSpacing: '1px' }}>{selectedOrder.deliveryOtp}</strong>
                               </div>
                             </div>
                           </div>
 
-                          <div style={{ background: 'rgba(114,9,183,0.04)', padding: '6px 10px', borderRadius: '8px', border: '1px solid rgba(114,9,183,0.12)', display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
-                            <span>🛡️</span>
-                            <span style={{ fontSize: '0.68rem', color: '#7209b7', fontWeight: 'bold' }}>{selectedOrder.handleNote}</span>
-                          </div>
-                      </div>
+                          {/* Row 2: Package Details, Customer Note, Payment Details */}
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                            {/* Package Details */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(122, 62, 240, 0.08)', color: '#7A3EF0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>📦</div>
+                                  <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Package Details</strong>
+                                </div>
 
-                    {/* Customer Note */}
-                        <div className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(249,115,22,0.06)', color: '#f97316', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>📝</div>
-                            <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>Customer Note</strong>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px' }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingBottom: '4px' }}>
+                                    <span style={{ color: '#6B7280' }}>Item</span>
+                                    <strong style={{ color: colorTextPrimary }}>{selectedOrder.item}</strong>
+                                  </div>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingBottom: '4px' }}>
+                                    <span style={{ color: '#6B7280' }}>Weight</span>
+                                    <strong style={{ color: colorTextPrimary }}>{selectedOrder.weight}</strong>
+                                  </div>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px' }}>
+                                    <span style={{ color: '#6B7280' }}>Fragile</span>
+                                    <span style={{ background: selectedOrder.fragile === 'Yes' ? 'rgba(255,46,131,0.06)' : 'rgba(34,197,94,0.06)', color: selectedOrder.fragile === 'Yes' ? '#FF2E83' : '#22C55E', padding: '2px 8px', borderRadius: '6px', fontWeight: '700', fontSize: '12px' }}>
+                                      {selectedOrder.fragile}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div style={{ background: 'rgba(122,62,240,0.04)', padding: '6px 12px', borderRadius: '8px', border: '1px dashed rgba(122,62,240,0.15)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span>🛡️</span>
+                                <span style={{ fontSize: '12px', color: '#7A3EF0', fontWeight: '700' }}>{selectedOrder.handleNote}</span>
+                              </div>
+                            </div>
+
+                            {/* Customer Notes */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,159,67,0.08)', color: '#FF9F43', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>📝</div>
+                                <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Customer Note</strong>
+                              </div>
+                              <p style={{ margin: 0, fontSize: '15px', color: colorTextSecondary, lineHeight: '1.6', fontStyle: 'italic', flex: 1 }}>
+                                "{selectedOrder.customerNote}"
+                              </p>
+                            </div>
+
+                            {/* Payment Details */}
+                            <div 
+                              className="glass-card-no-hover" 
+                              style={{ 
+                                padding: '24px', 
+                                background: bgCard, 
+                                border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                                borderRadius: '16px',
+                                height: '230px',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                              }}
+                            >
+                              <div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(34, 197, 94, 0.08)', color: '#22C55E', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '16px' }}>💵</div>
+                                  <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Payment Details</strong>
+                                </div>
+
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px' }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span style={{ color: '#6B7280' }}>Payment Type</span>
+                                    <span style={{ 
+                                      background: selectedOrder.paymentType === 'Prepaid' ? '#EAFBF3' : 'rgba(255,46,131,0.06)', 
+                                      color: selectedOrder.paymentType === 'Prepaid' ? '#22C55E' : '#FF2E83', 
+                                      padding: '4px 10px', 
+                                      borderRadius: '6px', 
+                                      fontWeight: '700', 
+                                      fontSize: '13px' 
+                                    }}>
+                                      {selectedOrder.paymentType}
+                                    </span>
+                                  </div>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingTop: '12px', marginTop: '4px' }}>
+                                    <span style={{ color: '#6B7280' }}>Order Value</span>
+                                    <strong style={{ color: colorTextPrimary, fontSize: '16px', fontWeight: '700' }}>{selectedOrder.orderValue}</strong>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <p style={{ margin: 0, fontSize: '0.75rem', color: colorTextSecondary, lineHeight: '1.5', flex: 1 }}>
-                            "{selectedOrder.customerNote}"
-                          </p>
+
                         </div>
 
-                        {/* Payment Details */}
-                        <div className="glass-card-no-hover" style={{ padding: '16px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                            <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16,185,129,0.06)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>💵</div>
-                            <strong style={{ fontSize: '0.78rem', color: colorTextPrimary }}>Payment Details</strong>
-                          </div>
-
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.75rem', flex: 1, justifyContent: 'center' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                              <span style={{ color: colorTextMuted }}>Payment Type</span>
-                              <span style={{ background: selectedOrder.paymentType === 'Prepaid' ? 'rgba(16,185,129,0.06)' : 'rgba(247,37,133,0.06)', color: selectedOrder.paymentType === 'Prepaid' ? '#10b981' : '#f72585', padding: '2px 8px', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.65rem' }}>
-                                {selectedOrder.paymentType}
-                              </span>
+                        {/* RIGHT COLUMN: Route Overview Map */}
+                        <div style={{ flex: '0 0 calc(40% - 12px)', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                          <div 
+                            className="glass-card-no-hover" 
+                            style={{ 
+                              padding: '24px', 
+                              background: bgCard, 
+                              border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, 
+                              borderRadius: '16px', 
+                              display: 'flex', 
+                              flexDirection: 'column', 
+                              flex: 1,
+                              justifyContent: 'space-between',
+                              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+                            }}
+                          >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                              <strong style={{ fontSize: '18px', fontWeight: '600', color: colorTextPrimary }}>Route Overview</strong>
+                              <span style={{ fontSize: '15px', color: '#FF2E83', fontWeight: '700' }}>{selectedOrder.distance} • {selectedOrder.estTime}</span>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                              <span style={{ color: colorTextMuted }}>Order Value</span>
-                              <strong style={{ color: colorTextPrimary, fontSize: '0.85rem' }}>{selectedOrder.orderValue}</strong>
+
+                            {/* Leaflet map container */}
+                            <div style={{ flex: 1, minHeight: '360px', height: '360px', borderRadius: '16px', overflow: 'hidden', border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, position: 'relative' }}>
+                              <div ref={orderMapRef} style={{ width: '100%', height: '100%', filter: isDark ? 'invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none', zIndex: 1 }} />
+                              <button 
+                                onClick={() => {
+                                  try {
+                                    const pickup = selectedOrder.pickupCoords || [12.9592, 77.6974];
+                                    const deliver = selectedOrder.deliveryCoords || [12.9660, 77.7320];
+                                    const L = window.L;
+                                    if (orderMapInstance.current && L) {
+                                      orderMapInstance.current.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [24, 24] });
+                                    }
+                                  } catch (e) {
+                                    console.error("Map fitBounds failed", e);
+                                  }
+                                }}
+                                style={{
+                                  position: 'absolute',
+                                  bottom: '12px',
+                                  right: '12px',
+                                  background: 'rgba(255,255,255,0.95)',
+                                  border: 'none',
+                                  borderRadius: '8px',
+                                  padding: '8px 12px',
+                                  fontSize: '13px',
+                                  fontWeight: '700',
+                                  cursor: 'pointer',
+                                  zIndex: 10,
+                                  color: '#1E293B',
+                                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '4px'
+                                }}
+                              >
+                                📍 Live Location
+                              </button>
+                            </div>
+
+                            {/* Map specs footer */}
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingTop: '16px', marginTop: '16px' }}>
+                              <div>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>Distance</span>
+                                <strong style={{ color: colorTextPrimary, fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block' }}>{selectedOrder.distance}</strong>
+                              </div>
+                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '12px' }}>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>ETA</span>
+                                <strong style={{ color: colorTextPrimary, fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block' }}>{selectedOrder.estTime}</strong>
+                              </div>
+                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '12px' }}>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>Traffic</span>
+                                <strong style={{ color: selectedOrder.traffic === 'Light' ? '#22C55E' : (selectedOrder.traffic === 'Moderate' ? '#FF9F43' : '#FF2E83'), fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block' }}>
+                                  ● {selectedOrder.traffic}
+                                </strong>
+                              </div>
+                              <div style={{ borderLeft: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingLeft: '12px' }}>
+                                <span style={{ color: '#6B7280', display: 'block', fontSize: '13px', fontWeight: '600' }}>Best Route</span>
+                                <strong style={{ color: colorTextPrimary, fontSize: '15px', fontWeight: '700', marginTop: '4px', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{selectedOrder.bestRoute}</strong>
+                              </div>
                             </div>
                           </div>
                         </div>
+
                       </div>
 
                       {/* Section 5: Bottom action footer bar */}
-                      <div style={{ display: 'flex', gap: '12px', borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }} className="order-details-actions">
+                      <div style={{ display: 'flex', gap: '16px', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingTop: '20px', marginTop: '20px' }} className="order-details-actions">
                         <button 
-                          className="btn btn-solid-purple" 
                           onClick={() => setActiveTab('navigation')}
                           style={{ 
                             flex: 1, 
-                            padding: '12px', 
-                            borderRadius: '12px', 
-                            fontSize: '0.8rem', 
+                            height: '64px',
+                            borderRadius: '14px', 
+                            fontSize: '15px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '8px', 
-                            cursor: 'pointer'
+                            gap: '10px', 
+                            background: 'linear-gradient(135deg, #7A3EF0 0%, #9B6BF7 100%)',
+                            color: '#ffffff',
+                            border: 'none',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 12px rgba(122, 62, 240, 0.2)'
                           }}
                         >
-                          <Navigation size={14} style={{ transform: 'rotate(45deg)' }} /> Navigate
+                          <Navigation size={18} style={{ transform: 'rotate(45deg)' }} /> Navigate
                         </button>
+
                         <button 
-                          className="btn btn-solid-pink" 
                           onClick={() => alert(`Calling customer: ${selectedOrder.deliveryPhone}`)}
                           style={{ 
                             flex: 1, 
-                            padding: '12px', 
-                            borderRadius: '12px', 
-                            fontSize: '0.8rem', 
+                            height: '64px',
+                            borderRadius: '14px', 
+                            fontSize: '15px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '8px', 
-                            cursor: 'pointer'
+                            gap: '10px', 
+                            background: 'linear-gradient(135deg, #FF2E83 0%, #FF60A4 100%)',
+                            color: '#ffffff',
+                            border: 'none',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 12px rgba(255, 46, 131, 0.2)'
                           }}
                         >
-                          <Phone size={14} /> Call Customer
+                          <Phone size={18} /> Call Customer
                         </button>
+
                         <button 
-                          className="btn btn-solid-purple" 
                           onClick={() => alert(`Calling tailor: ${selectedOrder.pickupPhone}`)}
                           style={{ 
                             flex: 1, 
-                            padding: '12px', 
-                            borderRadius: '12px', 
-                            fontSize: '0.8rem', 
+                            height: '64px',
+                            borderRadius: '14px', 
+                            fontSize: '15px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '8px', 
-                            cursor: 'pointer'
+                            gap: '10px', 
+                            background: 'linear-gradient(135deg, #7A3EF0 0%, #9B6BF7 100%)',
+                            color: '#ffffff',
+                            border: 'none',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 12px rgba(122, 62, 240, 0.2)'
                           }}
                         >
-                          <Phone size={14} /> Call Tailor
+                          <Phone size={18} /> Call Tailor
                         </button>
+
                         <button 
-                          className="btn" 
                           onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
                           style={{ 
-                            flex: 0.8, 
-                            padding: '12px', 
-                            borderRadius: '12px', 
-                            fontSize: '0.8rem', 
+                            flex: 1, 
+                            height: '64px',
+                            borderRadius: '14px', 
+                            fontSize: '15px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '8px', 
-                            background: isDark ? 'rgba(114,9,183,0.15)' : '#f5f3ff', 
-                            color: '#7209b7', 
-                            border: isDark ? '1px solid rgba(114,9,183,0.3)' : '1px solid rgba(114,9,183,0.15)',
+                            gap: '10px', 
+                            background: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff', 
+                            color: '#7A3EF0', 
+                            border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
                             cursor: 'pointer'
                           }}
                         >
-                          <MessageSquare size={14} /> Chat
+                          <MessageSquare size={18} /> Chat
                         </button>
                         
                         {selectedOrder.status === 'upcoming' && (
-                          <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
-                            <button 
-                              className="btn btn-text-white-force"
-                              onClick={() => {
-                                alert(`Task accepted! Navigating to Pickup point.`);
-                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
-                                setOrdersList(updated);
-                                setSelectedOrder({ ...selectedOrder, status: 'active', taskStatus: 'In Progress' });
-                              }}
-                              style={{ flex: 1, background: 'transparent', border: 'none', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 0', cursor: 'pointer', boxShadow: 'none' }}
-                            >
-                              <Check size={14} /> Accept Task
-                            </button>
-                            <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
-                            <button 
-                              className="btn btn-text-white-force"
-                              onClick={() => alert("More options: Reject Task, View details")}
-                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
-                            >
-                              <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
-                            </button>
-                          </div>
+                          <button 
+                            onClick={() => {
+                              alert(`Task accepted! Navigating to Pickup point.`);
+                              const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
+                              setOrdersList(updated);
+                              setSelectedOrder({ ...selectedOrder, status: 'active', taskStatus: 'In Progress' });
+                            }}
+                            style={{ 
+                              flex: 1.2, 
+                              height: '64px',
+                              borderRadius: '14px', 
+                              fontSize: '15px', 
+                              fontWeight: '700', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              gap: '10px', 
+                              background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
+                              color: '#ffffff',
+                              border: 'none',
+                              cursor: 'pointer',
+                              boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
+                            }}
+                          >
+                            <Check size={18} /> Accept Task
+                          </button>
                         )}
 
                         {selectedOrder.status === 'active' && (selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Pickup Pending') && (
-                          <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
-                            <button 
-                              className="btn btn-text-white-force"
-                              onClick={() => {
-                                alert(`Order picked up! Now navigating to delivery point.`);
-                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, taskStatus: 'In Progress' } : o);
-                                setOrdersList(updated);
-                                setSelectedOrder({ ...selectedOrder, taskStatus: 'In Progress' });
-                              }}
-                              style={{ flex: 1, background: 'transparent', border: 'none', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px 0', cursor: 'pointer', boxShadow: 'none' }}
-                            >
-                              <Check size={14} /> Picked Up
-                            </button>
-                            <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
-                            <button 
-                              className="btn btn-text-white-force"
-                              onClick={() => alert("More options: Delay Pickup, Issue at Tailor")}
-                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
-                            >
-                              <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
-                            </button>
-                          </div>
+                          <button 
+                            onClick={() => {
+                              alert(`Order picked up! Now navigating to delivery point.`);
+                              const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, taskStatus: 'In Progress' } : o);
+                              setOrdersList(updated);
+                              setSelectedOrder({ ...selectedOrder, taskStatus: 'In Progress' });
+                            }}
+                            style={{ 
+                              flex: 1.2, 
+                              height: '64px',
+                              borderRadius: '14px', 
+                              fontSize: '15px', 
+                              fontWeight: '700', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              gap: '10px', 
+                              background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
+                              color: '#ffffff',
+                              border: 'none',
+                              cursor: 'pointer',
+                              boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
+                            }}
+                          >
+                            <Check size={18} /> Picked Up
+                          </button>
                         )}
 
                         {selectedOrder.status === 'active' && selectedOrder.taskStatus === 'In Progress' && (
-                          <div style={{ display: 'flex', alignItems: 'stretch', background: '#10b981', borderRadius: '12px', color: '#fff', flex: 1.5, overflow: 'hidden' }}>
-                            <button 
-                              className="btn btn-text-white-force"
-                              onClick={() => {
-                                const code = prompt("Enter customer Delivery OTP to verify delivery:");
-                                if (code === selectedOrder.deliveryOtp) {
-                                  alert("OTP Verified! Order marked completed.");
-                                  const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'completed', taskStatus: 'Delivered' } : o);
-                                  setOrdersList(updated);
-                                  setSelectedOrder({ ...selectedOrder, status: 'completed', taskStatus: 'Delivered' });
-                                } else {
-                                  alert("Incorrect OTP code. Verification failed.");
-                                }
-                              }}
-                              style={{ flex: 1, background: 'transparent', border: 'none', fontSize: '0.8rem', fontWeight: '700', display: 'flex', alignItems: 'center', justify: 'center', gap: '8px', padding: '12px 0', cursor: 'pointer', boxShadow: 'none' }}
-                            >
-                              <Check size={14} /> Delivered
-                            </button>
-                            <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '8px 0' }} />
-                            <button 
-                              className="btn btn-text-white-force"
-                              onClick={() => alert("More options: Customer Not Available, Delay Delivery, Issue")}
-                              style={{ background: 'transparent', border: 'none', color: '#fff', padding: '0 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justify: 'center', boxShadow: 'none' }}
-                            >
-                              <ChevronRight size={14} style={{ transform: 'rotate(90deg)', color: '#fff' }} />
-                            </button>
-                          </div>
+                          <button 
+                            onClick={() => {
+                              const code = prompt("Enter customer Delivery OTP to verify delivery:");
+                              if (code === selectedOrder.deliveryOtp) {
+                                alert("OTP Verified! Order marked completed.");
+                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'completed', taskStatus: 'Delivered' } : o);
+                                setOrdersList(updated);
+                                setSelectedOrder({ ...selectedOrder, status: 'completed', taskStatus: 'Delivered' });
+                              } else {
+                                alert("Incorrect OTP code. Verification failed.");
+                              }
+                            }}
+                            style={{ 
+                              flex: 1.2, 
+                              height: '64px',
+                              borderRadius: '14px', 
+                              fontSize: '15px', 
+                              fontWeight: '700', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              gap: '10px', 
+                              background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
+                              color: '#ffffff',
+                              border: 'none',
+                              cursor: 'pointer',
+                              boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
+                            }}
+                          >
+                            <Check size={18} /> Delivered
+                          </button>
                         )}
                       </div>
                     </div>
