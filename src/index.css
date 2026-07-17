@@ -6372,6 +6372,8 @@ body.light-theme button.btn-chat-custom.btn svg {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
+  flex: 1;
+  min-height: 0;
 }
 
 @media (max-width: 1024px) {
