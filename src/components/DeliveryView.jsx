@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
   Phone, AlertTriangle, CheckCircle, Navigation, Send, Calendar, 
-  Clock, Check, ChevronRight, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
+  Clock, Check, ChevronRight, ChevronDown, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
   Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power
 } from 'lucide-react';
 
@@ -1658,7 +1658,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
               </div>
 
               {/* BOTTOM SECTION: Two-column grid workspace */}
-              <div style={{ display: 'grid', gridTemplateColumns: '400px 1fr', gap: '24px', height: 'calc(100vh - 250px)' }} className="orders-workspace-layout">
+              <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', gap: '24px', height: 'calc(100vh - 250px)' }} className="orders-workspace-layout">
                 
                 {/* Left Column: List of Category Orders */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%', overflowY: 'auto', paddingRight: '4px' }}>
@@ -2292,18 +2292,19 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       {/* Section 5: Bottom action footer bar */}
                       <div style={{ display: 'flex', gap: '16px', borderTop: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`, paddingTop: '20px', marginTop: '20px' }} className="order-details-actions">
                         <button 
+                          className="btn-text-white-force"
                           onClick={() => setActiveTab('navigation')}
                           style={{ 
                             flex: 1, 
-                            height: '64px',
-                            borderRadius: '14px', 
-                            fontSize: '15px', 
+                            height: '46px',
+                            borderRadius: '10px', 
+                            fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '10px', 
-                            background: 'linear-gradient(135deg, #7A3EF0 0%, #9B6BF7 100%)',
+                            gap: '8px', 
+                            background: '#7A3EF0',
                             color: '#ffffff',
                             border: 'none',
                             cursor: 'pointer',
@@ -2314,18 +2315,19 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         </button>
 
                         <button 
+                          className="btn-text-white-force"
                           onClick={() => alert(`Calling customer: ${selectedOrder.deliveryPhone}`)}
                           style={{ 
                             flex: 1, 
-                            height: '64px',
-                            borderRadius: '14px', 
-                            fontSize: '15px', 
+                            height: '46px',
+                            borderRadius: '10px', 
+                            fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '10px', 
-                            background: 'linear-gradient(135deg, #FF2E83 0%, #FF60A4 100%)',
+                            gap: '8px', 
+                            background: '#FF2E83',
                             color: '#ffffff',
                             border: 'none',
                             cursor: 'pointer',
@@ -2336,18 +2338,19 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         </button>
 
                         <button 
+                          className="btn-text-white-force"
                           onClick={() => alert(`Calling tailor: ${selectedOrder.pickupPhone}`)}
                           style={{ 
                             flex: 1, 
-                            height: '64px',
-                            borderRadius: '14px', 
-                            fontSize: '15px', 
+                            height: '46px',
+                            borderRadius: '10px', 
+                            fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '10px', 
-                            background: 'linear-gradient(135deg, #7A3EF0 0%, #9B6BF7 100%)',
+                            gap: '8px', 
+                            background: '#7A3EF0',
                             color: '#ffffff',
                             border: 'none',
                             cursor: 'pointer',
@@ -2358,20 +2361,21 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         </button>
 
                         <button 
+                          className="btn-chat-custom"
                           onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
                           style={{ 
                             flex: 1, 
-                            height: '64px',
-                            borderRadius: '14px', 
-                            fontSize: '15px', 
+                            height: '46px',
+                            borderRadius: '10px', 
+                            fontSize: '14px', 
                             fontWeight: '700', 
                             display: 'flex', 
                             alignItems: 'center', 
                             justifyContent: 'center', 
-                            gap: '10px', 
-                            background: isDark ? 'rgba(255,255,255,0.03)' : '#ffffff', 
+                            gap: '8px', 
+                            background: 'rgba(122, 62, 240, 0.08)',
                             color: '#7A3EF0', 
-                            border: `1.5px solid ${isDark ? borderColor : '#E9EEF5'}`,
+                            border: '1px solid rgba(122, 62, 240, 0.15)',
                             cursor: 'pointer'
                           }}
                         >
@@ -2380,6 +2384,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         
                         {selectedOrder.status === 'upcoming' && (
                           <button 
+                            className="btn-text-white-force"
                             onClick={() => {
                               alert(`Task accepted! Navigating to Pickup point.`);
                               const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, status: 'active', taskStatus: 'In Progress' } : o);
@@ -2388,15 +2393,15 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             }}
                             style={{ 
                               flex: 1.2, 
-                              height: '64px',
-                              borderRadius: '14px', 
-                              fontSize: '15px', 
+                              height: '46px',
+                              borderRadius: '10px', 
+                              fontSize: '14px', 
                               fontWeight: '700', 
                               display: 'flex', 
                               alignItems: 'center', 
                               justifyContent: 'center', 
-                              gap: '10px', 
-                              background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
+                              gap: '8px', 
+                              background: '#22C55E',
                               color: '#ffffff',
                               border: 'none',
                               cursor: 'pointer',
@@ -2408,36 +2413,56 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         )}
 
                         {selectedOrder.status === 'active' && (selectedOrder.taskStatus === 'Ready' || selectedOrder.taskStatus === 'Pickup Pending') && (
-                          <button 
-                            onClick={() => {
-                              alert(`Order picked up! Now navigating to delivery point.`);
-                              const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, taskStatus: 'In Progress' } : o);
-                              setOrdersList(updated);
-                              setSelectedOrder({ ...selectedOrder, taskStatus: 'In Progress' });
-                            }}
-                            style={{ 
-                              flex: 1.2, 
-                              height: '64px',
-                              borderRadius: '14px', 
-                              fontSize: '15px', 
-                              fontWeight: '700', 
-                              display: 'flex', 
-                              alignItems: 'center', 
-                              justifyContent: 'center', 
-                              gap: '10px', 
-                              background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
-                              color: '#ffffff',
-                              border: 'none',
-                              cursor: 'pointer',
-                              boxShadow: '0 4px 12px rgba(34, 197, 94, 0.2)'
-                            }}
-                          >
-                            <Check size={18} /> Picked Up
-                          </button>
+                          <div style={{ display: 'flex', flex: 1.2, height: '46px', borderRadius: '10px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(31, 199, 126, 0.2)' }}>
+                            <button 
+                              className="btn-text-white-force"
+                              onClick={() => {
+                                alert(`Order picked up! Now navigating to delivery point.`);
+                                const updated = ordersList.map(o => o.id === selectedOrder.id ? { ...o, taskStatus: 'In Progress' } : o);
+                                setOrdersList(updated);
+                                setSelectedOrder({ ...selectedOrder, taskStatus: 'In Progress' });
+                              }}
+                              style={{ 
+                                flex: 1, 
+                                height: '100%',
+                                fontSize: '14px', 
+                                fontWeight: '700', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center', 
+                                gap: '8px', 
+                                background: '#1FC77E', // Brand Green
+                                color: '#ffffff',
+                                border: 'none',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <Check size={18} /> Picked Up
+                            </button>
+                            <div style={{ width: '1.5px', background: 'rgba(255,255,255,0.2)', height: '100%' }}></div>
+                            <button
+                              className="btn-text-white-force"
+                              onClick={() => alert("Open options...")}
+                              style={{
+                                width: '36px',
+                                height: '100%',
+                                background: '#1FC77E',
+                                color: '#ffffff',
+                                border: 'none',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                              }}
+                            >
+                              <ChevronDown size={14} />
+                            </button>
+                          </div>
                         )}
 
                         {selectedOrder.status === 'active' && selectedOrder.taskStatus === 'In Progress' && (
                           <button 
+                            className="btn-text-white-force"
                             onClick={() => {
                               const code = prompt("Enter customer Delivery OTP to verify delivery:");
                               if (code === selectedOrder.deliveryOtp) {
@@ -2451,15 +2476,15 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             }}
                             style={{ 
                               flex: 1.2, 
-                              height: '64px',
-                              borderRadius: '14px', 
-                              fontSize: '15px', 
+                              height: '46px',
+                              borderRadius: '10px', 
+                              fontSize: '14px', 
                               fontWeight: '700', 
                               display: 'flex', 
                               alignItems: 'center', 
                               justifyContent: 'center', 
-                              gap: '10px', 
-                              background: 'linear-gradient(135deg, #22C55E 0%, #4ADE80 100%)',
+                              gap: '8px', 
+                              background: '#22C55E',
                               color: '#ffffff',
                               border: 'none',
                               cursor: 'pointer',

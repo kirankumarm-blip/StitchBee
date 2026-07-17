@@ -6324,6 +6324,20 @@ body.light-theme button.quick-action-btn * {
 }
 
 
+body button.btn-chat-custom,
+body.light-theme button.btn-chat-custom.btn {
+  background: rgba(122, 62, 240, 0.08) !important;
+  color: #7A3EF0 !important;
+  border: 1.5px solid rgba(122, 62, 240, 0.15) !important;
+}
+body button.btn-chat-custom *,
+body button.btn-chat-custom svg,
+body.light-theme button.btn-chat-custom.btn *,
+body.light-theme button.btn-chat-custom.btn svg {
+  color: #7A3EF0 !important;
+  stroke: #7A3EF0 !important;
+}
+
 /* StitchBee Rider Portal Orders Page Responsive Design overrides */
 .order-details-split-container {
   display: flex;
