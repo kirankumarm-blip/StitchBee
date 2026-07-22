@@ -183,11 +183,11 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '48px 60px',
+          padding: '24px 48px',
           boxSizing: 'border-box',
           position: 'relative',
           height: '100%',
-          overflowY: 'auto'
+          overflowY: 'hidden'
         }}
         className="auth-page-content"
       >
@@ -238,15 +238,15 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         </div>
 
         {/* CENTERED LOGIN CARD */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, margin: '30px 0' }} className="auth-card-wrapper">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, margin: '16px 0' }} className="auth-card-wrapper">
           <div 
             style={{ 
               width: '100%', 
-              maxWidth: '640px', 
+              maxWidth: '820px', 
               background: bgCard, 
               border: `1.5px solid ${borderColor}`, 
               borderRadius: '28px', 
-              padding: '48px',
+              padding: '36px 44px',
               boxShadow: isDark ? '0 20px 60px rgba(0,0,0,0.4)' : '0 20px 60px rgba(106,0,244,0.08)',
               boxSizing: 'border-box',
               textAlign: 'left'
@@ -254,13 +254,13 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             className="auth-card"
           >
             {/* Header Content */}
-            <span style={{ fontSize: '20px', fontWeight: '700', color: '#EC0B79', display: 'block', marginBottom: '6px' }}>
+            <span style={{ fontSize: '15px', fontWeight: '700', color: '#EC0B79', display: 'block', marginBottom: '6px' }}>
               {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
             </span>
-            <h2 style={{ margin: 0, fontSize: '48px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-1px', lineHeight: '1.1' }}>
+            <h2 style={{ margin: 0, fontSize: '30px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px', lineHeight: '1.1' }}>
               {tab === 'login' ? 'Login to your account' : 'Create your account'}
             </h2>
-            <span style={{ fontSize: '20px', color: colorTextSecondary, display: 'block', marginBottom: '32px', marginTop: '6px', fontWeight: '500' }}>
+            <span style={{ fontSize: '15px', color: colorTextSecondary, display: 'block', marginBottom: '20px', marginTop: '6px', fontWeight: '500' }}>
               {tab === 'login' ? 'Enter your details to continue' : 'Start your journey with us today'}
             </span>
 
@@ -272,21 +272,21 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               
               {tab === 'signup' && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="auth-name-phone-row">
                   {/* Full Name */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Full Name</label>
-                    <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '64px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Full Name</label>
+                    <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '52px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
                       <User size={18} style={{ color: colorTextMuted, marginRight: '12px', flexShrink: 0 }} />
                       <input 
                         type="text" 
                         placeholder="John Doe" 
                         value={name} 
                         onChange={(e) => setName(e.target.value)} 
-                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '20px', color: colorTextPrimary, fontWeight: '500' }} 
+                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '16px', color: colorTextPrimary, fontWeight: '500' }} 
                         required 
                       />
                     </div>
@@ -294,15 +294,15 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
 
                   {/* Phone Number */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Phone Number</label>
-                    <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '64px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Phone Number</label>
+                    <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '52px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
                       <Phone size={18} style={{ color: colorTextMuted, marginRight: '12px', flexShrink: 0 }} />
                       <input 
                         type="tel" 
                         placeholder="+91 98765 43210" 
                         value={phone} 
                         onChange={(e) => setPhone(e.target.value)} 
-                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '20px', color: colorTextPrimary, fontWeight: '500' }} 
+                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '16px', color: colorTextPrimary, fontWeight: '500' }} 
                         required 
                       />
                     </div>
@@ -312,15 +312,15 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
 
               {/* Email Address */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Email Address</label>
-                <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '64px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
+                <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Email Address</label>
+                <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '52px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
                   <Mail size={18} style={{ color: colorTextMuted, marginRight: '12px', flexShrink: 0 }} />
                   <input 
                     type="email" 
                     placeholder="john@example.com" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
-                    style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '20px', color: colorTextPrimary, fontWeight: '500' }} 
+                    style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '16px', color: colorTextPrimary, fontWeight: '500' }} 
                     required 
                   />
                 </div>
@@ -331,15 +331,15 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 
                 {/* Password */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Password</label>
-                  <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '64px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative' }}>
+                  <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Password</label>
+                  <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '52px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative' }}>
                     <Lock size={18} style={{ color: colorTextMuted, marginRight: '12px', flexShrink: 0 }} />
                     <input 
                       type={showPassword ? 'text' : 'password'} 
                       placeholder="••••••••" 
                       value={password} 
                       onChange={(e) => setPassword(e.target.value)} 
-                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '20px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '16px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
                       required 
                     />
                     <button 
@@ -355,15 +355,15 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 {/* Confirm Password */}
                 {tab === 'signup' && (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Confirm Password</label>
-                    <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '64px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative' }}>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Confirm Password</label>
+                    <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '52px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative' }}>
                       <Lock size={18} style={{ color: colorTextMuted, marginRight: '12px', flexShrink: 0 }} />
                       <input 
                         type={showConfirmPassword ? 'text' : 'password'} 
                         placeholder="••••••••" 
                         value={confirmPassword} 
                         onChange={(e) => setConfirmPassword(e.target.value)} 
-                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '20px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
+                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '16px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
                         required 
                       />
                       <button 
@@ -382,7 +382,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               {/* Roles Cards Grid (Only Signup) */}
               {tab === 'signup' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Register as</label>
+                  <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Register as</label>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }} className="auth-roles-grid">
                     
                     {[
@@ -433,15 +433,15 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               {/* Customer Sizing Address */}
               {tab === 'signup' && role === 'customer' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }} className="animate-fade-in">
-                  <label style={{ fontSize: '18px', fontWeight: '600', color: colorTextSecondary }}>Delivery & Sizing Address</label>
-                  <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '64px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
+                  <label style={{ fontSize: '14px', fontWeight: '600', color: colorTextSecondary }}>Delivery & Sizing Address</label>
+                  <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '14px', padding: '0 24px', height: '52px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
                     <MapPin size={18} style={{ color: colorTextMuted, marginRight: '12px', flexShrink: 0 }} />
                     <input 
                       type="text" 
                       placeholder="123 Green Glen Road, HSR Layout, Bengaluru" 
                       value={address} 
                       onChange={(e) => setAddress(e.target.value)} 
-                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '20px', color: colorTextPrimary, fontWeight: '500' }} 
+                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '16px', color: colorTextPrimary, fontWeight: '500' }} 
                       required 
                     />
                   </div>
@@ -450,13 +450,13 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
 
               {/* Remember Me / Forgot Password */}
               {tab === 'login' && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '18px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '14px' }}>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: colorTextSecondary, fontWeight: '600' }}>
                     <input 
                       type="checkbox" 
                       checked={rememberMe} 
                       onChange={(e) => setRememberMe(e.target.checked)} 
-                      style={{ accentColor: '#EC0B79', width: '20px', height: '20px', borderRadius: '4px' }} 
+                      style={{ accentColor: '#EC0B79', width: '18px', height: '18px', borderRadius: '4px' }} 
                     />
                     Remember me
                   </label>
@@ -490,13 +490,13 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 type="submit"
                 style={{ 
                   width: '100%', 
-                  height: '64px',
+                  height: '52px',
                   background: 'linear-gradient(135deg, #EC0B79 0%, #6A00F4 100%)', 
                   color: '#ffffff', 
                   border: 'none', 
                   borderRadius: '16px', 
                   fontWeight: '700', 
-                  fontSize: '24px', 
+                  fontSize: '18px', 
                   cursor: 'pointer', 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -516,9 +516,9 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             </form>
 
             {/* Separator */}
-            <div style={{ display: 'flex', alignItems: 'center', margin: '28px 0 20px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', margin: '16px 0 12px 0' }}>
               <div style={{ flex: 1, height: '1px', background: borderColor }} />
-              <span style={{ padding: '0 14px', fontSize: '14px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>or continue with</span>
+              <span style={{ padding: '0 14px', fontSize: '13px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>or continue with</span>
               <div style={{ flex: 1, height: '1px', background: borderColor }} />
             </div>
 
@@ -528,30 +528,30 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               <button 
                 type="button"
                 onClick={() => handleQuickFill('customer@stitchbee.com', 'customer123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: bgCard, border: `1.5px solid ${borderColor}`, height: '64px', borderRadius: '16px', fontSize: '18px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: bgCard, border: `1.5px solid ${borderColor}`, height: '52px', borderRadius: '16px', fontSize: '15px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
                 title="Quick Fill Customer"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style={{ width: '20px', height: '20px' }} />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style={{ width: '18px', height: '18px' }} />
                 <span>Google</span>
               </button>
 
               <button 
                 type="button"
                 onClick={() => handleQuickFill('tailor@stitchbee.com', 'tailor123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: bgCard, border: `1.5px solid ${borderColor}`, height: '64px', borderRadius: '16px', fontSize: '18px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: bgCard, border: `1.5px solid ${borderColor}`, height: '52px', borderRadius: '16px', fontSize: '15px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
                 title="Quick Fill Tailor"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" style={{ width: '20px', height: '20px' }} />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" style={{ width: '18px', height: '18px' }} />
                 <span>Facebook</span>
               </button>
 
               <button 
                 type="button"
                 onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: bgCard, border: `1.5px solid ${borderColor}`, height: '64px', borderRadius: '16px', fontSize: '18px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: bgCard, border: `1.5px solid ${borderColor}`, height: '52px', borderRadius: '16px', fontSize: '15px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
                 title="Quick Fill Delivery Partner"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style={{ width: '20px', height: '20px', filter: isDark ? 'invert(1)' : 'none' }} />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style={{ width: '18px', height: '18px', filter: isDark ? 'invert(1)' : 'none' }} />
                 <span>Apple</span>
               </button>
 
@@ -565,43 +565,43 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
           style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '32px', 
+            gap: '16px', 
             borderTop: `1.5px solid ${borderColor}`, 
-            paddingTop: '20px', 
+            paddingTop: '12px', 
             width: '100%', 
             boxSizing: 'border-box',
-            marginTop: '12px'
+            marginTop: '8px'
           }}
           className="auth-trust-row"
         >
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(29, 185, 84, 0.12)', color: '#1DB954', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Shield size={20} />
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(29, 185, 84, 0.12)', color: '#1DB954', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Shield size={18} />
             </div>
             <div>
-              <span style={{ fontSize: '16px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>Verified Partners</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted }}>Background verified</span>
+              <span style={{ fontSize: '14px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>Verified Partners</span>
+              <span style={{ fontSize: '11px', color: colorTextMuted }}>Background verified</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(106, 0, 244, 0.12)', color: '#6A00F4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Headphones size={20} />
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(106, 0, 244, 0.12)', color: '#6A00F4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Headphones size={18} />
             </div>
             <div>
-              <span style={{ fontSize: '16px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>24/7 Support</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted }}>We're here to help</span>
+              <span style={{ fontSize: '14px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>24/7 Support</span>
+              <span style={{ fontSize: '11px', color: colorTextMuted }}>We're here to help</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255, 46, 131, 0.12)', color: '#EC0B79', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <CreditCard size={20} />
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(255, 46, 131, 0.12)', color: '#EC0B79', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <CreditCard size={18} />
             </div>
             <div>
-              <span style={{ fontSize: '16px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>Secure Payments</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted }}>100% safe & secure</span>
+              <span style={{ fontSize: '14px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>Secure Payments</span>
+              <span style={{ fontSize: '11px', color: colorTextMuted }}>100% safe & secure</span>
             </div>
           </div>
 
