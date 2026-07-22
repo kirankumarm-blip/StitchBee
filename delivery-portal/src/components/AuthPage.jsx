@@ -333,6 +333,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               {tab === 'login' ? "Don't have an account?" : "Already have an account?"}
             </span>
             <button
+              className="btn-primary"
               onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
               style={{
                 background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
@@ -932,6 +933,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               {/* Gradient Submit Button */}
               <button 
                 type="submit"
+                className="btn-primary"
                 style={{ 
                   width: '100%', 
                   height: '56px',

@@ -214,21 +214,29 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               </span>
               <button 
                 type="button"
+                className="btn-primary"
                 onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
                 style={{ 
-                  background: 'transparent', 
-                  color: '#EC0B79', 
-                  border: '1.5px solid #EC0B79', 
+                  background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
+                  color: '#ffffff', 
+                  border: 'none', 
                   padding: '8px 20px', 
                   borderRadius: '14px', 
                   fontSize: '16px', 
                   fontWeight: '700', 
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  boxShadow: '0 4px 12px rgba(247, 37, 133, 0.2)'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(236, 11, 121, 0.08)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(247, 37, 133, 0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(247, 37, 133, 0.2)';
+                }}
               >
                 {tab === 'login' ? 'Sign Up' : 'Login'}
               </button>
@@ -488,10 +496,11 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               {/* Gradient Submit Button */}
               <button 
                 type="submit"
+                className="btn-primary"
                 style={{ 
                   width: '100%', 
                   height: '52px',
-                  background: 'linear-gradient(135deg, #EC0B79 0%, #6A00F4 100%)', 
+                  background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
                   color: '#ffffff', 
                   border: 'none', 
                   borderRadius: '16px', 
@@ -502,12 +511,18 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   gap: '10px',
-                  boxShadow: '0 15px 35px rgba(106, 0, 244, 0.22)',
+                  boxShadow: '0 12px 28px rgba(247, 37, 133, 0.2)',
                   marginTop: '10px',
                   transition: 'all 0.2s ease'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-1px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 16px 36px rgba(247, 37, 133, 0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(247, 37, 133, 0.2)';
+                }}
               >
                 <span>{tab === 'login' ? 'Login' : 'Create Account'}</span>
                 <ArrowRight size={22} />
