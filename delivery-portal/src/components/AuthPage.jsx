@@ -163,10 +163,10 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
       className="auth-page-layout"
     >
       
-      {/* LEFT SIDE COLUMN (40% Width) */}
+      {/* LEFT SIDE COLUMN (45% Width) */}
       <div 
         style={{ 
-          width: '40%',
+          width: '45%',
           backgroundImage: 'url(/auth_banner.jpg)',
           backgroundSize: '100% 100%',
           backgroundPosition: 'center',
@@ -176,10 +176,10 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         className="auth-page-banner"
       />
 
-      {/* RIGHT SIDE COLUMN (60% Width) */}
+      {/* RIGHT SIDE COLUMN (55% Width) */}
       <div 
         style={{ 
-          width: '60%',
+          width: '55%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
