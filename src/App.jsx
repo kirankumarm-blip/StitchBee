@@ -6,6 +6,7 @@ import TailorView from './components/TailorView';
 import StudentView from './components/StudentView';
 import AdminView from './components/AdminView';
 import AuthModal from './components/AuthModal';
+import AuthPage from './components/AuthPage';
 import AboutView from './components/AboutView';
 import BlogsView from './components/BlogsView';
 import BecomeTailorView from './components/BecomeTailorView';
@@ -571,9 +572,9 @@ export default function App() {
     setRole('landing');
   };
 
-  const openAuthModal = (role, tab) => {
-    setAuthModalConfig({ role, tab });
-    setAuthModalOpen(true);
+  const openAuthModal = (targetRole, tab) => {
+    setAuthModalConfig({ role: targetRole, tab });
+    setRole(tab); // tab is 'login' or 'signup'
   };
 
   const navigateToSection = (sectionId) => {
@@ -607,7 +608,7 @@ export default function App() {
     <div className="app-container">
       
       {/* Top sticky navigation bar */}
-      {!['customer', 'tailor', 'student', 'admin', 'delivery'].includes(role) && (
+      {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
         <header className="top-nav">
           <div className="logo" onClick={() => setRole('landing')}>
             <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
@@ -1944,7 +1945,20 @@ export default function App() {
         </footer>
       )}
 
-      {/* Auth Modal overlay */}
+      {/* Full screen Auth Page */}
+      {(role === 'login' || role === 'signup') && (
+        <AuthPage 
+          tab={role}
+          setTab={(newTab) => setRole(newTab)}
+          onLoginSuccess={handleLoginSuccess}
+          onClose={() => setRole('landing')}
+          theme={theme}
+          setTheme={setTheme}
+          initialRole={authModalConfig.role}
+        />
+      )}
+
+      {/* Auth Modal overlay (fallback) */}
       <AuthModal 
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}

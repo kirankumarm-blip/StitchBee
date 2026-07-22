@@ -7288,5 +7288,113 @@ svg * {
   }
 }
 
+/* Navigation Page Responsive Layout Classes */
+.nav-top-info-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav-top-info-card-metrics {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-bottom-info-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1024px) {
+  .nav-top-info-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+  .nav-top-info-card-metrics {
+    gap: 16px !important;
+    justify-content: space-between !important;
+  }
+  .nav-bottom-info-bar {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-top-info-card-metrics {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+  .nav-bottom-info-bar {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    padding: 12px 14px !important;
+  }
+  .nav-floating-status-stack {
+    max-width: 170px !important;
+  }
+}
+
+/* Full Page Authentication Styling */
+@media (max-width: 1023px) {
+  .auth-page-layout {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: auto !important;
+    border-radius: 0 !important;
+  }
+  .auth-page-banner {
+    display: block !important;
+    height: 320px !important;
+    width: 100% !important;
+    background-size: cover !important;
+  }
+  .auth-page-content {
+    width: 100% !important;
+    padding: 32px 20px !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .auth-page-banner {
+    display: none !important; /* Hide image banner on mobile for clean screen flow */
+  }
+  .auth-roles-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .auth-name-phone-row,
+  .auth-password-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .auth-card {
+    padding: 24px 20px !important;
+    border-radius: 20px !important;
+  }
+  .auth-social-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .auth-trust-row {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .auth-tab-toggle-container {
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 4px !important;
+  }
+}
+
+
+
 
 

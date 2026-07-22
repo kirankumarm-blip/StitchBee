@@ -172,45 +172,74 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
           delete navMapRef.current._leaflet_id;
         }
 
-        const map = L.map(navMapRef.current).setView([12.9592, 77.6974], 14);
+        const map = L.map(navMapRef.current, {
+          zoomControl: false,
+          attributionControl: false
+        }).setView([12.9600, 77.7100], 14);
         navMapInstance.current = map;
 
         const tileUrl = isDark 
           ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
           : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
         L.tileLayer(tileUrl, {
-          attribution: '&copy; Google Maps &copy; OpenStreetMap'
+          maxZoom: 20
         }).addTo(map);
 
-        const pickup = [12.9592, 77.6974];
-        const deliver = [12.9660, 77.7320];
+        const pickup = [12.9640, 77.6910];
+        const riderLoc = [12.9610, 77.7120];
+        const deliver = [12.9560, 77.7280];
 
-        map.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [40, 40] });
+        map.fitBounds(L.latLngBounds([pickup, deliver]), { padding: [60, 60] });
 
-        // Route line
-        L.polyline([pickup, deliver], {
-          color: '#f72585',
-          weight: 6,
+        // Route line (Dashed gradient pink/purple path)
+        L.polyline([pickup, riderLoc, deliver], {
+          color: '#FF2E8A',
+          weight: 5,
+          dashArray: '8, 8',
           opacity: 0.95
         }).addTo(map);
 
-        // Pickup Marker
+        // Pickup Marker Badge
         const pickupIcon = L.divIcon({
-          html: `<div style="background:#7209b7; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-size:14px;">🏪</div>`,
+          html: `<div style="display:flex; align-items:center; gap:6px; background:#ffffff; padding:4px 10px 4px 6px; border-radius:20px; box-shadow:0 6px 18px rgba(0,0,0,0.18); border:1.5px solid #7C3AED; cursor:pointer;">
+            <div style="background:linear-gradient(135deg, #7C3AED, #6D28D9); color:#fff; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; flex-shrink:0;">🛍️</div>
+            <div style="display:flex; flex-direction:column; line-height:1.2; text-align:left;">
+              <span style="font-size:9px; color:#64748B; font-weight:700; text-transform:uppercase;">Pickup</span>
+              <strong style="font-size:11px; color:#0F172A; white-space:nowrap; font-weight:800;">Vogue Tailors</strong>
+            </div>
+          </div>`,
           className: '',
-          iconSize: [32, 32],
-          iconAnchor: [16, 16]
+          iconSize: [140, 36],
+          iconAnchor: [70, 18]
         });
         L.marker(pickup, { icon: pickupIcon }).addTo(map).bindPopup("<strong>Pickup: Vogue Craft Tailors</strong>");
 
-        // Delivery Marker
-        const deliverIcon = L.divIcon({
-          html: `<div style="background:#10b981; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.3); font-size:14px;">🏠</div>`,
+        // Rider GPS Dot with Pulse Animation
+        const riderIcon = L.divIcon({
+          html: `<div style="position:relative; width:38px; height:38px; display:flex; align-items:center; justify-content:center;">
+            <div style="position:absolute; width:38px; height:38px; border-radius:50%; background:rgba(59,130,246,0.35);" class="pulse-marker"></div>
+            <div style="width:18px; height:18px; border-radius:50%; background:#3B82F6; border:3px solid #ffffff; box-shadow:0 4px 14px rgba(59,130,246,0.6);"></div>
+          </div>`,
           className: '',
-          iconSize: [32, 32],
-          iconAnchor: [16, 16]
+          iconSize: [38, 38],
+          iconAnchor: [19, 19]
         });
-        L.marker(deliver, { icon: deliverIcon }).addTo(map).bindPopup("<strong>Deliver: Priya Sharma</strong>");
+        L.marker(riderLoc, { icon: riderIcon }).addTo(map).bindPopup("<strong>Live Location: On the way to pickup</strong>");
+
+        // Delivery Marker Badge
+        const deliverIcon = L.divIcon({
+          html: `<div style="display:flex; align-items:center; gap:6px; background:#ffffff; padding:4px 10px 4px 6px; border-radius:20px; box-shadow:0 6px 18px rgba(0,0,0,0.18); border:1.5px solid #FF2E8A; cursor:pointer;">
+            <div style="background:linear-gradient(135deg, #FF2E8A, #C400FF); color:#fff; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; flex-shrink:0;">📍</div>
+            <div style="display:flex; flex-direction:column; line-height:1.2; text-align:left;">
+              <span style="font-size:9px; color:#64748B; font-weight:700; text-transform:uppercase;">Deliver to</span>
+              <strong style="font-size:11px; color:#0F172A; white-space:nowrap; font-weight:800;">Priya Sharma</strong>
+            </div>
+          </div>`,
+          className: '',
+          iconSize: [140, 36],
+          iconAnchor: [70, 18]
+        });
+        L.marker(deliver, { icon: deliverIcon }).addTo(map).bindPopup("<strong>Deliver to: Priya Sharma</strong>");
       }
 
       // 3. Handle Order Details Map
@@ -2852,127 +2881,500 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
         );
       })()}
 
-        {/* MODULE 3: NAVIGATION & LIVE ROUTE PLANNER */}
+        {/* MODULE 3: NAVIGATION & LIVE ROUTE PLANNER (Uber / Amazon Flex / StitchBee Redesign) */}
         {activeTab === 'navigation' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '20px', height: 'calc(100vh - 160px)' }} className="delivery-nav-grid">
+          <div style={{ display: 'grid', gridTemplateColumns: '76% 24%', gap: '20px', background: isDark ? '#0b081e' : '#F7F8FC', minHeight: 'calc(100vh - 120px)', padding: '4px', borderRadius: '24px' }} className="delivery-nav-grid">
             
-            {/* Map Simulator */}
-            <div style={{ background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+            {/* LEFT COLUMN: TOP ORDER INFO CARD & MAIN MAP (Matching Widths) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0, width: '100%' }}>
               
-              {/* Interactive Vector map canvas */}
-              <div style={{ flex: 1, background: isDark ? '#14142b' : '#e2e8f0', position: 'relative' }}>
-                <svg viewBox="0 0 800 600" style={{ width: '100%', height: '100%' }}>
-                  {/* Grid Lines representing streets */}
-                  <line x1="50" y1="0" x2="50" y2="600" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="150" y1="0" x2="150" y2="600" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="300" y1="0" x2="300" y2="600" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="500" y1="0" x2="500" y2="600" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="700" y1="0" x2="700" y2="600" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  
-                  <line x1="0" y1="100" x2="800" y2="100" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="0" y1="250" x2="800" y2="250" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="0" y1="400" x2="800" y2="400" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-                  <line x1="0" y1="520" x2="800" y2="520" stroke={isDark ? '#2e2e4e' : '#cbd5e1'} strokeWidth="12" />
-
-                  {/* Route line */}
-                  <path d="M 150 250 L 300 250 L 300 400 L 500 400" fill="none" stroke="var(--primary)" strokeWidth="6" strokeDasharray="6 4" />
-
-                  {/* Pickup Pin */}
-                  <circle cx="150" cy="250" r="14" fill="#7209b7" />
-                  <text x="150" y="254" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="bold">🏪</text>
-
-                  {/* Rider Dot */}
-                  <circle cx="300" cy="250" r="10" fill="#3b82f6" stroke="#fff" strokeWidth="2" />
-                  
-                  {/* Delivery Destination Pin */}
-                  <circle cx="500" cy="400" r="14" fill="var(--primary)" />
-                  <text x="500" y="404" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="bold">🏠</text>
-                </svg>
-
-                {/* Floating GPS HUD overlay */}
-                <div style={{ position: 'absolute', bottom: '16px', left: '16px', right: '16px', background: bgCard, border: `1px solid ${borderColor}`, padding: '16px', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
-                  <div>
-                    <span style={{ fontSize: '0.62rem', color: colorTextMuted, textTransform: 'uppercase', fontWeight: 'bold' }}>CURRENT ACTIVE ROUTE</span>
-                    <h5 style={{ margin: '2px 0 0 0', fontSize: '0.88rem', fontWeight: '800' }}>To {activeOrder.deliverTo}</h5>
+              {/* TOP INFORMATION CARD (Floating Order Info Bar - Aligned to Map Width) */}
+              <div 
+                className="nav-top-info-card"
+                style={{ 
+                  background: bgCard, 
+                  border: `1.5px solid ${borderColor}`, 
+                  borderRadius: '24px', 
+                  padding: '16px 28px',
+                  boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.04)',
+                  width: '100%',
+                  boxSizing: 'border-box'
+                }}
+              >
+                {/* Left Order Title & Status */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', textAlign: 'left' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '800', color: colorTextPrimary, fontFamily: 'Poppins, sans-serif' }}>
+                      Order #SB-1024
+                    </h3>
+                    <span 
+                      style={{ 
+                        fontSize: '11px', 
+                        fontWeight: '700', 
+                        background: 'rgba(29, 185, 84, 0.12)', 
+                        color: '#1DB954', 
+                        padding: '4px 12px', 
+                        borderRadius: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1DB954' }} className="pulse-marker"></span>
+                      In Progress
+                    </span>
                   </div>
-                  <div style={{ display: 'flex', gap: '14px', textAlign: 'center', fontSize: '0.78rem' }}>
+                  <span style={{ fontSize: '13px', color: colorTextSecondary, fontWeight: '600' }}>
+                    Pickup → Delivery
+                  </span>
+                </div>
+
+                {/* Middle Metrics Group */}
+                <div className="nav-top-info-card-metrics">
+                  <div style={{ textAlign: 'center' }}>
+                    <span style={{ display: 'block', fontSize: '11px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase' }}>ETA</span>
+                    <strong style={{ fontSize: '20px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED 0%, #FF2E83 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                      12 mins
+                    </strong>
+                  </div>
+
+                  <div style={{ borderLeft: `1.5px solid ${borderColor}`, paddingLeft: '36px', textAlign: 'center' }}>
+                    <span style={{ display: 'block', fontSize: '11px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase' }}>Distance</span>
+                    <strong style={{ fontSize: '20px', fontWeight: '800', color: colorTextPrimary }}>
+                      3.8 km
+                    </strong>
+                  </div>
+
+                  <div style={{ borderLeft: `1.5px solid ${borderColor}`, paddingLeft: '36px', textAlign: 'center' }}>
+                    <span style={{ display: 'block', fontSize: '11px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase' }}>Earnings</span>
+                    <strong style={{ fontSize: '20px', fontWeight: '800', color: colorTextPrimary }}>
+                      ₹150.00
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Right View Details Button */}
+                <button 
+                  className="btn"
+                  onClick={() => { setActiveTab('orders'); setSelectedOrder(orders.find(o => o.id === 'SB-1024') || orders[0]); }}
+                  style={{ 
+                    background: 'transparent',
+                    color: '#FF2E83',
+                    border: '1.5px solid #FF2E83',
+                    padding: '10px 18px',
+                    borderRadius: '14px',
+                    fontWeight: '700',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 46, 131, 0.08)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'none'; }}
+                >
+                  <span>View Details</span>
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+
+              {/* MAIN MAP SECTION */}
+              <div 
+                style={{ 
+                  background: bgCard, 
+                  border: `1.5px solid ${borderColor}`, 
+                  borderRadius: '30px', 
+                  overflow: 'hidden', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  position: 'relative',
+                  boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.4)' : '0 10px 30px rgba(0,0,0,0.04)',
+                  flex: 1,
+                  minHeight: '560px'
+                }}
+              >
+                {/* Leaflet map container element */}
+                <div ref={navMapRef} style={{ width: '100%', height: '100%', minHeight: '560px', position: 'relative' }}></div>
+
+                {/* Floating Map Controls (Top Right Overlay) */}
+                <div style={{ position: 'absolute', top: '20px', right: '20px', display: 'flex', flexDirection: 'column', gap: '8px', zIndex: 1000 }}>
+                  <button 
+                    onClick={() => { if (navMapInstance.current) navMapInstance.current.zoomIn(); }}
+                    style={{ width: '40px', height: '40px', borderRadius: '12px', background: bgCard, border: `1px solid ${borderColor}`, boxShadow: '0 4px 14px rgba(0,0,0,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '18px', color: colorTextPrimary }}
+                    title="Zoom In"
+                  >
+                    +
+                  </button>
+                  <button 
+                    onClick={() => { if (navMapInstance.current) navMapInstance.current.zoomOut(); }}
+                    style={{ width: '40px', height: '40px', borderRadius: '12px', background: bgCard, border: `1px solid ${borderColor}`, boxShadow: '0 4px 14px rgba(0,0,0,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '18px', color: colorTextPrimary }}
+                    title="Zoom Out"
+                  >
+                    -
+                  </button>
+                  <button 
+                    onClick={() => { if (navMapInstance.current) navMapInstance.current.setView([12.9610, 77.7120], 15); }}
+                    style={{ width: '40px', height: '40px', borderRadius: '12px', background: bgCard, border: `1px solid ${borderColor}`, boxShadow: '0 4px 14px rgba(0,0,0,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3B82F6' }}
+                    title="Locate Me"
+                  >
+                    <Compass size={18} />
+                  </button>
+                  <button 
+                    onClick={() => alert("Traffic overlay refreshed with live congestion metrics!")}
+                    style={{ width: '40px', height: '40px', borderRadius: '12px', background: bgCard, border: `1px solid ${borderColor}`, boxShadow: '0 4px 14px rgba(0,0,0,0.15)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFB547' }}
+                    title="Traffic Layer"
+                  >
+                    <Activity size={18} />
+                  </button>
+                </div>
+
+                {/* Left Floating Status Cards (Top Left Overlay) */}
+                <div className="nav-floating-status-stack" style={{ position: 'absolute', top: '20px', left: '20px', display: 'flex', flexDirection: 'column', gap: '12px', zIndex: 1000, maxWidth: '240px' }}>
+                  {/* Card 1: Live Status & Speed */}
+                  <div style={{ background: bgCard, border: `1.5px solid ${borderColor}`, padding: '12px 16px', borderRadius: '18px', boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.4)' : '0 8px 24px rgba(0,0,0,0.08)', textAlign: 'left' }}>
+                    <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block', marginBottom: '2px' }}>Live Status</span>
+                    <strong style={{ fontSize: '12px', color: '#1DB954', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1DB954' }}></span>
+                      On the way to pickup
+                    </strong>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', paddingTop: '8px', borderTop: `1px solid ${borderColor}` }}>
+                      <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(29, 185, 84, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1DB954' }}>
+                        <Activity size={14} />
+                      </div>
+                      <div>
+                        <span style={{ fontSize: '9px', color: colorTextMuted, display: 'block', fontWeight: '700' }}>Speed</span>
+                        <strong style={{ fontSize: '12px', color: '#1DB954' }}>42 km/h</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Traffic */}
+                  <div style={{ background: bgCard, border: `1.5px solid ${borderColor}`, padding: '10px 14px', borderRadius: '16px', boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.4)' : '0 8px 24px rgba(0,0,0,0.08)', display: 'flex', alignItems: 'center', gap: '10px', textAlign: 'left' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(255, 181, 71, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFB547' }}>
+                      <AlertTriangle size={14} />
+                    </div>
                     <div>
-                      <span style={{ display: 'block', color: colorTextSecondary }}>Distance</span>
-                      <strong style={{ color: 'var(--primary)' }}>3.8 KM</strong>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, display: 'block', fontWeight: '700' }}>Traffic</span>
+                      <strong style={{ fontSize: '12px', color: '#FFB547' }}>Moderate</strong>
                     </div>
-                    <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '14px' }}>
-                      <span style={{ display: 'block', color: colorTextSecondary }}>ETA</span>
-                      <strong style={{ color: '#10b981' }}>12 mins</strong>
+                  </div>
+
+                  {/* Card 3: Weather */}
+                  <div style={{ background: bgCard, border: `1.5px solid ${borderColor}`, padding: '10px 14px', borderRadius: '16px', boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.4)' : '0 8px 24px rgba(0,0,0,0.08)', display: 'flex', alignItems: 'center', gap: '10px', textAlign: 'left' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3B82F6' }}>
+                      <Sun size={14} />
                     </div>
-                    <div style={{ borderLeft: `1px solid ${borderColor}`, paddingLeft: '14px' }}>
-                      <span style={{ display: 'block', color: colorTextSecondary }}>Traffic</span>
-                      <strong style={{ color: '#fbbf24' }}>Moderate</strong>
+                    <div>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, display: 'block', fontWeight: '700' }}>Weather</span>
+                      <strong style={{ fontSize: '12px', color: colorTextPrimary }}>Sunny 31°C</strong>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Bottom Quick actions bar */}
-              <div style={{ display: 'flex', gap: '8px', padding: '12px 16px', borderTop: `1px solid ${borderColor}` }}>
-                <button className="btn btn-primary" style={{ flex: 1.5, fontSize: '0.75rem' }} onClick={() => alert("Simulated GPS directions initialized...")}>
-                  Start Route
-                </button>
-                <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.75rem' }} onClick={() => alert("SOS Alert dispatched to operations center!")}>
-                  ⚠️ SOS
-                </button>
-                <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.75rem' }} onClick={() => alert(`Calling Tailor Shop ${activeOrder.pickup} at ${activeOrder.tailorPhone}`)}>
-                  Call Tailor
-                </button>
+                {/* Bottom Floating Glassmorphism Information Bar */}
+                <div 
+                  className="nav-bottom-info-bar"
+                  style={{ 
+                    position: 'absolute', 
+                    bottom: '20px', 
+                    left: '20px', 
+                    right: '20px', 
+                    background: isDark ? 'rgba(18, 15, 38, 0.92)' : 'rgba(255, 255, 255, 0.92)', 
+                    backdropFilter: 'blur(12px)',
+                    border: `1.5px solid ${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(255, 255, 255, 0.8)'}`, 
+                    padding: '16px 24px', 
+                    borderRadius: '24px', 
+                    boxShadow: isDark ? '0 12px 36px rgba(0,0,0,0.5)' : '0 12px 36px rgba(0,0,0,0.08)',
+                    zIndex: 1000
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(255, 46, 131, 0.12)', color: '#FF2E83', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Navigation size={16} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>Distance Left</span>
+                      <strong style={{ fontSize: '14px', color: colorTextPrimary, fontWeight: '800' }}>3.8 km</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderLeft: `1.5px solid ${borderColor}`, paddingLeft: '14px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(124, 58, 237, 0.12)', color: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Clock size={16} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>ETA</span>
+                      <strong style={{ fontSize: '14px', color: colorTextPrimary, fontWeight: '800' }}>12 mins</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderLeft: `1.5px solid ${borderColor}`, paddingLeft: '14px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.12)', color: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Compass size={16} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>Stops Left</span>
+                      <strong style={{ fontSize: '14px', color: colorTextPrimary, fontWeight: '800' }}>2</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderLeft: `1.5px solid ${borderColor}`, paddingLeft: '14px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(29, 185, 84, 0.12)', color: '#1DB954', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Wallet size={16} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>Earnings</span>
+                      <strong style={{ fontSize: '14px', color: colorTextPrimary, fontWeight: '800' }}>₹150.00</strong>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', borderLeft: `1.5px solid ${borderColor}`, paddingLeft: '14px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.12)', color: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Sparkles size={16} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '9px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block' }}>Delivery Type</span>
+                      <strong style={{ fontSize: '14px', color: colorTextPrimary, fontWeight: '800' }}>Express</strong>
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
             </div>
 
-            {/* Route Planner sidebar */}
-            <div className="glass-card-no-hover" style={{ padding: '20px', background: bgCard, border: `1px solid ${borderColor}`, borderRadius: '16px', display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px', marginBottom: '14px' }}>
-                <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: '800' }}>Amazon Flex Route Planner</h4>
-                <span style={{ fontSize: '0.65rem', color: colorTextMuted }}>Sequence of pickups and drop-offs</span>
-              </div>
+            {/* RIGHT COLUMN: ROUTE TIMELINE PANEL & CUSTOMER DETAILS (Aligned to Top) */}
+            <div 
+              style={{ 
+                background: bgCard, 
+                border: `1.5px solid ${borderColor}`, 
+                borderRadius: '24px', 
+                padding: '20px', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                justifyContent: 'space-between',
+                boxShadow: isDark ? '0 10px 30px rgba(0,0,0,0.3)' : '0 10px 30px rgba(0,0,0,0.04)',
+                textAlign: 'left'
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* Header */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '800', color: colorTextPrimary, fontFamily: 'Poppins, sans-serif' }}>Delivery Route</h4>
+                  <span 
+                    style={{ fontSize: '11px', color: '#FF2E83', fontWeight: '700', cursor: 'pointer' }}
+                    onClick={() => setActiveTab('orders')}
+                  >
+                    View All Orders
+                  </span>
+                </div>
 
-              {/* Path timeline */}
-              <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', paddingLeft: '12px', borderLeft: `2px dashed ${borderColor}`, marginLeft: '10px', position: 'relative' }}>
-                {[
-                  { num: 1, title: 'Pickup from Vogue Tailors', subText: 'Order #SB-1024' },
-                  { num: 2, title: 'Deliver to Priya Sharma', subText: 'Flat 402, Pinecrest Apts' },
-                  { num: 3, title: 'Pickup from Elite Threads', subText: 'Order #SB-0998' },
-                  { num: 4, title: 'Deliver to Amit Verma', subText: 'Lane 5, Phase 2, Pune Road' },
-                  { num: 5, title: 'Deliver to Sneha Iyer', subText: 'Rose Boutique collection drop-off' }
-                ].map((step, idx) => (
-                  <div key={idx} style={{ position: 'relative', fontSize: '0.78rem' }}>
-                    <div 
-                      style={{ 
-                        position: 'absolute', 
-                        left: '-22px', 
-                        top: '1px', 
-                        width: '18px', 
-                        height: '18px', 
-                        borderRadius: '50%', 
-                        background: step.title.includes('Pickup') ? '#7209b7' : 'var(--primary)',
-                        color: '#fff', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        fontSize: '0.62rem', 
-                        fontWeight: 'bold' 
-                      }}
-                    >
-                      {step.num}
+                {/* Vertical Route Timeline */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative', paddingLeft: '4px' }}>
+                  {[
+                    { num: 1, type: 'Pickup', name: 'Vogue Craft Tailors', address: '12, 5th Main, AECS Layout, Bengaluru - 560037', tag: 'Now', isNow: true, bg: 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)', phone: '+919876543210' },
+                    { num: 2, type: 'Deliver to', name: 'Priya Sharma', address: 'Flat 402, Pinecrest Apts, Brookfield, Bengaluru - 560037', tag: '12 mins', isNow: false, bg: 'linear-gradient(135deg, #FF2E83 0%, #C400FF 100%)', phone: '+919812345678' },
+                    { num: 3, type: 'Next Pickup', name: 'Elite Threads', address: '88, 7th Cross, Whitefield, Bengaluru - 560066', tag: '25 mins', isNow: false, bg: '#94A3B8', phone: '+919822233344' },
+                    { num: 4, type: 'Deliver to', name: 'Amit Verma', address: 'Lane 5, Phase 2, Pune Road, Bengaluru - 560048', tag: '35 mins', isNow: false, bg: '#94A3B8', phone: '+919855566677' }
+                  ].map((step, idx) => (
+                    <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', position: 'relative' }}>
+                      {/* Dashed vertical connector line */}
+                      {idx < 3 && (
+                        <div 
+                          style={{ 
+                            position: 'absolute', 
+                            left: '11px', 
+                            top: '24px', 
+                            bottom: '-12px', 
+                            width: '2px', 
+                            borderLeft: `2px dashed ${borderColor}`, 
+                            zIndex: 1 
+                          }} 
+                        />
+                      )}
+
+                      {/* Step Number Circle */}
+                      <div 
+                        style={{ 
+                          width: '24px', 
+                          height: '24px', 
+                          borderRadius: '50%', 
+                          background: step.bg, 
+                          color: '#ffffff', 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          fontSize: '11px', 
+                          fontWeight: '800',
+                          flexShrink: 0,
+                          zIndex: 2,
+                          boxShadow: step.isNow ? '0 2px 8px rgba(124, 58, 237, 0.3)' : 'none'
+                        }}
+                      >
+                        {step.num}
+                      </div>
+
+                      {/* Stop Details */}
+                      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                          <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase' }}>
+                            {step.type}
+                          </span>
+                          <span 
+                            style={{ 
+                              fontSize: '9px', 
+                              padding: '2px 6px', 
+                              borderRadius: '6px', 
+                              fontWeight: '700',
+                              background: step.isNow ? 'rgba(255, 46, 131, 0.15)' : 'rgba(148, 163, 184, 0.12)',
+                              color: step.isNow ? '#FF2E83' : colorTextMuted
+                            }}
+                          >
+                            {step.tag}
+                          </span>
+                        </div>
+
+                        <strong style={{ fontSize: '12px', color: colorTextPrimary, fontWeight: '800' }}>
+                          {step.name}
+                        </strong>
+
+                        <span style={{ fontSize: '10px', color: colorTextSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: '1px' }}>
+                          {step.address}
+                        </span>
+                      </div>
+
+                      {/* Phone action button */}
+                      <button 
+                        onClick={() => alert(`Dialing ${step.name}: ${step.phone}`)}
+                        style={{ width: '28px', height: '28px', borderRadius: '50%', background: isDark ? 'rgba(255,255,255,0.05)' : '#F8FAFC', border: `1px solid ${borderColor}`, color: colorTextSecondary, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}
+                        title={`Call ${step.name}`}
+                      >
+                        <Phone size={12} />
+                      </button>
                     </div>
-                    <strong style={{ display: 'block', color: colorTextPrimary }}>{step.title}</strong>
-                    <span style={{ fontSize: '0.68rem', color: colorTextSecondary }}>{step.subText}</span>
+                  ))}
+                </div>
+
+                {/* Section Divider */}
+                <div style={{ borderTop: `1.5px solid ${borderColor}`, margin: '4px 0' }} />
+
+                {/* Customer Details Section */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '13px', fontWeight: '800', color: colorTextPrimary }}>Customer Details</h4>
+                    <span style={{ fontSize: '10px', fontWeight: '700', background: 'rgba(29, 185, 84, 0.12)', color: '#1DB954', padding: '2px 8px', borderRadius: '8px' }}>
+                      COD: ₹520
+                    </span>
                   </div>
-                ))}
+
+                  {/* Customer Profile Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #7C3AED 0%, #FF2E83 100%)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 'bold' }}>
+                        PS
+                      </div>
+                      <div>
+                        <strong style={{ fontSize: '12px', color: colorTextPrimary, display: 'block' }}>Priya Sharma</strong>
+                        <span style={{ fontSize: '10px', color: '#F59E0B', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                          <Star size={10} fill="#F59E0B" /> 4.9 Rating
+                        </span>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button 
+                        onClick={() => alert("Calling customer Priya Sharma: +919812345678")}
+                        style={{ padding: '6px 10px', borderRadius: '10px', background: isDark ? 'rgba(255,255,255,0.05)' : '#F8FAFC', border: `1px solid ${borderColor}`, color: colorTextPrimary, fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      >
+                        <Phone size={12} /> Call
+                      </button>
+                      <button 
+                        onClick={() => { setActiveTab('support'); setSupportContact('customer'); }}
+                        style={{ padding: '6px 10px', borderRadius: '10px', background: 'rgba(255, 46, 131, 0.12)', border: 'none', color: '#FF2E83', fontSize: '11px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      >
+                        <MessageSquare size={12} /> Chat
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Order Notes Box */}
+                  <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '10px 12px' }}>
+                    <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '700', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Order Notes & Instructions
+                    </span>
+                    <ul style={{ margin: 0, paddingLeft: '14px', fontSize: '11px', color: colorTextSecondary, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <li>Please call before arriving.</li>
+                      <li>Gate No. 4, Flat 402.</li>
+                      <li>Fragile Package - Handle with care.</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
 
-              {/* Optimize Button */}
-              <button className="btn btn-secondary" style={{ width: '100%', marginTop: '16px', fontWeight: 'bold', fontSize: '0.78rem' }} onClick={() => alert("Re-ordered route timeline to avoid major congestion areas!")}>
-                Optimize Route
-              </button>
+              {/* Bottom Actions Panel */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '14px', borderTop: `1.5px solid ${borderColor}`, paddingTop: '14px' }}>
+                <button 
+                  className="btn"
+                  onClick={() => alert("Initializing live turn-by-turn navigation...")}
+                  style={{ 
+                    width: '100%', 
+                    height: '46px',
+                    background: 'linear-gradient(135deg, #7C3AED 0%, #FF2E83 100%)', 
+                    color: '#ffffff', 
+                    border: 'none', 
+                    borderRadius: '16px', 
+                    fontWeight: '800', 
+                    fontSize: '13px', 
+                    cursor: 'pointer', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    gap: '8px',
+                    boxShadow: '0 8px 20px rgba(124, 58, 237, 0.3)',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
+                >
+                  <Navigation size={16} /> Navigate
+                </button>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <button 
+                    onClick={() => alert("Marked Order #SB-1024 as Picked Up!")}
+                    style={{ 
+                      padding: '10px', 
+                      borderRadius: '14px', 
+                      background: bgCard, 
+                      border: '1.5px solid #7C3AED', 
+                      color: '#7C3AED', 
+                      fontSize: '11px', 
+                      fontWeight: '800', 
+                      cursor: 'pointer' 
+                    }}
+                  >
+                    Mark Picked Up
+                  </button>
+                  <button 
+                    onClick={() => alert("Marked Order #SB-1024 as Delivered!")}
+                    style={{ 
+                      padding: '10px', 
+                      borderRadius: '14px', 
+                      background: '#1DB954', 
+                      border: 'none', 
+                      color: '#ffffff', 
+                      fontSize: '11px', 
+                      fontWeight: '800', 
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(29, 185, 84, 0.25)' 
+                    }}
+                  >
+                    Mark Delivered
+                  </button>
+                </div>
+              </div>
 
             </div>
 
