@@ -21,6 +21,9 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
   
   // Design system theme mapping
   const bgPage = isDark ? '#0b081e' : '#FFFDFC';
+  const bgPageGrad = isDark 
+    ? 'radial-gradient(circle at 10% 20%, rgba(106, 0, 244, 0.15) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(236, 11, 121, 0.15) 0%, transparent 40%), #0b081e'
+    : 'radial-gradient(circle at 10% 20%, rgba(106, 0, 244, 0.08) 0%, transparent 45%), radial-gradient(circle at 90% 80%, rgba(236, 11, 121, 0.08) 0%, transparent 45%), #FFFDFC';
   const bgCard = isDark ? '#120f26' : '#FFFFFF';
   const borderColor = isDark ? 'rgba(255,255,255,0.08)' : '#ECECF4';
   const colorTextPrimary = isDark ? '#f3f4f6' : '#131A34';
