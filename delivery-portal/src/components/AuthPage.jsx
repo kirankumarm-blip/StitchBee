@@ -194,8 +194,8 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
           animation: spark 3s ease-in-out infinite;
         }
         .input-glow-focus:focus-within {
-          border-color: #EC0B79 !important;
-          box-shadow: 0 0 0 4px rgba(236, 11, 121, 0.15) !important;
+          border-color: #f72585 !important;
+          box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.15) !important;
         }
         @media (max-width: 1023px) {
           .auth-main-wrapper {
@@ -220,7 +220,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         left: '10%',
         width: '300px',
         height: '300px',
-        background: 'rgba(236, 11, 121, 0.05)',
+        background: 'rgba(247, 37, 133, 0.05)',
         filter: 'blur(120px)',
         borderRadius: '50%',
         pointerEvents: 'none',
@@ -232,7 +232,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         right: '15%',
         width: '350px',
         height: '350px',
-        background: 'rgba(106, 0, 244, 0.05)',
+        background: 'rgba(114, 9, 183, 0.05)',
         filter: 'blur(120px)',
         borderRadius: '50%',
         pointerEvents: 'none',
@@ -244,7 +244,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         position: 'absolute',
         top: '15%',
         right: '40%',
-        color: '#EC0B79',
+        color: '#f72585',
         opacity: 0.3,
         pointerEvents: 'none',
         zIndex: 1
@@ -253,7 +253,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         position: 'absolute',
         bottom: '25%',
         left: '45%',
-        color: '#6A00F4',
+        color: '#7209b7',
         opacity: 0.3,
         pointerEvents: 'none',
         zIndex: 1
@@ -288,30 +288,18 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
       }}>
         {/* Left: StitchBee logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            background: 'linear-gradient(135deg, #EC0B79 0%, #6A00F4 100%)',
-            width: '36px',
-            height: '36px',
-            borderRadius: '10px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff',
-            fontWeight: '800',
-            fontSize: '18px',
-            boxShadow: '0 8px 16px rgba(106, 0, 244, 0.25)'
-          }}>🐝</div>
+          <Scissors size={24} style={{ color: '#f72585', transform: 'rotate(-45deg)' }} />
           <span style={{ fontSize: '22px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
-            Stitch<span style={{ color: '#EC0B79' }}>Bee</span>
+            StitchBee
           </span>
           <span style={{
             fontSize: '9px',
             fontWeight: '800',
-            background: 'linear-gradient(135deg, rgba(236, 11, 121, 0.1) 0%, rgba(106, 0, 244, 0.1) 100%)',
-            color: '#EC0B79',
+            background: 'linear-gradient(135deg, rgba(247, 37, 133, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%)',
+            color: '#f72585',
             padding: '3px 8px',
             borderRadius: '8px',
-            border: '1px solid rgba(236, 11, 121, 0.2)',
+            border: '1px solid rgba(247, 37, 133, 0.2)',
             textTransform: 'uppercase',
             letterSpacing: '0.8px'
           }}>RIDER PORTAL</span>
@@ -347,12 +335,9 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             <button
               onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
               style={{
-                background: 'transparent',
-                border: '1.5px solid transparent',
-                backgroundImage: 'linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), linear-gradient(135deg, #EC0B79 0%, #6A00F4 100%)',
-                backgroundOrigin: 'border-box',
-                backgroundClip: 'padding-box, border-box',
-                color: '#EC0B79',
+                background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                border: 'none',
+                color: '#ffffff',
                 padding: '8px 20px',
                 borderRadius: '12px',
                 fontWeight: '700',
@@ -361,15 +346,16 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 transition: 'all 0.2s ease',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(247, 37, 133, 0.2)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(236, 11, 121, 0.15)';
+                e.currentTarget.style.boxShadow = '0 8px 20px rgba(247, 37, 133, 0.35)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(247, 37, 133, 0.2)';
               }}
             >
               {tab === 'login' ? 'Sign Up' : 'Login'}
@@ -412,7 +398,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             width: '150px',
             height: '150px',
             borderRadius: '50%',
-            background: 'rgba(236, 11, 121, 0.15)',
+            background: 'rgba(247, 37, 133, 0.15)',
             filter: 'blur(60px)',
             pointerEvents: 'none'
           }} />
@@ -430,14 +416,14 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               flexDirection: 'column'
             }}>
               <span>Delivering</span>
-              <span style={{ color: '#EC0B79' }}>Style.</span>
-              <span style={{ color: '#6A00F4' }}>Precision.</span>
+              <span style={{ color: '#f72585' }}>Style.</span>
+              <span style={{ color: '#7209b7' }}>Precision.</span>
               <span>Perfection.</span>
             </h1>
             <div style={{
               width: '80px',
               height: '4px',
-              background: 'linear-gradient(90deg, #EC0B79 0%, #6A00F4 100%)',
+              background: 'linear-gradient(90deg, #f72585 0%, #7209b7 100%)',
               borderRadius: '2px',
               marginTop: '16px',
               marginBottom: '20px'
@@ -472,10 +458,10 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               position: 'absolute',
               inset: 0,
               backgroundImage: isDark 
-                ? 'radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px)' 
-                : 'radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px)',
+                ? 'radial-gradient(rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)' 
+                : 'radial-gradient(rgba(114, 9, 183, 0.15) 1.5px, transparent 1.5px)',
               backgroundSize: '24px 24px',
-              opacity: 0.8
+              opacity: 0.9
             }} />
 
             {/* Glowing lights inside area */}
@@ -484,7 +470,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               width: '180px',
               height: '180px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(106, 0, 244, 0.18) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(114, 9, 183, 0.15) 0%, transparent 70%)',
               top: '20%',
               left: '25%',
               pointerEvents: 'none'
@@ -522,23 +508,35 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               <div style={{
                 flex: 1,
                 position: 'relative',
-                background: isDark ? '#0F0C24' : '#F1EFFB'
+                backgroundImage: isDark
+                  ? 'url("https://a.basemaps.cartocdn.com/dark_all/13/5862/3475.png")'
+                  : 'url("https://a.basemaps.cartocdn.com/rastertiles/voyager/13/5862/3475.png")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
               }}>
+                {/* Contrast overlay */}
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: isDark ? 'rgba(15, 12, 36, 0.4)' : 'rgba(255, 255, 255, 0.15)',
+                  pointerEvents: 'none'
+                }} />
+
                 {/* SVG path with active animation */}
-                <svg viewBox="0 0 200 300" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+                <svg viewBox="0 0 200 300" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
                   {/* Decorative map street grid */}
-                  <path d="M 0 60 L 200 80 M 0 160 L 200 130 M 0 240 L 200 250 M 60 0 L 80 300 M 140 0 L 120 300" stroke={isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'} strokeWidth="2" fill="none" />
+                  <path d="M 0 60 L 200 80 M 0 160 L 200 130 M 0 240 L 200 250 M 60 0 L 80 300 M 140 0 L 120 300" stroke={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'} strokeWidth="1.5" fill="none" />
                   
                   {/* Active delivery path */}
-                  <path d="M 40 250 C 60 180, 140 160, 160 80" stroke="rgba(106, 0, 244, 0.2)" strokeWidth="8" fill="none" strokeLinecap="round" />
-                  <path id="delivery-route" d="M 40 250 C 60 180, 140 160, 160 80" stroke="#EC0B79" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="6,4" />
+                  <path d="M 40 250 C 60 180, 140 160, 160 80" stroke="rgba(114, 9, 183, 0.2)" strokeWidth="8" fill="none" strokeLinecap="round" />
+                  <path id="delivery-route" d="M 40 250 C 60 180, 140 160, 160 80" stroke="#f72585" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="6,4" />
 
                   {/* Pulsing delivery target */}
-                  <circle cx="160" cy="80" r="10" fill="rgba(236, 11, 121, 0.2)" className="animate-glow" />
-                  <circle cx="160" cy="80" r="4" fill="#EC0B79" />
+                  <circle cx="160" cy="80" r="10" fill="rgba(247, 37, 133, 0.2)" className="animate-glow" />
+                  <circle cx="160" cy="80" r="4" fill="#f72585" />
 
                   {/* Pulse driver position tracker dot */}
-                  <circle r="6" fill="#6A00F4" stroke="#ffffff" strokeWidth="2">
+                  <circle r="6" fill="#7209b7" stroke="#ffffff" strokeWidth="2">
                     <animateMotion dur="6s" repeatCount="indefinite" path="M 40 250 C 60 180, 140 160, 160 80" />
                   </circle>
                 </svg>
@@ -549,22 +547,23 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                   bottom: '10px',
                   left: '10px',
                   right: '10px',
-                  background: 'rgba(15, 12, 36, 0.85)',
-                  backdropFilter: 'blur(4px)',
+                  background: 'rgba(15, 12, 36, 0.9)',
+                  backdropFilter: 'blur(6px)',
                   borderRadius: '12px',
                   padding: '8px',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.12)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  color: '#ffffff'
+                  color: '#ffffff',
+                  zIndex: 5
                 }}>
-                  <div style={{ background: '#EC0B79', borderRadius: '6px', padding: '4px', display: 'flex', alignItems: 'center' }}>
-                    <Truck size={14} />
+                  <div style={{ background: '#f72585', borderRadius: '6px', padding: '4px', display: 'flex', alignItems: 'center' }}>
+                    <Truck size={14} style={{ color: '#ffffff' }} />
                   </div>
                   <div>
-                    <span style={{ fontSize: '9px', opacity: 0.6, display: 'block', fontWeight: '700' }}>Active Order</span>
-                    <span style={{ fontSize: '10px', fontWeight: '800' }}>HSR Layout → 2.1km</span>
+                    <span style={{ fontSize: '9px', opacity: 0.8, display: 'block', fontWeight: '700', color: '#ffffff' }}>Active Order</span>
+                    <span style={{ fontSize: '10px', fontWeight: '800', color: '#ffffff' }}>HSR Layout → 2.1km</span>
                   </div>
                 </div>
               </div>
@@ -575,7 +574,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               position: 'absolute',
               top: '15%',
               right: '15%',
-              background: 'rgba(236, 11, 121, 0.95)',
+              background: '#f72585',
               color: '#ffffff',
               padding: '6px 12px',
               borderRadius: '30px',
@@ -584,11 +583,11 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 10px 20px rgba(236, 11, 121, 0.3)',
+              boxShadow: '0 10px 20px rgba(247, 37, 133, 0.35)',
               zIndex: 20
             }}>
-              <MapPin size={12} />
-              <span>StitchBee #1408</span>
+              <MapPin size={12} style={{ color: '#ffffff' }} />
+              <span style={{ color: '#ffffff' }}>StitchBee #1408</span>
             </div>
 
             {/* Floating delivery pin (Absolute outside phone, bottom left) */}
@@ -596,7 +595,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               position: 'absolute',
               bottom: '15%',
               left: '10%',
-              background: 'rgba(106, 0, 244, 0.95)',
+              background: '#7209b7',
               color: '#ffffff',
               padding: '6px 12px',
               borderRadius: '30px',
@@ -605,11 +604,11 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 10px 20px rgba(106, 0, 244, 0.3)',
+              boxShadow: '0 10px 20px rgba(114, 9, 183, 0.35)',
               zIndex: 20
             }}>
-              <MapPin size={12} />
-              <span>Earnings +₹185</span>
+              <MapPin size={12} style={{ color: '#ffffff' }} />
+              <span style={{ color: '#ffffff' }}>Earnings +₹185</span>
             </div>
             
             {/* Bottom floating statistics card */}
@@ -750,7 +749,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
           >
             {/* Header Content */}
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <span style={{ fontSize: '15px', fontWeight: '700', color: '#EC0B79', display: 'block', marginBottom: '6px' }}>
+              <span style={{ fontSize: '15px', fontWeight: '700', color: '#f72585', display: 'block', marginBottom: '6px' }}>
                 {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
               </span>
               <h2 style={{ margin: 0, fontSize: '28px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
@@ -760,7 +759,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
 
             {/* Error box */}
             {error && (
-              <div style={{ background: 'rgba(236, 11, 121, 0.08)', color: '#EC0B79', border: '1px solid rgba(236, 11, 121, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', marginBottom: '20px' }}>
+              <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', marginBottom: '20px' }}>
                 {error}
               </div>
             )}
@@ -917,13 +916,13 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                       type="checkbox" 
                       checked={rememberMe} 
                       onChange={(e) => setRememberMe(e.target.checked)} 
-                      style={{ accentColor: '#EC0B79', width: '16px', height: '16px', borderRadius: '4px' }} 
+                      style={{ accentColor: '#f72585', width: '16px', height: '16px', borderRadius: '4px' }} 
                     />
                     Remember me
                   </label>
                   <span 
                     onClick={() => alert("Password reset link sent to your email!")}
-                    style={{ color: '#EC0B79', fontWeight: '700', cursor: 'pointer' }}
+                    style={{ color: '#f72585', fontWeight: '700', cursor: 'pointer' }}
                   >
                     Forgot Password?
                   </span>
@@ -936,7 +935,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 style={{ 
                   width: '100%', 
                   height: '56px',
-                  background: 'linear-gradient(135deg, #EC0B79 0%, #6A00F4 100%)', 
+                  background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
                   color: '#ffffff', 
                   border: 'none', 
                   borderRadius: '16px', 
@@ -947,17 +946,17 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   gap: '8px',
-                  boxShadow: '0 12px 28px rgba(106, 0, 244, 0.2)',
+                  boxShadow: '0 12px 28px rgba(247, 37, 133, 0.2)',
                   marginTop: '8px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 16px 36px rgba(106, 0, 244, 0.35)';
+                  e.currentTarget.style.boxShadow = '0 16px 36px rgba(247, 37, 133, 0.35)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(106, 0, 244, 0.2)';
+                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(247, 37, 133, 0.2)';
                 }}
               >
                 <span>{tab === 'login' ? 'Login to Portal' : 'Create Account'}</span>
@@ -990,7 +989,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 title="Google Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#EC0B79';
+                  e.currentTarget.style.borderColor = '#f72585';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
@@ -1008,7 +1007,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
                 title="Apple Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#6A00F4';
+                  e.currentTarget.style.borderColor = '#7209b7';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
@@ -1096,7 +1095,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             border: `1px solid ${borderColor}`,
             boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(106, 0, 244, 0.12)', color: '#6A00F4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(114, 9, 183, 0.12)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Headphones size={22} />
             </div>
             <div>
@@ -1117,7 +1116,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             border: `1px solid ${borderColor}`,
             boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255, 46, 131, 0.12)', color: '#EC0B79', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.12)', color: '#f72585', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <CreditCard size={22} />
             </div>
             <div>
