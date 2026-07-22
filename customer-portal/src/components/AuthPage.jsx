@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   Scissors, User, Lock, Mail, MapPin, Sparkles, Check, Truck, 
   Phone, Star, Eye, EyeOff, Sun, Moon, Headphones, ArrowRight, 
-  Shield, ShieldAlert, CreditCard, Activity, Calendar, Award, 
-  Layers, CheckCircle, Tag, ShoppingBag, Gift
+  Shield, CreditCard, Activity, Calendar, Award, Layers, 
+  CheckCircle, Tag, ShoppingBag, Gift
 } from 'lucide-react';
 
 export default function AuthPage({ 
@@ -35,8 +35,8 @@ export default function AuthPage({
   // Design system theme mapping
   const bgPage = isDark ? '#0b081e' : '#FFFDFC';
   const bgPageGrad = isDark 
-    ? 'radial-gradient(circle at 10% 20%, rgba(114, 9, 183, 0.15) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(247, 37, 133, 0.15) 0%, transparent 40%), #0b081e'
-    : 'radial-gradient(circle at 10% 20%, rgba(114, 9, 183, 0.08) 0%, transparent 45%), radial-gradient(circle at 90% 80%, rgba(247, 37, 133, 0.08) 0%, transparent 45%), #FFFDFC';
+    ? 'radial-gradient(circle at 20% 30%, rgba(216, 27, 255, 0.12) 0%, transparent 45%), radial-gradient(circle at 80% 70%, rgba(123, 45, 255, 0.12) 0%, transparent 45%), radial-gradient(circle at 50% 10%, rgba(255, 46, 138, 0.08) 0%, transparent 40%), #0b081e'
+    : 'radial-gradient(circle at 20% 30%, rgba(216, 27, 255, 0.06) 0%, transparent 45%), radial-gradient(circle at 80% 70%, rgba(123, 45, 255, 0.06) 0%, transparent 45%), radial-gradient(circle at 50% 10%, rgba(255, 46, 138, 0.04) 0%, transparent 40%), #FFFDFC';
   const bgCard = isDark ? 'rgba(18, 15, 38, 0.75)' : 'rgba(255, 255, 255, 0.75)';
   const borderColor = isDark ? 'rgba(255,255,255,0.08)' : '#ECECF4';
   const colorTextPrimary = isDark ? '#f3f4f6' : '#131A34';
@@ -180,43 +180,43 @@ export default function AuthPage({
       className="auth-page-layout-root"
     >
       <style>{`
-        @keyframes float {
-          0% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-8px) rotate(0.5deg); }
-          100% { transform: translateY(0px) rotate(0deg); }
+        @keyframes float-slow-1 {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(0.5deg); }
         }
-        @keyframes glow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.1); }
+        @keyframes float-slow-2 {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-6px) rotate(-0.5deg); }
         }
-        @keyframes spark {
-          0%, 100% { opacity: 0.2; }
-          50% { opacity: 0.8; }
+        @keyframes pulse-glowing {
+          0%, 100% { opacity: 0.25; stroke-width: 1.5px; }
+          50% { opacity: 0.55; stroke-width: 2.2px; }
         }
-        @keyframes drift {
-          0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
-          33% { transform: translate(5px, -5px) rotate(1deg); }
-          66% { transform: translate(-3px, 4px) rotate(-1deg); }
+        @keyframes flow-dash {
+          to { stroke-dashoffset: -20; }
         }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
+        @keyframes scale-podium {
+          0%, 100% { transform: rotateX(60deg) scale(1); }
+          50% { transform: rotateX(60deg) scale(1.02); }
         }
-        .animate-float-delayed {
-          animation: float 6s ease-in-out infinite;
-          animation-delay: 3s;
+        .animate-podium {
+          animation: scale-podium 8s ease-in-out infinite;
         }
-        .animate-drift {
-          animation: drift 10s ease-in-out infinite;
+        .animate-float-1 {
+          animation: float-slow-1 6s ease-in-out infinite;
         }
-        .animate-glow {
-          animation: glow 5s ease-in-out infinite;
+        .animate-float-2 {
+          animation: float-slow-2 8s ease-in-out infinite;
         }
-        .animate-sparkle {
-          animation: spark 3s ease-in-out infinite;
+        .animate-dash-flow {
+          animation: flow-dash 2s linear infinite;
+        }
+        .animate-pulse-glow {
+          animation: pulse-glowing 3s ease-in-out infinite;
         }
         .input-glow-focus:focus-within {
-          border-color: #f72585 !important;
-          box-shadow: 0 0 0 4px rgba(247, 37, 133, 0.15) !important;
+          border-color: #FF2E8A !important;
+          box-shadow: 0 0 0 4px rgba(255, 46, 138, 0.15) !important;
         }
         @media (max-width: 1023px) {
           .auth-main-wrapper {
@@ -234,67 +234,10 @@ export default function AuthPage({
         }
       `}</style>
 
-      {/* Background blobs */}
-      <div className="animate-glow" style={{
-        position: 'absolute',
-        top: '20%',
-        left: '10%',
-        width: '300px',
-        height: '300px',
-        background: 'rgba(247, 37, 133, 0.05)',
-        filter: 'blur(120px)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        zIndex: 1
-      }} />
-      <div className="animate-glow" style={{
-        position: 'absolute',
-        bottom: '20%',
-        right: '15%',
-        width: '350px',
-        height: '350px',
-        background: 'rgba(114, 9, 183, 0.05)',
-        filter: 'blur(120px)',
-        borderRadius: '50%',
-        pointerEvents: 'none',
-        zIndex: 1
-      }} />
-
-      {/* Tiny Sparkles */}
-      <div className="animate-sparkle" style={{
-        position: 'absolute',
-        top: '15%',
-        right: '40%',
-        color: '#f72585',
-        opacity: 0.3,
-        pointerEvents: 'none',
-        zIndex: 1
-      }}><Sparkles size={16} /></div>
-      <div className="animate-sparkle" style={{
-        position: 'absolute',
-        bottom: '25%',
-        left: '45%',
-        color: '#7209b7',
-        opacity: 0.3,
-        pointerEvents: 'none',
-        zIndex: 1
-      }}><Sparkles size={20} /></div>
-
-      {/* Abstract City Skyline SVG */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: '180px',
-        opacity: isDark ? 0.07 : 0.03,
-        pointerEvents: 'none',
-        zIndex: 1
-      }}>
-        <svg viewBox="0 0 1440 180" style={{ width: '100%', height: '100%', verticalAlign: 'bottom' }}>
-          <path d="M0,180 L0,140 L40,140 L40,110 L80,110 L80,150 L120,150 L120,90 L180,90 L180,130 L220,130 L220,70 L260,70 L260,150 L320,150 L320,120 L380,120 L380,160 L420,160 L420,100 L480,100 L480,140 L520,140 L520,80 L580,80 L580,130 L640,130 L640,95 L700,95 L700,150 L760,150 L760,110 L820,110 L820,160 L880,160 L880,85 L940,85 L940,125 L980,125 L980,75 L1040,75 L1040,140 L1100,140 L1100,105 L1160,105 L1160,150 L1220,150 L1220,90 L1280,90 L1280,130 L1320,130 L1320,60 L1380,60 L1380,140 L1440,140 L1440,180 Z" fill={isDark ? '#ffffff' : '#000000'} />
-        </svg>
-      </div>
+      {/* Floating Sparkles & Light Particles */}
+      <div className="animate-float-1" style={{ position: 'absolute', top: '15%', right: '35%', color: '#FF2E8A', opacity: 0.35, pointerEvents: 'none' }}><Sparkles size={16} /></div>
+      <div className="animate-float-2" style={{ position: 'absolute', bottom: '25%', left: '42%', color: '#7B2DFF', opacity: 0.35, pointerEvents: 'none' }}><Sparkles size={20} /></div>
+      <div className="animate-float-1" style={{ position: 'absolute', top: '45%', left: '10%', color: '#D81BFF', opacity: 0.25, pointerEvents: 'none' }}><Sparkles size={14} /></div>
 
       {/* TOP NAVIGATION */}
       <header style={{
@@ -309,18 +252,18 @@ export default function AuthPage({
       }}>
         {/* Left: StitchBee logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Scissors size={24} style={{ color: '#f72585', transform: 'rotate(-45deg)' }} />
+          <Scissors size={24} style={{ color: '#FF2E8A', transform: 'rotate(-45deg)' }} />
           <span style={{ fontSize: '22px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
             StitchBee
           </span>
           <span style={{
             fontSize: '9px',
             fontWeight: '800',
-            background: 'linear-gradient(135deg, rgba(247, 37, 133, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%)',
-            color: '#f72585',
+            background: 'linear-gradient(135deg, rgba(255, 46, 138, 0.1) 0%, rgba(123, 45, 255, 0.1) 100%)',
+            color: '#FF2E8A',
             padding: '3px 8px',
             borderRadius: '8px',
-            border: '1px solid rgba(247, 37, 133, 0.2)',
+            border: '1px solid rgba(255, 46, 138, 0.2)',
             textTransform: 'uppercase',
             letterSpacing: '0.8px'
           }}>CUSTOMER PORTAL</span>
@@ -357,7 +300,7 @@ export default function AuthPage({
               className="btn-primary"
               onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
               style={{
-                background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)',
                 border: 'none',
                 color: '#ffffff',
                 padding: '8px 20px',
@@ -369,15 +312,15 @@ export default function AuthPage({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(247, 37, 133, 0.2)'
+                boxShadow: '0 4px 12px rgba(255, 46, 138, 0.2)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(247, 37, 133, 0.35)';
+                e.currentTarget.style.boxShadow = '0 8px 20px rgba(255, 46, 138, 0.35)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(247, 37, 133, 0.2)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 46, 138, 0.2)';
               }}
             >
               {tab === 'login' ? 'Create Account' : 'Login'}
@@ -401,7 +344,7 @@ export default function AuthPage({
         position: 'relative'
       }} className="auth-main-wrapper">
         
-        {/* LEFT COLUMN (HERO SECTION - 45% Width) */}
+        {/* LEFT COLUMN (PREMIUM MINI STUDIO HERO - 45% Width) */}
         <div style={{
           width: '45%',
           display: 'flex',
@@ -412,19 +355,6 @@ export default function AuthPage({
           paddingBottom: '40px'
         }} className="auth-left-column">
           
-          {/* Subtle glowing light behind headline */}
-          <div style={{
-            position: 'absolute',
-            top: '-40px',
-            left: '-20px',
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-            background: 'rgba(247, 37, 133, 0.15)',
-            filter: 'blur(60px)',
-            pointerEvents: 'none'
-          }} />
-
           {/* Headline and subtitle */}
           <div>
             <h1 style={{
@@ -438,13 +368,13 @@ export default function AuthPage({
               flexDirection: 'column'
             }}>
               <span>Dress Better.</span>
-              <span style={{ color: '#f72585' }}>Designed</span>
-              <span style={{ color: '#7209b7' }}>for You.</span>
+              <span style={{ color: '#FF2E8A' }}>Designed</span>
+              <span style={{ color: '#7B2DFF' }}>for You.</span>
             </h1>
             <div style={{
               width: '80px',
               height: '4px',
-              background: 'linear-gradient(90deg, #f72585 0%, #7209b7 100%)',
+              background: 'linear-gradient(90deg, #FF2E8A 0%, #7B2DFF 100%)',
               borderRadius: '2px',
               marginTop: '12px',
               marginBottom: '16px'
@@ -453,15 +383,15 @@ export default function AuthPage({
               fontSize: '15px',
               color: colorTextSecondary,
               lineHeight: '1.5',
-              maxWidth: '440px',
+              maxWidth: '460px',
               margin: 0,
               fontWeight: '500'
             }}>
-              Book tailors, manage measurements, track orders and enjoy a premium stitching experience.
+              Book expert tailors, choose premium fabrics, customize every stitch, and track your order from start to finish.
             </p>
           </div>
 
-          {/* PREMIUM 3D ILLUSTRATION BOUTIQUE CANVAS */}
+          {/* PREMIUM MINI TAILORING STUDIO ON circular podium DISPLAY */}
           <div style={{
             position: 'relative',
             width: '100%',
@@ -470,430 +400,316 @@ export default function AuthPage({
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: '24px',
-            background: isDark 
-              ? 'radial-gradient(circle at 50% 50%, #16132D 0%, #0c091f 100%)' 
-              : 'radial-gradient(circle at 50% 50%, #fbfafd 0%, #f1effb 100%)',
-            border: `1.5px solid ${borderColor}`,
-            overflow: 'hidden',
-            boxShadow: 'inset 0 0 40px rgba(114, 9, 183, 0.05)'
+            background: 'transparent',
+            overflow: 'hidden'
           }}>
-            {/* Grid dot layer */}
+            {/* Ambient Lighting: Warm glow center, pink/purple edge light */}
             <div style={{
               position: 'absolute',
-              inset: 0,
-              backgroundImage: isDark 
-                ? 'radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px)' 
-                : 'radial-gradient(rgba(114, 9, 183, 0.12) 1.5px, transparent 1.5px)',
-              backgroundSize: '20px 20px',
-              opacity: 0.8
+              width: '280px',
+              height: '280px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(216, 27, 255, 0.08) 0%, transparent 70%)',
+              bottom: '10%',
+              left: '50%',
+              marginLeft: '-140px',
+              pointerEvents: 'none',
+              zIndex: 1
             }} />
 
-            {/* Boutique store backdrop silhouettes (Luxury clothes rack and hanger displays) */}
-            <svg viewBox="0 0 400 300" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, opacity: isDark ? 0.08 : 0.04, pointerEvents: 'none' }}>
-              <line x1="40" y1="280" x2="360" y2="280" stroke="currentColor" strokeWidth="4" />
-              <line x1="80" y1="280" x2="80" y2="100" stroke="currentColor" strokeWidth="3" />
-              <line x1="320" y1="280" x2="320" y2="100" stroke="currentColor" strokeWidth="3" />
-              <line x1="80" y1="110" x2="320" y2="110" stroke="currentColor" strokeWidth="3" />
-              {/* Hanging clothes silhouettes */}
-              <path d="M 110 110 L 110 240 L 140 240 L 140 110 Z" fill="currentColor" />
-              <path d="M 160 110 L 160 220 L 195 220 L 195 110 Z" fill="currentColor" />
-              <path d="M 210 110 L 210 250 L 240 250 L 240 110 Z" fill="currentColor" />
-              <path d="M 260 110 L 260 210 L 290 210 L 290 110 Z" fill="currentColor" />
+            {/* Glowing Connecting lines SVG (curving outward from podium to the 6 cards) */}
+            <svg viewBox="0 0 500 480" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 2, pointerEvents: 'none' }}>
+              <defs>
+                <linearGradient id="glow-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FF2E8A" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#7B2DFF" stopOpacity="0.2" />
+                </linearGradient>
+                <linearGradient id="glow-grad-2" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#D81BFF" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#FF2E8A" stopOpacity="0.2" />
+                </linearGradient>
+              </defs>
+              {/* Connecting lines from circular display center (250, 320) to the 6 float cards */}
+              {/* Left Column connections */}
+              <path d="M 250 320 Q 140 290, 80 120" stroke="url(#glow-grad-1)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
+              <path d="M 250 320 Q 120 320, 80 230" stroke="url(#glow-grad-1)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
+              <path d="M 250 320 Q 130 350, 80 370" stroke="url(#glow-grad-1)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
+              {/* Right Column connections */}
+              <path d="M 250 320 Q 360 290, 420 120" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
+              <path d="M 250 320 Q 380 320, 420 230" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
+              <path d="M 250 320 Q 370 350, 420 370" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
             </svg>
 
-            {/* Interactive Vector Scene: Customer & Tailor */}
-            <svg viewBox="0 0 400 480" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: 'none' }}>
-              {/* Sewing Machine Outline on bottom left table */}
-              <rect x="30" y="380" width="80" height="8" rx="2" fill={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.05)'} />
-              <path d="M 50 380 L 50 350 L 90 350 L 90 365 L 80 365 L 80 380" stroke={isDark ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.1)'} strokeWidth="3" fill="none" />
-              
-              {/* Mannequin Stand on bottom right */}
-              <line x1="330" y1="310" x2="330" y2="430" stroke={isDark ? 'rgba(255,255,255,0.18)' : 'rgba(15,23,42,0.12)'} strokeWidth="3" />
-              <line x1="310" y1="430" x2="350" y2="430" stroke={isDark ? 'rgba(255,255,255,0.18)' : 'rgba(15,23,42,0.12)'} strokeWidth="3" />
-              {/* Mannequin Body torso outline */}
-              <path d="M 315 310 C 315 260, 345 260, 345 310 L 340 370 L 320 370 Z" fill={isDark ? 'rgba(114, 9, 183, 0.08)' : 'rgba(247, 37, 133, 0.04)'} stroke={isDark ? 'rgba(255,255,255,0.2)' : 'rgba(15,23,42,0.12)'} strokeWidth="1.5" />
-            </svg>
-
-            {/* Central Floating Smartphone Mockup */}
-            <div className="animate-float" style={{
-              width: '180px',
-              height: '290px',
-              background: isDark ? '#16132D' : '#FFFFFF',
-              borderRadius: '28px',
-              border: isDark ? '4px solid #2A254D' : '4px solid #131A34',
-              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-              position: 'relative',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              boxSizing: 'border-box',
-              zIndex: 10
+            {/* circular podium display platform (3D perspective) */}
+            <div className="animate-podium" style={{
+              position: 'absolute',
+              bottom: '12%',
+              left: '50%',
+              marginLeft: '-150px',
+              width: '300px',
+              height: '300px',
+              borderRadius: '50%',
+              transform: 'rotateX(60deg)',
+              background: isDark 
+                ? 'radial-gradient(circle, rgba(216,27,255,0.18) 0%, rgba(123,45,255,0.06) 60%, rgba(255,255,255,0.02) 100%)' 
+                : 'radial-gradient(circle, rgba(216,27,255,0.08) 0%, rgba(123,45,255,0.02) 60%, rgba(0,0,0,0.01) 100%)',
+              border: '2px solid rgba(255, 46, 138, 0.35)',
+              boxShadow: '0 25px 70px rgba(123, 45, 255, 0.35), inset 0 0 40px rgba(255, 46, 138, 0.25)',
+              zIndex: 3,
+              transformStyle: 'preserve-3d'
             }}>
-              {/* Speaker Notch */}
+              {/* Internal glowing rim ring */}
               <div style={{
                 position: 'absolute',
-                top: '0',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '56px',
-                height: '14px',
-                background: isDark ? '#2A254D' : '#131A34',
-                borderBottomLeftRadius: '8px',
-                borderBottomRightRadius: '8px',
-                zIndex: 15
+                inset: '12px',
+                borderRadius: '50%',
+                border: '1px solid rgba(216, 27, 255, 0.2)',
+                background: 'transparent'
               }} />
-
-              {/* Map/App UI inside phone screen */}
-              <div style={{
-                flex: 1,
-                position: 'relative',
-                backgroundImage: isDark
-                  ? 'url("https://a.basemaps.cartocdn.com/dark_all/13/5862/3475.png")'
-                  : 'url("https://a.basemaps.cartocdn.com/rastertiles/voyager/13/5862/3475.png")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: isDark ? 'rgba(15, 12, 36, 0.35)' : 'rgba(255, 255, 255, 0.1)',
-                  pointerEvents: 'none'
-                }} />
-
-                {/* SVG path with active animation */}
-                <svg viewBox="0 0 200 300" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
-                  <path d="M 30 240 C 50 180, 130 160, 150 80" stroke="rgba(114, 9, 183, 0.15)" strokeWidth="6" fill="none" />
-                  <path id="route-line" d="M 30 240 C 50 180, 130 160, 150 80" stroke="#f72585" strokeWidth="3" fill="none" strokeDasharray="5,3" />
-                  <circle cx="150" cy="80" r="4" fill="#f72585" />
-                  <circle r="5" fill="#7209b7" stroke="#ffffff" strokeWidth="1.5">
-                    <animateMotion dur="5s" repeatCount="indefinite" path="M 30 240 C 50 180, 130 160, 150 80" />
-                  </circle>
-                </svg>
-
-                {/* Smartphone HUD Card */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '8px',
-                  left: '8px',
-                  right: '8px',
-                  background: 'rgba(15, 12, 36, 0.9)',
-                  backdropFilter: 'blur(5px)',
-                  borderRadius: '10px',
-                  padding: '6px 8px',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: '#ffffff',
-                  zIndex: 5
-                }}>
-                  <div style={{ background: '#f72585', borderRadius: '4px', padding: '3px', display: 'flex', alignItems: 'center' }}>
-                    <Truck size={10} style={{ color: '#ffffff' }} />
-                  </div>
-                  <div style={{ textAlign: 'left' }}>
-                    <span style={{ fontSize: '8px', opacity: 0.8, display: 'block', fontWeight: '700', color: '#ffffff' }}>Active Order</span>
-                    <span style={{ fontSize: '9px', fontWeight: '800', color: '#ffffff' }}>Stitching In Progress</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* 8 FLOATING GLASSMORPHIC BADGES (Apple/Stripe Style) */}
-            
-            {/* 1. AI Body Measurement (Top Right) */}
-            <div className="animate-float" style={{
-              position: 'absolute',
-              top: '8%',
-              right: '4%',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <Activity size={12} style={{ color: '#f72585' }} />
-              <span>AI Body Measurement</span>
-            </div>
-
-            {/* 2. Tailor Assigned (Mid Left) */}
-            <div className="animate-float-delayed" style={{
-              position: 'absolute',
-              top: '30%',
-              left: '4%',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <Award size={12} style={{ color: '#7209b7' }} />
-              <span>Tailor Assigned</span>
-            </div>
-
-            {/* 3. Fabric Selected (Top Left) */}
-            <div className="animate-float" style={{
-              position: 'absolute',
-              top: '12%',
-              left: '6%',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <Layers size={12} style={{ color: '#f72585' }} />
-              <span>Fabric Selected</span>
-            </div>
-
-            {/* 4. Stitch Design Selected (Mid Right) */}
-            <div className="animate-float-delayed" style={{
-              position: 'absolute',
-              top: '35%',
-              right: '2%',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <Scissors size={12} style={{ color: '#7209b7' }} />
-              <span>Design Selected</span>
-            </div>
-
-            {/* 5. Live Order Tracking (Center Overlay) */}
-            <div className="animate-float" style={{
-              position: 'absolute',
-              top: '20%',
-              right: '25%',
-              background: '#f72585',
-              color: '#ffffff',
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '800',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 10px 20px rgba(247, 37, 133, 0.35)',
-              zIndex: 20
-            }}>
-              <MapPin size={12} style={{ color: '#ffffff' }} />
-              <span style={{ color: '#ffffff' }}>Live Order Tracking</span>
-            </div>
-
-            {/* 6. Appointment Confirmed (Bottom Left) */}
-            <div className="animate-float" style={{
-              position: 'absolute',
-              bottom: '22%',
-              left: '5%',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <Calendar size={12} style={{ color: '#f72585' }} />
-              <span>Appointment Confirmed</span>
-            </div>
-
-            {/* 7. Order Ready (Bottom Right) */}
-            <div className="animate-float-delayed" style={{
-              position: 'absolute',
-              bottom: '25%',
-              right: '6%',
-              background: '#7209b7',
-              color: '#ffffff',
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '800',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 10px 20px rgba(114, 9, 183, 0.35)',
-              zIndex: 20
-            }}>
-              <CheckCircle size={12} style={{ color: '#ffffff' }} />
-              <span style={{ color: '#ffffff' }}>Order Ready</span>
-            </div>
-
-            {/* 8. Premium Customer Rating (Center Left) */}
-            <div className="animate-float-delayed" style={{
-              position: 'absolute',
-              top: '55%',
-              left: '8%',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <Star size={12} fill="#fbbf24" style={{ color: '#fbbf24' }} />
-              <span>4.9 Customer Rating</span>
-            </div>
-
-            {/* 10 FLOATING CLOTHING PREVIEW BADGES (Apple/Nike Style) */}
+            {/* MINIATURE 3D BOUTIQUE SETUP ON circular podium DISPLAY */}
             <div style={{
               position: 'absolute',
-              bottom: '10px',
-              left: '10px',
-              right: '10px',
+              bottom: '15%',
+              width: '280px',
+              height: '240px',
+              zIndex: 5,
               display: 'flex',
-              flexWrap: 'wrap',
-              gap: '6px',
+              alignItems: 'flex-end',
               justifyContent: 'center',
-              zIndex: 20
+              pointerEvents: 'none'
             }}>
-              {[
-                { label: '🧥 Sherwani' },
-                { label: '👔 Kurta' },
-                { label: '🧥 Blazer' },
-                { label: '👔 Suit' },
-                { label: '👗 Lehenga' },
-                { label: '✨ Saree Blouse' },
-                { label: '👗 Anarkali' },
-                { label: '👶 Kids Wear' },
-                { label: '👗 Western Dress' },
-                { label: '👑 Wedding Collection' }
-              ].map((item, idx) => (
-                <span 
-                  key={idx} 
-                  className="animate-drift"
-                  style={{
-                    fontSize: '10px',
-                    fontWeight: '800',
-                    color: colorTextSecondary,
-                    background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
-                    border: `1px solid ${borderColor}`,
-                    padding: '3px 8px',
-                    borderRadius: '20px',
-                    boxShadow: '0 4px 10px rgba(0,0,0,0.01)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    animationDelay: `${idx * 0.8}s`
-                  }}
-                >
-                  {item.label}
-                </span>
-              ))}
+              <svg viewBox="0 0 280 240" style={{ width: '100%', height: '100%' }}>
+                {/* 1. Mannequin Stand (Right Side of circular podium) */}
+                <line x1="200" y1="90" x2="200" y2="200" stroke={isDark ? 'rgba(255,255,255,0.45)' : '#475569'} strokeWidth="2.5" />
+                <line x1="185" y1="200" x2="215" y2="200" stroke={isDark ? 'rgba(255,255,255,0.45)' : '#475569'} strokeWidth="2.5" />
+                {/* Mannequin torso body wearing premium magenta designer outfit */}
+                <path d="M 185 90 C 185 55, 215 55, 215 90 L 210 145 L 190 145 Z" fill="url(#gown-grad)" stroke="#FF2E8A" strokeWidth="1.5" />
+                <defs>
+                  <linearGradient id="gown-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FF2E8A" />
+                    <stop offset="100%" stopColor="#D81BFF" />
+                  </linearGradient>
+                </defs>
+                {/* Measuring tape draped around mannequin neck */}
+                <path d="M 193 68 C 195 90, 205 90, 207 68" stroke="#fbbf24" strokeWidth="2.2" fill="none" />
+                <path d="M 193 68 L 191 110" stroke="#fbbf24" strokeWidth="2.2" fill="none" />
+
+                {/* 2. Luxury Sewing Machine (Left Side of circular podium) */}
+                {/* Sewing Table base */}
+                <rect x="50" y="170" width="70" height="6" rx="2" fill={isDark ? '#2A254D' : '#e2e8f0'} stroke={isDark ? 'rgba(255,255,255,0.1)' : '#94a3b8'} strokeWidth="1" />
+                {/* Machine body */}
+                <path d="M 60 170 L 60 135 L 105 135 L 105 152 L 95 152 L 95 170" stroke="#7B2DFF" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+                <circle cx="105" cy="142" r="3" fill="#fbbf24" />
+                <line x1="60" y1="170" x2="110" y2="170" stroke={isDark ? 'rgba(255,255,255,0.4)' : '#64748b'} strokeWidth="2.5" />
+                {/* Spool of thread on machine top */}
+                <rect x="75" y="128" width="6" height="7" fill="#FF2E8A" rx="1" />
+
+                {/* 3. Folded Premium Fabric Rolls (Center background) */}
+                <g transform="translate(115, 155)">
+                  {/* Roll 1: Pink */}
+                  <rect x="5" y="10" width="40" height="12" rx="3" fill="#FF2E8A" opacity="0.9" />
+                  <ellipse cx="45" cy="16" rx="2" ry="6" fill="#fbbf24" />
+                  {/* Roll 2: Purple */}
+                  <rect x="15" y="20" width="42" height="12" rx="3" fill="#7B2DFF" opacity="0.9" />
+                  <ellipse cx="57" cy="26" rx="2" ry="6" fill="#fbbf24" />
+                </g>
+
+                {/* 4. Clothes Hanger Rack (Center-right background) */}
+                <line x1="125" y1="80" x2="175" y2="80" stroke={isDark ? 'rgba(255,255,255,0.3)' : '#cbd5e1'} strokeWidth="2" />
+                <line x1="125" y1="80" x2="125" y2="175" stroke={isDark ? 'rgba(255,255,255,0.3)' : '#cbd5e1'} strokeWidth="1.5" />
+                {/* Hanging designer garments */}
+                <path d="M 135 83 L 135 140 L 148 140 L 148 83 Z" fill="rgba(216, 27, 255, 0.4)" stroke="#D81BFF" strokeWidth="1" />
+                <path d="M 155 83 L 155 145 L 168 145 L 168 83 Z" fill="rgba(123, 45, 255, 0.4)" stroke="#7B2DFF" strokeWidth="1" />
+
+                {/* 5. Sewing Tools on circular podium floor */}
+                {/* Thread reels */}
+                <rect x="135" y="195" width="5" height="9" fill="#D81BFF" rx="1" transform="rotate(15, 135, 195)" />
+                <rect x="145" y="193" width="5" height="9" fill="#FF2E8A" rx="1" transform="rotate(-30, 145, 193)" />
+                {/* Scissors */}
+                <path d="M 160 195 C 160 190, 168 190, 168 195 L 164 205 L 160 195 M 165 195 C 165 190, 173 190, 173 195 L 166 205 Z" fill="none" stroke={isDark ? 'rgba(255,255,255,0.6)' : '#475569'} strokeWidth="1" />
+                {/* Buttons */}
+                <circle cx="120" cy="201" r="2.2" fill="#fbbf24" />
+                <circle cx="126" cy="203" r="1.8" fill="#FF2E8A" />
+                <circle cx="116" cy="204" r="2.4" fill="#7B2DFF" />
+              </svg>
             </div>
 
-            {/* Floating Luxury Sewing Elements in corners */}
-            <div className="animate-float" style={{ position: 'absolute', left: '15%', bottom: '40%', opacity: 0.4, color: colorTextMuted }}><Scissors size={14} /></div>
-            <div className="animate-float-delayed" style={{ position: 'absolute', right: '15%', top: '25%', opacity: 0.4, color: colorTextMuted }}><Sparkles size={14} /></div>
+            {/* 6 FLOATING GLASSMORPHIC FEATURE CARDS (Circular Spacing layout) */}
+            
+            {/* 1. AI Body Measurements (Top Left) */}
+            <div className="animate-float-1" style={{
+              position: 'absolute',
+              top: '6%',
+              left: '4%',
+              background: bgCard,
+              backdropFilter: 'blur(16px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '10px 16px',
+              borderRadius: '16px',
+              textAlign: 'left',
+              width: '150px',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
+              zIndex: 20
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <Activity size={13} style={{ color: '#FF2E8A' }} />
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>AI Measurements</span>
+              </div>
+              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Accurate. Fast. Easy.</span>
+            </div>
+
+            {/* 2. Premium Fabrics (Mid Left) */}
+            <div className="animate-float-2" style={{
+              position: 'absolute',
+              top: '32%',
+              left: '2%',
+              background: bgCard,
+              backdropFilter: 'blur(16px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '10px 16px',
+              borderRadius: '16px',
+              textAlign: 'left',
+              width: '150px',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
+              zIndex: 20
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <Layers size={13} style={{ color: '#D81BFF' }} />
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>Premium Fabrics</span>
+              </div>
+              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>1000+ Fabric Collections</span>
+            </div>
+
+            {/* 3. Custom Stitching (Bottom Left) */}
+            <div className="animate-float-1" style={{
+              position: 'absolute',
+              bottom: '10%',
+              left: '4%',
+              background: bgCard,
+              backdropFilter: 'blur(16px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '10px 16px',
+              borderRadius: '16px',
+              textAlign: 'left',
+              width: '150px',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
+              zIndex: 20
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <Scissors size={13} style={{ color: '#7B2DFF' }} />
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>Custom Stitching</span>
+              </div>
+              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Design any outfit you love</span>
+            </div>
+
+            {/* 4. Expert Tailors (Top Right) */}
+            <div className="animate-float-2" style={{
+              position: 'absolute',
+              top: '6%',
+              right: '4%',
+              background: bgCard,
+              backdropFilter: 'blur(16px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '10px 16px',
+              borderRadius: '16px',
+              textAlign: 'left',
+              width: '150px',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
+              zIndex: 20
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <Award size={13} style={{ color: '#FF2E8A' }} />
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>Expert Tailors</span>
+              </div>
+              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Verified & Experienced</span>
+            </div>
+
+            {/* 5. Live Order Tracking (Mid Right) */}
+            <div className="animate-float-1" style={{
+              position: 'absolute',
+              top: '32%',
+              right: '2%',
+              background: bgCard,
+              backdropFilter: 'blur(16px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '10px 16px',
+              borderRadius: '16px',
+              textAlign: 'left',
+              width: '150px',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
+              zIndex: 20
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <Truck size={13} style={{ color: '#D81BFF' }} />
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>Order Tracking</span>
+              </div>
+              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Track every stitching stage</span>
+            </div>
+
+            {/* 6. Home Delivery (Bottom Right) */}
+            <div className="animate-float-2" style={{
+              position: 'absolute',
+              bottom: '10%',
+              right: '4%',
+              background: bgCard,
+              backdropFilter: 'blur(16px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '10px 16px',
+              borderRadius: '16px',
+              textAlign: 'left',
+              width: '150px',
+              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
+              zIndex: 20
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                <Gift size={13} style={{ color: '#7B2DFF' }} />
+                <span style={{ fontSize: '11px', fontWeight: '800' }}>Home Delivery</span>
+              </div>
+              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Delivered to your doorstep</span>
+            </div>
 
           </div>
 
-          {/* Bottom floating statistics card */}
+          {/* Bottom Statistics Bar */}
           <div className="animate-float-delayed" style={{
             background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.6)',
             backdropFilter: 'blur(16px)',
             border: `1.5px solid ${borderColor}`,
             borderRadius: '20px',
-            padding: '16px 24px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            padding: '16px 20px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '12px',
             width: '100%',
             boxSizing: 'border-box',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.04)'
+            boxShadow: '0 20px 40px rgba(0,0,0,0.03)'
           }}>
             <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '20px', fontWeight: '800', color: colorTextPrimary, display: 'block' }}>50K+</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted, fontWeight: '600' }}>Happy Customers</span>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: colorTextPrimary, display: 'block' }}>👥 50K+</span>
+              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Happy Customers</span>
             </div>
-            <div style={{ width: '1px', height: '30px', background: borderColor }} />
             <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '20px', fontWeight: '800', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                4.9 <Star size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />
+              <span style={{ fontSize: '15px', fontWeight: '800', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                ⭐ 4.9
               </span>
-              <span style={{ fontSize: '12px', color: colorTextMuted, fontWeight: '600' }}>Customer Rating</span>
+              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Rating</span>
             </div>
-            <div style={{ width: '1px', height: '30px', background: borderColor }} />
             <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '20px', fontWeight: '800', color: '#10b981', display: 'block' }}>100K+</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted, fontWeight: '600' }}>Orders Delivered</span>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: '#10b981', display: 'block' }}>👕 100K+</span>
+              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Custom Outfits</span>
             </div>
-          </div>
-
-          {/* Grid features layout */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '16px',
-            width: '100%'
-          }}>
-            {[
-              { title: "🧵 Personalized Stitching", desc: "Custom tailoring made for your style." },
-              { title: "📏 AI Body Measurements", desc: "Fast and accurate measurements." },
-              { title: "🚚 Live Order Tracking", desc: "Track your outfit in real time." },
-              { title: "⭐ Trusted Tailors", desc: "Verified professionals with top ratings." }
-            ].map((feat, idx) => (
-              <div key={idx} style={{
-                background: bgCard,
-                backdropFilter: 'blur(10px)',
-                border: `1.5px solid ${borderColor}`,
-                borderRadius: '16px',
-                padding: '16px',
-                textAlign: 'left',
-                transition: 'transform 0.2s',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.02)'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
-              >
-                <h4 style={{ fontSize: '14px', fontWeight: '800', margin: '0 0 4px 0', color: colorTextPrimary }}>{feat.title}</h4>
-                <p style={{ fontSize: '11px', color: colorTextSecondary, margin: 0, lineHeight: '1.4' }}>{feat.desc}</p>
-              </div>
-            ))}
+            <div style={{ textAlign: 'left' }}>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: '#D81BFF', display: 'block' }}>🛡 500+</span>
+              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Verified Tailors</span>
+            </div>
           </div>
 
         </div>
@@ -916,12 +732,12 @@ export default function AuthPage({
             width: '200px',
             height: '200px',
             borderRadius: '50%',
-            background: 'rgba(106, 0, 244, 0.1)',
+            background: 'rgba(216, 27, 255, 0.08)',
             filter: 'blur(80px)',
             pointerEvents: 'none'
           }} />
 
-          {/* Redesigned Floating Glass Form Card */}
+          {/* Glassmorphic Form Card */}
           <div 
             style={{ 
               width: '100%', 
@@ -939,7 +755,7 @@ export default function AuthPage({
           >
             {/* Header Content */}
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <span style={{ fontSize: '15px', fontWeight: '700', color: '#f72585', display: 'block', marginBottom: '6px' }}>
+              <span style={{ fontSize: '15px', fontWeight: '700', color: '#FF2E8A', display: 'block', marginBottom: '6px' }}>
                 {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
               </span>
               <h2 style={{ margin: 0, fontSize: '28px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
@@ -949,7 +765,7 @@ export default function AuthPage({
 
             {/* Error box */}
             {error && (
-              <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', marginBottom: '20px' }}>
+              <div style={{ background: 'rgba(255, 46, 138, 0.08)', color: '#FF2E8A', border: '1px solid rgba(255, 46, 138, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', marginBottom: '20px' }}>
                 {error}
               </div>
             )}
@@ -1095,10 +911,10 @@ export default function AuthPage({
                           key={roleOpt.id}
                           onClick={() => setRole(roleOpt.id)}
                           style={{ 
-                            border: isSelected ? '1.5px solid #f72585' : `1.5px solid ${borderColor}`,
+                            border: isSelected ? '1.5px solid #FF2E8A' : `1.5px solid ${borderColor}`,
                             borderRadius: '12px',
                             padding: '10px 8px',
-                            background: isSelected ? (isDark ? 'rgba(247, 37, 133, 0.08)' : '#FFF0F5') : (isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF'),
+                            background: isSelected ? (isDark ? 'rgba(255, 46, 138, 0.08)' : '#FFF0F5') : (isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF'),
                             cursor: 'pointer',
                             textAlign: 'center',
                             display: 'flex',
@@ -1111,14 +927,14 @@ export default function AuthPage({
                           className="auth-role-card"
                         >
                           {isSelected && (
-                            <div style={{ position: 'absolute', top: '4px', right: '4px', width: '12px', height: '12px', borderRadius: '50%', background: '#f72585', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff' }}>
+                            <div style={{ position: 'absolute', top: '4px', right: '4px', width: '12px', height: '12px', borderRadius: '50%', background: '#FF2E8A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff' }}>
                               <Check size={8} strokeWidth={4} />
                             </div>
                           )}
-                          <div style={{ color: isSelected ? '#f72585' : colorTextMuted, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '8px', background: isSelected ? 'rgba(247, 37, 133, 0.1)' : (isDark ? 'rgba(255,255,255,0.05)' : '#F8FAFC'), marginBottom: '2px' }}>
+                          <div style={{ color: isSelected ? '#FF2E8A' : colorTextMuted, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '8px', background: isSelected ? 'rgba(255, 46, 138, 0.1)' : (isDark ? 'rgba(255,255,255,0.05)' : '#F8FAFC'), marginBottom: '2px' }}>
                             {roleOpt.icon}
                           </div>
-                          <span style={{ fontSize: '10px', fontWeight: '800', color: isSelected ? '#f72585' : colorTextPrimary, display: 'block', lineHeight: '1.2' }}>{roleOpt.name}</span>
+                          <span style={{ fontSize: '10px', fontWeight: '800', color: isSelected ? '#FF2E8A' : colorTextPrimary, display: 'block', lineHeight: '1.2' }}>{roleOpt.name}</span>
                           <span style={{ fontSize: '8px', color: colorTextMuted, display: 'block', lineHeight: '1' }}>{roleOpt.sub}</span>
                         </div>
                       );
@@ -1157,13 +973,13 @@ export default function AuthPage({
                       type="checkbox" 
                       checked={rememberMe} 
                       onChange={(e) => setRememberMe(e.target.checked)} 
-                      style={{ accentColor: '#f72585', width: '16px', height: '16px', borderRadius: '4px' }} 
+                      style={{ accentColor: '#FF2E8A', width: '16px', height: '16px', borderRadius: '4px' }} 
                     />
                     Remember me
                   </label>
                   <span 
                     onClick={() => alert("Password reset link sent to your email!")}
-                    style={{ color: '#f72585', fontWeight: '700', cursor: 'pointer' }}
+                    style={{ color: '#FF2E8A', fontWeight: '700', cursor: 'pointer' }}
                   >
                     Forgot Password?
                   </span>
@@ -1177,11 +993,11 @@ export default function AuthPage({
                     type="checkbox" 
                     checked={agreeTerms} 
                     onChange={(e) => setAgreeTerms(e.target.checked)} 
-                    style={{ accentColor: '#f72585', width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0, marginTop: '1px' }} 
+                    style={{ accentColor: '#FF2E8A', width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0, marginTop: '1px' }} 
                     required
                   />
                   <span style={{ color: colorTextSecondary, lineHeight: '1.4' }}>
-                    I agree to the <strong style={{ color: '#f72585', cursor: 'pointer' }} onClick={() => alert("Terms & Conditions")}>Terms & Conditions</strong> and <strong style={{ color: '#f72585', cursor: 'pointer' }} onClick={() => alert("Privacy Policy")}>Privacy Policy</strong>.
+                    I agree to the <strong style={{ color: '#FF2E8A', cursor: 'pointer' }} onClick={() => alert("Terms & Conditions")}>Terms & Conditions</strong> and <strong style={{ color: '#FF2E8A', cursor: 'pointer' }} onClick={() => alert("Privacy Policy")}>Privacy Policy</strong>.
                   </span>
                 </div>
               )}
@@ -1193,7 +1009,7 @@ export default function AuthPage({
                 style={{ 
                   width: '100%', 
                   height: '56px',
-                  background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
+                  background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)', 
                   color: '#ffffff', 
                   border: 'none', 
                   borderRadius: '16px', 
@@ -1204,17 +1020,17 @@ export default function AuthPage({
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   gap: '8px',
-                  boxShadow: '0 12px 28px rgba(247, 37, 133, 0.2)',
+                  boxShadow: '0 12px 28px rgba(255, 46, 138, 0.2)',
                   marginTop: '8px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 16px 36px rgba(247, 37, 133, 0.35)';
+                  e.currentTarget.style.boxShadow = '0 16px 36px rgba(255, 46, 138, 0.35)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(247, 37, 133, 0.2)';
+                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(255, 46, 138, 0.2)';
                 }}
               >
                 <span>{tab === 'login' ? 'Login to Portal' : 'Create Account'}</span>
@@ -1247,7 +1063,7 @@ export default function AuthPage({
                 title="Google Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#f72585';
+                  e.currentTarget.style.borderColor = '#FF2E8A';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
@@ -1265,7 +1081,7 @@ export default function AuthPage({
                 title="Apple Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#7209b7';
+                  e.currentTarget.style.borderColor = '#7B2DFF';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'none';
@@ -1353,7 +1169,7 @@ export default function AuthPage({
             border: `1px solid ${borderColor}`,
             boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(114, 9, 183, 0.12)', color: '#7209b7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(114, 9, 183, 0.12)', color: '#7B2DFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Headphones size={22} />
             </div>
             <div>
@@ -1374,7 +1190,7 @@ export default function AuthPage({
             border: `1px solid ${borderColor}`,
             boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(247, 37, 133, 0.12)', color: '#f72585', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255, 46, 138, 0.12)', color: '#FF2E8A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <CreditCard size={22} />
             </div>
             <div>
