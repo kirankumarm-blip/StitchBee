@@ -1,0 +1,30 @@
+{
+  "name": "stichbee",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.395.0",
+    "pngjs": "^7.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-is": "^19.2.7",
+    "recharts": "^3.9.2",
+    "three": "^0.184.0",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^4.8.2",
+    "@capacitor/cli": "^4.8.2",
+    "@capacitor/core": "^4.8.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^2.2.0",
+    "vite": "^3.2.10"
+  }
+}
