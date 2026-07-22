@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   Scissors, User, Lock, Mail, MapPin, Sparkles, Check, Truck, 
   Phone, Star, Eye, EyeOff, Sun, Moon, Headphones, ArrowRight, 
-  Shield, ShieldAlert, CreditCard, Activity, Calendar, Award 
+  Shield, ShieldAlert, CreditCard, Activity, Calendar, Award, 
+  Layers, CheckCircle, Tag, ShoppingBag, Gift
 } from 'lucide-react';
 
 export default function AuthPage({ 
@@ -192,12 +193,20 @@ export default function AuthPage({
           0%, 100% { opacity: 0.2; }
           50% { opacity: 0.8; }
         }
+        @keyframes drift {
+          0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+          33% { transform: translate(5px, -5px) rotate(1deg); }
+          66% { transform: translate(-3px, 4px) rotate(-1deg); }
+        }
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
         .animate-float-delayed {
           animation: float 6s ease-in-out infinite;
           animation-delay: 3s;
+        }
+        .animate-drift {
+          animation: drift 10s ease-in-out infinite;
         }
         .animate-glow {
           animation: glow 5s ease-in-out infinite;
@@ -392,13 +401,13 @@ export default function AuthPage({
         position: 'relative'
       }} className="auth-main-wrapper">
         
-        {/* LEFT COLUMN (45% Width) */}
+        {/* LEFT COLUMN (HERO SECTION - 45% Width) */}
         <div style={{
           width: '45%',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: '32px',
+          gap: '24px',
           position: 'relative',
           paddingBottom: '40px'
         }} className="auth-left-column">
@@ -419,7 +428,7 @@ export default function AuthPage({
           {/* Headline and subtitle */}
           <div>
             <h1 style={{
-              fontSize: '56px',
+              fontSize: '52px',
               fontWeight: '800',
               lineHeight: '1.05',
               letterSpacing: '-2px',
@@ -437,11 +446,11 @@ export default function AuthPage({
               height: '4px',
               background: 'linear-gradient(90deg, #f72585 0%, #7209b7 100%)',
               borderRadius: '2px',
-              marginTop: '16px',
-              marginBottom: '20px'
+              marginTop: '12px',
+              marginBottom: '16px'
             }} />
             <p style={{
-              fontSize: '16px',
+              fontSize: '15px',
               color: colorTextSecondary,
               lineHeight: '1.5',
               maxWidth: '440px',
@@ -452,71 +461,89 @@ export default function AuthPage({
             </p>
           </div>
 
-          {/* FASHION ILLUSTRATION AREA: Floating Smartphone Map Mockup */}
+          {/* PREMIUM 3D ILLUSTRATION BOUTIQUE CANVAS */}
           <div style={{
             position: 'relative',
             width: '100%',
-            height: '340px',
+            height: '480px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: '24px',
-            background: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.01)',
+            background: isDark 
+              ? 'radial-gradient(circle at 50% 50%, #16132D 0%, #0c091f 100%)' 
+              : 'radial-gradient(circle at 50% 50%, #fbfafd 0%, #f1effb 100%)',
             border: `1.5px solid ${borderColor}`,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            boxShadow: 'inset 0 0 40px rgba(114, 9, 183, 0.05)'
           }}>
-            {/* Grid visual inside area */}
+            {/* Grid dot layer */}
             <div style={{
               position: 'absolute',
               inset: 0,
               backgroundImage: isDark 
-                ? 'radial-gradient(rgba(255, 255, 255, 0.2) 1.5px, transparent 1.5px)' 
-                : 'radial-gradient(rgba(114, 9, 183, 0.15) 1.5px, transparent 1.5px)',
-              backgroundSize: '24px 24px',
-              opacity: 0.9
+                ? 'radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px)' 
+                : 'radial-gradient(rgba(114, 9, 183, 0.12) 1.5px, transparent 1.5px)',
+              backgroundSize: '20px 20px',
+              opacity: 0.8
             }} />
 
-            {/* Glowing lights inside area */}
-            <div className="animate-glow" style={{
-              position: 'absolute',
-              width: '180px',
-              height: '180px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(114, 9, 183, 0.15) 0%, transparent 70%)',
-              top: '20%',
-              left: '25%',
-              pointerEvents: 'none'
-            }} />
-            
-            {/* Smartphone mockup */}
+            {/* Boutique store backdrop silhouettes (Luxury clothes rack and hanger displays) */}
+            <svg viewBox="0 0 400 300" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, opacity: isDark ? 0.08 : 0.04, pointerEvents: 'none' }}>
+              <line x1="40" y1="280" x2="360" y2="280" stroke="currentColor" strokeWidth="4" />
+              <line x1="80" y1="280" x2="80" y2="100" stroke="currentColor" strokeWidth="3" />
+              <line x1="320" y1="280" x2="320" y2="100" stroke="currentColor" strokeWidth="3" />
+              <line x1="80" y1="110" x2="320" y2="110" stroke="currentColor" strokeWidth="3" />
+              {/* Hanging clothes silhouettes */}
+              <path d="M 110 110 L 110 240 L 140 240 L 140 110 Z" fill="currentColor" />
+              <path d="M 160 110 L 160 220 L 195 220 L 195 110 Z" fill="currentColor" />
+              <path d="M 210 110 L 210 250 L 240 250 L 240 110 Z" fill="currentColor" />
+              <path d="M 260 110 L 260 210 L 290 210 L 290 110 Z" fill="currentColor" />
+            </svg>
+
+            {/* Interactive Vector Scene: Customer & Tailor */}
+            <svg viewBox="0 0 400 480" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, pointerEvents: 'none' }}>
+              {/* Sewing Machine Outline on bottom left table */}
+              <rect x="30" y="380" width="80" height="8" rx="2" fill={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.05)'} />
+              <path d="M 50 380 L 50 350 L 90 350 L 90 365 L 80 365 L 80 380" stroke={isDark ? 'rgba(255,255,255,0.15)' : 'rgba(15,23,42,0.1)'} strokeWidth="3" fill="none" />
+              
+              {/* Mannequin Stand on bottom right */}
+              <line x1="330" y1="310" x2="330" y2="430" stroke={isDark ? 'rgba(255,255,255,0.18)' : 'rgba(15,23,42,0.12)'} strokeWidth="3" />
+              <line x1="310" y1="430" x2="350" y2="430" stroke={isDark ? 'rgba(255,255,255,0.18)' : 'rgba(15,23,42,0.12)'} strokeWidth="3" />
+              {/* Mannequin Body torso outline */}
+              <path d="M 315 310 C 315 260, 345 260, 345 310 L 340 370 L 320 370 Z" fill={isDark ? 'rgba(114, 9, 183, 0.08)' : 'rgba(247, 37, 133, 0.04)'} stroke={isDark ? 'rgba(255,255,255,0.2)' : 'rgba(15,23,42,0.12)'} strokeWidth="1.5" />
+            </svg>
+
+            {/* Central Floating Smartphone Mockup */}
             <div className="animate-float" style={{
-              width: '190px',
-              height: '310px',
+              width: '180px',
+              height: '290px',
               background: isDark ? '#16132D' : '#FFFFFF',
-              borderRadius: '32px',
+              borderRadius: '28px',
               border: isDark ? '4px solid #2A254D' : '4px solid #131A34',
               boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
               position: 'relative',
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
+              zIndex: 10
             }}>
-              {/* Phone Speaker Notch */}
+              {/* Speaker Notch */}
               <div style={{
                 position: 'absolute',
                 top: '0',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '60px',
-                height: '16px',
+                width: '56px',
+                height: '14px',
                 background: isDark ? '#2A254D' : '#131A34',
-                borderBottomLeftRadius: '10px',
-                borderBottomRightRadius: '10px',
-                zIndex: 10
+                borderBottomLeftRadius: '8px',
+                borderBottomRightRadius: '8px',
+                zIndex: 15
               }} />
 
-              {/* Map background screen visual */}
+              {/* Map/App UI inside phone screen */}
               <div style={{
                 flex: 1,
                 position: 'relative',
@@ -526,71 +553,155 @@ export default function AuthPage({
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
               }}>
-                {/* Contrast overlay */}
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: isDark ? 'rgba(15, 12, 36, 0.4)' : 'rgba(255, 255, 255, 0.15)',
+                  background: isDark ? 'rgba(15, 12, 36, 0.35)' : 'rgba(255, 255, 255, 0.1)',
                   pointerEvents: 'none'
                 }} />
 
                 {/* SVG path with active animation */}
                 <svg viewBox="0 0 200 300" style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 2 }}>
-                  {/* Decorative map street grid */}
-                  <path d="M 0 60 L 200 80 M 0 160 L 200 130 M 0 240 L 200 250 M 60 0 L 80 300 M 140 0 L 120 300" stroke={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'} strokeWidth="1.5" fill="none" />
-                  
-                  {/* Active tracking path */}
-                  <path d="M 40 250 C 60 180, 140 160, 160 80" stroke="rgba(114, 9, 183, 0.2)" strokeWidth="8" fill="none" strokeLinecap="round" />
-                  <path id="delivery-route" d="M 40 250 C 60 180, 140 160, 160 80" stroke="#f72585" strokeWidth="4" fill="none" strokeLinecap="round" strokeDasharray="6,4" />
-
-                  {/* Pulsing delivery target */}
-                  <circle cx="160" cy="80" r="10" fill="rgba(247, 37, 133, 0.2)" className="animate-glow" />
-                  <circle cx="160" cy="80" r="4" fill="#f72585" />
-
-                  {/* Pulse driver position tracker dot */}
-                  <circle r="6" fill="#7209b7" stroke="#ffffff" strokeWidth="2">
-                    <animateMotion dur="6s" repeatCount="indefinite" path="M 40 250 C 60 180, 140 160, 160 80" />
+                  <path d="M 30 240 C 50 180, 130 160, 150 80" stroke="rgba(114, 9, 183, 0.15)" strokeWidth="6" fill="none" />
+                  <path id="route-line" d="M 30 240 C 50 180, 130 160, 150 80" stroke="#f72585" strokeWidth="3" fill="none" strokeDasharray="5,3" />
+                  <circle cx="150" cy="80" r="4" fill="#f72585" />
+                  <circle r="5" fill="#7209b7" stroke="#ffffff" strokeWidth="1.5">
+                    <animateMotion dur="5s" repeatCount="indefinite" path="M 30 240 C 50 180, 130 160, 150 80" />
                   </circle>
                 </svg>
 
-                {/* Simulated delivery HUD overlay inside phone */}
+                {/* Smartphone HUD Card */}
                 <div style={{
                   position: 'absolute',
-                  bottom: '10px',
-                  left: '10px',
-                  right: '10px',
+                  bottom: '8px',
+                  left: '8px',
+                  right: '8px',
                   background: 'rgba(15, 12, 36, 0.9)',
-                  backdropFilter: 'blur(6px)',
-                  borderRadius: '12px',
-                  padding: '8px',
-                  border: '1px solid rgba(255,255,255,0.12)',
+                  backdropFilter: 'blur(5px)',
+                  borderRadius: '10px',
+                  padding: '6px 8px',
+                  border: '1px solid rgba(255,255,255,0.1)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '6px',
                   color: '#ffffff',
                   zIndex: 5
                 }}>
-                  <div style={{ background: '#f72585', borderRadius: '6px', padding: '4px', display: 'flex', alignItems: 'center' }}>
-                    <Truck size={14} style={{ color: '#ffffff' }} />
+                  <div style={{ background: '#f72585', borderRadius: '4px', padding: '3px', display: 'flex', alignItems: 'center' }}>
+                    <Truck size={10} style={{ color: '#ffffff' }} />
                   </div>
-                  <div>
-                    <span style={{ fontSize: '9px', opacity: 0.8, display: 'block', fontWeight: '700', color: '#ffffff' }}>Active Order</span>
-                    <span style={{ fontSize: '10px', fontWeight: '800', color: '#ffffff' }}>HSR Layout → 2.1km</span>
+                  <div style={{ textAlign: 'left' }}>
+                    <span style={{ fontSize: '8px', opacity: 0.8, display: 'block', fontWeight: '700', color: '#ffffff' }}>Active Order</span>
+                    <span style={{ fontSize: '9px', fontWeight: '800', color: '#ffffff' }}>Stitching In Progress</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Floating fashion card (Absolute outside phone, top right) */}
+            {/* 8 FLOATING GLASSMORPHIC BADGES (Apple/Stripe Style) */}
+            
+            {/* 1. AI Body Measurement (Top Right) */}
+            <div className="animate-float" style={{
+              position: 'absolute',
+              top: '8%',
+              right: '4%',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '6px 12px',
+              borderRadius: '30px',
+              fontSize: '11px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+              zIndex: 20
+            }}>
+              <Activity size={12} style={{ color: '#f72585' }} />
+              <span>AI Body Measurement</span>
+            </div>
+
+            {/* 2. Tailor Assigned (Mid Left) */}
+            <div className="animate-float-delayed" style={{
+              position: 'absolute',
+              top: '30%',
+              left: '4%',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '6px 12px',
+              borderRadius: '30px',
+              fontSize: '11px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+              zIndex: 20
+            }}>
+              <Award size={12} style={{ color: '#7209b7' }} />
+              <span>Tailor Assigned</span>
+            </div>
+
+            {/* 3. Fabric Selected (Top Left) */}
             <div className="animate-float" style={{
               position: 'absolute',
               top: '12%',
-              right: '12%',
+              left: '6%',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '6px 12px',
+              borderRadius: '30px',
+              fontSize: '11px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+              zIndex: 20
+            }}>
+              <Layers size={12} style={{ color: '#f72585' }} />
+              <span>Fabric Selected</span>
+            </div>
+
+            {/* 4. Stitch Design Selected (Mid Right) */}
+            <div className="animate-float-delayed" style={{
+              position: 'absolute',
+              top: '35%',
+              right: '2%',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '6px 12px',
+              borderRadius: '30px',
+              fontSize: '11px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+              zIndex: 20
+            }}>
+              <Scissors size={12} style={{ color: '#7209b7' }} />
+              <span>Design Selected</span>
+            </div>
+
+            {/* 5. Live Order Tracking (Center Overlay) */}
+            <div className="animate-float" style={{
+              position: 'absolute',
+              top: '20%',
+              right: '25%',
               background: '#f72585',
               color: '#ffffff',
               padding: '6px 12px',
               borderRadius: '30px',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: '800',
               display: 'flex',
               alignItems: 'center',
@@ -599,19 +710,42 @@ export default function AuthPage({
               zIndex: 20
             }}>
               <MapPin size={12} style={{ color: '#ffffff' }} />
-              <span style={{ color: '#ffffff' }}>StitchBee #1408</span>
+              <span style={{ color: '#ffffff' }}>Live Order Tracking</span>
             </div>
 
-            {/* Floating fashion card (Absolute outside phone, bottom left) */}
+            {/* 6. Appointment Confirmed (Bottom Left) */}
+            <div className="animate-float" style={{
+              position: 'absolute',
+              bottom: '22%',
+              left: '5%',
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(10px)',
+              border: `1.5px solid ${borderColor}`,
+              color: colorTextPrimary,
+              padding: '6px 12px',
+              borderRadius: '30px',
+              fontSize: '11px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+              zIndex: 20
+            }}>
+              <Calendar size={12} style={{ color: '#f72585' }} />
+              <span>Appointment Confirmed</span>
+            </div>
+
+            {/* 7. Order Ready (Bottom Right) */}
             <div className="animate-float-delayed" style={{
               position: 'absolute',
-              bottom: '12%',
-              left: '8%',
+              bottom: '25%',
+              right: '6%',
               background: '#7209b7',
               color: '#ffffff',
               padding: '6px 12px',
               borderRadius: '30px',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: '800',
               display: 'flex',
               alignItems: 'center',
@@ -619,18 +753,18 @@ export default function AuthPage({
               boxShadow: '0 10px 20px rgba(114, 9, 183, 0.35)',
               zIndex: 20
             }}>
-              <Activity size={12} style={{ color: '#ffffff' }} />
-              <span style={{ color: '#ffffff' }}>AI Measurements Ready</span>
+              <CheckCircle size={12} style={{ color: '#ffffff' }} />
+              <span style={{ color: '#ffffff' }}>Order Ready</span>
             </div>
 
-            {/* Additional Luxury floaters (Top Left & Bottom Right) */}
+            {/* 8. Premium Customer Rating (Center Left) */}
             <div className="animate-float-delayed" style={{
               position: 'absolute',
-              top: '10%',
-              left: '10%',
-              background: 'rgba(255,255,255,0.08)',
+              top: '55%',
+              left: '8%',
+              background: 'rgba(255, 255, 255, 0.08)',
               backdropFilter: 'blur(10px)',
-              border: `1px solid ${borderColor}`,
+              border: `1.5px solid ${borderColor}`,
               color: colorTextPrimary,
               padding: '6px 12px',
               borderRadius: '30px',
@@ -639,32 +773,62 @@ export default function AuthPage({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
               zIndex: 20
             }}>
-              <Calendar size={12} style={{ color: '#f72585' }} />
-              <span>Next Appointment</span>
+              <Star size={12} fill="#fbbf24" style={{ color: '#fbbf24' }} />
+              <span>4.9 Customer Rating</span>
             </div>
-            
-            <div className="animate-float" style={{
+
+            {/* 10 FLOATING CLOTHING PREVIEW BADGES (Apple/Nike Style) */}
+            <div style={{
               position: 'absolute',
-              bottom: '10%',
-              right: '8%',
-              background: 'rgba(255,255,255,0.08)',
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '6px 12px',
-              borderRadius: '30px',
-              fontSize: '11px',
-              fontWeight: '700',
+              bottom: '10px',
+              left: '10px',
+              right: '10px',
               display: 'flex',
-              alignItems: 'center',
+              flexWrap: 'wrap',
               gap: '6px',
+              justifyContent: 'center',
               zIndex: 20
             }}>
-              <Award size={12} style={{ color: '#7209b7' }} />
-              <span>Tailor Assigned</span>
+              {[
+                { label: '🧥 Sherwani' },
+                { label: '👔 Kurta' },
+                { label: '🧥 Blazer' },
+                { label: '👔 Suit' },
+                { label: '👗 Lehenga' },
+                { label: '✨ Saree Blouse' },
+                { label: '👗 Anarkali' },
+                { label: '👶 Kids Wear' },
+                { label: '👗 Western Dress' },
+                { label: '👑 Wedding Collection' }
+              ].map((item, idx) => (
+                <span 
+                  key={idx} 
+                  className="animate-drift"
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: '800',
+                    color: colorTextSecondary,
+                    background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)',
+                    border: `1px solid ${borderColor}`,
+                    padding: '3px 8px',
+                    borderRadius: '20px',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.01)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    animationDelay: `${idx * 0.8}s`
+                  }}
+                >
+                  {item.label}
+                </span>
+              ))}
             </div>
+
+            {/* Floating Luxury Sewing Elements in corners */}
+            <div className="animate-float" style={{ position: 'absolute', left: '15%', bottom: '40%', opacity: 0.4, color: colorTextMuted }}><Scissors size={14} /></div>
+            <div className="animate-float-delayed" style={{ position: 'absolute', right: '15%', top: '25%', opacity: 0.4, color: colorTextMuted }}><Sparkles size={14} /></div>
 
           </div>
 
@@ -896,7 +1060,7 @@ export default function AuthPage({
                         type={showConfirmPassword ? 'text' : 'password'} 
                         placeholder="••••••••" 
                         value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.value)} 
+                        onChange={(e) => setConfirmPassword(e.target.checked)} 
                         style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
                         required 
                       />
