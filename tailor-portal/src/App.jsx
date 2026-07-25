@@ -599,9 +599,8 @@ export default function App() {
       {/* Top sticky navigation bar */}
       {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
         <header className="top-nav">
-          <div className="logo" onClick={() => setRole('landing')}>
-            <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
-            <span className="logo-text">StitchBee</span>
+          <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="StitchBee" style={{ height: '34px', width: 'auto', display: 'block' }} />
           </div>
           
           <div className="role-switcher">
