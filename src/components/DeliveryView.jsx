@@ -724,10 +724,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
       {/* 1. TOP HEADER NAVIGATION BAR */}
       <header className="top-nav rider-top-nav">
         {/* Logo and Brand */}
-        <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
-          <span className="logo-text">StitchBee</span>
-          <span style={{ fontSize: '0.65rem', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '4px' }}>RIDER PORTAL</span>
+        <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+          <span style={{ fontSize: '0.65rem', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '-40px', zIndex: 10 }}>RIDER PORTAL</span>
         </div>
 
         {/* Desktop Tabs Header Menu */}

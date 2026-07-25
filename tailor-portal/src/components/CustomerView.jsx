@@ -2058,8 +2058,7 @@ export default function CustomerView({
             setWizardOpen(false);
           }
         }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
-          <span className="logo-text">StitchBee</span>
+          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
         </div>
 
         {/* Center Nav Menu */}
@@ -2272,7 +2271,7 @@ export default function CustomerView({
                   setServicesDropdownOpen(false);
                 }
               }} 
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
             >
               <div className="user-avatar">{currentUser?.name ? currentUser.name.charAt(0) : 'G'}</div>
               <span>{currentUser?.name || 'Guest'} {currentUser ? '▼' : ''}</span>
