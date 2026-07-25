@@ -287,22 +287,28 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         position: 'relative'
       }}>
         {/* Left: StitchBee logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Scissors size={24} style={{ color: '#f72585', transform: 'rotate(-45deg)' }} />
-          <span style={{ fontSize: '22px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
+        <div 
+          onClick={onClose} 
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+          title="Go to Home"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF2E8A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <line x1="12" y1="4" x2="12" y2="20" />
+            <circle cx="7" cy="10" r="3.5" />
+            <circle cx="7" cy="16" r="3.5" />
+            <line x1="12" y1="13" x2="20" y2="13" />
+          </svg>
+          <span style={{ 
+            fontSize: '22px', 
+            fontWeight: '800', 
+            background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            display: 'inline-block',
+            letterSpacing: '-0.5px' 
+          }}>
             StitchBee
           </span>
-          <span style={{
-            fontSize: '9px',
-            fontWeight: '800',
-            background: 'linear-gradient(135deg, rgba(247, 37, 133, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%)',
-            color: '#f72585',
-            padding: '3px 8px',
-            borderRadius: '8px',
-            border: '1px solid rgba(247, 37, 133, 0.2)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.8px'
-          }}>RIDER PORTAL</span>
         </div>
 
         {/* Right Nav Options */}

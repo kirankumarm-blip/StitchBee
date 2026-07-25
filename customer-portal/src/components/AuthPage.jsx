@@ -251,9 +251,26 @@ export default function AuthPage({
         position: 'relative'
       }}>
         {/* Left: StitchBee logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Scissors size={24} style={{ color: '#FF2E8A', transform: 'rotate(-45deg)' }} />
-          <span style={{ fontSize: '22px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
+        <div 
+          onClick={onClose} 
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+          title="Go to Home"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF2E8A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+            <line x1="12" y1="4" x2="12" y2="20" />
+            <circle cx="7" cy="10" r="3.5" />
+            <circle cx="7" cy="16" r="3.5" />
+            <line x1="12" y1="13" x2="20" y2="13" />
+          </svg>
+          <span style={{ 
+            fontSize: '22px', 
+            fontWeight: '800', 
+            background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            display: 'inline-block',
+            letterSpacing: '-0.5px' 
+          }}>
             StitchBee
           </span>
         </div>

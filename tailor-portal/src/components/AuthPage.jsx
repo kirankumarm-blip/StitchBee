@@ -195,8 +195,30 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         {/* TOP ROW HEADER */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }} className="auth-header-top-row">
           
-          {/* logo space placeholder / navigate home */}
-          <div style={{ width: '40px' }} />
+          {/* Left: StitchBee logo */}
+          <div 
+            onClick={onClose} 
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+            title="Go to Home"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF2E8A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <line x1="12" y1="4" x2="12" y2="20" />
+              <circle cx="7" cy="10" r="3.5" />
+              <circle cx="7" cy="16" r="3.5" />
+              <line x1="12" y1="13" x2="20" y2="13" />
+            </svg>
+            <span style={{ 
+              fontSize: '22px', 
+              fontWeight: '800', 
+              background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              display: 'inline-block',
+              letterSpacing: '-0.5px' 
+            }}>
+              StitchBee
+            </span>
+          </div>
 
           {/* Right Action Trigger Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -209,9 +231,6 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }} className="auth-tab-toggle-container">
-              <span style={{ fontSize: '18px', fontWeight: '500', color: colorTextSecondary }}>
-                {tab === 'login' ? "Don't have an account?" : "Already have an account?"}
-              </span>
               <button 
                 type="button"
                 className="btn-primary"
