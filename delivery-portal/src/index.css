@@ -7425,3 +7425,16 @@ svg * {
     height: 80px !important;
   }
 }
+
+
+/* Alert buttons white text overrides */
+.alert-btn-reject {
+  color: #ffffff !important;
+  background: rgba(239, 68, 68, 0.3) !important;
+  border: 1.5px solid #ef4444 !important;
+}
+.alert-btn-accept {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  border: none !important;
+}

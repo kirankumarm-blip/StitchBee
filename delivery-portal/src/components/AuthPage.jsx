@@ -319,9 +319,11 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '500' }}>
-              {tab === 'login' ? "Don't have an account?" : "Already have an account?"}
-            </span>
+            {tab === 'signup' && (
+              <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '500' }}>
+                Already have an account?
+              </span>
+            )}
             <button
               className="btn-primary"
               onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}

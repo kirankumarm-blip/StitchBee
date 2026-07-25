@@ -51,7 +51,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
   const incomingMockOrders = [
     {
       id: 'REQ-101',
-      restaurant: 'Gourmet Kitchen',
+      restaurant: 'Vogue Craft Boutique',
+      item: 'Premium Suit & Trousers',
       customerName: 'Aarav Sharma',
       pickupAddress: 'Indiranagar Main Rd, Stage 2',
       deliveryAddress: 'Domlur Layout, 4th Cross',
@@ -61,7 +62,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
     },
     {
       id: 'REQ-102',
-      restaurant: 'Pizza Palazzo',
+      restaurant: 'Royal Silk Weaves',
+      item: 'Banarasi Designer Saree',
       customerName: 'Neha Iyer',
       pickupAddress: 'Koramangala 5th Block',
       deliveryAddress: 'HSR Layout Sector 3',
@@ -71,7 +73,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
     },
     {
       id: 'REQ-103',
-      restaurant: 'Burger & Co',
+      restaurant: 'Elite Bridal Studio',
+      item: 'Heavy Embroidery Lehenga',
       customerName: 'Rohan Sen',
       pickupAddress: 'MG Road Metro Station',
       deliveryAddress: 'Richmond Town, Museum Rd',
@@ -81,7 +84,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
     },
     {
       id: 'REQ-104',
-      restaurant: 'Spice Delight',
+      restaurant: 'SmartFit Tailoring',
+      item: 'Custom Sherwani & Kurta',
       customerName: 'Aditi Rao',
       pickupAddress: 'HAL 3rd Stage, Jeevanbheemanagar',
       deliveryAddress: 'CV Raman Nagar, Kaggadasapura',
@@ -6220,6 +6224,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#f3f4f6', marginTop: '2px' }}>
                       {incomingMockOrders[activeAlertIndex].restaurant}
                     </div>
+                    <div style={{ fontSize: '0.78rem', color: '#FF2E8A', fontWeight: '700', marginTop: '2px', marginBottom: '2px' }}>
+                      📦 Garment: {incomingMockOrders[activeAlertIndex].item}
+                    </div>
                     <div style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '1px' }}>
                       {incomingMockOrders[activeAlertIndex].pickupAddress}
                     </div>
@@ -6256,13 +6263,14 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
             <div style={{ display: 'flex', gap: '16px' }}>
               <button
                 onClick={handleReject}
+                className="alert-btn-reject"
                 style={{
                   flex: 1,
                   padding: '14px 20px',
                   borderRadius: '14px',
-                  border: '1.5px solid rgba(239, 68, 68, 0.4)',
-                  background: 'rgba(239, 68, 68, 0.06)',
-                  color: '#ef4444',
+                  border: '1.5px solid #ef4444',
+                  background: 'rgba(239, 68, 68, 0.3)',
+                  color: '#ffffff',
                   fontWeight: 'bold',
                   cursor: 'pointer',
                   fontSize: '0.9rem',
@@ -6277,13 +6285,14 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
               <button
                 onClick={handleAccept}
+                className="alert-btn-accept"
                 style={{
                   flex: 2,
                   padding: '14px 20px',
                   borderRadius: '14px',
                   border: 'none',
                   background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                  color: '#fff',
+                  color: '#ffffff',
                   fontWeight: '800',
                   cursor: 'pointer',
                   fontSize: '0.95rem',
