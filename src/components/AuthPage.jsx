@@ -201,7 +201,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
             title="Go to Home"
           >
-            <img src="/logo.png" alt="StitchBee" style={{ height: '34px', width: 'auto', display: 'block' }} />
+            <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block' }} />
           </div>
 
           {/* Right Action Trigger Buttons */}
