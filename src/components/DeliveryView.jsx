@@ -46,6 +46,158 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
   const navMapInstance = useRef(null);
   const orderMapInstance = useRef(null);
 
+
+  // --- SEQUENTIAL ORDER POPUP ALERTS WITH SIREN SOUND ---
+  const incomingMockOrders = [
+    {
+      id: 'REQ-101',
+      restaurant: 'Gourmet Kitchen',
+      customerName: 'Aarav Sharma',
+      pickupAddress: 'Indiranagar Main Rd, Stage 2',
+      deliveryAddress: 'Domlur Layout, 4th Cross',
+      payout: '₹85.50',
+      distance: '3.2 km',
+      estTime: '15 mins'
+    },
+    {
+      id: 'REQ-102',
+      restaurant: 'Pizza Palazzo',
+      customerName: 'Neha Iyer',
+      pickupAddress: 'Koramangala 5th Block',
+      deliveryAddress: 'HSR Layout Sector 3',
+      payout: '₹110.00',
+      distance: '4.8 km',
+      estTime: '22 mins'
+    },
+    {
+      id: 'REQ-103',
+      restaurant: 'Burger & Co',
+      customerName: 'Rohan Sen',
+      pickupAddress: 'MG Road Metro Station',
+      deliveryAddress: 'Richmond Town, Museum Rd',
+      payout: '₹95.00',
+      distance: '2.5 km',
+      estTime: '12 mins'
+    },
+    {
+      id: 'REQ-104',
+      restaurant: 'Spice Delight',
+      customerName: 'Aditi Rao',
+      pickupAddress: 'HAL 3rd Stage, Jeevanbheemanagar',
+      deliveryAddress: 'CV Raman Nagar, Kaggadasapura',
+      payout: '₹120.50',
+      distance: '5.1 km',
+      estTime: '25 mins'
+    }
+  ];
+
+  const [activeAlertIndex, setActiveAlertIndex] = useState(null);
+  const [showAlertPopup, setShowAlertPopup] = useState(false);
+  const [alertTimeRemaining, setAlertTimeRemaining] = useState(15);
+
+  const audioCtxRef = useRef(null);
+  const sirenIntervalRef = useRef(null);
+  const oscillatorRef = useRef(null);
+
+  const startSiren = () => {
+    try {
+      if (audioCtxRef.current) return;
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtxRef.current = audioCtx;
+      
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      
+      let freqDirection = 1;
+      let freq = 600;
+      sirenIntervalRef.current = setInterval(() => {
+        if (freq >= 900) freqDirection = -1;
+        if (freq <= 600) freqDirection = 1;
+        freq += freqDirection * 30;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      }, 50);
+
+      gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      oscillatorRef.current = osc;
+    } catch (e) {
+      console.warn("Audio Context failed to start:", e);
+    }
+  };
+
+  const stopSiren = () => {
+    if (sirenIntervalRef.current) {
+      clearInterval(sirenIntervalRef.current);
+      sirenIntervalRef.current = null;
+    }
+    if (oscillatorRef.current) {
+      try { oscillatorRef.current.stop(); } catch (e) {}
+      oscillatorRef.current = null;
+    }
+    if (audioCtxRef.current) {
+      try { audioCtxRef.current.close(); } catch (e) {}
+      audioCtxRef.current = null;
+    }
+  };
+
+  const handleAccept = () => {
+    stopSiren();
+    setShowAlertPopup(false);
+    setActiveAlertIndex(null);
+    setActiveTab('navigation');
+  };
+
+  const handleReject = () => {
+    stopSiren();
+    if (activeAlertIndex !== null && activeAlertIndex < 3) {
+      const nextIndex = activeAlertIndex + 1;
+      setActiveAlertIndex(nextIndex);
+      setTimeout(() => {
+        startSiren();
+      }, 500);
+    } else {
+      setShowAlertPopup(false);
+      setActiveAlertIndex(null);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActiveAlertIndex(0);
+      setShowAlertPopup(true);
+      startSiren();
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+      stopSiren();
+    };
+  }, []);
+
+  useEffect(() => {
+    let interval;
+    if (showAlertPopup && activeAlertIndex !== null && activeAlertIndex >= 0) {
+      setAlertTimeRemaining(15);
+      interval = setInterval(() => {
+        setAlertTimeRemaining((prev) => {
+          if (prev <= 1) {
+            handleReject();
+            return 15;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [showAlertPopup, activeAlertIndex]);
+  // --- END OF ALERTS SYSTEM ---
+
   useEffect(() => {
     // Load Leaflet CSS dynamically if not present
     if (!document.getElementById('leaflet-css-cdn')) {
@@ -5916,6 +6068,274 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
           );
         })}
       </footer>
+
+
+      {/* Incoming Order Request Alert Modal overlay */}
+      {showAlertPopup && activeAlertIndex !== null && incomingMockOrders[activeAlertIndex] && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(5, 4, 10, 0.85)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999,
+          padding: '20px',
+          animation: 'fadeIn 0.3s ease-out'
+        }}>
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(20, 17, 38, 0.95) 0%, rgba(30, 26, 56, 0.98) 100%)',
+            border: '2px solid #FF2E8A',
+            borderRadius: '24px',
+            boxShadow: '0 0 40px rgba(255, 46, 138, 0.4), inset 0 0 20px rgba(255, 46, 138, 0.15)',
+            width: '100%',
+            maxWidth: '480px',
+            padding: '30px',
+            color: '#fff',
+            position: 'relative',
+            boxSizing: 'border-box',
+            animation: 'pulseGlow 2s infinite ease-in-out, scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
+          }}>
+            
+            {/* Header / Alarm Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '25px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FF2E8A',
+                  animation: 'blink 0.8s infinite'
+                }}></div>
+                <span style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 'bold',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: '#FF2E8A'
+                }}>Incoming Delivery Alert</span>
+              </div>
+              <div style={{
+                background: 'rgba(255, 46, 138, 0.1)',
+                border: '1px solid rgba(255, 46, 138, 0.3)',
+                padding: '4px 10px',
+                borderRadius: '12px',
+                fontSize: '0.75rem',
+                fontWeight: 'bold',
+                color: '#FF2E8A'
+              }}>
+                Request {activeAlertIndex + 1} of 4
+              </div>
+            </div>
+
+            {/* Siren Visual Animation */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+              <div style={{
+                width: '70px',
+                height: '70px',
+                borderRadius: '50%',
+                background: 'rgba(255, 46, 138, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                animation: 'sirenRipple 1.2s infinite ease-out'
+              }}>
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FF2E8A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'sirenWobble 0.6s infinite ease-in-out' }}>
+                  <path d="M18.8 4A10.71 10.71 0 0 0 12 2a10.71 10.71 0 0 0 -6.8 2" />
+                  <path d="M12 2v6" />
+                  <path d="M4 10a8 8 0 0 0 16 0" />
+                  <circle cx="12" cy="14" r="3" />
+                  <path d="M12 17v5" />
+                  <path d="M8 22h8" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Countdown timer */}
+            <div style={{ marginBottom: '25px', textAlign: 'center' }}>
+              <div style={{ fontSize: '0.8rem', color: '#9ca3af', marginBottom: '8px' }}>
+                Auto-rejecting in <strong style={{ color: '#fff', fontSize: '1rem' }}>{alertTimeRemaining}s</strong>
+              </div>
+              <div style={{
+                height: '6px',
+                width: '100%',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                borderRadius: '3px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  height: '100%',
+                  width: `${(alertTimeRemaining / 15) * 100}%`,
+                  backgroundColor: '#FF2E8A',
+                  borderRadius: '3px',
+                  transition: 'width 1s linear'
+                }}></div>
+              </div>
+            </div>
+
+            {/* Order Payout & Info */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: '16px',
+              padding: '20px',
+              marginBottom: '25px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <div>
+                  <span style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Est. Payout</span>
+                  <div style={{
+                    fontSize: '1.8rem',
+                    fontWeight: '800',
+                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    marginTop: '2px'
+                  }}>{incomingMockOrders[activeAlertIndex].payout}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Distance / Time</span>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 'bold', marginTop: '4px', color: '#f3f4f6' }}>
+                    {incomingMockOrders[activeAlertIndex].distance} • {incomingMockOrders[activeAlertIndex].estTime}
+                  </div>
+                </div>
+              </div>
+
+              <hr style={{ border: 'none', borderTop: '1px solid rgba(255, 255, 255, 0.08)', margin: '12px 0' }} />
+
+              {/* Locations */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '4px' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#FF2E8A' }}></div>
+                    <div style={{ width: '2px', flexGrow: 1, backgroundColor: 'rgba(255, 255, 255, 0.15)', margin: '4px 0' }}></div>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '0.7rem', color: '#9ca3af', textTransform: 'uppercase' }}>Pickup</span>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#f3f4f6', marginTop: '2px' }}>
+                      {incomingMockOrders[activeAlertIndex].restaurant}
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '1px' }}>
+                      {incomingMockOrders[activeAlertIndex].pickupAddress}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '4px' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#10b981' }}></div>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '0.7rem', color: '#9ca3af', textTransform: 'uppercase' }}>Delivery</span>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#f3f4f6', marginTop: '2px' }}>
+                      {incomingMockOrders[activeAlertIndex].customerName}
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#9ca3af', marginTop: '1px' }}>
+                      {incomingMockOrders[activeAlertIndex].deliveryAddress}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Audio Toggle Indicator */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginBottom: '20px', fontSize: '0.75rem', color: '#9ca3af' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </svg>
+              Siren sound active (Web Audio oscillator)
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <button
+                onClick={handleReject}
+                style={{
+                  flex: 1,
+                  padding: '14px 20px',
+                  borderRadius: '14px',
+                  border: '1.5px solid rgba(239, 68, 68, 0.4)',
+                  background: 'rgba(239, 68, 68, 0.06)',
+                  color: '#ef4444',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  transition: 'all 0.2s',
+                  outline: 'none'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)'}
+                onMouseOut={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.06)'}
+              >
+                Reject Request
+              </button>
+
+              <button
+                onClick={handleAccept}
+                style={{
+                  flex: 2,
+                  padding: '14px 20px',
+                  borderRadius: '14px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  color: '#fff',
+                  fontWeight: '800',
+                  cursor: 'pointer',
+                  fontSize: '0.95rem',
+                  boxShadow: '0 0 20px rgba(16, 185, 129, 0.3)',
+                  transition: 'all 0.25s',
+                  outline: 'none'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 0 25px rgba(16, 185, 129, 0.5)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.3)';
+                }}
+              >
+                Accept Order
+              </button>
+            </div>
+
+          </div>
+
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes scaleUp {
+              from { transform: scale(0.9); opacity: 0; }
+              to { transform: scale(1); opacity: 1; }
+            }
+            @keyframes blink {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.3; }
+            }
+            @keyframes sirenRipple {
+              0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 46, 138, 0.3); }
+              70% { box-shadow: 0 0 0 15px rgba(255, 46, 138, 0); }
+              100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 46, 138, 0); }
+            }
+            @keyframes sirenWobble {
+              0%, 100% { transform: rotate(0deg); }
+              25% { transform: rotate(-8deg); }
+              75% { transform: rotate(8deg); }
+            }
+            @keyframes pulseGlow {
+              0%, 100% { box-shadow: 0 0 40px rgba(255, 46, 138, 0.3), inset 0 0 20px rgba(255, 46, 138, 0.1); }
+              50% { box-shadow: 0 0 50px rgba(255, 46, 138, 0.55), inset 0 0 30px rgba(255, 46, 138, 0.25); }
+            }
+          `}</style>
+        </div>
+      )}
 
     </div>
   );
