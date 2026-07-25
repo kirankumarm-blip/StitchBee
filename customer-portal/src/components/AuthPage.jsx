@@ -256,11 +256,40 @@ export default function AuthPage({
           style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
           title="Go to Home"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF2E8A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-            <line x1="12" y1="4" x2="12" y2="20" />
-            <circle cx="7" cy="10" r="3.5" />
-            <circle cx="7" cy="16" r="3.5" />
-            <line x1="12" y1="13" x2="20" y2="13" />
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+            <defs>
+              <linearGradient id="wing-left-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FF2E8A" />
+                <stop offset="100%" stopColor="#D81BFF" />
+              </linearGradient>
+              <linearGradient id="wing-right-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#D81BFF" />
+                <stop offset="100%" stopColor="#7B2DFF" />
+              </linearGradient>
+              <linearGradient id="tail-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FF2E8A" />
+                <stop offset="100%" stopColor="#7B2DFF" />
+              </linearGradient>
+            </defs>
+            
+            {/* Antennas */}
+            <path d="M11 6.5 C10 4.5, 9 3.5, 8 2.5" stroke="#FF2E8A" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="8" cy="2.5" r="1.3" fill="#FF2E8A" />
+            
+            <path d="M13 6.5 C14 4.5, 15 3.5, 16 2.5" stroke="#FF2E8A" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="16" cy="2.5" r="1.3" fill="#FF2E8A" />
+
+            {/* Head */}
+            <path d="M10.5 7.2 C10.5 6.2, 13.5 6.2, 13.5 7.2 C13.5 8.2, 12 9.5, 12 9.5 C12 9.5, 10.5 8.2, 10.5 7.2 Z" fill="#FF2E8A" />
+
+            {/* Left Wing (Pink/Magenta) */}
+            <path d="M11.5 9.5 C8.5 9, 3.5 9, 3.5 13.5 C 3.5 18, 8.5 17.5, 11.5 13.8" stroke="url(#wing-left-grad)" strokeWidth="2.8" strokeLinecap="round" fill="none" />
+
+            {/* Right Wing (Purple) */}
+            <path d="M12.5 9.5 C15.5 9, 20.5 9, 20.5 13.5 C 20.5 18, 15.5 17.5, 12.5 13.8" stroke="url(#wing-right-grad)" strokeWidth="2.8" strokeLinecap="round" fill="none" />
+
+            {/* Tail / Abdomen */}
+            <path d="M12 13.5 C12 16.5, 8.8 16.5, 8.8 19.5 C8.8 22, 12.2 22, 14.5 19.8 C15.2 19, 15.2 18.5, 14 18.5 C13 18.5, 11.5 18.5, 11.5 19.8" stroke="url(#tail-grad)" strokeWidth="2.8" strokeLinecap="round" fill="none" />
           </svg>
           <span style={{ 
             fontSize: '22px', 
