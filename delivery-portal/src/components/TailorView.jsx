@@ -523,10 +523,9 @@ export default function TailorView({
         <div 
           onClick={() => setActiveTab('dashboard')} 
           className="logo" 
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
         >
-          <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
-          <span className="logo-text">StitchBee</span>
+          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
         </div>
 
         <div className="role-switcher">

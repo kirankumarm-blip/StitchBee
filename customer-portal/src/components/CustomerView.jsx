@@ -2057,7 +2057,7 @@ export default function CustomerView({
             setActiveHub('home');
             setWizardOpen(false);
           }
-        }} style={{ cursor: 'pointer' }}>
+        }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
           <Scissors size={24} style={{ color: 'var(--primary)', transform: 'rotate(-45deg)' }} />
           <span className="logo-text">StitchBee</span>
         </div>
