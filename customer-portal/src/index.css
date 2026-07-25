@@ -7414,11 +7414,14 @@ svg * {
 
 @media (max-width: 768px) {
   .logo img, img[alt="StitchBee"] {
-    height: 50px !important;
-    width: 150px !important;
-    margin-left: -30px !important;
+    height: 100px !important;
+    width: 200px !important;
+    margin-left: -40px !important;
   }
   .logo span {
-    margin-left: -20px !important;
+    margin-left: -25px !important;
+  }
+  .top-nav, .rider-top-nav {
+    height: 80px !important;
   }
 }
