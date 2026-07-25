@@ -102,6 +102,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
   const audioCtxRef = useRef(null);
   const sirenIntervalRef = useRef(null);
   const oscillatorRef = useRef(null);
+  const vibrationIntervalRef = useRef(null);
 
   const startSiren = () => {
     try {
@@ -130,12 +131,31 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
       gainNode.connect(audioCtx.destination);
       osc.start();
       oscillatorRef.current = osc;
+      
+      // Vibrate mobile device
+      try {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          navigator.vibrate([500, 250, 500]);
+          vibrationIntervalRef.current = setInterval(() => {
+            navigator.vibrate([500, 250, 500]);
+          }, 2000);
+        }
+      } catch (err) {}
     } catch (e) {
       console.warn("Audio Context failed to start:", e);
     }
   };
 
   const stopSiren = () => {
+    if (vibrationIntervalRef.current) {
+      clearInterval(vibrationIntervalRef.current);
+      vibrationIntervalRef.current = null;
+    }
+    try {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(0);
+      }
+    } catch (err) {}
     if (sirenIntervalRef.current) {
       clearInterval(sirenIntervalRef.current);
       sirenIntervalRef.current = null;
