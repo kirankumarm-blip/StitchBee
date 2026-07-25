@@ -7398,3 +7398,27 @@ svg * {
 
 
 
+
+
+/* Responsive adjustments for brand logo image and rider badge */
+.logo img, img[alt="StitchBee"] {
+  height: 100px !important;
+  width: 300px !important;
+  object-fit: contain !important;
+  margin-left: -60px !important;
+}
+
+.logo span {
+  margin-left: -40px !important;
+}
+
+@media (max-width: 768px) {
+  .logo img, img[alt="StitchBee"] {
+    height: 50px !important;
+    width: 150px !important;
+    margin-left: -30px !important;
+  }
+  .logo span {
+    margin-left: -20px !important;
+  }
+}
