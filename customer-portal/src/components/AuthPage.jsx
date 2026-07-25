@@ -256,17 +256,6 @@ export default function AuthPage({
           <span style={{ fontSize: '22px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
             StitchBee
           </span>
-          <span style={{
-            fontSize: '9px',
-            fontWeight: '800',
-            background: 'linear-gradient(135deg, rgba(255, 46, 138, 0.1) 0%, rgba(123, 45, 255, 0.1) 100%)',
-            color: '#FF2E8A',
-            padding: '3px 8px',
-            borderRadius: '8px',
-            border: '1px solid rgba(255, 46, 138, 0.2)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.8px'
-          }}>CUSTOMER PORTAL</span>
         </div>
 
         {/* Right Nav Options */}
@@ -293,9 +282,6 @@ export default function AuthPage({
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '500' }}>
-              {tab === 'login' ? "Need an account?" : "Already have an account?"}
-            </span>
             <button
               className="btn-primary"
               onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
@@ -440,40 +426,12 @@ export default function AuthPage({
               <path d="M 250 320 Q 370 350, 420 370" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
             </svg>
 
-            {/* circular podium display platform (3D perspective) */}
-            <div className="animate-podium" style={{
-              position: 'absolute',
-              bottom: '12%',
-              left: '50%',
-              marginLeft: '-150px',
-              width: '300px',
-              height: '300px',
-              borderRadius: '50%',
-              transform: 'rotateX(60deg)',
-              background: isDark 
-                ? 'radial-gradient(circle, rgba(216,27,255,0.18) 0%, rgba(123,45,255,0.06) 60%, rgba(255,255,255,0.02) 100%)' 
-                : 'radial-gradient(circle, rgba(216,27,255,0.08) 0%, rgba(123,45,255,0.02) 60%, rgba(0,0,0,0.01) 100%)',
-              border: '2px solid rgba(255, 46, 138, 0.35)',
-              boxShadow: '0 25px 70px rgba(123, 45, 255, 0.35), inset 0 0 40px rgba(255, 46, 138, 0.25)',
-              zIndex: 3,
-              transformStyle: 'preserve-3d'
-            }}>
-              {/* Internal glowing rim ring */}
-              <div style={{
-                position: 'absolute',
-                inset: '12px',
-                borderRadius: '50%',
-                border: '1px solid rgba(216, 27, 255, 0.2)',
-                background: 'transparent'
-              }} />
-            </div>
-
-            {/* MINIATURE 3D BOUTIQUE SETUP ON circular podium DISPLAY */}
+            {/* MINIATURE BOUTIQUE SETUP ON CONCENTRIC ELLIPSE DISPLAY */}
             <div style={{
               position: 'absolute',
-              bottom: '15%',
-              width: '280px',
-              height: '240px',
+              bottom: '10%',
+              width: '320px',
+              height: '280px',
               zIndex: 5,
               display: 'flex',
               alignItems: 'flex-end',
@@ -481,58 +439,74 @@ export default function AuthPage({
               pointerEvents: 'none'
             }}>
               <svg viewBox="0 0 280 240" style={{ width: '100%', height: '100%' }}>
-                {/* 1. Mannequin Stand (Right Side of circular podium) */}
-                <line x1="200" y1="90" x2="200" y2="200" stroke={isDark ? 'rgba(255,255,255,0.45)' : '#475569'} strokeWidth="2.5" />
-                <line x1="185" y1="200" x2="215" y2="200" stroke={isDark ? 'rgba(255,255,255,0.45)' : '#475569'} strokeWidth="2.5" />
-                {/* Mannequin torso body wearing premium magenta designer outfit */}
-                <path d="M 185 90 C 185 55, 215 55, 215 90 L 210 145 L 190 145 Z" fill="url(#gown-grad)" stroke="#FF2E8A" strokeWidth="1.5" />
                 <defs>
-                  <linearGradient id="gown-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="gown-grad-new" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#FF2E8A" />
                     <stop offset="100%" stopColor="#D81BFF" />
                   </linearGradient>
+                  <radialGradient id="podium-glow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="rgba(255, 46, 138, 0.12)" />
+                    <stop offset="70%" stopColor="rgba(255, 46, 138, 0.03)" />
+                    <stop offset="100%" stopColor="rgba(255, 46, 138, 0)" />
+                  </radialGradient>
                 </defs>
-                {/* Measuring tape draped around mannequin neck */}
-                <path d="M 193 68 C 195 90, 205 90, 207 68" stroke="#fbbf24" strokeWidth="2.2" fill="none" />
-                <path d="M 193 68 L 191 110" stroke="#fbbf24" strokeWidth="2.2" fill="none" />
 
-                {/* 2. Luxury Sewing Machine (Left Side of circular podium) */}
-                {/* Sewing Table base */}
-                <rect x="50" y="170" width="70" height="6" rx="2" fill={isDark ? '#2A254D' : '#e2e8f0'} stroke={isDark ? 'rgba(255,255,255,0.1)' : '#94a3b8'} strokeWidth="1" />
-                {/* Machine body */}
-                <path d="M 60 170 L 60 135 L 105 135 L 105 152 L 95 152 L 95 170" stroke="#7B2DFF" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                <circle cx="105" cy="142" r="3" fill="#fbbf24" />
-                <line x1="60" y1="170" x2="110" y2="170" stroke={isDark ? 'rgba(255,255,255,0.4)' : '#64748b'} strokeWidth="2.5" />
-                {/* Spool of thread on machine top */}
-                <rect x="75" y="128" width="6" height="7" fill="#FF2E8A" rx="1" />
+                {/* concentric display platform ellipses (Podium from image) */}
+                {/* Outer Glow Ellipse */}
+                <ellipse cx="140" cy="155" rx="122" ry="56" fill="url(#podium-glow)" stroke="rgba(255, 46, 138, 0.15)" strokeWidth="1" />
+                {/* Mid Ellipse */}
+                <ellipse cx="140" cy="155" rx="112" ry="51" fill="none" stroke="rgba(255, 46, 138, 0.35)" strokeWidth="1.5" />
+                {/* Inner Ellipse */}
+                <ellipse cx="140" cy="155" rx="100" ry="45" fill="none" stroke="#FF2E8A" strokeWidth="2.5" />
 
-                {/* 3. Folded Premium Fabric Rolls (Center background) */}
-                <g transform="translate(115, 155)">
+                {/* 1. Mannequin Stand & Torso (Right Side) */}
+                <line x1="196" y1="125" x2="196" y2="200" stroke="#475569" strokeWidth="2.5" />
+                <line x1="186" y1="200" x2="206" y2="200" stroke="#475569" strokeWidth="2.5" />
+                {/* Torso Silhouette */}
+                <path d="M 186 122 C 186 102, 206 102, 206 122 L 202 165 C 202 170, 190 170, 190 165 Z" fill="url(#gown-grad-new)" stroke="#FF2E8A" strokeWidth="1" />
+                {/* Gold necklace string */}
+                <path d="M 190 124 Q 196 142, 202 124" stroke="#fbbf24" strokeWidth="2" fill="none" />
+
+                {/* 2. Clothes Hanger Rack (Center) */}
+                {/* Simple metallic U-stand */}
+                <path d="M 143 175 L 143 115 A 2 2 0 0 1 145 113 L 175 113 A 2 2 0 0 1 177 115 L 177 175" stroke="#cbd5e1" strokeWidth="2" fill="none" />
+                {/* Hanging garment swatches */}
+                <rect x="149" y="117" width="10" height="38" rx="1.5" fill="#FF2E8A" opacity="0.9" />
+                <rect x="163" y="117" width="10" height="38" rx="1.5" fill="#7B2DFF" opacity="0.9" />
+
+                {/* 3. Folded Premium Fabric Rolls (Center Bottom overlapping) */}
+                <g transform="translate(136, 165)">
                   {/* Roll 1: Pink */}
-                  <rect x="5" y="10" width="40" height="12" rx="3" fill="#FF2E8A" opacity="0.9" />
-                  <ellipse cx="45" cy="16" rx="2" ry="6" fill="#fbbf24" />
+                  <rect x="5" y="1" width="30" height="9" rx="2" fill="#FF2E8A" />
+                  <ellipse cx="35" cy="5.5" rx="1.5" ry="4.5" fill="#fbbf24" />
                   {/* Roll 2: Purple */}
-                  <rect x="15" y="20" width="42" height="12" rx="3" fill="#7B2DFF" opacity="0.9" />
-                  <ellipse cx="57" cy="26" rx="2" ry="6" fill="#fbbf24" />
+                  <rect x="12" y="9" width="30" height="9" rx="2" fill="#7B2DFF" />
+                  <ellipse cx="42" cy="13.5" rx="1.5" ry="4.5" fill="#fbbf24" />
                 </g>
 
-                {/* 4. Clothes Hanger Rack (Center-right background) */}
-                <line x1="125" y1="80" x2="175" y2="80" stroke={isDark ? 'rgba(255,255,255,0.3)' : '#cbd5e1'} strokeWidth="2" />
-                <line x1="125" y1="80" x2="125" y2="175" stroke={isDark ? 'rgba(255,255,255,0.3)' : '#cbd5e1'} strokeWidth="1.5" />
-                {/* Hanging designer garments */}
-                <path d="M 135 83 L 135 140 L 148 140 L 148 83 Z" fill="rgba(216, 27, 255, 0.4)" stroke="#D81BFF" strokeWidth="1" />
-                <path d="M 155 83 L 155 145 L 168 145 L 168 83 Z" fill="rgba(123, 45, 255, 0.4)" stroke="#7B2DFF" strokeWidth="1" />
+                {/* 4. Luxury Sewing Machine (Left Side) */}
+                {/* Machine base */}
+                <rect x="85" y="172" width="46" height="5" rx="1.5" fill="#e2e8f0" />
+                {/* Machine body */}
+                <path d="M 91 172 L 91 148 C 91 145, 94 143, 97 143 L 118 143 L 118 158" stroke="#7B2DFF" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                <line x1="114" y1="158" x2="114" y2="172" stroke="#475569" strokeWidth="1" />
+                {/* Pink thread spool */}
+                <rect x="93" y="137" width="5" height="6" fill="#FF2E8A" rx="0.5" />
+                {/* Yellow wheel/dot */}
+                <circle cx="118" cy="151" r="2.5" fill="#fbbf24" />
 
-                {/* 5. Sewing Tools on circular podium floor */}
-                {/* Thread reels */}
-                <rect x="135" y="195" width="5" height="9" fill="#D81BFF" rx="1" transform="rotate(15, 135, 195)" />
-                <rect x="145" y="193" width="5" height="9" fill="#FF2E8A" rx="1" transform="rotate(-30, 145, 193)" />
+                {/* 5. Sewing Tools & Buttons on floor */}
+                {/* Buttons/Dots */}
+                <circle cx="127" cy="204" r="2.5" fill="#7B2DFF" />
+                <circle cx="132" cy="202" r="2" fill="#fbbf24" />
+                <circle cx="141" cy="201" r="3" fill="#FF2E8A" />
                 {/* Scissors */}
-                <path d="M 160 195 C 160 190, 168 190, 168 195 L 164 205 L 160 195 M 165 195 C 165 190, 173 190, 173 195 L 166 205 Z" fill="none" stroke={isDark ? 'rgba(255,255,255,0.6)' : '#475569'} strokeWidth="1" />
-                {/* Buttons */}
-                <circle cx="120" cy="201" r="2.2" fill="#fbbf24" />
-                <circle cx="126" cy="203" r="1.8" fill="#FF2E8A" />
-                <circle cx="116" cy="204" r="2.4" fill="#7B2DFF" />
+                <g transform="translate(158, 192)">
+                  <circle cx="2.5" cy="2.5" r="2.2" fill="none" stroke="#475569" strokeWidth="0.8" />
+                  <circle cx="7.5" cy="2.5" r="2.2" fill="none" stroke="#475569" strokeWidth="0.8" />
+                  <line x1="4.5" y1="4.5" x2="11" y2="13" stroke="#475569" strokeWidth="1" />
+                  <line x1="6.5" y1="4.5" x2="0" y2="13" stroke="#475569" strokeWidth="1" />
+                </g>
               </svg>
             </div>
 
@@ -893,56 +867,7 @@ export default function AuthPage({
 
               </div>
 
-              {/* Roles Cards Grid (Only Signup) */}
-              {tab === 'signup' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Register as</label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }} className="auth-roles-grid">
-                    
-                    {[
-                      { id: 'customer', name: 'Customer', sub: 'Shop & order', icon: <User size={14} /> },
-                      { id: 'tailor', name: 'Tailor Partner', sub: 'Manage orders', icon: <Scissors size={14} /> },
-                      { id: 'delivery', name: 'Delivery Partner', sub: 'Deliver orders', icon: <Truck size={14} /> },
-                      { id: 'student', name: 'Student Partner', sub: 'Earn & learn', icon: <Star size={14} /> }
-                    ].map((roleOpt) => {
-                      const isSelected = role === roleOpt.id;
-                      return (
-                        <div 
-                          key={roleOpt.id}
-                          onClick={() => setRole(roleOpt.id)}
-                          style={{ 
-                            border: isSelected ? '1.5px solid #FF2E8A' : `1.5px solid ${borderColor}`,
-                            borderRadius: '12px',
-                            padding: '10px 8px',
-                            background: isSelected ? (isDark ? 'rgba(255, 46, 138, 0.08)' : '#FFF0F5') : (isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF'),
-                            cursor: 'pointer',
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '4px',
-                            position: 'relative',
-                            transition: 'all 0.2s ease'
-                          }}
-                          className="auth-role-card"
-                        >
-                          {isSelected && (
-                            <div style={{ position: 'absolute', top: '4px', right: '4px', width: '12px', height: '12px', borderRadius: '50%', background: '#FF2E8A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff' }}>
-                              <Check size={8} strokeWidth={4} />
-                            </div>
-                          )}
-                          <div style={{ color: isSelected ? '#FF2E8A' : colorTextMuted, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '8px', background: isSelected ? 'rgba(255, 46, 138, 0.1)' : (isDark ? 'rgba(255,255,255,0.05)' : '#F8FAFC'), marginBottom: '2px' }}>
-                            {roleOpt.icon}
-                          </div>
-                          <span style={{ fontSize: '10px', fontWeight: '800', color: isSelected ? '#FF2E8A' : colorTextPrimary, display: 'block', lineHeight: '1.2' }}>{roleOpt.name}</span>
-                          <span style={{ fontSize: '8px', color: colorTextMuted, display: 'block', lineHeight: '1' }}>{roleOpt.sub}</span>
-                        </div>
-                      );
-                    })}
 
-                  </div>
-                </div>
-              )}
 
               {/* Customer Sizing Address */}
               {tab === 'signup' && role === 'customer' && (
