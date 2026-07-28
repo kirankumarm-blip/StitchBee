@@ -1205,19 +1205,31 @@ export default function App() {
                   <div className="step-time-badge">⏱ 2 mins</div>
                   <div className="step-benefit-pill">✨ 1000+ Designs</div>
 
-                  {/* 3D Illustration Mockup (SVG) */}
+                  {/* Premium SVG Illustration */}
                   <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                      <rect x="25" y="20" width="70" height="80" rx="12" fill="rgba(247,37,133,0.06)" stroke="rgba(247,37,133,0.2)" strokeWidth="1.5" />
-                      {/* Dress hanger representation */}
-                      <path d="M60,35 C50,35 45,45 45,55 L75,55 C75,45 70,35 60,35 Z" fill="rgba(247,37,133,0.2)" />
-                      <path d="M45,55 L40,85 L80,85 L75,55 Z" fill="rgba(247,37,133,0.15)" />
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
+                      <defs>
+                        <linearGradient id="pink-dress-grad" x1="40" y1="35" x2="80" y2="85" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="#f72585" />
+                          <stop offset="100%" stopColor="#7209b7" />
+                        </linearGradient>
+                      </defs>
+                      {/* Grid background */}
+                      <circle cx="60" cy="60" r="48" fill="rgba(247,37,133,0.02)" stroke="rgba(247,37,133,0.06)" strokeWidth="1" strokeDasharray="3 3"/>
+                      {/* Premium dress template sketch */}
+                      <path d="M60,25 C55,25 50,30 50,35 C50,37 52,40 60,40" stroke="#f72585" strokeWidth="2.5" strokeLinecap="round"/>
+                      <path d="M42,42 L78,42 L70,88 L50,88 Z" fill="url(#pink-dress-grad)" opacity="0.9"/>
+                      <path d="M42,42 Q60,52 78,42" stroke="#fff" strokeWidth="1.5"/>
                       {/* Swatch options floating */}
-                      <circle cx="35" cy="45" r="5" fill="#f72585" />
-                      <circle cx="35" cy="60" r="5" fill="#7209b7" />
-                      <circle cx="35" cy="75" r="5" fill="#3f37c9" />
-                      <circle cx="85" cy="50" r="6" fill="#fff" stroke="var(--primary)" strokeWidth="1.5" />
-                      <path d="M82,50 L88,50 M85,47 L85,53" stroke="var(--primary)" strokeWidth="1.5" />
+                      <circle cx="28" cy="48" r="6" fill="#f72585" stroke="#fff" strokeWidth="1"/>
+                      <circle cx="28" cy="64" r="6" fill="#7209b7" stroke="#fff" strokeWidth="1"/>
+                      <circle cx="28" cy="80" r="6" fill="#4cc9f0" stroke="#fff" strokeWidth="1"/>
+                      {/* UI selector element */}
+                      <circle cx="92" cy="55" r="7" fill="#fff" stroke="var(--primary)" strokeWidth="2" />
+                      <path d="M89,55 L95,55 M92,52 L92,58" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" />
+                      {/* Sparkles */}
+                      <path d="M92,30 L94,34 L98,36 L94,38 L92,42 L90,38 L86,36 L90,34 Z" fill="#fbbf24"/>
+                      <path d="M30,92 L31,94 L33,95 L31,96 L30,98 L29,96 L27,95 L29,94 Z" fill="#fbbf24"/>
                     </svg>
                   </div>
 
@@ -1254,17 +1266,33 @@ export default function App() {
                   <div className="step-time-badge">⏱ 5 mins</div>
                   <div className="step-benefit-pill">⚡ AI Takes 30s</div>
 
-                  {/* 3D Illustration Mockup (SVG) */}
+                  {/* Premium SVG Illustration */}
                   <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                      <rect x="42" y="15" width="36" height="72" rx="6" fill="rgba(76,201,240,0.06)" stroke="rgba(76,201,240,0.2)" strokeWidth="1.5" />
-                      {/* Body contour and laser scanner line */}
-                      <path d="M50,45 C55,42 65,42 70,45 L70,70 L50,70 Z" fill="rgba(255,255,255,0.05)" />
-                      <line x1="38" y1="52" x2="82" y2="52" stroke="#4cc9f0" strokeWidth="2" strokeDasharray="3 2" style={{ animation: 'pulse-glow 1.5s infinite' }} />
-                      <circle cx="60" cy="80" r="3" fill="#4cc9f0" />
-                      {/* Ruler measurements overlays */}
-                      <text x="18" y="55" fill="rgba(76,201,240,0.5)" style={{ fontSize: '8px', fontFamily: 'monospace' }}>34.2"</text>
-                      <text x="86" y="60" fill="rgba(76,201,240,0.5)" style={{ fontSize: '8px', fontFamily: 'monospace' }}>28.5"</text>
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
+                      <defs>
+                        <linearGradient id="phone-glow" x1="42" y1="15" x2="78" y2="87" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="rgba(76,201,240,0.4)" />
+                          <stop offset="100%" stopColor="rgba(76,201,240,0.05)" />
+                        </linearGradient>
+                      </defs>
+                      {/* Grid background */}
+                      <path d="M20,20 L100,20 M20,40 L100,40 M20,60 L100,60 M20,80 L100,80" stroke="rgba(255,255,255,0.03)" strokeWidth="1"/>
+                      <path d="M20,20 L20,100 M40,20 L40,100 M60,20 L60,100 M80,20 L80,100" stroke="rgba(255,255,255,0.03)" strokeWidth="1"/>
+                      {/* Phone outline */}
+                      <rect x="42" y="15" width="36" height="74" rx="8" fill="#0d1117" stroke="rgba(76, 201, 240, 0.4)" strokeWidth="2"/>
+                      <rect x="45" y="18" width="30" height="68" rx="5" fill="url(#phone-glow)" />
+                      {/* Camera notch */}
+                      <circle cx="60" cy="22" r="1.5" fill="#333"/>
+                      {/* Body contour being scanned inside phone */}
+                      <path d="M53,42 Q60,39 67,42 L65,70 Q60,73 55,70 Z" fill="rgba(255,255,255,0.1)" stroke="rgba(76, 201, 240, 0.4)" strokeWidth="1.2"/>
+                      {/* Active green/blue scanning laser line */}
+                      <line x1="28" y1="52" x2="92" y2="52" stroke="#4cc9f0" strokeWidth="2.5" />
+                      <line x1="28" y1="52" x2="92" y2="52" stroke="rgba(76, 201, 240, 0.5)" strokeWidth="7" opacity="0.3"/>
+                      {/* Measurement tags overlay */}
+                      <text x="18" y="55" fill="rgba(76,201,240,0.8)" style={{ fontSize: '8px', fontFamily: 'monospace', fontWeight: 'bold' }}>34.2"</text>
+                      <text x="86" y="60" fill="rgba(76,201,240,0.8)" style={{ fontSize: '8px', fontFamily: 'monospace', fontWeight: 'bold' }}>28.5"</text>
+                      <circle cx="53" cy="52" r="2.5" fill="#fff" stroke="#4cc9f0" strokeWidth="1.5"/>
+                      <circle cx="67" cy="52" r="2.5" fill="#fff" stroke="#4cc9f0" strokeWidth="1.5"/>
                     </svg>
                   </div>
 
@@ -1301,19 +1329,29 @@ export default function App() {
                   <div className="step-time-badge">⏱ 10 mins</div>
                   <div className="step-benefit-pill">⭐ Verified Tailors</div>
 
-                  {/* 3D Illustration Mockup (SVG) */}
+                  {/* Premium SVG Illustration */}
                   <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                      <rect x="25" y="25" width="70" height="60" rx="10" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.2)" strokeWidth="1.5" />
-                      {/* Chat avatar and chat bubbles */}
-                      <circle cx="45" cy="45" r="8" fill="rgba(16,185,129,0.2)" />
-                      <rect x="58" y="41" width="30" height="8" rx="3" fill="rgba(255,255,255,0.08)" />
-                      
-                      <circle cx="75" cy="65" r="8" fill="rgba(251,191,36,0.2)" />
-                      <rect x="35" y="61" width="32" height="8" rx="3" fill="rgba(16,185,129,0.15)" />
-                      
-                      {/* Star rating overlay */}
-                      <polygon points="60,78 63,83 69,84 65,88 66,94 60,91 54,94 55,88 51,84 57,83" fill="#fbbf24" />
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
+                      {/* Left Tailor bubble */}
+                      <rect x="15" y="20" width="75" height="30" rx="10" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="1.2"/>
+                      <path d="M22,50 L22,57 L29,50 Z" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="1.2"/>
+                      {/* Avatar preview */}
+                      <circle cx="30" cy="35" r="7" fill="rgba(16,185,129,0.2)"/>
+                      <rect x="42" y="31" width="38" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+                      <rect x="42" y="39" width="28" height="4" rx="2" fill="rgba(16,185,129,0.2)"/>
+
+                      {/* Right User bubble */}
+                      <rect x="30" y="62" width="75" height="30" rx="10" fill="rgba(251, 191, 36, 0.08)" stroke="rgba(251, 191, 36, 0.25)" strokeWidth="1.2"/>
+                      <path d="M98,92 L98,99 L91,92 Z" fill="rgba(251, 191, 36, 0.08)" stroke="rgba(251, 191, 36, 0.25)" strokeWidth="1.2"/>
+                      <circle cx="90" cy="77" r="7" fill="rgba(251,191,36,0.2)"/>
+                      <rect x="42" y="73" width="38" height="4" rx="2" fill="rgba(251,191,36,0.2)"/>
+                      <rect x="42" y="81" width="20" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
+
+                      {/* Floating Bid Acceptance Badge */}
+                      <g transform="translate(76, 42)">
+                        <rect x="0" y="0" width="34" height="14" rx="5" fill="#10b981" />
+                        <text x="4" y="9" fill="#fff" style={{ fontSize: '6px', fontFamily: 'Inter', fontWeight: 'bold' }}>₹2,400</text>
+                      </g>
                     </svg>
                   </div>
 
@@ -1350,16 +1388,35 @@ export default function App() {
                   <div className="step-time-badge">⏱ 3–5 Days</div>
                   <div className="step-benefit-pill">✔ Free Alteration</div>
 
-                  {/* 3D Illustration Mockup (SVG) */}
+                  {/* Premium SVG Illustration */}
                   <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                      <rect x="30" y="30" width="60" height="50" rx="8" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.2)" strokeWidth="1.5" />
-                      {/* Box lid and delivery ribbon path */}
-                      <path d="M30,40 L60,45 L90,40" stroke="rgba(139,92,246,0.3)" strokeWidth="1.5" />
-                      <rect x="54" y="30" width="12" height="50" fill="rgba(139,92,246,0.15)" />
-                      {/* Delivery vehicle tracking trail */}
-                      <path d="M15,80 C30,75 55,85 70,80" stroke="#8b5cf6" strokeWidth="2" strokeDasharray="3 3" />
-                      <circle cx="70" cy="80" r="4" fill="#8b5cf6" />
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
+                      <defs>
+                        <linearGradient id="box-left-grad" x1="0" y1="25" x2="25" y2="60" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="rgba(139, 92, 246, 0.4)" />
+                          <stop offset="100%" stopColor="rgba(139, 92, 246, 0.1)" />
+                        </linearGradient>
+                        <linearGradient id="box-right-grad" x1="25" y1="25" x2="50" y2="60" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="rgba(139, 92, 246, 0.5)" />
+                          <stop offset="100%" stopColor="rgba(139, 92, 246, 0.15)" />
+                        </linearGradient>
+                        <linearGradient id="box-top-grad" x1="0" y1="10" x2="50" y2="25" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="rgba(139, 92, 246, 0.6)" />
+                          <stop offset="100%" stopColor="rgba(139, 92, 246, 0.2)" />
+                        </linearGradient>
+                      </defs>
+                      {/* Dotted path */}
+                      <path d="M15,80 Q45,95 75,80 T105,80" stroke="rgba(139,92,246,0.3)" strokeWidth="2" strokeDasharray="3 3"/>
+                      {/* 3D Box */}
+                      <g transform="translate(35, 20)">
+                        <path d="M25,25 L0,35 L0,60 L25,50 Z" fill="url(#box-left-grad)" stroke="rgba(139,92,246,0.3)" strokeWidth="1"/>
+                        <path d="M25,25 L50,35 L50,60 L25,50 Z" fill="url(#box-right-grad)" stroke="rgba(139,92,246,0.3)" strokeWidth="1"/>
+                        <path d="M25,10 L0,25 L25,25 L50,25 Z" fill="url(#box-top-grad)" stroke="rgba(139,92,246,0.3)" strokeWidth="1"/>
+                        <path d="M22,12 L22,51 L28,51 L28,12 Z" fill="#8b5cf6" opacity="0.8"/>
+                      </g>
+                      {/* Checked success badge overlay */}
+                      <circle cx="85" cy="78" r="10" fill="#10b981" />
+                      <path d="M80,78 L84,82 L90,74" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
 
