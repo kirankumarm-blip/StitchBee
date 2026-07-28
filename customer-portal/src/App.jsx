@@ -497,37 +497,7 @@ export default function App() {
       clearTimeout(timeoutId);
       observer.disconnect();
     };
-  }, [role]);
-
-  // Scroll reveal animation observer for guest landing folds
-  useEffect(() => {
-    if (role !== 'landing') return;
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px -40px 0px -40px',
-      threshold: 0.05
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    const timeoutId = setTimeout(() => {
-      const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom');
-      targets.forEach((target) => observer.observe(target));
-    }, 150);
-
-    return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
-    };
-  }, [role]);
+  }, [role, locationStatus]);
 
   const nextLandingSlide = () => {
     setCurrentLandingSlide((prev) => (prev + 1) % guestLandingBanners.length);
