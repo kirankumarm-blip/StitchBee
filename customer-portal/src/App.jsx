@@ -1176,58 +1176,239 @@ export default function App() {
           </section>
 
           {/* Fold 3: How It Works */}
-          <section id="how-it-works" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container reveal">
-              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>How StitchBee Works</h2>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Your dream garment in 4 simple steps</p>
-            </div>
-            
-            <div className="how-it-works-row-v2">
-              <div className="how-step-card-v2 reveal-left stagger-1">
-                <span className="how-step-badge">STEP 01</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)' }}>
-                  <Sparkles size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>Select Style & Customization</h3>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Browse designer outlines or upload your own reference images. Choose necklines, sleeves, pockets, and other bespoke details.
-                </p>
+          <section id="how-it-works" style={{ padding: '6rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)', overflow: 'hidden' }}>
+            <div className="landing-container reveal how-it-works-container-premium">
+              <div className="how-it-works-mesh-bg"></div>
+              
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'Outfit, sans-serif' }}>How StitchBee Works</h2>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1.05rem' }}>Get your custom outfit in 4 easy steps</p>
               </div>
 
-              <div className="how-step-card-v2 reveal-left stagger-2">
-                <span className="how-step-badge">STEP 02</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent)' }}>
-                  <Scissors size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>5 Measurement Options</h3>
+              {/* Connected Timeline Progress Line SVG (Desktop only) */}
+              <svg className="timeline-progress-line-svg" viewBox="0 0 1000 20" fill="none">
+                <path d="M 50 10 L 950 10" stroke="rgba(255,255,255,0.05)" strokeWidth="4" strokeLinecap="round" />
+                <path d="M 50 10 L 950 10" stroke="var(--primary)" strokeWidth="2" strokeDasharray="6 6" strokeLinecap="round" style={{ opacity: 0.7 }} />
+                {/* Dots along line */}
+                <circle cx="50" cy="10" r="5" fill="var(--primary)" />
+                <circle cx="350" cy="10" r="5" fill="var(--accent)" />
+                <circle cx="650" cy="10" r="5" fill="var(--success)" />
+                <circle cx="950" cy="10" r="5" fill="#8b5cf6" />
+              </svg>
+
+              <div className="timeline-grid-premium">
+                {/* Step 1: Select Style */}
+                <div className="how-step-card-premium theme-pink reveal-zoom stagger-1">
+                  <span className="step-giant-number">01</span>
+                  
+                  {/* Estimated Time & Benefit Badges */}
+                  <div className="step-time-badge">⏱ 2 mins</div>
+                  <div className="step-benefit-pill">✨ 1000+ Designs</div>
+
+                  {/* 3D Illustration Mockup (SVG) */}
+                  <div className="step-illustration-wrapper">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                      <rect x="25" y="20" width="70" height="80" rx="12" fill="rgba(247,37,133,0.06)" stroke="rgba(247,37,133,0.2)" strokeWidth="1.5" />
+                      {/* Dress hanger representation */}
+                      <path d="M60,35 C50,35 45,45 45,55 L75,55 C75,45 70,35 60,35 Z" fill="rgba(247,37,133,0.2)" />
+                      <path d="M45,55 L40,85 L80,85 L75,55 Z" fill="rgba(247,37,133,0.15)" />
+                      {/* Swatch options floating */}
+                      <circle cx="35" cy="45" r="5" fill="#f72585" />
+                      <circle cx="35" cy="60" r="5" fill="#7209b7" />
+                      <circle cx="35" cy="75" r="5" fill="#3f37c9" />
+                      <circle cx="85" cy="50" r="6" fill="#fff" stroke="var(--primary)" strokeWidth="1.5" />
+                      <path d="M82,50 L88,50 M85,47 L85,53" stroke="var(--primary)" strokeWidth="1.5" />
+                    </svg>
+                  </div>
+
+                  {/* Header Title with Circle Icon */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="step-icon-circle">
+                      <Sparkles size={18} />
+                    </div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Select Style</h3>
+                  </div>
+
+                  {/* Description & bullet benefits */}
+                  <ul className="step-bullet-list">
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--primary)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Browse 1000+ designs</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--primary)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Upload inspiration photos</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--primary)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Customize sleeves & necks</span>
+                    </li>
+                  </ul>
                 </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Submit sizes via: <strong>Home Fit Visit</strong> (student helper), <strong>Reference Dress pickup</strong>, <strong>Video guidance</strong>, <strong>Manual inputs</strong>, or our instant <strong>Touchless AI Camera Scan</strong>!
-                </p>
+
+                {/* Step 2: Measure */}
+                <div className="how-step-card-premium theme-blue reveal-zoom stagger-2">
+                  <span className="step-giant-number">02</span>
+                  
+                  {/* Estimated Time & Benefit Badges */}
+                  <div className="step-time-badge">⏱ 5 mins</div>
+                  <div className="step-benefit-pill">⚡ AI Takes 30s</div>
+
+                  {/* 3D Illustration Mockup (SVG) */}
+                  <div className="step-illustration-wrapper">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                      <rect x="42" y="15" width="36" height="72" rx="6" fill="rgba(76,201,240,0.06)" stroke="rgba(76,201,240,0.2)" strokeWidth="1.5" />
+                      {/* Body contour and laser scanner line */}
+                      <path d="M50,45 C55,42 65,42 70,45 L70,70 L50,70 Z" fill="rgba(255,255,255,0.05)" />
+                      <line x1="38" y1="52" x2="82" y2="52" stroke="#4cc9f0" strokeWidth="2" strokeDasharray="3 2" style={{ animation: 'pulse-glow 1.5s infinite' }} />
+                      <circle cx="60" cy="80" r="3" fill="#4cc9f0" />
+                      {/* Ruler measurements overlays */}
+                      <text x="18" y="55" fill="rgba(76,201,240,0.5)" style={{ fontSize: '8px', fontFamily: 'monospace' }}>34.2"</text>
+                      <text x="86" y="60" fill="rgba(76,201,240,0.5)" style={{ fontSize: '8px', fontFamily: 'monospace' }}>28.5"</text>
+                    </svg>
+                  </div>
+
+                  {/* Header Title with Circle Icon */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="step-icon-circle">
+                      <Scissors size={18} />
+                    </div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Measure Body</h3>
+                  </div>
+
+                  {/* Description & bullet benefits */}
+                  <ul className="step-bullet-list">
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--accent)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Instant 3D AI Scan</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--accent)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Home Visit pickup slots</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--accent)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Reference dress sizing</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Step 3: Compare & Chat */}
+                <div className="how-step-card-premium theme-green reveal-zoom stagger-3">
+                  <span className="step-giant-number">03</span>
+                  
+                  {/* Estimated Time & Benefit Badges */}
+                  <div className="step-time-badge">⏱ 10 mins</div>
+                  <div className="step-benefit-pill">⭐ Verified Tailors</div>
+
+                  {/* 3D Illustration Mockup (SVG) */}
+                  <div className="step-illustration-wrapper">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                      <rect x="25" y="25" width="70" height="60" rx="10" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.2)" strokeWidth="1.5" />
+                      {/* Chat avatar and chat bubbles */}
+                      <circle cx="45" cy="45" r="8" fill="rgba(16,185,129,0.2)" />
+                      <rect x="58" y="41" width="30" height="8" rx="3" fill="rgba(255,255,255,0.08)" />
+                      
+                      <circle cx="75" cy="65" r="8" fill="rgba(251,191,36,0.2)" />
+                      <rect x="35" y="61" width="32" height="8" rx="3" fill="rgba(16,185,129,0.15)" />
+                      
+                      {/* Star rating overlay */}
+                      <polygon points="60,78 63,83 69,84 65,88 66,94 60,91 54,94 55,88 51,84 57,83" fill="#fbbf24" />
+                    </svg>
+                  </div>
+
+                  {/* Header Title with Circle Icon */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="step-icon-circle">
+                      <MapPin size={18} />
+                    </div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Choose Tailor</h3>
+                  </div>
+
+                  {/* Description & bullet benefits */}
+                  <ul className="step-bullet-list">
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--success)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Compare tailor bids</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--success)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Direct real-time chat</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: 'var(--success)' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Check rating reviews</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Step 4: Stitched & Delivered */}
+                <div className="how-step-card-premium theme-purple reveal-zoom stagger-4">
+                  <span className="step-giant-number">04</span>
+                  
+                  {/* Estimated Time & Benefit Badges */}
+                  <div className="step-time-badge">⏱ 3–5 Days</div>
+                  <div className="step-benefit-pill">✔ Free Alteration</div>
+
+                  {/* 3D Illustration Mockup (SVG) */}
+                  <div className="step-illustration-wrapper">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                      <rect x="30" y="30" width="60" height="50" rx="8" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.2)" strokeWidth="1.5" />
+                      {/* Box lid and delivery ribbon path */}
+                      <path d="M30,40 L60,45 L90,40" stroke="rgba(139,92,246,0.3)" strokeWidth="1.5" />
+                      <rect x="54" y="30" width="12" height="50" fill="rgba(139,92,246,0.15)" />
+                      {/* Delivery vehicle tracking trail */}
+                      <path d="M15,80 C30,75 55,85 70,80" stroke="#8b5cf6" strokeWidth="2" strokeDasharray="3 3" />
+                      <circle cx="70" cy="80" r="4" fill="#8b5cf6" />
+                    </svg>
+                  </div>
+
+                  {/* Header Title with Circle Icon */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="step-icon-circle">
+                      <Truck size={18} />
+                    </div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Delivered</h3>
+                  </div>
+
+                  {/* Description & bullet benefits */}
+                  <ul className="step-bullet-list">
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: '#a78bfa' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Live 12-stage tracking</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: '#a78bfa' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>Contactless doorstep drop</span>
+                    </li>
+                    <li className="step-bullet-item">
+                      <span className="step-bullet-check" style={{ color: '#a78bfa' }}><Check size={14} strokeWidth={3} /></span>
+                      <span>7-day free alterations</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
-              <div className="how-step-card-v2 reveal-left stagger-3">
-                <span className="how-step-badge">STEP 03</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981' }}>
-                  <MapPin size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>Match Boutique & Negotiate</h3>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Connect with local tailors matching your budget and needs. Chat in real-time, compare quotes, and confirm the best tailoring bid.
+              {/* Bottom CTA Block */}
+              <div className="how-it-works-cta-container reveal">
+                <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '1.1rem' }}>
+                  Ready to design your perfect custom outfit?
                 </p>
+                <button 
+                  className="btn btn-primary btn-lg" 
+                  onClick={() => {
+                    if (!currentUser) {
+                      openAuthModal('customer', 'login');
+                    } else {
+                      setRole('customer');
+                      setCustomerHub('landing');
+                    }
+                  }}
+                  style={{ padding: '14px 32px', fontSize: '1.05rem', fontWeight: '700', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 8px 25px rgba(247,37,133,0.25)' }}
+                >
+                  Start Designing <ArrowRight size={18} />
+                </button>
               </div>
-
-              <div className="how-step-card-v2 reveal-left stagger-4">
-                <span className="how-step-badge">STEP 04</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#8b5cf6' }}>
-                  <Truck size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>Stitched & Delivered</h3>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Track your outfit's 12-stage progress on the live panel. Get safe delivery at your door with free alterations for 7 days.
-                </p>
-              </div>
-            </div>
             </div>
           </section>
 
