@@ -1249,7 +1249,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1314,7 +1314,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1379,7 +1379,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1444,7 +1444,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
