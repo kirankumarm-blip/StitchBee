@@ -1176,283 +1176,337 @@ export default function App() {
           </section>
 
           {/* Fold 3: How It Works */}
-          <section id="how-it-works" style={{ padding: '6rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)', overflow: 'hidden' }}>
+          <section id="how-it-works" style={{ padding: '6rem 0', borderTop: '1px solid var(--border-color)', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', overflow: 'hidden' }}>
             <div className="landing-container reveal how-it-works-container-premium">
               <div className="how-it-works-mesh-bg"></div>
               
-              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                <h2 style={{ fontSize: '2.5rem', fontWeight: '800', fontFamily: 'Outfit, sans-serif' }}>How StitchBee Works</h2>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1.05rem' }}>Get your custom outfit in 4 easy steps</p>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '2.8rem', fontWeight: '800', fontFamily: 'Outfit, sans-serif', color: theme === 'dark' ? '#fff' : '#0f172a', letterSpacing: '-0.02em' }}>
+                  How <span style={{ background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>StitchBee</span> Works
+                </h2>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1.08rem', fontWeight: '500' }}>Get your custom outfit in 4 easy steps</p>
               </div>
 
-              {/* Connected Timeline Progress Line SVG (Desktop only) */}
-              <svg className="timeline-progress-line-svg" viewBox="0 0 1000 20" fill="none">
-                <path d="M 50 10 L 950 10" stroke="rgba(255,255,255,0.05)" strokeWidth="4" strokeLinecap="round" />
-                <path d="M 50 10 L 950 10" stroke="var(--primary)" strokeWidth="2" strokeDasharray="6 6" strokeLinecap="round" style={{ opacity: 0.7 }} />
-                {/* Dots along line */}
-                <circle cx="50" cy="10" r="5" fill="var(--primary)" />
-                <circle cx="350" cy="10" r="5" fill="var(--accent)" />
-                <circle cx="650" cy="10" r="5" fill="var(--success)" />
-                <circle cx="950" cy="10" r="5" fill="#8b5cf6" />
-              </svg>
+              {/* Connected Timeline Progress Line (Desktop only) */}
+              <div className="timeline-progress-line-desktop" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '2rem auto 3.5rem auto', maxWidth: '800px', position: 'relative' }}>
+                <div style={{ position: 'absolute', left: '40px', right: '40px', height: '2px', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#e2e8f0', zIndex: 1 }}>
+                  <div style={{ width: '100%', height: '100%', borderTop: '2px dashed var(--border-color)' }}></div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', position: 'relative', zIndex: 2 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--primary)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>1</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--accent)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>2</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--success)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>3</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid #8b5cf6', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>4</div>
+                  </div>
+                </div>
+              </div>
 
               <div className="timeline-grid-premium">
                 {/* Step 1: Select Style */}
                 <div className="how-step-card-premium theme-pink reveal-zoom stagger-1">
-                  <span className="step-giant-number">01</span>
-                  
-                  {/* Estimated Time & Benefit Badges */}
-                  <div className="step-time-badge">⏱ 2 mins</div>
-                  <div className="step-benefit-pill">✨ 1000+ Designs</div>
-
-                  {/* Premium SVG Illustration */}
-                  <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
-                      <defs>
-                        <linearGradient id="pink-dress-grad" x1="40" y1="35" x2="80" y2="85" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stopColor="#f72585" />
-                          <stop offset="100%" stopColor="#7209b7" />
-                        </linearGradient>
-                      </defs>
-                      {/* Grid background */}
-                      <circle cx="60" cy="60" r="48" fill="rgba(247,37,133,0.02)" stroke="rgba(247,37,133,0.06)" strokeWidth="1" strokeDasharray="3 3"/>
-                      {/* Premium dress template sketch */}
-                      <path d="M60,25 C55,25 50,30 50,35 C50,37 52,40 60,40" stroke="#f72585" strokeWidth="2.5" strokeLinecap="round"/>
-                      <path d="M42,42 L78,42 L70,88 L50,88 Z" fill="url(#pink-dress-grad)" opacity="0.9"/>
-                      <path d="M42,42 Q60,52 78,42" stroke="#fff" strokeWidth="1.5"/>
-                      {/* Swatch options floating */}
-                      <circle cx="28" cy="48" r="6" fill="#f72585" stroke="#fff" strokeWidth="1"/>
-                      <circle cx="28" cy="64" r="6" fill="#7209b7" stroke="#fff" strokeWidth="1"/>
-                      <circle cx="28" cy="80" r="6" fill="#4cc9f0" stroke="#fff" strokeWidth="1"/>
-                      {/* UI selector element */}
-                      <circle cx="92" cy="55" r="7" fill="#fff" stroke="var(--primary)" strokeWidth="2" />
-                      <path d="M89,55 L95,55 M92,52 L92,58" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" />
-                      {/* Sparkles */}
-                      <path d="M92,30 L94,34 L98,36 L94,38 L92,42 L90,38 L86,36 L90,34 Z" fill="#fbbf24"/>
-                      <path d="M30,92 L31,94 L33,95 L31,96 L30,98 L29,96 L27,95 L29,94 Z" fill="#fbbf24"/>
-                    </svg>
-                  </div>
-
-                  {/* Header Title with Circle Icon */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div className="step-icon-circle">
-                      <Sparkles size={18} />
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid var(--primary)',
+                      color: 'var(--primary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      1
                     </div>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Select Style</h3>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#fff5f8',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(247,37,133,0.15)'}`,
+                      color: 'var(--primary)',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 2 mins
+                    </div>
                   </div>
 
-                  {/* Description & bullet benefits */}
-                  <ul className="step-bullet-list">
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--primary)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Browse 1000+ designs</span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Select Style
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Browse 1000+ designs</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--primary)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Upload inspiration photos</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Upload inspiration photos</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--primary)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Customize sleeves & necks</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Customize sleeves & necks</span>
                     </li>
                   </ul>
                 </div>
 
-                {/* Step 2: Measure */}
+                {/* Step 2: Measure Body */}
                 <div className="how-step-card-premium theme-blue reveal-zoom stagger-2">
-                  <span className="step-giant-number">02</span>
-                  
-                  {/* Estimated Time & Benefit Badges */}
-                  <div className="step-time-badge">⏱ 5 mins</div>
-                  <div className="step-benefit-pill">⚡ AI Takes 30s</div>
-
-                  {/* Premium SVG Illustration */}
-                  <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
-                      <defs>
-                        <linearGradient id="phone-glow" x1="42" y1="15" x2="78" y2="87" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stopColor="rgba(76,201,240,0.4)" />
-                          <stop offset="100%" stopColor="rgba(76,201,240,0.05)" />
-                        </linearGradient>
-                      </defs>
-                      {/* Grid background */}
-                      <path d="M20,20 L100,20 M20,40 L100,40 M20,60 L100,60 M20,80 L100,80" stroke="rgba(255,255,255,0.03)" strokeWidth="1"/>
-                      <path d="M20,20 L20,100 M40,20 L40,100 M60,20 L60,100 M80,20 L80,100" stroke="rgba(255,255,255,0.03)" strokeWidth="1"/>
-                      {/* Phone outline */}
-                      <rect x="42" y="15" width="36" height="74" rx="8" fill="#0d1117" stroke="rgba(76, 201, 240, 0.4)" strokeWidth="2"/>
-                      <rect x="45" y="18" width="30" height="68" rx="5" fill="url(#phone-glow)" />
-                      {/* Camera notch */}
-                      <circle cx="60" cy="22" r="1.5" fill="#333"/>
-                      {/* Body contour being scanned inside phone */}
-                      <path d="M53,42 Q60,39 67,42 L65,70 Q60,73 55,70 Z" fill="rgba(255,255,255,0.1)" stroke="rgba(76, 201, 240, 0.4)" strokeWidth="1.2"/>
-                      {/* Active green/blue scanning laser line */}
-                      <line x1="28" y1="52" x2="92" y2="52" stroke="#4cc9f0" strokeWidth="2.5" />
-                      <line x1="28" y1="52" x2="92" y2="52" stroke="rgba(76, 201, 240, 0.5)" strokeWidth="7" opacity="0.3"/>
-                      {/* Measurement tags overlay */}
-                      <text x="18" y="55" fill="rgba(76,201,240,0.8)" style={{ fontSize: '8px', fontFamily: 'monospace', fontWeight: 'bold' }}>34.2"</text>
-                      <text x="86" y="60" fill="rgba(76,201,240,0.8)" style={{ fontSize: '8px', fontFamily: 'monospace', fontWeight: 'bold' }}>28.5"</text>
-                      <circle cx="53" cy="52" r="2.5" fill="#fff" stroke="#4cc9f0" strokeWidth="1.5"/>
-                      <circle cx="67" cy="52" r="2.5" fill="#fff" stroke="#4cc9f0" strokeWidth="1.5"/>
-                    </svg>
-                  </div>
-
-                  {/* Header Title with Circle Icon */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div className="step-icon-circle">
-                      <Scissors size={18} />
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid var(--accent)',
+                      color: 'var(--accent)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      2
                     </div>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Measure Body</h3>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ecfeff',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(76,201,240,0.15)'}`,
+                      color: 'var(--accent)',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 5 mins
+                    </div>
                   </div>
 
-                  {/* Description & bullet benefits */}
-                  <ul className="step-bullet-list">
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--accent)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Instant 3D AI Scan</span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Measure Body
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Instant 3D AI Scan</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--accent)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Home Visit pickup slots</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Home Visit pickup slots</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--accent)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Reference dress sizing</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Reference dress sizing</span>
                     </li>
                   </ul>
                 </div>
 
-                {/* Step 3: Compare & Chat */}
+                {/* Step 3: Choose Tailor */}
                 <div className="how-step-card-premium theme-green reveal-zoom stagger-3">
-                  <span className="step-giant-number">03</span>
-                  
-                  {/* Estimated Time & Benefit Badges */}
-                  <div className="step-time-badge">⏱ 10 mins</div>
-                  <div className="step-benefit-pill">⭐ Verified Tailors</div>
-
-                  {/* Premium SVG Illustration */}
-                  <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
-                      {/* Left Tailor bubble */}
-                      <rect x="15" y="20" width="75" height="30" rx="10" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="1.2"/>
-                      <path d="M22,50 L22,57 L29,50 Z" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="1.2"/>
-                      {/* Avatar preview */}
-                      <circle cx="30" cy="35" r="7" fill="rgba(16,185,129,0.2)"/>
-                      <rect x="42" y="31" width="38" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
-                      <rect x="42" y="39" width="28" height="4" rx="2" fill="rgba(16,185,129,0.2)"/>
-
-                      {/* Right User bubble */}
-                      <rect x="30" y="62" width="75" height="30" rx="10" fill="rgba(251, 191, 36, 0.08)" stroke="rgba(251, 191, 36, 0.25)" strokeWidth="1.2"/>
-                      <path d="M98,92 L98,99 L91,92 Z" fill="rgba(251, 191, 36, 0.08)" stroke="rgba(251, 191, 36, 0.25)" strokeWidth="1.2"/>
-                      <circle cx="90" cy="77" r="7" fill="rgba(251,191,36,0.2)"/>
-                      <rect x="42" y="73" width="38" height="4" rx="2" fill="rgba(251,191,36,0.2)"/>
-                      <rect x="42" y="81" width="20" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
-
-                      {/* Floating Bid Acceptance Badge */}
-                      <g transform="translate(76, 42)">
-                        <rect x="0" y="0" width="34" height="14" rx="5" fill="#10b981" />
-                        <text x="4" y="9" fill="#fff" style={{ fontSize: '6px', fontFamily: 'Inter', fontWeight: 'bold' }}>₹2,400</text>
-                      </g>
-                    </svg>
-                  </div>
-
-                  {/* Header Title with Circle Icon */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div className="step-icon-circle">
-                      <MapPin size={18} />
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid var(--success)',
+                      color: 'var(--success)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      3
                     </div>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Choose Tailor</h3>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f0fdf4',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(16,185,129,0.15)'}`,
+                      color: 'var(--success)',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 10 mins
+                    </div>
                   </div>
 
-                  {/* Description & bullet benefits */}
-                  <ul className="step-bullet-list">
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--success)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Compare tailor bids</span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Choose Tailor
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Compare tailor bids</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--success)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Direct real-time chat</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Direct real-time chat</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: 'var(--success)' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Check rating reviews</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Check rating reviews</span>
                     </li>
                   </ul>
                 </div>
 
-                {/* Step 4: Stitched & Delivered */}
+                {/* Step 4: Delivered */}
                 <div className="how-step-card-premium theme-purple reveal-zoom stagger-4">
-                  <span className="step-giant-number">04</span>
-                  
-                  {/* Estimated Time & Benefit Badges */}
-                  <div className="step-time-badge">⏱ 3–5 Days</div>
-                  <div className="step-benefit-pill">✔ Free Alteration</div>
-
-                  {/* Premium SVG Illustration */}
-                  <div className="step-illustration-wrapper">
-                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ width: '85%', height: '85%' }}>
-                      <defs>
-                        <linearGradient id="box-left-grad" x1="0" y1="25" x2="25" y2="60" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stopColor="rgba(139, 92, 246, 0.4)" />
-                          <stop offset="100%" stopColor="rgba(139, 92, 246, 0.1)" />
-                        </linearGradient>
-                        <linearGradient id="box-right-grad" x1="25" y1="25" x2="50" y2="60" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stopColor="rgba(139, 92, 246, 0.5)" />
-                          <stop offset="100%" stopColor="rgba(139, 92, 246, 0.15)" />
-                        </linearGradient>
-                        <linearGradient id="box-top-grad" x1="0" y1="10" x2="50" y2="25" gradientUnits="userSpaceOnUse">
-                          <stop offset="0%" stopColor="rgba(139, 92, 246, 0.6)" />
-                          <stop offset="100%" stopColor="rgba(139, 92, 246, 0.2)" />
-                        </linearGradient>
-                      </defs>
-                      {/* Dotted path */}
-                      <path d="M15,80 Q45,95 75,80 T105,80" stroke="rgba(139,92,246,0.3)" strokeWidth="2" strokeDasharray="3 3"/>
-                      {/* 3D Box */}
-                      <g transform="translate(35, 20)">
-                        <path d="M25,25 L0,35 L0,60 L25,50 Z" fill="url(#box-left-grad)" stroke="rgba(139,92,246,0.3)" strokeWidth="1"/>
-                        <path d="M25,25 L50,35 L50,60 L25,50 Z" fill="url(#box-right-grad)" stroke="rgba(139,92,246,0.3)" strokeWidth="1"/>
-                        <path d="M25,10 L0,25 L25,25 L50,25 Z" fill="url(#box-top-grad)" stroke="rgba(139,92,246,0.3)" strokeWidth="1"/>
-                        <path d="M22,12 L22,51 L28,51 L28,12 Z" fill="#8b5cf6" opacity="0.8"/>
-                      </g>
-                      {/* Checked success badge overlay */}
-                      <circle cx="85" cy="78" r="10" fill="#10b981" />
-                      <path d="M80,78 L84,82 L90,74" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-
-                  {/* Header Title with Circle Icon */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div className="step-icon-circle">
-                      <Truck size={18} />
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid #8b5cf6',
+                      color: '#8b5cf6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      4
                     </div>
-                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: '#fff' }}>Delivered</h3>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f5f3ff',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(139,92,246,0.15)'}`,
+                      color: '#8b5cf6',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 3-5 Days
+                    </div>
                   </div>
 
-                  {/* Description & bullet benefits */}
-                  <ul className="step-bullet-list">
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: '#a78bfa' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Live 12-stage tracking</span>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Delivered
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Live tracking</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: '#a78bfa' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>Contactless doorstep drop</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Contactless doorstep drop</span>
                     </li>
-                    <li className="step-bullet-item">
-                      <span className="step-bullet-check" style={{ color: '#a78bfa' }}><Check size={14} strokeWidth={3} /></span>
-                      <span>7-day free alterations</span>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>7-day free alterations</span>
                     </li>
                   </ul>
                 </div>
               </div>
 
               {/* Bottom CTA Block */}
-              <div className="how-it-works-cta-container reveal">
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', fontSize: '1.1rem' }}>
-                  Ready to design your perfect custom outfit?
-                </p>
+              <div 
+                className="reveal" 
+                style={{ 
+                  marginTop: '4rem', 
+                  background: theme === 'dark' ? 'rgba(247,37,133,0.04)' : '#fff5f8', 
+                  border: `1px solid ${theme === 'dark' ? 'rgba(247,37,133,0.15)' : 'rgba(247,37,133,0.08)'}`, 
+                  borderRadius: '24px', 
+                  padding: '24px 32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '24px',
+                  flexWrap: 'wrap',
+                  textAlign: 'left',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fff', border: '2px solid rgba(247,37,133,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z" />
+                      <circle cx="12" cy="11" r="3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', margin: 0 }}>
+                      Ready to design your perfect custom outfit?
+                    </h3>
+                    <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: '0.92rem' }}>
+                      Your style. Your fit. Made just for you.
+                    </p>
+                  </div>
+                </div>
                 <button 
-                  className="btn btn-primary btn-lg" 
+                  className="btn" 
                   onClick={() => {
                     if (!currentUser) {
                       openAuthModal('customer', 'login');
@@ -1461,11 +1515,69 @@ export default function App() {
                       setCustomerHub('landing');
                     }
                   }}
-                  style={{ padding: '14px 32px', fontSize: '1.05rem', fontWeight: '700', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '8px', boxShadow: '0 8px 25px rgba(247,37,133,0.25)' }}
+                  style={{ 
+                    padding: '14px 32px', 
+                    fontSize: '1.02rem', 
+                    fontWeight: '700', 
+                    borderRadius: '12px', 
+                    background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
+                    color: '#fff',
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '8px', 
+                    boxShadow: '0 8px 25px rgba(247,37,133,0.25)',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
                 >
                   Start Designing <ArrowRight size={18} />
                 </button>
               </div>
+
+              {/* Footer Trust Factors */}
+              <div 
+                style={{ 
+                  marginTop: '3.5rem', 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(3, 1fr)', 
+                  gap: '30px', 
+                  borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#e2e8f0'}`, 
+                  paddingTop: '2.5rem',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6', flexShrink: 0 }}>
+                    <ShieldCheck size={20} />
+                  </div>
+                  <div style={{ textAlign: 'left' }}>
+                    <h4 style={{ fontSize: '0.92rem', fontWeight: '700', margin: 0, color: theme === 'dark' ? '#fff' : '#1e293b' }}>Secure & Private</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Your data is 100% safe</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 }}>
+                    <Users size={20} />
+                  </div>
+                  <div style={{ textAlign: 'left' }}>
+                    <h4 style={{ fontSize: '0.92rem', fontWeight: '700', margin: 0, color: theme === 'dark' ? '#fff' : '#1e293b' }}>Trusted by 10K+ Customers</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Loved for quality & fit</span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--success)', flexShrink: 0 }}>
+                    <Award size={20} />
+                  </div>
+                  <div style={{ textAlign: 'left' }}>
+                    <h4 style={{ fontSize: '0.92rem', fontWeight: '700', margin: 0, color: theme === 'dark' ? '#fff' : '#1e293b' }}>Quality You Can Trust</h4>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Perfect stitching. Every time.</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </section>
 
