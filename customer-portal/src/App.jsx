@@ -41,6 +41,7 @@ export default function App() {
   const [userCoords, setUserCoords] = useState({ lat: null, lng: null });
   const [nearbyTailors, setNearbyTailors] = useState([]);
   const [markersRef, setMarkersRef] = useState([]);
+  const [hoveredCategoryIdx, setHoveredCategoryIdx] = useState(null);
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
 
@@ -1073,75 +1074,103 @@ export default function App() {
                     )
                   }
                 ].map((category, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`category-card-v2 reveal-zoom stagger-${(idx % 4) + 1}`} 
-                    onClick={() => {
-                      setCustomerCategory(category.cat);
-                      setCustomerHub('category-landing');
-                      setRole('customer');
-                    }}
-                    style={{
-                      background: theme === 'dark' ? '#1a1a2e' : '#ffffff',
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9'}`,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      position: 'relative'
-                    }}
-                  >
-                    {/* Image wrapper */}
-                    <div style={{ position: 'relative', width: '100%', height: '160px', overflow: 'hidden' }}>
-                      <img 
-                        src={category.img} 
-                        alt={category.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                      />
-                      {/* Overlapping Badge Icon */}
-                      <div 
-                        style={{
-                          position: 'absolute',
-                          left: '16px',
-                          bottom: '-18px',
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '8px',
-                          background: theme === 'dark' ? '#24243e' : '#ffffff',
-                          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--primary)',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                          zIndex: 10
-                        }}
-                      >
-                        {category.icon}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div style={{ padding: '24px 16px 16px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <h3 style={{ fontSize: '1.05rem', fontWeight: '800', color: 'var(--text-primary)', margin: '0 0 6px 0' }}>
-                          {category.name}
-                        </h3>
-                        <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.4' }}>
-                          {category.desc}
-                        </p>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontSize: '0.82rem', fontWeight: '700' }}>
-                        <span>Explore</span>
-                        <ChevronRight size={14} />
-                      </div>
+                <div 
+                  key={idx} 
+                  className={`category-card-v2 reveal-zoom stagger-${(idx % 4) + 1}`} 
+                  onClick={() => {
+                    setCustomerCategory(category.cat);
+                    setCustomerHub('category-landing');
+                    setRole('customer');
+                  }}
+                  onMouseEnter={() => setHoveredCategoryIdx(idx)}
+                  onMouseLeave={() => setHoveredCategoryIdx(null)}
+                  style={{
+                    background: theme === 'dark' ? '#1a1a2e' : '#ffffff',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    boxShadow: hoveredCategoryIdx === idx
+                      ? '0 20px 35px rgba(247,37,133,0.18), 0 4px 15px rgba(0,0,0,0.1)'
+                      : '0 4px 20px rgba(0,0,0,0.03)',
+                    border: `1px solid ${hoveredCategoryIdx === idx ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9')}`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                    position: 'relative',
+                    transform: hoveredCategoryIdx === idx ? 'translateY(-10px) scale(1.03)' : 'translateY(0) scale(1)'
+                  }}
+                >
+                  {/* Image wrapper */}
+                  <div style={{ position: 'relative', width: '100%', height: '160px', overflow: 'hidden' }}>
+                    <img 
+                      src={category.img} 
+                      alt={category.name} 
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'cover',
+                        transition: 'transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                        transform: hoveredCategoryIdx === idx ? 'scale(1.12)' : 'scale(1)'
+                      }} 
+                    />
+                    {/* Overlapping Badge Icon */}
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        left: '16px',
+                        bottom: '-18px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: theme === 'dark' ? '#24243e' : '#ffffff',
+                        border: `1px solid ${hoveredCategoryIdx === idx ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0')}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--primary)',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                        zIndex: 10,
+                        transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                        transform: hoveredCategoryIdx === idx ? 'scale(1.15) rotate(10deg)' : 'scale(1) rotate(0deg)'
+                      }}
+                    >
+                      {category.icon}
                     </div>
                   </div>
-                ))}
+
+                  {/* Content */}
+                  <div style={{ padding: '24px 16px 16px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <h3 style={{ 
+                        fontSize: '1.05rem', 
+                        fontWeight: '800', 
+                        color: hoveredCategoryIdx === idx ? 'var(--primary)' : 'var(--text-primary)', 
+                        margin: '0 0 6px 0',
+                        transition: 'color 0.3s ease'
+                      }}>
+                        {category.name}
+                      </h3>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.4' }}>
+                        {category.desc}
+                      </p>
+                    </div>
+
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px', 
+                      color: 'var(--primary)', 
+                      fontSize: '0.82rem', 
+                      fontWeight: '700',
+                      transition: 'transform 0.3s ease',
+                      transform: hoveredCategoryIdx === idx ? 'translateX(4px)' : 'translateX(0)'
+                    }}>
+                      <span>Explore</span>
+                      <ChevronRight size={14} />
+                    </div>
+                  </div>
+                </div>
+              ))}
               </div>
             </div>
           </section>
