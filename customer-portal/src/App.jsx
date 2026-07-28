@@ -1598,21 +1598,20 @@ export default function App() {
                   answer: "Absolutely. All tailors registered on StitchBee undergo strict background checks, including Aadhaar/PAN verification, and a physical assessment of their workspace and stitching quality before they are approved to take orders."
                 }
               ].map((faq, idx) => (
-                <div 
-                  key={idx} 
-                  className={`faq-item ${expandedFaqIdx === idx ? 'expanded' : ''} reveal stagger-${(idx % 4) + 1}`}
-                >
-                  <button 
-                    className="faq-question" 
-                    onClick={() => setExpandedFaqIdx(expandedFaqIdx === idx ? null : idx)}
-                  >
-                    <span>{faq.question}</span>
-                    <span style={{ fontSize: '0.8rem', transition: 'transform 0.3s ease', transform: expandedFaqIdx === idx ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                      ▼
-                    </span>
-                  </button>
-                  <div className="faq-answer">
-                    <p style={{ margin: 0 }}>{faq.answer}</p>
+                <div key={idx} className={`reveal stagger-${(idx % 4) + 1}`}>
+                  <div className={`faq-item ${expandedFaqIdx === idx ? 'expanded' : ''}`}>
+                    <button 
+                      className="faq-question" 
+                      onClick={() => setExpandedFaqIdx(expandedFaqIdx === idx ? null : idx)}
+                    >
+                      <span>{faq.question}</span>
+                      <span style={{ fontSize: '0.8rem', transition: 'transform 0.3s ease', transform: expandedFaqIdx === idx ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        ▼
+                      </span>
+                    </button>
+                    <div className="faq-answer">
+                      <p style={{ margin: 0 }}>{faq.answer}</p>
+                    </div>
                   </div>
                 </div>
               ))}
