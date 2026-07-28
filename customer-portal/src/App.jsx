@@ -469,6 +469,66 @@ export default function App() {
     return () => clearInterval(interval);
   }, [pauseLandingCarousel, role]);
 
+  // Scroll reveal animation observer for guest landing folds
+  useEffect(() => {
+    if (role !== 'landing') return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px -40px 0px -40px',
+      threshold: 0.05
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const timeoutId = setTimeout(() => {
+      const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom');
+      targets.forEach((target) => observer.observe(target));
+    }, 150);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [role]);
+
+  // Scroll reveal animation observer for guest landing folds
+  useEffect(() => {
+    if (role !== 'landing') return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px -40px 0px -40px',
+      threshold: 0.05
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const timeoutId = setTimeout(() => {
+      const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom');
+      targets.forEach((target) => observer.observe(target));
+    }, 150);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [role]);
+
   const nextLandingSlide = () => {
     setCurrentLandingSlide((prev) => (prev + 1) % guestLandingBanners.length);
   };
@@ -834,7 +894,7 @@ export default function App() {
                 ].map((item, idx) => (
                   <div 
                     key={idx} 
-                    className="stats-bar-item"
+                    className={`stats-bar-item reveal-zoom stagger-${idx + 1}`}
                     style={{ 
                       display: 'flex', 
                       alignItems: 'center', 
@@ -862,8 +922,8 @@ export default function App() {
 
           {/* Fold 2: Quick Service Categories */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div className="landing-container reveal">
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                 <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick Service Categories</h2>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Select from our premium custom tailoring categories</p>
               </div>
@@ -1045,7 +1105,7 @@ export default function App() {
                 ].map((category, idx) => (
                   <div 
                     key={idx} 
-                    className="category-card-v2" 
+                    className={`category-card-v2 reveal-zoom stagger-${(idx % 4) + 1}`} 
                     onClick={() => {
                       setCustomerCategory(category.cat);
                       setCustomerHub('category-landing');
@@ -1118,14 +1178,14 @@ export default function App() {
 
           {/* Fold 3: How It Works */}
           <section id="how-it-works" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div className="landing-container reveal">
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
               <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>How StitchBee Works</h2>
               <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Your dream garment in 4 simple steps</p>
             </div>
             
             <div className="how-it-works-row-v2">
-              <div className="how-step-card-v2">
+              <div className="how-step-card-v2 reveal-left stagger-1">
                 <span className="how-step-badge">STEP 01</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)' }}>
                   <Sparkles size={20} />
@@ -1136,7 +1196,7 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="how-step-card-v2">
+              <div className="how-step-card-v2 reveal-left stagger-2">
                 <span className="how-step-badge">STEP 02</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent)' }}>
                   <Scissors size={20} />
@@ -1147,7 +1207,7 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="how-step-card-v2">
+              <div className="how-step-card-v2 reveal-left stagger-3">
                 <span className="how-step-badge">STEP 03</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981' }}>
                   <MapPin size={20} />
@@ -1158,7 +1218,7 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="how-step-card-v2">
+              <div className="how-step-card-v2 reveal-left stagger-4">
                 <span className="how-step-badge">STEP 04</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#8b5cf6' }}>
                   <Truck size={20} />
@@ -1174,8 +1234,8 @@ export default function App() {
 
           {/* Fold 4: Popular Designs Section */}
           <section id="popular-designs" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="reels-header">
+            <div className="landing-container reveal-zoom">
+              <div className="reels-header reveal">
               <div className="reels-title-box">
                 <h2 className="reels-title">Trending Designer Outfits</h2>
                 <p className="reels-subtitle">Watch fits and choose custom designs from our master fashion designers</p>
@@ -1204,7 +1264,7 @@ export default function App() {
                 ].map((reel, idx) => (
                   <div 
                     key={idx} 
-                    className="reel-card"
+                    className={`reel-card reveal-zoom stagger-${(idx % 4) + 1}`}
                     onMouseEnter={(e) => {
                       const videoEl = e.currentTarget.querySelector('video');
                       if (videoEl) videoEl.play().catch(() => {});
@@ -1275,17 +1335,19 @@ export default function App() {
           </section>
 
           {/* Fold 5: Fabric Marketplace */}
-          <FabricMarketplace 
-            openAuthModal={openAuthModal} 
-            currentUser={currentUser} 
-            setRole={setRole}
-            onCategorySelect={handleCategorySelect}
-          />
+          <div className="reveal">
+            <FabricMarketplace 
+              openAuthModal={openAuthModal} 
+              currentUser={currentUser} 
+              setRole={setRole}
+              onCategorySelect={handleCategorySelect}
+            />
+          </div>
 
           {/* Fold 6: Tailors Near You */}
           <section id="tailors-near-you" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                 <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Verified Tailors Near You</h2>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Locate verified boutique partners offering doorstep measurement trials</p>
               </div>
@@ -1328,7 +1390,7 @@ export default function App() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', alignItems: 'start' }}>
                   
                   {/* Left Column: Map Preview */}
-                  <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: '0 8px 30px rgba(0,0,0,0.5)', height: '420px' }}>
+                  <div className="reveal-left" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: '0 8px 30px rgba(0,0,0,0.5)', height: '420px' }}>
                     <div 
                       ref={mapContainerRef} 
                       style={{ width: '100%', height: '100%' }} 
@@ -1349,7 +1411,7 @@ export default function App() {
                   </div>
 
                   {/* Right Column: Tailors List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '6px' }}>
+                  <div className="reveal-right" style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '6px' }}>
                     <div style={{ textAlign: 'left', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>
                         📍 {locationStatus === 'success' ? 'Your Neighborhood' : 'Bengaluru Area'}
@@ -1411,7 +1473,7 @@ export default function App() {
           {/* Fold 7: Why Choose StitchBee */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
             <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '3rem' }}>
               <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>The StitchBee Promise</h2>
               <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Designed to ensure convenience, safety, and visual perfection</p>
             </div>
@@ -1425,7 +1487,7 @@ export default function App() {
                 { title: "No-Markup Fair Pricing", desc: "Get quotes directly from tailors and choose the bid matching your budget.", icon: <Star size={24} style={{ color: '#fbbf24' }} /> },
                 { title: "Escrow Protected Payments", desc: "Stitching fees are held securely, and released to tailors only after trial satisfaction.", icon: <User size={24} style={{ color: '#ec4899' }} /> }
               ].map((trust, idx) => (
-                <div key={idx} className="trust-item-v2">
+                <div key={idx} className={`trust-item-v2 reveal-zoom stagger-${(idx % 3) + 1}`}>
                   <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                     {trust.icon}
                   </div>
@@ -1442,7 +1504,7 @@ export default function App() {
           {/* Fold 8: Pricing Section */}
           <section id="pricing-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
               <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Transparent Tailoring Pricing</h2>
               <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Standard stitching rates. Choose the tier matching your styling goals.</p>
             </div>
@@ -1454,7 +1516,7 @@ export default function App() {
                 { name: "Bridal / Heavy Designer", price: "2499", features: ["Intricate wedding lehengas, heavy zari", "Pre-stitch designer consultation", "Priority boutique stitching slot", "Unlimited alteration revisions"], action: "Book Designer" },
                 { name: "Alteration Specialist", price: "149", features: ["Resizing, hemming, repairs", "Zipper / button replacements", "24-hour express completion", "Perfect fit guarantee"], action: "Book Alteration" }
               ].map((tier, idx) => (
-                <div key={idx} className="pricing-card-v2">
+                <div key={idx} className={`pricing-card-v2 reveal-zoom stagger-${idx + 1}`}>
                   <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{tier.name}</h3>
                   <div className="pricing-price-box">
                     <span style={{ fontSize: '1rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>From</span> ₹{tier.price}
@@ -1490,9 +1552,9 @@ export default function App() {
           {/* Fold 9: Customer Reviews */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
             <div className="landing-container">
-              <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Loved by 10,000+ Fashion Enthusiasts</h2>
+              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Loved by 10,000+ Fashion Enthusiasts</h2>
             <div className="testimonial-grid">
-              <div className="testimonial-card">
+              <div className="testimonial-card reveal-zoom stagger-1">
                 <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
                 </div>
@@ -1508,7 +1570,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="testimonial-card">
+              <div className="testimonial-card reveal-zoom stagger-2">
                 <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
                 </div>
@@ -1524,7 +1586,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="testimonial-card">
+              <div className="testimonial-card reveal-zoom stagger-3">
                 <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
                 </div>
@@ -1546,7 +1608,7 @@ export default function App() {
           {/* Fold 10: Interactive FAQ Accordion Section */}
           <section className="faq-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Frequently Asked Questions</h2>
+              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Frequently Asked Questions</h2>
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
               {[
                 {
@@ -1568,7 +1630,7 @@ export default function App() {
               ].map((faq, idx) => (
                 <div 
                   key={idx} 
-                  className={`faq-item ${expandedFaqIdx === idx ? 'expanded' : ''}`}
+                  className={`faq-item ${expandedFaqIdx === idx ? 'expanded' : ''} reveal stagger-${(idx % 4) + 1}`}
                 >
                   <button 
                     className="faq-question" 
@@ -1590,13 +1652,13 @@ export default function App() {
 
           {/* Fold 11: Earn Section (Join Our Growing Ecosystem) */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container">
+            <div className="landing-container reveal">
               <h2 style={{ textAlign: 'center', fontSize: '2.2rem', marginBottom: '1.25rem', fontWeight: 'bold' }}>Join Our Growing Ecosystem</h2>
             <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem' }}>Partner with StitchBee and grow your business or earn flexible part-time income</p>
             
             <div className="grid-cols-3">
               {/* Customers Card */}
-              <div className="glass-card-no-hover" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="glass-card-no-hover reveal-zoom stagger-1" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
                   <Scissors size={28} />
                 </div>
@@ -1616,7 +1678,7 @@ export default function App() {
               </div>
 
               {/* Delivery Partner Card */}
-              <div className="glass-card-no-hover" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="glass-card-no-hover reveal-zoom stagger-2" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)' }}>
                   <Truck size={28} />
                 </div>
@@ -1636,7 +1698,7 @@ export default function App() {
               </div>
 
               {/* Student Gigs Card */}
-              <div className="glass-card-no-hover" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="glass-card-no-hover reveal-zoom stagger-3" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(16,185,129,0.1)', color: 'var(--success)' }}>
                   <Award size={28} style={{ color: 'var(--success)' }} />
                 </div>
@@ -1659,7 +1721,7 @@ export default function App() {
           </section>
 
           {/* Fold 12: Mobile App Download Banner */}
-          <div className="landing-container">
+          <div className="landing-container reveal">
             <section id="download-app-banner" className="app-download-banner" style={{ margin: '40px 0' }}>
             <div className="app-download-text">
               <span className="badge badge-secondary" style={{ width: 'fit-content', marginBottom: '8px' }}>STITCHBEE MOBILE</span>
@@ -1694,7 +1756,7 @@ export default function App() {
 
           {/* Fold 13: High Fidelity Interactive Demo Feature Showcase */}
           <section id="interactive-demo" style={{ padding: '2rem 0 6rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
+            <div className="landing-container reveal-zoom">
               <div className="glass-card-no-hover" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', padding: '40px', alignItems: 'center' }}>
                 <div style={{ textAlign: 'left' }}>
                 <span className="badge badge-primary" style={{ marginBottom: '12px' }}><Sparkles size={12} /> Live Simulation System</span>
