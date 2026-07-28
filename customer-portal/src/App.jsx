@@ -1212,7 +1212,7 @@ export default function App() {
                 {/* Step 1: Select Style */}
                 <div className="how-step-card-premium theme-pink reveal-zoom stagger-1">
                   {/* Card Header Row */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
                     <div style={{
                       width: '28px',
                       height: '28px',
@@ -1249,7 +1249,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1277,7 +1277,7 @@ export default function App() {
                 {/* Step 2: Measure Body */}
                 <div className="how-step-card-premium theme-blue reveal-zoom stagger-2">
                   {/* Card Header Row */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
                     <div style={{
                       width: '28px',
                       height: '28px',
@@ -1314,7 +1314,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1342,7 +1342,7 @@ export default function App() {
                 {/* Step 3: Choose Tailor */}
                 <div className="how-step-card-premium theme-green reveal-zoom stagger-3">
                   {/* Card Header Row */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
                     <div style={{
                       width: '28px',
                       height: '28px',
@@ -1379,7 +1379,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1407,7 +1407,7 @@ export default function App() {
                 {/* Step 4: Delivered */}
                 <div className="how-step-card-premium theme-purple reveal-zoom stagger-4">
                   {/* Card Header Row */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
                     <div style={{
                       width: '28px',
                       height: '28px',
@@ -1444,7 +1444,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: '230px', objectFit: 'cover', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1521,7 +1521,7 @@ export default function App() {
                     fontWeight: '700', 
                     borderRadius: '12px', 
                     background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
-                    color: '#fff',
+                    color: '#ffffff',
                     display: 'inline-flex', 
                     alignItems: 'center', 
                     gap: '8px', 
@@ -1530,54 +1530,9 @@ export default function App() {
                     cursor: 'pointer'
                   }}
                 >
-                  Start Designing <ArrowRight size={18} />
+                  <span style={{ color: '#ffffff' }}>Start Designing</span> <ArrowRight size={18} style={{ color: '#ffffff' }} />
                 </button>
               </div>
-
-              {/* Footer Trust Factors */}
-              <div 
-                style={{ 
-                  marginTop: '3.5rem', 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(3, 1fr)', 
-                  gap: '30px', 
-                  borderTop: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#e2e8f0'}`, 
-                  paddingTop: '2.5rem',
-                  position: 'relative',
-                  zIndex: 2
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6', flexShrink: 0 }}>
-                    <ShieldCheck size={20} />
-                  </div>
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.92rem', fontWeight: '700', margin: 0, color: theme === 'dark' ? '#fff' : '#1e293b' }}>Secure & Private</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Your data is 100% safe</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 }}>
-                    <Users size={20} />
-                  </div>
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.92rem', fontWeight: '700', margin: 0, color: theme === 'dark' ? '#fff' : '#1e293b' }}>Trusted by 10K+ Customers</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Loved for quality & fit</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--success)', flexShrink: 0 }}>
-                    <Award size={20} />
-                  </div>
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.92rem', fontWeight: '700', margin: 0, color: theme === 'dark' ? '#fff' : '#1e293b' }}>Quality You Can Trust</h4>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Perfect stitching. Every time.</span>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </section>
 
