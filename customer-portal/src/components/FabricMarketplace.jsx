@@ -249,23 +249,7 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
           </div>
         </div>
 
-        {/* 9. CTA Section */}
-        <div className="fabric-cta-banner" style={{ background: 'linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '50px 30px', textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-glow)' }}>
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <h3 style={{ fontSize: '2.2rem', fontWeight: 'bold', color: '#fff' }}>Find Your Perfect Fabric Today</h3>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: '500px', margin: '10px auto 25px', fontSize: '0.95rem' }}>
-              Sourced directly from authentic weavers and double quality-checked for perfect custom tailoring.
-            </p>
-            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button className="primary-btn" onClick={() => handleBookOutfit('Egyptian Giza Cotton', 'men')} style={{ padding: '14px 28px' }}>
-                Customize Your Outfit
-              </button>
-              <button className="secondary-btn" onClick={() => handleBookOutfit('Marketplace Store', 'all')} style={{ padding: '14px 28px', background: 'rgba(255,255,255,0.05)' }}>
-                Explore Fabric Store
-              </button>
-            </div>
-          </div>
-        </div>
+
 
       </div>
     </section>

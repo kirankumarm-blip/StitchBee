@@ -1650,75 +1650,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* Fold 11: Earn Section (Join Our Growing Ecosystem) */}
-          <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container reveal">
-              <h2 style={{ textAlign: 'center', fontSize: '2.2rem', marginBottom: '1.25rem', fontWeight: 'bold' }}>Join Our Growing Ecosystem</h2>
-            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem' }}>Partner with StitchBee and grow your business or earn flexible part-time income</p>
-            
-            <div className="grid-cols-3">
-              {/* Customers Card */}
-              <div className="glass-card-no-hover reveal-zoom stagger-1" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
-                  <Scissors size={28} />
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>Become a Tailor Partner</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Register your boutique, receive high-value local tailoring orders, access 3D AI body scan measurements, and manage clients via our streamlined catalog.
-                </p>
-                <button className="btn btn-ghost" style={{ padding: '8px 0', justifyContent: 'flex-start', color: 'var(--primary)' }} onClick={() => {
-                  if (currentUser && currentUser.role === 'tailor') {
-                    setRole('tailor');
-                  } else {
-                    setRole('become-tailor');
-                  }
-                }}>
-                  Become a Tailor →
-                </button>
-              </div>
 
-              {/* Delivery Partner Card */}
-              <div className="glass-card-no-hover reveal-zoom stagger-2" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)' }}>
-                  <Truck size={28} />
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>Become a Delivery Partner</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Deliver fabrics from customers to tailors and completed outfits to doorsteps. Earn per delivery with flexible hours and weekly payouts.
-                </p>
-                <button className="btn btn-ghost" style={{ padding: '8px 0', justifyContent: 'flex-start', color: 'var(--accent)' }} onClick={() => {
-                  if (currentUser && currentUser.role === 'student') {
-                    setRole('student');
-                  } else {
-                    setRole('become-delivery');
-                  }
-                }}>
-                  Apply as Partner →
-                </button>
-              </div>
-
-              {/* Student Gigs Card */}
-              <div className="glass-card-no-hover reveal-zoom stagger-3" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(16,185,129,0.1)', color: 'var(--success)' }}>
-                  <Award size={28} style={{ color: 'var(--success)' }} />
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>Student Fit Gigs</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Earn money by taking manual body measurements at customer homes. We train you, certify you, and connect you with local gig orders.
-                </p>
-                <button className="btn btn-ghost" style={{ padding: '8px 0', justifyContent: 'flex-start', color: 'var(--success)' }} onClick={() => {
-                  if (currentUser && currentUser.role === 'student') {
-                    setRole('student');
-                  } else {
-                    setRole('become-student');
-                  }
-                }}>
-                  Explore Gigs →
-                </button>
-              </div>
-            </div>
-            </div>
-          </section>
 
           {/* Fold 12: Mobile App Download Banner */}
           <div className="landing-container reveal">
@@ -1754,59 +1686,7 @@ export default function App() {
             </section>
           </div>
 
-          {/* Fold 13: High Fidelity Interactive Demo Feature Showcase */}
-          <section id="interactive-demo" style={{ padding: '2rem 0 6rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container reveal-zoom">
-              <div className="glass-card-no-hover" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', padding: '40px', alignItems: 'center' }}>
-                <div style={{ textAlign: 'left' }}>
-                <span className="badge badge-primary" style={{ marginBottom: '12px' }}><Sparkles size={12} /> Live Simulation System</span>
-                <h2 style={{ fontSize: '2.2rem', marginBottom: '16px', lineHeight: '1.2' }}>Test the Entire Startup Pipeline</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '24px' }}>
-                  This web application is configured with local database synchronization. Switch roles in the header to simulate the complete transaction loop:
-                </p>
-                
-                <ul style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px', listStyleType: 'none' }}>
-                  <li style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>1.</span>
-                    <span><strong>CMS Banners</strong>: Add a promo banner in the Admin panel and see it appear immediately in the Customer home view.</span>
-                  </li>
-                  <li style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>2.</span>
-                    <span><strong>Tailor Onboarding</strong>: Try registering a new tailor (Urban Stitch Studio is pending) and approve their credentials.</span>
-                  </li>
-                  <li style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>3.</span>
-                    <span><strong>Order Logistics</strong>: Advance order status from Placed to Trial Period, and verify the 15-minute countdown clock.</span>
-                  </li>
-                </ul>
-              </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                  <MapPin size={24} style={{ color: 'var(--accent)' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Geolocated Tailor Radar</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Find master tailors based on current coordinate indexes.</p>
-                  </div>
-                </div>
-                <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                  <Award size={24} style={{ color: 'var(--primary)' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Interactive Student Certifications</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Guaranteed fitting accuracy with training quiz verification.</p>
-                  </div>
-                </div>
-                <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                  <Truck size={24} style={{ color: '#34d399' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Doorstep Logistics Matching</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Students manage pickups and deliveries for extra cash.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
-          </section>
         </div>
       )}
 
