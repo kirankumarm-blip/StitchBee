@@ -212,42 +212,7 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
           </div>
         </div>
 
-        {/* 8. Designer Picks */}
-        <div className="designer-picks-section" style={{ margin: '4rem 0', background: 'var(--grad-glow)', padding: '30px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', marginBottom: '20px', textAlign: 'center', color: '#fff' }}>
-            Recommended by Top Designers
-          </h3>
-          <div className="designer-picks-flex" style={{ display: 'flex', gap: '30px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <div style={{ flex: '1 1 280px', textAlign: 'left' }}>
-              <p style={{ fontStyle: 'italic', fontSize: '1.05rem', color: 'var(--text-primary)', lineHeight: '1.6' }}>
-                "We always advise our customers to pick high-grade Egyptian cotton for shirts and Super 150s wool for suits. The fall, finish, and structural retention of StitchBee marketplace fabrics match top global luxury brands."
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '15px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'var(--primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                  V
-                </div>
-                <div>
-                  <h4 style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#fff' }}>Vikram Singh</h4>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Senior Bespoke Designer, StitchBee Expert</span>
-                </div>
-              </div>
-            </div>
-            <div style={{ flex: '1 1 280px', textAlign: 'left' }}>
-              <p style={{ fontStyle: 'italic', fontSize: '1.05rem', color: 'var(--text-primary)', lineHeight: '1.6' }}>
-                "Linen has a tendency to lose stitch integrity if poorly woven. Sourcing verified Belgian Linen from this marketplace ensures tailors get perfect tension during seam stitching, which prevents bunching."
-              </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '15px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'var(--secondary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                  S
-                </div>
-                <div>
-                  <h4 style={{ fontWeight: 'bold', fontSize: '0.9rem', color: '#fff' }}>Sneha Reddy</h4>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Bridal & Ethnic Couture Expert</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
 
 
 
