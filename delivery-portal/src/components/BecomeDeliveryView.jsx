@@ -187,7 +187,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
               borderRadius: '24px',
               overflow: 'hidden',
               boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
-              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(247,37,133,0.1)'}`
+              border: '1px solid rgba(247, 37, 133, 0.12)'
             }}>
               <img 
                 src="./delivery_hero.jpg" 
