@@ -322,7 +322,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
       </section>
 
       {/* 3. Why Choose StitchBee (More Benefits. More Freedom.) */}
-      <section className="become-delivery-why-join-section" style={{ padding: '7rem 3.5rem', position: 'relative', overflow: 'hidden' }}>
+      <section id="delivery-benefits" className="become-delivery-why-join-section" style={{ padding: '7rem 3.5rem', position: 'relative', overflow: 'hidden' }}>
         
         {/* Decorative background glows */}
         <div className="why-join-glow-pink" />
@@ -532,7 +532,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
       </section>
 
       {/* 3. Earnings Potential */}
-      <section className="earnings-calc-section-v3" style={{ 
+      <section id="delivery-earnings" className="earnings-calc-section-v3" style={{ 
         padding: '7rem 1.5rem', 
         background: 'rgba(255,255,255,0.01)',
         borderBottom: '1px solid var(--border-color)',
@@ -789,7 +789,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
       </section>
 
       {/* 4. How It Works */}
-      <section className="become-delivery-works-section" style={{ padding: '5rem 0', borderBottom: '1px solid var(--border-color)' }}>
+      <section id="delivery-how-it-works" className="become-delivery-works-section" style={{ padding: '5rem 0', borderBottom: '1px solid var(--border-color)' }}>
         <div className="delivery-container" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
           
           {/* Left Column: Timeline Steps */}
@@ -1190,7 +1190,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
 
 
       {/* 10. FAQ Section */}
-      <section style={{ padding: '5rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+      <section id="delivery-faqs" style={{ padding: '5rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '750px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>Frequently Asked Questions</h2>

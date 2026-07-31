@@ -576,8 +576,10 @@ export default function App() {
     setRole(tab); // tab is 'login' or 'signup'
   };
 
-  const navigateToSection = (sectionId) => {
-    setRole('become-delivery');
+  const navigateToSection = (sectionId, targetRole) => {
+    if (targetRole) {
+      setRole(targetRole);
+    }
     setTimeout(() => {
       const element = document.getElementById(sectionId);
       if (element) {
@@ -614,28 +616,61 @@ export default function App() {
           </div>
           
           <div className="role-switcher">
-  
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('how-it-works')}
-            >
-              How It Works
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('pricing-section')}
-            >
-              Pricing
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('contact-footer')}
-            >
-              Contact
-            </button>
+            {role === 'become-delivery' ? (
+              <>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('delivery-how-it-works')}
+                >
+                  How It Works
+                </button>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('delivery-earnings')}
+                >
+                  Earnings
+                </button>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('delivery-benefits')}
+                >
+                  Benefits
+                </button>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('delivery-faqs')}
+                >
+                  FAQs
+                </button>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('contact-footer')}
+                >
+                  Contact
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('how-it-works', 'landing')}
+                >
+                  How It Works
+                </button>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('pricing-section', 'landing')}
+                >
+                  Pricing
+                </button>
+                <button 
+                  className="role-btn"
+                  onClick={() => navigateToSection('contact-footer', 'landing')}
+                >
+                  Contact
+                </button>
+              </>
+            )}
           </div>
   
           {/* User Profile / Auth Area */}
