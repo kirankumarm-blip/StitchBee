@@ -327,7 +327,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-full);
   border: 2px solid transparent;
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 14px !important;
   font-weight: 600;
   color: var(--text-secondary);
   background: transparent;
