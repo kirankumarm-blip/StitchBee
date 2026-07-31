@@ -2257,7 +2257,7 @@ export default function App() {
           <div className="landing-container">
             <div className="footer-content">
               <div className="footer-brand">
-                <span className="footer-brand-title">StitchBee</span>
+                <img src="/logo.png" alt="StitchBee" style={{ height: '60px', objectFit: 'contain', display: 'block', marginBottom: '1.2rem', marginLeft: '-12px' }} />
               <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 The custom tailoring platform your entire wardrobe has been waiting for.
               </p>

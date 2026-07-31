@@ -290,13 +290,20 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2.5rem;
+}
+
+.app-container:has(.top-nav) {
+  padding-top: var(--header-height);
 }
 
 .logo {
