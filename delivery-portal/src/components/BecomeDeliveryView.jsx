@@ -179,73 +179,21 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             </div>
           </div>
 
-          {/* Right Column: Carousel */}
-          <div className="become-tailor-hero-carousel-col">
-            <div className="hero-carousel-container">
-              <div className="hero-carousel-track">
-                {carouselImages.map((image, idx) => {
-                  let offset = idx - currentSlide;
-                  if (offset < -2) offset += carouselImages.length;
-                  if (offset > 2) offset -= carouselImages.length;
-
-                  const isActive = offset === 0;
-                  const isLeft = offset === -1;
-                  const isRight = offset === 1;
-
-                  let slideClass = "hero-carousel-slide";
-                  if (offset === 0) slideClass += " active";
-                  else if (offset === -1) slideClass += " prev";
-                  else if (offset === 1) slideClass += " next";
-                  else if (offset === -2) slideClass += " hidden-left";
-                  else if (offset === 2) slideClass += " hidden-right";
-
-                  return (
-                    <div
-                      key={idx}
-                      className={slideClass}
-                      onClick={() => {
-                        if (isLeft) handlePrev();
-                        else if (isRight) handleNext();
-                      }}
-                    >
-                      <img
-                        src={image.url}
-                        alt={image.alt}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          display: 'block'
-                        }}
-                      />
-                      {isActive && (
-                        <div style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
-                          padding: '24px 20px 20px 20px',
-                          textAlign: 'left',
-                          zIndex: 4
-                        }}>
-                          <h4 style={{ color: '#fff', fontSize: '0.95rem', margin: 0, fontWeight: '700', letterSpacing: '-0.3px', lineHeight: '1.3' }}>
-                            {image.alt}
-                          </h4>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Carousel Arrows */}
-              <button className="hero-carousel-btn prev-btn" onClick={handlePrev} aria-label="Previous slide">
-                <ChevronLeft size={20} />
-              </button>
-              <button className="hero-carousel-btn next-btn" onClick={handleNext} aria-label="Next slide">
-                <ChevronRight size={20} />
-              </button>
+          {/* Right Column: Premium Hero Illustration */}
+          <div style={{ flex: '1 1 500px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', zIndex: 10 }}>
+            <div style={{
+              width: '100%',
+              maxWidth: '540px',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(247,37,133,0.1)'}`
+            }}>
+              <img 
+                src="./delivery_hero.jpg" 
+                alt="StitchBee Delivery Partner" 
+                style={{ width: '100%', height: 'auto', display: 'block' }} 
+              />
             </div>
           </div>
 
