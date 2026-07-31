@@ -3,12 +3,77 @@ import {
   Truck, ArrowRight, Check, Star, HelpCircle, ChevronDown, 
   Clock, DollarSign, TrendingUp, Zap, Wallet, MapPin, 
   Smartphone, Award, UserCheck, ShieldCheck, CheckCircle,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Users, Gift, Shield, ThumbsUp, Calendar, Calculator
 } from 'lucide-react';
 
+const allTestimonials = [
+  {
+    author: "Vikram R.",
+    role: "College Student & Part-Time Rider",
+    quote: "I earn ₹900–₹1200 every day after college. StitchBee gives me the freedom I always wanted.",
+    earnings: "₹22,000/month",
+    hours: "4 hrs/day",
+    location: "Bangalore",
+    joined: "Joined 4 months ago",
+    avatar: "/alt_al1.jpg"
+  },
+  {
+    author: "Sanjay M.",
+    role: "Freelance Gig Executive",
+    quote: "After joining StitchBee, I now earn ₹32,000 every month while studying.",
+    earnings: "₹32,000+ Monthly Earnings",
+    hours: "5–6 hrs/day Flexible Hours",
+    location: "Mumbai Location",
+    joined: "Joined 9 months ago",
+    avatar: "/alt_al2.jpg"
+  },
+  {
+    author: "Ramesh K.",
+    role: "Full-Time Logistics Partner",
+    quote: "StitchBee deliveries are much easier than food delivery. Packages are light and tailors treat us like partners.",
+    earnings: "₹38,500/month",
+    hours: "8 hrs/day",
+    location: "Hyderabad",
+    joined: "Joined 1 year ago",
+    avatar: "/alt_al3.jpg"
+  },
+  {
+    author: "Anil P.",
+    role: "Delivery Specialist",
+    quote: "StitchBee's customer tips are amazing. Deliveries are lightweight, so I can complete more runs daily.",
+    earnings: "₹28,000/month",
+    hours: "5 hrs/day",
+    location: "Delhi",
+    joined: "Joined 6 months ago",
+    avatar: "/alt_al4.jpg"
+  },
+  {
+    author: "Kiran G.",
+    role: "Weekend Courier Partner",
+    quote: "I ride only on weekends. Earning ₹8,000 extra every month helps me pay my bike loan easily.",
+    earnings: "₹12,500/month",
+    hours: "6 hrs/day",
+    location: "Pune",
+    joined: "Joined 8 months ago",
+    avatar: "/alt_al5.jpg"
+  },
+  {
+    author: "Deepak S.",
+    role: "Full-Time Fleet Partner",
+    quote: "The dedicated partner support solves any delivery issue instantly. Highly professional platform.",
+    earnings: "₹41,000/month",
+    hours: "8 hrs/day",
+    location: "Chennai",
+    joined: "Joined 1.5 years ago",
+    avatar: "/alt_al6.jpg"
+  }
+];
+
 export default function BecomeDeliveryView({ onJoinClick }) {
-  // Earnings calculator state
+  // Earnings calculator states
   const [calcDeliveries, setCalcDeliveries] = useState(15);
+  const [calcHours, setCalcHours] = useState(6);
+  const [calcDays, setCalcDays] = useState(26);
   
   // FAQ accordion state
   const [activeFaq, setActiveFaq] = useState(null);
@@ -22,6 +87,8 @@ export default function BecomeDeliveryView({ onJoinClick }) {
     }, 45);
     return () => clearInterval(interval);
   }, []);
+
+
 
   // Hero Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -128,25 +195,16 @@ export default function BecomeDeliveryView({ onJoinClick }) {
     }
   ];
 
-  // Calculate earnings estimate based on slider
-  const getEstimatedEarnings = (dailyCount) => {
-    // Approx earning per delivery: ₹60 - ₹90 (includes basic fee + peak incentives)
-    const minPerDel = 60;
-    const maxPerDel = 90;
-    const daysInMonth = 26;
-    
-    // Add monthly loyalty bonus if delivery volume is high
-    let bonus = 0;
-    if (dailyCount >= 25) bonus = 3000;
-    else if (dailyCount >= 15) bonus = 1500;
-
-    return {
-      min: (dailyCount * minPerDel * daysInMonth + bonus).toLocaleString('en-IN'),
-      max: (dailyCount * maxPerDel * daysInMonth + bonus).toLocaleString('en-IN')
-    };
+  // Calculate earnings estimate based on sliders
+  const getEstimatedEarnings = (deliveries, hours, days) => {
+    // Formula: (Deliveries * 80 + Hours * 15 + 37) * Days
+    const val = (deliveries * 80 + hours * 15 + 37) * days;
+    // Round to nearest 50
+    const rounded = Math.round(val / 50) * 50;
+    return rounded.toLocaleString('en-IN');
   };
 
-  const estimated = getEstimatedEarnings(calcDeliveries);
+  const estimated = getEstimatedEarnings(calcDeliveries, calcHours, calcDays);
 
   const toggleFaq = (idx) => {
     setActiveFaq(activeFaq === idx ? null : idx);
@@ -156,8 +214,19 @@ export default function BecomeDeliveryView({ onJoinClick }) {
     <div style={{ color: 'var(--text-color)', fontFamily: 'inherit' }}>
       
       {/* 1. Hero Section */}
-      <section className="become-delivery-hero-section">
-        <div className="delivery-container">
+      <section className="become-delivery-hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
+        
+        {/* Loop Video Background of Delivery Partner */}
+        <video
+          src="/DeliveryPartner.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hero-partner-video"
+        />
+
+        <div className="delivery-container" style={{ position: 'relative', zIndex: 2 }}>
           
           {/* Left Column: Content */}
           <div className="become-delivery-hero-content">
@@ -189,574 +258,533 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             </div>
           </div>
 
-          {/* Right Column: Interactive 3D Scene */}
-          <div 
-            style={{ 
-              flex: '1 1 500px', 
-              height: '450px', 
-              position: 'relative', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              perspective: '1000px',
-              background: 'transparent',
-              zIndex: 10
-            }}
-          >
-            {/* Embedded Custom Keyframe Animations */}
-            <style>{`
-              @keyframes drift-cloud-slow {
-                0% { transform: translateX(-110%); }
-                100% { transform: translateX(110%); }
-              }
-              @keyframes float-scooter {
-                0% { transform: translateY(0) rotate(0deg); }
-                25% { transform: translateY(-3px) rotate(1deg); }
-                50% { transform: translateY(-7px) rotate(0deg); }
-                75% { transform: translateY(-3px) rotate(-1deg); }
-                100% { transform: translateY(0) rotate(0deg); }
-              }
-              @keyframes drive-scooter-x {
-                0% { left: 16%; }
-                50% { left: 24%; }
-                100% { left: 16%; }
-              }
-              @keyframes rotate-wheel {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }
-              @keyframes pulse-shadow {
-                0% { transform: scale(1); opacity: 0.25; }
-                50% { transform: scale(0.85); opacity: 0.15; }
-                100% { transform: scale(1); opacity: 0.25; }
-              }
-              @keyframes scroll-road-dashes {
-                0% { stroke-dashoffset: 0; }
-                100% { stroke-dashoffset: -32; }
-              }
-              @keyframes float-card-1 {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-8px); }
-              }
-              @keyframes float-card-2 {
-                0%, 100% { transform: translateY(-4px); }
-                50% { transform: translateY(4px); }
-              }
-              @keyframes float-card-3 {
-                0%, 100% { transform: translateY(6px); }
-                50% { transform: translateY(-6px); }
-              }
-              @keyframes rotate-phone-3d {
-                0%, 100% { transform: rotateY(-10deg) rotateX(8deg) rotateZ(-2deg); }
-                50% { transform: rotateY(10deg) rotateX(12deg) rotateZ(2deg); }
-              }
-              @keyframes screen-shine {
-                0% { left: -100%; }
-                100% { left: 200%; }
-              }
-              @keyframes pulse-ripple {
-                0% { transform: scale(0.5); opacity: 0.8; }
-                100% { transform: scale(2); opacity: 0; }
-              }
-              @keyframes bounce-pin {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-8px); }
-              }
-              @keyframes float-particle {
-                0% { transform: translateY(100%) scale(0.5); opacity: 0; }
-                50% { opacity: 0.6; }
-                100% { transform: translateY(-100%) scale(1.2); opacity: 0; }
-              }
-              @keyframes float-bird {
-                0% { transform: translate(-20px, 0) scaleX(1); }
-                50% { transform: translate(60px, -15px) scaleX(1); }
-                51% { transform: translate(60px, -15px) scaleX(-1); }
-                100% { transform: translate(-20px, 0) scaleX(-1); }
-              }
-            `}</style>
-
-            {/* 1. Clouds Background */}
-            <div style={{
-              position: 'absolute',
-              top: '25px',
-              left: '5%',
-              width: '65px',
-              height: '20px',
-              background: 'rgba(255,255,255,0.4)',
-              borderRadius: '20px',
-              filter: 'blur(2px)',
-              animation: 'drift-cloud-slow 28s linear infinite',
-              zIndex: 1
-            }} />
-            <div style={{
-              position: 'absolute',
-              top: '65px',
-              left: '30%',
-              width: '90px',
-              height: '26px',
-              background: 'rgba(255,255,255,0.3)',
-              borderRadius: '30px',
-              filter: 'blur(3px)',
-              animation: 'drift-cloud-slow 40s linear infinite',
-              animationDelay: '-15s',
-              zIndex: 1
-            }} />
-
-            {/* 2. Flying Birds Parallax */}
-            <div style={{
-              position: 'absolute',
-              top: '40px',
-              left: '20%',
-              zIndex: 1,
-              animation: 'float-bird 18s ease-in-out infinite'
-            }}>
-              <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
-                <path d="M 0,6 Q 4,0 9,6 Q 14,0 18,6" stroke="rgba(0,0,0,0.15)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-              </svg>
-            </div>
-
-            {/* 3. Floating Light Particles */}
-            {[...Array(6)].map((_, i) => (
-              <div 
-                key={i}
-                style={{
-                  position: 'absolute',
-                  bottom: '20px',
-                  left: `${12 + i * 14}%`,
-                  width: `${4 + (i % 3) * 2}px`,
-                  height: `${4 + (i % 3) * 2}px`,
-                  borderRadius: '50%',
-                  background: i % 2 === 0 ? 'var(--primary)' : 'var(--accent)',
-                  filter: 'blur(1px)',
-                  opacity: 0,
-                  animation: `float-particle ${5 + (i % 3) * 2.5}s linear infinite`,
-                  animationDelay: `${i * 0.9}s`,
-                  zIndex: 1
-                }}
-              />
-            ))}
-
-            {/* 4. Glowing Curved Road */}
-            <svg width="500" height="220" viewBox="0 0 500 220" fill="none" style={{ position: 'absolute', bottom: '0px', left: '0', width: '100%', zIndex: 2 }}>
-              <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(0,0,0,0.08)" strokeWidth="54" strokeLinecap="round" fill="none" />
-              <path d="M-20,170 Q130,90 280,140 T520,80" stroke="url(#road-grad-become)" strokeWidth="48" strokeLinecap="round" fill="none" opacity="0.95" />
-              <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(247,37,133,0.3)" strokeWidth="50" strokeLinecap="round" fill="none" />
-              <path 
-                d="M-20,170 Q130,90 280,140 T520,80" 
-                stroke="#ffffff" 
-                strokeWidth="2" 
-                strokeDasharray="14 16" 
-                strokeLinecap="round" 
-                fill="none" 
-                style={{ animation: 'scroll-road-dashes 0.4s linear infinite' }} 
-              />
-              <defs>
-                <linearGradient id="road-grad-become" x1="0" y1="170" x2="500" y2="80" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#f72585" />
-                  <stop offset="100%" stopColor="#7209b7" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            {/* 5. 3D Rotating Navigation Phone */}
-            <div 
-              className="phone-container-3d" 
-              style={{ 
-                position: 'absolute', 
-                right: '50px', 
-                top: '25px', 
-                width: '160px', 
-                height: '300px', 
-                zIndex: 3,
-                transformStyle: 'preserve-3d',
-                animation: 'rotate-phone-3d 9s ease-in-out infinite'
-              }}
-            >
-              <div style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '28px',
-                background: '#13111c',
-                border: '3px solid #f72585',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.35), 0 0 25px rgba(247,37,133,0.25)',
-                padding: '6px',
-                position: 'relative',
-                overflow: 'hidden'
-              }}>
-                <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '60px', height: '14px', background: '#000', borderBottomLeftRadius: '9px', borderBottomRightRadius: '9px', zIndex: 10 }} />
-                
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: '-100%',
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
-                  animation: 'screen-shine 5s linear infinite',
-                  pointerEvents: 'none',
-                  zIndex: 5
-                }} />
-
-                <div style={{ width: '100%', height: '100%', borderRadius: '22px', background: '#08060d', position: 'relative', overflow: 'hidden' }}>
-                  <svg width="100%" height="100%" style={{ opacity: 0.12 }}>
-                    <pattern id="grid-pattern-become" width="16" height="16" patternUnits="userSpaceOnUse">
-                      <rect width="16" height="16" fill="none" />
-                      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#fff" strokeWidth="0.5" />
-                    </pattern>
-                    <rect width="100%" height="100%" fill="url(#grid-pattern-become)" />
-                  </svg>
-
-                  <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
-                    <path d="M 25,240 Q 60,180 40,120 T 110,40" fill="none" stroke="rgba(247,37,133,0.2)" strokeWidth="4" strokeLinecap="round" />
-                    <path 
-                      d="M 25,240 Q 60,180 40,120 T 110,40" 
-                      fill="none" 
-                      stroke="var(--accent)" 
-                      strokeWidth="2.5" 
-                      strokeDasharray="6 10" 
-                      strokeLinecap="round" 
-                      style={{ animation: 'scroll-road-dashes 1.8s linear infinite' }} 
-                    />
-                  </svg>
-
-                  <div style={{ position: 'absolute', left: '20px', top: '235px', transform: 'translate(-50%, -100%)' }}>
-                    <MapPin size={14} color="var(--primary)" fill="rgba(247,37,133,0.2)" />
-                  </div>
-                  <div style={{ position: 'absolute', left: '108px', top: '35px', transform: 'translate(-50%, -100%)' }}>
-                    <div style={{ animation: 'bounce-pin 2s ease-in-out infinite' }}>
-                      <MapPin size={16} color="var(--accent)" fill="rgba(76,201,240,0.2)" />
-                    </div>
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '10px',
-                      height: '3px',
-                      borderRadius: '50%',
-                      border: '1px solid var(--accent)',
-                      animation: 'pulse-ripple 1.4s ease-out infinite'
-                    }} />
-                  </div>
-
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '8px',
-                    left: '8px',
-                    right: '8px',
-                    background: 'rgba(19, 17, 28, 0.9)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    borderRadius: '10px',
-                    padding: '6px 8px',
-                    textAlign: 'left'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
-                      <span style={{ fontSize: '0.58rem', color: '#10b981', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                        <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} /> Online
-                      </span>
-                      <span style={{ fontSize: '0.54rem', color: '#8b5cf6' }}>Route live</span>
-                    </div>
-                    <div style={{ fontSize: '0.65rem', color: '#fff', fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>StitchBee Studio → Drop</div>
-                    <div style={{ fontSize: '0.54rem', color: 'var(--text-secondary)' }}>Delivery time: 12 mins</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 6. Scooter Rider Component (Absolute animated positioning) */}
-            <div 
-              style={{ 
-                position: 'absolute', 
-                bottom: '15px', 
-                left: '20px',
-                width: '270px', 
-                height: '270px', 
-                zIndex: 4,
-                animation: 'drive-scooter-x 6s ease-in-out infinite'
-              }}
-            >
-              <div style={{ width: '100%', height: '100%', position: 'relative', animation: 'float-scooter 2.5s ease-in-out infinite' }}>
-                
-                {/* Interactive Scooter Shadow */}
-                <div 
-                  style={{
-                    position: 'absolute',
-                    bottom: '15px',
-                    left: '45px',
-                    width: '180px',
-                    height: '14px',
-                    borderRadius: '50%',
-                    background: '#000',
-                    filter: 'blur(5px)',
-                    zIndex: 1,
-                    animation: 'pulse-shadow 2.5s ease-in-out infinite'
-                  }}
-                />
-
-                {/* 3D Scooter Cutout Image */}
-                <img 
-                  src="./delivery_rider_cutout.jpg" 
-                  alt="StitchBee Delivery Partner" 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'contain',
-                    position: 'relative', 
-                    zIndex: 2,
-                    mixBlendMode: 'multiply'
-                  }} 
-                />
-              </div>
-            </div>
-
-            {/* 7. Floating Glassmorphism Info Cards */}
-            <div 
-              style={{
-                position: 'absolute',
-                top: '70px',
-                left: '20px',
-                background: 'rgba(255, 255, 255, 0.75)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(247, 37, 133, 0.15)',
-                borderRadius: '16px',
-                padding: '10px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
-                animation: 'float-card-1 4.5s ease-in-out infinite',
-                zIndex: 5
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' }}>
-                <Star size={14} fill="#fbbf24" />
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>RIDER STATUS</span>
-                <strong style={{ fontSize: '0.88rem', fontWeight: '800', color: '#0f172a' }}>⭐ 4.9 Rating</strong>
-              </div>
-            </div>
-
-            <div 
-              style={{
-                position: 'absolute',
-                bottom: '95px',
-                left: '40px',
-                background: 'rgba(255, 255, 255, 0.75)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(247, 37, 133, 0.15)',
-                borderRadius: '16px',
-                padding: '10px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
-                animation: 'float-card-2 5.5s ease-in-out infinite',
-                zIndex: 5
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
-                <Check size={14} strokeWidth={3} />
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>TODAY'S PAYOUT</span>
-                <strong style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', fontFamily: 'monospace' }}>
-                  ₹{earningsCount.toLocaleString('en-IN')}
-                </strong>
-              </div>
-            </div>
-
-            <div 
-              style={{
-                position: 'absolute',
-                top: '190px',
-                left: '80px',
-                background: 'rgba(255, 255, 255, 0.75)',
-                backdropFilter: 'blur(12px)',
-                border: '1px solid rgba(247, 37, 133, 0.15)',
-                borderRadius: '16px',
-                padding: '10px 14px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
-                animation: 'float-card-3 5.0s ease-in-out infinite',
-                zIndex: 5
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)' }}>
-                <Truck size={14} />
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>COMPLETED</span>
-                <strong style={{ fontSize: '0.82rem', fontWeight: '800', color: '#0f172a' }}>15 Deliveries Today</strong>
-              </div>
-            </div>
-
-          </div>
+          {/* Right Column: Layout Spacer */}
+          <div className="hero-interactive-column" />
 
         </div>
       </section>
 
-      {/* 2. Why Join StitchBee? */}
-      <section className="become-delivery-why-join-section">
-        <div className="delivery-container">
-          
-          <div className="why-join-split-container">
-            
-            {/* Left Column: Benefits Content */}
-            <div className="why-join-content-col">
-              <div style={{ textAlign: 'left', marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>Why Delivery Partners Choose StitchBee</h2>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '8px', marginBottom: 0 }}>The absolute best way to monetize your rides with zero mess</p>
+      {/* 2. Stats Ribbon Banner */}
+      <section className="delivery-stats-ribbon-section" style={{ padding: '0 1.5rem', marginTop: '-35px', position: 'relative', zIndex: 30 }}>
+        <div className="delivery-stats-ribbon-container">
+          <div className="delivery-stats-ribbon-row">
+            {/* Stat 1 */}
+            <div className="delivery-stat-item">
+              <div className="delivery-stat-icon-wrapper" style={{ background: 'rgba(247,37,133,0.12)', color: 'var(--primary)' }}>
+                <Users size={22} />
               </div>
-
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
-                gap: '20px' 
-              }}>
-                {[
-                  { title: "Flexible Hours", desc: "Work whenever you want. Log in and log out on your own terms.", icon: <Clock size={18} /> },
-                  { title: "Good Earnings", desc: "Earn competitive rates per delivery plus milestone weekly bonuses.", icon: <DollarSign size={18} /> },
-                  { title: "More Orders", desc: "Consistent courier orders directly from active boutique tailors in your local area.", icon: <TrendingUp size={18} /> },
-                  { title: "Fuel Incentives", desc: "Extra distance payouts and support during peak rainfall or festival seasons.", icon: <Zap size={18} /> },
-                  { title: "Weekly Payments", desc: "Your earnings are processed securely and sent directly to your bank account.", icon: <Wallet size={18} /> },
-                  { title: "Easy App Tracking", desc: "Manage pickups and navigate destinations smoothly with the StitchBee App.", icon: <MapPin size={18} /> }
-                ].map((benefit, idx) => (
-                  <div key={idx} className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', gap: '12px', flexDirection: 'column' }}>
-                    <div style={{ 
-                      background: 'rgba(247,37,133,0.1)', 
-                      color: 'var(--primary)', 
-                      width: '36px', 
-                      height: '36px', 
-                      borderRadius: '8px', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center' 
-                    }}>
-                      {benefit.icon}
-                    </div>
-                    <div>
-                      <h4 style={{ color: 'var(--text-primary)', fontSize: '1rem', margin: '0 0 6px 0', fontWeight: '600' }}>{benefit.title}</h4>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: 0, lineHeight: '1.4' }}>{benefit.desc}</p>
-                    </div>
-                  </div>
-                ))}
+              <div style={{ textAlign: 'left' }}>
+                <div className="delivery-stat-number">10K+</div>
+                <div className="delivery-stat-label">Active Delivery Partners</div>
               </div>
             </div>
 
-            {/* Right Column: Visual Showcase */}
-            <div className="why-join-delivery-visual-col">
-              <div className="delivery-premium-card-wrapper">
-                <img 
-                  src="./delivery_premium.png" 
-                  alt="Premium clothing garment package being handled with care" 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
-                  padding: '20px',
-                  textAlign: 'left'
-                }}>
-                  <span className="badge badge-primary" style={{ marginBottom: '8px', fontSize: '0.65rem', color: 'var(--primary)' }}>Fashion Courier Class</span>
-                  <h4 style={{ color: '#fff', fontSize: '1.1rem', margin: 0, fontWeight: '700' }}>Premium Fabric Handling</h4>
-                  <p style={{ color: '#e2e8f0', fontSize: '0.75rem', margin: '4px 0 0 0', opacity: 0.9 }}>Every delivery contains protected, high-value custom wear.</p>
+            <div className="delivery-stat-divider" />
+
+            {/* Stat 2 */}
+            <div className="delivery-stat-item">
+              <div className="delivery-stat-icon-wrapper" style={{ background: 'rgba(76,201,240,0.12)', color: 'var(--accent)' }}>
+                <Wallet size={22} />
+              </div>
+              <div style={{ textAlign: 'left' }}>
+                <div className="delivery-stat-number">₹25K+</div>
+                <div className="delivery-stat-label">Average Monthly Earnings</div>
+              </div>
+            </div>
+
+            <div className="delivery-stat-divider" />
+
+            {/* Stat 3 */}
+            <div className="delivery-stat-item">
+              <div className="delivery-stat-icon-wrapper" style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981' }}>
+                <Award size={22} />
+              </div>
+              <div style={{ textAlign: 'left' }}>
+                <div className="delivery-stat-number">95%</div>
+                <div className="delivery-stat-label">Partner Satisfaction</div>
+              </div>
+            </div>
+
+            <div className="delivery-stat-divider" />
+
+            {/* Stat 4 */}
+            <div className="delivery-stat-item">
+              <div className="delivery-stat-icon-wrapper" style={{ background: 'rgba(251,191,36,0.12)', color: '#fbbf24' }}>
+                <Clock size={22} />
+              </div>
+              <div style={{ textAlign: 'left' }}>
+                <div className="delivery-stat-number">Flexible</div>
+                <div className="delivery-stat-label">Work on Your Time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Why Choose StitchBee (More Benefits. More Freedom.) */}
+      <section className="become-delivery-why-join-section" style={{ padding: '7rem 3.5rem', position: 'relative', overflow: 'hidden' }}>
+        
+        {/* Decorative background glows */}
+        <div className="why-join-glow-pink" />
+        <div className="why-join-glow-purple" />
+
+        <div style={{ maxWidth: '1320px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+          
+          <div className="delivery-benefits-main-split-container">
+            
+            {/* Left Side: Headline & 3x2 Grid of 6 Premium Cards */}
+            <div className="delivery-benefits-left-col">
+              <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
+                <span className="premium-section-badge">
+                  WHY CHOOSE STITCHBEE?
+                </span>
+                <h2 className="become-delivery-why-join-title">
+                  More Benefits. More Freedom.
+                </h2>
+                <p className="premium-supporting-text">
+                  Everything you need to earn more, work flexibly, and grow with India's fastest tailoring delivery platform.
+                </p>
+              </div>
+
+              {/* 3x2 Grid of 6 cards */}
+              <div className="delivery-benefits-3x2-grid">
+                
+                {/* Card 1 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-pink">
+                    <Clock size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Work on Your Terms</h4>
+                  <p className="premium-card-desc">Choose your own working hours and deliver at your convenience.</p>
+                </div>
+
+                {/* Card 2 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-purple">
+                    <DollarSign size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Higher Earnings</h4>
+                  <p className="premium-card-desc">Earn competitive rates per delivery plus milestone weekly bonuses.</p>
+                </div>
+
+                {/* Card 3 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-red">
+                    <Zap size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Weekly Instant Payouts</h4>
+                  <p className="premium-card-desc">Get paid every week with secure, instant, and on-time transfers.</p>
+                </div>
+
+                {/* Card 4 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-blue">
+                    <Shield size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Accident Insurance</h4>
+                  <p className="premium-card-desc">Comprehensive accidental insurance and medical coverage always with you.</p>
+                </div>
+
+                {/* Card 5 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-yellow">
+                    <UserCheck size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Dedicated Partner Support</h4>
+                  <p className="premium-card-desc">Get 24/7 dedicated support for any delivery issues or queries.</p>
+                </div>
+
+                {/* Card 6 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-pink2">
+                    <Users size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Growing Community</h4>
+                  <p className="premium-card-desc">Join a growing community that respects, supports, and values you.</p>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Right Side: Onboarding Panel with 3D Rotating Phone Mockup & Glassmorphism CTA card */}
+            <div className="delivery-signup-right-col">
+              
+              {/* Phone Mockup with 3D Rotation */}
+              <div className="delivery-phone-overlapping-frame-3d">
+                <div className="delivery-phone-glow-bg" />
+                <div className="delivery-phone-screen-small">
+                  <div className="delivery-phone-notch-small" />
+                  
+                  {/* Phone App Content */}
+                  <div className="delivery-app-content-small">
+                    <div className="delivery-app-header-small">
+                      <span>Hello, Partner 👋</span>
+                    </div>
+
+                    <div className="delivery-app-stats-grid-small">
+                      <div className="delivery-app-stat-box-small">
+                        <span className="delivery-app-stat-label-small">Deliveries</span>
+                        <strong className="delivery-app-stat-val-small">12</strong>
+                      </div>
+                      <div className="delivery-app-stat-box-small">
+                        <span className="delivery-app-stat-label-small">Earnings</span>
+                        <strong className="delivery-app-stat-val-small" style={{ color: '#10b981' }}>₹1,850</strong>
+                      </div>
+                    </div>
+
+                    <div className="delivery-app-list-title-small">Recent Deliveries</div>
+
+                    <div className="delivery-app-deliveries-list-small">
+                      <div className="delivery-app-list-item-small">
+                        <div style={{ textAlign: 'left' }}>
+                          <div className="order-title">Order #SB1234</div>
+                          <div className="order-status">Delivered</div>
+                        </div>
+                        <strong>₹160</strong>
+                      </div>
+
+                      <div className="delivery-app-list-item-small">
+                        <div style={{ textAlign: 'left' }}>
+                          <div className="order-title">Order #SB1235</div>
+                          <div className="order-status">Delivered</div>
+                        </div>
+                        <strong>₹220</strong>
+                      </div>
+
+                      <div className="delivery-app-list-item-small">
+                        <div style={{ textAlign: 'left' }}>
+                          <div className="order-title">Order #SB1236</div>
+                          <div className="order-status">Delivered</div>
+                        </div>
+                        <strong>₹150</strong>
+                      </div>
+                    </div>
+
+                    <div style={{ width: '50px', height: '2px', background: '#cbd5e1', borderRadius: '1px', margin: 'auto auto 2px auto' }} />
+                  </div>
+                </div>
+
+                {/* Floating Notifications */}
+                <div className="floating-noti notification-earnings">
+                  <div className="noti-icon-badge"><Zap size={10} /></div>
+                  <div className="noti-text-block">
+                    <span>Weekly Payout</span>
+                    <strong>₹12,400 Received!</strong>
+                  </div>
+                </div>
+
+                <div className="floating-noti notification-received">
+                  <div className="noti-icon-badge noti-green"><CheckCircle size={10} /></div>
+                  <div className="noti-text-block">
+                    <span>Order Delivered</span>
+                    <strong>Earned +₹220</strong>
+                  </div>
+                </div>
+
+                <div className="floating-noti notification-wallet">
+                  <div className="noti-icon-badge noti-blue"><Wallet size={10} /></div>
+                  <div className="noti-text-block">
+                    <span>Wallet Balance</span>
+                    <strong>₹4,850.00</strong>
+                  </div>
                 </div>
               </div>
+
+              {/* Glassmorphism CTA Signup Card */}
+              <div className="delivery-glass-signup-card">
+                <h3 className="delivery-signup-card-title-small">Your Journey Starts Here!</h3>
+                <p className="delivery-signup-card-desc-small">Sign up in less than 2 minutes and start earning with every delivery.</p>
+                
+                <button className="delivery-signup-card-btn-gradient" onClick={onJoinClick}>
+                  Join Now <ArrowRight size={14} style={{ marginLeft: '4px' }} />
+                </button>
+
+                <div className="delivery-signup-card-footer-small" style={{ textAlign: 'center', width: '100%', marginTop: '8px' }}>
+                  <span className="delivery-signup-card-trust-text-small" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    ❤️ Loved by <strong>10,000+</strong> partners
+                  </span>
+                </div>
+              </div>
+
             </div>
 
+          </div>
+
+          {/* Premium Full-Width Glass Bottom Banner */}
+          <div className="delivery-premium-glass-banner">
+            <div className="banner-left-glow" />
+            <div className="banner-content-wrapper">
+              <div className="banner-icon-title-block">
+                <div className="banner-gift-icon-box">
+                  <Gift size={20} />
+                </div>
+                <span className="banner-text">
+                  Complete your first 5 deliveries and unlock your <strong className="glow-accent-text">Welcome Bonus!</strong>
+                </span>
+              </div>
+              <button className="banner-gradient-btn" onClick={onJoinClick}>
+                Start Earning Today <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
 
         </div>
       </section>
 
       {/* 3. Earnings Potential */}
-      <section style={{ 
-        padding: '5rem 1.5rem', 
+      <section className="earnings-calc-section-v3" style={{ 
+        padding: '7rem 1.5rem', 
         background: 'rgba(255,255,255,0.01)',
-        borderBottom: '1px solid var(--border-color)'
+        borderBottom: '1px solid var(--border-color)',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>Your Time = Your Income</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Calculate your potential monthly income as a logistics partner</p>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <div className="calc-badge-top-centered">
+              <Calculator size={12} /> Calculate Your Potential
+            </div>
+            <h2 className="calc-heading-v3">
+              Your Time = <span className="highlight-pink-text">Your Income</span>
+            </h2>
+            <p className="calc-supporting-text-v3">
+              See how much you can earn as a StitchBee delivery partner
+            </p>
           </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-            gap: '32px',
-            alignItems: 'center'
-          }}>
-            {/* Interactive Calculator Slider */}
-            <div className="glass-card-no-hover" style={{ padding: '30px' }}>
-              <h4 style={{ color: 'var(--text-primary)', marginBottom: '20px' }}>Estimate Your Income</h4>
-              
-              <div style={{ marginBottom: '25px' }}>
-                <div className="flex-row-between" style={{ marginBottom: '10px' }}>
-                  <span style={{ color: 'var(--text-secondary)' }}>Deliveries Per Day</span>
-                  <strong style={{ color: 'var(--primary)', fontSize: '1.2rem' }}>{calcDeliveries} Deliveries</strong>
+          {/* Grid Layout */}
+          <div className="earnings-calc-grid-v3">
+            
+            {/* Left Card: Interactive Calculator */}
+            <div className="calc-card-v3">
+              <div className="calc-card-header-v3">
+                <div className="calc-header-icon-box">
+                  <Calculator size={20} />
+                </div>
+                <h3 className="calc-card-title-v3">Estimate Your Monthly Earnings</h3>
+              </div>
+
+              {/* Slider 1: Deliveries Per Day */}
+              <div className="calc-slider-block-v3">
+                <div className="slider-header-v3">
+                  <span className="slider-label-name">Deliveries Per Day</span>
+                  <span className="slider-value-display pink-text">{calcDeliveries} Deliveries</span>
                 </div>
                 <input 
                   type="range" 
                   min="5" 
-                  max="45" 
+                  max="30" 
                   value={calcDeliveries}
                   onChange={(e) => setCalcDeliveries(parseInt(e.target.value))}
-                  style={{ width: '100%', accentColor: 'var(--primary)' }}
+                  className="calc-range-slider"
                 />
+                <div className="slider-ticks-v3">
+                  <span>5</span>
+                  <span>10</span>
+                  <span>15</span>
+                  <span>20</span>
+                  <span>30+</span>
+                </div>
               </div>
 
-              <div style={{ background: 'var(--bg-darker)', padding: '20px', borderRadius: '8px', border: '1px solid var(--border-color)', textAlign: 'center' }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Estimated Monthly Earnings</span>
-                <strong style={{ fontSize: '2rem', color: 'var(--text-primary)', fontWeight: '800' }}>₹{estimated.min} – ₹{estimated.max}</strong>
+              {/* Slider 2: Hours Available Per Day */}
+              <div className="calc-slider-block-v3">
+                <div className="slider-header-v3">
+                  <span className="slider-label-name">Hours Available Per Day</span>
+                  <span className="slider-value-display pink-text">{calcHours} Hours</span>
+                </div>
+                <input 
+                  type="range" 
+                  min="2" 
+                  max="10" 
+                  value={calcHours}
+                  onChange={(e) => setCalcHours(parseInt(e.target.value))}
+                  className="calc-range-slider"
+                />
+                <div className="slider-ticks-v3">
+                  <span>2</span>
+                  <span>4</span>
+                  <span>6</span>
+                  <span>8</span>
+                  <span>10+</span>
+                </div>
+              </div>
+
+              {/* Slider 3: Days Working Per Month */}
+              <div className="calc-slider-block-v3">
+                <div className="slider-header-v3">
+                  <span className="slider-label-name">Days Working Per Month</span>
+                  <span className="slider-value-display pink-text">{calcDays} Days</span>
+                </div>
+                <input 
+                  type="range" 
+                  min="10" 
+                  max="30" 
+                  value={calcDays}
+                  onChange={(e) => setCalcDays(parseInt(e.target.value))}
+                  className="calc-range-slider"
+                />
+                <div className="slider-ticks-v3">
+                  <span>10</span>
+                  <span>15</span>
+                  <span>20</span>
+                  <span>26</span>
+                  <span>30</span>
+                </div>
+              </div>
+
+              {/* Output Gradient Box */}
+              <div className="calc-estimated-box-v3">
+                <div className="estimated-label-row">
+                  <span>Estimated Monthly Earnings</span>
+                  <div className="info-tooltip-v3" title="This calculation is based on average deliveries, flexible hour incentives, and base partner benefits.">ⓘ</div>
+                </div>
+                <div className="estimated-value-row">
+                  <span className="estimated-amount-v3">₹{estimated}</span>
+                  <span className="estimated-unit-v3">/ month</span>
+                </div>
+              </div>
+
+              {/* Bottom Metadata Badges */}
+              <div className="calc-meta-badges-row-v3">
+                <span className="meta-badge-item-v3">Weekly Payouts</span>
+                <span className="meta-badge-divider-v3">•</span>
+                <span className="meta-badge-item-v3">No Joining Fee</span>
+                <span className="meta-badge-divider-v3">•</span>
+                <span className="meta-badge-item-v3">Insurance Coverage</span>
               </div>
             </div>
 
-            {/* Income Benchmarks */}
-            <div>
-              <table style={{ width: '100%', borderCollapse: 'collapse', color: 'var(--text-secondary)' }}>
-                <thead>
-                  <tr style={{ borderBottom: '1px solid var(--border-color)', textAlign: 'left' }}>
-                    <th style={{ padding: '12px 8px', color: 'var(--text-primary)' }}>Deliveries Per Day</th>
-                    <th style={{ padding: '12px 8px', color: 'var(--text-primary)', textAlign: 'right' }}>Monthly Earnings</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                    <td style={{ padding: '12px 8px' }}>10 Deliveries</td>
-                    <td style={{ padding: '12px 8px', textAlign: 'right', color: 'var(--text-primary)', fontWeight: '500' }}>₹12,000 – ₹20,000</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                    <td style={{ padding: '12px 8px' }}>20 Deliveries</td>
-                    <td style={{ padding: '12px 8px', textAlign: 'right', color: 'var(--text-primary)', fontWeight: '500' }}>₹25,000 – ₹40,000</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                    <td style={{ padding: '12px 8px' }}>30+ Deliveries</td>
-                    <td style={{ padding: '12px 8px', textAlign: 'right', color: 'var(--primary)', fontWeight: '700' }}>₹50,000+</td>
-                  </tr>
-                </tbody>
-              </table>
+            {/* Right Card: How Your Earnings Grow */}
+            <div className="grow-card-v3">
+              <div className="grow-card-header-v3">
+                <div className="grow-header-icon-box">
+                  <TrendingUp size={20} />
+                </div>
+                <h3 className="grow-card-title-v3">How Your Earnings Grow</h3>
+              </div>
 
-              <blockquote style={{ 
-                borderLeft: '3px solid var(--primary)', 
-                margin: '2rem 0 0 0', 
-                paddingLeft: '1rem',
-                fontStyle: 'italic',
-                color: 'var(--text-secondary)',
-                fontSize: '0.95rem'
-              }}>
-                “More deliveries. More bonuses. More growth.”
-              </blockquote>
+              {/* Growth List Items */}
+              <div className="grow-list-v3">
+                <div className="grow-item-v3">
+                  <div className="grow-icon-box-v3 rupee-circle">
+                    <span className="rupee-char-v3">₹</span>
+                  </div>
+                  <div className="grow-item-content-v3">
+                    <h4 className="grow-item-title-v3">Base Delivery Earnings</h4>
+                    <p className="grow-item-desc-v3">Earn for every successful delivery</p>
+                  </div>
+                  <div className="grow-item-percentage-v3 text-pink">70-80% <span className="sub-perc">of earnings</span></div>
+                  <ChevronRight size={14} className="grow-arrow-icon" />
+                </div>
+
+                <div className="grow-item-v3">
+                  <div className="grow-icon-box-v3 gift-circle">
+                    <Gift size={16} />
+                  </div>
+                  <div className="grow-item-content-v3">
+                    <h4 className="grow-item-title-v3">Delivery Incentives</h4>
+                    <p className="grow-item-desc-v3">Extra rewards for completing more deliveries</p>
+                  </div>
+                  <div className="grow-item-percentage-v3 text-purple">10-15% <span className="sub-perc">of earnings</span></div>
+                  <ChevronRight size={14} className="grow-arrow-icon" />
+                </div>
+
+                <div className="grow-item-v3">
+                  <div className="grow-icon-box-v3 star-circle">
+                    <Star size={16} fill="#fff" color="#fff" />
+                  </div>
+                  <div className="grow-item-content-v3">
+                    <h4 className="grow-item-title-v3">Performance Bonus</h4>
+                    <p className="grow-item-desc-v3">High ratings & consistent performance unlock bonuses</p>
+                  </div>
+                  <div className="grow-item-percentage-v3 text-orange">5-10% <span className="sub-perc">of earnings</span></div>
+                  <ChevronRight size={14} className="grow-arrow-icon" />
+                </div>
+
+                <div className="grow-item-v3">
+                  <div className="grow-icon-box-v3 gas-circle">
+                    <Zap size={16} />
+                  </div>
+                  <div className="grow-item-content-v3">
+                    <h4 className="grow-item-title-v3">Peak Hour Bonus</h4>
+                    <p className="grow-item-desc-v3">Earn more during busy hours and peak days</p>
+                  </div>
+                  <div className="grow-item-percentage-v3 text-green">Extra <span className="sub-perc font-bold">earnings</span></div>
+                  <ChevronRight size={14} className="grow-arrow-icon" />
+                </div>
+              </div>
+
+              {/* Bottom Megaphone Promo Box */}
+              <div className="grow-promo-box-v3">
+                <div className="grow-promo-icon-circle-v3">
+                  <Zap size={18} fill="#f72585" color="#f72585" />
+                </div>
+                <div className="grow-promo-text-block-v3">
+                  <h4 className="grow-promo-title-v3">More Deliveries. More Incentives. More Growth.</h4>
+                  <p className="grow-promo-desc-v3">The more you deliver, the more you earn!</p>
+                </div>
+              </div>
             </div>
+
           </div>
+
+          {/* Bottom Full-Width Horizontal Ribbon */}
+          <div className="earnings-ribbon-v3">
+            <div className="ribbon-items-grid-v3">
+              <div className="ribbon-item-v3">
+                <div className="ribbon-icon-circle rupee-circle">
+                  <span className="rupee-char-v3">₹</span>
+                </div>
+                <div className="ribbon-item-text">
+                  <span className="ribbon-label">Average Earning Per Delivery</span>
+                  <span className="ribbon-value">₹70 – ₹90</span>
+                </div>
+              </div>
+
+              <div className="ribbon-item-v3">
+                <div className="ribbon-icon-circle wallet-circle">
+                  <Wallet size={16} />
+                </div>
+                <div className="ribbon-item-text">
+                  <span className="ribbon-label">Weekly Payouts</span>
+                  <span className="ribbon-value">Every Monday</span>
+                </div>
+              </div>
+
+              <div className="ribbon-item-v3">
+                <div className="ribbon-icon-circle shield-circle">
+                  <Shield size={16} />
+                </div>
+                <div className="ribbon-item-text">
+                  <span className="ribbon-label">Insurance Coverage</span>
+                  <span className="ribbon-value">You're always protected</span>
+                </div>
+              </div>
+
+              <div className="ribbon-item-v3">
+                <div className="ribbon-icon-circle green-circle">
+                  <span style={{ fontSize: '0.85rem', fontWeight: '800' }}>%</span>
+                </div>
+                <div className="ribbon-item-text">
+                  <span className="ribbon-label">No Commission</span>
+                  <span className="ribbon-value">Keep 100% of your earnings</span>
+                </div>
+              </div>
+            </div>
+
+            <button className="ribbon-cta-btn-v3" onClick={onJoinClick}>
+              Become a Delivery Partner <ArrowRight size={16} />
+            </button>
+          </div>
+
+          {/* Bottom Disclaimer */}
+          <p className="calc-disclaimer-text-v3">
+            ⓘ Earnings are estimates and may vary based on location, time, and performance.
+          </p>
+
         </div>
       </section>
 
@@ -968,199 +996,196 @@ export default function BecomeDeliveryView({ onJoinClick }) {
         </div>
       </section>
 
-      {/* 5. What Will You Deliver? */}
-      <section style={{ padding: '5rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>What Will You Deliver?</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Fashion garments that are clean, lightweight, and easy to carry</p>
+
+
+      {/* 7. Partner Success Stories */}
+      <section className="success-stories-main-section-v3" style={{ padding: '7rem 0', borderBottom: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden' }}>
+        
+        {/* Title block with centered header and illustrations */}
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', position: 'relative' }}>
+          
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem', position: 'relative' }}>
+            {/* Decorative Map Route Icon on Left */}
+            <div style={{ position: 'absolute', left: '2%', top: '-20px', opacity: 0.85 }} className="hide-on-mobile">
+              <svg viewBox="0 0 100 50" width="120" height="60" fill="none" stroke="#f72585" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="5 5">
+                <path d="M10,40 Q40,10 70,35 T110,15" />
+                <circle cx="10" cy="40" r="5" fill="#f72585" />
+                
+                {/* Custom pin shape */}
+                <path d="M70,35 L66,15 A3,3 0 0,1 74,15 L70,35 Z" fill="#f72585" />
+                <circle cx="70" cy="15" r="9" fill="#f72585" opacity="0.25" />
+                <circle cx="70" cy="15" r="4" fill="#f72585" />
+              </svg>
+            </div>
+            
+            {/* Scooter rider on Right */}
+            <div style={{ position: 'absolute', right: '2%', top: '-40px', opacity: 0.95 }} className="hide-on-mobile">
+              <img src="/rider_3d.jpg" alt="Scooter Rider" style={{ width: '135px', height: 'auto', borderRadius: '16px', boxShadow: '0 10px 25px rgba(247,37,133,0.1)' }} />
+            </div>
+
+            <div className="stories-badge-top-centered">
+              ❤️ Loved by 10,000+ Delivery Partners
+            </div>
+            
+            <h2 className="stories-heading-v3">
+              Hear From People Earning with <span style={{ color: '#f72585' }}>StitchBee</span>
+            </h2>
+            
+            <p className="stories-supporting-text-v3">
+              Thousands of delivery partners are earning flexible income while working on their own schedule.
+            </p>
           </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', 
-            gap: '16px' 
-          }}>
-            {[
-              "Shirts", "Pants", "Suits", "Blazers", "Kurtas", 
-              "Dresses", "Altered Clothes", "Custom Orders", "Bulk Uniform Orders"
-            ].map((item, idx) => (
-              <div key={idx} className="glass-card-no-hover" style={{ 
-                padding: '20px', 
-                textAlign: 'center', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                gap: '8px',
-                border: '1px solid rgba(255,255,255,0.05)'
-              }}>
-                <div style={{ 
-                  background: 'rgba(247,37,133,0.08)', 
-                  width: '36px', 
-                  height: '36px', 
-                  borderRadius: '50%', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  color: 'var(--primary)'
-                }}>
-                  <CheckCircle size={16} />
-                </div>
-                <h5 style={{ color: 'var(--text-primary)', margin: '4px 0 0 0', fontSize: '0.95rem', fontWeight: '600' }}>{item}</h5>
+          {/* Stats ribbon */}
+          <div className="success-stories-badges-ribbon">
+            <div className="success-stats-item">
+              <div className="success-stats-icon-box pink-bg">
+                <Users size={16} />
               </div>
-            ))}
+              <div className="success-stats-info">
+                <span className="stat-num">10K+</span>
+                <span className="stat-label">Active Partners</span>
+              </div>
+            </div>
+            
+            <div className="success-stats-divider" />
+
+            <div className="success-stats-item">
+              <div className="success-stats-icon-box purple-bg">
+                <Wallet size={16} />
+              </div>
+              <div className="success-stats-info">
+                <span className="stat-num">₹25K+</span>
+                <span className="stat-label">Avg. Monthly Earnings</span>
+              </div>
+            </div>
+
+            <div className="success-stats-divider" />
+
+            <div className="success-stats-item">
+              <div className="success-stats-icon-box orange-bg">
+                <Star size={16} fill="#fff" color="#fff" />
+              </div>
+              <div className="success-stats-info">
+                <span className="stat-num">4.9 ★</span>
+                <span className="stat-label">Average Rating</span>
+              </div>
+            </div>
+
+            <div className="success-stats-divider" />
+
+            <div className="success-stats-item">
+              <div className="success-stats-icon-box green-bg">
+                <ThumbsUp size={16} />
+              </div>
+              <div className="success-stats-info">
+                <span className="stat-num">98%</span>
+                <span className="stat-label">Partner Satisfaction</span>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* 6. Why It’s Different */}
-      <section style={{ 
-        padding: '5rem 1.5rem', 
-        borderBottom: '1px solid var(--border-color)',
-        background: 'radial-gradient(circle at center, rgba(247,37,133,0.05) 0%, rgba(0,0,0,0) 70%)'
-      }}>
-        <div style={{ maxWidth: '850px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>Not Food. Premium Fashion Deliveries.</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Say goodbye to smelly bags, heavy loads, and messy soup spills</p>
-          </div>
+        {/* 3 Columns Stories Grid */}
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', position: 'relative' }}>
+          <div className="delivery-stories-grid-v3">
+            {[allTestimonials[0], allTestimonials[1], allTestimonials[2]].map((test, index) => {
+              const isFeatured = index === 1;
+              return (
+                <div 
+                  key={test.author} 
+                  className={`partner-story-card-v3 ${isFeatured ? 'featured-story-card-v3' : ''}`}
+                >
+                  {isFeatured && (
+                    <div className="featured-story-badge">
+                      <Star size={10} fill="#fff" color="#fff" /> Featured Story
+                    </div>
+                  )}
 
-          <div className="glass-card-no-hover" style={{ padding: '36px', border: '1px solid var(--primary)' }}>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
-              gap: '24px' 
-            }}>
-              {[
-                { title: "Lightweight Packages", desc: "No massive containers. Mostly light garment boxes and clothing hangers." },
-                { title: "No Messy Deliveries", desc: "Zero food leakage, soup spillages, or bad food odours in your carrier bag." },
-                { title: "Higher-Value Orders", desc: "Deliver premium custom wear which means customers value your handling care." },
-                { title: "Premium Customer Base", desc: "Connect with high-end boutique customers who appreciate reliable delivery." },
-                { title: "Better Tips", desc: "Safe, high-care garment transport is consistently rewarded with generous customer tips." }
-              ].map((diff, idx) => (
-                <div key={idx} style={{ display: 'flex', gap: '12px' }}>
-                  <div style={{ color: 'var(--primary)', marginTop: '2px' }}>
-                    <CheckCircle size={16} />
+                  <div className="story-profile-block-v3">
+                    <img src={test.avatar} alt={test.author} className="story-avatar-circle-v3" />
+                    <div className="story-profile-info-v3">
+                      <h4 className="profile-name">{test.author}</h4>
+                      <span className="profile-role">{test.role}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h5 style={{ color: 'var(--text-primary)', margin: '0 0 4px 0', fontSize: '0.95rem', fontWeight: '700' }}>{diff.title}</h5>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: 0, lineHeight: '1.4' }}>{diff.desc}</p>
+
+                  <div className="story-stars-row-v3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={14} fill="#f72585" color="#f72585" />
+                    ))}
+                  </div>
+
+                  <p className="story-quote-text-v3">
+                    {test.author === "Sanjay M." ? (
+                      <>
+                        "After joining StitchBee, I now earn <span className="highlight-pink-text">₹32,000</span> every month while studying."
+                      </>
+                    ) : test.author === "Vikram R." ? (
+                      <>
+                        "I earn <span className="highlight-pink-text">₹900–₹1200</span> every day after college. StitchBee gives me the freedom I always wanted."
+                      </>
+                    ) : (
+                      `"${test.quote}"`
+                    )}
+                  </p>
+
+                  <div className="story-badges-grid-v3">
+                    <div className="story-badge-item-v3 badge-wallet-v3">
+                      <Wallet size={12} /> {test.earnings}
+                    </div>
+                    <div className="story-badge-item-v3 badge-clock-v3">
+                      <Clock size={12} /> {test.hours}
+                    </div>
+                    <div className="story-badge-item-v3">
+                      <MapPin size={12} /> {test.location}
+                    </div>
+                  </div>
+
+                  <div className="story-verified-footer-row">
+                    <div className="verified-badge-pill-v3">
+                      <CheckCircle size={12} /> Verified Partner
+                    </div>
+                    <span className="story-joined-text-v3">
+                      <Calendar size={12} /> {test.joined}
+                    </span>
                   </div>
                 </div>
-              ))}
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom Promo CTA Banner */}
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', position: 'relative' }}>
+          <div className="success-stories-cta-banner-v3">
+            <div className="success-cta-left-block">
+              <div className="success-cta-gift-illustration">
+                <Gift size={26} />
+              </div>
+              <div>
+                <h4 className="success-cta-title-v3">Ready to Become Our Next Success Story?</h4>
+                <p className="success-cta-desc-v3">Join thousands of delivery partners earning every week.</p>
+              </div>
+            </div>
+            <div className="success-cta-right-block">
+              <button className="success-cta-btn-v3" onClick={onJoinClick}>
+                Become a Delivery Partner <ArrowRight size={16} />
+              </button>
+              <div className="success-cta-footer-users">
+                <div className="success-cta-avatar-overlap">
+                  <img src="/alt_al1.jpg" alt="User" className="success-cta-avatar-circle" />
+                  <img src="/alt_al2.jpg" alt="User" className="success-cta-avatar-circle" />
+                  <img src="/alt_al3.jpg" alt="User" className="success-cta-avatar-circle" />
+                </div>
+                <span className="success-cta-users-text">10,000+ partners already earning</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 7. Partner Success Stories */}
-      <section style={{ 
-        padding: '5rem 1.5rem', 
-        background: 'rgba(255,255,255,0.01)',
-        borderBottom: '1px solid var(--border-color)'
-      }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>Partner Success Stories</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Hear from riders who earn on their own terms with StitchBee</p>
-          </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-            gap: '24px' 
-          }}>
-            {[
-              {
-                quote: "I earn part-time while managing my college studies. Logging in for just 3 hours daily gives me enough pocket money.",
-                author: "Vikram R.",
-                role: "College Student & Part-Time Rider",
-                rating: 5,
-                joined: "Joined 4 months ago"
-              },
-              {
-                quote: "Flexible timing helped me increase my overall monthly income. I do boutique courier runs during my morning slots.",
-                author: "Sanjay M.",
-                role: "Freelance Gig Executive",
-                rating: 5,
-                joined: "Joined 9 months ago"
-              },
-              {
-                quote: "StitchBee clothing deliveries are much easier than food delivery. Packages are light and tailors treat us like partners.",
-                author: "Ramesh K.",
-                role: "Full-Time Logistics Partner",
-                rating: 5,
-                joined: "Joined 1 year ago"
-              }
-            ].map((test, idx) => (
-              <div key={idx} className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ display: 'flex', gap: '4px', marginBottom: '16px' }}>
-                    {[...Array(test.rating)].map((_, i) => (
-                      <Star key={i} size={14} fill="var(--primary)" color="var(--primary)" />
-                    ))}
-                  </div>
-                  <p style={{ color: 'var(--text-primary)', fontStyle: 'italic', fontSize: '0.95rem', lineHeight: '1.4', margin: '0 0 20px 0' }}>
-                    "{test.quote}"
-                  </p>
-                </div>
-                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
-                  <h5 style={{ color: 'var(--text-primary)', margin: '0 0 2px 0', fontSize: '0.9rem' }}>{test.author}</h5>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block' }}>{test.role}</span>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>{test.joined}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Growth Opportunities */}
-      <section style={{ padding: '5rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>Grow With StitchBee</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>We don't just offer runs—we build paths for long-term career growth</p>
-          </div>
-
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', 
-            gap: '20px'
-          }}>
-            {[
-              "Become a premium delivery partner",
-              "Earn high performance weekly bonuses",
-              "Build and manage your own delivery team",
-              "Access high-priority delivery time slots",
-              "Increase your overall monthly income streams"
-            ].map((point, idx) => (
-              <div key={idx} className="glass-card-no-hover" style={{ 
-                padding: '16px 20px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '12px',
-                border: '1px solid rgba(255,255,255,0.04)' 
-              }}>
-                <div style={{ 
-                  background: 'rgba(247,37,133,0.1)', 
-                  color: 'var(--primary)', 
-                  width: '28px', 
-                  height: '28px', 
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Check size={14} />
-                </div>
-                <span style={{ color: 'var(--text-primary)', fontSize: '0.9rem', fontWeight: '500' }}>{point}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 9. Requirements to Join */}
       <section style={{ 

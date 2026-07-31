@@ -338,27 +338,37 @@ export default function BecomeDeliveryView({ onJoinClick }) {
               />
             ))}
 
-            {/* 4. Glowing Curved Road */}
-            <svg width="500" height="220" viewBox="0 0 500 220" fill="none" style={{ position: 'absolute', bottom: '0px', left: '0', width: '100%', zIndex: 2 }}>
-              <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(0,0,0,0.08)" strokeWidth="54" strokeLinecap="round" fill="none" />
-              <path d="M-20,170 Q130,90 280,140 T520,80" stroke="url(#road-grad-become)" strokeWidth="48" strokeLinecap="round" fill="none" opacity="0.95" />
-              <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(247,37,133,0.3)" strokeWidth="50" strokeLinecap="round" fill="none" />
-              <path 
-                d="M-20,170 Q130,90 280,140 T520,80" 
-                stroke="#ffffff" 
-                strokeWidth="2" 
-                strokeDasharray="14 16" 
-                strokeLinecap="round" 
-                fill="none" 
-                style={{ animation: 'scroll-road-dashes 0.4s linear infinite' }} 
-              />
-              <defs>
-                <linearGradient id="road-grad-become" x1="0" y1="170" x2="500" y2="80" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#f72585" />
-                  <stop offset="100%" stopColor="#7209b7" />
-                </linearGradient>
-              </defs>
-            </svg>
+            {/* 4. Loop Video Background of Delivery Partner */}
+            <video
+              src="/DeliveryPartner.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                zIndex: 1
+              }}
+            />
+
+            {/* Video overlay to soften contrast for floating cards */}
+            <div 
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'rgba(15, 23, 42, 0.08)',
+                zIndex: 2,
+                pointerEvents: 'none'
+              }}
+            />
 
             {/* 5. 3D Rotating Navigation Phone */}
             <div 
@@ -465,51 +475,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
               </div>
             </div>
 
-            {/* 6. Scooter Rider Component (Absolute animated positioning) */}
-            <div 
-              style={{ 
-                position: 'absolute', 
-                bottom: '15px', 
-                left: '20px',
-                width: '270px', 
-                height: '270px', 
-                zIndex: 4,
-                animation: 'drive-scooter-x 6s ease-in-out infinite'
-              }}
-            >
-              <div style={{ width: '100%', height: '100%', position: 'relative', animation: 'float-scooter 2.5s ease-in-out infinite' }}>
-                
-                {/* Interactive Scooter Shadow */}
-                <div 
-                  style={{
-                    position: 'absolute',
-                    bottom: '15px',
-                    left: '45px',
-                    width: '180px',
-                    height: '14px',
-                    borderRadius: '50%',
-                    background: '#000',
-                    filter: 'blur(5px)',
-                    zIndex: 1,
-                    animation: 'pulse-shadow 2.5s ease-in-out infinite'
-                  }}
-                />
-
-                {/* 3D Scooter Cutout Image */}
-                <img 
-                  src="./delivery_rider_cutout.jpg" 
-                  alt="StitchBee Delivery Partner" 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'contain',
-                    position: 'relative', 
-                    zIndex: 2,
-                    mixBlendMode: 'multiply'
-                  }} 
-                />
-              </div>
-            </div>
+            {/* 6. Rider Cutout is replaced by background video */}
 
             {/* 7. Floating Glassmorphism Info Cards */}
             <div 
