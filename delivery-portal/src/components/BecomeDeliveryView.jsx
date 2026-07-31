@@ -1187,54 +1187,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
 
 
 
-      {/* 9. Requirements to Join */}
-      <section style={{ 
-        padding: '5rem 1.5rem', 
-        background: 'rgba(255,255,255,0.01)',
-        borderBottom: '1px solid var(--border-color)'
-      }}>
-        <div style={{ maxWidth: '950px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>Requirements to Join</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Ensure you have the following basic details ready to get started</p>
-          </div>
 
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
-            gap: '20px' 
-          }}>
-            {[
-              { label: "Age 18+", desc: "Must be at least 18 years old.", icon: <Award size={18} /> },
-              { label: "Smartphone", desc: "An Android or iOS phone with active internet connection.", icon: <Smartphone size={18} /> },
-              { label: "Bike/Scooter", desc: "A two-wheeler with valid registration.", icon: <Truck size={18} /> },
-              { label: "Valid Driving License", desc: "Active license to drive in your state.", icon: <UserCheck size={18} /> },
-              { label: "Aadhaar Card / ID Proof", desc: "Required for background verification checks.", icon: <ShieldCheck size={18} /> },
-              { label: "Active Bank Account", desc: "For secure weekly direct bank payouts.", icon: <Wallet size={18} /> }
-            ].map((req, idx) => (
-              <div key={idx} className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div style={{ 
-                  background: 'rgba(247,37,133,0.1)', 
-                  color: 'var(--primary)', 
-                  width: '40px', 
-                  height: '40px', 
-                  borderRadius: '50%', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  {req.icon}
-                </div>
-                <div>
-                  <h5 style={{ color: 'var(--text-primary)', margin: '0 0 2px 0', fontSize: '0.95rem', fontWeight: '600' }}>{req.label}</h5>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', margin: 0 }}>{req.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 10. FAQ Section */}
       <section style={{ padding: '5rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
