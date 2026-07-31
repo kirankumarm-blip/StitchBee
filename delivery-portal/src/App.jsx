@@ -681,81 +681,128 @@ export default function App() {
       {/* Main Content Area */}
       {role === 'landing' && (
         <div className="animate-fade-in">
-          {/* Fold 1: Hero Carousel Banner & Stats Fold */}
+          {/* Fold 1: Premium Delivery Partner Hero Section */}
           <section style={{ padding: '1.5rem 0 0.5rem 0', width: '100%', margin: '0 auto' }}>
             <div className="landing-container" style={{ padding: '0 10px' }}>
-              
-              {/* Full-width Carousel Banner Card */}
               <div 
                 style={{ 
-                  position: 'relative', 
-                  overflow: 'hidden', 
                   display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'center', 
-                  padding: 0,
-                  width: '100%',
-                  aspectRatio: '1024 / 315',
-                  height: 'auto',
-                  borderRadius: '0px',
-                  cursor: 'pointer',
-                  border: 'none',
-                  background: 'transparent'
+                  alignItems: 'center', 
+                  justifyContent: 'space-between', 
+                  minHeight: '480px', 
+                  borderRadius: '24px', 
+                  background: theme === 'dark' ? 'linear-gradient(135deg, #13111c 0%, #0c0a12 100%)' : 'linear-gradient(135deg, #fff5f8 0%, #ffffff 100%)', 
+                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(247,37,133,0.08)'}`, 
+                  overflow: 'hidden', 
+                  flexWrap: 'wrap',
+                  position: 'relative',
+                  padding: '2rem 3rem',
+                  gap: '2rem'
                 }}
-                onMouseEnter={() => setPauseLandingCarousel(true)}
-                onMouseLeave={() => setPauseLandingCarousel(false)}
-                onClick={handleLandingBannerClick}
               >
-                {/* Slides */}
-                {guestLandingBanners.map((banner, idx) => (
-                  <img 
-                    key={idx}
-                    src={banner} 
-                    alt={`banner-${idx+1}`} 
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'fill',
-                      opacity: currentLandingSlide === idx ? 1 : 0,
-                      transition: 'opacity 0.8s ease-in-out',
-                      pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
-                    }}
-                  />
-                ))}
+                {/* Left Side Content (approx. 45% empty white/content space) */}
+                <div style={{ flex: '1 1 400px', maxWidth: '480px', zIndex: 5, textAlign: 'left' }}>
+                  <span style={{ 
+                    fontSize: '0.85rem', 
+                    fontWeight: '800', 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.12em', 
+                    color: 'var(--primary)',
+                    background: 'rgba(247,37,133,0.08)',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    display: 'inline-block',
+                    marginBottom: '16px'
+                  }}>
+                    Delivery Partner Portal
+                  </span>
+                  
+                  <h1 style={{ 
+                    fontSize: '3rem', 
+                    fontWeight: '900', 
+                    fontFamily: 'Outfit, sans-serif', 
+                    lineHeight: '1.15', 
+                    color: theme === 'dark' ? '#fff' : '#0f172a',
+                    letterSpacing: '-0.02em',
+                    marginBottom: '18px'
+                  }}>
+                    Earn on Your Schedule with <span style={{ background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>StitchBee</span>
+                  </h1>
+                  
+                  <p style={{ 
+                    fontSize: '1.05rem', 
+                    color: 'var(--text-secondary)', 
+                    lineHeight: '1.6', 
+                    marginBottom: '28px',
+                    fontWeight: '500'
+                  }}>
+                    Deliver custom-tailored fashion outfits to doorsteps. Earn premium payouts, access instant weekly settlements, and enjoy complete schedule flexibility.
+                  </p>
 
-                {/* Dot Indicators */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '16px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  display: 'flex',
-                  gap: '6px',
-                  zIndex: 20,
-                  background: 'rgba(0,0,0,0.25)',
-                  padding: '5px 12px',
-                  borderRadius: '20px'
-                }}>
-                  {guestLandingBanners.map((_, idx) => (
-                    <span 
-                      key={idx}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentLandingSlide(idx);
-                      }}
-                      style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        background: currentLandingSlide === idx ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+                    <button 
+                      onClick={() => openAuthModal('delivery', 'signup')}
+                      style={{ 
+                        padding: '14px 28px', 
+                        fontSize: '1.02rem', 
+                        fontWeight: '700', 
+                        borderRadius: '12px', 
+                        background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
+                        color: '#fff',
+                        boxShadow: '0 8px 25px rgba(247,37,133,0.25)',
+                        border: 'none',
                         cursor: 'pointer',
-                        transition: 'all 0.2s'
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px'
                       }}
-                    />
-                  ))}
+                    >
+                      Join as Partner <ArrowRight size={18} />
+                    </button>
+                    <button 
+                      onClick={() => {
+                        const target = document.getElementById('quick-categories');
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      style={{ 
+                        padding: '14px 24px', 
+                        fontSize: '1.02rem', 
+                        fontWeight: '700', 
+                        borderRadius: '12px', 
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#fff', 
+                        color: theme === 'dark' ? '#fff' : '#475569',
+                        border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}`,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Side Illustration (55% width) */}
+                <div 
+                  style={{ 
+                    flex: '1 1 500px', 
+                    height: '420px', 
+                    position: 'relative', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    borderRadius: '20px',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <img 
+                    src="./delivery_hero.jpg" 
+                    alt="StitchBee Delivery Partner" 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      borderRadius: '20px'
+                    }} 
+                  />
                 </div>
               </div>
 
@@ -777,11 +824,11 @@ export default function App() {
                 }}
               >
                 {[
-                  { icon: <Users size={18} />, value: "500+", label: "Expert Tailors", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
+                  { icon: <Users size={18} />, value: "10K+", label: "Delivery Partners", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
                   { icon: <Heart size={18} />, value: "50K+", label: "Happy Customers", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
-                  { icon: <Star size={18} />, value: "4.8 ★", label: "Average Rating", bg: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' },
-                  { icon: <ShieldCheck size={18} />, value: "100%", label: "Quality Assurance", bg: 'rgba(16, 185, 129, 0.1)', color: '#10b981' },
-                  { icon: <Headphones size={18} />, value: "24/7", label: "Customer Support", bg: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }
+                  { icon: <Star size={18} />, value: "4.9 ★", label: "Average Rating", bg: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' },
+                  { icon: <ShieldCheck size={18} />, value: "100%", label: "Contactless Drop", bg: 'rgba(16, 185, 129, 0.1)', color: '#10b981' },
+                  { icon: <Headphones size={18} />, value: "Weekly", label: "Secure Payouts", bg: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }
                 ].map((item, idx) => (
                   <div 
                     key={idx} 
