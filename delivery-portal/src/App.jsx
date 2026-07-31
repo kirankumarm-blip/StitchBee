@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import DeliveryView from './components/DeliveryView';
 import AuthModal from './components/AuthModal';
