@@ -469,70 +469,45 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             <div 
               style={{ 
                 position: 'absolute', 
-                bottom: '50px', 
-                width: '130px', 
-                height: '130px', 
+                bottom: '15px', 
+                left: '20px',
+                width: '270px', 
+                height: '270px', 
                 zIndex: 4,
                 animation: 'drive-scooter-x 6s ease-in-out infinite'
               }}
             >
               <div style={{ width: '100%', height: '100%', position: 'relative', animation: 'float-scooter 2.5s ease-in-out infinite' }}>
                 
+                {/* Interactive Scooter Shadow */}
                 <div 
                   style={{
                     position: 'absolute',
-                    bottom: '6px',
-                    left: '12px',
-                    width: '90px',
-                    height: '10px',
+                    bottom: '15px',
+                    left: '45px',
+                    width: '180px',
+                    height: '14px',
                     borderRadius: '50%',
                     background: '#000',
-                    filter: 'blur(3px)',
+                    filter: 'blur(5px)',
                     zIndex: 1,
                     animation: 'pulse-shadow 2.5s ease-in-out infinite'
                   }}
                 />
 
-                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ position: 'relative', zIndex: 2 }}>
-                  <g style={{ animation: 'bounce-pin 2.5s ease-in-out infinite' }}>
-                    <rect x="14" y="32" width="32" height="32" rx="5" fill="#f72585" stroke="#7209b7" strokeWidth="2" />
-                    <circle cx="30" cy="48" r="6" fill="none" stroke="#ffffff" strokeWidth="1.5" />
-                    <path d="M28,48 L32,48 M30,46 L30,50" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
-                  </g>
-
-                  <path d="M40,75 L80,75 M40,75 L28,62 M80,75 L90,48 L74,48" stroke="#f72585" strokeWidth="4.5" strokeLinecap="round" />
-                  <path d="M85,44 L96,44 L87,76 Z" fill="#f72585" />
-                  <path d="M96,46 L130,42 L130,68 Z" fill="url(#headlight-beam-become)" opacity="0.16" />
-                  <circle cx="95" cy="46" r="4" fill="#ffffff" style={{ boxShadow: '0 0 10px #ffffff' }} />
-                  
-                  <rect x="44" y="60" width="24" height="8" rx="4" fill="#1c1921" />
-
-                  <path d="M48,60 C47,44 67,44 66,60 Z" fill="#7209b7" />
-                  <path d="M58,52 L80,50" stroke="#7209b7" strokeWidth="3.5" strokeLinecap="round" />
-                  <circle cx="57" cy="37" r="9.5" fill="#f72585" />
-                  <circle cx="57" cy="37" r="7.5" fill="#1c1921" />
-                  <path d="M60,35 Q65,39 63,41" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
-
-                  <g style={{ transformOrigin: '88px 80px', animation: 'rotate-wheel 0.8s linear infinite' }}>
-                    <circle cx="88" cy="80" r="15" fill="#1c1921" />
-                    <circle cx="88" cy="80" r="9" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
-                    <line x1="88" y1="65" x2="88" y2="95" stroke="#475569" strokeWidth="1.5" />
-                    <line x1="73" y1="80" x2="103" y2="80" stroke="#475569" strokeWidth="1.5" />
-                  </g>
-                  <g style={{ transformOrigin: '32px 80px', animation: 'rotate-wheel 0.8s linear infinite' }}>
-                    <circle cx="32" cy="80" r="15" fill="#1c1921" />
-                    <circle cx="32" cy="80" r="9" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
-                    <line x1="32" y1="65" x2="32" y2="95" stroke="#475569" strokeWidth="1.5" />
-                    <line x1="17" y1="80" x2="47" y2="80" stroke="#475569" strokeWidth="1.5" />
-                  </g>
-
-                  <defs>
-                    <radialGradient id="headlight-beam-become" cx="0%" cy="50%" r="100%">
-                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
-                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-                    </radialGradient>
-                  </defs>
-                </svg>
+                {/* 3D Scooter Cutout Image */}
+                <img 
+                  src="./delivery_rider_cutout.jpg" 
+                  alt="StitchBee Delivery Partner" 
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'contain',
+                    position: 'relative', 
+                    zIndex: 2,
+                    mixBlendMode: 'multiply'
+                  }} 
+                />
               </div>
             </div>
 
