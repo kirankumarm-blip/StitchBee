@@ -18,6 +18,16 @@ export default function App() {
   // Guest landing banner carousel states
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
   const [pauseLandingCarousel, setPauseLandingCarousel] = useState(false);
+  const [earningsCount, setEarningsCount] = useState(0);
+
+  useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      current = (current + 12) > 1250 ? 0 : (current + 12);
+      setEarningsCount(current);
+    }, 45);
+    return () => clearInterval(interval);
+  }, []);
   const guestLandingBanners = [
     '/banners/banner1.png',
     '/banners/banner2.png',
@@ -754,7 +764,8 @@ export default function App() {
                         cursor: 'pointer',
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '8px'
+                        gap: '8px',
+                        animation: 'pulse-glow-button 2s infinite'
                       }}
                     >
                       Join as Partner <ArrowRight size={18} />
@@ -780,29 +791,474 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Right Side Illustration (55% width) */}
+                {/* Right Side (Interactive 3D Scene) */}
                 <div 
                   style={{ 
                     flex: '1 1 500px', 
-                    height: '420px', 
+                    height: '450px', 
                     position: 'relative', 
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'center',
-                    borderRadius: '20px',
-                    overflow: 'hidden'
+                    borderRadius: '24px',
+                    overflow: 'hidden',
+                    perspective: '1000px',
+                    background: 'transparent'
                   }}
                 >
-                  <img 
-                    src="./delivery_hero.jpg" 
-                    alt="StitchBee Delivery Partner" 
+                  {/* Embedded Custom Keyframe Animations */}
+                  <style>{`
+                    @keyframes drift-cloud-slow {
+                      0% { transform: translateX(-110%); }
+                      100% { transform: translateX(110%); }
+                    }
+                    @keyframes float-scooter {
+                      0% { transform: translateY(0) rotate(0deg); }
+                      25% { transform: translateY(-3px) rotate(1deg); }
+                      50% { transform: translateY(-7px) rotate(0deg); }
+                      75% { transform: translateY(-3px) rotate(-1deg); }
+                      100% { transform: translateY(0) rotate(0deg); }
+                    }
+                    @keyframes drive-scooter-x {
+                      0% { left: 16%; }
+                      50% { left: 24%; }
+                      100% { left: 16%; }
+                    }
+                    @keyframes rotate-wheel {
+                      0% { transform: rotate(0deg); }
+                      100% { transform: rotate(360deg); }
+                    }
+                    @keyframes pulse-shadow {
+                      0% { transform: scale(1); opacity: 0.25; }
+                      50% { transform: scale(0.85); opacity: 0.15; }
+                      100% { transform: scale(1); opacity: 0.25; }
+                    }
+                    @keyframes scroll-road-dashes {
+                      0% { stroke-dashoffset: 0; }
+                      100% { stroke-dashoffset: -32; }
+                    }
+                    @keyframes float-card-1 {
+                      0%, 100% { transform: translateY(0px); }
+                      50% { transform: translateY(-8px); }
+                    }
+                    @keyframes float-card-2 {
+                      0%, 100% { transform: translateY(-4px); }
+                      50% { transform: translateY(4px); }
+                    }
+                    @keyframes float-card-3 {
+                      0%, 100% { transform: translateY(6px); }
+                      50% { transform: translateY(-6px); }
+                    }
+                    @keyframes rotate-phone-3d {
+                      0%, 100% { transform: rotateY(-10deg) rotateX(8deg) rotateZ(-2deg); }
+                      50% { transform: rotateY(10deg) rotateX(12deg) rotateZ(2deg); }
+                    }
+                    @keyframes screen-shine {
+                      0% { left: -100%; }
+                      100% { left: 200%; }
+                    }
+                    @keyframes pulse-ripple {
+                      0% { transform: scale(0.5); opacity: 0.8; }
+                      100% { transform: scale(2); opacity: 0; }
+                    }
+                    @keyframes bounce-pin {
+                      0%, 100% { transform: translateY(0); }
+                      50% { transform: translateY(-8px); }
+                    }
+                    @keyframes float-particle {
+                      0% { transform: translateY(100%) scale(0.5); opacity: 0; }
+                      50% { opacity: 0.6; }
+                      100% { transform: translateY(-100%) scale(1.2); opacity: 0; }
+                    }
+                    @keyframes float-bird {
+                      0% { transform: translate(-20px, 0) scaleX(1); }
+                      50% { transform: translate(60px, -15px) scaleX(1); }
+                      51% { transform: translate(60px, -15px) scaleX(-1); }
+                      100% { transform: translate(-20px, 0) scaleX(-1); }
+                    }
+                    @keyframes pulse-glow-button {
+                      0% { box-shadow: 0 0 0 0 rgba(247,37,133,0.5); }
+                      70% { box-shadow: 0 0 0 15px rgba(247,37,133,0); }
+                      100% { box-shadow: 0 0 0 0 rgba(247,37,133,0); }
+                    }
+                  `}</style>
+
+                  {/* 1. Clouds Background */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '25px',
+                    left: '5%',
+                    width: '65px',
+                    height: '20px',
+                    background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.6)',
+                    borderRadius: '20px',
+                    filter: 'blur(2px)',
+                    animation: 'drift-cloud-slow 28s linear infinite',
+                    zIndex: 1
+                  }} />
+                  <div style={{
+                    position: 'absolute',
+                    top: '65px',
+                    left: '30%',
+                    width: '90px',
+                    height: '26px',
+                    background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.4)',
+                    borderRadius: '30px',
+                    filter: 'blur(3px)',
+                    animation: 'drift-cloud-slow 40s linear infinite',
+                    animationDelay: '-15s',
+                    zIndex: 1
+                  }} />
+
+                  {/* 2. Flying Birds Parallax */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '40px',
+                    left: '20%',
+                    zIndex: 1,
+                    animation: 'float-bird 18s ease-in-out infinite'
+                  }}>
+                    <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+                      <path d="M 0,6 Q 4,0 9,6 Q 14,0 18,6" stroke={theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                    </svg>
+                  </div>
+
+                  {/* 3. Floating Light Particles */}
+                  {[...Array(6)].map((_, i) => (
+                    <div 
+                      key={i}
+                      style={{
+                        position: 'absolute',
+                        bottom: '20px',
+                        left: `${12 + i * 14}%`,
+                        width: `${4 + (i % 3) * 2}px`,
+                        height: `${4 + (i % 3) * 2}px`,
+                        borderRadius: '50%',
+                        background: i % 2 === 0 ? 'var(--primary)' : 'var(--accent)',
+                        filter: 'blur(1px)',
+                        opacity: 0,
+                        animation: `float-particle ${5 + (i % 3) * 2.5}s linear infinite`,
+                        animationDelay: `${i * 0.9}s`,
+                        zIndex: 1
+                      }}
+                    />
+                  ))}
+
+                  {/* 4. Glowing Curved Road */}
+                  <svg width="500" height="220" viewBox="0 0 500 220" fill="none" style={{ position: 'absolute', bottom: '0px', left: '0', width: '100%', zIndex: 2 }}>
+                    {/* Road Shadow */}
+                    <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(0,0,0,0.08)" strokeWidth="54" strokeLinecap="round" fill="none" />
+                    {/* Main road gradient */}
+                    <path d="M-20,170 Q130,90 280,140 T520,80" stroke="url(#road-grad-interactive)" strokeWidth="48" strokeLinecap="round" fill="none" opacity="0.95" />
+                    {/* Glowing outer board lines */}
+                    <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(247,37,133,0.3)" strokeWidth="50" strokeLinecap="round" fill="none" />
+                    {/* Scrolling road dashes */}
+                    <path 
+                      d="M-20,170 Q130,90 280,140 T520,80" 
+                      stroke="#ffffff" 
+                      strokeWidth="2" 
+                      strokeDasharray="14 16" 
+                      strokeLinecap="round" 
+                      fill="none" 
+                      style={{ animation: 'scroll-road-dashes 0.4s linear infinite' }} 
+                    />
+                    <defs>
+                      <linearGradient id="road-grad-interactive" x1="0" y1="170" x2="500" y2="80" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stopColor="#f72585" />
+                        <stop offset="100%" stopColor="#7209b7" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+
+                  {/* 5. 3D Rotating Navigation Phone */}
+                  <div 
+                    className="phone-container-3d" 
                     style={{ 
-                      width: '100%', 
-                      height: '100%', 
-                      objectFit: 'cover',
-                      borderRadius: '20px'
-                    }} 
-                  />
+                      position: 'absolute', 
+                      right: '50px', 
+                      top: '25px', 
+                      width: '160px', 
+                      height: '300px', 
+                      zIndex: 3,
+                      transformStyle: 'preserve-3d',
+                      animation: 'rotate-phone-3d 9s ease-in-out infinite'
+                    }}
+                  >
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      borderRadius: '28px',
+                      background: '#13111c',
+                      border: '3px solid #f72585',
+                      boxShadow: '0 20px 40px rgba(0,0,0,0.35), 0 0 25px rgba(247,37,133,0.25)',
+                      padding: '6px',
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}>
+                      <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '60px', height: '14px', background: '#000', borderBottomLeftRadius: '9px', borderBottomRightRadius: '9px', zIndex: 10 }} />
+                      
+                      {/* Screen shine overlay */}
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: '-100%',
+                        width: '100%',
+                        height: '100%',
+                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
+                        animation: 'screen-shine 5s linear infinite',
+                        pointerEvents: 'none',
+                        zIndex: 5
+                      }} />
+
+                      {/* Map View */}
+                      <div style={{ width: '100%', height: '100%', borderRadius: '22px', background: '#08060d', position: 'relative', overflow: 'hidden' }}>
+                        <svg width="100%" height="100%" style={{ opacity: 0.12 }}>
+                          <pattern id="grid-pattern" width="16" height="16" patternUnits="userSpaceOnUse">
+                            <rect width="16" height="16" fill="none" />
+                            <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#fff" strokeWidth="0.5" />
+                          </pattern>
+                          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+                        </svg>
+
+                        {/* Navigation route */}
+                        <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
+                          <path d="M 25,240 Q 60,180 40,120 T 110,40" fill="none" stroke="rgba(247,37,133,0.2)" strokeWidth="4" strokeLinecap="round" />
+                          <path 
+                            d="M 25,240 Q 60,180 40,120 T 110,40" 
+                            fill="none" 
+                            stroke="var(--accent)" 
+                            strokeWidth="2.5" 
+                            strokeDasharray="6 10" 
+                            strokeLinecap="round" 
+                            style={{ animation: 'scroll-road-dashes 1.8s linear infinite' }} 
+                          />
+                        </svg>
+
+                        {/* Start pin */}
+                        <div style={{ position: 'absolute', left: '20px', top: '235px', transform: 'translate(-50%, -100%)' }}>
+                          <MapPin size={14} color="var(--primary)" fill="rgba(247,37,133,0.2)" />
+                        </div>
+                        {/* End Pin */}
+                        <div style={{ position: 'absolute', left: '108px', top: '35px', transform: 'translate(-50%, -100%)' }}>
+                          <div style={{ animation: 'bounce-pin 2s ease-in-out infinite' }}>
+                            <MapPin size={16} color="var(--accent)" fill="rgba(76,201,240,0.2)" />
+                          </div>
+                          <div style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '10px',
+                            height: '3px',
+                            borderRadius: '50%',
+                            border: '1px solid var(--accent)',
+                            animation: 'pulse-ripple 1.4s ease-out infinite'
+                          }} />
+                        </div>
+
+                        {/* Live route card overlay */}
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '8px',
+                          right: '8px',
+                          background: 'rgba(19, 17, 28, 0.9)',
+                          border: '1px solid rgba(255,255,255,0.06)',
+                          borderRadius: '10px',
+                          padding: '6px 8px',
+                          textAlign: 'left'
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
+                            <span style={{ fontSize: '0.58rem', color: '#10b981', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                              <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} /> Online
+                            </span>
+                            <span style={{ fontSize: '0.54rem', color: '#8b5cf6' }}>Route live</span>
+                          </div>
+                          <div style={{ fontSize: '0.65rem', color: '#fff', fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>StitchBee Studio → Drop</div>
+                          <div style={{ fontSize: '0.54rem', color: 'var(--text-secondary)' }}>Delivery time: 12 mins</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 6. Scooter Rider Component (Absolute animated positioning) */}
+                  <div 
+                    style={{ 
+                      position: 'absolute', 
+                      bottom: '50px', 
+                      width: '130px', 
+                      height: '130px', 
+                      zIndex: 4,
+                      animation: 'drive-scooter-x 6s ease-in-out infinite'
+                    }}
+                  >
+                    <div style={{ width: '100%', height: '100%', position: 'relative', animation: 'float-scooter 2.5s ease-in-out infinite' }}>
+                      
+                      {/* Interactive Scooter Shadow */}
+                      <div 
+                        style={{
+                          position: 'absolute',
+                          bottom: '6px',
+                          left: '12px',
+                          width: '90px',
+                          height: '10px',
+                          borderRadius: '50%',
+                          background: '#000',
+                          filter: 'blur(3px)',
+                          zIndex: 1,
+                          animation: 'pulse-shadow 2.5s ease-in-out infinite'
+                        }}
+                      />
+
+                      {/* Scooter Vector SVG */}
+                      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ position: 'relative', zIndex: 2 }}>
+                        {/* Insulated Box (Bounces slightly via offset) */}
+                        <g style={{ animation: 'bounce-pin 2.5s ease-in-out infinite' }}>
+                          <rect x="14" y="32" width="32" height="32" rx="5" fill="#f72585" stroke="#7209b7" strokeWidth="2" />
+                          {/* StitchBee brand mark on box */}
+                          <circle cx="30" cy="48" r="6" fill="none" stroke="#ffffff" strokeWidth="1.5" />
+                          <path d="M28,48 L32,48 M30,46 L30,50" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
+                        </g>
+
+                        {/* Scooter Main Body & Chassis */}
+                        <path d="M40,75 L80,75 M40,75 L28,62 M80,75 L90,48 L74,48" stroke="#f72585" strokeWidth="4.5" strokeLinecap="round" />
+                        {/* Front Dashboard Shield */}
+                        <path d="M85,44 L96,44 L87,76 Z" fill="#f72585" />
+                        {/* Headlight beam radial shape */}
+                        <path d="M96,46 L130,42 L130,68 Z" fill="url(#headlight-beam-active)" opacity="0.16" />
+                        {/* Soft headlight shine glow */}
+                        <circle cx="95" cy="46" r="4" fill="#ffffff" style={{ boxShadow: '0 0 10px #ffffff' }} />
+                        
+                        {/* Soft seat cushion */}
+                        <rect x="44" y="60" width="24" height="8" rx="4" fill="#1c1921" />
+
+                        {/* Rider Body & Details */}
+                        {/* Jacket */}
+                        <path d="M48,60 C47,44 67,44 66,60 Z" fill="#7209b7" />
+                        {/* Arm extending to handlebars */}
+                        <path d="M58,52 L80,50" stroke="#7209b7" strokeWidth="3.5" strokeLinecap="round" />
+                        {/* Rider Helmet */}
+                        <circle cx="57" cy="37" r="9.5" fill="#f72585" />
+                        <circle cx="57" cy="37" r="7.5" fill="#1c1921" />
+                        {/* White visor shine */}
+                        <path d="M60,35 Q65,39 63,41" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
+
+                        {/* Rotating Wheels */}
+                        {/* Front Wheel */}
+                        <g style={{ transformOrigin: '88px 80px', animation: 'rotate-wheel 0.8s linear infinite' }}>
+                          <circle cx="88" cy="80" r="15" fill="#1c1921" />
+                          <circle cx="88" cy="80" r="9" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
+                          <line x1="88" y1="65" x2="88" y2="95" stroke="#475569" strokeWidth="1.5" />
+                          <line x1="73" y1="80" x2="103" y2="80" stroke="#475569" strokeWidth="1.5" />
+                        </g>
+                        {/* Rear Wheel */}
+                        <g style={{ transformOrigin: '32px 80px', animation: 'rotate-wheel 0.8s linear infinite' }}>
+                          <circle cx="32" cy="80" r="15" fill="#1c1921" />
+                          <circle cx="32" cy="80" r="9" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
+                          <line x1="32" y1="65" x2="32" y2="95" stroke="#475569" strokeWidth="1.5" />
+                          <line x1="17" y1="80" x2="47" y2="80" stroke="#475569" strokeWidth="1.5" />
+                        </g>
+
+                        <defs>
+                          <radialGradient id="headlight-beam-active" cx="0%" cy="50%" r="100%">
+                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+                            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                          </radialGradient>
+                        </defs>
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* 7. Floating Glassmorphism Info Cards */}
+                  {/* Rating Card */}
+                  <div 
+                    className="floating-glass-card" 
+                    style={{
+                      position: 'absolute',
+                      top: '70px',
+                      left: '20px',
+                      background: theme === 'dark' ? 'rgba(30, 27, 46, 0.75)' : 'rgba(255, 255, 255, 0.75)',
+                      backdropFilter: 'blur(12px)',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(247, 37, 133, 0.15)'}`,
+                      borderRadius: '16px',
+                      padding: '10px 14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
+                      animation: 'float-card-1 4.5s ease-in-out infinite',
+                      zIndex: 5
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' }}>
+                      <Star size={14} fill="#fbbf24" />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>RIDER STATUS</span>
+                      <strong style={{ fontSize: '0.88rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a' }}>⭐ 4.9 Rating</strong>
+                    </div>
+                  </div>
+
+                  {/* Real-time Earnings Card (With ticking hook value) */}
+                  <div 
+                    className="floating-glass-card" 
+                    style={{
+                      position: 'absolute',
+                      bottom: '95px',
+                      left: '40px',
+                      background: theme === 'dark' ? 'rgba(30, 27, 46, 0.75)' : 'rgba(255, 255, 255, 0.75)',
+                      backdropFilter: 'blur(12px)',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(247, 37, 133, 0.15)'}`,
+                      borderRadius: '16px',
+                      padding: '10px 16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
+                      animation: 'float-card-2 5.5s ease-in-out infinite',
+                      zIndex: 5
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
+                      <Check size={14} strokeWidth={3} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>TODAY'S PAYOUT</span>
+                      <strong style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', fontFamily: 'monospace' }}>
+                        ₹{earningsCount.toLocaleString('en-IN')}
+                      </strong>
+                    </div>
+                  </div>
+
+                  {/* Deliveries Completed Card */}
+                  <div 
+                    className="floating-glass-card" 
+                    style={{
+                      position: 'absolute',
+                      top: '190px',
+                      left: '80px',
+                      background: theme === 'dark' ? 'rgba(30, 27, 46, 0.75)' : 'rgba(255, 255, 255, 0.75)',
+                      backdropFilter: 'blur(12px)',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(247, 37, 133, 0.15)'}`,
+                      borderRadius: '16px',
+                      padding: '10px 14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
+                      animation: 'float-card-3 5.0s ease-in-out infinite',
+                      zIndex: 5
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)' }}>
+                      <Truck size={14} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>COMPLETED</span>
+                      <strong style={{ fontSize: '0.82rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a' }}>15 Deliveries Today</strong>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
