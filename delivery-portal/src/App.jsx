@@ -617,7 +617,7 @@ export default function App() {
               {/* Mobile menu toggle hamburger icon */}
               <button 
                 className="mobile-menu-toggle-btn"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
                 aria-label="Toggle menu"
                 style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
@@ -625,7 +625,7 @@ export default function App() {
               </button>
 
               <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+                <img className="header-logo-image" src="/logo.png" alt="StitchBee" />
               </div>
             </div>
             
@@ -739,37 +739,37 @@ export default function App() {
 
           {/* Slide down / drawer Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="mobile-dropdown-menu-v3">
+            <div className="mobile-dropdown-menu-v3" onClick={(e) => e.stopPropagation()}>
               <div className="mobile-menu-links-v3">
                 {role === 'become-delivery' ? (
                   <>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('delivery-how-it-works'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-how-it-works'); setMobileMenuOpen(false); }}
                     >
                       How It Works
                     </span>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('delivery-earnings'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-earnings'); setMobileMenuOpen(false); }}
                     >
                       Earnings
                     </span>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('delivery-benefits'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-benefits'); setMobileMenuOpen(false); }}
                     >
                       Benefits
                     </span>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('delivery-faqs'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-faqs'); setMobileMenuOpen(false); }}
                     >
                       FAQs
                     </span>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('contact-footer'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer'); setMobileMenuOpen(false); }}
                     >
                       Contact
                     </span>
@@ -778,19 +778,19 @@ export default function App() {
                   <>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('how-it-works', 'landing'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('how-it-works', 'landing'); setMobileMenuOpen(false); }}
                     >
                       How It Works
                     </span>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('pricing-section', 'landing'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('pricing-section', 'landing'); setMobileMenuOpen(false); }}
                     >
                       Pricing
                     </span>
                     <span 
                       className="mobile-menu-link-v3"
-                      onClick={() => { navigateToSection('contact-footer', 'landing'); setMobileMenuOpen(false); }}
+                      onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer', 'landing'); setMobileMenuOpen(false); }}
                     >
                       Contact
                     </span>
