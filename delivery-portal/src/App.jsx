@@ -613,8 +613,20 @@ export default function App() {
       {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
         <>
           <header className="top-nav">
-            <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-              <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {/* Mobile menu toggle hamburger icon */}
+              <button 
+                className="mobile-menu-toggle-btn"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+
+              <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+              </div>
             </div>
             
             <div className="role-switcher desktop-nav-menu">
@@ -675,8 +687,8 @@ export default function App() {
               )}
             </div>
     
-            {/* User Profile / Auth Area */}
-            <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* User Profile / Auth Area (Visible on both desktop & mobile) */}
+            <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <button 
                 className="btn btn-secondary" 
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -686,15 +698,14 @@ export default function App() {
                 {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
               </button>
     
-              <div className="desktop-auth-buttons" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <div className="header-auth-buttons-v3" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 {currentUser ? (
-                  <div className="user-profile-nav">
+                  <div className="user-profile-nav" style={{ gap: '8px' }}>
                     <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
                       <div className="user-profile-avatar">
                         {currentUser.name.charAt(0).toUpperCase()}
                       </div>
-                      <span>{currentUser.name}</span>
-                      <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
+                      <span className="desktop-only-name">{currentUser.name}</span>
                     </div>
                     <button 
                       className="btn btn-secondary" 
@@ -708,14 +719,14 @@ export default function App() {
                   <>
                     <button 
                       className="btn btn-secondary" 
-                      style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
+                      style={{ minHeight: '32px', padding: '6px 12px', fontSize: '0.85rem' }} 
                       onClick={() => openAuthModal('delivery', 'login')}
                     >
                       Login
                     </button>
                     <button 
                       className="btn btn-primary" 
-                      style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }}
+                      style={{ minHeight: '32px', padding: '6px 12px', fontSize: '0.85rem' }}
                       onClick={() => openAuthModal('delivery', 'signup')}
                     >
                       Sign Up
@@ -723,15 +734,6 @@ export default function App() {
                   </>
                 )}
               </div>
-
-              {/* Mobile menu toggle hamburger icon */}
-              <button 
-                className="mobile-menu-toggle-btn"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle menu"
-              >
-                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
             </div>
           </header>
 
@@ -794,45 +796,6 @@ export default function App() {
                     </span>
                   </>
                 )}
-
-                {/* Mobile Auth options */}
-                <div className="mobile-menu-auth-v3">
-                  {currentUser ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-                      <div className="user-profile-chip" onClick={() => { setRole(currentUser.role); setMobileMenuOpen(false); }} style={{ cursor: 'pointer', alignSelf: 'center' }}>
-                        <div className="user-profile-avatar">
-                          {currentUser.name.charAt(0).toUpperCase()}
-                        </div>
-                        <span>{currentUser.name}</span>
-                        <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
-                      </div>
-                      <button 
-                        className="btn btn-secondary" 
-                        style={{ width: '100%', minHeight: '36px' }}
-                        onClick={() => { handleLogout(); setMobileMenuOpen(false); }}
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  ) : (
-                    <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
-                      <button 
-                        className="btn btn-secondary" 
-                        style={{ flex: 1, minHeight: '36px' }} 
-                        onClick={() => { openAuthModal('delivery', 'login'); setMobileMenuOpen(false); }}
-                      >
-                        Login
-                      </button>
-                      <button 
-                        className="btn btn-primary" 
-                        style={{ flex: 1, minHeight: '36px' }}
-                        onClick={() => { openAuthModal('delivery', 'signup'); setMobileMenuOpen(false); }}
-                      >
-                        Sign Up
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
           )}
