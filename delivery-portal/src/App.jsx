@@ -619,7 +619,7 @@ export default function App() {
                 className="mobile-menu-toggle-btn"
                 onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
                 aria-label="Toggle menu"
-                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none' }}
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
