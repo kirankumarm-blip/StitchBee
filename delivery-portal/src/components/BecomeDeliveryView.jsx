@@ -1258,28 +1258,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
         </div>
       </section>
 
-      {/* 11. Final CTA Section */}
-      <section style={{ 
-        padding: '6rem 1.5rem', 
-        background: 'radial-gradient(circle, rgba(247,37,133,0.12) 0%, var(--bg-darker) 100%)',
-        textAlign: 'center'
-      }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--text-primary)', marginBottom: '1rem' }}>
-            Start Delivering With StitchBee Today
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '2rem', lineHeight: '1.4' }}>
-            Get registered in a few steps, complete your verification, and start taking local garment deliveries.
-          </p>
-          <button 
-            className="btn btn-primary" 
-            onClick={onJoinClick} 
-            style={{ padding: '14px 36px', fontSize: '1rem', display: 'inline-flex', gap: '10px', alignItems: 'center' }}
-          >
-            Become a Delivery Partner <ArrowRight size={18} />
-          </button>
-        </div>
-      </section>
+
 
     </div>
   );
