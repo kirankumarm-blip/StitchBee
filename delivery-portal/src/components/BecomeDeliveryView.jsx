@@ -131,7 +131,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
 
   // Scroll reveal IntersectionObserver logic for premium slide-in scroll animations
   useEffect(() => {
-    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-3d-phone');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -402,7 +402,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
           <div className="delivery-benefits-three-col-layout">
             
             {/* Column 1: Animated 3D Phone Mockup & Floating Cards */}
-            <div className="phone-animation-column reveal-3d-phone reveal">
+            <div className="phone-animation-column reveal-3d-phone">
               <div 
                 className="interactive-phone-perspective-wrapper"
                 onMouseMove={handleMouseMove}

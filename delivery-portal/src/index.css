@@ -10057,9 +10057,9 @@ body.light-theme .phone-glass-circle {
 }
 
 .reveal-3d-phone.active {
-  opacity: 1;
-  transform: translateY(0) rotateX(0deg) rotateZ(0deg) scale(1);
-  filter: blur(0);
+  opacity: 1 !important;
+  transform: translateY(0) rotateX(0deg) rotateZ(0deg) scale(1) !important;
+  filter: blur(0) !important;
 }
 
 .interactive-phone-perspective-wrapper {
