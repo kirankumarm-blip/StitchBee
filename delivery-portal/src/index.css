@@ -10107,6 +10107,39 @@ body.light-theme .phone-glass-circle {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Force light high-contrast text color inside the 3D phone mockup in all themes */
+.phone-inner-screen,
+.phone-inner-screen *,
+.phone-inner-screen span,
+.phone-inner-screen strong,
+.phone-inner-screen div {
+  color: #ffffff !important;
+}
+
+/* Restore highlight colors inside mockup */
+.phone-inner-screen .widget-trend {
+  color: #10b981 !important;
+}
+.phone-inner-screen .notif-tag {
+  color: #f72585 !important;
+}
+.phone-inner-screen .notif-status {
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+.phone-inner-screen .widget-label {
+  color: #94a3b8 !important;
+}
+.phone-inner-screen .widget-deliveries {
+  color: #64748b !important;
+}
+.phone-inner-screen .gps-start {
+  color: #f72585 !important;
+}
+.phone-inner-screen .gps-end {
+  color: #10b981 !important;
+}
+
 .phone-notch {
   position: absolute;
   top: 0;
@@ -10518,12 +10551,13 @@ body.light-theme .floating-card-v3 {
   font-weight: 700;
 }
 
-/* QR Code Card */
 .qr-download-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1.5px solid var(--border-color);
   border-radius: 16px;
-  padding: 16px;
+  padding: 16px !important;
+  padding-left: 40px !important;
+  padding-bottom: 40px !important;
   text-align: center;
   width: 100%;
   max-width: 220px;
