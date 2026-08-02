@@ -88,7 +88,26 @@ export default function BecomeDeliveryView({ onJoinClick }) {
     return () => clearInterval(interval);
   }, []);
 
+  // Scroll reveal IntersectionObserver logic for premium slide-in scroll animations
+  useEffect(() => {
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.1, // trigger early when 10% of element is in view
+      rootMargin: '0px 0px -40px 0px'
+    });
 
+    revealElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      revealElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   // Hero Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -333,7 +352,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
           <div className="delivery-benefits-main-split-container">
             
             {/* Left Side: Headline & 3x2 Grid of 6 Premium Cards */}
-            <div className="delivery-benefits-left-col">
+            <div className="delivery-benefits-left-col reveal-left">
               <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
                 <span className="premium-section-badge">
                   WHY CHOOSE STITCHBEE?
@@ -407,7 +426,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             </div>
 
             {/* Right Side: Onboarding Panel with 3D Rotating Phone Mockup & Glassmorphism CTA card */}
-            <div className="delivery-signup-right-col">
+            <div className="delivery-signup-right-col reveal-right">
               
               {/* Phone Mockup with 3D Rotation */}
               <div className="delivery-phone-overlapping-frame-3d">
@@ -558,7 +577,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
           <div className="earnings-calc-grid-v3">
             
             {/* Left Card: Interactive Calculator */}
-            <div className="calc-card-v3">
+            <div className="calc-card-v3 reveal-left">
               <div className="calc-card-header-v3">
                 <div className="calc-header-icon-box">
                   <Calculator size={20} />
@@ -658,7 +677,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             </div>
 
             {/* Right Card: How Your Earnings Grow */}
-            <div className="grow-card-v3">
+            <div className="grow-card-v3 reveal-right">
               <div className="grow-card-header-v3">
                 <div className="grow-header-icon-box">
                   <TrendingUp size={20} />
@@ -793,7 +812,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
         <div className="delivery-container" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
           
           {/* Left Column: Timeline Steps */}
-          <div className="delivery-works-steps-col" style={{ flex: 1.2 }}>
+          <div className="delivery-works-steps-col reveal-left" style={{ flex: 1.2 }}>
             <div style={{ textAlign: 'left', marginBottom: '2.5rem' }}>
               <h2 style={{ fontSize: '2.2rem', fontWeight: '700', color: 'var(--text-primary)' }}>How It Works</h2>
               <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Start delivering in 5 simple steps</p>
@@ -852,7 +871,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
           </div>
 
           {/* Right Column: Carousel Card */}
-          <div className="delivery-works-carousel-col" style={{ flex: 0.8, width: '100%' }}>
+          <div className="delivery-works-carousel-col reveal-right" style={{ flex: 0.8, width: '100%' }}>
             <div className="works-carousel-wrapper" style={{
               position: 'relative',
               borderRadius: 'var(--radius-lg)',
@@ -1094,7 +1113,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
               return (
                 <div 
                   key={test.author} 
-                  className={`partner-story-card-v3 ${isFeatured ? 'featured-story-card-v3' : ''}`}
+                  className={`partner-story-card-v3 ${isFeatured ? 'featured-story-card-v3' : ''} ${index === 0 ? 'reveal-left' : index === 2 ? 'reveal-right' : 'reveal'}`}
                 >
                   {isFeatured && (
                     <div className="featured-story-badge">
@@ -1201,7 +1220,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             {faqs.map((faq, idx) => (
               <div 
                 key={idx} 
-                className="glass-card-no-hover" 
+                className="glass-card-no-hover reveal" 
                 style={{ 
                   borderRadius: '8px', 
                   overflow: 'hidden', 
