@@ -3,7 +3,7 @@ import {
   Truck, ArrowRight, Check, Star, HelpCircle, ChevronDown, 
   Clock, DollarSign, TrendingUp, Zap, Wallet, MapPin, 
   Smartphone, Award, UserCheck, ShieldCheck, CheckCircle,
-  ChevronLeft, ChevronRight, Users, Gift, Shield, ThumbsUp, Calendar, Calculator
+  ChevronLeft, ChevronRight, Users, Gift, Shield, ThumbsUp, Calendar, Calculator, Headphones
 } from 'lucide-react';
 
 const allTestimonials = [
