@@ -568,6 +568,216 @@ export default function BecomeDeliveryView({ onJoinClick }) {
         </div>
       </section>
 
+      {/* Why Choose StitchBee (More Benefits. More Freedom. Old Cards Grid Restored) */}
+      <section className="become-delivery-why-join-section" style={{ padding: '7rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+        
+        {/* Decorative background glows */}
+        <div className="why-join-glow-pink" />
+        <div className="why-join-glow-purple" />
+
+        <div style={{ maxWidth: '1320px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+          
+          <div className="delivery-benefits-main-split-container">
+            
+            {/* Left Side: Headline & 3x2 Grid of 6 Premium Cards */}
+            <div className="delivery-benefits-left-col reveal-left">
+              <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
+                <span className="premium-section-badge">
+                  WHY CHOOSE STITCHBEE?
+                </span>
+                <h2 className="become-delivery-why-join-title">
+                  More Benefits. More Freedom.
+                </h2>
+                <p className="premium-supporting-text">
+                  Everything you need to earn more, work flexibly, and grow with India's fastest tailoring delivery platform.
+                </p>
+              </div>
+
+              {/* 3x2 Grid of 6 cards */}
+              <div className="delivery-benefits-3x2-grid">
+                
+                {/* Card 1 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-pink">
+                    <Clock size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Work on Your Terms</h4>
+                  <p className="premium-card-desc">Choose your own working hours and deliver at your convenience.</p>
+                </div>
+
+                {/* Card 2 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-purple">
+                    <DollarSign size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Higher Earnings</h4>
+                  <p className="premium-card-desc">Earn competitive rates per delivery plus milestone weekly bonuses.</p>
+                </div>
+
+                {/* Card 3 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-red">
+                    <Zap size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Weekly Payouts</h4>
+                  <p className="premium-card-desc">Get paid every week with secure, instant, and on-time transfers.</p>
+                </div>
+
+                {/* Card 4 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-blue">
+                    <Shield size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Accident Insurance</h4>
+                  <p className="premium-card-desc">Comprehensive accidental insurance and medical coverage always with you.</p>
+                </div>
+
+                {/* Card 5 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-yellow">
+                    <UserCheck size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Dedicated Partner Support</h4>
+                  <p className="premium-card-desc">Get 24/7 dedicated support for any delivery issues or queries.</p>
+                </div>
+
+                {/* Card 6 */}
+                <div className="delivery-premium-feature-card">
+                  <div className="premium-card-icon-wrapper grad-pink2">
+                    <Users size={20} />
+                  </div>
+                  <h4 className="premium-card-title">Growing Community</h4>
+                  <p className="premium-card-desc">Join a growing community that respects, supports, and values you.</p>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Right Side: Onboarding Panel with 3D Rotating Phone Mockup & Glassmorphism CTA card */}
+            <div className="delivery-signup-right-col reveal-right">
+              
+              {/* Phone Mockup with 3D Rotation */}
+              <div className="delivery-phone-overlapping-frame-3d">
+                <div className="delivery-phone-glow-bg" />
+                <div className="delivery-phone-screen-small">
+                  <div className="delivery-phone-notch-small" />
+                  
+                  {/* Phone App Content */}
+                  <div className="delivery-app-content-small">
+                    <div className="delivery-app-header-small">
+                      <span>Hello, Partner 👋</span>
+                    </div>
+
+                    <div className="delivery-app-stats-grid-small">
+                      <div className="delivery-app-stat-box-small">
+                        <span className="delivery-app-stat-label-small">Deliveries</span>
+                        <strong className="delivery-app-stat-val-small">12</strong>
+                      </div>
+                      <div className="delivery-app-stat-box-small">
+                        <span className="delivery-app-stat-label-small">Earnings</span>
+                        <strong className="delivery-app-stat-val-small" style={{ color: '#10b981' }}>₹1,850</strong>
+                      </div>
+                    </div>
+
+                    <div className="delivery-app-list-title-small">Recent Deliveries</div>
+
+                    <div className="delivery-app-deliveries-list-small">
+                      <div className="delivery-app-list-item-small">
+                        <div style={{ textAlign: 'left' }}>
+                          <div className="order-title">Order #SB1234</div>
+                          <div className="order-status">Delivered</div>
+                        </div>
+                        <strong>₹160</strong>
+                      </div>
+
+                      <div className="delivery-app-list-item-small">
+                        <div style={{ textAlign: 'left' }}>
+                          <div className="order-title">Order #SB1235</div>
+                          <div className="order-status">Delivered</div>
+                        </div>
+                        <strong>₹220</strong>
+                      </div>
+
+                      <div className="delivery-app-list-item-small">
+                        <div style={{ textAlign: 'left' }}>
+                          <div className="order-title">Order #SB1236</div>
+                          <div className="order-status">Delivered</div>
+                        </div>
+                        <strong>₹150</strong>
+                      </div>
+                    </div>
+
+                    <div style={{ width: '50px', height: '2px', background: '#cbd5e1', borderRadius: '1px', margin: 'auto auto 2px auto' }} />
+                  </div>
+                </div>
+
+                {/* Floating Notifications */}
+                <div className="floating-noti notification-earnings">
+                  <div className="noti-icon-badge"><Zap size={10} /></div>
+                  <div className="noti-text-block">
+                    <span>Weekly Payout</span>
+                    <strong>₹12,400 Received!</strong>
+                  </div>
+                </div>
+
+                <div className="floating-noti notification-received">
+                  <div className="noti-icon-badge noti-green"><CheckCircle size={10} /></div>
+                  <div className="noti-text-block">
+                    <span>Order Delivered</span>
+                    <strong>Earned +₹220</strong>
+                  </div>
+                </div>
+
+                <div className="floating-noti notification-wallet">
+                  <div className="noti-icon-badge noti-blue"><Wallet size={10} /></div>
+                  <div className="noti-text-block">
+                    <span>Wallet Balance</span>
+                    <strong>₹4,850.00</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Glassmorphism CTA Signup Card */}
+              <div className="delivery-glass-signup-card">
+                <h3 className="delivery-signup-card-title-small">Your Journey Starts Here!</h3>
+                <p className="delivery-signup-card-desc-small">Sign up in less than 2 minutes and start earning with every delivery.</p>
+                
+                <button className="delivery-signup-card-btn-gradient" onClick={onJoinClick}>
+                  Join Now <ArrowRight size={14} style={{ marginLeft: '4px' }} />
+                </button>
+
+                <div className="delivery-signup-card-footer-small" style={{ textAlign: 'center', width: '100%', marginTop: '8px' }}>
+                  <span className="delivery-signup-card-trust-text-small" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    ❤️ Loved by <strong>10,000+</strong> partners
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Premium Full-Width Glass Bottom Banner */}
+          <div className="delivery-premium-glass-banner">
+            <div className="banner-left-glow" />
+            <div className="banner-content-wrapper">
+              <div className="banner-icon-title-block">
+                <div className="banner-gift-icon-box">
+                  <Gift size={20} />
+                </div>
+                <span className="banner-text">
+                  Complete your first 5 deliveries and unlock your <strong className="glow-accent-text">Welcome Bonus!</strong>
+                </span>
+              </div>
+              <button className="banner-gradient-btn" onClick={onJoinClick}>
+                Start Earning Today <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* 3. Earnings Potential */}
       <section id="delivery-earnings" className="earnings-calc-section-v3" style={{ 
         padding: '7rem 1.5rem', 
