@@ -902,7 +902,6 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
         {/* Logo and Brand */}
         <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
           <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
-          <span style={{ fontSize: '0.65rem', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '-40px', zIndex: 10 }}>RIDER PORTAL</span>
         </div>
 
         {/* Desktop Tabs Header Menu */}

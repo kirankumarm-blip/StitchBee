@@ -7348,6 +7348,34 @@ svg * {
   }
 }
 
+/* Delivery Navigation Page Responsive Overrides */
+@media (max-width: 1024px) {
+  .delivery-nav-grid {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+    gap: 16px !important;
+  }
+  .rider-top-nav .logo img {
+    height: 80px !important;
+    width: 240px !important;
+    margin-left: -35px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-floating-status-stack {
+    display: none !important;
+  }
+  .nav-bottom-info-bar {
+    display: none !important;
+  }
+  .rider-top-nav .logo img {
+    height: 66px !important;
+    width: 200px !important;
+    margin-left: -22px !important;
+  }
+}
+
 /* Full Page Authentication Styling */
 @media (max-width: 1023px) {
   .auth-page-layout {

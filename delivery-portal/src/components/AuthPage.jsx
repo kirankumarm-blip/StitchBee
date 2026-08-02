@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Scissors, User, Lock, Mail, MapPin, Sparkles, Check, Truck, Phone, Star, Eye, EyeOff, Sun, Moon, Headphones, ArrowRight, Shield, ShieldAlert, CreditCard } from 'lucide-react';
+
+const INDIAN_LOCATIONS = {
+  "Karnataka": ["Bengaluru", "Mysore", "Hubli-Dharwad", "Mangaluru", "Belagavi", "Davangere"],
+  "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur"],
+  "Delhi (NCR)": ["New Delhi", "Noida", "Gurugram", "Ghaziabad", "Faridabad"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli"],
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Ramagundam"],
+  "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Siliguri", "Asansol", "Durgapur"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi", "Meerut", "Prayagraj", "Bareilly"]
+};
 
 export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClose, theme, setTheme, initialRole = 'customer' }) {
   const [role, setRole] = useState(initialRole); // 'customer' | 'tailor' | 'student' | 'delivery'
@@ -16,6 +27,125 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
   const [rememberMe, setRememberMe] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [error, setError] = useState('');
+
+  // Delivery Onboarding Flow States
+  const [deliveryStep, setDeliveryStep] = useState(0); // 0: Enter Phone, 0.5: OTP Verify, 1: Welcome, 2: Personal, 3: Location, 4: Vehicle, 5: Documents, 6: Bank, 7: Selfie, 8: Review, 9: Verification, 10: Approved
+  const [deliveryPhone, setDeliveryPhone] = useState('');
+  const [deliveryOtp, setDeliveryOtp] = useState('');
+  const [otpDigits, setOtpDigits] = useState(['', '', '', '', '', '']);
+  const otpRefs = useRef([]);
+  const [timerSeconds, setTimerSeconds] = useState(300);
+  const [timerActive, setTimerActive] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const [agreeTermsDelivery, setAgreeTermsDelivery] = useState(false);
+  const [simulatedDocProgress, setSimulatedDocProgress] = useState({});
+
+  // Form details collected step-by-step
+  const [onboardingData, setOnboardingData] = useState({
+    firstName: '',
+    lastName: '',
+    gender: '',
+    dob: '',
+    state: '',
+    city: '',
+    area: '',
+    vehicleType: '',
+    vehicleNumber: '',
+    aadhaarNumber: '',
+    aadhaarFile: null,
+    panNumber: '',
+    panFile: null,
+    dlNumber: '',
+    dlFile: null,
+    rcNumber: '',
+    rcFile: null,
+    insuranceNumber: '',
+    insuranceFile: null,
+    bankHolder: '',
+    bankAccount: '',
+    bankIfsc: '',
+    upiId: '',
+    profilePhoto: null,
+  });
+
+  const [capturingSelfie, setCapturingSelfie] = useState(false);
+
+  const handleFileChange = (e, fieldName) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSimulatedDocProgress(prev => ({ ...prev, [fieldName]: 'uploading' }));
+      let prg = 0;
+      const interval = setInterval(() => {
+        prg += 25;
+        if (prg >= 100) {
+          clearInterval(interval);
+          setSimulatedDocProgress(prev => ({ ...prev, [fieldName]: 'done' }));
+          setOnboardingData(prev => ({ ...prev, [fieldName + 'File']: file.name }));
+        }
+      }, 250);
+    }
+  };
+
+  const videoRef = useRef(null);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [cameraStream, setCameraStream] = useState(null);
+
+  const startCamera = async () => {
+    try {
+      setOtpError('');
+      setCapturingSelfie(true);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 300, height: 300, facingMode: 'user' }
+      });
+      setCameraStream(stream);
+      setCameraActive(true);
+      setCapturingSelfie(false);
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      }, 150);
+    } catch (err) {
+      console.error("Camera access error:", err);
+      setCapturingSelfie(false);
+      setOtpError("Unable to access camera. Please ensure camera permissions are granted.");
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 300;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+      ctx.translate(300, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(videoRef.current, 0, 0, 300, 300);
+      const dataUrl = canvas.toDataURL('image/jpeg');
+      setOnboardingData(prev => ({ ...prev, profilePhoto: dataUrl }));
+      stopCamera();
+    }
+  };
+
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+    }
+    setCameraActive(false);
+  };
+
+  // Cleanup camera stream on unmount
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [cameraStream]);
 
   const isDark = theme === 'dark';
   
@@ -44,6 +174,34 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
       }
     };
   }, []);
+
+  // 5-minute Countdown Timer Effect
+  useEffect(() => {
+    let interval = null;
+    if (timerActive && timerSeconds > 0) {
+      interval = setInterval(() => {
+        setTimerSeconds(prev => prev - 1);
+      }, 1000);
+    } else if (timerSeconds === 0) {
+      setTimerActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, timerSeconds]);
+
+  // Reset timer whenever step changes to 0.5 (OTP Verify)
+  useEffect(() => {
+    if (deliveryStep === 0.5) {
+      setTimerSeconds(300);
+      setTimerActive(true);
+      setOtpDigits(['', '', '', '', '', '']);
+      setDeliveryOtp('');
+      setTimeout(() => {
+        if (otpRefs.current[0]) otpRefs.current[0].focus();
+      }, 100);
+    } else {
+      setTimerActive(false);
+    }
+  }, [deliveryStep]);
 
   useEffect(() => {
     setError('');
@@ -146,6 +304,1243 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
     onLoginSuccess(userData);
   };
 
+  const renderDeliveryWizard = () => {
+    const renderProgressHeader = () => {
+      if (deliveryStep < 1 || deliveryStep > 8) return null;
+      const percent = Math.round(((deliveryStep - 1) / 7) * 100);
+      return (
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '11px', fontWeight: '800', color: '#f72585', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Onboarding Progress
+            </span>
+            <span style={{ fontSize: '11px', fontWeight: '700', color: colorTextSecondary }}>
+              Step {deliveryStep} of 8 ({percent}%)
+            </span>
+          </div>
+          <div style={{ width: '100%', height: '6px', background: isDark ? 'rgba(255,255,255,0.06)' : '#E5E7EB', borderRadius: '3px', overflow: 'hidden' }}>
+            <div style={{ width: `${percent}%`, height: '100%', background: 'linear-gradient(90deg, #f72585 0%, #7209b7 100%)', borderRadius: '3px', transition: 'width 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }} />
+          </div>
+        </div>
+      );
+    };
+
+    // Step 0: Enter Phone
+    if (deliveryStep === 0) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+            <span style={{ fontSize: '14px', fontWeight: '700', color: '#f72585', display: 'block', marginBottom: '6px' }}>
+              {tab === 'login' ? 'RIDER LOGIN' : 'BECOME A PARTNER'}
+            </span>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: colorTextPrimary }}>
+              {tab === 'login' ? 'Enter Phone Number' : 'Create Rider Account'}
+            </h3>
+            <p style={{ fontSize: '13px', color: colorTextSecondary, marginTop: '6px' }}>
+              We will send a 6-digit OTP to verify your number
+            </p>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Phone Number</label>
+              <span 
+                onClick={() => setDeliveryPhone('9876543210')}
+                style={{ fontSize: '11px', color: '#f72585', fontWeight: '700', cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                Quick Fill Test Number
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF' }}>
+              <Phone size={16} style={{ color: colorTextMuted, marginRight: '10px' }} />
+              <span style={{ fontSize: '14px', color: colorTextSecondary, marginRight: '6px', fontWeight: '600' }}>+91</span>
+              <input 
+                type="tel" 
+                placeholder="Enter 10-digit number"
+                value={deliveryPhone} 
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, ''); // no letters, only digits
+                  if (val.length <= 10) setDeliveryPhone(val);
+                }} 
+                style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '600' }} 
+              />
+            </div>
+          </div>
+
+          {tab === 'signup' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '4px' }}>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '13px', color: colorTextSecondary, lineHeight: '1.4' }}>
+                <input 
+                  type="checkbox" 
+                  checked={agreeTermsDelivery}
+                  onChange={(e) => setAgreeTermsDelivery(e.target.checked)}
+                  style={{ accentColor: '#f72585', marginTop: '3px', cursor: 'pointer' }}
+                />
+                <span>I agree to the <span style={{ color: '#f72585', fontWeight: '700' }} onClick={(e) => { e.stopPropagation(); alert('Terms of Service Agreement'); }}>Terms & Conditions</span> for delivery partners.</span>
+              </label>
+
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '13px', color: colorTextSecondary, lineHeight: '1.4' }}>
+                <input 
+                  type="checkbox" 
+                  checked={agreePrivacy}
+                  onChange={(e) => setAgreePrivacy(e.target.checked)}
+                  style={{ accentColor: '#f72585', marginTop: '3px', cursor: 'pointer' }}
+                />
+                <span>I accept the <span style={{ color: '#f72585', fontWeight: '700' }} onClick={(e) => { e.stopPropagation(); alert('Privacy Policy Guidelines'); }}>Privacy Policy</span> on document storage.</span>
+              </label>
+            </div>
+          )}
+
+          <button
+            onClick={() => {
+              setOtpError('');
+              if (deliveryPhone.length !== 10) {
+                setOtpError('Please enter a valid 10-digit phone number.');
+                return;
+              }
+              if (tab === 'signup' && (!agreeTermsDelivery || !agreePrivacy)) {
+                setOtpError('You must agree to the Privacy Policy and Terms & Conditions to proceed.');
+                return;
+              }
+              setOtpSent(true);
+              setDeliveryStep(0.5);
+            }}
+            className="btn-primary"
+            style={{ width: '100%', height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+          >
+            <span>Send OTP Verification</span>
+            <ArrowRight size={18} />
+          </button>
+
+          {/* Switch tab option inside the card */}
+          <div style={{ textAlign: 'center', marginTop: '10px' }}>
+            <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '500' }}>
+              {tab === 'login' ? "New to StitchBee Logistics? " : "Already registered as a partner? "}
+              <button
+                type="button"
+                onClick={() => {
+                  setTab(tab === 'login' ? 'signup' : 'login');
+                  setDeliveryPhone('');
+                  setDeliveryOtp('');
+                  setOtpError('');
+                }}
+                style={{ background: 'transparent', border: 'none', padding: 0, color: '#f72585', fontWeight: '700', cursor: 'pointer', fontSize: '14px', textDecoration: 'underline', marginLeft: '4px', outline: 'none' }}
+              >
+                {tab === 'login' ? 'Register' : 'Login'}
+              </button>
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 0.5: OTP Verify
+    if (deliveryStep === 0.5) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+            <span style={{ fontSize: '14px', fontWeight: '700', color: '#7209b7', display: 'block', marginBottom: '6px' }}>
+              OTP SENT
+            </span>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: colorTextPrimary }}>
+              Verify Mobile OTP
+            </h3>
+            <p style={{ fontSize: '13px', color: colorTextSecondary, marginTop: '6px', lineHeight: '1.4' }}>
+              Enter the 6-digit verification code sent to <br />
+              <strong style={{ color: colorTextPrimary }}>+91 {deliveryPhone}</strong>
+            </p>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          {/* 6-Digit OTP Text Boxes */}
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', margin: '8px 0' }}>
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <input
+                key={idx}
+                ref={(el) => (otpRefs.current[idx] = el)}
+                type="text"
+                pattern="[0-9]*"
+                inputMode="numeric"
+                maxLength={1}
+                disabled={timerSeconds === 0}
+                value={otpDigits[idx]}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, ''); // digits only
+                  const newDigits = [...otpDigits];
+                  newDigits[idx] = val;
+                  setOtpDigits(newDigits);
+                  setDeliveryOtp(newDigits.join(''));
+                  
+                  // Auto-advance focus to the next field
+                  if (val && idx < 5) {
+                    otpRefs.current[idx + 1].focus();
+                  }
+                }}
+                onKeyDown={(e) => {
+                  // Backspace regression logic
+                  if (e.key === 'Backspace' && !otpDigits[idx] && idx > 0) {
+                    const newDigits = [...otpDigits];
+                    newDigits[idx - 1] = '';
+                    setOtpDigits(newDigits);
+                    setDeliveryOtp(newDigits.join(''));
+                    otpRefs.current[idx - 1].focus();
+                  }
+                }}
+                style={{
+                  width: '44px',
+                  height: '50px',
+                  borderRadius: '12px',
+                  border: `1.5px solid ${timerSeconds === 0 ? borderColor : otpDigits[idx] ? '#f72585' : borderColor}`,
+                  background: isDark ? 'rgba(255,255,255,0.02)' : '#F8FAFC',
+                  color: colorTextPrimary,
+                  fontSize: '18px',
+                  fontWeight: '700',
+                  textAlign: 'center',
+                  outline: 'none',
+                  transition: 'all 0.2s ease',
+                  boxShadow: otpDigits[idx] ? '0 0 0 3px rgba(247, 37, 133, 0.1)' : 'none'
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Countdown timer */}
+          <div style={{ textAlign: 'center', margin: '2px 0' }}>
+            {timerSeconds > 0 ? (
+              <span style={{ fontSize: '13px', color: colorTextSecondary, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }} />
+                OTP expires in <strong style={{ color: colorTextPrimary, fontFamily: 'monospace', fontSize: '14px' }}>{Math.floor(timerSeconds / 60)}:{(timerSeconds % 60) < 10 ? '0' : ''}{timerSeconds % 60}</strong>
+              </span>
+            ) : (
+              <span style={{ fontSize: '13px', color: '#f72585', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#f72585' }} />
+                OTP expired. Please click resend below.
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: colorTextSecondary, marginTop: '2px' }}>
+            <span style={{ cursor: 'pointer', color: '#f72585', fontWeight: '700' }} onClick={() => { setDeliveryStep(0); }}>
+              Change Number
+            </span>
+            <span 
+              style={{ cursor: 'pointer', color: '#7209b7', fontWeight: '700', opacity: timerSeconds > 0 ? 0.6 : 1 }} 
+              onClick={() => {
+                setOtpDigits(['', '', '', '', '', '']);
+                setDeliveryOtp('');
+                setTimerSeconds(300);
+                setTimerActive(true);
+                setOtpError('');
+                alert('A new 6-digit OTP code has been resent to +91 ' + deliveryPhone);
+                setTimeout(() => {
+                  if (otpRefs.current[0]) otpRefs.current[0].focus();
+                }, 100);
+              }}
+            >
+              Resend OTP code
+            </span>
+          </div>
+
+          <button
+            disabled={timerSeconds === 0}
+            onClick={() => {
+              setOtpError('');
+              if (deliveryOtp.length !== 6) {
+                setOtpError('Please enter the complete 6-digit OTP verification code.');
+                return;
+              }
+              
+              if (tab === 'login') {
+                if (deliveryPhone === '9876543210') {
+                  const finalUserData = {
+                    name: 'Kiran Kumar',
+                    email: 'kiran@stitchbee.com',
+                    role: 'delivery',
+                    phone: '9876543210',
+                    address: 'HSR Layout, Bengaluru, Karnataka',
+                    onboardingCompleted: true
+                  };
+                  localStorage.setItem('stitchbee_user', JSON.stringify(finalUserData));
+                  onLoginSuccess(finalUserData);
+                  return;
+                }
+
+                const existingUser = localStorage.getItem('stitchbee_user');
+                let userObj = null;
+                if (existingUser) {
+                  try {
+                    const parsed = JSON.parse(existingUser);
+                    if (parsed.phone === deliveryPhone && parsed.role === 'delivery') {
+                      userObj = parsed;
+                    }
+                  } catch (e) {}
+                }
+                
+                if (userObj && userObj.onboardingCompleted) {
+                  onLoginSuccess(userObj);
+                  return;
+                }
+              }
+              
+              setDeliveryStep(1);
+            }}
+            className="btn-primary"
+            style={{ width: '100%', height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer', marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          >
+            Verify & Proceed
+          </button>
+        </div>
+      );
+    }
+
+    // Step 1: Welcome
+    if (deliveryStep === 1) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {renderProgressHeader()}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', textAlign: 'center' }}>
+            <div style={{ fontSize: '50px' }}>🎉</div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: colorTextPrimary }}>
+                Welcome, {onboardingData.firstName || 'Kiran'}!
+              </h3>
+              <p style={{ fontSize: '15px', color: colorTextSecondary, marginTop: '12px', lineHeight: '1.6' }}>
+                Let's complete your profile to start delivering orders and earning payouts.
+              </p>
+            </div>
+
+            <div style={{ background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(106, 0, 244, 0.03)', border: `1px dashed ${borderColor}`, borderRadius: '16px', padding: '16px', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '13px', fontWeight: '700', color: colorTextPrimary }}>📄 Onboarding Checklist:</span>
+              <span style={{ fontSize: '12px', color: colorTextSecondary }}>• Personal Details & Vehicle Information</span>
+              <span style={{ fontSize: '12px', color: colorTextSecondary }}>• ID Verification Documents (Aadhaar & PAN)</span>
+              <span style={{ fontSize: '12px', color: colorTextSecondary }}>• Bank Account details for instant payout transfers</span>
+            </div>
+
+            <button
+              onClick={() => setDeliveryStep(2)}
+              className="btn-primary"
+              style={{ width: '100%', height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Continue Profile Setup
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 2: Personal Details
+    if (deliveryStep === 2) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Personal Details
+            </h3>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>First Name</label>
+              <input 
+                type="text" 
+                placeholder="Kiran"
+                value={onboardingData.firstName}
+                onChange={(e) => setOnboardingData({ ...onboardingData, firstName: e.target.value })}
+                style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Last Name</label>
+              <input 
+                type="text" 
+                placeholder="Kumar"
+                value={onboardingData.lastName}
+                onChange={(e) => setOnboardingData({ ...onboardingData, lastName: e.target.value })}
+                style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Gender</label>
+            <select
+              value={onboardingData.gender}
+              onChange={(e) => setOnboardingData({ ...onboardingData, gender: e.target.value })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? '#120f26' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary, cursor: 'pointer' }}
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Date of Birth</label>
+            <input 
+              type="date"
+              value={onboardingData.dob}
+              onChange={(e) => setOnboardingData({ ...onboardingData, dob: e.target.value })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              setOtpError('');
+              if (!onboardingData.firstName || !onboardingData.lastName || !onboardingData.gender || !onboardingData.dob) {
+                setOtpError('Please fill in all personal details fields.');
+                return;
+              }
+              setDeliveryStep(3);
+            }}
+            className="btn-primary"
+            style={{ width: '100%', height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer', marginTop: '10px' }}
+          >
+            Continue
+          </button>
+        </div>
+      );
+    }
+
+    // Step 3: Select Location
+    if (deliveryStep === 3) {
+      const stateOptions = Object.keys(INDIAN_LOCATIONS);
+      const citiesList = onboardingData.state ? INDIAN_LOCATIONS[onboardingData.state] : [];
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Select Location
+            </h3>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>State</label>
+            <select
+              value={onboardingData.state}
+              onChange={(e) => setOnboardingData({ ...onboardingData, state: e.target.value, city: '' })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? '#120f26' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary, cursor: 'pointer' }}
+            >
+              <option value="">Select State</option>
+              {stateOptions.map(st => <option key={st} value={st}>{st}</option>)}
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>City</label>
+            <select
+              value={onboardingData.city}
+              onChange={(e) => setOnboardingData({ ...onboardingData, city: e.target.value })}
+              disabled={!onboardingData.state}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? '#120f26' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary, cursor: onboardingData.state ? 'pointer' : 'not-allowed', opacity: onboardingData.state ? 1 : 0.6 }}
+            >
+              <option value="">Select City</option>
+              {citiesList.map(ct => <option key={ct} value={ct}>{ct}</option>)}
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Preferred Delivery Area</label>
+            <input 
+              type="text" 
+              placeholder="e.g. HSR Layout Sector 3"
+              value={onboardingData.area}
+              onChange={(e) => setOnboardingData({ ...onboardingData, area: e.target.value })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '10px' }}>
+            <button
+              onClick={() => setDeliveryStep(2)}
+              className="btn-secondary"
+              style={{ height: '52px', border: `1.5px solid ${borderColor}`, borderRadius: '14px', fontWeight: '700', fontSize: '15px', color: colorTextSecondary, cursor: 'pointer', background: 'transparent' }}
+            >
+              Back
+            </button>
+            <button
+              onClick={() => {
+                setOtpError('');
+                if (!onboardingData.state || !onboardingData.city || !onboardingData.area) {
+                  setOtpError('Please select state, city and preferred area.');
+                  return;
+                }
+                setDeliveryStep(4);
+              }}
+              className="btn-primary"
+              style={{ height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 4: Vehicle Details
+    if (deliveryStep === 4) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Vehicle Details
+            </h3>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Vehicle Type</label>
+            <select
+              value={onboardingData.vehicleType}
+              onChange={(e) => setOnboardingData({ ...onboardingData, vehicleType: e.target.value, vehicleNumber: e.target.value === 'Bicycle' ? 'N/A' : '' })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? '#120f26' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary, cursor: 'pointer' }}
+            >
+              <option value="">Select Vehicle Type</option>
+              <option value="Bicycle">Bicycle (Non-Motorized)</option>
+              <option value="Electric Scooter">Electric Scooter (EV)</option>
+              <option value="Motorcycle">Motorcycle / Scooty</option>
+              <option value="Car">Car</option>
+            </select>
+          </div>
+
+          {onboardingData.vehicleType && onboardingData.vehicleType !== 'Bicycle' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} className="animate-fade-in">
+              <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Vehicle Registration Number</label>
+              <input 
+                type="text" 
+                placeholder="e.g. KA-01-HE-1234"
+                value={onboardingData.vehicleNumber === 'N/A' ? '' : onboardingData.vehicleNumber}
+                onChange={(e) => setOnboardingData({ ...onboardingData, vehicleNumber: e.target.value })}
+                style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+              />
+            </div>
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '10px' }}>
+            <button
+              onClick={() => setDeliveryStep(3)}
+              className="btn-secondary"
+              style={{ height: '52px', border: `1.5px solid ${borderColor}`, borderRadius: '14px', fontWeight: '700', fontSize: '15px', color: colorTextSecondary, cursor: 'pointer', background: 'transparent' }}
+            >
+              Back
+            </button>
+            <button
+              onClick={() => {
+                setOtpError('');
+                if (!onboardingData.vehicleType) {
+                  setOtpError('Please select a vehicle type.');
+                  return;
+                }
+                if (onboardingData.vehicleType !== 'Bicycle' && !onboardingData.vehicleNumber) {
+                  setOtpError('Please enter your vehicle registration number.');
+                  return;
+                }
+                setDeliveryStep(5);
+              }}
+              className="btn-primary"
+              style={{ height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 5: Upload Documents
+    if (deliveryStep === 5) {
+      const isMotorized = onboardingData.vehicleType && onboardingData.vehicleType !== 'Bicycle';
+
+      const renderDocUploader = (fieldName, labelName) => {
+        const progress = simulatedDocProgress[fieldName];
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>{labelName}</span>
+              {progress === 'done' && <span style={{ fontSize: '11px', color: '#10b981', fontWeight: '700' }}>✓ Uploaded</span>}
+            </div>
+            
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <input 
+                type="file" 
+                id={`file-upload-${fieldName}`} 
+                onChange={(e) => handleFileChange(e, fieldName)} 
+                style={{ display: 'none' }} 
+              />
+              <button
+                type="button"
+                disabled={progress === 'uploading'}
+                onClick={() => {
+                  const inputEl = document.getElementById(`file-upload-${fieldName}`);
+                  if (inputEl) inputEl.click();
+                }}
+                style={{
+                  background: progress === 'done' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(106, 0, 244, 0.05)',
+                  border: progress === 'done' ? '1px solid #10b981' : `1px dashed ${borderColor}`,
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  color: progress === 'done' ? '#10b981' : '#7209b7',
+                  cursor: progress === 'uploading' ? 'wait' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                {progress === 'uploading' ? 'Uploading...' : progress === 'done' ? 'Change File' : 'Choose File'}
+              </button>
+              <span style={{ fontSize: '12px', color: colorTextMuted, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>
+                {onboardingData[fieldName + 'File'] || 'No file chosen'}
+              </span>
+            </div>
+          </div>
+        );
+      };
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', maxHeight: '550px', overflowY: 'auto', paddingRight: '6px' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '4px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Upload Documents
+            </h3>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          {/* Aadhaar Number */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Aadhaar Number (12 digits)</label>
+            <input 
+              type="text" 
+              placeholder="e.g. 1234 5678 9012"
+              value={onboardingData.aadhaarNumber}
+              onChange={(e) => {
+                const val = e.target.value.replace(/\D/g, ''); // numbers only
+                if (val.length <= 12) setOnboardingData({ ...onboardingData, aadhaarNumber: val });
+              }}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '44px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+            />
+          </div>
+          {renderDocUploader('aadhaar', 'Aadhaar Document Card')}
+
+          {/* PAN Number */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>PAN Card Number</label>
+            <input 
+              type="text" 
+              placeholder="e.g. ABCDE1234F"
+              value={onboardingData.panNumber}
+              onChange={(e) => setOnboardingData({ ...onboardingData, panNumber: e.target.value.toUpperCase() })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '44px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+            />
+          </div>
+          {renderDocUploader('pan', 'PAN Document Card')}
+
+          {/* DL Number if motorized */}
+          {isMotorized && (
+            <>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} className="animate-fade-in">
+                <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Driving License Number</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. DL-1420110012345"
+                  value={onboardingData.dlNumber}
+                  onChange={(e) => setOnboardingData({ ...onboardingData, dlNumber: e.target.value })}
+                  style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '44px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+                />
+              </div>
+              {renderDocUploader('dl', 'Driving License Document')}
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} className="animate-fade-in">
+                <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>RC Number</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. RC-KA011234"
+                  value={onboardingData.rcNumber}
+                  onChange={(e) => setOnboardingData({ ...onboardingData, rcNumber: e.target.value })}
+                  style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '44px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+                />
+              </div>
+              {renderDocUploader('rc', 'RC Certificate File')}
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} className="animate-fade-in">
+                <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Insurance Policy Number</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. INS-987654321"
+                  value={onboardingData.insuranceNumber}
+                  onChange={(e) => setOnboardingData({ ...onboardingData, insuranceNumber: e.target.value })}
+                  style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '44px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+                />
+              </div>
+              {renderDocUploader('insurance', 'Insurance Document Policy')}
+            </>
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '10px' }}>
+            <button
+              onClick={() => setDeliveryStep(4)}
+              className="btn-secondary"
+              style={{ height: '52px', border: `1.5px solid ${borderColor}`, borderRadius: '14px', fontWeight: '700', fontSize: '15px', color: colorTextSecondary, cursor: 'pointer', background: 'transparent' }}
+            >
+              Back
+            </button>
+            <button
+              onClick={() => {
+                setOtpError('');
+                if (onboardingData.aadhaarNumber.length !== 12) {
+                  setOtpError('Please enter a valid 12-digit Aadhaar number.');
+                  return;
+                }
+                if (!onboardingData.aadhaarFile) {
+                  setOtpError('Please upload your Aadhaar document card.');
+                  return;
+                }
+                if (!onboardingData.panNumber) {
+                  setOtpError('Please enter your PAN Card number.');
+                  return;
+                }
+                if (!onboardingData.panFile) {
+                  setOtpError('Please upload your PAN document card.');
+                  return;
+                }
+                if (isMotorized) {
+                  if (!onboardingData.dlNumber || !onboardingData.dlFile) {
+                    setOtpError('Please enter Driving License details.');
+                    return;
+                  }
+                  if (!onboardingData.rcNumber || !onboardingData.rcFile) {
+                    setOtpError('Please upload your RC Certificate.');
+                    return;
+                  }
+                  if (!onboardingData.insuranceNumber || !onboardingData.insuranceFile) {
+                    setOtpError('Please upload your Insurance Document.');
+                    return;
+                  }
+                }
+                setDeliveryStep(6);
+              }}
+              className="btn-primary"
+              style={{ height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 6: Bank Details
+    if (deliveryStep === 6) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Bank Details
+            </h3>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Account Holder Name</label>
+            <input 
+              type="text" 
+              placeholder="Kiran Kumar"
+              value={onboardingData.bankHolder}
+              onChange={(e) => setOnboardingData({ ...onboardingData, bankHolder: e.target.value })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Account Number</label>
+              <input 
+                type="text" 
+                placeholder="123456789012"
+                value={onboardingData.bankAccount}
+                onChange={(e) => setOnboardingData({ ...onboardingData, bankAccount: e.target.value.replace(/\D/g, '') })}
+                style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Bank IFSC Code</label>
+              <input 
+                type="text" 
+                placeholder="SBIN0001234"
+                value={onboardingData.bankIfsc}
+                onChange={(e) => setOnboardingData({ ...onboardingData, bankIfsc: e.target.value.toUpperCase() })}
+                style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}>
+            <div style={{ flex: 1, height: '1px', background: borderColor }} />
+            <span style={{ padding: '0 12px', fontSize: '11px', color: colorTextMuted, fontWeight: '800' }}>OR UPI ID</span>
+            <div style={{ flex: 1, height: '1px', background: borderColor }} />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>UPI ID (e.g. kiran@okaxis)</label>
+            <input 
+              type="text" 
+              placeholder="e.g. kiran@upi"
+              value={onboardingData.upiId}
+              onChange={(e) => setOnboardingData({ ...onboardingData, upiId: e.target.value })}
+              style={{ border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', outline: 'none', fontSize: '14px', color: colorTextPrimary }}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '10px' }}>
+            <button
+              onClick={() => setDeliveryStep(5)}
+              className="btn-secondary"
+              style={{ height: '52px', border: `1.5px solid ${borderColor}`, borderRadius: '14px', fontWeight: '700', fontSize: '15px', color: colorTextSecondary, cursor: 'pointer', background: 'transparent' }}
+            >
+              Back
+            </button>
+            <button
+              onClick={() => {
+                setOtpError('');
+                if (!onboardingData.bankHolder) {
+                  setOtpError('Please enter Account Holder name.');
+                  return;
+                }
+                const hasAccount = onboardingData.bankAccount && onboardingData.bankIfsc;
+                const hasUpi = onboardingData.upiId;
+                if (!hasAccount && !hasUpi) {
+                  setOtpError('Please provide either bank account + IFSC details, or a UPI ID.');
+                  return;
+                }
+                setDeliveryStep(7);
+              }}
+              className="btn-primary"
+              style={{ height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 7: Selfie Verification
+    if (deliveryStep === 7) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', width: '100%' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '4px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Selfie Verification
+            </h3>
+          </div>
+
+          {otpError && (
+            <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', fontWeight: '600' }}>
+              {otpError}
+            </div>
+          )}
+
+          <div style={{
+            width: '180px',
+            height: '180px',
+            borderRadius: '50%',
+            border: onboardingData.profilePhoto ? '4px solid #10b981' : cameraActive ? '4px solid #7209b7' : '4px dashed #7209b7',
+            background: isDark ? 'rgba(0,0,0,0.4)' : '#F8FAFC',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            position: 'relative',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+          }}>
+            {capturingSelfie ? (
+              <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '50%', border: '3px solid #7209b7', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }} className="spinner-camera" />
+                <span style={{ fontSize: '11px', color: '#7209b7', fontWeight: '700' }}>Initializing Camera...</span>
+              </div>
+            ) : onboardingData.profilePhoto ? (
+              <img 
+                src={onboardingData.profilePhoto} 
+                alt="Selfie Preview" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+              />
+            ) : cameraActive ? (
+              <video 
+                ref={videoRef}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }}
+                playsInline
+                muted
+              />
+            ) : (
+              <div style={{ textAlign: 'center', color: colorTextMuted }}>
+                <div style={{ fontSize: '32px', marginBottom: '4px' }}>📸</div>
+                <span style={{ fontSize: '11px', fontWeight: '600' }}>Camera Offline</span>
+              </div>
+            )}
+          </div>
+
+          {/* Action buttons based on camera state */}
+          {onboardingData.profilePhoto ? (
+            <button
+              type="button"
+              onClick={() => {
+                setOnboardingData(prev => ({ ...prev, profilePhoto: null }));
+                startCamera();
+              }}
+              style={{
+                background: 'rgba(247, 37, 133, 0.08)',
+                border: '1.5px solid #f72585',
+                borderRadius: '12px',
+                padding: '10px 20px',
+                fontSize: '13px',
+                fontWeight: '700',
+                color: '#f72585',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <span>Retake Profile Photo</span>
+            </button>
+          ) : cameraActive ? (
+            <button
+              type="button"
+              onClick={capturePhoto}
+              style={{
+                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '10px 24px',
+                fontSize: '13px',
+                fontWeight: '700',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.2)'
+              }}
+            >
+              <span>Capture Photo</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={startCamera}
+              style={{
+                background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '10px 24px',
+                fontSize: '13px',
+                fontWeight: '700',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 12px rgba(247, 37, 133, 0.2)'
+              }}
+            >
+              <span>Start Camera</span>
+            </button>
+          )}
+
+          {/* Description & guidelines */}
+          <div style={{
+            background: isDark ? 'rgba(255,255,255,0.01)' : 'rgba(106, 0, 244, 0.02)',
+            border: `1.5px solid ${borderColor}`,
+            borderRadius: '12px',
+            padding: '12px 16px',
+            width: '100%',
+            boxSizing: 'border-box',
+            marginTop: '4px'
+          }}>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '16px' }}>💡</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <strong style={{ fontSize: '12px', color: colorTextPrimary, fontWeight: '700' }}>Selfie Guidelines</strong>
+                <span style={{ fontSize: '11px', color: colorTextSecondary, lineHeight: '1.4', textAlign: 'left' }}>
+                  • Stand in direct front light brightness (avoid backlighting).<br />
+                  • Remove sunglasses, hats, masks, or any face coverings.<br />
+                  • Look directly into the camera lens with a neutral expression.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px', color: colorTextSecondary, marginTop: '8px' }}>
+            <input 
+              type="checkbox" 
+              checked={onboardingData.liveSelfie} 
+              onChange={(e) => setOnboardingData({ ...onboardingData, liveSelfie: e.target.checked })}
+              style={{ accentColor: '#7209b7' }} 
+            />
+            <span>Perform Live Selfie verification (optional)</span>
+          </label>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '10px', width: '100%' }}>
+            <button
+              onClick={() => setDeliveryStep(6)}
+              className="btn-secondary"
+              style={{ height: '52px', border: `1.5px solid ${borderColor}`, borderRadius: '14px', fontWeight: '700', fontSize: '15px', color: colorTextSecondary, cursor: 'pointer', background: 'transparent' }}
+            >
+              Back
+            </button>
+            <button
+              onClick={() => {
+                setOtpError('');
+                if (!onboardingData.profilePhoto) {
+                  setOtpError('Please take a profile photo first to verify.');
+                  return;
+                }
+                setDeliveryStep(8);
+              }}
+              className="btn-primary"
+              style={{ height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 8: Review & Submit
+    if (deliveryStep === 8) {
+      const renderReviewItem = (label, value) => (
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', padding: '6px 0', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'}` }}>
+          <span style={{ color: colorTextSecondary, fontWeight: '500' }}>{label}</span>
+          <span style={{ color: colorTextPrimary, fontWeight: '600', textAlign: 'right' }}>{value || 'N/A'}</span>
+        </div>
+      );
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', maxHeight: '550px', overflowY: 'auto', paddingRight: '6px' }}>
+          {renderProgressHeader()}
+          <div style={{ textAlign: 'center', marginBottom: '4px' }}>
+            <h3 style={{ margin: 0, fontSize: '22px', fontWeight: '800', color: colorTextPrimary }}>
+              Review & Submit
+            </h3>
+            <p style={{ fontSize: '12px', color: colorTextMuted, marginTop: '4px' }}>
+              Double check details before final application submission
+            </p>
+          </div>
+
+          <div style={{ background: isDark ? 'rgba(255,255,255,0.01)' : '#FFFFFF', border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <strong style={{ fontSize: '13px', color: '#f72585' }}>Personal Details</strong>
+              <span style={{ fontSize: '11px', color: '#7209b7', fontWeight: '700', cursor: 'pointer' }} onClick={() => setDeliveryStep(2)}>Edit</span>
+            </div>
+            {renderReviewItem('Full Name', `${onboardingData.firstName} ${onboardingData.lastName}`)}
+            {renderReviewItem('Gender', onboardingData.gender)}
+            {renderReviewItem('Date of Birth', onboardingData.dob)}
+          </div>
+
+          <div style={{ background: isDark ? 'rgba(255,255,255,0.01)' : '#FFFFFF', border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <strong style={{ fontSize: '13px', color: '#f72585' }}>Preferred Location</strong>
+              <span style={{ fontSize: '11px', color: '#7209b7', fontWeight: '700', cursor: 'pointer' }} onClick={() => setDeliveryStep(3)}>Edit</span>
+            </div>
+            {renderReviewItem('State', onboardingData.state)}
+            {renderReviewItem('City', onboardingData.city)}
+            {renderReviewItem('Area', onboardingData.area)}
+          </div>
+
+          <div style={{ background: isDark ? 'rgba(255,255,255,0.01)' : '#FFFFFF', border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <strong style={{ fontSize: '13px', color: '#f72585' }}>Vehicle Details</strong>
+              <span style={{ fontSize: '11px', color: '#7209b7', fontWeight: '700', cursor: 'pointer' }} onClick={() => setDeliveryStep(4)}>Edit</span>
+            </div>
+            {renderReviewItem('Vehicle Type', onboardingData.vehicleType)}
+            {renderReviewItem('Vehicle Number', onboardingData.vehicleNumber)}
+          </div>
+
+          <div style={{ background: isDark ? 'rgba(255,255,255,0.01)' : '#FFFFFF', border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <strong style={{ fontSize: '13px', color: '#f72585' }}>Verification IDs</strong>
+              <span style={{ fontSize: '11px', color: '#7209b7', fontWeight: '700', cursor: 'pointer' }} onClick={() => setDeliveryStep(5)}>Edit</span>
+            </div>
+            {renderReviewItem('Aadhaar Number', onboardingData.aadhaarNumber)}
+            {renderReviewItem('PAN Card', onboardingData.panNumber)}
+            {onboardingData.vehicleType !== 'Bicycle' && (
+              <>
+                {renderReviewItem('DL Number', onboardingData.dlNumber)}
+                {renderReviewItem('RC Certificate', onboardingData.rcNumber)}
+              </>
+            )}
+          </div>
+
+          <div style={{ background: isDark ? 'rgba(255,255,255,0.01)' : '#FFFFFF', border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <strong style={{ fontSize: '13px', color: '#f72585' }}>Payout Accounts</strong>
+              <span style={{ fontSize: '11px', color: '#7209b7', fontWeight: '700', cursor: 'pointer' }} onClick={() => setDeliveryStep(6)}>Edit</span>
+            </div>
+            {renderReviewItem('Holder Name', onboardingData.bankHolder)}
+            {onboardingData.upiId ? renderReviewItem('UPI ID', onboardingData.upiId) : (
+              <>
+                {renderReviewItem('Account No.', onboardingData.bankAccount)}
+                {renderReviewItem('IFSC Code', onboardingData.bankIfsc)}
+              </>
+            )}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '10px' }}>
+            <button
+              onClick={() => setDeliveryStep(7)}
+              className="btn-secondary"
+              style={{ height: '52px', border: `1.5px solid ${borderColor}`, borderRadius: '14px', fontWeight: '700', fontSize: '15px', color: colorTextSecondary, cursor: 'pointer', background: 'transparent' }}
+            >
+              Back
+            </button>
+            <button
+              onClick={() => setDeliveryStep(9)}
+              className="btn-primary"
+              style={{ height: '52px', background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer' }}
+            >
+              Submit Application
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 9: Verification (Simulated Approval)
+    if (deliveryStep === 9) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', textAlign: 'center', alignItems: 'center', padding: '20px 0' }}>
+          <div style={{ fontSize: '50px', animation: 'spin 3s linear infinite' }} className="spinner-logo">⏳</div>
+          
+          <div>
+            <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: colorTextPrimary }}>
+              Application Submitted ✅
+            </h3>
+            <p style={{ fontSize: '14px', color: colorTextSecondary, marginTop: '12px', lineHeight: '1.6' }}>
+              We're verifying your Aadhaar, PAN, and Bank details on the logistics partner network.
+            </p>
+            <p style={{ fontSize: '13px', color: colorTextMuted, marginTop: '6px' }}>
+              This usually takes a few hours. Please stand by.
+            </p>
+          </div>
+
+          <div style={{ width: '100%', height: '6px', background: borderColor, borderRadius: '3px', overflow: 'hidden', position: 'relative' }}>
+            <div style={{
+              position: 'absolute',
+              height: '100%',
+              background: 'linear-gradient(90deg, #f72585 0%, #7209b7 100%)',
+              width: '100%',
+              animation: 'progressAnim 3.8s linear forwards'
+            }} />
+          </div>
+
+          <button
+            onClick={() => setDeliveryStep(10)}
+            className="btn-secondary animate-fade-in"
+            style={{ border: 'none', padding: '8px 16px', fontSize: '13px', fontWeight: '800', color: '#7209b7', background: 'transparent', cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            Simulate Instant Admin Approval →
+          </button>
+        </div>
+      );
+    }
+
+    // Step 10: Approved Success
+    if (deliveryStep === 10) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', textAlign: 'center', alignItems: 'center' }}>
+          <div style={{ fontSize: '50px' }}>🎉</div>
+          <div>
+            <h3 style={{ margin: 0, fontSize: '26px', fontWeight: '800', color: colorTextPrimary }}>
+              Congratulations!
+            </h3>
+            <p style={{ fontSize: '15px', color: colorTextSecondary, marginTop: '12px', lineHeight: '1.6' }}>
+              Your StitchBee Logistics Rider Account is now active. You have been background verified.
+            </p>
+          </div>
+
+          <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid #10b981', borderRadius: '16px', padding: '16px', display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left', width: '100%' }}>
+            <span style={{ fontSize: '24px' }}>🛡️</span>
+            <div>
+              <strong style={{ fontSize: '13px', color: '#10b981', display: 'block' }}>Rider Account Approved</strong>
+              <span style={{ fontSize: '11px', color: colorTextSecondary }}>Active in {onboardingData.city || 'Bengaluru'}, {onboardingData.state || 'Karnataka'}</span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              const finalUserData = {
+                name: `${onboardingData.firstName || 'Kiran'} ${onboardingData.lastName || 'Kumar'}`,
+                email: `${(onboardingData.firstName || 'kiran').toLowerCase()}@stitchbee.com`,
+                role: 'delivery',
+                phone: deliveryPhone || '9876543210',
+                address: `${onboardingData.area || 'HSR Layout'}, ${onboardingData.city || 'Bengaluru'}, ${onboardingData.state || 'Karnataka'}`,
+                onboardingCompleted: true
+              };
+              
+              localStorage.setItem('stitchbee_user', JSON.stringify(finalUserData));
+              onLoginSuccess(finalUserData);
+            }}
+            className="btn-primary"
+            style={{ width: '100%', height: '52px', background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: '#ffffff', border: 'none', borderRadius: '14px', fontWeight: '700', fontSize: '15px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 8px 20px rgba(16, 185, 129, 0.2)' }}
+          >
+            <span>Go to Dashboard</span>
+            <ArrowRight size={18} />
+          </button>
+        </div>
+      );
+    }
+  };
+
   const handleQuickFill = (emailVal, passVal) => {
     setEmail(emailVal);
     setPassword(passVal);
@@ -180,6 +1575,17 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
           0%, 100% { opacity: 0.2; }
           50% { opacity: 0.8; }
         }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes progressAnim {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(4px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
@@ -192,6 +1598,12 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
         }
         .animate-sparkle {
           animation: spark 3s ease-in-out infinite;
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.4s ease-out forwards;
+        }
+        .spinner-camera, .spinner-logo {
+          animation: spin 1s linear infinite;
         }
         .input-glow-focus:focus-within {
           border-color: #f72585 !important;
@@ -318,42 +1730,7 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {tab === 'signup' && (
-              <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '500' }}>
-                Already have an account?
-              </span>
-            )}
-            <button
-              className="btn-primary"
-              onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
-              style={{
-                background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
-                border: 'none',
-                color: '#ffffff',
-                padding: '8px 20px',
-                borderRadius: '12px',
-                fontWeight: '700',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(247, 37, 133, 0.2)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(247, 37, 133, 0.35)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(247, 37, 133, 0.2)';
-              }}
-            >
-              {tab === 'login' ? 'Sign Up' : 'Login'}
-            </button>
-          </div>
+          {/* Login and Signup top buttons removed - redesigned directly inside the card */}
         </div>
       </header>
 
@@ -729,308 +2106,330 @@ export default function AuthPage({ tab = 'login', setTab, onLoginSuccess, onClos
             style={{ 
               width: '100%', 
               maxWidth: '520px', 
-              background: isDark ? 'rgba(18, 15, 38, 0.75)' : 'rgba(255, 255, 255, 0.75)', 
+              background: isDark ? 'rgba(18, 15, 38, 0.85)' : '#FFFFFF', 
               backdropFilter: 'blur(20px)',
-              border: `1.5px solid ${borderColor}`, 
+              border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)'}`, 
+              borderTop: '4px solid #f72585',
               borderRadius: '24px', 
               padding: '40px',
-              boxShadow: isDark ? '0 30px 60px rgba(0, 0, 0, 0.4)' : '0 30px 60px rgba(106, 0, 244, 0.08)',
+              boxShadow: isDark ? '0 30px 60px rgba(0, 0, 0, 0.4)' : '0 20px 40px rgba(106, 0, 244, 0.05)',
               boxSizing: 'border-box',
-              zIndex: 20
+              zIndex: 20,
+              transition: 'all 0.3s ease'
             }}
             className="auth-card"
           >
-            {/* Header Content */}
-            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <span style={{ fontSize: '15px', fontWeight: '700', color: '#f72585', display: 'block', marginBottom: '6px' }}>
-                {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
-              </span>
-              <h2 style={{ margin: 0, fontSize: '28px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
-                {tab === 'login' ? 'Login to your account' : 'Create your account'}
-              </h2>
-            </div>
-
-            {/* Error box */}
-            {error && (
-              <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', marginBottom: '20px' }}>
-                {error}
-              </div>
-            )}
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              
-              {tab === 'signup' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="auth-name-phone-row">
-                  {/* Full Name */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Full Name</label>
-                    <div 
-                      className="input-glow-focus"
-                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
-                    >
-                      <User size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
-                      <input 
-                        type="text" 
-                        placeholder="John Doe" 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
-                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
-                        required 
-                      />
-                    </div>
-                  </div>
-
-                  {/* Phone Number */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Phone Number</label>
-                    <div 
-                      className="input-glow-focus"
-                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
-                    >
-                      <Phone size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
-                      <input 
-                        type="tel" 
-                        placeholder="+91 98765 43210" 
-                        value={phone} 
-                        onChange={(e) => setPhone(e.target.value)} 
-                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
-                        required 
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Email Address */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Email Address</label>
-                <div 
-                  className="input-glow-focus"
-                  style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
-                >
-                  <Mail size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
-                  <input 
-                    type="email" 
-                    placeholder="john@example.com" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
-                    required 
-                  />
-                </div>
-              </div>
-
-              {/* Password row */}
-              <div style={{ display: 'grid', gridTemplateColumns: tab === 'signup' ? '1fr 1fr' : '1fr', gap: '16px' }} className="auth-password-row">
-                
-                {/* Password */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Password</label>
-                  <div 
-                    className="input-glow-focus"
-                    style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
-                  >
-                    <Lock size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
-                    <input 
-                      type={showPassword ? 'text' : 'password'} 
-                      placeholder="••••••••" 
-                      value={password} 
-                      onChange={(e) => setPassword(e.target.value)} 
-                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
-                      required 
-                    />
-                    <button 
-                      type="button" 
-                      onClick={() => setShowPassword(!showPassword)}
-                      style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', position: 'absolute', right: '14px', color: colorTextMuted, display: 'flex', alignItems: 'center' }}
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  </div>
+            {role === 'delivery' ? (
+              renderDeliveryWizard()
+            ) : (
+              <>
+                {/* Header Content */}
+                <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                  <span style={{ fontSize: '15px', fontWeight: '700', color: '#f72585', display: 'block', marginBottom: '6px' }}>
+                    {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
+                  </span>
+                  <h2 style={{ margin: 0, fontSize: '28px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
+                    {tab === 'login' ? 'Login to your account' : 'Create your account'}
+                  </h2>
                 </div>
 
-                {/* Confirm Password */}
-                {tab === 'signup' && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Confirm Password</label>
-                    <div 
-                      className="input-glow-focus"
-                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
-                    >
-                      <Lock size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
-                      <input 
-                        type={showConfirmPassword ? 'text' : 'password'} 
-                        placeholder="••••••••" 
-                        value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.value)} 
-                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
-                        required 
-                      />
-                      <button 
-                        type="button" 
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', position: 'absolute', right: '14px', color: colorTextMuted, display: 'flex', alignItems: 'center' }}
-                      >
-                        {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </button>
-                    </div>
+                {/* Error box */}
+                {error && (
+                  <div style={{ background: 'rgba(247, 37, 133, 0.08)', color: '#f72585', border: '1px solid rgba(247, 37, 133, 0.15)', padding: '12px 16px', borderRadius: '12px', fontSize: '14px', fontWeight: '600', marginBottom: '20px' }}>
+                    {error}
                   </div>
                 )}
 
-              </div>
+                {/* Form */}
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  
+                  {tab === 'signup' && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="auth-name-phone-row">
+                      {/* Full Name */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Full Name</label>
+                        <div 
+                          className="input-glow-focus"
+                          style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                        >
+                          <User size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
+                          <input 
+                            type="text" 
+                            placeholder="John Doe" 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
+                            required 
+                          />
+                        </div>
+                      </div>
 
-              {/* Sizing Address (Only Signup + customer, but we keep the logic intact) */}
-              {tab === 'signup' && role === 'customer' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} className="animate-fade-in">
-                  <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Delivery & Sizing Address</label>
-                  <div 
-                    className="input-glow-focus"
-                    style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
-                  >
-                    <MapPin size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
-                    <input 
-                      type="text" 
-                      placeholder="123 Green Glen Road, HSR Layout, Bengaluru" 
-                      value={address} 
-                      onChange={(e) => setAddress(e.target.value)} 
-                      style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
-                      required 
-                    />
+                      {/* Phone Number */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Phone Number</label>
+                        <div 
+                          className="input-glow-focus"
+                          style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                        >
+                          <Phone size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
+                          <input 
+                            type="tel" 
+                            placeholder="+91 98765 43210" 
+                            value={phone} 
+                            onChange={(e) => setPhone(e.target.value)} 
+                            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
+                            required 
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Email Address */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Email Address</label>
+                    <div 
+                      className="input-glow-focus"
+                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                    >
+                      <Mail size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
+                      <input 
+                        type="email" 
+                        placeholder="john@example.com" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
+                        required 
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
 
-              {/* Remember Me / Forgot Password */}
-              {tab === 'login' && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: colorTextSecondary, fontWeight: '600' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={rememberMe} 
-                      onChange={(e) => setRememberMe(e.target.checked)} 
-                      style={{ accentColor: '#f72585', width: '16px', height: '16px', borderRadius: '4px' }} 
-                    />
-                    Remember me
-                  </label>
-                  <span 
-                    onClick={() => alert("Password reset link sent to your email!")}
-                    style={{ color: '#f72585', fontWeight: '700', cursor: 'pointer' }}
+                  {/* Password row */}
+                  <div style={{ display: 'grid', gridTemplateColumns: tab === 'signup' ? '1fr 1fr' : '1fr', gap: '16px' }} className="auth-password-row">
+                    
+                    {/* Password */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Password</label>
+                      <div 
+                        className="input-glow-focus"
+                        style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
+                      >
+                        <Lock size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
+                        <input 
+                          type={showPassword ? 'text' : 'password'} 
+                          placeholder="••••••••" 
+                          value={password} 
+                          onChange={(e) => setPassword(e.target.value)} 
+                          style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
+                          required 
+                        />
+                        <button 
+                          type="button" 
+                          onClick={() => setShowPassword(!showPassword)}
+                          style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', position: 'absolute', right: '14px', color: colorTextMuted, display: 'flex', alignItems: 'center' }}
+                        >
+                          {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Confirm Password */}
+                    {tab === 'signup' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Confirm Password</label>
+                        <div 
+                          className="input-glow-focus"
+                          style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
+                        >
+                          <Lock size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
+                          <input 
+                            type={showConfirmPassword ? 'text' : 'password'} 
+                            placeholder="••••••••" 
+                            value={confirmPassword} 
+                            onChange={(e) => setConfirmPassword(e.target.value)} 
+                            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
+                            required 
+                          />
+                          <button 
+                            type="button" 
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', position: 'absolute', right: '14px', color: colorTextMuted, display: 'flex', alignItems: 'center' }}
+                          >
+                            {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+
+                  {/* Sizing Address (Only Signup + customer, but we keep the logic intact) */}
+                  {tab === 'signup' && role === 'customer' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }} className="animate-fade-in">
+                      <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Delivery & Sizing Address</label>
+                      <div 
+                        className="input-glow-focus"
+                        style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                      >
+                        <MapPin size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
+                        <input 
+                          type="text" 
+                          placeholder="123 Green Glen Road, HSR Layout, Bengaluru" 
+                          value={address} 
+                          onChange={(e) => setAddress(e.target.value)} 
+                          style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500' }} 
+                          required 
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Remember Me / Forgot Password */}
+                  {tab === 'login' && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: colorTextSecondary, fontWeight: '600' }}>
+                        <input 
+                          type="checkbox" 
+                          checked={rememberMe} 
+                          onChange={(e) => setRememberMe(e.target.checked)} 
+                          style={{ accentColor: '#f72585', width: '16px', height: '16px', borderRadius: '4px' }} 
+                        />
+                        Remember me
+                      </label>
+                      <span 
+                        onClick={() => alert("Password reset link sent to your email!")}
+                        style={{ color: '#f72585', fontWeight: '700', cursor: 'pointer' }}
+                      >
+                        Forgot Password?
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Gradient Submit Button */}
+                  <button 
+                    type="submit"
+                    className="btn-primary"
+                    style={{ 
+                      width: '100%', 
+                      height: '56px',
+                      background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
+                      color: '#ffffff', 
+                      border: 'none', 
+                      borderRadius: '16px', 
+                      fontWeight: '700', 
+                      fontSize: '16px', 
+                      cursor: 'pointer', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      gap: '8px',
+                      boxShadow: '0 12px 28px rgba(247, 37, 133, 0.2)',
+                      marginTop: '8px',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 16px 36px rgba(247, 37, 133, 0.35)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.boxShadow = '0 12px 28px rgba(247, 37, 133, 0.2)';
+                    }}
                   >
-                    Forgot Password?
+                    <span>{tab === 'login' ? 'Login to Portal' : 'Create Account'}</span>
+                    <ArrowRight size={18} />
+                  </button>
+
+                </form>
+
+                {/* Below Submit Indicators */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginTop: '16px', fontSize: '11px', color: colorTextMuted, fontWeight: '600' }}>
+                  <span>✓ Secure Login</span>
+                  <span>• End-to-end encrypted</span>
+                  <span>• Background verified riders</span>
+                </div>
+
+                {/* Separator */}
+                <div style={{ display: 'flex', alignItems: 'center', margin: '24px 0 16px 0' }}>
+                  <div style={{ flex: 1, height: '1px', background: borderColor }} />
+                  <span style={{ padding: '0 12px', fontSize: '11px', color: colorTextMuted, fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1px' }}>or continue with</span>
+                  <div style={{ flex: 1, height: '1px', background: borderColor }} />
+                </div>
+
+                {/* Social Logins */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }} className="auth-social-row">
+                  
+                  <button 
+                    type="button"
+                    onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                    title="Google Login"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.borderColor = '#f72585';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.borderColor = borderColor;
+                    }}
+                  >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style={{ width: '16px', height: '16px' }} />
+                    <span>Google</span>
+                  </button>
+
+                  <button 
+                    type="button"
+                    onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                    title="Apple Login"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.borderColor = '#7209b7';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.borderColor = borderColor;
+                    }}
+                  >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style={{ width: '14px', height: '14px', filter: isDark ? 'invert(1)' : 'none' }} />
+                    <span>Apple</span>
+                  </button>
+
+                  <button 
+                    type="button"
+                    onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                    title="Facebook Login"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.borderColor = '#1877F2';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'none';
+                      e.currentTarget.style.borderColor = borderColor;
+                    }}
+                  >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" style={{ width: '16px', height: '16px' }} />
+                    <span>Facebook</span>
+                  </button>
+
+                </div>
+
+                {/* Redesigned Switch tab option inside the card */}
+                <div style={{ textAlign: 'center', marginTop: '24px' }}>
+                  <span style={{ fontSize: '14px', color: colorTextSecondary, fontWeight: '500' }}>
+                    {tab === 'login' ? "New to StitchBee? " : "Already have an account? "}
+                    <button
+                      type="button"
+                      onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
+                      style={{ background: 'transparent', border: 'none', padding: 0, color: '#f72585', fontWeight: '700', cursor: 'pointer', fontSize: '14px', textDecoration: 'underline', marginLeft: '4px', outline: 'none' }}
+                    >
+                      {tab === 'login' ? 'Create Account' : 'Login'}
+                    </button>
                   </span>
                 </div>
-              )}
-
-              {/* Gradient Submit Button */}
-              <button 
-                type="submit"
-                className="btn-primary"
-                style={{ 
-                  width: '100%', 
-                  height: '56px',
-                  background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
-                  color: '#ffffff', 
-                  border: 'none', 
-                  borderRadius: '16px', 
-                  fontWeight: '700', 
-                  fontSize: '16px', 
-                  cursor: 'pointer', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  gap: '8px',
-                  boxShadow: '0 12px 28px rgba(247, 37, 133, 0.2)',
-                  marginTop: '8px',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 16px 36px rgba(247, 37, 133, 0.35)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(247, 37, 133, 0.2)';
-                }}
-              >
-                <span>{tab === 'login' ? 'Login to Portal' : 'Create Account'}</span>
-                <ArrowRight size={18} />
-              </button>
-
-            </form>
-
-            {/* Below Submit Indicators */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginTop: '16px', fontSize: '11px', color: colorTextMuted, fontWeight: '600' }}>
-              <span>✓ Secure Login</span>
-              <span>• End-to-end encrypted</span>
-              <span>• Background verified riders</span>
-            </div>
-
-            {/* Separator */}
-            <div style={{ display: 'flex', alignItems: 'center', margin: '24px 0 16px 0' }}>
-              <div style={{ flex: 1, height: '1px', background: borderColor }} />
-              <span style={{ padding: '0 12px', fontSize: '11px', color: colorTextMuted, fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1px' }}>or continue with</span>
-              <div style={{ flex: 1, height: '1px', background: borderColor }} />
-            </div>
-
-            {/* Social Logins */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }} className="auth-social-row">
-              
-              <button 
-                type="button"
-                onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
-                title="Google Login"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#f72585';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = borderColor;
-                }}
-              >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style={{ width: '16px', height: '16px' }} />
-                <span>Google</span>
-              </button>
-
-              <button 
-                type="button"
-                onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
-                title="Apple Login"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#7209b7';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = borderColor;
-                }}
-              >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style={{ width: '14px', height: '14px', filter: isDark ? 'invert(1)' : 'none' }} />
-                <span>Apple</span>
-              </button>
-
-              <button 
-                type="button"
-                onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
-                title="Facebook Login"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  e.currentTarget.style.borderColor = '#1877F2';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = borderColor;
-                }}
-              >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook" style={{ width: '16px', height: '16px' }} />
-                <span>Facebook</span>
-              </button>
-
-            </div>
+              </>
+            )}
 
           </div>
         </div>
