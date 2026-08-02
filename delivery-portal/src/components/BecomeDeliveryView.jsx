@@ -520,41 +520,43 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             <div className="benefits-right-download-col reveal-right">
               <h4 className="download-title">Download the StitchBee<br />Partner App</h4>
               
-              <div className="store-buttons-container">
-                <div className="store-badge-v3 play-store">
-                  <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path d="M3.609,1.814 C3.38,2.043 3.25,2.4 3.25,2.86 L3.25,21.14 C3.25,21.6 3.38,21.957 3.609,22.186 L3.684,22.251 L13.882,12.053 L13.882,11.947 L3.684,1.749 L3.609,1.814 Z" fill="#00E5FF"/>
-                    <path d="M17.272,15.448 L13.882,12.057 L13.882,11.943 L17.273,8.552 L17.348,8.595 L21.365,10.878 C22.513,11.53 22.513,12.47 21.365,13.122 L17.348,15.405 L17.272,15.448 Z" fill="#FFC107"/>
-                    <path d="M3.684,1.749 L13.882,11.947 L17.272,8.557 L3.684,1.749 Z" fill="#FF3D00"/>
-                    <path d="M3.684,22.251 L17.272,15.443 L13.882,12.053 L3.684,22.251 Z" fill="#4CAF50"/>
-                  </svg>
-                  <div className="store-badge-text">
-                    <span className="store-pre">GET IT ON</span>
-                    <span className="store-main">Google Play</span>
+              <div className="downloads-row-wrapper-v3">
+                <div className="store-buttons-container" style={{ marginBottom: 0 }}>
+                  <div className="store-badge-v3 play-store">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path d="M3.609,1.814 C3.38,2.043 3.25,2.4 3.25,2.86 L3.25,21.14 C3.25,21.6 3.38,21.957 3.609,22.186 L3.684,22.251 L13.882,12.053 L13.882,11.947 L3.684,1.749 L3.609,1.814 Z" fill="#00E5FF"/>
+                      <path d="M17.272,15.448 L13.882,12.057 L13.882,11.943 L17.273,8.552 L17.348,8.595 L21.365,10.878 C22.513,11.53 22.513,12.47 21.365,13.122 L17.348,15.405 L17.272,15.448 Z" fill="#FFC107"/>
+                      <path d="M3.684,1.749 L13.882,11.947 L17.272,8.557 L3.684,1.749 Z" fill="#FF3D00"/>
+                      <path d="M3.684,22.251 L17.272,15.443 L13.882,12.053 L3.684,22.251 Z" fill="#4CAF50"/>
+                    </svg>
+                    <div className="store-badge-text">
+                      <span className="store-pre">GET IT ON</span>
+                      <span className="store-main">Google Play</span>
+                    </div>
+                  </div>
+                  
+                  <div className="store-badge-v3 app-store">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                      <path d="M18.71,19.5 C17.88,20.74 17,21.95 15.66,21.97 C14.32,22 13.89,21.18 12.37,21.18 C10.84,21.18 10.37,21.95 9.1,22 C7.79,22.05 6.8,20.68 5.96,19.47 C4.25,17 2.94,12.45 4.7,9.39 C5.57,7.87 7.13,6.91 8.82,6.88 C10.1,6.86 11.32,7.75 12.11,7.75 C12.89,7.75 14.37,6.68 15.92,6.84 C16.57,6.87 18.39,7.1 19.56,8.82 C19.47,8.88 17.39,10.1 17.41,12.63 C17.44,15.65 20.06,16.66 20.1,16.67 C20.08,16.74 19.67,18.11 18.71,19.5 M15.97,4.17 C16.63,3.37 17.07,2.28 16.95,1 C15.85,1.04 14.51,1.73 13.73,2.64 C13.07,3.41 12.49,4.52 12.64,5.78 C13.87,5.87 15.12,5.17 15.97,4.17 Z" fill="currentColor"/>
+                    </svg>
+                    <div className="store-badge-text">
+                      <span className="store-pre">Download on the</span>
+                      <span className="store-main">App Store</span>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="store-badge-v3 app-store">
-                  <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path d="M18.71,19.5 C17.88,20.74 17,21.95 15.66,21.97 C14.32,22 13.89,21.18 12.37,21.18 C10.84,21.18 10.37,21.95 9.1,22 C7.79,22.05 6.8,20.68 5.96,19.47 C4.25,17 2.94,12.45 4.7,9.39 C5.57,7.87 7.13,6.91 8.82,6.88 C10.1,6.86 11.32,7.75 12.11,7.75 C12.89,7.75 14.37,6.68 15.92,6.84 C16.57,6.87 18.39,7.1 19.56,8.82 C19.47,8.88 17.39,10.1 17.41,12.63 C17.44,15.65 20.06,16.66 20.1,16.67 C20.08,16.74 19.67,18.11 18.71,19.5 M15.97,4.17 C16.63,3.37 17.07,2.28 16.95,1 C15.85,1.04 14.51,1.73 13.73,2.64 C13.07,3.41 12.49,4.52 12.64,5.78 C13.87,5.87 15.12,5.17 15.97,4.17 Z" fill="currentColor"/>
-                  </svg>
-                  <div className="store-badge-text">
-                    <span className="store-pre">Download on the</span>
-                    <span className="store-main">App Store</span>
-                  </div>
-                </div>
-              </div>
 
-              {/* QR Code Card */}
-              <div className="qr-download-card">
-                <div className="qr-code-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <img 
-                    src="/qr_code_user.png" 
-                    alt="Scan to Download Android App" 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                  />
+                {/* QR Code Card */}
+                <div className="qr-download-card" style={{ marginTop: 0 }}>
+                  <div className="qr-code-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <img 
+                      src="/qr_code_user.png" 
+                      alt="Scan to Download Android App" 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
+                  </div>
+                  <span className="qr-card-label">Scan to Download Android App</span>
                 </div>
-                <span className="qr-card-label">Scan to Download Android App</span>
               </div>
             </div>
 

@@ -10421,11 +10421,26 @@ body.light-theme .floating-card-v3 {
 
 /* Column 3: Right App Downloads & QR */
 .benefits-right-download-col {
-  flex: 0 0 320px;
+  flex: 0 0 460px;
   text-align: left;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.downloads-row-wrapper-v3 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .downloads-row-wrapper-v3 {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
 }
 
 @media (max-width: 1024px) {
