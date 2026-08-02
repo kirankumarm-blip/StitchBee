@@ -10713,3 +10713,310 @@ body.light-theme .phone-app-notification .notif-body strong {
 body.light-theme .phone-app-map-widget {
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
+
+/* ==========================================================================
+   Premium SWIGGY/UBER Inspired 5-Column Footer Redesign
+   ========================================================================== */
+.delivery-premium-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+  padding: 70px 0 !important;
+  width: 100% !important;
+  font-family: var(--font-sans) !important;
+  color: #374151 !important;
+}
+
+/* Light / Dark Mode Consistency - Footer stays white as requested */
+body.light-theme .delivery-premium-footer,
+body.dark-theme .delivery-premium-footer {
+  background: #ffffff !important;
+  color: #374151 !important;
+}
+
+.footer-container-v4 {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  padding: 0 40px !important;
+  box-sizing: border-box !important;
+}
+
+.footer-top-v4 {
+  display: grid !important;
+  grid-template-columns: 2fr 1.2fr 1.2fr 1.8fr 1.8fr !important; /* 5 evenly distributed/proportional columns */
+  gap: 56px !important; /* 48-64px spacing range */
+  margin-bottom: 50px !important;
+  align-items: start !important;
+}
+
+/* Column 1 – Brand */
+.brand-col-v4 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+.footer-logo-v4 {
+  height: 50px !important;
+  object-fit: contain !important;
+  margin-bottom: 16px !important;
+}
+
+.footer-tagline-v4 {
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  color: #6b7280 !important; /* gray-500 */
+  margin-bottom: 24px !important;
+  max-width: 240px !important;
+}
+
+.footer-social-icons-v4 {
+  display: flex !important;
+  gap: 12px !important;
+}
+
+.footer-social-icons-v4 a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: #f3f4f6 !important; /* light gray bg */
+  color: #4b5563 !important;
+  transition: all 250ms ease !important;
+  text-decoration: none !important;
+}
+
+.footer-social-icons-v4 a:hover {
+  background: var(--primary) !important; /* StitchBee primary color bg */
+  color: #ffffff !important; /* White icon */
+  transform: translateY(-2px) !important;
+}
+
+/* Columns 2 & 3 – Company & Partner Links */
+.footer-heading-v4 {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #111827 !important; /* dark slate */
+  margin-bottom: 20px !important;
+  text-transform: none !important;
+  letter-spacing: 0.5px !important;
+}
+
+.footer-links-v4 {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.footer-links-v4 li {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.footer-links-v4 a,
+.footer-links-v4 .footer-link-v4 {
+  font-size: 15px !important; /* 15px */
+  font-weight: 500 !important; /* Medium weight */
+  color: #374151 !important; /* Dark gray text */
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: color 200ms ease !important;
+}
+
+.footer-links-v4 a:hover,
+.footer-links-v4 .footer-link-v4:hover {
+  color: var(--primary) !important; /* Hover to StitchBee primary color */
+}
+
+/* Column 4 – Download App Buttons */
+.download-col-v4 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.footer-downloads-v4 {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+.download-btn-v4 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: #f3f4f6 !important; /* light gray bg */
+  border: 1px solid rgba(0, 0, 0, 0.03) !important;
+  border-radius: 12px !important; /* 12px rounded corners */
+  padding: 10px 16px !important;
+  width: 180px !important; /* Width around 180px */
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  transition: all 250ms ease !important;
+}
+
+.download-btn-v4:hover {
+  background: #e5e7eb !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important; /* Hover elevation */
+}
+
+.download-btn-text-v4 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+.download-pre-v4 {
+  font-size: 0.6rem !important;
+  color: #6b7280 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1.1 !important;
+}
+
+.download-main-v4 {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  line-height: 1.2 !important;
+}
+
+/* Column 5 – QR Code Card */
+.qr-col-v4 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.footer-qr-card-v4 {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important; /* Light border */
+  border-radius: 12px !important; /* 12px rounded corners */
+  padding: 12px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important; /* Soft shadow */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 130px !important;
+  box-sizing: border-box !important;
+}
+
+.footer-qr-img-v4 {
+  width: 95px !important; /* 90-100px size */
+  height: 95px !important;
+  object-fit: contain !important;
+  margin-bottom: 8px !important;
+}
+
+.footer-qr-caption-v4 {
+  font-size: 11px !important;
+  color: #6b7280 !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+/* Bottom Footer copyright block */
+.footer-bottom-v4 {
+  border-top: 1px solid #f1f5f9 !important; /* separator line */
+  padding-top: 30px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.footer-copyright-v4 {
+  font-size: 0.88rem !important;
+  color: #6b7280 !important;
+}
+
+.footer-bottom-links-v4 {
+  display: flex !important;
+  gap: 24px !important; /* Spacing between links 24px */
+}
+
+.footer-bottom-links-v4 span {
+  font-size: 0.88rem !important;
+  color: #4b5563 !important;
+  cursor: pointer !important;
+  transition: color 200ms ease !important;
+  font-weight: 500 !important;
+}
+
+.footer-bottom-links-v4 span:hover {
+  color: var(--primary) !important; /* Hover primary brand color */
+}
+
+/* Mobile Responsive Footer (< 768px) */
+@media (max-width: 768px) {
+  .delivery-premium-footer {
+    padding: 50px 0 !important;
+  }
+  
+  .footer-container-v4 {
+    padding: 0 24px !important;
+  }
+  
+  .footer-top-v4 {
+    grid-template-columns: 1fr !important; /* Stack all columns vertically */
+    gap: 32px !important; /* Maintain 32px spacing between sections */
+    text-align: center !important;
+    justify-items: center !important;
+  }
+  
+  .brand-col-v4,
+  .download-col-v4,
+  .qr-col-v4 {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  
+  .footer-tagline-v4 {
+    max-width: 100% !important;
+  }
+  
+  .footer-social-icons-v4 {
+    justify-content: center !important; /* Center social icons */
+  }
+  
+  .footer-links-v4 {
+    align-items: center !important;
+  }
+  
+  /* Show QR code below the app download buttons */
+  .download-col-v4 {
+    order: 4 !important;
+  }
+  .qr-col-v4 {
+    order: 5 !important;
+  }
+  
+  .download-btn-v4 {
+    width: 280px !important; /* Keep download buttons full width max-width 280px */
+    max-width: 280px !important;
+    justify-content: center !important;
+  }
+  
+  .footer-bottom-v4 {
+    flex-direction: column !important;
+    gap: 16px !important;
+    text-align: center !important;
+    padding-top: 24px !important;
+  }
+  
+  .footer-bottom-links-v4 {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 16px 24px !important;
+  }
+}
