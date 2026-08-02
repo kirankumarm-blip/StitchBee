@@ -79,6 +79,47 @@ export default function BecomeDeliveryView({ onJoinClick }) {
   const [activeFaq, setActiveFaq] = useState(null);
   const [earningsCount, setEarningsCount] = useState(0);
 
+  // 3D Phone Mockup Tilt & Counter states
+  const [tilt, setTilt] = useState({ rotateX: 12, rotateY: -18 });
+  const [liveEarnings, setLiveEarnings] = useState(1850);
+  const [liveDeliveries, setLiveDeliveries] = useState(12);
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    
+    // Calculate tilt values (tilt max 8 degrees)
+    const rotateY = (x / (box.width / 2)) * 8;
+    const rotateX = -(y / (box.height / 2)) * 8;
+    
+    setTilt({ rotateX, rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    // Return back to standard 3D depth angles: rotateY(-18deg), rotateX(12deg)
+    setTilt({ rotateX: 12, rotateY: -18 });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveEarnings((prev) => {
+        if (prev === 1850) {
+          setLiveDeliveries(13);
+          return 1875;
+        }
+        if (prev === 1875) {
+          setLiveDeliveries(14);
+          return 1900;
+        }
+        setLiveDeliveries(12);
+        return 1850;
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     let current = 0;
     const interval = setInterval(() => {
@@ -340,213 +381,190 @@ export default function BecomeDeliveryView({ onJoinClick }) {
         </div>
       </section>
 
-      {/* 3. Why Choose StitchBee (More Benefits. More Freedom.) */}
-      <section id="delivery-benefits" className="become-delivery-why-join-section" style={{ padding: '7rem 3.5rem', position: 'relative', overflow: 'hidden' }}>
+      {/* 3. Why Choose StitchBee (More Benefits. More Freedom. Redesigned) */}
+      <section id="delivery-benefits" className="become-delivery-why-join-section" style={{ padding: '6rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
         
-        {/* Decorative background glows */}
-        <div className="why-join-glow-pink" />
-        <div className="why-join-glow-purple" />
+        {/* Decorative background glows & particles behind the phone */}
+        <div className="phone-back-effects">
+          <div className="phone-glow-blob" />
+          <div className="phone-light-rays" />
+          <div className="phone-glass-circle circle-1" />
+          <div className="phone-glass-circle circle-2" />
+          <div className="phone-particles">
+            <div className="particle p1" />
+            <div className="particle p2" />
+            <div className="particle p3" />
+            <div className="particle p4" />
+          </div>
+        </div>
 
         <div style={{ maxWidth: '1320px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
-          
-          <div className="delivery-benefits-main-split-container">
+          <div className="delivery-benefits-three-col-layout">
             
-            {/* Left Side: Headline & 3x2 Grid of 6 Premium Cards */}
-            <div className="delivery-benefits-left-col reveal-left">
-              <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
-                <span className="premium-section-badge">
-                  WHY CHOOSE STITCHBEE?
-                </span>
-                <h2 className="become-delivery-why-join-title">
-                  More Benefits. More Freedom.
-                </h2>
-                <p className="premium-supporting-text">
-                  Everything you need to earn more, work flexibly, and grow with India's fastest tailoring delivery platform.
-                </p>
-              </div>
-
-              {/* 3x2 Grid of 6 cards */}
-              <div className="delivery-benefits-3x2-grid">
-                
-                {/* Card 1 */}
-                <div className="delivery-premium-feature-card">
-                  <div className="premium-card-icon-wrapper grad-pink">
-                    <Clock size={20} />
-                  </div>
-                  <h4 className="premium-card-title">Work on Your Terms</h4>
-                  <p className="premium-card-desc">Choose your own working hours and deliver at your convenience.</p>
+            {/* Column 1: Animated 3D Phone Mockup & Floating Cards */}
+            <div className="phone-animation-column reveal-3d-phone">
+              <div 
+                className="interactive-phone-perspective-wrapper"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                {/* Floating Cards around the phone */}
+                <div className="floating-card-v3 card-rating">
+                  <span className="star-icon">⭐</span> 4.9
+                </div>
+                <div className="floating-card-v3 card-earnings">
+                  ₹{liveEarnings}
+                </div>
+                <div className="floating-card-v3 card-deliveries">
+                  📦 {liveDeliveries}
+                </div>
+                <div className="floating-card-v3 card-status">
+                  <span className="live-dot-v3" /> Live
                 </div>
 
-                {/* Card 2 */}
-                <div className="delivery-premium-feature-card">
-                  <div className="premium-card-icon-wrapper grad-purple">
-                    <DollarSign size={20} />
-                  </div>
-                  <h4 className="premium-card-title">Higher Earnings</h4>
-                  <p className="premium-card-desc">Earn competitive rates per delivery plus milestone weekly bonuses.</p>
-                </div>
+                {/* The 3D Phone Body */}
+                <div 
+                  className="phone-body-3d"
+                  style={{
+                    transform: `rotateY(${tilt.rotateY}deg) rotateX(${tilt.rotateX}deg)`
+                  }}
+                >
+                  <div className="phone-inner-screen">
+                    <div className="phone-notch" />
+                    
+                    {/* Screen App Layout */}
+                    <div className="phone-app-container">
+                      <div className="phone-app-header">
+                        <span>Hello, Partner 👋</span>
+                      </div>
+                      
+                      {/* Earnings widget */}
+                      <div className="phone-app-earnings-widget">
+                        <span className="widget-label">Today's Earnings</span>
+                        <div className="widget-value-row">
+                          <strong className="widget-value">₹{liveEarnings}</strong>
+                          <span className="widget-trend">↑</span>
+                        </div>
+                        <span className="widget-deliveries">{liveDeliveries} Deliveries</span>
+                      </div>
 
-                {/* Card 3 */}
-                <div className="delivery-premium-feature-card">
-                  <div className="premium-card-icon-wrapper grad-red">
-                    <Zap size={20} />
-                  </div>
-                  <h4 className="premium-card-title">Weekly Instant Payouts</h4>
-                  <p className="premium-card-desc">Get paid every week with secure, instant, and on-time transfers.</p>
-                </div>
+                      {/* Recent Order notification widget */}
+                      <div className="phone-app-notification">
+                        <div className="notif-header">
+                          <span className="notif-tag">Recent Order</span>
+                          <span className="notif-status">Delivered</span>
+                        </div>
+                        <div className="notif-body">
+                          <strong>#SB1234</strong>
+                          <strong>₹160</strong>
+                        </div>
+                      </div>
 
-                {/* Card 4 */}
-                <div className="delivery-premium-feature-card">
-                  <div className="premium-card-icon-wrapper grad-blue">
-                    <Shield size={20} />
-                  </div>
-                  <h4 className="premium-card-title">Accident Insurance</h4>
-                  <p className="premium-card-desc">Comprehensive accidental insurance and medical coverage always with you.</p>
-                </div>
+                      {/* Interactive Route Map widget */}
+                      <div className="phone-app-map-widget">
+                        <div className="map-gps-route">
+                          <span className="gps-start">●</span>
+                          <div className="gps-line-container">
+                            <div className="gps-line-progress" />
+                          </div>
+                          <span className="gps-end">►</span>
+                        </div>
+                        <div className="map-pin-indicator">
+                          <span className="bouncing-pin">📍</span>
+                        </div>
+                      </div>
 
-                {/* Card 5 */}
-                <div className="delivery-premium-feature-card">
-                  <div className="premium-card-icon-wrapper grad-yellow">
-                    <UserCheck size={20} />
-                  </div>
-                  <h4 className="premium-card-title">Dedicated Partner Support</h4>
-                  <p className="premium-card-desc">Get 24/7 dedicated support for any delivery issues or queries.</p>
-                </div>
+                    </div>
 
-                {/* Card 6 */}
-                <div className="delivery-premium-feature-card">
-                  <div className="premium-card-icon-wrapper grad-pink2">
-                    <Users size={20} />
                   </div>
-                  <h4 className="premium-card-title">Growing Community</h4>
-                  <p className="premium-card-desc">Join a growing community that respects, supports, and values you.</p>
                 </div>
-
               </div>
             </div>
 
-            {/* Right Side: Onboarding Panel with 3D Rotating Phone Mockup & Glassmorphism CTA card */}
-            <div className="delivery-signup-right-col reveal-right">
+            {/* Column 2: Bullet points & Info */}
+            <div className="benefits-middle-info-col reveal-left">
+              <h3 className="middle-col-title">
+                Everything You Need,<br />In <span className="highlight-pink-text">One App</span>
+              </h3>
               
-              {/* Phone Mockup with 3D Rotation */}
-              <div className="delivery-phone-overlapping-frame-3d">
-                <div className="delivery-phone-glow-bg" />
-                <div className="delivery-phone-screen-small">
-                  <div className="delivery-phone-notch-small" />
-                  
-                  {/* Phone App Content */}
-                  <div className="delivery-app-content-small">
-                    <div className="delivery-app-header-small">
-                      <span>Hello, Partner 👋</span>
-                    </div>
+              <ul className="benefits-bullet-list">
+                <li>
+                  <span className="bullet-icon-box pink"><Zap size={18} /></span>
+                  <div className="bullet-text-box">
+                    <strong>Get real-time delivery requests</strong>
+                  </div>
+                </li>
+                <li>
+                  <span className="bullet-icon-box purple"><MapPin size={18} /></span>
+                  <div className="bullet-text-box">
+                    <strong>Navigate easily with in-app maps</strong>
+                  </div>
+                </li>
+                <li>
+                  <span className="bullet-icon-box pink"><TrendingUp size={18} /></span>
+                  <div className="bullet-text-box">
+                    <strong>Track earnings and payouts</strong>
+                  </div>
+                </li>
+                <li>
+                  <span className="bullet-icon-box purple"><Headphones size={18} /></span>
+                  <div className="bullet-text-box">
+                    <strong>Get 24/7 partner support</strong>
+                  </div>
+                </li>
+              </ul>
+            </div>
 
-                    <div className="delivery-app-stats-grid-small">
-                      <div className="delivery-app-stat-box-small">
-                        <span className="delivery-app-stat-label-small">Deliveries</span>
-                        <strong className="delivery-app-stat-val-small">12</strong>
-                      </div>
-                      <div className="delivery-app-stat-box-small">
-                        <span className="delivery-app-stat-label-small">Earnings</span>
-                        <strong className="delivery-app-stat-val-small" style={{ color: '#10b981' }}>₹1,850</strong>
-                      </div>
-                    </div>
-
-                    <div className="delivery-app-list-title-small">Recent Deliveries</div>
-
-                    <div className="delivery-app-deliveries-list-small">
-                      <div className="delivery-app-list-item-small">
-                        <div style={{ textAlign: 'left' }}>
-                          <div className="order-title">Order #SB1234</div>
-                          <div className="order-status">Delivered</div>
-                        </div>
-                        <strong>₹160</strong>
-                      </div>
-
-                      <div className="delivery-app-list-item-small">
-                        <div style={{ textAlign: 'left' }}>
-                          <div className="order-title">Order #SB1235</div>
-                          <div className="order-status">Delivered</div>
-                        </div>
-                        <strong>₹220</strong>
-                      </div>
-
-                      <div className="delivery-app-list-item-small">
-                        <div style={{ textAlign: 'left' }}>
-                          <div className="order-title">Order #SB1236</div>
-                          <div className="order-status">Delivered</div>
-                        </div>
-                        <strong>₹150</strong>
-                      </div>
-                    </div>
-
-                    <div style={{ width: '50px', height: '2px', background: '#cbd5e1', borderRadius: '1px', margin: 'auto auto 2px auto' }} />
+            {/* Column 3: App Downloads & QR */}
+            <div className="benefits-right-download-col reveal-right">
+              <h4 className="download-title">Download the StitchBee<br />Partner App</h4>
+              
+              <div className="store-buttons-container">
+                <div className="store-badge-v3 play-store">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M3.609,1.814 C3.38,2.043 3.25,2.4 3.25,2.86 L3.25,21.14 C3.25,21.6 3.38,21.957 3.609,22.186 L3.684,22.251 L13.882,12.053 L13.882,11.947 L3.684,1.749 L3.609,1.814 Z" fill="#00E5FF"/>
+                    <path d="M17.272,15.448 L13.882,12.057 L13.882,11.943 L17.273,8.552 L17.348,8.595 L21.365,10.878 C22.513,11.53 22.513,12.47 21.365,13.122 L17.348,15.405 L17.272,15.448 Z" fill="#FFC107"/>
+                    <path d="M3.684,1.749 L13.882,11.947 L17.272,8.557 L3.684,1.749 Z" fill="#FF3D00"/>
+                    <path d="M3.684,22.251 L17.272,15.443 L13.882,12.053 L3.684,22.251 Z" fill="#4CAF50"/>
+                  </svg>
+                  <div className="store-badge-text">
+                    <span className="store-pre">GET IT ON</span>
+                    <span className="store-main">Google Play</span>
                   </div>
                 </div>
-
-                {/* Floating Notifications */}
-                <div className="floating-noti notification-earnings">
-                  <div className="noti-icon-badge"><Zap size={10} /></div>
-                  <div className="noti-text-block">
-                    <span>Weekly Payout</span>
-                    <strong>₹12,400 Received!</strong>
-                  </div>
-                </div>
-
-                <div className="floating-noti notification-received">
-                  <div className="noti-icon-badge noti-green"><CheckCircle size={10} /></div>
-                  <div className="noti-text-block">
-                    <span>Order Delivered</span>
-                    <strong>Earned +₹220</strong>
-                  </div>
-                </div>
-
-                <div className="floating-noti notification-wallet">
-                  <div className="noti-icon-badge noti-blue"><Wallet size={10} /></div>
-                  <div className="noti-text-block">
-                    <span>Wallet Balance</span>
-                    <strong>₹4,850.00</strong>
-                  </div>
-                </div>
-              </div>
-
-              {/* Glassmorphism CTA Signup Card */}
-              <div className="delivery-glass-signup-card">
-                <h3 className="delivery-signup-card-title-small">Your Journey Starts Here!</h3>
-                <p className="delivery-signup-card-desc-small">Sign up in less than 2 minutes and start earning with every delivery.</p>
                 
-                <button className="delivery-signup-card-btn-gradient" onClick={onJoinClick}>
-                  Join Now <ArrowRight size={14} style={{ marginLeft: '4px' }} />
-                </button>
-
-                <div className="delivery-signup-card-footer-small" style={{ textAlign: 'center', width: '100%', marginTop: '8px' }}>
-                  <span className="delivery-signup-card-trust-text-small" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                    ❤️ Loved by <strong>10,000+</strong> partners
-                  </span>
+                <div className="store-badge-v3 app-store">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M18.71,19.5 C17.88,20.74 17,21.95 15.66,21.97 C14.32,22 13.89,21.18 12.37,21.18 C10.84,21.18 10.37,21.95 9.1,22 C7.79,22.05 6.8,20.68 5.96,19.47 C4.25,17 2.94,12.45 4.7,9.39 C5.57,7.87 7.13,6.91 8.82,6.88 C10.1,6.86 11.32,7.75 12.11,7.75 C12.89,7.75 14.37,6.68 15.92,6.84 C16.57,6.87 18.39,7.1 19.56,8.82 C19.47,8.88 17.39,10.1 17.41,12.63 C17.44,15.65 20.06,16.66 20.1,16.67 C20.08,16.74 19.67,18.11 18.71,19.5 M15.97,4.17 C16.63,3.37 17.07,2.28 16.95,1 C15.85,1.04 14.51,1.73 13.73,2.64 C13.07,3.41 12.49,4.52 12.64,5.78 C13.87,5.87 15.12,5.17 15.97,4.17 Z" fill="currentColor"/>
+                  </svg>
+                  <div className="store-badge-text">
+                    <span className="store-pre">Download on the</span>
+                    <span className="store-main">App Store</span>
+                  </div>
                 </div>
               </div>
 
-            </div>
-
-          </div>
-
-          {/* Premium Full-Width Glass Bottom Banner */}
-          <div className="delivery-premium-glass-banner">
-            <div className="banner-left-glow" />
-            <div className="banner-content-wrapper">
-              <div className="banner-icon-title-block">
-                <div className="banner-gift-icon-box">
-                  <Gift size={20} />
+              {/* QR Code Card */}
+              <div className="qr-download-card">
+                <div className="qr-code-wrapper">
+                  <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%' }}>
+                    <path d="M0,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z" fill="currentColor" />
+                    <path d="M70,0 h30 v30 h-30 z M80,10 h10 v10 h-10 z" fill="currentColor" />
+                    <path d="M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z" fill="currentColor" />
+                    <path d="M35,5 h5 v10 h-5 z M45,0 h10 v5 h-10 z M60,5 h5 v5 h-5 z" fill="currentColor" />
+                    <path d="M35,20 h15 v5 h-15 z M55,15 h10 v5 h-10 z M60,25 h10 v5 h-10 z" fill="currentColor" />
+                    <path d="M35,35 h5 v15 h-5 z M45,40 h15 v5 h-15 z M50,50 h10 v10 h-10 z" fill="currentColor" />
+                    <path d="M5,35 h10 v5 h-10 z M15,45 h5 v10 h-5 z M25,40 h5 v5 h-5 z M20,55 h10 v5 h-10 z" fill="currentColor" />
+                    <path d="M70,35 h15 v5 h-15 z M80,45 h10 v5 h-10 z M75,55 h5 v15 h-5 z M85,60 h15 v5 h-15 z" fill="currentColor" />
+                    <path d="M35,70 h10 v5 h-10 z M45,80 h5 v15 h-5 z M55,75 h15 v5 h-15 z M60,85 h10 v10 h-10 z" fill="currentColor" />
+                    <path d="M35,60 h5 v5 h-5 z M45,60 h5 v5 h-5 z M55,60 h5 v5 h-5 z" fill="currentColor" />
+                  </svg>
                 </div>
-                <span className="banner-text">
-                  Complete your first 5 deliveries and unlock your <strong className="glow-accent-text">Welcome Bonus!</strong>
-                </span>
+                <span className="qr-card-label">Scan to Download Android App</span>
               </div>
-              <button className="banner-gradient-btn" onClick={onJoinClick}>
-                Start Earning Today <ArrowRight size={16} />
-              </button>
             </div>
-          </div>
 
+          </div>
         </div>
       </section>
 
