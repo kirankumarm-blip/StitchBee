@@ -10734,16 +10734,17 @@ body.dark-theme .delivery-premium-footer {
 }
 
 .footer-container-v4 {
-  max-width: 1280px !important;
+  max-width: 1560px !important;
+  width: 92vw !important;
   margin: 0 auto !important;
-  padding: 0 40px !important;
+  padding: 0 48px !important;
   box-sizing: border-box !important;
 }
 
 .footer-top-v4 {
   display: grid !important;
-  grid-template-columns: 2fr 1.2fr 1.2fr 1.8fr 1.8fr !important; /* 5 evenly distributed/proportional columns */
-  gap: 56px !important; /* 48-64px spacing range */
+  grid-template-columns: 2.2fr 1.1fr 1.1fr 1.8fr 1.6fr !important;
+  gap: 72px !important; /* Spacing between columns (60-80px range) */
   margin-bottom: 50px !important;
   align-items: start !important;
 }
