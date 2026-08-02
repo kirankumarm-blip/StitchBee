@@ -466,6 +466,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
                           <span className="gps-start">●</span>
                           <div className="gps-line-container">
                             <div className="gps-line-progress" />
+                            <span className="gps-rider-icon">🛵</span>
                           </div>
                           <span className="gps-end">►</span>
                         </div>
@@ -546,19 +547,12 @@ export default function BecomeDeliveryView({ onJoinClick }) {
 
               {/* QR Code Card */}
               <div className="qr-download-card">
-                <div className="qr-code-wrapper">
-                  <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%' }}>
-                    <path d="M0,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z" fill="currentColor" />
-                    <path d="M70,0 h30 v30 h-30 z M80,10 h10 v10 h-10 z" fill="currentColor" />
-                    <path d="M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z" fill="currentColor" />
-                    <path d="M35,5 h5 v10 h-5 z M45,0 h10 v5 h-10 z M60,5 h5 v5 h-5 z" fill="currentColor" />
-                    <path d="M35,20 h15 v5 h-15 z M55,15 h10 v5 h-10 z M60,25 h10 v5 h-10 z" fill="currentColor" />
-                    <path d="M35,35 h5 v15 h-5 z M45,40 h15 v5 h-15 z M50,50 h10 v10 h-10 z" fill="currentColor" />
-                    <path d="M5,35 h10 v5 h-10 z M15,45 h5 v10 h-5 z M25,40 h5 v5 h-5 z M20,55 h10 v5 h-10 z" fill="currentColor" />
-                    <path d="M70,35 h15 v5 h-15 z M80,45 h10 v5 h-10 z M75,55 h5 v15 h-5 z M85,60 h15 v5 h-15 z" fill="currentColor" />
-                    <path d="M35,70 h10 v5 h-10 z M45,80 h5 v15 h-5 z M55,75 h15 v5 h-15 z M60,85 h10 v10 h-10 z" fill="currentColor" />
-                    <path d="M35,60 h5 v5 h-5 z M45,60 h5 v5 h-5 z M55,60 h5 v5 h-5 z" fill="currentColor" />
-                  </svg>
+                <div className="qr-code-wrapper" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <img 
+                    src="/qr_code_user.png" 
+                    alt="Scan to Download Android App" 
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
                 </div>
                 <span className="qr-card-label">Scan to Download Android App</span>
               </div>

@@ -10540,3 +10540,81 @@ body.light-theme .qr-download-card {
   font-weight: 500;
   display: block;
 }
+
+/* Animated driving rider along the route line */
+.gps-rider-icon {
+  position: absolute;
+  top: -12px; /* sit on top of the line */
+  left: 0%;
+  font-size: 1.1rem;
+  transform: translateX(-50%);
+  animation: driveRider 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20;
+}
+
+@keyframes driveRider {
+  0% { left: 0%; opacity: 0; }
+  5% { opacity: 1; }
+  85% { opacity: 1; }
+  90%, 100% { left: 95%; opacity: 0; }
+}
+
+.gps-line-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, var(--primary), #10b981) !important;
+  animation: drawRoute 4s infinite cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes drawRoute {
+  0% { width: 0%; }
+  90%, 100% { width: 95%; }
+}
+
+/* Column divider / intersection lines for the 3-column benefits layout */
+@media (min-width: 1025px) {
+  .benefits-middle-info-col {
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    padding-right: 40px;
+  }
+  body.light-theme .benefits-middle-info-col {
+    border-right: 1px solid rgba(15, 23, 42, 0.1);
+  }
+}
+
+/* Force pink text color on "One App" text */
+.middle-col-title .highlight-pink-text {
+  color: #f72585 !important;
+}
+
+/* Responsiveness overrides for flat mobile layout (mockup look only) */
+@media (max-width: 768px) {
+  /* Hide background glows and particles behind the phone on mobile */
+  .phone-back-effects {
+    display: none !important;
+  }
+  
+  /* Hide floating stats cards on mobile */
+  .floating-card-v3 {
+    display: none !important;
+  }
+  
+  /* Reset perspective and tilts to make the phone flat on mobile */
+  .interactive-phone-perspective-wrapper {
+    perspective: none !important;
+    width: 250px !important;
+    height: auto !important;
+    margin: 0 auto !important;
+  }
+  
+  .phone-body-3d {
+    transform: none !important;
+    animation: none !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+    border: 4px solid #334155 !important;
+    margin: 0 auto !important;
+  }
+}
