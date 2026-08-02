@@ -402,7 +402,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
           <div className="delivery-benefits-three-col-layout">
             
             {/* Column 1: Animated 3D Phone Mockup & Floating Cards */}
-            <div className="phone-animation-column reveal-3d-phone">
+            <div className="phone-animation-column reveal-3d-phone reveal">
               <div 
                 className="interactive-phone-perspective-wrapper"
                 onMouseMove={handleMouseMove}
