@@ -1789,13 +1789,7 @@ export default function App() {
 
       {/* Luxury Intro Splash Screen */}
       {showSplash && (
-        <div className={`splash-overlay ${splashFade ? 'splash-fade-out' : ''}`}>
-          <div className="splash-content">
-            <span className="splash-subtitle">ATELIER D'ARTISANS</span>
-            <h1 className="splash-title">STITCHBEE</h1>
-            <div className="splash-line"></div>
-          </div>
-        </div>
+        <div className={`splash-overlay ${splashFade ? 'splash-fade-out' : ''}`} />
       )}
 
     </div>

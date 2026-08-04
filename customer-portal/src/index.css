@@ -2925,10 +2925,13 @@ body.light-theme .reels-nav-btn {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* Luxury Brand Splash Screen Loader */
 .splash-overlay {
   position: fixed;
   inset: 0;
+  background-image: url('/splash_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-color: #05040a;
   display: flex;
   align-items: center;
