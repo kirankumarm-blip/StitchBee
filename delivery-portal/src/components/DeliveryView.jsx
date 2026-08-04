@@ -1811,7 +1811,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
 
                   <div style={{ flex: 1, minHeight: '130px', position: 'relative' }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={130}>
                       <AreaChart
                         data={[
                           { name: 'Mon', earnings: 1200 },
@@ -3597,7 +3597,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <span style={{ fontSize: '11px', color: colorTextSecondary, fontWeight: '500' }}>12 Hours Active</span>
                   </div>
                   <div style={{ width: '80px', height: '35px', marginTop: '8px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={35}>
                       <LineChart data={[
                         { value: 100 }, { value: 120 }, { value: 110 }, { value: 150 }, { value: 140 }, { value: 190 }, { value: 220 }
                       ]}>
@@ -3621,7 +3621,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <span style={{ fontSize: '11px', color: colorTextSecondary, fontWeight: '500' }}>98% Completion</span>
                   </div>
                   <div style={{ width: '80px', height: '35px', marginTop: '8px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={35}>
                       <LineChart data={[
                         { value: 200 }, { value: 220 }, { value: 210 }, { value: 240 }, { value: 280 }, { value: 260 }, { value: 310 }
                       ]}>
@@ -3816,7 +3816,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                     {/* Chart Container */}
                     <div style={{ height: '240px', width: '100%', marginTop: '16px', position: 'relative' }}>
-                      <ResponsiveContainer width="100%" height="100%">
+                      <ResponsiveContainer width="100%" height={240}>
                         <AreaChart 
                           data={[
                             { name: 'Mon', earnings: 900 },
@@ -3934,7 +3934,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     {/* Donut Chart and Legend Split */}
                     <div className="earnings-breakdown-row">
                       <div style={{ position: 'relative', width: '160px', height: '160px', flexShrink: 0 }}>
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height={160}>
                           <PieChart>
                             <Pie
                               data={[
@@ -4444,7 +4444,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Hourly Earnings & Deliveries</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={[
                               { hour: '8 AM', earnings: 150, orders: 1 },
                               { hour: '10 AM', earnings: 380, orders: 2 },
@@ -4474,7 +4474,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block' }}>Daily Earnings Source</strong>
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
                               <Pie
                                 data={[
@@ -4653,7 +4653,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Weekly Earnings Summary (Mon - Sun)</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={[
                               { day: 'Mon', earnings: 900 },
                               { day: 'Tue', earnings: 1200 },
@@ -4677,7 +4677,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Daily Active Hours Timeline</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={[
                               { day: 'Mon', hours: 5.6 },
                               { day: 'Tue', hours: 6.8 },
@@ -4811,7 +4811,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Monthly Revenue trend (Last 30 Days)</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={[
                               { label: 'Jun 1', earnings: 1400 },
                               { label: 'Jun 4', earnings: 1600 },
@@ -4835,7 +4835,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Weekly Performance Comparison</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={[
                               { week: 'Week 1', base: 6800, bonus: 800 },
                               { week: 'Week 2', base: 7200, bonus: 1100 },
@@ -4977,7 +4977,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Milestone Incentive Cash History</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={[
                               { label: 'Week 21', incentives: 400 },
                               { label: 'Week 22', incentives: 600 },
@@ -4999,7 +4999,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block' }}>Incentive Distribution</strong>
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
                               <Pie
                                 data={[
@@ -5162,7 +5162,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Credits vs Debits (Daily Breakdown)</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={[
                               { name: 'Mon', credits: 120, debits: -2000 },
                               { name: 'Tue', credits: 40, debits: 0 },
@@ -5185,7 +5185,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block' }}>Adjustment Distribution</strong>
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
                               <Pie
                                 data={[
