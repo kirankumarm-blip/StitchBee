@@ -2936,10 +2936,10 @@ body.light-theme .reels-nav-btn {
   position: fixed;
   inset: 0;
   background-image: url('/splash_bg.png');
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #05040a;
+  background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
