@@ -7441,3 +7441,22 @@ svg * {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
   border: none !important;
 }
+
+/* Custom overrides to align the partner landing page testimonial section on mobile */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+  .success-stories-badges-ribbon {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 24px 20px !important;
+  }
+  .success-stats-item {
+    align-self: center !important;
+    justify-content: flex-start !important;
+    width: 240px !important;
+    margin: 0 auto !important;
+  }
+}
