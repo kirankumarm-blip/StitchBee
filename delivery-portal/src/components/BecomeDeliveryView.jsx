@@ -1263,7 +1263,7 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             
             {/* Scooter rider on Right */}
             <div style={{ position: 'absolute', right: '2%', top: '-40px', opacity: 0.95 }} className="hide-on-mobile">
-              <img src="/rider_3d.jpg" alt="Scooter Rider" style={{ width: '135px', height: 'auto', borderRadius: '16px', boxShadow: '0 10px 25px rgba(247,37,133,0.1)' }} />
+              <img src="/rider_3d.png" alt="Scooter Rider" style={{ width: '160px', height: 'auto' }} />
             </div>
 
             <div className="stories-badge-top-centered">

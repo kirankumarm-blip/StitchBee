@@ -1076,7 +1076,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                 {/* 3D Illustration Widget */}
                 <div style={{ textAlign: 'center', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '14px 0' }}>
                   <img 
-                    src="/rider_3d.jpg" 
+                    src="/rider_3d.png" 
                     alt="Rider 3D" 
                     style={{ 
                       width: '95%', 
