@@ -1842,7 +1842,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             color: colorTextPrimary
                           }}
                         />
-                        <Area type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={2} fillOpacity={1} fill="url(#earningsGrad)" />
+                        <Area isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={2} fillOpacity={1} fill="url(#earningsGrad)" />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
@@ -3601,7 +3601,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <LineChart data={[
                         { value: 100 }, { value: 120 }, { value: 110 }, { value: 150 }, { value: 140 }, { value: 190 }, { value: 220 }
                       ]}>
-                        <Line type="monotone" dataKey="value" stroke="#22C55E" strokeWidth={2.5} dot={false} />
+                        <Line isAnimationActive={false} type="monotone" dataKey="value" stroke="#22C55E" strokeWidth={2.5} dot={false} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -3625,7 +3625,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <LineChart data={[
                         { value: 200 }, { value: 220 }, { value: 210 }, { value: 240 }, { value: 280 }, { value: 260 }, { value: 310 }
                       ]}>
-                        <Line type="monotone" dataKey="value" stroke="#FF9F43" strokeWidth={2.5} dot={false} />
+                        <Line isAnimationActive={false} type="monotone" dataKey="value" stroke="#FF9F43" strokeWidth={2.5} dot={false} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -3866,7 +3866,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               return null;
                             }}
                           />
-                          <Area 
+                          <Area isAnimationActive={false} 
                             type="monotone" 
                             dataKey="earnings" 
                             stroke="#FF2E83" 
@@ -3875,7 +3875,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             fill="url(#colorEarnings)" 
                             dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }}
                             activeDot={{ r: 6, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }}
-                            animationDuration={800}
+                            
                           />
                         </AreaChart>
                       </ResponsiveContainer>
@@ -3936,7 +3936,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div style={{ position: 'relative', width: '160px', height: '160px', flexShrink: 0 }}>
                         <ResponsiveContainer width="100%" height={160}>
                           <PieChart>
-                            <Pie
+                            <Pie isAnimationActive={false}
                               data={[
                                 { name: 'Base Earnings', value: 7200, percentage: 64, color: '#7A3EF0' },
                                 { name: 'Delivery Commission', value: 2400, percentage: 21, color: '#3B82F6' },
@@ -3950,7 +3950,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               outerRadius={75}
                               paddingAngle={3}
                               dataKey="value"
-                              animationDuration={800}
+                              
                             >
                               {[
                                 { color: '#7A3EF0' },
@@ -4464,7 +4464,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="hour" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip cursor={{ stroke: '#FF2E83', strokeWidth: 1, strokeDasharray: '4 4' }} />
-                              <Area type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3} fillOpacity={1} fill="url(#colorDaily)" dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} />
+                              <Area isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3} fillOpacity={1} fill="url(#colorDaily)" dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
@@ -4476,7 +4476,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
                           <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
-                              <Pie
+                              <Pie isAnimationActive={false}
                                 data={[
                                   { name: 'Base Commission', value: 1200, color: '#7A3EF0' },
                                   { name: 'Tips', value: 200, color: '#3B82F6' },
@@ -4667,7 +4667,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="day" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Line type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
+                              <Line isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
@@ -4697,7 +4697,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="day" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => v + 'h'} />
                               <RechartsTooltip />
-                              <Area type="monotone" dataKey="hours" stroke="#22C55E" strokeWidth={3} fillOpacity={1} fill="url(#colorHours)" dot={{ r: 4, stroke: '#22C55E', strokeWidth: 2, fill: pCardBg }} />
+                              <Area isAnimationActive={false} type="monotone" dataKey="hours" stroke="#22C55E" strokeWidth={3} fillOpacity={1} fill="url(#colorHours)" dot={{ r: 4, stroke: '#22C55E', strokeWidth: 2, fill: pCardBg }} />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
@@ -4825,7 +4825,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="label" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Line type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
+                              <Line isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
@@ -4846,8 +4846,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="week" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Bar dataKey="base" fill="#7A3EF0" radius={[4, 4, 0, 0]} />
-                              <Bar dataKey="bonus" fill="#FF2E83" radius={[4, 4, 0, 0]} />
+                              <Bar isAnimationActive={false} dataKey="base" fill="#7A3EF0" radius={[4, 4, 0, 0]} />
+                              <Bar isAnimationActive={false} dataKey="bonus" fill="#FF2E83" radius={[4, 4, 0, 0]} />
                             </BarChart>
                           </ResponsiveContainer>
                         </div>
@@ -4989,7 +4989,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="label" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Line type="monotone" dataKey="incentives" stroke="#7A3EF0" strokeWidth={3.5} dot={{ r: 4, stroke: '#7A3EF0', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
+                              <Line isAnimationActive={false} type="monotone" dataKey="incentives" stroke="#7A3EF0" strokeWidth={3.5} dot={{ r: 4, stroke: '#7A3EF0', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
@@ -5001,7 +5001,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
                           <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
-                              <Pie
+                              <Pie isAnimationActive={false}
                                 data={[
                                   { name: 'Weekend Rush', value: 1800, color: '#FF2E83' },
                                   { name: 'Streak Bonus', value: 1200, color: '#7A3EF0' },
@@ -5174,8 +5174,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="name" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <RechartsTooltip />
-                              <Bar dataKey="credits" fill="#22C55E" stackId="a" radius={[4, 4, 0, 0]} />
-                              <Bar dataKey="debits" fill="#FF2E83" stackId="a" radius={[0, 0, 4, 4]} />
+                              <Bar isAnimationActive={false} dataKey="credits" fill="#22C55E" stackId="a" radius={[4, 4, 0, 0]} />
+                              <Bar isAnimationActive={false} dataKey="debits" fill="#FF2E83" stackId="a" radius={[0, 0, 4, 4]} />
                             </BarChart>
                           </ResponsiveContainer>
                         </div>
@@ -5187,7 +5187,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
                           <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
-                              <Pie
+                              <Pie isAnimationActive={false}
                                 data={[
                                   { name: 'Manual Refund', value: 100, color: '#22C55E' },
                                   { name: 'Penalties', value: 50, color: '#EF4444' },
