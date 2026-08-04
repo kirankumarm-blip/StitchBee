@@ -1249,8 +1249,8 @@ export default function BecomeDeliveryView({ onJoinClick }) {
           
           <div style={{ textAlign: 'center', marginBottom: '3.5rem', position: 'relative' }}>
             {/* Decorative Map Route Icon on Left */}
-            <div style={{ position: 'absolute', left: '2%', top: '-20px', opacity: 0.85 }} className="hide-on-mobile">
-              <svg viewBox="0 0 100 50" width="120" height="60" fill="none" stroke="#f72585" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="5 5">
+            <div className="stories-decor-route">
+              <svg viewBox="0 0 100 50" fill="none" stroke="#f72585" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="5 5">
                 <path d="M10,40 Q40,10 70,35 T110,15" />
                 <circle cx="10" cy="40" r="5" fill="#f72585" />
                 
@@ -1262,8 +1262,8 @@ export default function BecomeDeliveryView({ onJoinClick }) {
             </div>
             
             {/* Scooter rider on Right */}
-            <div style={{ position: 'absolute', right: '2%', top: '-40px', opacity: 0.95 }} className="hide-on-mobile">
-              <img src="/rider_3d.png" alt="Scooter Rider" style={{ width: '160px', height: 'auto' }} />
+            <div className="stories-decor-rider">
+              <img src="/rider_3d.png" alt="Scooter Rider" />
             </div>
 
             <div className="stories-badge-top-centered">
