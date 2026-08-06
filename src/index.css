@@ -126,6 +126,10 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 
+.app-container:has(.rider-top-nav) {
+  padding-top: 0 !important;
+}
+
 /* Glassmorphism Card styling */
 .glass-card {
   background: var(--bg-card);

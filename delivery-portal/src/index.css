@@ -6738,10 +6738,30 @@ body.light-theme .earnings-card-gradient svg {
 }
 
 /* Specific overrides for Rider Header */
+.app-container:has(.rider-top-nav) {
+  padding-top: 0 !important;
+}
+
 .rider-top-nav {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px !important;
+  min-height: 64px !important;
+  padding: 0 1.5rem !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.rider-top-nav .header-logo-image {
+  height: 40px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  object-fit: contain;
+  margin-left: 0 !important;
 }
 
 /* Earnings wrapper and custom responsive styles */
