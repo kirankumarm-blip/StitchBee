@@ -6745,11 +6745,11 @@ body.light-theme .earnings-card-gradient svg {
 }
 
 .rider-top-nav .header-logo-image {
-  height: 40px !important;
-  width: auto !important;
-  max-width: 170px !important;
+  height: 90px !important;
+  width: 280px !important;
+  max-width: 280px !important;
   object-fit: contain;
-  margin-left: 0 !important;
+  margin-left: -55px !important;
 }
 
 /* Earnings wrapper and custom responsive styles */
