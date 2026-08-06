@@ -9921,11 +9921,20 @@ body.dark-theme .drawer-close-btn {
   color: #FFFFFF;
 }
 
+.drawer-welcome-card,
+.drawer-welcome-card *,
+.drawer-welcome-card h3,
+.drawer-welcome-card p,
+.drawer-welcome-card div,
+.drawer-welcome-card span {
+  color: #FFFFFF !important;
+}
+
 .drawer-welcome-card {
   background: linear-gradient(135deg, #1B0F2A 0%, #3B154C 50%, #FF2E93 100%);
   border-radius: 24px;
   padding: 20px;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   box-shadow: 0 10px 30px rgba(255, 46, 147, 0.25);
   margin-bottom: 20px;
   position: relative;

@@ -1077,13 +1077,13 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   <LayoutGrid size={24} color="#ffffff" />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '0.78rem', opacity: 0.88, fontWeight: 500 }}>
+                  <div style={{ fontSize: '0.78rem', opacity: 0.95, fontWeight: 500, color: '#ffffff' }}>
                     Welcome back,
                   </div>
                   <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '2px 0 2px 0', color: '#ffffff' }}>
                     Kiran 👋
                   </h3>
-                  <p style={{ fontSize: '0.74rem', opacity: 0.82, margin: 0 }}>
+                  <p style={{ fontSize: '0.74rem', opacity: 0.9, margin: 0, color: '#ffffff' }}>
                     Ready to deliver today?
                   </p>
                 </div>
