@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
@@ -5,7 +6,8 @@ import {
   Clock, Check, ChevronRight, ChevronDown, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
   Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power, RefreshCw,
   Trophy, Percent, Activity, Filter, ArrowUpRight, ArrowDownRight,
-  Paperclip, Mic, Smile, Award, Bookmark, Share2, Pin, Heart
+  Paperclip, Mic, Smile, Award, Bookmark, Share2, Pin, Heart,
+  Menu, X, LayoutGrid
 } from 'lucide-react';
 import { 
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
@@ -27,16 +29,18 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'orders' | 'navigation' | 'earnings' | 'support' | 'profile'
   const [isOnline, setIsOnline] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false); // floating dropdown state
   const [ordersSubTab, setOrdersSubTab] = useState('active'); // 'active' | 'upcoming' | 'completed' | 'cancelled' | 'returned'
   const [earningsPeriod, setEarningsPeriod] = useState('daily'); // 'daily' | 'weekly' | 'monthly'
   const [selectedOrder, setSelectedOrder] = useState(null); // Detailed order modal/view
   const [orderSearchText, setOrderSearchText] = useState(''); // Search query for orders list
   const [typedMessage, setTypedMessage] = useState('');
-    const [supportContact, setSupportContact] = useState('customer'); // 'customer' | 'tailor' | 'admin' | 'ai'
-    const [rightPanelTab, setRightPanelTab] = useState('order'); // 'order' | 'faq' | 'analytics'
-    const [faqOpenIdx, setFaqOpenIdx] = useState(null);
-    const [supportMobileView, setSupportMobileView] = useState('list'); // 'list' | 'chat' | 'info'
+  const [supportContact, setSupportContact] = useState('customer'); // 'customer' | 'tailor' | 'admin' | 'ai'
+  const [rightPanelTab, setRightPanelTab] = useState('order'); // 'order' | 'faq' | 'analytics'
+  const [faqOpenIdx, setFaqOpenIdx] = useState(null);
+  const [supportMobileView, setSupportMobileView] = useState('list'); // 'list' | 'chat' | 'info'
+
   
   // Interactive Map References
   const homeMapRef = useRef(null);
@@ -898,11 +902,38 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
       }}
     >
       {/* 1. TOP HEADER NAVIGATION BAR */}
-      <header className="top-nav rider-top-nav">
-        {/* Logo and Brand */}
-        <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
-          <span style={{ fontSize: '0.65rem', background: '#3b82f6', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '-40px', zIndex: 10 }}>RIDER PORTAL</span>
+      <header 
+        className="top-nav rider-top-nav" 
+        style={{ 
+          position: 'sticky', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          zIndex: 1000, 
+          background: isDark ? 'rgba(18, 15, 38, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: `1px solid ${borderColor}`,
+          height: '64px',
+          padding: '0 20px',
+          boxSizing: 'border-box'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          {/* Mobile menu toggle hamburger icon */}
+          <button 
+            className="mobile-menu-toggle-btn"
+            onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
+            aria-label="Toggle menu"
+            style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none', color: colorTextPrimary }}
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
+          {/* Logo and Brand */}
+          <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <img className="header-logo-image" src="/logo.png" alt="StitchBee" />
+          </div>
         </div>
 
         {/* Desktop Tabs Header Menu */}
@@ -1024,6 +1055,134 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
           </div>
         </div>
       </header>
+
+       {/* Redesigned Left Slide-out Navigation Drawer */}
+      {mobileMenuOpen && (
+        <>
+          {/* Backdrop Blur Overlay */}
+          <div 
+            className="drawer-backdrop"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Slide-out Drawer Panel */}
+          <div 
+            className="left-nav-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Welcome Card */}
+            <div className="drawer-welcome-card">
+              <div className="drawer-welcome-inner">
+                <div className="drawer-welcome-icon-box">
+                  <LayoutGrid size={24} color="#ffffff" />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.78rem', opacity: 0.95, fontWeight: 500, color: '#ffffff' }}>
+                    Welcome back,
+                  </div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '2px 0 2px 0', color: '#ffffff' }}>
+                    Kiran 👋
+                  </h3>
+                  <p style={{ fontSize: '0.74rem', opacity: 0.9, margin: 0, color: '#ffffff' }}>
+                    Ready to deliver today?
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Items List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
+              {[
+                { id: 'home', label: 'Home', subtitle: 'Dashboard & Overview', icon: <Home size={20} /> },
+                { id: 'orders', label: 'Orders', subtitle: 'Active & Past Deliveries', icon: <ShoppingBag size={20} /> },
+                { id: 'navigation', label: 'Navigation', subtitle: 'Live GPS & Route Map', icon: <Compass size={20} /> },
+                { id: 'earnings', label: 'Earnings', subtitle: 'Daily & Weekly Income', icon: <DollarSign size={20} /> },
+                { id: 'support', label: 'Support', subtitle: 'Help & Partner Care', icon: <MessageSquare size={20} /> },
+                { id: 'profile', label: 'Profile', subtitle: 'Account & Documents', icon: <User size={20} /> }
+              ].map(tab => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <div
+                    key={tab.id}
+                    className={`drawer-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    {isActive && <div className="drawer-nav-indicator" />}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                      <div className="drawer-nav-icon-box">
+                        {tab.icon}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                        <span style={{ 
+                          fontSize: '0.95rem', 
+                          fontWeight: 700, 
+                          color: isActive ? '#FF2E93' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                        }}>
+                          {tab.label}
+                        </span>
+                        <span style={{ fontSize: '0.73rem', color: isActive ? '#FF2E93' : '#6B7280', opacity: isActive ? 0.85 : 1 }}>
+                          {tab.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight 
+                      size={18} 
+                      style={{ 
+                        color: isActive ? '#FF2E93' : '#9CA3AF',
+                        transition: 'transform 0.2s ease'
+                      }} 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Gold Rider Tier Bottom Progress Card */}
+            <div className="drawer-tier-card">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.3rem' }}>🥇</span>
+                  <div>
+                    <div style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.2px' }}>
+                      Gold Rider Tier
+                    </div>
+                    <div style={{ fontSize: '0.72rem', opacity: 0.88, marginTop: '1px' }}>
+                      XP: 8,500 / 10,000 (85%)
+                    </div>
+                  </div>
+                </div>
+                <span style={{ 
+                  background: 'rgba(255, 255, 255, 0.25)', 
+                  padding: '4px 10px', 
+                  borderRadius: '12px', 
+                  fontSize: '0.72rem', 
+                  fontWeight: 700 
+                }}>
+                  v4.2
+                </span>
+              </div>
+              <div className="drawer-tier-progress-bar">
+                <div className="drawer-tier-progress-fill" />
+              </div>
+            </div>
+
+            {/* Logout Button */}
+            <button 
+              className="drawer-logout-btn"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onLogout();
+              }}
+            >
+              <LogOut size={18} />
+              <span>Log Out</span>
+            </button>
+          </div>
+        </>
+      )}
 
       {/* Main content body */}
       <main style={{ flex: 1, padding: activeTab === 'orders' ? '12px 16px' : '20px', overflowY: 'auto', overflowX: 'hidden', paddingBottom: activeTab === 'orders' ? '12px' : '90px' }}>
@@ -1812,7 +1971,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                   </div>
 
                   <div style={{ flex: 1, minHeight: '130px', position: 'relative' }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={130}>
                       <AreaChart
                         data={[
                           { name: 'Mon', earnings: 1200 },
@@ -1843,7 +2002,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             color: colorTextPrimary
                           }}
                         />
-                        <Area type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={2} fillOpacity={1} fill="url(#earningsGrad)" />
+                        <Area isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={2} fillOpacity={1} fill="url(#earningsGrad)" />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>
@@ -3598,11 +3757,11 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <span style={{ fontSize: '11px', color: colorTextSecondary, fontWeight: '500' }}>12 Hours Active</span>
                   </div>
                   <div style={{ width: '80px', height: '35px', marginTop: '8px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={35}>
                       <LineChart data={[
                         { value: 100 }, { value: 120 }, { value: 110 }, { value: 150 }, { value: 140 }, { value: 190 }, { value: 220 }
                       ]}>
-                        <Line type="monotone" dataKey="value" stroke="#22C55E" strokeWidth={2.5} dot={false} />
+                        <Line isAnimationActive={false} type="monotone" dataKey="value" stroke="#22C55E" strokeWidth={2.5} dot={false} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -3622,11 +3781,11 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     <span style={{ fontSize: '11px', color: colorTextSecondary, fontWeight: '500' }}>98% Completion</span>
                   </div>
                   <div style={{ width: '80px', height: '35px', marginTop: '8px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height={35}>
                       <LineChart data={[
                         { value: 200 }, { value: 220 }, { value: 210 }, { value: 240 }, { value: 280 }, { value: 260 }, { value: 310 }
                       ]}>
-                        <Line type="monotone" dataKey="value" stroke="#FF9F43" strokeWidth={2.5} dot={false} />
+                        <Line isAnimationActive={false} type="monotone" dataKey="value" stroke="#FF9F43" strokeWidth={2.5} dot={false} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -3817,7 +3976,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
                     {/* Chart Container */}
                     <div style={{ height: '240px', width: '100%', marginTop: '16px', position: 'relative' }}>
-                      <ResponsiveContainer width="100%" height="100%">
+                      <ResponsiveContainer width="100%" height={240}>
                         <AreaChart 
                           data={[
                             { name: 'Mon', earnings: 900 },
@@ -3867,7 +4026,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               return null;
                             }}
                           />
-                          <Area 
+                          <Area isAnimationActive={false} 
                             type="monotone" 
                             dataKey="earnings" 
                             stroke="#FF2E83" 
@@ -3876,7 +4035,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                             fill="url(#colorEarnings)" 
                             dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }}
                             activeDot={{ r: 6, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }}
-                            animationDuration={800}
+                            
                           />
                         </AreaChart>
                       </ResponsiveContainer>
@@ -3935,9 +4094,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                     {/* Donut Chart and Legend Split */}
                     <div className="earnings-breakdown-row">
                       <div style={{ position: 'relative', width: '160px', height: '160px', flexShrink: 0 }}>
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height={160}>
                           <PieChart>
-                            <Pie
+                            <Pie isAnimationActive={false}
                               data={[
                                 { name: 'Base Earnings', value: 7200, percentage: 64, color: '#7A3EF0' },
                                 { name: 'Delivery Commission', value: 2400, percentage: 21, color: '#3B82F6' },
@@ -3951,7 +4110,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               outerRadius={75}
                               paddingAngle={3}
                               dataKey="value"
-                              animationDuration={800}
+                              
                             >
                               {[
                                 { color: '#7A3EF0' },
@@ -4445,7 +4604,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Hourly Earnings & Deliveries</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={[
                               { hour: '8 AM', earnings: 150, orders: 1 },
                               { hour: '10 AM', earnings: 380, orders: 2 },
@@ -4465,7 +4624,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="hour" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip cursor={{ stroke: '#FF2E83', strokeWidth: 1, strokeDasharray: '4 4' }} />
-                              <Area type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3} fillOpacity={1} fill="url(#colorDaily)" dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} />
+                              <Area isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3} fillOpacity={1} fill="url(#colorDaily)" dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
@@ -4475,9 +4634,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block' }}>Daily Earnings Source</strong>
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
-                              <Pie
+                              <Pie isAnimationActive={false}
                                 data={[
                                   { name: 'Base Commission', value: 1200, color: '#7A3EF0' },
                                   { name: 'Tips', value: 200, color: '#3B82F6' },
@@ -4654,7 +4813,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Weekly Earnings Summary (Mon - Sun)</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={[
                               { day: 'Mon', earnings: 900 },
                               { day: 'Tue', earnings: 1200 },
@@ -4668,7 +4827,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="day" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Line type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
+                              <Line isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
@@ -4678,7 +4837,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover earnings-glass-card" style={{ height: '400px' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Daily Active Hours Timeline</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <AreaChart data={[
                               { day: 'Mon', hours: 5.6 },
                               { day: 'Tue', hours: 6.8 },
@@ -4698,7 +4857,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="day" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => v + 'h'} />
                               <RechartsTooltip />
-                              <Area type="monotone" dataKey="hours" stroke="#22C55E" strokeWidth={3} fillOpacity={1} fill="url(#colorHours)" dot={{ r: 4, stroke: '#22C55E', strokeWidth: 2, fill: pCardBg }} />
+                              <Area isAnimationActive={false} type="monotone" dataKey="hours" stroke="#22C55E" strokeWidth={3} fillOpacity={1} fill="url(#colorHours)" dot={{ r: 4, stroke: '#22C55E', strokeWidth: 2, fill: pCardBg }} />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
@@ -4812,7 +4971,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Monthly Revenue trend (Last 30 Days)</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={[
                               { label: 'Jun 1', earnings: 1400 },
                               { label: 'Jun 4', earnings: 1600 },
@@ -4826,7 +4985,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="label" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Line type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
+                              <Line isAnimationActive={false} type="monotone" dataKey="earnings" stroke="#FF2E83" strokeWidth={3.5} dot={{ r: 4, stroke: '#FF2E83', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
@@ -4836,7 +4995,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Weekly Performance Comparison</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={[
                               { week: 'Week 1', base: 6800, bonus: 800 },
                               { week: 'Week 2', base: 7200, bonus: 1100 },
@@ -4847,8 +5006,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="week" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Bar dataKey="base" fill="#7A3EF0" radius={[4, 4, 0, 0]} />
-                              <Bar dataKey="bonus" fill="#FF2E83" radius={[4, 4, 0, 0]} />
+                              <Bar isAnimationActive={false} dataKey="base" fill="#7A3EF0" radius={[4, 4, 0, 0]} />
+                              <Bar isAnimationActive={false} dataKey="bonus" fill="#FF2E83" radius={[4, 4, 0, 0]} />
                             </BarChart>
                           </ResponsiveContainer>
                         </div>
@@ -4978,7 +5137,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Milestone Incentive Cash History</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={[
                               { label: 'Week 21', incentives: 400 },
                               { label: 'Week 22', incentives: 600 },
@@ -4990,7 +5149,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="label" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => '₹' + v} />
                               <RechartsTooltip />
-                              <Line type="monotone" dataKey="incentives" stroke="#7A3EF0" strokeWidth={3.5} dot={{ r: 4, stroke: '#7A3EF0', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
+                              <Line isAnimationActive={false} type="monotone" dataKey="incentives" stroke="#7A3EF0" strokeWidth={3.5} dot={{ r: 4, stroke: '#7A3EF0', strokeWidth: 2, fill: pCardBg }} activeDot={{ r: 6 }} />
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
@@ -5000,9 +5159,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block' }}>Incentive Distribution</strong>
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
-                              <Pie
+                              <Pie isAnimationActive={false}
                                 data={[
                                   { name: 'Weekend Rush', value: 1800, color: '#FF2E83' },
                                   { name: 'Streak Bonus', value: 1200, color: '#7A3EF0' },
@@ -5163,7 +5322,7 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block', marginBottom: '16px' }}>Credits vs Debits (Daily Breakdown)</strong>
                         <div style={{ height: '300px', width: '100%' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={[
                               { name: 'Mon', credits: 120, debits: -2000 },
                               { name: 'Tue', credits: 40, debits: 0 },
@@ -5175,8 +5334,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                               <XAxis dataKey="name" stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <YAxis stroke={colorTextMuted} fontSize={11} tickLine={false} axisLine={false} />
                               <RechartsTooltip />
-                              <Bar dataKey="credits" fill="#22C55E" stackId="a" radius={[4, 4, 0, 0]} />
-                              <Bar dataKey="debits" fill="#FF2E83" stackId="a" radius={[0, 0, 4, 4]} />
+                              <Bar isAnimationActive={false} dataKey="credits" fill="#22C55E" stackId="a" radius={[4, 4, 0, 0]} />
+                              <Bar isAnimationActive={false} dataKey="debits" fill="#FF2E83" stackId="a" radius={[0, 0, 4, 4]} />
                             </BarChart>
                           </ResponsiveContainer>
                         </div>
@@ -5186,9 +5345,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       <div className="glass-card-no-hover" style={{ padding: '24px', background: pCardBg, border: `1.5px solid ${pBorder}`, borderRadius: '18px', boxShadow: pCardShadow, height: '400px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
                         <strong style={{ fontSize: '15px', color: colorTextPrimary, textAlign: 'left', display: 'block' }}>Adjustment Distribution</strong>
                         <div style={{ position: 'relative', width: '100%', height: '180px', margin: '12px 0' }}>
-                          <ResponsiveContainer width="100%" height="100%">
+                          <ResponsiveContainer width="100%" height={180}>
                             <PieChart>
-                              <Pie
+                              <Pie isAnimationActive={false}
                                 data={[
                                   { name: 'Manual Refund', value: 100, color: '#22C55E' },
                                   { name: 'Penalties', value: 50, color: '#EF4444' },

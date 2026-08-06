@@ -7819,3 +7819,25 @@ svg * {
     margin: 0 auto !important;
   }
 }
+
+body.light-theme .drawer-welcome-card,
+body.light-theme .drawer-welcome-card *,
+body.light-theme .drawer-welcome-card h3,
+body.light-theme .drawer-welcome-card p,
+body.light-theme .drawer-welcome-card div,
+body.light-theme .drawer-welcome-card span,
+body.dark-theme .drawer-welcome-card,
+body.dark-theme .drawer-welcome-card *,
+body.dark-theme .drawer-welcome-card h3,
+body.dark-theme .drawer-welcome-card p,
+body.dark-theme .drawer-welcome-card div,
+body.dark-theme .drawer-welcome-card span,
+.drawer-welcome-card,
+.drawer-welcome-card *,
+.drawer-welcome-card h3,
+.drawer-welcome-card p,
+.drawer-welcome-card div,
+.drawer-welcome-card span {
+  color: #FFFFFF !important;
+}
+
