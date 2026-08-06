@@ -1403,13 +1403,14 @@ body.light-theme .negotiation-panel {
   }
   
   .top-nav .header-logo-image,
-  .header-logo-image {
-    height: 75px !important;
+  .header-logo-image,
+  .logo img {
+    height: 70px !important;
     width: 220px !important;
     max-width: 220px !important;
     object-fit: contain !important;
-    margin-left: -35px !important;
-    margin-right: -30px !important;
+    margin-left: -65px !important;
+    margin-right: -40px !important;
   }
 }
 

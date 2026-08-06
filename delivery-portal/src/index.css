@@ -1406,13 +1406,14 @@ body.light-theme .negotiation-panel {
   }
   
   .top-nav .header-logo-image,
-  .header-logo-image {
-    height: 75px !important;
+  .header-logo-image,
+  .logo img {
+    height: 70px !important;
     width: 220px !important;
     max-width: 220px !important;
     object-fit: contain !important;
-    margin-left: -35px !important;
-    margin-right: -30px !important;
+    margin-left: -65px !important;
+    margin-right: -40px !important;
   }
 }
 
@@ -7458,9 +7459,10 @@ svg * {
 
 @media (max-width: 768px) {
   .logo img, img[alt="StitchBee"] {
-    height: 100px !important;
-    width: 200px !important;
-    margin-left: -40px !important;
+    height: 70px !important;
+    width: 220px !important;
+    margin-left: -65px !important;
+    margin-right: -40px !important;
   }
   .logo span {
     margin-left: -25px !important;
@@ -9803,11 +9805,11 @@ body.light-theme .mobile-menu-link-v3:hover {
     display: flex !important;
   }
   .header-logo-image {
-    height: 75px !important;
+    height: 70px !important;
     width: 220px !important;
     max-width: 220px !important;
-    margin-left: -35px !important;
-    margin-right: -30px !important;
+    margin-left: -65px !important;
+    margin-right: -40px !important;
   }
 }
 
