@@ -1413,13 +1413,6 @@ body.light-theme .negotiation-panel {
     margin-left: 0 !important;
   }
 }
-  
-  .role-btn {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    padding: 6px 12px;
-  }
-}
 
 /* Promo Banner Slider Styles */
 .promo-banner-list {
