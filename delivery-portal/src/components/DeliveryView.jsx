@@ -7,7 +7,7 @@ import {
   Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power, RefreshCw,
   Trophy, Percent, Activity, Filter, ArrowUpRight, ArrowDownRight,
   Paperclip, Mic, Smile, Award, Bookmark, Share2, Pin, Heart,
-  Menu, X
+  Menu, X, LayoutGrid
 } from 'lucide-react';
 import { 
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
@@ -1056,63 +1056,196 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
         </div>
       </header>
 
-      {/* Slide down / drawer Mobile Menu */}
+       {/* Redesigned Left Slide-out Navigation Drawer */}
       {mobileMenuOpen && (
-        <div 
-          className="mobile-dropdown-menu-v3" 
-          style={{
-            position: 'sticky',
-            top: '60px',
-            left: 0,
-            right: 0,
-            background: '#120f26',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-            zIndex: 999,
-            padding: '12px 16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px'
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {[
-            { id: 'home', label: 'Home', icon: <Home size={18} /> },
-            { id: 'orders', label: 'Orders', icon: <ShoppingBag size={18} /> },
-            { id: 'navigation', label: 'Navigation', icon: <Compass size={18} /> },
-            { id: 'earnings', label: 'Earnings', icon: <DollarSign size={18} /> },
-            { id: 'support', label: 'Support', icon: <MessageSquare size={18} /> },
-            { id: 'profile', label: 'Profile', icon: <User size={18} /> }
-          ].map(tab => (
-            <button
-              key={tab.id}
+        <>
+          {/* Backdrop Blur Overlay */}
+          <div 
+            className="drawer-backdrop"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+
+          {/* Slide-out Drawer Panel */}
+          <div 
+            className="left-nav-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Top Header Section */}
+            <div className="drawer-top-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button 
+                  className="drawer-close-btn"
+                  onClick={() => setMobileMenuOpen(false)}
+                  title="Close Navigation"
+                >
+                  <X size={20} />
+                </button>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <img 
+                    src="/logo.png" 
+                    alt="StitchBee" 
+                    style={{ height: '28px', objectFit: 'contain' }} 
+                  />
+                  <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--primary)', letterSpacing: '0.8px', textTransform: 'uppercase', marginTop: '2px' }}>
+                    Partner Portal
+                  </span>
+                </div>
+              </div>
+
+              {/* Online status indicator & theme toggle */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div 
+                  onClick={() => setIsOnline(!isOnline)}
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '6px', 
+                    padding: '6px 12px', 
+                    borderRadius: '20px', 
+                    background: isOnline ? 'rgba(0, 201, 123, 0.12)' : 'rgba(107, 114, 128, 0.12)', 
+                    color: isOnline ? '#00C97B' : '#6B7280', 
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                    fontSize: '0.72rem',
+                    border: `1px solid ${isOnline ? '#00C97B' : '#6B7280'}`
+                  }}
+                >
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: isOnline ? '#00C97B' : '#6B7280' }} />
+                  {isOnline ? 'Online' : 'Offline'}
+                </div>
+
+                <button 
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                    color: theme === 'dark' ? '#FFD700' : '#4B5563',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Welcome Card */}
+            <div className="drawer-welcome-card">
+              <div className="drawer-welcome-inner">
+                <div className="drawer-welcome-icon-box">
+                  <LayoutGrid size={24} color="#ffffff" />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.78rem', opacity: 0.88, fontWeight: 500 }}>
+                    Welcome back,
+                  </div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '2px 0 2px 0', color: '#ffffff' }}>
+                    Kiran 👋
+                  </h3>
+                  <p style={{ fontSize: '0.74rem', opacity: 0.82, margin: 0 }}>
+                    Ready to deliver today?
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Items List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
+              {[
+                { id: 'home', label: 'Home', subtitle: 'Dashboard & Overview', icon: <Home size={20} /> },
+                { id: 'orders', label: 'Orders', subtitle: 'Active & Past Deliveries', icon: <ShoppingBag size={20} /> },
+                { id: 'navigation', label: 'Navigation', subtitle: 'Live GPS & Route Map', icon: <Compass size={20} /> },
+                { id: 'earnings', label: 'Earnings', subtitle: 'Daily & Weekly Income', icon: <DollarSign size={20} /> },
+                { id: 'support', label: 'Support', subtitle: 'Help & Partner Care', icon: <MessageSquare size={20} /> },
+                { id: 'profile', label: 'Profile', subtitle: 'Account & Documents', icon: <User size={20} /> }
+              ].map(tab => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <div
+                    key={tab.id}
+                    className={`drawer-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    {isActive && <div className="drawer-nav-indicator" />}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                      <div className="drawer-nav-icon-box">
+                        {tab.icon}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                        <span style={{ 
+                          fontSize: '0.95rem', 
+                          fontWeight: 700, 
+                          color: isActive ? '#FF2E93' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                        }}>
+                          {tab.label}
+                        </span>
+                        <span style={{ fontSize: '0.73rem', color: isActive ? '#FF2E93' : '#6B7280', opacity: isActive ? 0.85 : 1 }}>
+                          {tab.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight 
+                      size={18} 
+                      style={{ 
+                        color: isActive ? '#FF2E93' : '#9CA3AF',
+                        transition: 'transform 0.2s ease'
+                      }} 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Gold Rider Tier Bottom Progress Card */}
+            <div className="drawer-tier-card">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.3rem' }}>🥇</span>
+                  <div>
+                    <div style={{ fontSize: '0.9rem', fontWeight: 700, letterSpacing: '0.2px' }}>
+                      Gold Rider Tier
+                    </div>
+                    <div style={{ fontSize: '0.72rem', opacity: 0.88, marginTop: '1px' }}>
+                      XP: 8,500 / 10,000 (85%)
+                    </div>
+                  </div>
+                </div>
+                <span style={{ 
+                  background: 'rgba(255, 255, 255, 0.25)', 
+                  padding: '4px 10px', 
+                  borderRadius: '12px', 
+                  fontSize: '0.72rem', 
+                  fontWeight: 700 
+                }}>
+                  v4.2
+                </span>
+              </div>
+              <div className="drawer-tier-progress-bar">
+                <div className="drawer-tier-progress-fill" />
+              </div>
+            </div>
+
+            {/* Logout Button */}
+            <button 
+              className="drawer-logout-btn"
               onClick={() => {
-                setActiveTab(tab.id);
                 setMobileMenuOpen(false);
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 14px',
-                borderRadius: '8px',
-                background: activeTab === tab.id ? 'var(--primary)' : 'rgba(255, 255, 255, 0.08)',
-                color: '#ffffff',
-                border: 'none',
-                fontSize: '0.95rem',
-                fontWeight: activeTab === tab.id ? '600' : 'normal',
-                textAlign: 'left',
-                cursor: 'pointer',
-                width: '100%'
+                onLogout();
               }}
             >
-              <span style={{ color: '#ffffff', display: 'flex', alignItems: 'center' }}>
-                {tab.icon}
-              </span>
-              <span style={{ color: '#ffffff' }}>{tab.label}</span>
+              <LogOut size={18} />
+              <span>Log Out</span>
             </button>
-          ))}
-        </div>
+          </div>
+        </>
       )}
 
       {/* Main content body */}
