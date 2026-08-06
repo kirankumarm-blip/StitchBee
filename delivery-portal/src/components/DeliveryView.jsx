@@ -1065,9 +1065,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
             top: '60px',
             left: 0,
             right: 0,
-            background: isDark ? '#120f26' : '#ffffff',
-            borderBottom: `1px solid ${borderColor}`,
-            boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+            background: '#120f26',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
             zIndex: 999,
             padding: '12px 16px',
             display: 'flex',
@@ -1096,8 +1096,8 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                 gap: '12px',
                 padding: '10px 14px',
                 borderRadius: '8px',
-                background: activeTab === tab.id ? 'var(--primary)' : 'transparent',
-                color: activeTab === tab.id ? '#ffffff' : colorTextPrimary,
+                background: activeTab === tab.id ? 'var(--primary)' : 'rgba(255, 255, 255, 0.08)',
+                color: '#ffffff',
                 border: 'none',
                 fontSize: '0.95rem',
                 fontWeight: activeTab === tab.id ? '600' : 'normal',
@@ -1106,8 +1106,10 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                 width: '100%'
               }}
             >
-              {tab.icon}
-              {tab.label}
+              <span style={{ color: '#ffffff', display: 'flex', alignItems: 'center' }}>
+                {tab.icon}
+              </span>
+              <span style={{ color: '#ffffff' }}>{tab.label}</span>
             </button>
           ))}
         </div>
