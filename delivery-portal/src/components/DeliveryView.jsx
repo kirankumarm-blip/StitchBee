@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Home, ShoppingBag, Map, DollarSign, MessageSquare, User, 
@@ -5,7 +6,8 @@ import {
   Clock, Check, ChevronRight, ChevronDown, Info, LogOut, Shield, Compass, Sparkles, Sun, Moon, Scissors,
   Target, Star, Bell, Gift, Scan, Camera, UserPlus, Headphones, Wallet, TrendingUp, FileText, Power, RefreshCw,
   Trophy, Percent, Activity, Filter, ArrowUpRight, ArrowDownRight,
-  Paperclip, Mic, Smile, Award, Bookmark, Share2, Pin, Heart
+  Paperclip, Mic, Smile, Award, Bookmark, Share2, Pin, Heart,
+  Menu, X
 } from 'lucide-react';
 import { 
   ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
@@ -27,16 +29,18 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
 
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'orders' | 'navigation' | 'earnings' | 'support' | 'profile'
   const [isOnline, setIsOnline] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false); // floating dropdown state
   const [ordersSubTab, setOrdersSubTab] = useState('active'); // 'active' | 'upcoming' | 'completed' | 'cancelled' | 'returned'
   const [earningsPeriod, setEarningsPeriod] = useState('daily'); // 'daily' | 'weekly' | 'monthly'
   const [selectedOrder, setSelectedOrder] = useState(null); // Detailed order modal/view
   const [orderSearchText, setOrderSearchText] = useState(''); // Search query for orders list
   const [typedMessage, setTypedMessage] = useState('');
-    const [supportContact, setSupportContact] = useState('customer'); // 'customer' | 'tailor' | 'admin' | 'ai'
-    const [rightPanelTab, setRightPanelTab] = useState('order'); // 'order' | 'faq' | 'analytics'
-    const [faqOpenIdx, setFaqOpenIdx] = useState(null);
-    const [supportMobileView, setSupportMobileView] = useState('list'); // 'list' | 'chat' | 'info'
+  const [supportContact, setSupportContact] = useState('customer'); // 'customer' | 'tailor' | 'admin' | 'ai'
+  const [rightPanelTab, setRightPanelTab] = useState('order'); // 'order' | 'faq' | 'analytics'
+  const [faqOpenIdx, setFaqOpenIdx] = useState(null);
+  const [supportMobileView, setSupportMobileView] = useState('list'); // 'list' | 'chat' | 'info'
+
   
   // Interactive Map References
   const homeMapRef = useRef(null);
@@ -898,10 +902,22 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
       }}
     >
       {/* 1. TOP HEADER NAVIGATION BAR */}
-      <header className="top-nav rider-top-nav">
-        {/* Logo and Brand */}
-        <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+      <header className="top-nav rider-top-nav" style={{ position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          {/* Mobile menu toggle hamburger icon */}
+          <button 
+            className="mobile-menu-toggle-btn"
+            onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
+            aria-label="Toggle menu"
+            style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none', color: colorTextPrimary }}
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
+          {/* Logo and Brand */}
+          <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <img className="header-logo-image" src="/logo.png" alt="StitchBee" />
+          </div>
         </div>
 
         {/* Desktop Tabs Header Menu */}
@@ -1023,6 +1039,63 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
           </div>
         </div>
       </header>
+
+      {/* Slide down / drawer Mobile Menu */}
+      {mobileMenuOpen && (
+        <div 
+          className="mobile-dropdown-menu-v3" 
+          style={{
+            position: 'sticky',
+            top: '60px',
+            left: 0,
+            right: 0,
+            background: isDark ? '#120f26' : '#ffffff',
+            borderBottom: `1px solid ${borderColor}`,
+            boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+            zIndex: 999,
+            padding: '12px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {[
+            { id: 'home', label: 'Home', icon: <Home size={18} /> },
+            { id: 'orders', label: 'Orders', icon: <ShoppingBag size={18} /> },
+            { id: 'navigation', label: 'Navigation', icon: <Compass size={18} /> },
+            { id: 'earnings', label: 'Earnings', icon: <DollarSign size={18} /> },
+            { id: 'support', label: 'Support', icon: <MessageSquare size={18} /> },
+            { id: 'profile', label: 'Profile', icon: <User size={18} /> }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => {
+                setActiveTab(tab.id);
+                setMobileMenuOpen(false);
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 14px',
+                borderRadius: '8px',
+                background: activeTab === tab.id ? 'var(--primary)' : 'transparent',
+                color: activeTab === tab.id ? '#ffffff' : colorTextPrimary,
+                border: 'none',
+                fontSize: '0.95rem',
+                fontWeight: activeTab === tab.id ? '600' : 'normal',
+                textAlign: 'left',
+                cursor: 'pointer',
+                width: '100%'
+              }}
+            >
+              {tab.icon}
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Main content body */}
       <main style={{ flex: 1, padding: activeTab === 'orders' ? '12px 16px' : '20px', overflowY: 'auto', overflowX: 'hidden', paddingBottom: activeTab === 'orders' ? '12px' : '90px' }}>
