@@ -1402,12 +1402,14 @@ body.light-theme .negotiation-panel {
     z-index: 1000 !important;
   }
   
-  .top-nav .header-logo-image {
-    height: 38px !important;
-    width: auto !important;
-    max-width: 150px !important;
-    object-fit: contain;
-    margin-left: 0 !important;
+  .top-nav .header-logo-image,
+  .header-logo-image {
+    height: 75px !important;
+    width: 220px !important;
+    max-width: 220px !important;
+    object-fit: contain !important;
+    margin-left: -35px !important;
+    margin-right: -30px !important;
   }
 }
 
