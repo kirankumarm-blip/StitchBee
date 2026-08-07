@@ -2357,26 +2357,29 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Column 2 – Company */}
-                <div className="footer-col-v4">
-                  <h5 className="footer-heading-v4">Company</h5>
-                  <ul className="footer-links-v4">
-                    <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>About Us</span></li>
-                    <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>How It Works</span></li>
-                    <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>Benefits</span></li>
-                    <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>Contact Us</span></li>
-                  </ul>
-                </div>
+                {/* Nav Links Wrapper for 2-column mobile grid */}
+                <div className="footer-links-group-v4">
+                  {/* Column 2 – Company */}
+                  <div className="footer-col-v4">
+                    <h5 className="footer-heading-v4">Company</h5>
+                    <ul className="footer-links-v4">
+                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>About Us</span></li>
+                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>How It Works</span></li>
+                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>Benefits</span></li>
+                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>Contact Us</span></li>
+                    </ul>
+                  </div>
 
-                {/* Column 3 – Partner */}
-                <div className="footer-col-v4">
-                  <h5 className="footer-heading-v4">Partner</h5>
-                  <ul className="footer-links-v4">
-                    <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Become a Partner</span></li>
-                    <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Partner App</span></li>
-                    <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Partner Support</span></li>
-                    <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>FAQs</span></li>
-                  </ul>
+                  {/* Column 3 – Partner */}
+                  <div className="footer-col-v4">
+                    <h5 className="footer-heading-v4">Partner</h5>
+                    <ul className="footer-links-v4">
+                      <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Become a Partner</span></li>
+                      <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Partner App</span></li>
+                      <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Partner Support</span></li>
+                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>FAQs</span></li>
+                    </ul>
+                  </div>
                 </div>
 
                 {/* Column 4 – Download App */}
