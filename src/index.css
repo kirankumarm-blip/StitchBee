@@ -7533,6 +7533,46 @@ svg * {
   }
 }
 
+/* Tailor Hero Floating Growth Card & Bottom Feature Ribbon */
+.tailor-hero-growth-card {
+  position: absolute;
+  top: 15%;
+  right: 6%;
+  z-index: 4;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px 24px;
+  width: 220px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .tailor-hero-growth-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.hero-dark-feature-ribbon-container {
+  position: absolute;
+  bottom: 24px;
+  right: 4rem;
+  z-index: 5;
+}
+
+@media (max-width: 1280px) {
+  .hero-dark-feature-ribbon-container {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .tailor-hero-growth-card {
+    display: none;
+  }
+}
+
 /* ==========================================================================
    New Delivery Portal Mockup Sizing & Styles
    ========================================================================== */
