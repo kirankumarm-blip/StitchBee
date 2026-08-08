@@ -137,8 +137,19 @@ export default function BecomeTailorView({ onJoinClick }) {
     <div style={{ color: 'var(--text-color)', fontFamily: 'inherit' }}>
       
       {/* 1. Hero Section (First Fold) */}
-      <section className="become-tailor-hero-section">
-        <div className="become-tailor-hero-container">
+      <section className="become-tailor-hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
+        
+        {/* Loop Video Background of Tailor Cutting */}
+        <video
+          src="/TailorCutting.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="hero-partner-video"
+        />
+
+        <div className="become-tailor-hero-container" style={{ position: 'relative', zIndex: 2 }}>
           
           {/* Left Column: Content */}
           <div className="become-tailor-hero-content">
@@ -169,74 +180,8 @@ export default function BecomeTailorView({ onJoinClick }) {
             </div>
           </div>
 
-          {/* Right Column: Carousel */}
-          <div className="become-tailor-hero-carousel-col">
-            <div className="hero-carousel-container">
-              <div className="hero-carousel-track">
-                {carouselImages.map((image, idx) => {
-                  let offset = idx - currentSlide;
-                  if (offset < -2) offset += carouselImages.length;
-                  if (offset > 2) offset -= carouselImages.length;
-
-                  const isActive = offset === 0;
-                  const isLeft = offset === -1;
-                  const isRight = offset === 1;
-
-                  let slideClass = "hero-carousel-slide";
-                  if (offset === 0) slideClass += " active";
-                  else if (offset === -1) slideClass += " prev";
-                  else if (offset === 1) slideClass += " next";
-                  else if (offset === -2) slideClass += " hidden-left";
-                  else if (offset === 2) slideClass += " hidden-right";
-
-                  return (
-                    <div
-                      key={idx}
-                      className={slideClass}
-                      onClick={() => {
-                        if (isLeft) handlePrev();
-                        else if (isRight) handleNext();
-                      }}
-                    >
-                      <img
-                        src={image.url}
-                        alt={image.alt}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                          display: 'block'
-                        }}
-                      />
-                      {isActive && (
-                        <div style={{
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
-                          padding: '24px 20px 20px 20px',
-                          textAlign: 'left'
-                        }}>
-                          <h4 style={{ color: '#fff', fontSize: '1.1rem', margin: 0, fontWeight: '700', letterSpacing: '-0.3px' }}>
-                            {image.alt}
-                          </h4>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Carousel Arrows */}
-              <button className="hero-carousel-btn prev-btn" onClick={handlePrev} aria-label="Previous slide">
-                <ChevronLeft size={20} />
-              </button>
-              <button className="hero-carousel-btn next-btn" onClick={handleNext} aria-label="Next slide">
-                <ChevronRight size={20} />
-              </button>
-            </div>
-          </div>
+          {/* Right Column Spacer for Widescreen Video Overlay */}
+          <div className="hero-interactive-column" />
 
         </div>
       </section>
