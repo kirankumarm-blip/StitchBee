@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, Facebook, Instagram, Linkedin, Twitter, Play, Apple } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import TailorView from './components/TailorView';
 import AuthModal from './components/AuthModal';
@@ -1726,51 +1726,97 @@ export default function App() {
         />
       )}
 
-      {/* Global Premium Footer on landing/about/blogs roles */}
+      {/* Global Delivery-Style Premium Footer on landing/about/blogs roles */}
       {(role === 'landing' || role === 'about' || role === 'blogs' || role === 'become-tailor' || role === 'become-delivery' || role === 'become-student' || role === 'customer') && (
-        <footer id="contact-footer" className="premium-footer">
-          <div className="landing-container">
-            <div className="footer-content">
-              <div className="footer-brand">
-                <span className="footer-brand-title">StitchBee</span>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                The custom tailoring platform your entire wardrobe has been waiting for.
-              </p>
-              <div className="footer-brand-contact">
-                Follow along or reach out to us directly at <a href="mailto:info@stitchbee.com">info@stitchbee.com</a>
+        <footer id="contact-footer" className="delivery-premium-footer">
+          <div className="footer-container-v4">
+            <div className="footer-top-v4">
+              
+              {/* Column 1 – Brand */}
+              <div className="footer-col-v4 brand-col-v4">
+                <img src="/logo.png" alt="StitchBee" className="footer-logo-v4" />
+                <p className="footer-tagline-v4">Crafting elegance & custom stitching, tailored to perfection.</p>
+                <div className="footer-social-icons-v4">
+                  <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+                    <Facebook size={18} />
+                  </a>
+                  <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                    <Instagram size={18} />
+                  </a>
+                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                    <Linkedin size={18} />
+                  </a>
+                  <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
+                    <Twitter size={18} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Nav Links Wrapper for 2-column mobile grid */}
+              <div className="footer-links-group-v4">
+                {/* Column 2 – Company */}
+                <div className="footer-col-v4">
+                  <h5 className="footer-heading-v4">Company</h5>
+                  <ul className="footer-links-v4">
+                    <li><span className="footer-link-v4" onClick={() => setRole('become-tailor')}>About Us</span></li>
+                    <li><span className="footer-link-v4" onClick={() => setRole('become-tailor')}>How It Works</span></li>
+                    <li><span className="footer-link-v4" onClick={() => setRole('become-tailor')}>Earnings & Benefits</span></li>
+                    <li><span className="footer-link-v4" onClick={() => setRole('become-tailor')}>Contact Us</span></li>
+                  </ul>
+                </div>
+
+                {/* Column 3 – Partner */}
+                <div className="footer-col-v4">
+                  <h5 className="footer-heading-v4">Tailor Partner</h5>
+                  <ul className="footer-links-v4">
+                    <li><span className="footer-link-v4" onClick={() => setRole('signup')}>Become a Tailor</span></li>
+                    <li><span className="footer-link-v4" onClick={() => setRole('login')}>Tailor Portal Login</span></li>
+                    <li><span className="footer-link-v4" onClick={() => setRole('signup')}>Partner Support</span></li>
+                    <li><span className="footer-link-v4" onClick={() => setRole('become-tailor')}>Partner FAQs</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Column 4 – Download App */}
+              <div className="footer-col-v4 download-col-v4">
+                <h5 className="footer-heading-v4">Download App</h5>
+                <div className="footer-downloads-v4">
+                  <div className="download-btn-v4" onClick={() => setRole('signup')}>
+                    <Play size={18} style={{ color: '#10b981' }} />
+                    <div className="download-btn-text-v4">
+                      <span className="download-pre-v4">GET IT ON</span>
+                      <span className="download-main-v4">Android App</span>
+                    </div>
+                  </div>
+                  <div className="download-btn-v4" style={{ cursor: 'not-allowed', opacity: 0.85 }}>
+                    <Apple size={18} style={{ color: '#64748b' }} />
+                    <div className="download-btn-text-v4">
+                      <span className="download-pre-v4">iOS App</span>
+                      <span className="download-main-v4" style={{ fontSize: '0.65rem' }}>Coming Soon</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Column 5 – QR Code */}
+              <div className="footer-col-v4 qr-col-v4">
+                <h5 className="footer-heading-v4">Scan to Download App</h5>
+                <div className="footer-qr-card-v4">
+                  <img src="/qr_code_user.png" alt="Scan to Download App" className="footer-qr-img-v4" />
+                  <span className="footer-qr-caption-v4">Scan with your phone</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div className="footer-bottom-v4">
+              <span className="footer-copyright-v4">&copy; 2026 StitchBee Technologies Private Limited. All rights reserved.</span>
+              <div className="footer-bottom-links-v4">
+                <span onClick={() => alert('Privacy Policy')}>Privacy Policy</span>
+                <span onClick={() => alert('Terms & Conditions')}>Terms & Conditions</span>
+                <span onClick={() => alert('Cookie Policy')}>Cookie Policy</span>
               </div>
             </div>
-            
-            <div className="footer-column">
-              <span className="footer-column-title">Company</span>
-              <ul className="footer-links">
-                <li><span className="footer-link" onClick={() => setRole('become-tailor')}>Become a Tailor</span></li>
-              </ul>
-            </div>
-            
-            <div className="footer-column">
-              <span className="footer-column-title">Socials</span>
-              <ul className="footer-links">
-                <li><a className="footer-link" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a></li>
-                <li><a className="footer-link" href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-              </ul>
-            </div>
-            
-            <div className="footer-column">
-              <span className="footer-column-title">Compliance</span>
-              <ul className="footer-links">
-                <li><span className="footer-link" onClick={() => alert('Terms of Service')}>Terms of Service</span></li>
-                <li><span className="footer-link" onClick={() => alert('Privacy Policy')}>Privacy Policy</span></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="footer-bottom">
-            <span>&copy; 2026 StitchBee Technologies Private Limited. Tailor Partner Workspace.</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              Made with <Heart size={10} style={{ color: 'var(--primary)' }} /> for artisan custom styling.
-            </span>
-          </div>
           </div>
         </footer>
       )}
