@@ -1,9 +1,10 @@
+// Import Lucide Icons
 import React, { useState, useEffect } from 'react';
 import { 
   Scissors, Check, ArrowRight, Star, Plus, Minus, 
   HelpCircle, ChevronDown, Award, TrendingUp, Calendar, 
   CheckCircle, Briefcase, DollarSign, ShieldCheck,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, Users, PackageCheck, Clock, Sparkles, Headphones
 } from 'lucide-react';
 
 export default function BecomeTailorView({ onJoinClick }) {
@@ -152,7 +153,7 @@ export default function BecomeTailorView({ onJoinClick }) {
         <div className="become-tailor-hero-container" style={{ position: 'relative', zIndex: 2 }}>
           
           {/* Left Column: Content */}
-          <div className="become-tailor-hero-content">
+          <div className="become-tailor-hero-content" style={{ maxWidth: '100%', width: '100%' }}>
             <span className="badge badge-primary" style={{ marginBottom: '1.5rem', display: 'inline-flex', gap: '6px', fontSize: '0.75rem' }}>
               <Scissors size={12} /> StitchBee Tailor Partner Program
             </span>
@@ -172,11 +173,135 @@ export default function BecomeTailorView({ onJoinClick }) {
               </a>
             </div>
 
-            {/* Trust Line */}
-            <div className="become-tailor-hero-trust">
-              <span className="trust-item"><Check size={14} style={{ color: 'var(--primary)' }} /> 500+ Tailors Joined</span>
-              <span className="trust-item"><Check size={14} style={{ color: 'var(--primary)' }} /> 10,000+ Orders Delivered</span>
-              <span className="trust-item"><Check size={14} style={{ color: 'var(--primary)' }} /> Weekly Payouts</span>
+            {/* Redesigned Hero Stats & Floating Feature Ribbon */}
+            <div className="become-tailor-hero-stats-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px', marginTop: '2.5rem', width: '100%' }}>
+              
+              {/* Left Column: 3 Stat Items with Soft Pink Badges */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap' }}>
+                
+                {/* Stat Item 1: 500+ */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ 
+                    width: '46px', 
+                    height: '46px', 
+                    borderRadius: '50%', 
+                    background: 'rgba(247,37,133,0.12)', 
+                    border: '1.5px solid rgba(247,37,133,0.25)',
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    color: '#f72585',
+                    boxShadow: '0 4px 14px rgba(247,37,133,0.12)',
+                    flexShrink: 0
+                  }}>
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)', lineHeight: 1.15 }}>500+</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600', marginTop: '2px' }}>Tailors Joined</div>
+                  </div>
+                </div>
+
+                {/* Stat Item 2: 10,000+ */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ 
+                    width: '46px', 
+                    height: '46px', 
+                    borderRadius: '50%', 
+                    background: 'rgba(247,37,133,0.12)', 
+                    border: '1.5px solid rgba(247,37,133,0.25)',
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    color: '#f72585',
+                    boxShadow: '0 4px 14px rgba(247,37,133,0.12)',
+                    flexShrink: 0
+                  }}>
+                    <PackageCheck size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)', lineHeight: 1.15 }}>10,000+</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600', marginTop: '2px' }}>Orders Delivered</div>
+                  </div>
+                </div>
+
+                {/* Stat Item 3: Weekly */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ 
+                    width: '46px', 
+                    height: '46px', 
+                    borderRadius: '50%', 
+                    background: 'rgba(247,37,133,0.12)', 
+                    border: '1.5px solid rgba(247,37,133,0.25)',
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    color: '#f72585',
+                    boxShadow: '0 4px 14px rgba(247,37,133,0.12)',
+                    flexShrink: 0
+                  }}>
+                    <Calendar size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--text-primary)', lineHeight: 1.15 }}>Weekly</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600', marginTop: '2px' }}>Payouts</div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Floating Dark Feature Ribbon */}
+              <div className="hero-dark-feature-ribbon" style={{ 
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
+                borderRadius: '16px', 
+                padding: '12px 24px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '18px', 
+                border: '1px solid rgba(255,255,255,0.12)',
+                boxShadow: '0 20px 30px -10px rgba(0,0,0,0.6), 0 0 20px rgba(247,37,133,0.15)',
+                flexWrap: 'wrap'
+              }}>
+                {/* Feature 1 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
+                    <Clock size={16} />
+                  </div>
+                  <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Work on Your Terms</span>
+                </div>
+
+                <div style={{ width: '1px', height: '22px', background: 'rgba(255,255,255,0.15)' }} className="hide-on-mobile" />
+
+                {/* Feature 2 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
+                    <Sparkles size={16} />
+                  </div>
+                  <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Grow Your Brand</span>
+                </div>
+
+                <div style={{ width: '1px', height: '22px', background: 'rgba(255,255,255,0.15)' }} className="hide-on-mobile" />
+
+                {/* Feature 3 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
+                    <ShieldCheck size={16} />
+                  </div>
+                  <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Secure Payments</span>
+                </div>
+
+                <div style={{ width: '1px', height: '22px', background: 'rgba(255,255,255,0.15)' }} className="hide-on-mobile" />
+
+                {/* Feature 4 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
+                    <Headphones size={16} />
+                  </div>
+                  <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Dedicated Support</span>
+                </div>
+
+              </div>
+
             </div>
           </div>
 
