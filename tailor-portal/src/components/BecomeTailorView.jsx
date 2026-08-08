@@ -150,23 +150,6 @@ export default function BecomeTailorView({ onJoinClick }) {
           className="hero-partner-video"
         />
 
-        {/* Floating Growth Card over video on right */}
-        <div className="tailor-hero-growth-card">
-          <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' }}>Your Business</div>
-          <div style={{ fontSize: '0.95rem', fontWeight: '800', color: '#f72585', marginBottom: '8px' }}>Unlimited Potential</div>
-          <div style={{ width: '100%', height: '50px', background: 'rgba(247,37,133,0.06)', borderRadius: '8px', padding: '6px', position: 'relative', display: 'flex', alignItems: 'flex-end' }}>
-            <svg viewBox="0 0 100 40" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-              <path d="M 0 35 Q 30 25 50 18 T 100 5" fill="none" stroke="#f72585" strokeWidth="3" />
-              <circle cx="100" cy="5" r="4" fill="#f72585" />
-            </svg>
-          </div>
-          <div style={{ marginTop: '10px', fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            <span>• More Orders</span>
-            <span>• More Earnings</span>
-            <span>• More Growth</span>
-          </div>
-        </div>
-
         <div className="become-tailor-hero-container" style={{ position: 'relative', zIndex: 2 }}>
           
           {/* Left Column: Content */}
@@ -269,60 +252,6 @@ export default function BecomeTailorView({ onJoinClick }) {
           {/* Right Column Spacer for Widescreen Video Overlay */}
           <div className="hero-interactive-column" />
 
-        </div>
-
-        {/* Floating Dark Feature Ribbon Positioned at Bottom Right Across Video */}
-        <div className="hero-dark-feature-ribbon-container">
-          <div className="hero-dark-feature-ribbon" style={{ 
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
-            borderRadius: '16px', 
-            padding: '14px 28px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '20px', 
-            border: '1px solid rgba(255,255,255,0.12)',
-            boxShadow: '0 20px 30px -10px rgba(0,0,0,0.6), 0 0 20px rgba(247,37,133,0.15)',
-            flexWrap: 'wrap'
-          }}>
-            {/* Feature 1 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
-                <Clock size={16} />
-              </div>
-              <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Work on Your Terms</span>
-            </div>
-
-            <div style={{ width: '1px', height: '22px', background: 'rgba(255,255,255,0.15)' }} className="hide-on-mobile" />
-
-            {/* Feature 2 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
-                <Sparkles size={16} />
-              </div>
-              <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Grow Your Brand</span>
-            </div>
-
-            <div style={{ width: '1px', height: '22px', background: 'rgba(255,255,255,0.15)' }} className="hide-on-mobile" />
-
-            {/* Feature 3 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
-                <ShieldCheck size={16} />
-              </div>
-              <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Secure Payments</span>
-            </div>
-
-            <div style={{ width: '1px', height: '22px', background: 'rgba(255,255,255,0.15)' }} className="hide-on-mobile" />
-
-            {/* Feature 4 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f72585', flexShrink: 0 }}>
-                <Headphones size={16} />
-              </div>
-              <span style={{ fontSize: '0.82rem', fontWeight: '600', color: '#ffffff' }}>Dedicated Support</span>
-            </div>
-
-          </div>
         </div>
       </section>
 
