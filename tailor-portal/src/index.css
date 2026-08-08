@@ -11571,3 +11571,269 @@ body.dark-theme .delivery-premium-footer {
     margin: 0 auto !important;
   }
 }
+
+/* ==========================================================================
+   Redesigned Tailor Partner Landing Page Styles & Scroll Animations
+   ========================================================================== */
+
+/* Scroll Entrance Reveal Utility Classes */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: scale(0.92) translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal.active,
+.scroll-reveal-left.active,
+.scroll-reveal-right.active,
+.scroll-reveal-scale.active {
+  opacity: 1;
+  transform: translate(0) scale(1);
+}
+
+/* 1. Why Tailors Choose StitchBee Grid */
+.tailor-benefits-3x2-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.tailor-benefit-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 28px 24px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tailor-benefit-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(247, 37, 133, 0.4);
+  box-shadow: 0 16px 36px rgba(247, 37, 133, 0.15), 0 0 20px rgba(247, 37, 133, 0.08);
+}
+
+.benefit-card-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  transition: transform 0.3s ease;
+}
+
+.tailor-benefit-card:hover .benefit-card-icon-wrapper {
+  transform: scale(1.1) rotate(4deg);
+}
+
+.benefit-card-title {
+  color: var(--text-primary, #ffffff);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.benefit-card-desc {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* 2. Earnings Estimator Grid */
+.tailor-calc-grid-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.tailor-calc-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.benchmark-tier-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  padding: 20px 24px;
+  transition: all 0.3s ease;
+}
+
+.benchmark-tier-card:hover {
+  transform: translateX(6px);
+  border-color: rgba(247, 37, 133, 0.3);
+}
+
+.benchmark-tier-card.popular {
+  border: 1.5px solid rgba(247, 37, 133, 0.4);
+  background: linear-gradient(135deg, rgba(247, 37, 133, 0.06) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* 3. How It Works Grid */
+.tailor-how-it-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.tailor-step-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tailor-step-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(247, 37, 133, 0.4);
+  box-shadow: 0 14px 30px rgba(247, 37, 133, 0.12);
+}
+
+/* 4. Garment Categories */
+.tailor-category-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.06));
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.tailor-category-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(247, 37, 133, 0.4);
+  background: rgba(247, 37, 133, 0.05);
+}
+
+/* 5. Real Tailor Stories Grid */
+.tailor-stories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.tailor-story-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.35s ease;
+}
+
+.tailor-story-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(247, 37, 133, 0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3), 0 0 20px rgba(247, 37, 133, 0.15);
+}
+
+/* 6. Pricing Tiers Grid */
+.tailor-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.tailor-pricing-card {
+  background: var(--bg-card, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: 24px;
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.35s ease;
+}
+
+.tailor-pricing-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(247, 37, 133, 0.4);
+}
+
+.tailor-pricing-card.popular {
+  border: 2px solid #f72585;
+  background: linear-gradient(180deg, rgba(247, 37, 133, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
+  box-shadow: 0 20px 40px rgba(247, 37, 133, 0.2);
+  transform: scale(1.03);
+}
+
+.tailor-pricing-card.popular:hover {
+  transform: scale(1.03) translateY(-8px);
+}
+
+.pricing-popular-ribbon {
+  position: absolute;
+  top: -12px;
+  right: 24px;
+  background: #f72585;
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(247, 37, 133, 0.4);
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .tailor-benefits-3x2-grid,
+  .tailor-how-it-works-grid,
+  .tailor-stories-grid,
+  .tailor-pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tailor-calc-grid-layout {
+    grid-template-columns: 1fr;
+  }
+  .tailor-pricing-card.popular {
+    transform: none;
+  }
+  .tailor-pricing-card.popular:hover {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 640px) {
+  .tailor-benefits-3x2-grid,
+  .tailor-how-it-works-grid,
+  .tailor-stories-grid,
+  .tailor-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+  .tailor-calc-card {
+    padding: 20px;
+  }
+}
+
