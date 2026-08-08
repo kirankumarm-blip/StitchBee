@@ -688,38 +688,6 @@ export default function TailorView({
 
       {/* 2. BODY CONTAINER FOR SELECTED TABS */}
       <main style={{ flex: 1, padding: '24px', width: '100%' }}>
-        
-        {/* SANDBOX CONTROLLER PILL */}
-        <div style={{ 
-          background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff', 
-          padding: '12px 20px', 
-          borderRadius: '12px', 
-          marginBottom: '20px', 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          flexWrap: 'wrap', 
-          gap: '12px',
-          alignItems: 'center',
-          fontSize: '0.8rem',
-          border: '1px solid var(--border-color)',
-          boxShadow: 'var(--shadow-sm)'
-        }}>
-          <div>
-            <span style={{ color: 'var(--text-secondary)' }}>Storefront:</span>
-            <strong style={{ fontWeight: '800', marginLeft: '4px' }}>Vogue Craft Tailors</strong>
-            <a href="#" style={{ color: 'var(--primary)', marginLeft: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none', fontWeight: 'bold' }} onClick={(e) => { e.preventDefault(); alert("Opening store public storefront view..."); }}>
-              View Store <ArrowRight size={12} />
-            </a>
-          </div>
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
-              <Database size={14} style={{ color: '#fbbf24' }} /> Credits Balance: <strong style={{ color: 'var(--text-primary)' }}>₹150</strong>
-            </span>
-            <strong style={{ color: '#10b981', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.78rem' }}>
-              ✓ VERIFIED PARTNER
-            </strong>
-          </div>
-        </div>
 
         {/* TAB 1: DASHBOARD */}
         {activeTab === 'dashboard' && (
