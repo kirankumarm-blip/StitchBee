@@ -82,19 +82,7 @@ export default function BecomeTailorView({ onJoinClick }) {
     return () => observer.disconnect();
   }, []);
 
-  // Garment category items with descriptions
-  const categories = [
-    { name: "Shirts", desc: "Formal, casual & designer shirts", icon: "👔" },
-    { name: "Pants & Trousers", desc: "Chinos, formal trousers & fits", icon: "👖" },
-    { name: "Suits & Tuxedos", desc: "Three-piece formal & casual suits", icon: "🤵" },
-    { name: "Blazers", desc: "Custom structured coats & jackets", icon: "🧥" },
-    { name: "Kurtas & Pyjamas", desc: "Traditional Indian men's wear", icon: "✨" },
-    { name: "Sherwanis", desc: "Royal wedding & festive sherwanis", icon: "👑" },
-    { name: "Dresses & Gowns", desc: "Western gowns & evening dresses", icon: "👗" },
-    { name: "Saree Blouses", desc: "Designer saree blouses & tops", icon: "💃" },
-    { name: "Lehengas", desc: "Bridal & festival custom lehengas", icon: "✨" },
-    { name: "Alterations", desc: "Perfect resizing & tailoring fits", icon: "✂️" }
-  ];
+
 
   // Testimonials with partner stats & cutouts
   const testimonials = [
