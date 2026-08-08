@@ -7498,13 +7498,13 @@ svg * {
   position: absolute;
   right: 0;
   top: 0;
-  width: 58%;
+  width: 75%;
   height: 100%;
   object-fit: cover;
   z-index: 1;
   pointer-events: none;
-  mask-image: linear-gradient(to right, transparent 0%, black 45%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 45%);
+  mask-image: linear-gradient(to right, transparent 0%, black 75%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 75%);
 }
 
 .hero-interactive-column {
