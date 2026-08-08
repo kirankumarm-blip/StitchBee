@@ -16,6 +16,9 @@ export default function BecomeTailorView({ onJoinClick }) {
   // Membership billing toggle
   const [billingCycle, setBillingCycle] = useState('monthly');
   
+  // FAQ accordion state
+  const [activeFaq, setActiveFaq] = useState(null);
+  
   // Category Specialties Filter Tab
   const [activeCategoryTab, setActiveCategoryTab] = useState('all');
 
