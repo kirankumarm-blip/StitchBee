@@ -963,50 +963,7 @@ export default function BecomeTailorView({ onJoinClick }) {
 
         </div>
       </section>
-
-      {/* 9. Final CTA Bottom Banner */}
-      <section style={{ padding: '6rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }} className="scroll-reveal-scale">
-          <div style={{ 
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
-            borderRadius: '24px', 
-            padding: '4rem 2rem', 
-            textAlign: 'center',
-            position: 'relative',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(247,37,133,0.15)',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}>
-            <span className="badge badge-primary" style={{ marginBottom: '1.2rem', display: 'inline-flex', gap: '6px', fontSize: '0.75rem' }}>
-              <Scissors size={14} /> JOIN STITCHBEE TODAY
-            </span>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: '900', color: '#ffffff', margin: '0 0 16px 0' }}>
-              Ready to Turn Your Sewing Skills Into a Growing Business?
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto 2.5rem auto', lineHeight: '1.6' }}>
-              Join 500+ skilled tailors in your city and start receiving orders within 24 hours of profile approval.
-            </p>
-
-            <button 
-              className="btn btn-primary" 
-              onClick={onJoinClick}
-              style={{ 
-                padding: '16px 36px', 
-                fontSize: '1.05rem', 
-                fontWeight: '800', 
-                background: '#f72585', 
-                borderColor: '#f72585',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 10px 25px rgba(247,37,133,0.4)'
-              }}
-            >
-              Become a Tailor Now <ArrowRight size={18} />
-            </button>
-          </div>
-        </div>
-      </section>
-
+      {/* 8. FAQ Section End */}
     </div>
   );
 }
