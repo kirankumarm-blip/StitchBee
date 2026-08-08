@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, Facebook, Instagram, Linkedin, Twitter, Play, Apple } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, Facebook, Instagram, Linkedin, Twitter, Play, Apple, Menu, X } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import TailorView from './components/TailorView';
 import AuthModal from './components/AuthModal';
@@ -14,6 +14,7 @@ export default function App() {
   const [customerCategory, setCustomerCategory] = useState('all');
   const [customerHub, setCustomerHub] = useState('home');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Guest landing banner carousel states
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
@@ -608,84 +609,169 @@ export default function App() {
       
       {/* Top sticky navigation bar */}
       {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
-        <header className="top-nav">
-          <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
-          </div>
-          
-          <div className="role-switcher">
-  
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('how-it-works')}
-            >
-              How It Works
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('pricing-section')}
-            >
-              Pricing
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('contact-footer')}
-            >
-              Contact
-            </button>
-          </div>
-  
-          {/* User Profile / Auth Area */}
-          <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button 
-              className="btn btn-secondary" 
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
-            </button>
-  
-            {currentUser ? (
-              <div className="user-profile-nav">
-                <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
-                  <div className="user-profile-avatar">
-                    {currentUser.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span>{currentUser.name}</span>
-                  <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
-                </div>
-                <button 
-                  className="btn btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+        <>
+          <header className="top-nav">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {/* Mobile menu toggle hamburger icon */}
+              <button 
+                className="mobile-menu-toggle-btn"
+                onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
+                aria-label="Toggle menu"
+                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none' }}
+              >
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+
+              <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <img className="header-logo-image" src="/logo.png" alt="StitchBee" />
               </div>
-            ) : (
-              <>
-                <button 
-                  className="btn btn-secondary" 
-                  style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
-                  onClick={() => openAuthModal('tailor', 'login')}
+            </div>
+            
+            <div className="role-switcher desktop-nav-menu">
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('how-it-works')}
+              >
+                How It Works
+              </button>
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('tailor-earnings')}
+              >
+                Earnings
+              </button>
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('tailor-benefits')}
+              >
+                Benefits
+              </button>
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('tailor-specialties')}
+              >
+                Specialties
+              </button>
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('tailor-pricing')}
+              >
+                Pricing
+              </button>
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('tailor-faqs')}
+              >
+                FAQs
+              </button>
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('contact-footer')}
+              >
+                Contact
+              </button>
+            </div>
+    
+            {/* User Profile / Auth Area (Visible on desktop & mobile) */}
+            <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button 
+                className="btn btn-secondary" 
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
+                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
+              </button>
+    
+              <div className="header-auth-buttons-v3" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {currentUser ? (
+                  <div className="user-profile-nav" style={{ gap: '8px' }}>
+                    <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
+                      <div className="user-profile-avatar">
+                        {currentUser.name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="desktop-only-name">{currentUser.name}</span>
+                    </div>
+                    <button 
+                      className="btn btn-secondary" 
+                      style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button 
+                      className="btn btn-secondary" 
+                      style={{ minHeight: '32px', padding: '6px 12px', fontSize: '0.85rem' }} 
+                      onClick={() => openAuthModal('tailor', 'login')}
+                    >
+                      Login
+                    </button>
+                    <button 
+                      className="btn btn-primary" 
+                      style={{ minHeight: '32px', padding: '6px 12px', fontSize: '0.85rem' }}
+                      onClick={() => openAuthModal('tailor', 'signup')}
+                    >
+                      Sign Up
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </header>
+
+          {/* Slide down / drawer Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="mobile-dropdown-menu-v3" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-menu-links-v3">
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('how-it-works'); setMobileMenuOpen(false); }}
                 >
-                  Login
-                </button>
-                <button 
-                  className="btn btn-primary" 
-                  style={{ padding: '6px 16px', fontSize: '0.85rem', minHeight: '32px' }} 
-                  onClick={() => openAuthModal('tailor', 'signup')}
+                  How It Works
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailor-earnings'); setMobileMenuOpen(false); }}
                 >
-                  Sign Up
-                </button>
-              </>
-            )}
-          </div>
-        </header>
+                  Earnings
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailor-benefits'); setMobileMenuOpen(false); }}
+                >
+                  Benefits
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailor-specialties'); setMobileMenuOpen(false); }}
+                >
+                  Specialties
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailor-pricing'); setMobileMenuOpen(false); }}
+                >
+                  Pricing
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailor-faqs'); setMobileMenuOpen(false); }}
+                >
+                  FAQs
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer'); setMobileMenuOpen(false); }}
+                >
+                  Contact
+                </span>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Main Content Area */}

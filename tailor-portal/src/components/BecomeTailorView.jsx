@@ -273,8 +273,8 @@ export default function BecomeTailorView({ onJoinClick }) {
         </div>
       </section>
 
-      {/* 2. Redesigned: Why Tailors Choose StitchBee */}
-      <section style={{ padding: '6rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
+      {/* 2. Why Tailors Choose StitchBee */}
+      <section id="tailor-benefits" style={{ padding: '6rem 1.5rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           
           <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '4rem' }}>
@@ -350,8 +350,8 @@ export default function BecomeTailorView({ onJoinClick }) {
         </div>
       </section>
 
-      {/* 3. Redesigned: Your Skills = Your Income (Earnings Estimator) */}
-      <section style={{ 
+      {/* 3. Your Skills = Your Income (Earnings Estimator) */}
+      <section id="tailor-earnings" style={{ 
         padding: '6rem 1.5rem', 
         background: 'linear-gradient(180deg, rgba(247,37,133,0.02) 0%, rgba(0,0,0,0) 100%)',
         borderTop: '1px solid var(--border-color)',
@@ -602,7 +602,7 @@ export default function BecomeTailorView({ onJoinClick }) {
       </section>
 
       {/* 5. What Can You Stitch & Craft? */}
-      <section style={{ padding: '6rem 1.5rem', borderBottom: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
+      <section id="tailor-specialties" style={{ padding: '6rem 1.5rem', borderBottom: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
         <div style={{ maxWidth: '1150px', margin: '0 auto' }}>
           
           <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '3rem' }}>
@@ -751,7 +751,7 @@ export default function BecomeTailorView({ onJoinClick }) {
       </section>
 
       {/* 7. Redesigned: Tailor Membership Plans */}
-      <section style={{ 
+      <section id="tailor-pricing" style={{ 
         padding: '6rem 1.5rem', 
         background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(247,37,133,0.02) 100%)',
         borderBottom: '1px solid var(--border-color)'
@@ -899,7 +899,7 @@ export default function BecomeTailorView({ onJoinClick }) {
       </section>
 
       {/* 8. FAQ Section */}
-      <section style={{ padding: '6rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+      <section id="tailor-faqs" style={{ padding: '6rem 1.5rem', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ maxWidth: '850px', margin: '0 auto' }}>
           
           <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
