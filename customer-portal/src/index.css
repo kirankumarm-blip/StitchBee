@@ -11539,11 +11539,14 @@ body.dark-theme .footer-bottom-links-v4 span:hover {
     align-items: center !important;
     gap: 20px !important;
     padding: 24px 20px !important;
+    width: 80% !important;
+    margin: 0 auto !important;
   }
   .success-stats-item {
     align-self: center !important;
     justify-content: flex-start !important;
-    width: 240px !important;
+    width: 80% !important;
+    max-width: 80% !important;
     margin: 0 auto !important;
   }
 }
