@@ -16,8 +16,50 @@ export default function BecomeTailorView({ onJoinClick }) {
   // Membership billing toggle
   const [billingCycle, setBillingCycle] = useState('monthly');
   
-  // FAQ accordion state
-  const [activeFaq, setActiveFaq] = useState(null);
+  // Category Specialties Filter Tab
+  const [activeCategoryTab, setActiveCategoryTab] = useState('all');
+
+  // Category Tabs Configuration
+  const categoryTabs = [
+    { id: 'all', label: 'All Crafting Specialties' },
+    { id: 'apparel', label: '👔 Clothes & Ethnic' },
+    { id: 'bags', label: '👜 Handmade & Leather Bags' },
+    { id: 'gifts_pets', label: '🎁 Handmade Gifts & Pets' },
+    { id: 'upholstery_shoes', label: '🚗 Vehicle Covers & Shoes' }
+  ];
+
+  // Garment & Crafting category items with descriptions
+  const categories = [
+    // Apparel & Ethnic
+    { tab: 'apparel', name: "Shirts & Trousers", desc: "Formal, casual & custom fitted shirts & pants", icon: "👔", tag: "Apparel" },
+    { tab: 'apparel', name: "Suits & Tuxedos", desc: "Three-piece formal suits, blazers & tuxedos", icon: "🤵", tag: "Apparel" },
+    { tab: 'apparel', name: "Designer Saree Blouses", desc: "Custom padded, embroidery & bridal blouses", icon: "💃", tag: "Apparel" },
+    { tab: 'apparel', name: "Bridal Lehengas & Gowns", desc: "Royal wedding lehengas, gowns & western dresses", icon: "👗", tag: "Apparel" },
+    { tab: 'apparel', name: "Kurtas & Sherwanis", desc: "Traditional ethnic wear & festive outfits", icon: "👑", tag: "Apparel" },
+    { tab: 'apparel', name: "Alterations & Fitting", desc: "Precision fitting, hem alteration & garment repair", icon: "✂️", tag: "Apparel" },
+
+    // Handmade & Leather Bags
+    { tab: 'bags', name: "Handmade Tote Bags", desc: "Custom eco-friendly canvas, jute & denim totes", icon: "👜", tag: "Handmade Bags" },
+    { tab: 'bags', name: "Leather Bags & Backpacks", desc: "Genuine & faux leather bag stitching & repair", icon: "🎒", tag: "Leather Goods" },
+    { tab: 'bags', name: "Custom Purses & Handbags", desc: "Designer fabric purses, clutches & pouches", icon: "👛", tag: "Handmade Bags" },
+    { tab: 'bags', name: "Travel Duffles & Sleeves", desc: "Padded travel bags, laptop sleeves & organizers", icon: "💼", tag: "Custom Bags" },
+
+    // Handmade Gifts & Pet Apparel
+    { tab: 'gifts_pets', name: "Handmade Fabric Gifts", desc: "Custom handmade gift pouches, keepsakes & crafts", icon: "🎁", tag: "Handcrafted Gifts" },
+    { tab: 'gifts_pets', name: "Pet Dresses & Outfits", desc: "Custom dog shirts, cat dresses, bandanas & coats", icon: "🐶", tag: "Pet Apparel" },
+    { tab: 'gifts_pets', name: "Pet Harnesses & Accessories", desc: "Stitching durable pet harnesses, bows & collars", icon: "🐾", tag: "Pet Accessories" },
+    { tab: 'gifts_pets', name: "Festive Craft Accessories", desc: "Custom embroidery art, festive covers & favors", icon: "✨", tag: "Crafts & Favors" },
+
+    // Vehicle Covers & Shoes
+    { tab: 'upholstery_shoes', name: "Car & Bike Seat Covers", desc: "Custom leatherette & heavy fabric vehicle upholstery", icon: "🚗", tag: "Vehicle Covers" },
+    { tab: 'upholstery_shoes', name: "Handmade Shoes & Slippers", desc: "Handcrafted cloth shoes, juttis & slip-ons", icon: "👟", tag: "Handmade Footwear" },
+    { tab: 'upholstery_shoes', name: "Leather Goods & Belts", desc: "Heavy duty leather stitching, boot repair & straps", icon: "👞", tag: "Leather Goods" },
+    { tab: 'upholstery_shoes', name: "Home Curtains & Cushions", desc: "Custom sofa covers, curtains & cushion sets", icon: "🛋️", tag: "Soft Furnishings" }
+  ];
+
+  const filteredCategories = activeCategoryTab === 'all' 
+    ? categories 
+    : categories.filter(c => c.tab === activeCategoryTab);
 
   // Scroll Entrance Observer Effect
   useEffect(() => {
@@ -568,32 +610,69 @@ export default function BecomeTailorView({ onJoinClick }) {
         </div>
       </section>
 
-      {/* 5. What Can You Stitch? */}
+      {/* 5. What Can You Stitch & Craft? */}
       <section style={{ padding: '6rem 1.5rem', borderBottom: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1150px', margin: '0 auto' }}>
           
-          <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <span className="badge badge-primary" style={{ marginBottom: '1rem', display: 'inline-flex', gap: '6px', fontSize: '0.75rem' }}>
-              <Shirt size={14} /> TAILORING SPECIALTIES
+              <Shirt size={14} /> TAILORING & CRAFTING SPECIALTIES
             </span>
             <h2 style={{ fontSize: '2.4rem', fontWeight: '800', color: 'var(--text-primary)', margin: '0 0 12px 0' }}>
-              What Can You Stitch?
+              What Can You Stitch & Craft?
             </h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem' }}>
-              Select the garment categories that match your custom tailoring expertise
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', maxWidth: '680px', margin: '0 auto' }}>
+              From bespoke clothes and handmade bags to pet dresses, leather goods, vehicle seat covers, and custom slippers!
             </p>
+
+            {/* Specialty Filter Tabs */}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '10px', 
+              flexWrap: 'wrap', 
+              marginTop: '28px' 
+            }}>
+              {categoryTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCategoryTab(tab.id)}
+                  style={{
+                    padding: '10px 20px',
+                    borderRadius: '24px',
+                    border: activeCategoryTab === tab.id ? '1px solid #f72585' : '1px solid var(--border-color)',
+                    background: activeCategoryTab === tab.id ? 'rgba(247,37,133,0.15)' : 'rgba(255,255,255,0.03)',
+                    color: activeCategoryTab === tab.id ? '#ffffff' : 'var(--text-secondary)',
+                    fontWeight: activeCategoryTab === tab.id ? '700' : '500',
+                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease',
+                    boxShadow: activeCategoryTab === tab.id ? '0 4px 14px rgba(247,37,133,0.25)' : 'none'
+                  }}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
 
+          {/* Cards Grid */}
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-            gap: '16px' 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
+            gap: '20px' 
           }}>
-            {categories.map((cat, idx) => (
+            {filteredCategories.map((cat, idx) => (
               <div key={idx} className="tailor-category-card scroll-reveal-scale">
-                <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{cat.icon}</div>
-                <h4 style={{ color: 'var(--text-primary)', margin: '0 0 4px 0', fontSize: '1rem', fontWeight: '700' }}>{cat.name}</h4>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.3' }}>{cat.desc}</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '2rem' }}>{cat.icon}</span>
+                  <span className="badge" style={{ background: 'rgba(247,37,133,0.12)', color: '#f72585', border: '1px solid rgba(247,37,133,0.25)', fontSize: '0.68rem', fontWeight: '700' }}>
+                    {cat.tag}
+                  </span>
+                </div>
+                <h4 style={{ color: 'var(--text-primary)', margin: '0 0 6px 0', fontSize: '1.05rem', fontWeight: '700', textAlign: 'left' }}>{cat.name}</h4>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.45', margin: 0, textAlign: 'left' }}>{cat.desc}</p>
               </div>
             ))}
           </div>
