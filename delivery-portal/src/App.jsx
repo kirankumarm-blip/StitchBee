@@ -460,11 +460,21 @@ export default function App() {
     // Load user session
     const savedUser = localStorage.getItem('stitchbee_user');
     if (savedUser) {
-      const parsed = JSON.parse(savedUser);
-      setCurrentUser(parsed);
-      if (parsed.role) {
-        setRole(parsed.role);
+      try {
+        const parsed = JSON.parse(savedUser);
+        if (parsed && (parsed.role === 'delivery' || !parsed.role)) {
+          const deliveryUser = { ...parsed, role: 'delivery' };
+          setCurrentUser(deliveryUser);
+          setRole('delivery');
+        } else {
+          setCurrentUser(null);
+          setRole('become-delivery');
+        }
+      } catch (err) {
+        setRole('become-delivery');
       }
+    } else {
+      setRole('become-delivery');
     }
   }, []);
 
@@ -560,10 +570,10 @@ export default function App() {
   };
 
   const handleLoginSuccess = (userData) => {
-    setCurrentUser(userData);
-    if (userData.role) {
-      setRole(userData.role);
-    }
+    const deliveryUser = { ...userData, role: 'delivery' };
+    setCurrentUser(deliveryUser);
+    localStorage.setItem('stitchbee_user', JSON.stringify(deliveryUser));
+    setRole('delivery');
   };
 
   const handleLogout = () => {

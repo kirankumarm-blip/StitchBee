@@ -1,34 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Menu, X, Facebook, Instagram, Linkedin, Twitter, Apple, Play } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
-import DeliveryView from './components/DeliveryView';
+import CustomerView from './components/CustomerView';
 import AuthModal from './components/AuthModal';
 import AuthPage from './components/AuthPage';
-import BecomeDeliveryView from './components/BecomeDeliveryView';
+import AboutView from './components/AboutView';
+import BlogsView from './components/BlogsView';
+import DressCustomizer360 from './components/DressCustomizer360';
+import FabricMarketplace from './components/FabricMarketplace';
 
 export default function App() {
-  const [role, setRole] = useState('become-delivery'); // Default to delivery homepage
+  const [role, setRole] = useState('landing'); // 'landing' | 'customer' | 'tailor' | 'student' | 'admin'
   const [currentUser, setCurrentUser] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [authModalConfig, setAuthModalConfig] = useState({ role: 'delivery', tab: 'login' });
+  const [authModalConfig, setAuthModalConfig] = useState({ role: 'customer', tab: 'login' });
   const [customerCategory, setCustomerCategory] = useState('all');
   const [customerHub, setCustomerHub] = useState('home');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Guest landing banner carousel states
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
   const [pauseLandingCarousel, setPauseLandingCarousel] = useState(false);
-  const [earningsCount, setEarningsCount] = useState(0);
-
-  useEffect(() => {
-    let current = 0;
-    const interval = setInterval(() => {
-      current = (current + 12) > 1250 ? 0 : (current + 12);
-      setEarningsCount(current);
-    }, 45);
-    return () => clearInterval(interval);
-  }, []);
   const guestLandingBanners = [
     '/banners/banner1.png',
     '/banners/banner2.png',
@@ -49,6 +41,7 @@ export default function App() {
   const [userCoords, setUserCoords] = useState({ lat: null, lng: null });
   const [nearbyTailors, setNearbyTailors] = useState([]);
   const [markersRef, setMarkersRef] = useState([]);
+  const [hoveredCategoryIdx, setHoveredCategoryIdx] = useState(null);
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
 
@@ -460,11 +453,21 @@ export default function App() {
     // Load user session
     const savedUser = localStorage.getItem('stitchbee_user');
     if (savedUser) {
-      const parsed = JSON.parse(savedUser);
-      setCurrentUser(parsed);
-      if (parsed.role) {
-        setRole(parsed.role);
+      try {
+        const parsed = JSON.parse(savedUser);
+        if (parsed && (parsed.role === 'customer' || !parsed.role)) {
+          const custUser = { ...parsed, role: 'customer' };
+          setCurrentUser(custUser);
+          setRole('customer');
+        } else {
+          setCurrentUser(null);
+          setRole('landing');
+        }
+      } catch (err) {
+        setRole('landing');
       }
+    } else {
+      setRole('landing');
     }
   }, []);
 
@@ -476,6 +479,36 @@ export default function App() {
     }, 5000);
     return () => clearInterval(interval);
   }, [pauseLandingCarousel, role]);
+
+  // Scroll reveal animation observer for guest landing folds
+  useEffect(() => {
+    if (role !== 'landing') return;
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px -40px 0px -40px',
+      threshold: 0.05
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const timeoutId = setTimeout(() => {
+      const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-zoom');
+      targets.forEach((target) => observer.observe(target));
+    }, 150);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [role, locationStatus]);
 
   const nextLandingSlide = () => {
     setCurrentLandingSlide((prev) => (prev + 1) % guestLandingBanners.length);
@@ -560,16 +593,16 @@ export default function App() {
   };
 
   const handleLoginSuccess = (userData) => {
-    setCurrentUser(userData);
-    if (userData.role) {
-      setRole(userData.role);
-    }
+    const custUser = { ...userData, role: 'customer' };
+    setCurrentUser(custUser);
+    localStorage.setItem('stitchbee_user', JSON.stringify(custUser));
+    setRole('customer');
   };
 
   const handleLogout = () => {
     localStorage.removeItem('stitchbee_user');
     setCurrentUser(null);
-    setRole('become-delivery');
+    setRole('landing');
   };
 
   const openAuthModal = (targetRole, tab) => {
@@ -577,10 +610,8 @@ export default function App() {
     setRole(tab); // tab is 'login' or 'signup'
   };
 
-  const navigateToSection = (sectionId, targetRole) => {
-    if (targetRole) {
-      setRole(targetRole);
-    }
+  const navigateToSection = (sectionId) => {
+    setRole('landing');
     setTimeout(() => {
       const element = document.getElementById(sectionId);
       if (element) {
@@ -611,768 +642,210 @@ export default function App() {
       
       {/* Top sticky navigation bar */}
       {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
-        <>
-          <header className="top-nav">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              {/* Mobile menu toggle hamburger icon */}
+        <header className="top-nav">
+          <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+          </div>
+          
+          <div className="role-switcher">
+  
+  
+            <div className="nav-item-relative">
               <button 
-                className="mobile-menu-toggle-btn"
-                onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
-                aria-label="Toggle menu"
-                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none' }}
+                className="role-btn" 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  setActiveDropdown(activeDropdown === 'services' ? null : 'services'); 
+                }}
               >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                Services ▼
               </button>
+              <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
+                <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
+              </ul>
+            </div>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('how-it-works')}
+            >
+              How It Works
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('tailors-near-you')}
+            >
+              Tailors Near You
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('pricing-section')}
+            >
+              Pricing
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={handleTrackOrder}
+            >
+              Track Order
+            </button>
 
-              <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                <img className="header-logo-image" src="/logo.png" alt="StitchBee" />
-              </div>
-            </div>
-            
-            <div className="role-switcher desktop-nav-menu">
-              {role === 'become-delivery' ? (
-                <>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('delivery-how-it-works')}
-                  >
-                    How It Works
-                  </button>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('delivery-earnings')}
-                  >
-                    Earnings
-                  </button>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('delivery-benefits')}
-                  >
-                    Benefits
-                  </button>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('delivery-faqs')}
-                  >
-                    FAQs
-                  </button>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('contact-footer')}
-                  >
-                    Contact
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('how-it-works', 'landing')}
-                  >
-                    How It Works
-                  </button>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('pricing-section', 'landing')}
-                  >
-                    Pricing
-                  </button>
-                  <button 
-                    className="role-btn"
-                    onClick={() => navigateToSection('contact-footer', 'landing')}
-                  >
-                    Contact
-                  </button>
-                </>
-              )}
-            </div>
-    
-            {/* User Profile / Auth Area (Visible on both desktop & mobile) */}
-            <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button 
-                className="btn btn-secondary" 
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
-                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              >
-                {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
-              </button>
-    
-              <div className="header-auth-buttons-v3" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                {currentUser ? (
-                  <div className="user-profile-nav" style={{ gap: '8px' }}>
-                    <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
-                      <div className="user-profile-avatar">
-                        {currentUser.name.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="desktop-only-name">{currentUser.name}</span>
-                    </div>
-                    <button 
-                      className="btn btn-secondary" 
-                      style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </button>
+  
+            <button 
+              className={`role-btn ${role === 'blogs' ? 'active' : ''}`}
+              onClick={() => setRole('blogs')}
+            >
+              Blogs
+            </button>
+  
+            <button 
+              className="role-btn"
+              onClick={() => navigateToSection('contact-footer')}
+            >
+              Contact
+            </button>
+          </div>
+  
+          {/* User Profile / Auth Area */}
+          <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button 
+              className="btn btn-secondary" 
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
+            </button>
+  
+            {currentUser ? (
+              <div className="user-profile-nav">
+                <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
+                  <div className="user-profile-avatar">
+                    {currentUser.name.charAt(0).toUpperCase()}
                   </div>
-                ) : (
-                  <>
-                    <button 
-                      className="btn btn-secondary" 
-                      style={{ minHeight: '32px', padding: '6px 12px', fontSize: '0.85rem' }} 
-                      onClick={() => openAuthModal('delivery', 'login')}
-                    >
-                      Login
-                    </button>
-                    <button 
-                      className="btn btn-primary" 
-                      style={{ minHeight: '32px', padding: '6px 12px', fontSize: '0.85rem' }}
-                      onClick={() => openAuthModal('delivery', 'signup')}
-                    >
-                      Sign Up
-                    </button>
-                  </>
-                )}
+                  <span>{currentUser.name}</span>
+                  <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
+                </div>
+                <button 
+                  className="btn btn-secondary" 
+                  style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
               </div>
-            </div>
-          </header>
-
-          {/* Slide down / drawer Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="mobile-dropdown-menu-v3" onClick={(e) => e.stopPropagation()}>
-              <div className="mobile-menu-links-v3">
-                {role === 'become-delivery' ? (
-                  <>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-how-it-works'); setMobileMenuOpen(false); }}
-                    >
-                      How It Works
-                    </span>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-earnings'); setMobileMenuOpen(false); }}
-                    >
-                      Earnings
-                    </span>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-benefits'); setMobileMenuOpen(false); }}
-                    >
-                      Benefits
-                    </span>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('delivery-faqs'); setMobileMenuOpen(false); }}
-                    >
-                      FAQs
-                    </span>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer'); setMobileMenuOpen(false); }}
-                    >
-                      Contact
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('how-it-works', 'landing'); setMobileMenuOpen(false); }}
-                    >
-                      How It Works
-                    </span>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('pricing-section', 'landing'); setMobileMenuOpen(false); }}
-                    >
-                      Pricing
-                    </span>
-                    <span 
-                      className="mobile-menu-link-v3"
-                      onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer', 'landing'); setMobileMenuOpen(false); }}
-                    >
-                      Contact
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-        </>
+            ) : (
+              <>
+                <button 
+                  className="btn btn-secondary" 
+                  style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
+                  onClick={() => openAuthModal('customer', 'login')}
+                >
+                  Login
+                </button>
+                <button 
+                  className="btn btn-primary" 
+                  style={{ padding: '6px 16px', fontSize: '0.85rem', minHeight: '32px' }} 
+                  onClick={() => openAuthModal('customer', 'signup')}
+                >
+                  Sign Up
+                </button>
+              </>
+            )}
+          </div>
+        </header>
       )}
 
       {/* Main Content Area */}
       {role === 'landing' && (
         <div className="animate-fade-in">
-          {/* Fold 1: Premium Delivery Partner Hero Section */}
+          {/* Fold 1: Hero Carousel Banner & Stats Fold */}
           <section style={{ padding: '1.5rem 0 0.5rem 0', width: '100%', margin: '0 auto' }}>
             <div className="landing-container" style={{ padding: '0 10px' }}>
+              
+              {/* Full-width Carousel Banner Card */}
               <div 
                 style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'space-between', 
-                  minHeight: '480px', 
-                  borderRadius: '24px', 
-                  background: theme === 'dark' ? 'linear-gradient(135deg, #13111c 0%, #0c0a12 100%)' : 'linear-gradient(135deg, #fff5f8 0%, #ffffff 100%)', 
-                  border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(247,37,133,0.08)'}`, 
+                  position: 'relative', 
                   overflow: 'hidden', 
-                  flexWrap: 'wrap',
-                  position: 'relative',
-                  padding: '2rem 3rem',
-                  gap: '2rem'
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  justifyContent: 'center', 
+                  padding: 0,
+                  width: '100%',
+                  aspectRatio: '1024 / 315',
+                  height: 'auto',
+                  borderRadius: '0px',
+                  cursor: 'pointer',
+                  border: 'none',
+                  background: 'transparent'
                 }}
+                onMouseEnter={() => setPauseLandingCarousel(true)}
+                onMouseLeave={() => setPauseLandingCarousel(false)}
+                onClick={handleLandingBannerClick}
               >
-                {/* Left Side Content (approx. 45% empty white/content space) */}
-                <div style={{ flex: '1 1 400px', maxWidth: '480px', zIndex: 5, textAlign: 'left' }}>
-                  <span style={{ 
-                    fontSize: '0.85rem', 
-                    fontWeight: '800', 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '0.12em', 
-                    color: 'var(--primary)',
-                    background: 'rgba(247,37,133,0.08)',
-                    padding: '6px 12px',
-                    borderRadius: '20px',
-                    display: 'inline-block',
-                    marginBottom: '16px'
-                  }}>
-                    Delivery Partner Portal
-                  </span>
-                  
-                  <h1 style={{ 
-                    fontSize: '3rem', 
-                    fontWeight: '900', 
-                    fontFamily: 'Outfit, sans-serif', 
-                    lineHeight: '1.15', 
-                    color: theme === 'dark' ? '#fff' : '#0f172a',
-                    letterSpacing: '-0.02em',
-                    marginBottom: '18px'
-                  }}>
-                    Earn on Your Schedule with <span style={{ background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>StitchBee</span>
-                  </h1>
-                  
-                  <p style={{ 
-                    fontSize: '1.05rem', 
-                    color: 'var(--text-secondary)', 
-                    lineHeight: '1.6', 
-                    marginBottom: '28px',
-                    fontWeight: '500'
-                  }}>
-                    Deliver custom-tailored fashion outfits to doorsteps. Earn premium payouts, access instant weekly settlements, and enjoy complete schedule flexibility.
-                  </p>
+                {/* Slides */}
+                {guestLandingBanners.map((banner, idx) => (
+                  <img 
+                    key={idx}
+                    src={banner} 
+                    alt={`banner-${idx+1}`} 
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'fill',
+                      opacity: currentLandingSlide === idx ? 1 : 0,
+                      transition: 'opacity 0.8s ease-in-out',
+                      pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
+                    }}
+                  />
+                ))}
 
-                  <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-                    <button 
-                      onClick={() => openAuthModal('delivery', 'signup')}
-                      style={{ 
-                        padding: '14px 28px', 
-                        fontSize: '1.02rem', 
-                        fontWeight: '700', 
-                        borderRadius: '12px', 
-                        background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
-                        color: '#fff',
-                        boxShadow: '0 8px 25px rgba(247,37,133,0.25)',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        animation: 'pulse-glow-button 2s infinite'
+                {/* Dot Indicators */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '16px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  gap: '6px',
+                  zIndex: 20,
+                  background: 'rgba(0,0,0,0.25)',
+                  padding: '5px 12px',
+                  borderRadius: '20px'
+                }}>
+                  {guestLandingBanners.map((_, idx) => (
+                    <span 
+                      key={idx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentLandingSlide(idx);
                       }}
-                    >
-                      Join as Partner <ArrowRight size={18} />
-                    </button>
-                    <button 
-                      onClick={() => {
-                        const target = document.getElementById('quick-categories');
-                        if (target) target.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                      style={{ 
-                        padding: '14px 24px', 
-                        fontSize: '1.02rem', 
-                        fontWeight: '700', 
-                        borderRadius: '12px', 
-                        background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#fff', 
-                        color: theme === 'dark' ? '#fff' : '#475569',
-                        border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}`,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-
-                {/* Right Side (Interactive 3D Scene) */}
-                <div 
-                  style={{ 
-                    flex: '1 1 500px', 
-                    height: '450px', 
-                    position: 'relative', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    borderRadius: '24px',
-                    overflow: 'hidden',
-                    perspective: '1000px',
-                    background: 'transparent'
-                  }}
-                >
-                  {/* Embedded Custom Keyframe Animations */}
-                  <style>{`
-                    @keyframes drift-cloud-slow {
-                      0% { transform: translateX(-110%); }
-                      100% { transform: translateX(110%); }
-                    }
-                    @keyframes float-scooter {
-                      0% { transform: translateY(0) rotate(0deg); }
-                      25% { transform: translateY(-3px) rotate(1deg); }
-                      50% { transform: translateY(-7px) rotate(0deg); }
-                      75% { transform: translateY(-3px) rotate(-1deg); }
-                      100% { transform: translateY(0) rotate(0deg); }
-                    }
-                    @keyframes drive-scooter-x {
-                      0% { left: 16%; }
-                      50% { left: 24%; }
-                      100% { left: 16%; }
-                    }
-                    @keyframes rotate-wheel {
-                      0% { transform: rotate(0deg); }
-                      100% { transform: rotate(360deg); }
-                    }
-                    @keyframes pulse-shadow {
-                      0% { transform: scale(1); opacity: 0.25; }
-                      50% { transform: scale(0.85); opacity: 0.15; }
-                      100% { transform: scale(1); opacity: 0.25; }
-                    }
-                    @keyframes scroll-road-dashes {
-                      0% { stroke-dashoffset: 0; }
-                      100% { stroke-dashoffset: -32; }
-                    }
-                    @keyframes float-card-1 {
-                      0%, 100% { transform: translateY(0px); }
-                      50% { transform: translateY(-8px); }
-                    }
-                    @keyframes float-card-2 {
-                      0%, 100% { transform: translateY(-4px); }
-                      50% { transform: translateY(4px); }
-                    }
-                    @keyframes float-card-3 {
-                      0%, 100% { transform: translateY(6px); }
-                      50% { transform: translateY(-6px); }
-                    }
-                    @keyframes rotate-phone-3d {
-                      0%, 100% { transform: rotateY(-10deg) rotateX(8deg) rotateZ(-2deg); }
-                      50% { transform: rotateY(10deg) rotateX(12deg) rotateZ(2deg); }
-                    }
-                    @keyframes screen-shine {
-                      0% { left: -100%; }
-                      100% { left: 200%; }
-                    }
-                    @keyframes pulse-ripple {
-                      0% { transform: scale(0.5); opacity: 0.8; }
-                      100% { transform: scale(2); opacity: 0; }
-                    }
-                    @keyframes bounce-pin {
-                      0%, 100% { transform: translateY(0); }
-                      50% { transform: translateY(-8px); }
-                    }
-                    @keyframes float-particle {
-                      0% { transform: translateY(100%) scale(0.5); opacity: 0; }
-                      50% { opacity: 0.6; }
-                      100% { transform: translateY(-100%) scale(1.2); opacity: 0; }
-                    }
-                    @keyframes float-bird {
-                      0% { transform: translate(-20px, 0) scaleX(1); }
-                      50% { transform: translate(60px, -15px) scaleX(1); }
-                      51% { transform: translate(60px, -15px) scaleX(-1); }
-                      100% { transform: translate(-20px, 0) scaleX(-1); }
-                    }
-                    @keyframes pulse-glow-button {
-                      0% { box-shadow: 0 0 0 0 rgba(247,37,133,0.5); }
-                      70% { box-shadow: 0 0 0 15px rgba(247,37,133,0); }
-                      100% { box-shadow: 0 0 0 0 rgba(247,37,133,0); }
-                    }
-                  `}</style>
-
-                  {/* 1. Clouds Background */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '25px',
-                    left: '5%',
-                    width: '65px',
-                    height: '20px',
-                    background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.6)',
-                    borderRadius: '20px',
-                    filter: 'blur(2px)',
-                    animation: 'drift-cloud-slow 28s linear infinite',
-                    zIndex: 1
-                  }} />
-                  <div style={{
-                    position: 'absolute',
-                    top: '65px',
-                    left: '30%',
-                    width: '90px',
-                    height: '26px',
-                    background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.4)',
-                    borderRadius: '30px',
-                    filter: 'blur(3px)',
-                    animation: 'drift-cloud-slow 40s linear infinite',
-                    animationDelay: '-15s',
-                    zIndex: 1
-                  }} />
-
-                  {/* 2. Flying Birds Parallax */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '40px',
-                    left: '20%',
-                    zIndex: 1,
-                    animation: 'float-bird 18s ease-in-out infinite'
-                  }}>
-                    <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
-                      <path d="M 0,6 Q 4,0 9,6 Q 14,0 18,6" stroke={theme === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                    </svg>
-                  </div>
-
-                  {/* 3. Floating Light Particles */}
-                  {[...Array(6)].map((_, i) => (
-                    <div 
-                      key={i}
                       style={{
-                        position: 'absolute',
-                        bottom: '20px',
-                        left: `${12 + i * 14}%`,
-                        width: `${4 + (i % 3) * 2}px`,
-                        height: `${4 + (i % 3) * 2}px`,
+                        width: '6px',
+                        height: '6px',
                         borderRadius: '50%',
-                        background: i % 2 === 0 ? 'var(--primary)' : 'var(--accent)',
-                        filter: 'blur(1px)',
-                        opacity: 0,
-                        animation: `float-particle ${5 + (i % 3) * 2.5}s linear infinite`,
-                        animationDelay: `${i * 0.9}s`,
-                        zIndex: 1
+                        background: currentLandingSlide === idx ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
                       }}
                     />
                   ))}
-
-                  {/* 4. Glowing Curved Road */}
-                  <svg width="500" height="220" viewBox="0 0 500 220" fill="none" style={{ position: 'absolute', bottom: '0px', left: '0', width: '100%', zIndex: 2 }}>
-                    {/* Road Shadow */}
-                    <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(0,0,0,0.08)" strokeWidth="54" strokeLinecap="round" fill="none" />
-                    {/* Main road gradient */}
-                    <path d="M-20,170 Q130,90 280,140 T520,80" stroke="url(#road-grad-interactive)" strokeWidth="48" strokeLinecap="round" fill="none" opacity="0.95" />
-                    {/* Glowing outer board lines */}
-                    <path d="M-20,170 Q130,90 280,140 T520,80" stroke="rgba(247,37,133,0.3)" strokeWidth="50" strokeLinecap="round" fill="none" />
-                    {/* Scrolling road dashes */}
-                    <path 
-                      d="M-20,170 Q130,90 280,140 T520,80" 
-                      stroke="#ffffff" 
-                      strokeWidth="2" 
-                      strokeDasharray="14 16" 
-                      strokeLinecap="round" 
-                      fill="none" 
-                      style={{ animation: 'scroll-road-dashes 0.4s linear infinite' }} 
-                    />
-                    <defs>
-                      <linearGradient id="road-grad-interactive" x1="0" y1="170" x2="500" y2="80" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stopColor="#f72585" />
-                        <stop offset="100%" stopColor="#7209b7" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-
-                  {/* 5. 3D Rotating Navigation Phone */}
-                  <div 
-                    className="phone-container-3d" 
-                    style={{ 
-                      position: 'absolute', 
-                      right: '50px', 
-                      top: '25px', 
-                      width: '160px', 
-                      height: '300px', 
-                      zIndex: 3,
-                      transformStyle: 'preserve-3d',
-                      animation: 'rotate-phone-3d 9s ease-in-out infinite'
-                    }}
-                  >
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      borderRadius: '28px',
-                      background: '#13111c',
-                      border: '3px solid #f72585',
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.35), 0 0 25px rgba(247,37,133,0.25)',
-                      padding: '6px',
-                      position: 'relative',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', width: '60px', height: '14px', background: '#000', borderBottomLeftRadius: '9px', borderBottomRightRadius: '9px', zIndex: 10 }} />
-                      
-                      {/* Screen shine overlay */}
-                      <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: '-100%',
-                        width: '100%',
-                        height: '100%',
-                        background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
-                        animation: 'screen-shine 5s linear infinite',
-                        pointerEvents: 'none',
-                        zIndex: 5
-                      }} />
-
-                      {/* Map View */}
-                      <div style={{ width: '100%', height: '100%', borderRadius: '22px', background: '#08060d', position: 'relative', overflow: 'hidden' }}>
-                        <svg width="100%" height="100%" style={{ opacity: 0.12 }}>
-                          <pattern id="grid-pattern" width="16" height="16" patternUnits="userSpaceOnUse">
-                            <rect width="16" height="16" fill="none" />
-                            <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#fff" strokeWidth="0.5" />
-                          </pattern>
-                          <rect width="100%" height="100%" fill="url(#grid-pattern)" />
-                        </svg>
-
-                        {/* Navigation route */}
-                        <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0 }}>
-                          <path d="M 25,240 Q 60,180 40,120 T 110,40" fill="none" stroke="rgba(247,37,133,0.2)" strokeWidth="4" strokeLinecap="round" />
-                          <path 
-                            d="M 25,240 Q 60,180 40,120 T 110,40" 
-                            fill="none" 
-                            stroke="var(--accent)" 
-                            strokeWidth="2.5" 
-                            strokeDasharray="6 10" 
-                            strokeLinecap="round" 
-                            style={{ animation: 'scroll-road-dashes 1.8s linear infinite' }} 
-                          />
-                        </svg>
-
-                        {/* Start pin */}
-                        <div style={{ position: 'absolute', left: '20px', top: '235px', transform: 'translate(-50%, -100%)' }}>
-                          <MapPin size={14} color="var(--primary)" fill="rgba(247,37,133,0.2)" />
-                        </div>
-                        {/* End Pin */}
-                        <div style={{ position: 'absolute', left: '108px', top: '35px', transform: 'translate(-50%, -100%)' }}>
-                          <div style={{ animation: 'bounce-pin 2s ease-in-out infinite' }}>
-                            <MapPin size={16} color="var(--accent)" fill="rgba(76,201,240,0.2)" />
-                          </div>
-                          <div style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: '10px',
-                            height: '3px',
-                            borderRadius: '50%',
-                            border: '1px solid var(--accent)',
-                            animation: 'pulse-ripple 1.4s ease-out infinite'
-                          }} />
-                        </div>
-
-                        {/* Live route card overlay */}
-                        <div style={{
-                          position: 'absolute',
-                          bottom: '8px',
-                          left: '8px',
-                          right: '8px',
-                          background: 'rgba(19, 17, 28, 0.9)',
-                          border: '1px solid rgba(255,255,255,0.06)',
-                          borderRadius: '10px',
-                          padding: '6px 8px',
-                          textAlign: 'left'
-                        }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
-                            <span style={{ fontSize: '0.58rem', color: '#10b981', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                              <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }} /> Online
-                            </span>
-                            <span style={{ fontSize: '0.54rem', color: '#8b5cf6' }}>Route live</span>
-                          </div>
-                          <div style={{ fontSize: '0.65rem', color: '#fff', fontWeight: '700', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>StitchBee Studio → Drop</div>
-                          <div style={{ fontSize: '0.54rem', color: 'var(--text-secondary)' }}>Delivery time: 12 mins</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 6. Scooter Rider Component (Absolute animated positioning) */}
-                  <div 
-                    style={{ 
-                      position: 'absolute', 
-                      bottom: '50px', 
-                      width: '130px', 
-                      height: '130px', 
-                      zIndex: 4,
-                      animation: 'drive-scooter-x 6s ease-in-out infinite'
-                    }}
-                  >
-                    <div style={{ width: '100%', height: '100%', position: 'relative', animation: 'float-scooter 2.5s ease-in-out infinite' }}>
-                      
-                      {/* Interactive Scooter Shadow */}
-                      <div 
-                        style={{
-                          position: 'absolute',
-                          bottom: '6px',
-                          left: '12px',
-                          width: '90px',
-                          height: '10px',
-                          borderRadius: '50%',
-                          background: '#000',
-                          filter: 'blur(3px)',
-                          zIndex: 1,
-                          animation: 'pulse-shadow 2.5s ease-in-out infinite'
-                        }}
-                      />
-
-                      {/* Scooter Vector SVG */}
-                      <svg width="120" height="120" viewBox="0 0 120 120" fill="none" style={{ position: 'relative', zIndex: 2 }}>
-                        {/* Insulated Box (Bounces slightly via offset) */}
-                        <g style={{ animation: 'bounce-pin 2.5s ease-in-out infinite' }}>
-                          <rect x="14" y="32" width="32" height="32" rx="5" fill="#f72585" stroke="#7209b7" strokeWidth="2" />
-                          {/* StitchBee brand mark on box */}
-                          <circle cx="30" cy="48" r="6" fill="none" stroke="#ffffff" strokeWidth="1.5" />
-                          <path d="M28,48 L32,48 M30,46 L30,50" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" />
-                        </g>
-
-                        {/* Scooter Main Body & Chassis */}
-                        <path d="M40,75 L80,75 M40,75 L28,62 M80,75 L90,48 L74,48" stroke="#f72585" strokeWidth="4.5" strokeLinecap="round" />
-                        {/* Front Dashboard Shield */}
-                        <path d="M85,44 L96,44 L87,76 Z" fill="#f72585" />
-                        {/* Headlight beam radial shape */}
-                        <path d="M96,46 L130,42 L130,68 Z" fill="url(#headlight-beam-active)" opacity="0.16" />
-                        {/* Soft headlight shine glow */}
-                        <circle cx="95" cy="46" r="4" fill="#ffffff" style={{ boxShadow: '0 0 10px #ffffff' }} />
-                        
-                        {/* Soft seat cushion */}
-                        <rect x="44" y="60" width="24" height="8" rx="4" fill="#1c1921" />
-
-                        {/* Rider Body & Details */}
-                        {/* Jacket */}
-                        <path d="M48,60 C47,44 67,44 66,60 Z" fill="#7209b7" />
-                        {/* Arm extending to handlebars */}
-                        <path d="M58,52 L80,50" stroke="#7209b7" strokeWidth="3.5" strokeLinecap="round" />
-                        {/* Rider Helmet */}
-                        <circle cx="57" cy="37" r="9.5" fill="#f72585" />
-                        <circle cx="57" cy="37" r="7.5" fill="#1c1921" />
-                        {/* White visor shine */}
-                        <path d="M60,35 Q65,39 63,41" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
-
-                        {/* Rotating Wheels */}
-                        {/* Front Wheel */}
-                        <g style={{ transformOrigin: '88px 80px', animation: 'rotate-wheel 0.8s linear infinite' }}>
-                          <circle cx="88" cy="80" r="15" fill="#1c1921" />
-                          <circle cx="88" cy="80" r="9" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
-                          <line x1="88" y1="65" x2="88" y2="95" stroke="#475569" strokeWidth="1.5" />
-                          <line x1="73" y1="80" x2="103" y2="80" stroke="#475569" strokeWidth="1.5" />
-                        </g>
-                        {/* Rear Wheel */}
-                        <g style={{ transformOrigin: '32px 80px', animation: 'rotate-wheel 0.8s linear infinite' }}>
-                          <circle cx="32" cy="80" r="15" fill="#1c1921" />
-                          <circle cx="32" cy="80" r="9" fill="#e2e8f0" stroke="#475569" strokeWidth="1.5" />
-                          <line x1="32" y1="65" x2="32" y2="95" stroke="#475569" strokeWidth="1.5" />
-                          <line x1="17" y1="80" x2="47" y2="80" stroke="#475569" strokeWidth="1.5" />
-                        </g>
-
-                        <defs>
-                          <radialGradient id="headlight-beam-active" cx="0%" cy="50%" r="100%">
-                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
-                            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-                          </radialGradient>
-                        </defs>
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* 7. Floating Glassmorphism Info Cards */}
-                  {/* Rating Card */}
-                  <div 
-                    className="floating-glass-card" 
-                    style={{
-                      position: 'absolute',
-                      top: '70px',
-                      left: '20px',
-                      background: theme === 'dark' ? 'rgba(30, 27, 46, 0.75)' : 'rgba(255, 255, 255, 0.75)',
-                      backdropFilter: 'blur(12px)',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(247, 37, 133, 0.15)'}`,
-                      borderRadius: '16px',
-                      padding: '10px 14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
-                      animation: 'float-card-1 4.5s ease-in-out infinite',
-                      zIndex: 5
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' }}>
-                      <Star size={14} fill="#fbbf24" />
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                      <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>RIDER STATUS</span>
-                      <strong style={{ fontSize: '0.88rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a' }}>⭐ 4.9 Rating</strong>
-                    </div>
-                  </div>
-
-                  {/* Real-time Earnings Card (With ticking hook value) */}
-                  <div 
-                    className="floating-glass-card" 
-                    style={{
-                      position: 'absolute',
-                      bottom: '95px',
-                      left: '40px',
-                      background: theme === 'dark' ? 'rgba(30, 27, 46, 0.75)' : 'rgba(255, 255, 255, 0.75)',
-                      backdropFilter: 'blur(12px)',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(247, 37, 133, 0.15)'}`,
-                      borderRadius: '16px',
-                      padding: '10px 16px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
-                      animation: 'float-card-2 5.5s ease-in-out infinite',
-                      zIndex: 5
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
-                      <Check size={14} strokeWidth={3} />
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                      <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>TODAY'S PAYOUT</span>
-                      <strong style={{ fontSize: '0.92rem', fontWeight: '800', color: '#10b981', fontFamily: 'monospace' }}>
-                        ₹{earningsCount.toLocaleString('en-IN')}
-                      </strong>
-                    </div>
-                  </div>
-
-                  {/* Deliveries Completed Card */}
-                  <div 
-                    className="floating-glass-card" 
-                    style={{
-                      position: 'absolute',
-                      top: '190px',
-                      left: '80px',
-                      background: theme === 'dark' ? 'rgba(30, 27, 46, 0.75)' : 'rgba(255, 255, 255, 0.75)',
-                      backdropFilter: 'blur(12px)',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(247, 37, 133, 0.15)'}`,
-                      borderRadius: '16px',
-                      padding: '10px 14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.06)',
-                      animation: 'float-card-3 5.0s ease-in-out infinite',
-                      zIndex: 5
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '26px', height: '26px', borderRadius: '50%', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)' }}>
-                      <Truck size={14} />
-                    </div>
-                    <div style={{ textAlign: 'left' }}>
-                      <span style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>COMPLETED</span>
-                      <strong style={{ fontSize: '0.82rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a' }}>15 Deliveries Today</strong>
-                    </div>
-                  </div>
-
                 </div>
               </div>
 
@@ -1394,15 +867,15 @@ export default function App() {
                 }}
               >
                 {[
-                  { icon: <Users size={18} />, value: "10K+", label: "Delivery Partners", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
+                  { icon: <Users size={18} />, value: "500+", label: "Expert Tailors", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
                   { icon: <Heart size={18} />, value: "50K+", label: "Happy Customers", bg: 'rgba(247, 37, 133, 0.08)', color: 'var(--primary)' },
-                  { icon: <Star size={18} />, value: "4.9 ★", label: "Average Rating", bg: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' },
-                  { icon: <ShieldCheck size={18} />, value: "100%", label: "Contactless Drop", bg: 'rgba(16, 185, 129, 0.1)', color: '#10b981' },
-                  { icon: <Headphones size={18} />, value: "Weekly", label: "Secure Payouts", bg: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }
+                  { icon: <Star size={18} />, value: "4.8 ★", label: "Average Rating", bg: 'rgba(251, 191, 36, 0.15)', color: '#fbbf24' },
+                  { icon: <ShieldCheck size={18} />, value: "100%", label: "Quality Assurance", bg: 'rgba(16, 185, 129, 0.1)', color: '#10b981' },
+                  { icon: <Headphones size={18} />, value: "24/7", label: "Customer Support", bg: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }
                 ].map((item, idx) => (
                   <div 
                     key={idx} 
-                    className="stats-bar-item"
+                    className={`stats-bar-item reveal-zoom stagger-${idx + 1}`}
                     style={{ 
                       display: 'flex', 
                       alignItems: 'center', 
@@ -1430,8 +903,8 @@ export default function App() {
 
           {/* Fold 2: Quick Service Categories */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div className="landing-container reveal">
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                 <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick Service Categories</h2>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Select from our premium custom tailoring categories</p>
               </div>
@@ -1611,139 +1084,472 @@ export default function App() {
                     )
                   }
                 ].map((category, idx) => (
-                  <div 
-                    key={idx} 
-                    className="category-card-v2" 
-                    onClick={() => {
-                      setCustomerCategory(category.cat);
-                      setCustomerHub('category-landing');
-                      setRole('customer');
-                    }}
-                    style={{
-                      background: theme === 'dark' ? '#1a1a2e' : '#ffffff',
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9'}`,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      position: 'relative'
-                    }}
-                  >
-                    {/* Image wrapper */}
-                    <div style={{ position: 'relative', width: '100%', height: '160px', overflow: 'hidden' }}>
-                      <img 
-                        src={category.img} 
-                        alt={category.name} 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                      />
-                      {/* Overlapping Badge Icon */}
-                      <div 
-                        style={{
-                          position: 'absolute',
-                          left: '16px',
-                          bottom: '-18px',
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '8px',
-                          background: theme === 'dark' ? '#24243e' : '#ffffff',
-                          border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0'}`,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--primary)',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                          zIndex: 10
-                        }}
-                      >
-                        {category.icon}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div style={{ padding: '24px 16px 16px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <h3 style={{ fontSize: '1.05rem', fontWeight: '800', color: 'var(--text-primary)', margin: '0 0 6px 0' }}>
-                          {category.name}
-                        </h3>
-                        <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.4' }}>
-                          {category.desc}
-                        </p>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontSize: '0.82rem', fontWeight: '700' }}>
-                        <span>Explore</span>
-                        <ChevronRight size={14} />
-                      </div>
+                <div 
+                  key={idx} 
+                  className={`category-card-v2 reveal-zoom stagger-${(idx % 4) + 1}`} 
+                  onClick={() => {
+                    setCustomerCategory(category.cat);
+                    setCustomerHub('category-landing');
+                    setRole('customer');
+                  }}
+                  onMouseEnter={() => setHoveredCategoryIdx(idx)}
+                  onMouseLeave={() => setHoveredCategoryIdx(null)}
+                  style={{
+                    background: theme === 'dark' ? '#1a1a2e' : '#ffffff',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    boxShadow: hoveredCategoryIdx === idx
+                      ? '0 20px 35px rgba(247,37,133,0.18), 0 4px 15px rgba(0,0,0,0.1)'
+                      : '0 4px 20px rgba(0,0,0,0.03)',
+                    border: `1px solid ${hoveredCategoryIdx === idx ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9')}`,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    cursor: 'pointer',
+                    transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                    position: 'relative',
+                    transform: hoveredCategoryIdx === idx ? 'translateY(-10px) scale(1.03)' : 'translateY(0) scale(1)'
+                  }}
+                >
+                  {/* Image wrapper */}
+                  <div style={{ position: 'relative', width: '100%', height: '160px', overflow: 'hidden' }}>
+                    <img 
+                      src={category.img} 
+                      alt={category.name} 
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'cover',
+                        transition: 'transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                        transform: hoveredCategoryIdx === idx ? 'scale(1.12)' : 'scale(1)'
+                      }} 
+                    />
+                    {/* Overlapping Badge Icon */}
+                    <div 
+                      style={{
+                        position: 'absolute',
+                        left: '16px',
+                        bottom: '-18px',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: theme === 'dark' ? '#24243e' : '#ffffff',
+                        border: `1px solid ${hoveredCategoryIdx === idx ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0')}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--primary)',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                        zIndex: 10,
+                        transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
+                        transform: hoveredCategoryIdx === idx ? 'scale(1.15) rotate(10deg)' : 'scale(1) rotate(0deg)'
+                      }}
+                    >
+                      {category.icon}
                     </div>
                   </div>
-                ))}
+
+                  {/* Content */}
+                  <div style={{ padding: '24px 16px 16px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <h3 style={{ 
+                        fontSize: '1.05rem', 
+                        fontWeight: '800', 
+                        color: hoveredCategoryIdx === idx ? 'var(--primary)' : 'var(--text-primary)', 
+                        margin: '0 0 6px 0',
+                        transition: 'color 0.3s ease'
+                      }}>
+                        {category.name}
+                      </h3>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.4' }}>
+                        {category.desc}
+                      </p>
+                    </div>
+
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '4px', 
+                      color: 'var(--primary)', 
+                      fontSize: '0.82rem', 
+                      fontWeight: '700',
+                      transition: 'transform 0.3s ease',
+                      transform: hoveredCategoryIdx === idx ? 'translateX(4px)' : 'translateX(0)'
+                    }}>
+                      <span>Explore</span>
+                      <ChevronRight size={14} />
+                    </div>
+                  </div>
+                </div>
+              ))}
               </div>
             </div>
           </section>
 
           {/* Fold 3: How It Works */}
-          <section id="how-it-works" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>How StitchBee Works</h2>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Your dream garment in 4 simple steps</p>
-            </div>
-            
-            <div className="how-it-works-row-v2">
-              <div className="how-step-card-v2">
-                <span className="how-step-badge">STEP 01</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)' }}>
-                  <Sparkles size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>Select Style & Customization</h3>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Browse designer outlines or upload your own reference images. Choose necklines, sleeves, pockets, and other bespoke details.
-                </p>
+          <section id="how-it-works" style={{ padding: '6rem 0', borderTop: '1px solid var(--border-color)', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', overflow: 'hidden' }}>
+            <div className="landing-container reveal how-it-works-container-premium">
+              <div className="how-it-works-mesh-bg"></div>
+              
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                <h2 style={{ fontSize: '2.8rem', fontWeight: '800', fontFamily: 'Outfit, sans-serif', color: theme === 'dark' ? '#fff' : '#0f172a', letterSpacing: '-0.02em' }}>
+                  How <span style={{ background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>StitchBee</span> Works
+                </h2>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1.08rem', fontWeight: '500' }}>Get your custom outfit in 4 easy steps</p>
               </div>
 
-              <div className="how-step-card-v2">
-                <span className="how-step-badge">STEP 02</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent)' }}>
-                  <Scissors size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>5 Measurement Options</h3>
+              {/* Connected Timeline Progress Line (Desktop only) */}
+              <div className="timeline-progress-line-desktop" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '2rem auto 3.5rem auto', maxWidth: '800px', position: 'relative' }}>
+                <div style={{ position: 'absolute', left: '40px', right: '40px', height: '2px', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#e2e8f0', zIndex: 1 }}>
+                  <div style={{ width: '100%', height: '100%', borderTop: '2px dashed var(--border-color)' }}></div>
                 </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Submit sizes via: <strong>Home Fit Visit</strong> (student helper), <strong>Reference Dress pickup</strong>, <strong>Video guidance</strong>, <strong>Manual inputs</strong>, or our instant <strong>Touchless AI Camera Scan</strong>!
-                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', position: 'relative', zIndex: 2 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--primary)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>1</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--accent)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>2</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--success)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>3</div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid #8b5cf6', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>4</div>
+                  </div>
+                </div>
               </div>
 
-              <div className="how-step-card-v2">
-                <span className="how-step-badge">STEP 03</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981' }}>
-                  <MapPin size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>Match Boutique & Negotiate</h3>
+              <div className="timeline-grid-premium">
+                {/* Step 1: Select Style */}
+                <div className="how-step-card-premium theme-pink reveal-zoom stagger-1">
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid var(--primary)',
+                      color: 'var(--primary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      1
+                    </div>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#fff5f8',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(247,37,133,0.15)'}`,
+                      color: 'var(--primary)',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 2 mins
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Select Style
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Browse 1000+ designs</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Upload inspiration photos</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Customize sleeves & necks</span>
+                    </li>
+                  </ul>
                 </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Connect with local tailors matching your budget and needs. Chat in real-time, compare quotes, and confirm the best tailoring bid.
-                </p>
+
+                {/* Step 2: Measure Body */}
+                <div className="how-step-card-premium theme-blue reveal-zoom stagger-2">
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid var(--accent)',
+                      color: 'var(--accent)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      2
+                    </div>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ecfeff',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(76,201,240,0.15)'}`,
+                      color: 'var(--accent)',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 5 mins
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Measure Body
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Instant 3D AI Scan</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Home Visit pickup slots</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Reference dress sizing</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Step 3: Choose Tailor */}
+                <div className="how-step-card-premium theme-green reveal-zoom stagger-3">
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid var(--success)',
+                      color: 'var(--success)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      3
+                    </div>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f0fdf4',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(16,185,129,0.15)'}`,
+                      color: 'var(--success)',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 10 mins
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Choose Tailor
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Compare tailor bids</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Direct real-time chat</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Check rating reviews</span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Step 4: Delivered */}
+                <div className="how-step-card-premium theme-purple reveal-zoom stagger-4">
+                  {/* Card Header Row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
+                    <div style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
+                      border: '2px solid #8b5cf6',
+                      color: '#8b5cf6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: '800',
+                      fontSize: '0.85rem'
+                    }}>
+                      4
+                    </div>
+                    <div style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f5f3ff',
+                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(139,92,246,0.15)'}`,
+                      color: '#8b5cf6',
+                      fontSize: '0.72rem',
+                      fontWeight: '700',
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      ⏱ 3-5 Days
+                    </div>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
+                    Delivered
+                  </h3>
+
+                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
+                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+
+                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Live tracking</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>Contactless doorstep drop</span>
+                    </li>
+                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
+                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <Check size={10} strokeWidth={4} />
+                      </div>
+                      <span style={{ fontWeight: '500' }}>7-day free alterations</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
-              <div className="how-step-card-v2">
-                <span className="how-step-badge">STEP 04</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#8b5cf6' }}>
-                  <Truck size={20} />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold' }}>Stitched & Delivered</h3>
+              {/* Bottom CTA Block */}
+              <div 
+                className="reveal" 
+                style={{ 
+                  marginTop: '4rem', 
+                  background: theme === 'dark' ? 'rgba(247,37,133,0.04)' : '#fff5f8', 
+                  border: `1px solid ${theme === 'dark' ? 'rgba(247,37,133,0.15)' : 'rgba(247,37,133,0.08)'}`, 
+                  borderRadius: '24px', 
+                  padding: '24px 32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '24px',
+                  flexWrap: 'wrap',
+                  textAlign: 'left',
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fff', border: '2px solid rgba(247,37,133,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z" />
+                      <circle cx="12" cy="11" r="3" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', margin: 0 }}>
+                      Ready to design your perfect custom outfit?
+                    </h3>
+                    <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: '0.92rem' }}>
+                      Your style. Your fit. Made just for you.
+                    </p>
+                  </div>
                 </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                  Track your outfit's 12-stage progress on the live panel. Get safe delivery at your door with free alterations for 7 days.
-                </p>
+                <button 
+                  className="btn" 
+                  onClick={() => {
+                    if (!currentUser) {
+                      openAuthModal('customer', 'login');
+                    } else {
+                      setRole('customer');
+                      setCustomerHub('landing');
+                    }
+                  }}
+                  style={{ 
+                    padding: '14px 32px', 
+                    fontSize: '1.02rem', 
+                    fontWeight: '700', 
+                    borderRadius: '12px', 
+                    background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
+                    color: '#ffffff',
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '8px', 
+                    boxShadow: '0 8px 25px rgba(247,37,133,0.25)',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <span style={{ color: '#ffffff' }}>Start Designing</span> <ArrowRight size={18} style={{ color: '#ffffff' }} />
+                </button>
               </div>
-            </div>
             </div>
           </section>
 
           {/* Fold 4: Popular Designs Section */}
           <section id="popular-designs" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="reels-header">
+            <div className="landing-container reveal-zoom">
+              <div className="reels-header reveal">
               <div className="reels-title-box">
                 <h2 className="reels-title">Trending Designer Outfits</h2>
                 <p className="reels-subtitle">Watch fits and choose custom designs from our master fashion designers</p>
@@ -1772,7 +1578,7 @@ export default function App() {
                 ].map((reel, idx) => (
                   <div 
                     key={idx} 
-                    className="reel-card"
+                    className={`reel-card reveal-zoom stagger-${(idx % 4) + 1}`}
                     onMouseEnter={(e) => {
                       const videoEl = e.currentTarget.querySelector('video');
                       if (videoEl) videoEl.play().catch(() => {});
@@ -1843,17 +1649,19 @@ export default function App() {
           </section>
 
           {/* Fold 5: Fabric Marketplace */}
-          <FabricMarketplace 
-            openAuthModal={openAuthModal} 
-            currentUser={currentUser} 
-            setRole={setRole}
-            onCategorySelect={handleCategorySelect}
-          />
+          <div className="reveal">
+            <FabricMarketplace 
+              openAuthModal={openAuthModal} 
+              currentUser={currentUser} 
+              setRole={setRole}
+              onCategorySelect={handleCategorySelect}
+            />
+          </div>
 
           {/* Fold 6: Tailors Near You */}
           <section id="tailors-near-you" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                 <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Verified Tailors Near You</h2>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Locate verified boutique partners offering doorstep measurement trials</p>
               </div>
@@ -1896,7 +1704,7 @@ export default function App() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', alignItems: 'start' }}>
                   
                   {/* Left Column: Map Preview */}
-                  <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: '0 8px 30px rgba(0,0,0,0.5)', height: '420px' }}>
+                  <div className="reveal-left" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: '0 8px 30px rgba(0,0,0,0.5)', height: '420px' }}>
                     <div 
                       ref={mapContainerRef} 
                       style={{ width: '100%', height: '100%' }} 
@@ -1917,7 +1725,7 @@ export default function App() {
                   </div>
 
                   {/* Right Column: Tailors List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '6px' }}>
+                  <div className="reveal-right" style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '6px' }}>
                     <div style={{ textAlign: 'left', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>
                         📍 {locationStatus === 'success' ? 'Your Neighborhood' : 'Bengaluru Area'}
@@ -1979,7 +1787,7 @@ export default function App() {
           {/* Fold 7: Why Choose StitchBee */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
             <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '3rem' }}>
               <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>The StitchBee Promise</h2>
               <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Designed to ensure convenience, safety, and visual perfection</p>
             </div>
@@ -1993,7 +1801,7 @@ export default function App() {
                 { title: "No-Markup Fair Pricing", desc: "Get quotes directly from tailors and choose the bid matching your budget.", icon: <Star size={24} style={{ color: '#fbbf24' }} /> },
                 { title: "Escrow Protected Payments", desc: "Stitching fees are held securely, and released to tailors only after trial satisfaction.", icon: <User size={24} style={{ color: '#ec4899' }} /> }
               ].map((trust, idx) => (
-                <div key={idx} className="trust-item-v2">
+                <div key={idx} className={`trust-item-v2 reveal-zoom stagger-${(idx % 3) + 1}`}>
                   <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                     {trust.icon}
                   </div>
@@ -2010,7 +1818,7 @@ export default function App() {
           {/* Fold 8: Pricing Section */}
           <section id="pricing-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <div className="section-header" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
               <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Transparent Tailoring Pricing</h2>
               <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Standard stitching rates. Choose the tier matching your styling goals.</p>
             </div>
@@ -2022,7 +1830,7 @@ export default function App() {
                 { name: "Bridal / Heavy Designer", price: "2499", features: ["Intricate wedding lehengas, heavy zari", "Pre-stitch designer consultation", "Priority boutique stitching slot", "Unlimited alteration revisions"], action: "Book Designer" },
                 { name: "Alteration Specialist", price: "149", features: ["Resizing, hemming, repairs", "Zipper / button replacements", "24-hour express completion", "Perfect fit guarantee"], action: "Book Alteration" }
               ].map((tier, idx) => (
-                <div key={idx} className="pricing-card-v2">
+                <div key={idx} className={`pricing-card-v2 reveal-zoom stagger-${idx + 1}`}>
                   <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{tier.name}</h3>
                   <div className="pricing-price-box">
                     <span style={{ fontSize: '1rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>From</span> ₹{tier.price}
@@ -2058,9 +1866,9 @@ export default function App() {
           {/* Fold 9: Customer Reviews */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
             <div className="landing-container">
-              <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Loved by 10,000+ Fashion Enthusiasts</h2>
+              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Loved by 10,000+ Fashion Enthusiasts</h2>
             <div className="testimonial-grid">
-              <div className="testimonial-card">
+              <div className="testimonial-card reveal-zoom stagger-1">
                 <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
                 </div>
@@ -2076,7 +1884,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="testimonial-card">
+              <div className="testimonial-card reveal-zoom stagger-2">
                 <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
                 </div>
@@ -2092,7 +1900,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="testimonial-card">
+              <div className="testimonial-card reveal-zoom stagger-3">
                 <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
                   {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
                 </div>
@@ -2114,7 +1922,7 @@ export default function App() {
           {/* Fold 10: Interactive FAQ Accordion Section */}
           <section className="faq-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Frequently Asked Questions</h2>
+              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Frequently Asked Questions</h2>
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
               {[
                 {
@@ -2134,21 +1942,20 @@ export default function App() {
                   answer: "Absolutely. All tailors registered on StitchBee undergo strict background checks, including Aadhaar/PAN verification, and a physical assessment of their workspace and stitching quality before they are approved to take orders."
                 }
               ].map((faq, idx) => (
-                <div 
-                  key={idx} 
-                  className={`faq-item ${expandedFaqIdx === idx ? 'expanded' : ''}`}
-                >
-                  <button 
-                    className="faq-question" 
-                    onClick={() => setExpandedFaqIdx(expandedFaqIdx === idx ? null : idx)}
-                  >
-                    <span>{faq.question}</span>
-                    <span style={{ fontSize: '0.8rem', transition: 'transform 0.3s ease', transform: expandedFaqIdx === idx ? 'rotate(180deg)' : 'rotate(0deg)' }}>
-                      ▼
-                    </span>
-                  </button>
-                  <div className="faq-answer">
-                    <p style={{ margin: 0 }}>{faq.answer}</p>
+                <div key={idx} className={`reveal stagger-${(idx % 4) + 1}`}>
+                  <div className={`faq-item ${expandedFaqIdx === idx ? 'expanded' : ''}`}>
+                    <button 
+                      className="faq-question" 
+                      onClick={() => setExpandedFaqIdx(expandedFaqIdx === idx ? null : idx)}
+                    >
+                      <span>{faq.question}</span>
+                      <span style={{ fontSize: '0.8rem', transition: 'transform 0.3s ease', transform: expandedFaqIdx === idx ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                        ▼
+                      </span>
+                    </button>
+                    <div className="faq-answer">
+                      <p style={{ margin: 0 }}>{faq.answer}</p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -2156,78 +1963,10 @@ export default function App() {
             </div>
           </section>
 
-          {/* Fold 11: Earn Section (Join Our Growing Ecosystem) */}
-          <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container">
-              <h2 style={{ textAlign: 'center', fontSize: '2.2rem', marginBottom: '1.25rem', fontWeight: 'bold' }}>Join Our Growing Ecosystem</h2>
-            <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '3rem' }}>Partner with StitchBee and grow your business or earn flexible part-time income</p>
-            
-            <div className="grid-cols-3">
-              {/* Customers Card */}
-              <div className="glass-card-no-hover" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)' }}>
-                  <Scissors size={28} />
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>Become a Tailor Partner</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Register your boutique, receive high-value local tailoring orders, access 3D AI body scan measurements, and manage clients via our streamlined catalog.
-                </p>
-                <button className="btn btn-ghost" style={{ padding: '8px 0', justifyContent: 'flex-start', color: 'var(--primary)' }} onClick={() => {
-                  if (currentUser && currentUser.role === 'tailor') {
-                    setRole('tailor');
-                  } else {
-                    setRole('become-tailor');
-                  }
-                }}>
-                  Become a Tailor →
-                </button>
-              </div>
 
-              {/* Delivery Partner Card */}
-              <div className="glass-card-no-hover" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)' }}>
-                  <Truck size={28} />
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>Become a Delivery Partner</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Deliver fabrics from customers to tailors and completed outfits to doorsteps. Earn per delivery with flexible hours and weekly payouts.
-                </p>
-                <button className="btn btn-ghost" style={{ padding: '8px 0', justifyContent: 'flex-start', color: 'var(--accent)' }} onClick={() => {
-                  if (currentUser && currentUser.role === 'student') {
-                    setRole('student');
-                  } else {
-                    setRole('become-delivery');
-                  }
-                }}>
-                  Apply as Partner →
-                </button>
-              </div>
-
-              {/* Student Gigs Card */}
-              <div className="glass-card-no-hover" style={{ padding: '30px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ padding: '12px', width: 'fit-content', borderRadius: '10px', background: 'rgba(16,185,129,0.1)', color: 'var(--success)' }}>
-                  <Award size={28} style={{ color: 'var(--success)' }} />
-                </div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>Student Fit Gigs</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }}>
-                  Earn money by taking manual body measurements at customer homes. We train you, certify you, and connect you with local gig orders.
-                </p>
-                <button className="btn btn-ghost" style={{ padding: '8px 0', justifyContent: 'flex-start', color: 'var(--success)' }} onClick={() => {
-                  if (currentUser && currentUser.role === 'student') {
-                    setRole('student');
-                  } else {
-                    setRole('become-student');
-                  }
-                }}>
-                  Explore Gigs →
-                </button>
-              </div>
-            </div>
-            </div>
-          </section>
 
           {/* Fold 12: Mobile App Download Banner */}
-          <div className="landing-container">
+          <div className="landing-container reveal">
             <section id="download-app-banner" className="app-download-banner" style={{ margin: '40px 0' }}>
             <div className="app-download-text">
               <span className="badge badge-secondary" style={{ width: 'fit-content', marginBottom: '8px' }}>STITCHBEE MOBILE</span>
@@ -2260,217 +1999,97 @@ export default function App() {
             </section>
           </div>
 
-          {/* Fold 13: High Fidelity Interactive Demo Feature Showcase */}
-          <section id="interactive-demo" style={{ padding: '2rem 0 6rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="glass-card-no-hover" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', padding: '40px', alignItems: 'center' }}>
-                <div style={{ textAlign: 'left' }}>
-                <span className="badge badge-primary" style={{ marginBottom: '12px' }}><Sparkles size={12} /> Live Simulation System</span>
-                <h2 style={{ fontSize: '2.2rem', marginBottom: '16px', lineHeight: '1.2' }}>Test the Entire Startup Pipeline</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.7', marginBottom: '24px' }}>
-                  This web application is configured with local database synchronization. Switch roles in the header to simulate the complete transaction loop:
-                </p>
-                
-                <ul style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '12px', listStyleType: 'none' }}>
-                  <li style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>1.</span>
-                    <span><strong>CMS Banners</strong>: Add a promo banner in the Admin panel and see it appear immediately in the Customer home view.</span>
-                  </li>
-                  <li style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>2.</span>
-                    <span><strong>Tailor Onboarding</strong>: Try registering a new tailor (Urban Stitch Studio is pending) and approve their credentials.</span>
-                  </li>
-                  <li style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>3.</span>
-                    <span><strong>Order Logistics</strong>: Advance order status from Placed to Trial Period, and verify the 15-minute countdown clock.</span>
-                  </li>
-                </ul>
-              </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                  <MapPin size={24} style={{ color: 'var(--accent)' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Geolocated Tailor Radar</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Find master tailors based on current coordinate indexes.</p>
-                  </div>
-                </div>
-                <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                  <Award size={24} style={{ color: 'var(--primary)' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Interactive Student Certifications</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Guaranteed fitting accuracy with training quiz verification.</p>
-                  </div>
-                </div>
-                <div className="glass-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '16px', background: 'rgba(255,255,255,0.02)' }}>
-                  <Truck size={24} style={{ color: '#34d399' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Doorstep Logistics Matching</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Students manage pickups and deliveries for extra cash.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
-          </section>
         </div>
       )}
 
-      {role === 'become-delivery' && (
-        <BecomeDeliveryView onJoinClick={() => openAuthModal('delivery', 'signup')} />
+      {role === 'about' && (
+        <AboutView setRole={setRole} />
       )}
 
-      {role === 'delivery' && (
-        <DeliveryView 
-          theme={theme}
-          setTheme={setTheme}
+      {role === 'blogs' && (
+        <BlogsView setRole={setRole} />
+      )}
+
+
+      {role === 'customer' && (
+        <CustomerView 
+          tailors={tailors}
+          orders={orders}
+          addOrder={addOrder}
+          updateOrderStatus={updateOrderStatus}
+          ledger={ledger}
+          setLedger={handleLedgerStateChange}
+          banners={banners}
+          articles={articles}
           currentUser={currentUser}
+          initialCategory={customerCategory}
+          initialHub={customerHub}
+          onLoginRequired={() => openAuthModal('customer', 'login')}
           onLogout={handleLogout}
           setRole={setRole}
+          setCustomerHub={setCustomerHub}
+          setCustomerCategory={setCustomerCategory}
+          theme={theme}
+          setTheme={setTheme}
         />
       )}
 
       {/* Global Premium Footer on landing/about/blogs roles */}
       {(role === 'landing' || role === 'about' || role === 'blogs' || role === 'become-tailor' || role === 'become-delivery' || role === 'become-student' || role === 'customer') && (
-        role === 'become-delivery' ? (
-          <footer id="contact-footer" className="delivery-premium-footer">
-            <div className="footer-container-v4">
-              <div className="footer-top-v4">
-                
-                {/* Column 1 – Brand */}
-                <div className="footer-col-v4 brand-col-v4">
-                  <img src="/logo.png" alt="StitchBee" className="footer-logo-v4" />
-                  <p className="footer-tagline-v4">Delivering happiness, one outfit at a time.</p>
-                  <div className="footer-social-icons-v4">
-                    <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
-                      <Facebook size={18} />
-                    </a>
-                    <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
-                      <Instagram size={18} />
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-                      <Linkedin size={18} />
-                    </a>
-                    <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
-                      <Twitter size={18} />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Nav Links Wrapper for 2-column mobile grid */}
-                <div className="footer-links-group-v4">
-                  {/* Column 2 – Company */}
-                  <div className="footer-col-v4">
-                    <h5 className="footer-heading-v4">Company</h5>
-                    <ul className="footer-links-v4">
-                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>About Us</span></li>
-                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>How It Works</span></li>
-                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>Benefits</span></li>
-                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>Contact Us</span></li>
-                    </ul>
-                  </div>
-
-                  {/* Column 3 – Partner */}
-                  <div className="footer-col-v4">
-                    <h5 className="footer-heading-v4">Partner</h5>
-                    <ul className="footer-links-v4">
-                      <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Become a Partner</span></li>
-                      <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Partner App</span></li>
-                      <li><span className="footer-link-v4" onClick={() => openAuthModal('delivery', 'signup')}>Partner Support</span></li>
-                      <li><span className="footer-link-v4" onClick={() => setRole('become-delivery')}>FAQs</span></li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Column 4 – Download App */}
-                <div className="footer-col-v4 download-col-v4">
-                  <h5 className="footer-heading-v4">Download App</h5>
-                  <div className="footer-downloads-v4">
-                    <div className="download-btn-v4" onClick={() => openAuthModal('delivery', 'signup')}>
-                      <Play size={18} style={{ color: '#10b981' }} />
-                      <div className="download-btn-text-v4">
-                        <span className="download-pre-v4">GET IT ON</span>
-                        <span className="download-main-v4">Android App</span>
-                      </div>
-                    </div>
-                    <div className="download-btn-v4" style={{ cursor: 'not-allowed', opacity: 0.85 }}>
-                      <Apple size={18} style={{ color: '#64748b' }} />
-                      <div className="download-btn-text-v4">
-                        <span className="download-pre-v4">iOS App</span>
-                        <span className="download-main-v4" style={{ fontSize: '0.65rem' }}>Coming Soon</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Column 5 – QR Code */}
-                <div className="footer-col-v4 qr-col-v4">
-                  <h5 className="footer-heading-v4">Scan to Download App</h5>
-                  <div className="footer-qr-card-v4">
-                    <img src="/qr_code_user.png" alt="Scan to Download App" className="footer-qr-img-v4" />
-                    <span className="footer-qr-caption-v4">Scan with your phone</span>
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="footer-bottom-v4">
-                <span className="footer-copyright-v4">&copy; 2026 StitchBee. All rights reserved.</span>
-                <div className="footer-bottom-links-v4">
-                  <span onClick={() => alert('Privacy Policy')}>Privacy Policy</span>
-                  <span onClick={() => alert('Terms & Conditions')}>Terms & Conditions</span>
-                  <span onClick={() => alert('Cookie Policy')}>Cookie Policy</span>
-                </div>
+        <footer id="contact-footer" className="premium-footer">
+          <div className="landing-container">
+            <div className="footer-content">
+              <div className="footer-brand">
+                <span className="footer-brand-title">StitchBee</span>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                The custom tailoring platform your entire wardrobe has been waiting for.
+              </p>
+              <div className="footer-brand-contact">
+                Follow along or reach out to us directly at <a href="mailto:info@stitchbee.com">info@stitchbee.com</a>
               </div>
             </div>
-          </footer>
-        ) : (
-          <footer id="contact-footer" className="premium-footer">
-            <div className="landing-container">
-              <div className="footer-content">
-                <div className="footer-brand">
-                  <img src="/logo.png" alt="StitchBee" style={{ height: '60px', objectFit: 'contain', display: 'block', marginBottom: '1.2rem', marginLeft: '-12px' }} />
-                  <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                    The custom tailoring platform your entire wardrobe has been waiting for.
-                  </p>
-                  <div className="footer-brand-contact">
-                    Follow along or reach out to us directly at <a href="mailto:info@stitchbee.com">info@stitchbee.com</a>
-                  </div>
-                </div>
-                
-                <div className="footer-column">
-                  <span className="footer-column-title">Company</span>
-                  <ul className="footer-links">
-                    <li><span className="footer-link" onClick={() => setRole('become-delivery')}>Become a Delivery Partner</span></li>
-                  </ul>
-                </div>
-                
-                <div className="footer-column">
-                  <span className="footer-column-title">Socials</span>
-                  <ul className="footer-links">
-                    <li><a className="footer-link" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a></li>
-                    <li><a className="footer-link" href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-                  </ul>
-                </div>
-                
-                <div className="footer-column">
-                  <span className="footer-column-title">Compliance</span>
-                  <ul className="footer-links">
-                    <li><span className="footer-link" onClick={() => alert('Terms of Service')}>Terms of Service</span></li>
-                    <li><span className="footer-link" onClick={() => alert('Privacy Policy')}>Privacy Policy</span></li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="footer-bottom">
-                <span>&copy; 2026 StitchBee Technologies Private Limited. Delivery Partner Workspace.</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  Made with <Heart size={10} style={{ color: 'var(--primary)' }} /> for delivery precision.
-                </span>
-              </div>
+            
+            <div className="footer-column">
+              <span className="footer-column-title">Company</span>
+              <ul className="footer-links">
+                <li><span className="footer-link" onClick={() => setRole('about')}>About</span></li>
+              </ul>
             </div>
-          </footer>
-        )
+            
+            <div className="footer-column">
+              <span className="footer-column-title">Resources</span>
+              <ul className="footer-links">
+                <li><span className="footer-link" onClick={() => setRole('blogs')}>Blogs</span></li>
+              </ul>
+            </div>
+            
+            <div className="footer-column">
+              <span className="footer-column-title">Socials</span>
+              <ul className="footer-links">
+                <li><a className="footer-link" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a></li>
+                <li><a className="footer-link" href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
+              </ul>
+            </div>
+            
+            <div className="footer-column">
+              <span className="footer-column-title">Compliance</span>
+              <ul className="footer-links">
+                <li><span className="footer-link" onClick={() => alert('Terms of Service')}>Terms of Service</span></li>
+                <li><span className="footer-link" onClick={() => alert('Privacy Policy')}>Privacy Policy</span></li>
+                <li><span className="footer-link" onClick={() => alert('Trust Center')}>Trust Center</span></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="footer-bottom">
+            <span>&copy; 2026 StitchBee Technologies Private Limited. Empowering tailors and students locally.</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              Made with <Heart size={10} style={{ color: 'var(--primary)' }} /> for startup innovation.
+            </span>
+          </div>
+          </div>
+        </footer>
       )}
 
       {/* Full screen Auth Page */}
@@ -2479,7 +2098,7 @@ export default function App() {
           tab={role}
           setTab={(newTab) => setRole(newTab)}
           onLoginSuccess={handleLoginSuccess}
-          onClose={() => setRole('become-delivery')}
+          onClose={() => setRole('landing')}
           theme={theme}
           setTheme={setTheme}
           initialRole={authModalConfig.role}
