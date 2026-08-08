@@ -11122,27 +11122,22 @@ body.light-theme .phone-app-map-widget {
    Option 4 Dark Indigo Footer Styling & Layout
    ========================================================================== */
 .delivery-premium-footer,
-.premium-footer {
-  background: #0d061c !important; /* Rich Dark Violet / Indigo */
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  padding: 60px 0 35px 0 !important;
-  width: 100% !important;
-  font-family: var(--font-sans) !important;
-  color: #ffffff !important;
-}
-
-/* Light / Dark Mode Consistency - Option 4 Dark Purple Footer Always */
+.premium-footer,
 body.light-theme .delivery-premium-footer,
 body.dark-theme .delivery-premium-footer,
 body.light-theme .premium-footer,
 body.dark-theme .premium-footer {
   background: #0d061c !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 56px 0 32px 0 !important;
+  width: 100% !important;
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif) !important;
   color: #ffffff !important;
 }
 
 .footer-container-v4 {
-  max-width: 1440px !important;
-  width: 92vw !important;
+  max-width: 1280px !important;
+  width: 100% !important;
   margin: 0 auto !important;
   padding: 0 32px !important;
   box-sizing: border-box !important;
@@ -11150,54 +11145,77 @@ body.dark-theme .premium-footer {
 
 .footer-top-v4 {
   display: grid !important;
-  grid-template-columns: 2fr 1fr 1fr 1.1fr 1.35fr 1.1fr !important;
+  grid-template-columns: 1.4fr 1fr 1fr 1.1fr 1.1fr !important;
   gap: 36px !important;
-  margin-bottom: 40px !important;
   align-items: start !important;
 }
 
-.footer-links-group-v4 {
-  display: contents !important;
-}
-
-/* Column 1 – Brand */
-.brand-col-v4 {
+.footer-col-v4 {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
   text-align: left !important;
 }
 
-.footer-logo-v4 {
-  height: 48px !important;
-  object-fit: contain !important;
+/* Header Slot ensures exact horizontal baseline for logo and headings */
+.footer-header-slot {
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
   margin-bottom: 16px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
 
-.footer-tagline-v4 {
+.footer-logo-v4 {
+  height: 36px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+.footer-heading-v4,
+body.light-theme .footer-heading-v4,
+body.dark-theme .footer-heading-v4 {
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.3px !important;
+}
+
+.footer-tagline-v4,
+body.light-theme .footer-tagline-v4,
+body.dark-theme .footer-tagline-v4 {
   font-size: 0.88rem !important;
   line-height: 1.55 !important;
-  color: #a89fc0 !important; /* Soft lavender gray */
-  margin-bottom: 20px !important;
+  color: #a89fc0 !important;
+  margin: 0 0 20px 0 !important;
   max-width: 220px !important;
 }
 
 .footer-social-icons-v4 {
   display: flex !important;
+  align-items: center !important;
   gap: 10px !important;
 }
 
-.footer-social-icons-v4 a {
+.footer-social-icons-v4 a,
+body.light-theme .footer-social-icons-v4 a,
+body.dark-theme .footer-social-icons-v4 a {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.07) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: #ffffff !important;
-  transition: all 250ms ease !important;
+  transition: all 200ms ease !important;
   text-decoration: none !important;
 }
 
@@ -11206,16 +11224,7 @@ body.dark-theme .premium-footer {
   border-color: transparent !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35) !important;
-}
-
-/* Columns 2, 3, 4 – Links */
-.footer-heading-v4 {
-  font-size: 0.95rem !important;
-  font-weight: 600 !important;
   color: #ffffff !important;
-  margin-bottom: 18px !important;
-  text-transform: none !important;
-  letter-spacing: 0.3px !important;
 }
 
 .footer-links-v4 {
@@ -11224,7 +11233,7 @@ body.dark-theme .premium-footer {
   margin: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 10px !important;
+  gap: 12px !important;
 }
 
 .footer-links-v4 li {
@@ -11233,8 +11242,12 @@ body.dark-theme .premium-footer {
 }
 
 .footer-links-v4 a,
-.footer-links-v4 .footer-link-v4 {
-  font-size: 14px !important;
+.footer-links-v4 .footer-link-v4,
+body.light-theme .footer-links-v4 a,
+body.light-theme .footer-links-v4 .footer-link-v4,
+body.dark-theme .footer-links-v4 a,
+body.dark-theme .footer-links-v4 .footer-link-v4 {
+  font-size: 0.88rem !important;
   font-weight: 400 !important;
   color: #a89fc0 !important;
   text-decoration: none !important;
@@ -11243,21 +11256,16 @@ body.dark-theme .premium-footer {
 }
 
 .footer-links-v4 a:hover,
-.footer-links-v4 .footer-link-v4:hover {
+.footer-links-v4 .footer-link-v4:hover,
+body.light-theme .footer-links-v4 a:hover,
+body.light-theme .footer-links-v4 .footer-link-v4:hover {
   color: #ffffff !important;
-}
-
-/* Column 5 – Download App Buttons */
-.download-col-v4 {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
 }
 
 .footer-downloads-v4 {
   display: flex !important;
   flex-direction: column !important;
-  gap: 10px !important;
+  gap: 12px !important;
   width: 100% !important;
 }
 
@@ -11272,13 +11280,18 @@ body.dark-theme .premium-footer {
   width: 165px !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
-  transition: all 250ms ease !important;
+  transition: all 200ms ease !important;
 }
 
-.download-btn-v4:hover {
+.download-btn-v4:hover:not(.disabled-app-btn) {
   background: rgba(255, 255, 255, 0.12) !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
   transform: translateY(-2px) !important;
+}
+
+.disabled-app-btn {
+  cursor: not-allowed !important;
+  opacity: 0.85 !important;
 }
 
 .download-btn-text-v4 {
@@ -11288,7 +11301,9 @@ body.dark-theme .premium-footer {
   text-align: left !important;
 }
 
-.download-pre-v4 {
+.download-pre-v4,
+body.light-theme .download-pre-v4,
+body.dark-theme .download-pre-v4 {
   font-size: 0.58rem !important;
   color: #a89fc0 !important;
   font-weight: 500 !important;
@@ -11297,14 +11312,23 @@ body.dark-theme .premium-footer {
   line-height: 1.1 !important;
 }
 
-.download-main-v4 {
-  font-size: 0.82rem !important;
-  font-weight: 700 !important;
+.download-main-v4,
+body.light-theme .download-main-v4,
+body.dark-theme .download-main-v4 {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
   color: #ffffff !important;
   line-height: 1.2 !important;
 }
 
-/* Column 6 – QR Code Card */
+.coming-soon-text,
+body.light-theme .coming-soon-text,
+body.dark-theme .coming-soon-text {
+  font-size: 0.72rem !important;
+  color: #94a3b8 !important;
+  font-weight: 400 !important;
+}
+
 .qr-col-v4 {
   display: flex !important;
   flex-direction: column !important;
@@ -11314,147 +11338,49 @@ body.dark-theme .premium-footer {
 .footer-qr-card-v4 {
   background: #ffffff !important;
   border-radius: 12px !important;
-  padding: 8px !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+  padding: 10px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
   display: flex !important;
+  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 100px !important;
-  height: 100px !important;
+  width: 125px !important;
   box-sizing: border-box !important;
 }
 
 .footer-qr-img-v4 {
-  width: 84px !important;
-  height: 84px !important;
+  width: 90px !important;
+  height: 90px !important;
   object-fit: contain !important;
+  margin-bottom: 6px !important;
 }
 
-.footer-qr-caption-v4 {
-  font-size: 11px !important;
-  color: #a89fc0 !important;
+.footer-qr-caption-v4,
+body.light-theme .footer-qr-caption-v4,
+body.dark-theme .footer-qr-caption-v4 {
+  font-size: 0.68rem !important;
+  color: #475569 !important;
   font-weight: 500 !important;
-  margin-top: 8px !important;
+  text-align: center !important;
   display: block !important;
 }
 
-/* Newsletter Bar */
-.footer-newsletter-v4 {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 60px !important;
-  padding: 14px 28px !important;
-  margin-bottom: 30px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 20px !important;
-  flex-wrap: wrap !important;
-}
-
-.newsletter-info-v4 {
-  display: flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-}
-
-.newsletter-icon-badge-v4 {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 50% !important;
-  background: rgba(236, 72, 153, 0.15) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-shrink: 0 !important;
-}
-
-.newsletter-text-v4 {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  text-align: left !important;
-}
-
-.newsletter-title-v4 {
-  font-size: 0.95rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  margin: 0 0 2px 0 !important;
-}
-
-.newsletter-sub-v4 {
-  font-size: 0.82rem !important;
-  color: #a89fc0 !important;
-  margin: 0 !important;
-}
-
-.newsletter-action-v4 {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-}
-
-.newsletter-form-v4 {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  background: rgba(0, 0, 0, 0.25) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 10px !important;
-  padding: 4px 4px 4px 14px !important;
-}
-
-.newsletter-input-v4 {
-  background: transparent !important;
-  border: none !important;
-  outline: none !important;
-  color: #ffffff !important;
-  font-size: 0.85rem !important;
-  width: 220px !important;
-}
-
-.newsletter-input-v4::placeholder {
-  color: #6b6382 !important;
-}
-
-.newsletter-btn-v4 {
-  background: linear-gradient(135deg, #ec4899 0%, #d946ef 100%) !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  font-size: 0.85rem !important;
-  padding: 8px 18px !important;
-  border-radius: 8px !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: opacity 200ms ease !important;
-}
-
-.newsletter-btn-v4:hover {
-  opacity: 0.9 !important;
-}
-
-.newsletter-arrow-v4 {
-  display: flex !important;
-  align-items: center !important;
-  gap: 4px !important;
-}
-
-.newsletter-send-icon-v4 {
-  color: #ec4899 !important;
-}
-
-/* Bottom Footer Copyright & Links */
-.footer-bottom-v4 {
+.footer-divider-v4 {
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  padding-top: 24px !important;
+  margin: 36px 0 24px 0 !important;
+  width: 100% !important;
+}
+
+.footer-bottom-v4 {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
   width: 100% !important;
 }
 
-.footer-copyright-v4 {
+.footer-copyright-v4,
+body.light-theme .footer-copyright-v4,
+body.dark-theme .footer-copyright-v4 {
   font-size: 0.82rem !important;
   color: #a89fc0 !important;
 }
@@ -11465,14 +11391,18 @@ body.dark-theme .premium-footer {
   gap: 12px !important;
 }
 
-.footer-bottom-links-v4 span {
+.footer-bottom-links-v4 span,
+body.light-theme .footer-bottom-links-v4 span,
+body.dark-theme .footer-bottom-links-v4 span {
   font-size: 0.82rem !important;
   color: #a89fc0 !important;
   cursor: pointer !important;
   transition: color 200ms ease !important;
 }
 
-.footer-bottom-links-v4 span:hover {
+.footer-bottom-links-v4 span:hover,
+body.light-theme .footer-bottom-links-v4 span:hover,
+body.dark-theme .footer-bottom-links-v4 span:hover {
   color: #ffffff !important;
 }
 
@@ -11481,10 +11411,10 @@ body.dark-theme .premium-footer {
   font-size: 0.75rem !important;
 }
 
-/* Mobile Responsive Footer (< 768px) */
+/* Responsive Footer */
 @media (max-width: 1024px) {
   .footer-top-v4 {
-    grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+    grid-template-columns: 1.4fr 1fr 1fr 1.1fr !important;
     gap: 28px !important;
   }
   .qr-col-v4 {
@@ -11503,156 +11433,44 @@ body.dark-theme .premium-footer {
   }
   
   .footer-top-v4 {
-    display: flex !important;
-    flex-direction: column !important;
+    grid-template-columns: 1fr 1fr !important;
     gap: 28px !important;
-    text-align: center !important;
-    align-items: center !important;
-    margin-bottom: 24px !important;
   }
   
   .brand-col-v4 {
+    grid-column: span 2 !important;
     align-items: center !important;
     text-align: center !important;
-    width: 100% !important;
   }
   
-  .footer-logo-v4 {
-    height: 44px !important;
-    margin-bottom: 12px !important;
+  .download-col-v4 {
+    grid-column: span 2 !important;
+    align-items: center !important;
+  }
+  
+  .footer-header-slot {
+    justify-content: center !important;
   }
 
   .footer-tagline-v4 {
-    max-width: 280px !important;
-    margin: 0 auto 16px auto !important;
-    font-size: 0.88rem !important;
     text-align: center !important;
-  }
-  
-  .footer-social-icons-v4 {
-    justify-content: center !important;
-    gap: 14px !important;
-  }
-
-  .footer-links-group-v4 {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 20px 16px !important;
-    width: 100% !important;
-    text-align: left !important;
-    margin: 8px auto !important;
-  }
-
-  .footer-col-v4 {
-    align-items: flex-start !important;
-    text-align: left !important;
-  }
-  
-  .footer-heading-v4 {
-    font-size: 0.9rem !important;
-    margin-bottom: 12px !important;
-  }
-  
-  .footer-links-v4 {
-    align-items: flex-start !important;
-    gap: 10px !important;
-  }
-
-  .footer-links-v4 a,
-  .footer-links-v4 .footer-link-v4 {
-    font-size: 13px !important;
-  }
-
-  .download-col-v4 {
-    align-items: center !important;
-    text-align: center !important;
-    width: 100% !important;
-    margin-top: 4px !important;
-  }
-
-  .download-col-v4 .footer-heading-v4 {
-    text-align: center !important;
-    align-self: center !important;
   }
 
   .footer-downloads-v4 {
     flex-direction: row !important;
     justify-content: center !important;
-    gap: 12px !important;
-    width: 100% !important;
-  }
-
-  .download-btn-v4 {
-    width: 155px !important;
-    max-width: 160px !important;
-    padding: 8px 10px !important;
-    gap: 8px !important;
-    justify-content: center !important;
-    border-radius: 10px !important;
-  }
-
-  .download-pre-v4 {
-    font-size: 0.55rem !important;
-  }
-
-  .download-main-v4 {
-    font-size: 0.78rem !important;
-  }
-
-  .qr-col-v4 {
-    display: none !important;
-  }
-
-  .footer-newsletter-v4 {
-    flex-direction: column !important;
-    border-radius: 24px !important;
-    align-items: stretch !important;
-    text-align: center !important;
-    padding: 20px !important;
-  }
-
-  .newsletter-info-v4 {
-    flex-direction: column !important;
-    text-align: center !important;
-  }
-
-  .newsletter-text-v4 {
-    align-items: center !important;
-  }
-
-  .newsletter-action-v4 {
-    width: 100% !important;
-    flex-direction: column !important;
-  }
-
-  .newsletter-form-v4 {
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  .newsletter-input-v4 {
-    width: 100% !important;
-  }
-
-  .newsletter-arrow-v4 {
-    display: none !important;
   }
   
   .footer-bottom-v4 {
     flex-direction: column !important;
     gap: 12px !important;
     text-align: center !important;
-    padding-top: 20px !important;
   }
-
-  .footer-copyright-v4 {
-    font-size: 0.82rem !important;
-  }
-
+  
   .footer-bottom-links-v4 {
     flex-wrap: wrap !important;
     justify-content: center !important;
-    gap: 8px 16px !important;
+    gap: 8px 12px !important;
   }
 }
 
