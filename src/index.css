@@ -11118,35 +11118,41 @@ body.light-theme .phone-app-map-widget {
 /* ==========================================================================
    Premium SWIGGY/UBER Inspired 5-Column Footer Redesign
    ========================================================================== */
-.delivery-premium-footer {
-  background: #ffffff !important;
-  border-top: 1px solid #f1f5f9 !important;
-  padding: 70px 0 !important;
+/* ==========================================================================
+   Option 4 Dark Indigo Footer Styling & Layout
+   ========================================================================== */
+.delivery-premium-footer,
+.premium-footer {
+  background: #0d061c !important; /* Rich Dark Violet / Indigo */
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 60px 0 35px 0 !important;
   width: 100% !important;
   font-family: var(--font-sans) !important;
-  color: #374151 !important;
+  color: #ffffff !important;
 }
 
-/* Light / Dark Mode Consistency - Footer stays white as requested */
+/* Light / Dark Mode Consistency - Option 4 Dark Purple Footer Always */
 body.light-theme .delivery-premium-footer,
-body.dark-theme .delivery-premium-footer {
-  background: #ffffff !important;
-  color: #374151 !important;
+body.dark-theme .delivery-premium-footer,
+body.light-theme .premium-footer,
+body.dark-theme .premium-footer {
+  background: #0d061c !important;
+  color: #ffffff !important;
 }
 
 .footer-container-v4 {
-  max-width: 1560px !important;
+  max-width: 1440px !important;
   width: 92vw !important;
   margin: 0 auto !important;
-  padding: 0 48px !important;
+  padding: 0 32px !important;
   box-sizing: border-box !important;
 }
 
 .footer-top-v4 {
   display: grid !important;
-  grid-template-columns: 2.2fr 1.1fr 1.1fr 1.8fr 1.6fr !important;
-  gap: 72px !important; /* Spacing between columns (60-80px range) */
-  margin-bottom: 50px !important;
+  grid-template-columns: 2fr 1fr 1fr 1.1fr 1.35fr 1.1fr !important;
+  gap: 36px !important;
+  margin-bottom: 40px !important;
   align-items: start !important;
 }
 
@@ -11163,51 +11169,53 @@ body.dark-theme .delivery-premium-footer {
 }
 
 .footer-logo-v4 {
-  height: 50px !important;
+  height: 48px !important;
   object-fit: contain !important;
   margin-bottom: 16px !important;
 }
 
 .footer-tagline-v4 {
-  font-size: 0.95rem !important;
-  line-height: 1.6 !important;
-  color: #6b7280 !important; /* gray-500 */
-  margin-bottom: 24px !important;
-  max-width: 240px !important;
+  font-size: 0.88rem !important;
+  line-height: 1.55 !important;
+  color: #a89fc0 !important; /* Soft lavender gray */
+  margin-bottom: 20px !important;
+  max-width: 220px !important;
 }
 
 .footer-social-icons-v4 {
   display: flex !important;
-  gap: 12px !important;
+  gap: 10px !important;
 }
 
 .footer-social-icons-v4 a {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 38px !important;
-  height: 38px !important;
+  width: 36px !important;
+  height: 36px !important;
   border-radius: 50% !important;
-  background: #f3f4f6 !important; /* light gray bg */
-  color: #4b5563 !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
   transition: all 250ms ease !important;
   text-decoration: none !important;
 }
 
 .footer-social-icons-v4 a:hover {
-  background: var(--primary) !important; /* StitchBee primary color bg */
-  color: #ffffff !important; /* White icon */
+  background: linear-gradient(135deg, #ec4899 0%, #d946ef 100%) !important;
+  border-color: transparent !important;
   transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35) !important;
 }
 
-/* Columns 2 & 3 – Company & Partner Links */
+/* Columns 2, 3, 4 – Links */
 .footer-heading-v4 {
-  font-size: 1rem !important;
+  font-size: 0.95rem !important;
   font-weight: 600 !important;
-  color: #111827 !important; /* dark slate */
-  margin-bottom: 20px !important;
+  color: #ffffff !important;
+  margin-bottom: 18px !important;
   text-transform: none !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.3px !important;
 }
 
 .footer-links-v4 {
@@ -11216,7 +11224,7 @@ body.dark-theme .delivery-premium-footer {
   margin: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 12px !important;
+  gap: 10px !important;
 }
 
 .footer-links-v4 li {
@@ -11226,9 +11234,9 @@ body.dark-theme .delivery-premium-footer {
 
 .footer-links-v4 a,
 .footer-links-v4 .footer-link-v4 {
-  font-size: 15px !important; /* 15px */
-  font-weight: 500 !important; /* Medium weight */
-  color: #374151 !important; /* Dark gray text */
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #a89fc0 !important;
   text-decoration: none !important;
   cursor: pointer !important;
   transition: color 200ms ease !important;
@@ -11236,10 +11244,10 @@ body.dark-theme .delivery-premium-footer {
 
 .footer-links-v4 a:hover,
 .footer-links-v4 .footer-link-v4:hover {
-  color: var(--primary) !important; /* Hover to StitchBee primary color */
+  color: #ffffff !important;
 }
 
-/* Column 4 – Download App Buttons */
+/* Column 5 – Download App Buttons */
 .download-col-v4 {
   display: flex !important;
   flex-direction: column !important;
@@ -11249,28 +11257,28 @@ body.dark-theme .delivery-premium-footer {
 .footer-downloads-v4 {
   display: flex !important;
   flex-direction: column !important;
-  gap: 12px !important;
+  gap: 10px !important;
   width: 100% !important;
 }
 
 .download-btn-v4 {
   display: flex !important;
   align-items: center !important;
-  gap: 12px !important;
-  background: #f3f4f6 !important; /* light gray bg */
-  border: 1px solid rgba(0, 0, 0, 0.03) !important;
-  border-radius: 12px !important; /* 12px rounded corners */
-  padding: 10px 16px !important;
-  width: 180px !important; /* Width around 180px */
+  gap: 10px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 10px !important;
+  padding: 8px 14px !important;
+  width: 165px !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
   transition: all 250ms ease !important;
 }
 
 .download-btn-v4:hover {
-  background: #e5e7eb !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important; /* Hover elevation */
 }
 
 .download-btn-text-v4 {
@@ -11281,21 +11289,22 @@ body.dark-theme .delivery-premium-footer {
 }
 
 .download-pre-v4 {
-  font-size: 0.6rem !important;
-  color: #6b7280 !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.5px !important;
+  font-size: 0.58rem !important;
+  color: #a89fc0 !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.4px !important;
+  text-transform: uppercase !important;
   line-height: 1.1 !important;
 }
 
 .download-main-v4 {
-  font-size: 0.85rem !important;
+  font-size: 0.82rem !important;
   font-weight: 700 !important;
-  color: #111827 !important;
+  color: #ffffff !important;
   line-height: 1.2 !important;
 }
 
-/* Column 5 – QR Code Card */
+/* Column 6 – QR Code Card */
 .qr-col-v4 {
   display: flex !important;
   flex-direction: column !important;
@@ -11304,37 +11313,141 @@ body.dark-theme .delivery-premium-footer {
 
 .footer-qr-card-v4 {
   background: #ffffff !important;
-  border: 1px solid #e5e7eb !important; /* Light border */
-  border-radius: 12px !important; /* 12px rounded corners */
-  padding: 12px !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important; /* Soft shadow */
+  border-radius: 12px !important;
+  padding: 8px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
   display: flex !important;
-  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 130px !important;
+  width: 100px !important;
+  height: 100px !important;
   box-sizing: border-box !important;
 }
 
 .footer-qr-img-v4 {
-  width: 95px !important; /* 90-100px size */
-  height: 95px !important;
+  width: 84px !important;
+  height: 84px !important;
   object-fit: contain !important;
-  margin-bottom: 8px !important;
 }
 
 .footer-qr-caption-v4 {
   font-size: 11px !important;
-  color: #6b7280 !important;
-  font-weight: 600 !important;
-  text-align: center !important;
+  color: #a89fc0 !important;
+  font-weight: 500 !important;
+  margin-top: 8px !important;
   display: block !important;
 }
 
-/* Bottom Footer copyright block */
+/* Newsletter Bar */
+.footer-newsletter-v4 {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 60px !important;
+  padding: 14px 28px !important;
+  margin-bottom: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  flex-wrap: wrap !important;
+}
+
+.newsletter-info-v4 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+.newsletter-icon-badge-v4 {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 50% !important;
+  background: rgba(236, 72, 153, 0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.newsletter-text-v4 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+.newsletter-title-v4 {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin: 0 0 2px 0 !important;
+}
+
+.newsletter-sub-v4 {
+  font-size: 0.82rem !important;
+  color: #a89fc0 !important;
+  margin: 0 !important;
+}
+
+.newsletter-action-v4 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.newsletter-form-v4 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 10px !important;
+  padding: 4px 4px 4px 14px !important;
+}
+
+.newsletter-input-v4 {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #ffffff !important;
+  font-size: 0.85rem !important;
+  width: 220px !important;
+}
+
+.newsletter-input-v4::placeholder {
+  color: #6b6382 !important;
+}
+
+.newsletter-btn-v4 {
+  background: linear-gradient(135deg, #ec4899 0%, #d946ef 100%) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  padding: 8px 18px !important;
+  border-radius: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: opacity 200ms ease !important;
+}
+
+.newsletter-btn-v4:hover {
+  opacity: 0.9 !important;
+}
+
+.newsletter-arrow-v4 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.newsletter-send-icon-v4 {
+  color: #ec4899 !important;
+}
+
+/* Bottom Footer Copyright & Links */
 .footer-bottom-v4 {
-  border-top: 1px solid #f1f5f9 !important; /* separator line */
-  padding-top: 30px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-top: 24px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -11342,30 +11455,46 @@ body.dark-theme .delivery-premium-footer {
 }
 
 .footer-copyright-v4 {
-  font-size: 0.88rem !important;
-  color: #6b7280 !important;
+  font-size: 0.82rem !important;
+  color: #a89fc0 !important;
 }
 
 .footer-bottom-links-v4 {
   display: flex !important;
-  gap: 24px !important; /* Spacing between links 24px */
+  align-items: center !important;
+  gap: 12px !important;
 }
 
 .footer-bottom-links-v4 span {
-  font-size: 0.88rem !important;
-  color: #4b5563 !important;
+  font-size: 0.82rem !important;
+  color: #a89fc0 !important;
   cursor: pointer !important;
   transition: color 200ms ease !important;
-  font-weight: 500 !important;
 }
 
 .footer-bottom-links-v4 span:hover {
-  color: var(--primary) !important; /* Hover primary brand color */
+  color: #ffffff !important;
+}
+
+.footer-dot-v4 {
+  color: #ec4899 !important;
+  font-size: 0.75rem !important;
 }
 
 /* Mobile Responsive Footer (< 768px) */
+@media (max-width: 1024px) {
+  .footer-top-v4 {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr !important;
+    gap: 28px !important;
+  }
+  .qr-col-v4 {
+    display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
-  .delivery-premium-footer {
+  .delivery-premium-footer,
+  .premium-footer {
     padding: 40px 0 24px 0 !important;
   }
   
@@ -11405,17 +11534,13 @@ body.dark-theme .delivery-premium-footer {
     gap: 14px !important;
   }
 
-  /* 2-Column Links Grid for Company & Partner on Mobile */
   .footer-links-group-v4 {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 24px 20px !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 20px 16px !important;
     width: 100% !important;
-    max-width: 380px !important;
     text-align: left !important;
     margin: 8px auto !important;
-    padding: 0 12px !important;
-    box-sizing: border-box !important;
   }
 
   .footer-col-v4 {
@@ -11424,7 +11549,7 @@ body.dark-theme .delivery-premium-footer {
   }
   
   .footer-heading-v4 {
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
     margin-bottom: 12px !important;
   }
   
@@ -11435,10 +11560,9 @@ body.dark-theme .delivery-premium-footer {
 
   .footer-links-v4 a,
   .footer-links-v4 .footer-link-v4 {
-    font-size: 14px !important;
+    font-size: 13px !important;
   }
 
-  /* Download App Section - Horizontal row on mobile */
   .download-col-v4 {
     align-items: center !important;
     text-align: center !important;
@@ -11475,8 +11599,42 @@ body.dark-theme .delivery-premium-footer {
     font-size: 0.78rem !important;
   }
 
-  /* Hide bulky QR Code card on Mobile Devices */
   .qr-col-v4 {
+    display: none !important;
+  }
+
+  .footer-newsletter-v4 {
+    flex-direction: column !important;
+    border-radius: 24px !important;
+    align-items: stretch !important;
+    text-align: center !important;
+    padding: 20px !important;
+  }
+
+  .newsletter-info-v4 {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  .newsletter-text-v4 {
+    align-items: center !important;
+  }
+
+  .newsletter-action-v4 {
+    width: 100% !important;
+    flex-direction: column !important;
+  }
+
+  .newsletter-form-v4 {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .newsletter-input-v4 {
+    width: 100% !important;
+  }
+
+  .newsletter-arrow-v4 {
     display: none !important;
   }
   
@@ -11494,7 +11652,7 @@ body.dark-theme .delivery-premium-footer {
   .footer-bottom-links-v4 {
     flex-wrap: wrap !important;
     justify-content: center !important;
-    gap: 12px 20px !important;
+    gap: 8px 16px !important;
   }
 }
 
