@@ -192,10 +192,10 @@ export default function BecomeTailorView({ onJoinClick }) {
             </div>
 
             {/* Left 3 Stat Items with Soft Pink Badges */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap', marginTop: '2.5rem' }}>
+            <div className="hero-stats-ribbon" style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap', marginTop: '2.5rem' }}>
               
               {/* Stat Item 1: 500+ */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="hero-stat-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ 
                   width: '44px', 
                   height: '44px', 
@@ -218,7 +218,7 @@ export default function BecomeTailorView({ onJoinClick }) {
               </div>
 
               {/* Stat Item 2: 10,000+ */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="hero-stat-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ 
                   width: '44px', 
                   height: '44px', 
@@ -241,7 +241,7 @@ export default function BecomeTailorView({ onJoinClick }) {
               </div>
 
               {/* Stat Item 3: Weekly */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="hero-stat-item stat-item-weekly" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ 
                   width: '44px', 
                   height: '44px', 

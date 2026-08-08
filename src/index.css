@@ -11837,3 +11837,14 @@ body.dark-theme .delivery-premium-footer {
   }
 }
 
+/* Mobile Hero Stats Ribbon Alignment */
+@media (max-width: 768px) {
+  .hero-stats-ribbon {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .hero-stat-item.stat-item-weekly {
+    margin: 0 auto !important;
+  }
+}
+
