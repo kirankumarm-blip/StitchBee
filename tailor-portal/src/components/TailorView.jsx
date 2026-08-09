@@ -288,8 +288,9 @@ export default function TailorView({
     { time: '06:00 PM', title: 'Appointment', type: 'appointment', desc: 'Customer: Amit Verma' }
   ]);
 
-  // Earnings filter
+  // Earnings filter & chart interactive state
   const [earningsFilter, setEarningsFilter] = useState('this_week');
+  const [hoveredPointIndex, setHoveredPointIndex] = useState(null);
 
   // Chat window state
   const [typedMessage, setTypedMessage] = useState('');
@@ -2993,10 +2994,10 @@ export default function TailorView({
                       }}>
                         Block Dates
                       </button>
-                    </div>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
 
             </div>
           );
@@ -3004,6 +3005,130 @@ export default function TailorView({
 
         {/* TAB 6: EARNINGS */}
         {activeTab === 'earnings' && (() => {
+          
+          // Dynamic Earnings Datasets
+          const earningsDataSets = {
+            this_week: {
+              label: 'Daily (This Week)',
+              periodLabel: 'Daily earnings for this week (Mon – Sun)',
+              kpis: {
+                total: '₹18,750',
+                change: '↑ 12% last week',
+                pending: '₹12,350',
+                commission: '₹937',
+                net: '₹17,813'
+              },
+              points: [
+                { label: 'Mon', amount: 1250, display: '₹1,250', orders: 2 },
+                { label: 'Tue', amount: 4850, display: '₹4,850', orders: 6 },
+                { label: 'Wed', amount: 3250, display: '₹3,250', orders: 4 },
+                { label: 'Thu', amount: 2100, display: '₹2,100', orders: 3 },
+                { label: 'Fri', amount: 5420, display: '₹5,420', orders: 8, peak: true },
+                { label: 'Sat', amount: 1430, display: '₹1,430', orders: 2 },
+                { label: 'Sun', amount: 2450, display: '₹2,450', orders: 3 }
+              ],
+              highestDay: 'Friday is your highest earning day with ₹5,420 (8 completed orders)',
+              categories: [
+                { name: 'Custom Stitching', amount: 12450, display: '₹12,450', percent: 66, color: 'var(--primary)' },
+                { name: 'Alterations', amount: 3250, display: '₹3,250', percent: 17, color: 'var(--secondary)' },
+                { name: 'Fabric & Materials', amount: 2100, display: '₹2,100', percent: 11, color: '#f59e0b' },
+                { name: 'Doorstep Fitting', amount: 950, display: '₹950', percent: 6, color: '#06b6d4' }
+              ]
+            },
+            this_month: {
+              label: 'Weekly (This Month)',
+              periodLabel: 'Weekly breakdown for June 2026',
+              kpis: {
+                total: '₹72,400',
+                change: '↑ 18% last month',
+                pending: '₹24,100',
+                commission: '₹3,620',
+                net: '₹68,780'
+              },
+              points: [
+                { label: 'Week 1', amount: 14200, display: '₹14,200', orders: 18 },
+                { label: 'Week 2', amount: 18750, display: '₹18,750', orders: 24 },
+                { label: 'Week 3', amount: 23600, display: '₹23,600', orders: 31, peak: true },
+                { label: 'Week 4', amount: 15850, display: '₹15,850', orders: 20 }
+              ],
+              highestDay: 'Week 3 is your highest earning period with ₹23,600 (31 completed orders)',
+              categories: [
+                { name: 'Custom Stitching', amount: 47060, display: '₹47,060', percent: 65, color: 'var(--primary)' },
+                { name: 'Alterations', amount: 14480, display: '₹14,480', percent: 20, color: 'var(--secondary)' },
+                { name: 'Fabric & Materials', amount: 7240, display: '₹7,240', percent: 10, color: '#f59e0b' },
+                { name: 'Doorstep Fitting', amount: 3620, display: '₹3,620', percent: 5, color: '#06b6d4' }
+              ]
+            },
+            this_year: {
+              label: 'Monthly (This Year)',
+              periodLabel: 'Monthly trend for 2026',
+              kpis: {
+                total: '₹5,48,200',
+                change: '↑ 32% year-over-year',
+                pending: '₹38,500',
+                commission: '₹27,410',
+                net: '₹5,20,790'
+              },
+              points: [
+                { label: 'Jan', amount: 32000, display: '₹32,000', orders: 42 },
+                { label: 'Feb', amount: 38500, display: '₹38,500', orders: 48 },
+                { label: 'Mar', amount: 45000, display: '₹45,000', orders: 56 },
+                { label: 'Apr', amount: 42100, display: '₹42,100', orders: 51 },
+                { label: 'May', amount: 58400, display: '₹58,400', orders: 74 },
+                { label: 'Jun', amount: 72400, display: '₹72,400', orders: 93, peak: true },
+                { label: 'Jul', amount: 51200, display: '₹51,200', orders: 63 },
+                { label: 'Aug', amount: 49000, display: '₹49,000', orders: 60 },
+                { label: 'Sep', amount: 53600, display: '₹53,600', orders: 68 },
+                { label: 'Oct', amount: 64000, display: '₹64,000', orders: 82 },
+                { label: 'Nov', amount: 24000, display: '₹24,000', orders: 30 },
+                { label: 'Dec', amount: 18000, display: '₹18,000', orders: 22 }
+              ],
+              highestDay: 'June is your highest earning month with ₹72,400 (93 completed orders)',
+              categories: [
+                { name: 'Custom Stitching', amount: 372776, display: '₹3,72,776', percent: 68, color: 'var(--primary)' },
+                { name: 'Alterations', amount: 98676, display: '₹98,676', percent: 18, color: 'var(--secondary)' },
+                { name: 'Fabric & Materials', amount: 49338, display: '₹49,338', percent: 9, color: '#f59e0b' },
+                { name: 'Doorstep Fitting', amount: 27410, display: '₹27,410', percent: 5, color: '#06b6d4' }
+              ]
+            }
+          };
+
+          const activeDS = earningsDataSets[earningsFilter] || earningsDataSets['this_week'];
+          const maxAmount = Math.max(...activeDS.points.map(p => p.amount), 1000) * 1.15;
+          
+          // Calculate SVG node coordinates dynamically
+          const svgNodes = activeDS.points.map((p, idx) => {
+            const x = 50 + (idx / Math.max(activeDS.points.length - 1, 1)) * 430;
+            const y = 200 - (p.amount / maxAmount) * 170;
+            return { ...p, x, y };
+          });
+
+          // Calculate smooth cubic Bezier curve path
+          const getCubicPath = (pts) => {
+            if (pts.length < 2) return '';
+            let path = `M ${pts[0].x} ${pts[0].y}`;
+            for (let i = 0; i < pts.length - 1; i++) {
+              const p0 = pts[i];
+              const p1 = pts[i + 1];
+              const cp1x = p0.x + (p1.x - p0.x) * 0.45;
+              const cp1y = p0.y;
+              const cp2x = p0.x + (p1.x - p0.x) * 0.55;
+              const cp2y = p1.y;
+              path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p1.x} ${p1.y}`;
+            }
+            return path;
+          };
+
+          const lineD = getCubicPath(svgNodes);
+          const areaD = svgNodes.length > 0 ? `${lineD} L ${svgNodes[svgNodes.length - 1].x} 200 L ${svgNodes[0].x} 200 Z` : '';
+
+          // Dynamic Conic-Gradient Doughnut calculation
+          let accumulatedPct = 0;
+          const conicStops = activeDS.categories.map((c) => {
+            const start = accumulatedPct;
+            accumulatedPct += c.percent;
+            return `${c.color} ${start}% ${accumulatedPct}%`;
+          }).join(', ');
           
           // Helper for transaction type styling
           const getTxStyle = (type) => {
@@ -3022,24 +3147,74 @@ export default function TailorView({
           return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               
-
               {/* TITLE SECTION WITH CONTROLS */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
                 <div>
                   <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '800' }}>Earnings Overview</h3>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Track your income, payouts and performance all in one place.</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Track your income, payouts and real-time chart performance.</span>
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                  {/* Date range button */}
-                  <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.8rem' }}>
-                    <Calendar size={14} /> 2 Jun – 8 Jun 2026 <ChevronDown size={14} />
-                  </button>
+                  {/* DYNAMIC TIMEFRAME SELECTOR */}
+                  <div style={{ display: 'flex', background: 'var(--input-bg)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '3px' }}>
+                    <button
+                      onClick={() => setEarningsFilter('this_week')}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '9px',
+                        border: 'none',
+                        background: earningsFilter === 'this_week' ? 'var(--primary)' : 'transparent',
+                        color: earningsFilter === 'this_week' ? '#ffffff' : 'var(--text-secondary)',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        fontFamily: 'inherit'
+                      }}
+                    >
+                      This Week
+                    </button>
+                    <button
+                      onClick={() => setEarningsFilter('this_month')}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '9px',
+                        border: 'none',
+                        background: earningsFilter === 'this_month' ? 'var(--primary)' : 'transparent',
+                        color: earningsFilter === 'this_month' ? '#ffffff' : 'var(--text-secondary)',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        fontFamily: 'inherit'
+                      }}
+                    >
+                      This Month
+                    </button>
+                    <button
+                      onClick={() => setEarningsFilter('this_year')}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '9px',
+                        border: 'none',
+                        background: earningsFilter === 'this_year' ? 'var(--primary)' : 'transparent',
+                        color: earningsFilter === 'this_year' ? '#ffffff' : 'var(--text-secondary)',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        fontFamily: 'inherit'
+                      }}
+                    >
+                      This Year
+                    </button>
+                  </div>
+
                   {/* Export button */}
-                  <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.8rem' }} onClick={() => alert("Exporting weekly ledger sheet...")}>
+                  <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.8rem' }} onClick={() => alert(`Exporting ${activeDS.label} ledger report...`)}>
                     <Upload size={14} style={{ transform: 'rotate(180deg)' }} /> Export Report
                   </button>
-                  {/* Top Request Payout button */}
+                  {/* Request Payout button */}
                   <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px', fontSize: '0.8rem', fontWeight: 'bold' }} onClick={() => alert("Payout request submitted successfully")}>
                     <CreditCard size={14} /> Request Payout
                   </button>
@@ -3052,7 +3227,7 @@ export default function TailorView({
                 {/* LEFT MAIN AREA (2/3 width) */}
                 <div className="earnings-main-content" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   
-                  {/* Row 1: KPI Cards */}
+                  {/* Row 1: DYNAMIC KPI Cards */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '16px' }}>
                     
                     {/* KPI 1: Total Earnings */}
@@ -3062,8 +3237,8 @@ export default function TailorView({
                       </div>
                       <div>
                         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 'bold', display: 'block' }}>Total Earnings</span>
-                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', display: 'block', margin: '2px 0' }}>₹18,750</strong>
-                        <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 'bold', display: 'block' }}>↑ 12% last week</span>
+                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', display: 'block', margin: '2px 0' }}>{activeDS.kpis.total}</strong>
+                        <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 'bold', display: 'block' }}>{activeDS.kpis.change}</span>
                       </div>
                     </div>
 
@@ -3074,8 +3249,8 @@ export default function TailorView({
                       </div>
                       <div>
                         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 'bold', display: 'block' }}>Pending Payouts</span>
-                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', display: 'block', margin: '2px 0' }}>₹12,350</strong>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>Releases 30 Jun</span>
+                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', display: 'block', margin: '2px 0' }}>{activeDS.kpis.pending}</strong>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>Auto Releases Daily</span>
                       </div>
                     </div>
 
@@ -3086,8 +3261,8 @@ export default function TailorView({
                       </div>
                       <div>
                         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 'bold', display: 'block' }}>Commission (5%)</span>
-                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', display: 'block', margin: '2px 0' }}>₹937</strong>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>Paid to platform</span>
+                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', display: 'block', margin: '2px 0' }}>{activeDS.kpis.commission}</strong>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>Platform fee</span>
                       </div>
                     </div>
 
@@ -3098,8 +3273,8 @@ export default function TailorView({
                       </div>
                       <div>
                         <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', textTransform: 'uppercase', fontWeight: 'bold', display: 'block' }}>Net Earnings</span>
-                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', color: '#10b981', display: 'block', margin: '2px 0' }}>₹17,813</strong>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>After fee deduction</span>
+                        <strong style={{ fontSize: '1.45rem', fontWeight: '800', color: '#10b981', display: 'block', margin: '2px 0' }}>{activeDS.kpis.net}</strong>
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>Take-home income</span>
                       </div>
                     </div>
 
@@ -3108,178 +3283,202 @@ export default function TailorView({
                   {/* Row 2: Trend Chart (Left) & Category Breakdown (Right) */}
                   <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                     
-                    {/* Earnings Trend spline chart */}
+                    {/* DYNAMIC SVG SPLINE TREND CHART */}
                     <div className="glass-card-no-hover" style={{ flex: '2', minWidth: '300px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
-                          <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: '800' }}>Earnings Trend</h4>
-                          <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Daily earnings for this week</span>
+                          <h4 style={{ margin: 0, fontSize: '0.9rem', fontWeight: '800' }}>Earnings Trend Graph</h4>
+                          <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>{activeDS.periodLabel}</span>
                         </div>
-                        <select className="form-select" style={{ width: '90px', fontSize: '0.75rem', padding: '4px 8px' }} defaultValue="daily">
-                          <option value="daily">Daily</option>
-                          <option value="weekly">Weekly</option>
-                        </select>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '0.7rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '3px 8px', borderRadius: '10px' }}>
+                            ● Real-time Sync
+                          </span>
+                        </div>
                       </div>
 
-                      {/* SVG Spline Wave Chart */}
+                      {/* SVG DYNAMIC SPLINE CHART */}
                       <div style={{ width: '100%', height: '260px', position: 'relative' }}>
-                        <svg viewBox="0 0 500 240" width="100%" height="100%">
+                        <svg viewBox="0 0 500 240" width="100%" height="100%" style={{ overflow: 'visible' }}>
                           <defs>
-                            <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.25" />
-                              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.00" />
+                            <linearGradient id="chart-grad-dynamic" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.3" />
+                              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.0" />
                             </linearGradient>
                           </defs>
                           
-                          {/* Y-axis Labels */}
-                          <text x="15" y="23" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹6,000</text>
-                          <text x="15" y="83" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹4,000</text>
-                          <text x="15" y="143" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹2,000</text>
-                          <text x="15" y="203" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹0</text>
+                          {/* Y-axis Grid Lines & Dynamic Labels */}
+                          <g>
+                            <text x="10" y="23" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹{Math.round(maxAmount).toLocaleString('en-IN')}</text>
+                            <text x="10" y="83" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹{Math.round(maxAmount * 0.66).toLocaleString('en-IN')}</text>
+                            <text x="10" y="143" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹{Math.round(maxAmount * 0.33).toLocaleString('en-IN')}</text>
+                            <text x="10" y="203" fontSize="8" fontWeight="bold" fill="var(--text-muted)">₹0</text>
 
-                          {/* Grid lines */}
-                          <line x1="50" y1="20" x2="490" y2="20" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
-                          <line x1="50" y1="80" x2="490" y2="80" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
-                          <line x1="50" y1="140" x2="490" y2="140" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
-                          <line x1="50" y1="200" x2="490" y2="200" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
+                            <line x1="50" y1="20" x2="490" y2="20" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
+                            <line x1="50" y1="80" x2="490" y2="80" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
+                            <line x1="50" y1="140" x2="490" y2="140" stroke="var(--border-color)" strokeWidth="0.5" strokeDasharray="4 4" />
+                            <line x1="50" y1="200" x2="490" y2="200" stroke="var(--border-color)" strokeWidth="0.5" opacity="0.4" />
+                          </g>
                           
-                          {/* Shaded Area */}
+                          {/* Dynamic Gradient Area Fill */}
                           <path 
-                            d="M 55 162.5 C 91.25 162.5, 91.25 54.5, 127.5 54.5 C 163.75 54.5, 163.75 102.5, 200 102.5 C 236.25 102.5, 236.25 137.0, 272.5 137.0 C 308.75 137.0, 308.75 37.4, 345 37.4 C 381.25 37.4, 381.25 157.1, 417.5 157.1 C 453.75 157.1, 453.75 126.5, 490 126.5 L 490 200 L 55 200 Z" 
-                            fill="url(#chart-grad)"
+                            d={areaD} 
+                            fill="url(#chart-grad-dynamic)"
+                            style={{ transition: 'all 0.5s ease' }}
                           />
 
-                          {/* Spline Path */}
+                          {/* Dynamic Spline Line Curve */}
                           <path 
-                            d="M 55 162.5 C 91.25 162.5, 91.25 54.5, 127.5 54.5 C 163.75 54.5, 163.75 102.5, 200 102.5 C 236.25 102.5, 236.25 137.0, 272.5 137.0 C 308.75 137.0, 308.75 37.4, 345 37.4 C 381.25 37.4, 381.25 157.1, 417.5 157.1 C 453.75 157.1, 453.75 126.5, 490 126.5" 
+                            d={lineD} 
                             fill="none" 
                             stroke="var(--primary)" 
                             strokeWidth="3.5"
                             strokeLinecap="round"
+                            style={{ transition: 'all 0.5s ease' }}
                           />
 
-                          {/* Markers */}
-                          {[
-                            { x: 55, y: 162.5, label: '₹1,250' },
-                            { x: 127.5, y: 54.5, label: '₹4,850' },
-                            { x: 200.0, y: 102.5, label: '₹3,250' },
-                            { x: 272.5, y: 137.0, label: '₹2,100' },
-                            { x: 345.0, y: 37.4, label: '₹5,420', active: true },
-                            { x: 417.5, y: 157.1, label: '₹1,430' },
-                            { x: 490.0, y: 126.5, label: '₹2,450' }
-                          ].map((m, idx) => (
-                            <g key={idx}>
-                              <circle cx={m.x} cy={m.y} r={m.active ? 6 : 4} fill={m.active ? '#ffffff' : 'var(--primary)'} stroke="var(--primary)" strokeWidth="2.5" />
-                              {m.active && <circle cx={m.x} cy={m.y} r={10} fill="none" stroke="var(--primary)" strokeWidth="1" opacity="0.4" className="pulse-slow" />}
-                              <text x={m.x} y={m.y - 12} fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-primary)">{m.label}</text>
-                            </g>
-                          ))}
+                          {/* Dynamic Markers & Interactive Nodes */}
+                          {svgNodes.map((m, idx) => {
+                            const isHovered = hoveredPointIndex === idx;
+                            const isPeak = m.peak;
+                            return (
+                              <g 
+                                key={idx} 
+                                onMouseEnter={() => setHoveredPointIndex(idx)}
+                                onMouseLeave={() => setHoveredPointIndex(null)}
+                                style={{ cursor: 'pointer' }}
+                              >
+                                {/* Vertical highlight bar on hover */}
+                                {isHovered && (
+                                  <line x1={m.x} y1="20" x2={m.x} y2="200" stroke="var(--primary)" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
+                                )}
 
-                          {/* X Axis Labels inside SVG */}
-                          <text x="55" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Mon</text>
-                          <text x="127.5" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Tue</text>
-                          <text x="200.0" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Wed</text>
-                          <text x="272.5" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Thu</text>
-                          <text x="345.0" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Fri</text>
-                          <text x="417.5" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Sat</text>
-                          <text x="490.0" y="224" fontSize="8" fontWeight="bold" textAnchor="middle" fill="var(--text-secondary)">Sun</text>
+                                {/* Outer glow pulse for peak or hovered */}
+                                {(isPeak || isHovered) && (
+                                  <circle cx={m.x} cy={m.y} r={isHovered ? 12 : 9} fill="none" stroke="var(--primary)" strokeWidth="1.5" opacity="0.5" className="pulse-slow" />
+                                )}
+
+                                {/* Main Node Circle */}
+                                <circle 
+                                  cx={m.x} 
+                                  cy={m.y} 
+                                  r={isHovered ? 7 : (isPeak ? 5.5 : 4)} 
+                                  fill={isPeak || isHovered ? '#ffffff' : 'var(--primary)'} 
+                                  stroke="var(--primary)" 
+                                  strokeWidth="2.5" 
+                                  style={{ transition: 'all 0.2s ease' }}
+                                />
+
+                                {/* Label above Node */}
+                                <text 
+                                  x={m.x} 
+                                  y={m.y - 10} 
+                                  fontSize={isHovered ? "9" : "8"} 
+                                  fontWeight="bold" 
+                                  textAnchor="middle" 
+                                  fill={isHovered ? 'var(--primary)' : 'var(--text-primary)'}
+                                >
+                                  {m.display}
+                                </text>
+
+                                {/* X Axis Label */}
+                                <text 
+                                  x={m.x} 
+                                  y="224" 
+                                  fontSize="8.5" 
+                                  fontWeight={isHovered || isPeak ? "bold" : "500"} 
+                                  textAnchor="middle" 
+                                  fill={isHovered ? 'var(--primary)' : 'var(--text-secondary)'}
+                                >
+                                  {m.label}
+                                </text>
+
+                                {/* HOVER TOOLTIP CARD */}
+                                {isHovered && (
+                                  <g transform={`translate(${Math.min(Math.max(m.x - 50, 10), 390)}, ${Math.max(m.y - 55, 10)})`}>
+                                    <rect width="100" height="42" rx="8" fill="#120f26" stroke="#f72585" strokeWidth="1" boxShadow="0 8px 16px rgba(0,0,0,0.5)" />
+                                    <text x="50" y="16" fontSize="9" fontWeight="bold" textAnchor="middle" fill="#ffffff">{m.label}: {m.display}</text>
+                                    <text x="50" y="32" fontSize="8" textAnchor="middle" fill="#10b981">{m.orders} Orders Completed</text>
+                                  </g>
+                                )}
+                              </g>
+                            );
+                          })}
                         </svg>
                       </div>
 
-                      {/* Highest earning alert banner */}
+                      {/* Dynamic Peak Earning Alert Banner */}
                       <div style={{ 
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '8px', 
-                        background: 'rgba(247,37,133,0.05)', 
-                        border: '1px solid rgba(247,37,133,0.12)', 
-                        borderRadius: '8px', 
+                        background: 'rgba(247,37,133,0.06)', 
+                        border: '1px solid rgba(247,37,133,0.15)', 
+                        borderRadius: '10px', 
                         padding: '10px 14px', 
-                        fontSize: '0.75rem',
+                        fontSize: '0.78rem',
                         color: 'var(--primary)',
                         marginTop: '6px',
-                        fontWeight: '500'
+                        fontWeight: '600'
                       }}>
-                        <Info size={14} /> Friday is your highest earning day with ₹5,420
+                        <Sparkles size={16} style={{ color: 'var(--primary)' }} />
+                        <span>{activeDS.highestDay}</span>
                       </div>
                     </div>
 
-                    {/* Earnings by Category Doughnut card */}
+                    {/* DYNAMIC EARNINGS BY CATEGORY DOUGHNUT CHART */}
                     <div className="glass-card-no-hover" style={{ flex: '1.2', minWidth: '240px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                       <strong style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Earnings by Category</strong>
                       
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap', marginTop: '4px' }}>
-                        {/* Doughnut graph (left) */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap', marginTop: '4px' }}>
+                        {/* Dynamic Doughnut Circle */}
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <div style={{
-                            width: '160px',
-                            height: '160px',
+                            width: '150px',
+                            height: '150px',
                             borderRadius: '50%',
-                            background: `conic-gradient(
-                              var(--primary) 0% 66%, 
-                              var(--secondary) 66% 83%, 
-                              #f59e0b 83% 94%, 
-                              #06b6d4 94% 100%
-                            )`,
+                            background: `conic-gradient(${conicStops})`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                            boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
+                            transition: 'all 0.5s ease'
                           }}>
                             <div style={{
-                              width: '120px',
-                              height: '120px',
+                              width: '110px',
+                              height: '110px',
                               borderRadius: '50%',
                               background: theme === 'dark' ? '#141126' : '#ffffff',
                               display: 'flex',
                               flexDirection: 'column',
                               alignItems: 'center',
-                              justifyContent: 'center'
+                              justifyContent: 'center',
+                              boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.1)'
                             }}>
-                              <span style={{ fontSize: '1.2rem', fontWeight: '800', color: 'var(--text-primary)' }}>₹18,750</span>
-                              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>Total</span>
+                              <span style={{ fontSize: '1.15rem', fontWeight: '800', color: 'var(--text-primary)' }}>{activeDS.kpis.total}</span>
+                              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 600 }}>Total Revenue</span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Legend details (right) */}
+                        {/* Dynamic Legend List */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '130px' }}>
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)', marginTop: '4px' }}></span>
-                            <div>
-                              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '500' }}>Stitching Orders</span>
-                              <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>₹12,450 (66%)</strong>
+                          {activeDS.categories.map((c, idx) => (
+                            <div key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                              <span style={{ width: '10px', height: '10px', borderRadius: '3px', background: c.color, marginTop: '3px', flexShrink: 0 }}></span>
+                              <div style={{ minWidth: 0 }}>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '500', lineHeight: 1.2 }}>{c.name}</span>
+                                <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)', display: 'block', marginTop: '1px' }}>
+                                  {c.display} <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>({c.percent}%)</span>
+                                </strong>
+                              </div>
                             </div>
-                          </div>
-                          
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--secondary)', marginTop: '4px' }}></span>
-                            <div>
-                              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '500' }}>Alterations</span>
-                              <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>₹3,250 (17%)</strong>
-                            </div>
-                          </div>
-
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', marginTop: '4px' }}></span>
-                            <div>
-                              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '500' }}>Pick & Delivery</span>
-                              <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>₹2,100 (11%)</strong>
-                            </div>
-                          </div>
-
-                          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#06b6d4', marginTop: '4px' }}></span>
-                            <div>
-                              <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '500' }}>Other Services</span>
-                              <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>₹950 (6%)</strong>
-                            </div>
-                          </div>
-                        </div>
+                          ))}
                       </div>
                     </div>
-
                   </div>
+                </div>
 
                   {/* Row 3: Transactions (Left) & Earnings Goal (Right) */}
                   <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
