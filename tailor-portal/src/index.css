@@ -2303,7 +2303,7 @@ body.light-theme .footer-brand-title {
   color: var(--text-primary);
 }
 body.light-theme .footer-column-title {
-  color: var(--text-primary);
+  color: #ffffff !important;
 }
 body.light-theme .footer-link {
   color: #315477;
@@ -11141,8 +11141,8 @@ body.dark-theme .premium-footer {
 }
 
 .footer-container-v4 {
-  max-width: 1440px !important;
-  width: 92vw !important;
+  width: 80% !important;
+  max-width: 80% !important;
   margin: 0 auto !important;
   padding: 0 32px !important;
   box-sizing: border-box !important;
@@ -11150,7 +11150,7 @@ body.dark-theme .premium-footer {
 
 .footer-top-v4 {
   display: grid !important;
-  grid-template-columns: 2fr 1fr 1fr 1.1fr 1.35fr 1.1fr !important;
+  grid-template-columns: 1.8fr 1fr 1fr 1.2fr 1.2fr !important;
   gap: 36px !important;
   margin-bottom: 40px !important;
   align-items: start !important;
@@ -11209,7 +11209,15 @@ body.dark-theme .premium-footer {
 }
 
 /* Columns 2, 3, 4 – Links */
-.footer-heading-v4 {
+.footer-heading-v4,
+body.light-theme .footer-heading-v4,
+body.dark-theme .footer-heading-v4,
+footer h5,
+.delivery-premium-footer h5,
+.premium-footer h5,
+body.light-theme footer h5,
+body.light-theme .delivery-premium-footer h5,
+body.light-theme .premium-footer h5 {
   font-size: 0.95rem !important;
   font-weight: 600 !important;
   color: #ffffff !important;
@@ -11492,6 +11500,13 @@ body.dark-theme .premium-footer {
   }
 }
 
+@media (max-width: 1200px) {
+  .footer-container-v4 {
+    width: 90% !important;
+    max-width: 90% !important;
+  }
+}
+
 @media (max-width: 768px) {
   .delivery-premium-footer,
   .premium-footer {
@@ -11499,27 +11514,58 @@ body.dark-theme .premium-footer {
   }
   
   .footer-container-v4 {
+    width: 92% !important;
+    max-width: 92% !important;
     padding: 0 20px !important;
   }
   
   .footer-top-v4 {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 28px !important;
-    text-align: center !important;
-    align-items: center !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px 20px !important;
     margin-bottom: 24px !important;
+    align-items: start !important;
   }
   
   .brand-col-v4 {
+    grid-column: span 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
     align-items: center !important;
     text-align: center !important;
     width: 100% !important;
   }
   
+  .footer-col-v4 {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  
+  .download-col-v4 {
+    grid-column: span 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+  
+  .footer-header-slot {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
   .footer-logo-v4 {
     height: 44px !important;
-    margin-bottom: 12px !important;
+    margin: 0 auto 12px auto !important;
+    display: block !important;
   }
 
   .footer-tagline-v4 {
@@ -11535,39 +11581,36 @@ body.dark-theme .premium-footer {
   }
 
   .footer-links-group-v4 {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 20px 24px !important;
-    width: 80% !important;
-    text-align: left !important;
-    margin: 8px auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto !important;
   }
 
-  .footer-col-v4 {
-    align-items: flex-start !important;
-    text-align: left !important;
-  }
-  
   .footer-heading-v4 {
     font-size: 0.9rem !important;
     margin-bottom: 12px !important;
+    text-align: center !important;
+    align-self: center !important;
   }
   
   .footer-links-v4 {
-    align-items: flex-start !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
     gap: 10px !important;
+    width: 100% !important;
+    padding: 0 !important;
   }
 
   .footer-links-v4 a,
   .footer-links-v4 .footer-link-v4 {
     font-size: 13px !important;
-  }
-
-  .download-col-v4 {
-    align-items: center !important;
     text-align: center !important;
-    width: 100% !important;
-    margin-top: 4px !important;
   }
 
   .download-col-v4 .footer-heading-v4 {
@@ -12008,4 +12051,55 @@ body.dark-theme .premium-footer {
     margin: 0 auto !important;
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* 3D TAILOR STITCHING ANIMATION KEYFRAMES                                   */
+/* -------------------------------------------------------------------------- */
+@keyframes stitchNeedle3D {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(28px);
+  }
+}
+
+@keyframes fabricSlide3D {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes spoolRotate3D {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sparkFlash3D {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes pulseGlowThread {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px #f72585);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #f72585) drop-shadow(0 0 16px #7209b7);
+  }
+}
+
 
