@@ -6,7 +6,7 @@ import {
   Building, Map, ShoppingBag, Palette, Ruler, FileText, CheckCircle, 
   RefreshCw, Smartphone, Award, Briefcase, Plus, X, Image as ImageIcon,
   Sparkle, DollarSign, Layers, ChevronLeft, Globe, HelpCircle, Navigation,
-  Wallet, TrendingUp, Users, Headphones, Zap
+  Wallet, TrendingUp, Users, Headphones, Zap, Trash2
 } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
@@ -45,9 +45,84 @@ export default function AuthPage({
   // STEP 2: BASIC PROFILE
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('/logo.png');
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [gender, setGender] = useState('Male');
   const [dob, setDob] = useState('1995-05-15');
+
+  // Camera & File Upload states for Profile Photo
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [cameraError, setCameraError] = useState('');
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // Attach stream when videoRef is ready
+  useEffect(() => {
+    if (isCameraActive && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
+    }
+  }, [isCameraActive]);
+
+  // Start live webcam stream
+  const startCamera = async () => {
+    setCameraError('');
+    setIsCameraActive(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 640 }, height: { ideal: 640 }, facingMode: 'user' }
+      });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.error('Camera access error:', err);
+      setCameraError('Unable to access camera. Please check browser permissions or upload a photo from your device.');
+    }
+  };
+
+  // Stop camera stream
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+    setIsCameraActive(false);
+    setCameraError('');
+  };
+
+  // Capture photo from video feed
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth || 400;
+      canvas.height = video.videoHeight || 400;
+      const ctx = canvas.getContext('2d');
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/png');
+      setAvatarUrl(dataUrl);
+      stopCamera();
+    }
+  };
+
+  // Handle photo file upload from device
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        alert('File size exceeds 10MB limit. Please upload a smaller image.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   // STEP 3: CHOOSE ROLE
   const [isTailorSelected, setIsTailorSelected] = useState(true);
@@ -1028,12 +1103,14 @@ export default function AuthPage({
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: colorTextPrimary, letterSpacing: '0.01em', lineHeight: 1.4 }}>Profile Photo</label>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginTop: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: colorTextPrimary, letterSpacing: '0.01em', lineHeight: 1.4, display: 'block', marginBottom: '6px' }}>Profile Photo</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                    {/* Avatar Preview */}
                     <div
                       style={{
-                        width: '52px',
-                        height: '52px',
+                        position: 'relative',
+                        width: '56px',
+                        height: '56px',
                         borderRadius: '50%',
                         background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
                         display: 'flex',
@@ -1041,40 +1118,102 @@ export default function AuthPage({
                         justifyContent: 'center',
                         color: '#ffffff',
                         fontWeight: 700,
-                        fontSize: '1.2rem'
+                        fontSize: '1.3rem',
+                        overflow: 'hidden',
+                        boxShadow: '0 4px 12px rgba(247, 37, 133, 0.25)',
+                        border: '2.5px solid #ffffff',
+                        flexShrink: 0
                       }}
                     >
-                      {firstName ? firstName.charAt(0).toUpperCase() : <User size={24} />}
+                      {avatarUrl ? (
+                        <img src={avatarUrl} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : firstName ? (
+                        firstName.charAt(0).toUpperCase()
+                      ) : (
+                        <User size={26} />
+                      )}
                     </div>
-                    <label
-                      style={{
-                        padding: '10px 16px',
-                        borderRadius: '12px',
-                        background: inputBg,
-                        border: `1.5px solid ${inputBorder}`,
-                        color: colorTextPrimary,
-                        fontSize: '13px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        fontFamily: 'inherit'
-                      }}
-                    >
-                      <Camera size={16} />
-                      <span>Upload Photo</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        onChange={(e) => {
-                          if (e.target.files && e.target.files[0]) {
-                            setAvatarUrl(URL.createObjectURL(e.target.files[0]));
-                          }
+
+                    {/* Action Buttons */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      {/* LIVE CAMERA CAPTURE BUTTON */}
+                      <button
+                        type="button"
+                        onClick={startCamera}
+                        style={{
+                          padding: '9px 14px',
+                          borderRadius: '12px',
+                          background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                          color: '#ffffff',
+                          border: 'none',
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          boxShadow: '0 4px 12px rgba(247, 37, 133, 0.2)',
+                          fontFamily: 'inherit',
+                          transition: 'all 0.2s ease'
                         }}
-                      />
-                    </label>
+                      >
+                        <Camera size={15} style={{ color: '#ffffff' }} />
+                        <span style={{ color: '#ffffff' }}>Take Photo</span>
+                      </button>
+
+                      {/* UPLOAD FROM DEVICE BUTTON */}
+                      <label
+                        style={{
+                          padding: '9px 14px',
+                          borderRadius: '12px',
+                          background: inputBg,
+                          border: `1.5px solid ${inputBorder}`,
+                          color: colorTextPrimary,
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          fontFamily: 'inherit',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <Upload size={15} style={{ color: '#7209b7' }} />
+                        <span>Upload Photo</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                          onChange={handleFileUpload}
+                        />
+                      </label>
+
+                      {/* REMOVE PHOTO BUTTON */}
+                      {avatarUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setAvatarUrl('')}
+                          style={{
+                            padding: '9px 12px',
+                            borderRadius: '12px',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                            color: '#ef4444',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontFamily: 'inherit'
+                          }}
+                        >
+                          <Trash2 size={14} />
+                          <span>Remove</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2378,6 +2517,157 @@ export default function AuthPage({
           </div>
         </div>
       </footer>
+
+      {/* -------------------------------------------------------------------- */}
+      {/* LIVE CAMERA CAPTURE MODAL OVERLAY                                    */}
+      {/* -------------------------------------------------------------------- */}
+      {isCameraActive && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(10, 8, 25, 0.85)',
+            backdropFilter: 'blur(12px)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '440px',
+              background: isDark ? '#1a1633' : '#ffffff',
+              borderRadius: '24px',
+              padding: '24px',
+              boxSizing: 'border-box',
+              border: '1.5px solid rgba(247, 37, 133, 0.3)',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '18px'
+            }}
+          >
+            {/* Modal Header */}
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(247,37,133,0.15)', color: '#f72585', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Camera size={20} />
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: colorTextPrimary }}>Take Profile Photo</h4>
+                  <span style={{ fontSize: '11px', color: colorTextSecondary, fontWeight: 500 }}>Center your face inside the viewfinder</span>
+                </div>
+              </div>
+              <button
+                onClick={stopCamera}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  border: 'none',
+                  color: colorTextMuted,
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Video Viewfinder Container */}
+            <div
+              style={{
+                position: 'relative',
+                width: '260px',
+                height: '260px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                border: '4px solid #f72585',
+                boxShadow: '0 0 35px rgba(247, 37, 133, 0.4)',
+                background: '#000000',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {cameraError ? (
+                <div style={{ padding: '20px', textAlign: 'center', color: '#ef4444', fontSize: '13px', fontWeight: 500, lineHeight: 1.5 }}>
+                  {cameraError}
+                </div>
+              ) : (
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transform: 'scaleX(-1)' // Mirror preview for natural camera feel
+                  }}
+                />
+              )}
+              
+              {/* Hidden canvas for capturing snapshot */}
+              <canvas ref={canvasRef} style={{ display: 'none' }} />
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', width: '100%', justifyContent: 'center' }}>
+              <button
+                onClick={stopCamera}
+                style={{
+                  flex: 1,
+                  height: '46px',
+                  borderRadius: '12px',
+                  border: `1.5px solid ${borderColor}`,
+                  background: inputBg,
+                  color: colorTextPrimary,
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Cancel
+              </button>
+              {!cameraError && (
+                <button
+                  onClick={capturePhoto}
+                  style={{
+                    flex: 2,
+                    height: '46px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 15px rgba(247, 37, 133, 0.4)',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  <Camera size={18} style={{ color: '#ffffff' }} />
+                  <span style={{ color: '#ffffff' }}>Capture Photo</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
