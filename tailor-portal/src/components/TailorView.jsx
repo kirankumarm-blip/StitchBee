@@ -692,15 +692,15 @@ export default function TailorView({
 
         {/* TAB 1: DASHBOARD */}
         {activeTab === 'dashboard' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: "'Inter', sans-serif" }}>
             {/* Welcome banner */}
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center', background: theme === 'dark' ? 'rgba(247,37,133,0.04)' : 'rgba(247,37,133,0.02)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
               <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden' }}>
                 <img src="/bridal 5.jpg" alt="Rajesh" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Welcome back, Master Rajesh Kumar 👋</h3>
-                <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Here's what is happening with your store today.</p>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, lineHeight: '1.3', color: 'var(--text-primary)' }}>Welcome back, Master Rajesh Kumar 👋</h3>
+                <p style={{ margin: '4px 0 0 0', fontSize: '13px', fontWeight: 400, color: 'var(--text-secondary)' }}>Here's what is happening with your store today.</p>
               </div>
             </div>
 
@@ -729,9 +729,9 @@ export default function TailorView({
                     boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
                   }}
                 >
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600' }}>{card.label}</span>
-                  <span style={{ fontSize: '1.6rem', fontWeight: '800', color: card.color }}>{card.value}</span>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{card.change}</span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 600 }}>{card.label}</span>
+                  <span style={{ fontSize: '28px', fontWeight: 700, color: card.color, lineHeight: '1.2' }}>{card.value}</span>
+                  <span style={{ fontSize: '11px', fontWeight: card.action ? 500 : 400, color: card.action ? card.color : 'var(--text-muted)' }}>{card.change}</span>
                 </div>
               ))}
             </div>
@@ -741,19 +741,19 @@ export default function TailorView({
               {/* Left Column: Active Stitching Queue */}
               <div className="glass-card-no-hover" style={{ padding: '20px', flex: '2', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '800' }}>Active Stitching Queue</h4>
-                  <button onClick={() => setActiveTab('orders')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}>View All Orders →</button>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Active Stitching Queue</h4>
+                  <button onClick={() => setActiveTab('orders')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>View All Orders →</button>
                 </div>
                 <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', textAlign: 'left' }}>
-                        <th style={{ padding: '8px' }}>Customer</th>
-                        <th style={{ padding: '8px' }}>Outfit & Fabric</th>
-                        <th style={{ padding: '8px' }}>Delivery Date</th>
-                        <th style={{ padding: '8px' }}>Progress</th>
-                        <th style={{ padding: '8px' }}>Status</th>
-                        <th style={{ padding: '8px', textAlign: 'right' }}>Action</th>
+                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Customer</th>
+                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Outfit & Fabric</th>
+                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Delivery Date</th>
+                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Progress</th>
+                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Status</th>
+                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -764,31 +764,32 @@ export default function TailorView({
                               <img src={item.image} alt={item.customer} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </div>
                             <div>
-                              <div style={{ fontWeight: 'bold' }}>{item.customer}</div>
-                              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>#{item.id}</span>
+                              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.customer}</div>
+                              <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>#{item.id}</span>
                             </div>
                           </td>
                           <td style={{ padding: '10px 8px' }}>
-                            <div>{item.outfit}</div>
-                            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{item.fabric}</span>
+                            <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>{item.outfit}</div>
+                            <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{item.fabric}</span>
                           </td>
                           <td style={{ padding: '10px 8px' }}>
-                            <div>{item.date}</div>
-                            <span style={{ fontSize: '0.7rem', color: 'var(--danger)', fontWeight: 'bold' }}>{item.daysLeft}</span>
+                            <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>{item.date}</div>
+                            <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--danger)' }}>{item.daysLeft}</span>
                           </td>
                           <td style={{ padding: '10px 8px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                               <div style={{ flex: 1, height: '4px', width: '60px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
                                 <div style={{ height: '100%', width: `${item.progress}%`, background: item.progress === 100 ? '#10b981' : 'var(--primary)' }}></div>
                               </div>
-                              <span>{item.progress}%</span>
+                              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.progress}%</span>
                             </div>
                           </td>
                           <td style={{ padding: '10px 8px' }}>
                             <span style={{
                               padding: '2px 8px',
                               borderRadius: '12px',
-                              fontSize: '0.7rem',
+                              fontSize: '11px',
+                              fontWeight: 600,
                               background: item.status === 'Ready' ? 'rgba(16,185,129,0.1)' : item.status === 'Pending' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)',
                               color: item.status === 'Ready' ? '#10b981' : item.status === 'Pending' ? 'var(--text-muted)' : 'var(--primary)'
                             }}>{item.status}</span>
@@ -797,7 +798,7 @@ export default function TailorView({
                             {item.progress < 100 ? (
                               <button 
                                 className="btn btn-primary" 
-                                style={{ padding: '4px 8px', fontSize: '0.7rem' }}
+                                style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600 }}
                                 onClick={() => handleUpdateProgress(item.id, 15)}
                               >
                                 Update
@@ -805,7 +806,7 @@ export default function TailorView({
                             ) : (
                               <button 
                                 className="btn btn-secondary" 
-                                style={{ padding: '4px 8px', fontSize: '0.7rem', borderColor: '#10b981', color: '#10b981' }}
+                                style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600, borderColor: '#10b981', color: '#10b981' }}
                                 onClick={() => alert(`${item.customer}'s order marked ready for delivery Handover!`)}
                               >
                                 Handover
@@ -822,8 +823,8 @@ export default function TailorView({
               {/* Right Column: Today's Schedule Carousel */}
               <div className="glass-card-no-hover" style={{ padding: '20px', flex: '1', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '800' }}>Today's Schedule</h4>
-                  <button onClick={() => setActiveTab('calendar')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}>View Calendar →</button>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Today's Schedule</h4>
+                  <button onClick={() => setActiveTab('calendar')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>View Calendar →</button>
                 </div>
 
                 {/* Day selector carousel */}
@@ -850,8 +851,8 @@ export default function TailorView({
                         flex: 1
                       }}
                     >
-                      <span style={{ fontSize: '0.65rem', display: 'block' }}>{day.d}</span>
-                      <strong style={{ fontSize: '0.85rem' }}>{day.num}</strong>
+                      <span style={{ fontSize: '11px', fontWeight: 500, display: 'block' }}>{day.d}</span>
+                      <strong style={{ fontSize: '13px', fontWeight: 700 }}>{day.num}</strong>
                     </div>
                   ))}
                 </div>
@@ -869,10 +870,10 @@ export default function TailorView({
                       alignItems: 'center'
                     }}>
                       <div>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 'bold', display: 'block' }}>{sched.title}</span>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>{sched.desc}</span>
+                        <span style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>{sched.title}</span>
+                        <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>{sched.desc}</span>
                       </div>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>{sched.time}</span>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>{sched.time}</span>
                     </div>
                   ))}
                 </div>
@@ -883,9 +884,9 @@ export default function TailorView({
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
               {/* New Booking Requests */}
               <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800' }}>New Booking Requests</h4>
+                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>New Booking Requests</h4>
                 {bookingRequests.length === 0 ? (
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>No pending requests.</p>
+                  <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>No pending requests.</p>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {bookingRequests.map(req => (
@@ -895,16 +896,16 @@ export default function TailorView({
                         borderRadius: '8px',
                         background: theme === 'dark' ? 'rgba(255,255,255,0.01)' : 'transparent'
                       }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                          <span>{req.customer}</span>
-                          <span style={{ color: 'var(--primary)' }}>{req.estPrice}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{req.customer}</span>
+                          <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)' }}>{req.estPrice}</span>
                         </div>
-                        <p style={{ margin: '4px 0', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>Outfit: {req.outfit} • Fabric: {req.fabric}</p>
-                        <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>📍 Distance: {req.distance} • {req.date}</span>
+                        <p style={{ margin: '4px 0', fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>Outfit: {req.outfit} • Fabric: {req.fabric}</p>
+                        <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>📍 Distance: {req.distance} • {req.date}</span>
                         <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
                           <button 
                             className="btn btn-primary" 
-                            style={{ flex: 1, padding: '4px', fontSize: '0.7rem' }}
+                            style={{ flex: 1, padding: '4px', fontSize: '11px', fontWeight: 600 }}
                             onClick={() => {
                               alert(`Booking request accepted! Added to active stitch queue.`);
                               setBookingRequests(bookingRequests.filter(b => b.id !== req.id));
@@ -914,7 +915,7 @@ export default function TailorView({
                           </button>
                           <button 
                             className="btn btn-secondary" 
-                            style={{ flex: 1, padding: '4px', fontSize: '0.7rem' }}
+                            style={{ flex: 1, padding: '4px', fontSize: '11px', fontWeight: 600 }}
                             onClick={() => setBookingRequests(bookingRequests.filter(b => b.id !== req.id))}
                           >
                             Reject
@@ -929,8 +930,8 @@ export default function TailorView({
               {/* Inventory Snapshot */}
               <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800' }}>Inventory Snapshot</h4>
-                  <button onClick={() => setActiveTab('inventory')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}>View stock</button>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Inventory Snapshot</h4>
+                  <button onClick={() => setActiveTab('inventory')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>View Stock →</button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   {inventoryStock.map(item => (
@@ -944,10 +945,10 @@ export default function TailorView({
                       <div style={{ color: item.status === 'Low Stock' ? '#ef4444' : 'var(--primary)', marginBottom: '4px', display: 'flex', justifyContent: 'center' }}>
                         {item.icon}
                       </div>
-                      <strong style={{ fontSize: '0.85rem', display: 'block' }}>{item.quantity} {item.unit === 'meters' ? 'm' : ''}</strong>
-                      <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{item.category}</span>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>{item.quantity} {item.unit === 'meters' ? 'm' : ''}</strong>
+                      <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{item.category}</span>
                       {item.status === 'Low Stock' && (
-                        <span style={{ fontSize: '0.6rem', color: '#ef4444', display: 'block', fontWeight: 'bold', marginTop: '2px' }}>Low Stock</span>
+                        <span style={{ fontSize: '10px', fontWeight: 600, color: '#ef4444', display: 'block', marginTop: '2px' }}>Low Stock</span>
                       )}
                     </div>
                   ))}
@@ -957,8 +958,8 @@ export default function TailorView({
               {/* Unread Chats Preview */}
               <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800' }}>Recent Messages</h4>
-                  <button onClick={() => setActiveTab('chat')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 'bold', cursor: 'pointer' }}>Chat Center</button>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Recent Messages</h4>
+                  <button onClick={() => setActiveTab('chat')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>Chat Center →</button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {[
@@ -971,14 +972,14 @@ export default function TailorView({
                         <img src={chat.avatar} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 'bold' }}>
-                          <span>{chat.name}</span>
-                          <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{chat.time}</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{chat.name}</span>
+                          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{chat.time}</span>
                         </div>
-                        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '180px' }}>{chat.text}</p>
+                        <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '180px' }}>{chat.text}</p>
                       </div>
                       {chat.count && (
-                        <span style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.6rem', fontWeight: 'bold', width: '14px', height: '14px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ background: 'var(--primary)', color: '#fff', fontSize: '10px', fontWeight: 600, width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           {chat.count}
                         </span>
                       )}
@@ -991,15 +992,15 @@ export default function TailorView({
             {/* Monthly Goal Progress bar */}
             <div className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
               <div>
-                <strong style={{ fontSize: '0.85rem' }}>Monthly Goal Progress</strong>
-                <p style={{ margin: '2px 0 0 0', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Complete 10 more orders this month to unlock Gold Partner Badge and extra commissions!</p>
+                <strong style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Monthly Goal Progress</strong>
+                <p style={{ margin: '2px 0 0 0', fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>Complete 10 more orders this month to unlock Gold Partner Badge and extra commissions!</p>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>20 / 30 Orders</span>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>20 / 30 Orders</span>
                 <div style={{ width: '150px', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
                   <div style={{ width: '66%', height: '100%', background: 'var(--primary)' }}></div>
                 </div>
-                <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '0.75rem' }} onClick={() => alert("Unlocking benefits: Free express fabric pickup & 5% higher payouts!")}>View Benefits</button>
+                <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '11px', fontWeight: 600 }} onClick={() => alert("Unlocking benefits: Free express fabric pickup & 5% higher payouts!")}>View Benefits</button>
               </div>
             </div>
           </div>
