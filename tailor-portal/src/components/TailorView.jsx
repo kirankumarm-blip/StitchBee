@@ -198,14 +198,20 @@ export default function TailorView({
   // Calendar redesign states
   const [calendarDate, setCalendarDate] = useState(new Date(2026, 5, 1)); // Default June 2026
   const [calendarViewMode, setCalendarViewMode] = useState('month'); // 'month' | 'week' | 'day'
-  const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date(2026, 5, 2)); // Default June 2, 2026 (matching mockup active date)
+  const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date(2026, 5, 20)); // Default June 20, 2026
   const [calendarEvents, setCalendarEvents] = useState([
-    { id: 1, date: new Date(2026, 5, 2), time: '02:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Lehenga stitching completion' },
-    { id: 2, date: new Date(2026, 5, 10), time: '11:00 AM', type: 'Stitching Deadline', customer: 'Amit Verma', details: 'Custom Suit stitching completion' },
-    { id: 3, date: new Date(2026, 5, 15), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Megha Reddy', details: 'Anarkali stitching completion' },
-    { id: 4, date: new Date(2026, 5, 20), time: '10:30 AM', type: 'Pick up & Delivery', customer: 'Rahul Nair', details: 'Sherwani home delivery' },
-    { id: 5, date: new Date(2026, 5, 22), time: '01:00 PM', type: 'Stitching Deadline', customer: 'Neha Singh', details: 'Salwar Suit stitching completion' },
-    { id: 6, date: new Date(2026, 5, 25), time: '03:00 PM', type: 'Pick up & Delivery', customer: 'Sanjay Mehta', details: 'Kurta home delivery' }
+    { id: 1, date: new Date(2026, 5, 19), time: '10:00 AM', type: 'Pick up & Delivery', customer: 'Priya Sharma', details: 'Pick up: Silk Fabric' },
+    { id: 2, date: new Date(2026, 5, 20), time: '10:00 AM', type: 'Pick up & Delivery', customer: 'Priya Sharma', details: 'Pick up: Silk Fabric' },
+    { id: 3, date: new Date(2026, 5, 20), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Delivery: Lehenga' },
+    { id: 4, date: new Date(2026, 5, 20), time: '06:00 PM', type: 'Appointment', customer: 'Amit Verma', details: 'Fitting Appointment' },
+    { id: 5, date: new Date(2026, 5, 21), time: '11:30 AM', type: 'Appointment', customer: 'Sneha Iyer', details: 'Measurement & Fabric Choice' },
+    { id: 6, date: new Date(2026, 5, 22), time: '01:00 PM', type: 'Stitching Deadline', customer: 'Neha Singh', details: 'Salwar Suit Stitching Deadline' },
+    { id: 7, date: new Date(2026, 5, 23), time: '02:30 PM', type: 'Stitching Deadline', customer: 'Ananya Goel', details: 'Designer Blouse Trial' },
+    { id: 8, date: new Date(2026, 5, 24), time: '05:00 PM', type: 'Pick up & Delivery', customer: 'Vikram Seth', details: 'Linen Suit Delivery' },
+    { id: 9, date: new Date(2026, 5, 25), time: '03:00 PM', type: 'Pick up & Delivery', customer: 'Sanjay Mehta', details: 'Kurta Home Delivery' },
+    { id: 10, date: new Date(2026, 5, 2), time: '02:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Lehenga stitching completion' },
+    { id: 11, date: new Date(2026, 5, 10), time: '11:00 AM', type: 'Stitching Deadline', customer: 'Amit Verma', details: 'Custom Suit stitching completion' },
+    { id: 12, date: new Date(2026, 5, 15), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Megha Reddy', details: 'Anarkali stitching completion' }
   ]);
   const [calendarFilters, setCalendarFilters] = useState(['Stitching Deadline', 'Pick up & Delivery', 'Appointment', 'Holiday', 'Blocked Date']);
   const [showAddEventModal, setShowAddEventModal] = useState(false);
@@ -820,64 +826,134 @@ export default function TailorView({
                 </div>
               </div>
 
-              {/* Right Column: Today's Schedule Carousel */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', flex: '1', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Today's Schedule</h4>
-                  <button onClick={() => setActiveTab('calendar')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>View Calendar →</button>
-                </div>
+              {/* Right Column: Dynamic Actual Calendar Today's Schedule */}
+              {(() => {
+                const activeDate = selectedCalendarDate || new Date(2026, 5, 20);
+                
+                // Calculate 7 days of current week (Monday -> Sunday)
+                const dayIndex = (activeDate.getDay() + 6) % 7; // Mon=0 ... Sun=6
+                const monday = new Date(activeDate);
+                monday.setDate(activeDate.getDate() - dayIndex);
 
-                {/* Day selector carousel */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
-                  {[
-                    { d: 'Mon', num: 19 },
-                    { d: 'Tue', num: 20, active: true },
-                    { d: 'Wed', num: 21 },
-                    { d: 'Thu', num: 22 },
-                    { d: 'Fri', num: 23 },
-                    { d: 'Sat', num: 24 },
-                    { d: 'Sun', num: 25 }
-                  ].map((day, idx) => (
-                    <div 
-                      key={idx}
-                      onClick={() => setSelectedDay(day.num)}
-                      style={{
-                        padding: '6px 10px',
-                        borderRadius: '8px',
-                        background: day.active ? 'var(--primary)' : 'transparent',
-                        color: day.active ? '#fff' : 'var(--text-secondary)',
-                        textAlign: 'center',
-                        cursor: 'pointer',
-                        flex: 1
-                      }}
-                    >
-                      <span style={{ fontSize: '11px', fontWeight: 500, display: 'block' }}>{day.d}</span>
-                      <strong style={{ fontSize: '13px', fontWeight: 700 }}>{day.num}</strong>
-                    </div>
-                  ))}
-                </div>
+                const weekDaysList = Array.from({ length: 7 }, (_, i) => {
+                  const d = new Date(monday);
+                  d.setDate(monday.getDate() + i);
+                  return d;
+                });
 
-                {/* Schedule list */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {todaySchedule.map((sched, idx) => (
-                    <div key={idx} style={{
-                      padding: '12px',
-                      borderRadius: '8px',
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
-                      borderLeft: `4px solid ${sched.type === 'pickup' ? '#fbbf24' : sched.type === 'delivery' ? '#10b981' : '#4cc9f0'}`,
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
+                // Filter actual calendar events for activeDate
+                const activeDayEvents = calendarEvents.filter(e => {
+                  const ed = e.date instanceof Date ? e.date : new Date(e.date);
+                  return ed.getFullYear() === activeDate.getFullYear() &&
+                         ed.getMonth() === activeDate.getMonth() &&
+                         ed.getDate() === activeDate.getDate();
+                });
+
+                // Helper for border badge colors
+                const getEventBorderColor = (type) => {
+                  if (type === 'Pick up & Delivery') return '#fbbf24';
+                  if (type === 'Stitching Deadline') return '#10b981';
+                  if (type === 'Appointment') return '#4cc9f0';
+                  if (type === 'Blocked Date') return '#ef4444';
+                  return 'var(--primary)';
+                };
+
+                return (
+                  <div className="glass-card-no-hover" style={{ padding: '20px', flex: '1', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
-                        <span style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>{sched.title}</span>
-                        <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>{sched.desc}</span>
+                        <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Today's Schedule</h4>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>
+                          {activeDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </span>
                       </div>
-                      <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>{sched.time}</span>
+                      <button onClick={() => setActiveTab('calendar')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+                        View Calendar →
+                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
+
+                    {/* Dynamic Week Carousel (Synced with Actual Calendar) */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+                      {weekDaysList.map((dayDate, idx) => {
+                        const isSelected = dayDate.toDateString() === activeDate.toDateString();
+                        const hasEvent = calendarEvents.some(e => {
+                          const ed = e.date instanceof Date ? e.date : new Date(e.date);
+                          return ed.toDateString() === dayDate.toDateString();
+                        });
+
+                        const dayName = dayDate.toLocaleDateString('en-US', { weekday: 'short' });
+                        const dayNum = dayDate.getDate();
+
+                        return (
+                          <div 
+                            key={idx}
+                            onClick={() => setSelectedCalendarDate(new Date(dayDate))}
+                            style={{
+                              padding: '6px 8px',
+                              borderRadius: '8px',
+                              background: isSelected ? 'var(--primary)' : 'transparent',
+                              color: isSelected ? '#ffffff' : 'var(--text-secondary)',
+                              textAlign: 'center',
+                              cursor: 'pointer',
+                              flex: 1,
+                              position: 'relative',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            <span style={{ fontSize: '11px', fontWeight: 500, display: 'block', color: isSelected ? '#ffffff' : 'var(--text-secondary)' }}>{dayName}</span>
+                            <strong style={{ fontSize: '13px', fontWeight: 700, display: 'block', marginTop: '2px', color: isSelected ? '#ffffff' : 'var(--text-primary)' }}>{dayNum}</strong>
+                            {hasEvent && !isSelected && (
+                              <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--primary)', position: 'absolute', bottom: '3px', left: '50%', transform: 'translateX(-50%)' }}></span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Dynamic Schedule Event List from Actual Calendar */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', minHeight: '140px' }}>
+                      {activeDayEvents.length > 0 ? (
+                        activeDayEvents.map((evt, idx) => (
+                          <div key={idx} style={{
+                            padding: '12px',
+                            borderRadius: '8px',
+                            background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
+                            borderLeft: `4px solid ${getEventBorderColor(evt.type)}`,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            boxShadow: 'var(--shadow-sm)'
+                          }}>
+                            <div>
+                              <span style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>
+                                {evt.details || evt.type}
+                              </span>
+                              <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+                                {evt.customer ? `Customer: ${evt.customer}` : evt.type}
+                              </span>
+                            </div>
+                            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>
+                              {evt.time}
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '24px 12px', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
+                          <Calendar size={22} style={{ color: 'var(--text-muted)', opacity: 0.6 }} />
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, textAlign: 'center' }}>No schedule or deadlines for this day</span>
+                          <button 
+                            className="btn btn-secondary" 
+                            style={{ fontSize: '11px', fontWeight: 600, padding: '4px 12px', marginTop: '4px' }}
+                            onClick={() => setShowAddEventModal(true)}
+                          >
+                            + Add Event
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Row 3: New Bookings & Inventory Snapshot & Messages */}
