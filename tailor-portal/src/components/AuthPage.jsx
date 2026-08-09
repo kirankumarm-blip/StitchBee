@@ -124,6 +124,45 @@ export default function AuthPage({
     }
   };
 
+  // Handle multiple stitching photos upload from device
+  const handleMultiplePortfolioUploads = (e) => {
+    const files = Array.from(e.target.files);
+    if (!files || files.length === 0) return;
+
+    const newPhotos = [];
+    let processedCount = 0;
+
+    files.forEach((file, idx) => {
+      if (file.size > 15 * 1024 * 1024) {
+        alert(`File "${file.name}" exceeds 15MB size limit.`);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const photoObj = {
+          id: Date.now() + idx + Math.random(),
+          name: file.name.replace(/\.[^/.]+$/, ''),
+          category: 'Stitching Sample',
+          url: reader.result,
+          size: (file.size / (1024 * 1024)).toFixed(1) + ' MB'
+        };
+        newPhotos.push(photoObj);
+        processedCount++;
+        if (processedCount === files.length) {
+          setPortfolioPhotos((prev) => [...prev, ...newPhotos]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    // Reset file input so user can upload more
+    e.target.value = '';
+  };
+
+  // Remove individual photo from portfolio
+  const removePortfolioPhoto = (id) => {
+    setPortfolioPhotos((prev) => prev.filter((p) => p.id !== id));
+  };
+
   // STEP 3: CHOOSE ROLE
   const [isTailorSelected, setIsTailorSelected] = useState(true);
   const [isDesignerSelected, setIsDesignerSelected] = useState(false);
@@ -1924,65 +1963,198 @@ export default function AuthPage({
                     Work Portfolio Uploads
                   </h3>
                   <p style={{ fontSize: '13px', fontWeight: 400, color: colorTextSecondary, margin: 0, lineHeight: 1.5 }}>
-                    Showcase your finished garments, suits, or custom work photos.
+                    Showcase your finished garments, suits, or custom work photos to attract clients.
                   </p>
                 </div>
 
-                <div
+                {/* INTERACTIVE MULTIPLE FILE UPLOAD DROPZONE */}
+                <label
                   style={{
-                    border: `2px dashed ${inputBorder}`,
-                    borderRadius: '16px',
-                    padding: '24px',
+                    border: '2px dashed #f72585',
+                    borderRadius: '18px',
+                    padding: '24px 20px',
                     textAlign: 'center',
-                    background: inputBg,
-                    cursor: 'pointer'
+                    background: isDark ? 'rgba(247, 37, 133, 0.04)' : 'rgba(247, 37, 133, 0.03)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 20px rgba(247, 37, 133, 0.05)'
                   }}
                 >
-                  <ImageIcon size={30} style={{ color: '#7209b7', marginBottom: '6px' }} />
-                  <div style={{ fontSize: '14px', fontWeight: 500, color: colorTextPrimary }}>
-                    Upload Stitching Photos
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    style={{ display: 'none' }}
+                    onChange={handleMultiplePortfolioUploads}
+                  />
+
+                  <div
+                    style={{
+                      width: '52px',
+                      height: '52px',
+                      borderRadius: '16px',
+                      background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#ffffff',
+                      boxShadow: '0 8px 18px rgba(247, 37, 133, 0.3)'
+                    }}
+                  >
+                    <Upload size={24} style={{ color: '#ffffff' }} />
                   </div>
-                  <div style={{ fontSize: '12px', color: colorTextMuted, marginTop: '2px', fontWeight: 400 }}>
-                    Add photos of finished suits, dresses, bags, seat covers
+
+                  <div>
+                    <span style={{ fontSize: '15px', fontWeight: 700, color: colorTextPrimary, display: 'block' }}>
+                      Upload Stitching Photos
+                    </span>
+                    <span style={{ fontSize: '12px', color: colorTextSecondary, marginTop: '4px', display: 'block', fontWeight: 400 }}>
+                      Click to select <strong style={{ color: '#f72585' }}>multiple photos</strong> from your device (JPEG, PNG, WEBP)
+                    </span>
                   </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                    <span style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(114, 9, 183, 0.12)', color: '#7209b7', fontWeight: 600 }}>
+                      📁 Select Multiple Files
+                    </span>
+                    <span style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(247, 37, 133, 0.12)', color: '#f72585', fontWeight: 600 }}>
+                      ⚡ Max 15MB each
+                    </span>
+                  </div>
+                </label>
+
+                {/* CAMERA TAKE PHOTO BUTTON */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <button
+                    type="button"
+                    onClick={startCamera}
+                    style={{
+                      padding: '8px 14px',
+                      borderRadius: '10px',
+                      background: inputBg,
+                      border: `1.5px solid ${inputBorder}`,
+                      color: colorTextPrimary,
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontFamily: 'inherit'
+                    }}
+                  >
+                    <Camera size={15} style={{ color: '#f72585' }} />
+                    <span>Or Snap Photo using Camera</span>
+                  </button>
+
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: colorTextPrimary }}>
+                    Uploaded Samples ({portfolioPhotos.length})
+                  </span>
                 </div>
 
-                <div style={{ fontSize: '12px', fontWeight: 600, color: colorTextPrimary }}>Uploaded Samples</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  {portfolioPhotos.map((p) => (
-                    <div
-                      key={p.id}
-                      style={{
-                        padding: '10px 12px',
-                        borderRadius: '12px',
-                        background: inputBg,
-                        border: `1px solid ${inputBorder}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px'
-                      }}
-                    >
+                {/* UPLOADED SAMPLES THUMBNAIL GRID */}
+                {portfolioPhotos.length === 0 ? (
+                  <div
+                    style={{
+                      padding: '20px',
+                      textAlign: 'center',
+                      borderRadius: '12px',
+                      background: inputBg,
+                      border: `1px solid ${inputBorder}`,
+                      color: colorTextMuted,
+                      fontSize: '12px'
+                    }}
+                  >
+                    No stitching photos uploaded yet. Select photos above!
+                  </div>
+                ) : (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', maxHeight: '240px', overflowY: 'auto', paddingRight: '4px' }}>
+                    {portfolioPhotos.map((p) => (
                       <div
+                        key={p.id}
                         style={{
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '8px',
-                          background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                          padding: '8px 10px',
+                          borderRadius: '12px',
+                          background: inputBg,
+                          border: `1px solid ${inputBorder}`,
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center',
-                          color: '#ffffff'
+                          justifyContent: 'space-between',
+                          gap: '8px'
                         }}
                       >
-                        <ImageIcon size={18} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                          {/* Image Preview Thumbnail */}
+                          {p.url && (p.url.startsWith('data:') || p.url.startsWith('http') || p.url.startsWith('/')) ? (
+                            <img
+                              src={p.url}
+                              alt={p.name}
+                              style={{
+                                width: '42px',
+                                height: '42px',
+                                borderRadius: '10px',
+                                objectFit: 'cover',
+                                flexShrink: 0,
+                                border: '1px solid rgba(255,255,255,0.2)'
+                              }}
+                            />
+                          ) : (
+                            <div
+                              style={{
+                                width: '42px',
+                                height: '42px',
+                                borderRadius: '10px',
+                                background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: '#ffffff',
+                                flexShrink: 0
+                              }}
+                            >
+                              <ImageIcon size={20} style={{ color: '#ffffff' }} />
+                            </div>
+                          )}
+
+                          <div style={{ minWidth: 0, overflow: 'hidden' }}>
+                            <div style={{ fontSize: '12px', fontWeight: 600, color: colorTextPrimary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {p.name}
+                            </div>
+                            <div style={{ fontSize: '10px', color: '#f72585', fontWeight: 600 }}>
+                              {p.size || p.category}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Remove Photo Button */}
+                        <button
+                          type="button"
+                          onClick={() => removePortfolioPhoto(p.id)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: colorTextMuted,
+                            cursor: 'pointer',
+                            padding: '4px',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                          }}
+                          title="Remove photo"
+                        >
+                          <Trash2 size={15} style={{ color: '#ef4444' }} />
+                        </button>
                       </div>
-                      <div>
-                        <div style={{ fontSize: '13px', fontWeight: 500, color: colorTextPrimary }}>{p.name}</div>
-                        <div style={{ fontSize: '11px', color: '#f72585', fontWeight: 600 }}>{p.category}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
