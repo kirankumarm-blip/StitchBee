@@ -316,22 +316,26 @@ export default function OrdersPage({ theme, setActiveTab }) {
       {/* KPI CARDS (REAL RECHARTS SPARKELINES) */}
       <OrderStats orders={orders} theme={theme} />
 
-      {/* REAL-TIME LINE CHART + DONUT CHART */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-        <RealTimeOrderChart 
-          trendData={realTimeTrendData} 
-          timeRange={realtimeTimeRange} 
-          setTimeRange={setRealtimeTimeRange} 
-          lastUpdatedSeconds={lastUpdatedSeconds}
-          onRefresh={() => setLastUpdatedSeconds(0)}
-          theme={theme} 
-        />
-        <OrderStatusDonut 
-          orders={orders} 
-          timeRange={donutTimeRange} 
-          setTimeRange={setDonutTimeRange} 
-          theme={theme} 
-        />
+      {/* REAL-TIME LINE CHART (65%) + ASYMMETRIC DONUT CHART (35%) */}
+      <div style={{ display: 'flex', gap: '18px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 62%', minWidth: '320px' }}>
+          <RealTimeOrderChart 
+            trendData={realTimeTrendData} 
+            timeRange={realtimeTimeRange} 
+            setTimeRange={setRealtimeTimeRange} 
+            lastUpdatedSeconds={lastUpdatedSeconds}
+            onRefresh={() => setLastUpdatedSeconds(0)}
+            theme={theme} 
+          />
+        </div>
+        <div style={{ flex: '1 1 33%', minWidth: '280px' }}>
+          <OrderStatusDonut 
+            orders={orders} 
+            timeRange={donutTimeRange} 
+            setTimeRange={setDonutTimeRange} 
+            theme={theme} 
+          />
+        </div>
       </div>
 
       {/* MAIN ORDERS PRODUCTION TABLE */}

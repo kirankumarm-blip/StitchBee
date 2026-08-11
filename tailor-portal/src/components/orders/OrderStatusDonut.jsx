@@ -27,11 +27,14 @@ export default function OrderStatusDonut({ orders, theme, timeRange, setTimeRang
       background: theme === 'dark' ? '#141126' : '#ffffff',
       border: '1px solid var(--border-color)',
       borderRadius: '12px',
-      padding: '20px',
+      padding: '18px 20px',
       display: 'flex',
       flexDirection: 'column',
-      gap: '16px',
-      boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+      gap: '14px',
+      boxShadow: '0 2px 8px rgba(16,24,40,0.04)',
+      height: 'fit-content',
+      minHeight: '240px',
+      boxSizing: 'border-box'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>Order Status</h4>
@@ -47,17 +50,17 @@ export default function OrderStatusDonut({ orders, theme, timeRange, setTimeRang
         </select>
       </div>
 
-      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', height: '100%' }}>
+      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', margin: 'auto 0', padding: '4px 0' }}>
         {/* Real Recharts PieChart Donut */}
-        <div style={{ position: 'relative', width: '110px', height: '110px', flexShrink: 0 }}>
+        <div style={{ position: 'relative', width: '130px', height: '130px', flexShrink: 0 }}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
                 cy="50%"
-                innerRadius={36}
-                outerRadius={52}
+                innerRadius={40}
+                outerRadius={58}
                 paddingAngle={3}
                 dataKey="value"
               >
@@ -79,8 +82,8 @@ export default function OrderStatusDonut({ orders, theme, timeRange, setTimeRang
             textAlign: 'center',
             pointerEvents: 'none'
           }}>
-            <strong style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1', display: 'block' }}>{totalOrders}</strong>
-            <span style={{ fontSize: '9px', color: 'var(--text-muted)', fontWeight: 400 }}>Total</span>
+            <strong style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1', display: 'block' }}>{totalOrders}</strong>
+            <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 400 }}>Total</span>
           </div>
         </div>
 
