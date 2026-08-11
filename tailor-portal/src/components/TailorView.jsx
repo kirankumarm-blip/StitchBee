@@ -12,6 +12,7 @@ import EarningsPage from './earnings/EarningsPage';
 import ReviewsPage from './reviews/ReviewsPage';
 import ChatSupportPage from './chat/ChatSupportPage';
 import InventoryPage from './inventory/InventoryPage';
+import HeaderProfileModal from './HeaderProfileModal';
 
 export default function TailorView({ 
   tailors, setTailors, orders, updateOrderStatus, theme, setTheme, currentUser, onLogout, onSwitchToDesigner 
@@ -748,22 +749,19 @@ export default function TailorView({
               <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} className="desktop-header-user-info" />
             </div>
 
-            {/* Profile Dropdown Menu */}
+            {/* Profile Component Modal */}
             {showProfileDropdown && (
-              <ul className="nav-dropdown-menu show" style={{ right: 0, top: '40px', width: '180px' }}>
-                <li className="dropdown-item" onClick={() => { setActiveTab('profile'); setShowProfileDropdown(false); }}>
-                  <User size={14} style={{ marginRight: '8px' }} /> Profile & Settings
-                </li>
-                <li className="dropdown-item" onClick={() => { setActiveTab('dashboard'); setShowProfileDropdown(false); }}>
-                  <TrendingUp size={14} style={{ marginRight: '8px' }} /> Dashboard
-                </li>
-                <li className="dropdown-item" onClick={() => { if (onSwitchToDesigner) onSwitchToDesigner(); setShowProfileDropdown(false); }} style={{ color: '#F72585', fontWeight: 600 }}>
-                  <Palette size={14} style={{ marginRight: '8px' }} /> Designer Portal
-                </li>
-                <li className="dropdown-item" onClick={() => { if (onLogout) onLogout(); }} style={{ color: 'var(--danger)', borderTop: '1px solid var(--border-color)' }}>
-                  <X size={14} style={{ marginRight: '8px' }} /> Logout
-                </li>
-              </ul>
+              <HeaderProfileModal
+                userRole="tailor"
+                userName={ownerName || "Master Rajesh"}
+                userAvatar="/bridal 5.jpg"
+                theme={theme}
+                setTheme={setTheme}
+                onViewProfile={() => setActiveTab('profile')}
+                onSwitchPortal={() => { if (onSwitchToDesigner) onSwitchToDesigner(); }}
+                onLogout={onLogout}
+                onClose={() => setShowProfileDropdown(false)}
+              />
             )}
           </div>
         </div>

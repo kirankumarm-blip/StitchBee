@@ -7,6 +7,7 @@ import {
   Eye, RefreshCw, Layers, Award
 } from 'lucide-react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import HeaderProfileModal from '../HeaderProfileModal';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -285,38 +286,17 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
             </div>
 
             {profileDropdownOpen && (
-              <div style={{
-                position: 'absolute',
-                top: '44px',
-                right: 0,
-                width: '200px',
-                background: theme === 'dark' ? '#141126' : '#ffffff',
-                border: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E5E7EB',
-                borderRadius: '12px',
-                padding: '8px 0',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-                zIndex: 200
-              }}>
-                <button
-                  onClick={() => { setActiveTab('profile'); setProfileDropdownOpen(false); }}
-                  style={{ width: '100%', padding: '8px 16px', textAlign: 'left', background: 'transparent', border: 'none', color: theme === 'dark' ? '#ffffff' : '#172033', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <User size={14} /> Profile & Reviews (4.9 ★)
-                </button>
-                <button
-                  onClick={() => { if (onSwitchToTailor) onSwitchToTailor(); setProfileDropdownOpen(false); }}
-                  style={{ width: '100%', padding: '8px 16px', textAlign: 'left', background: 'transparent', border: 'none', color: '#F72585', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <Scissors size={14} /> Switch to Tailor Portal
-                </button>
-                <div style={{ borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', margin: '4px 0' }} />
-                <button
-                  onClick={() => { if (onLogout) onLogout(); }}
-                  style={{ width: '100%', padding: '8px 16px', textAlign: 'left', background: 'transparent', border: 'none', color: '#EF4444', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
-                  <X size={14} /> Logout
-                </button>
-              </div>
+              <HeaderProfileModal
+                userRole="designer"
+                userName="Ananya Roy"
+                userAvatar="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+                theme={theme}
+                setTheme={setTheme}
+                onViewProfile={() => setActiveTab('profile')}
+                onSwitchPortal={() => { if (onSwitchToTailor) onSwitchToTailor(); }}
+                onLogout={onLogout}
+                onClose={() => setProfileDropdownOpen(false)}
+              />
             )}
           </div>
 
