@@ -4,7 +4,8 @@ import {
   Trash2, Clock, Send, MessageSquare, ShieldAlert, Calendar, ShieldCheck, Database, 
   Bell, Sun, Moon, Sparkles, Star, Edit, Upload, User, Video, MapPin, Map, CreditCard, 
   ChevronDown, ChevronRight, ChevronLeft, X, Info, Heart, List, HelpCircle, Activity, FileText, Filter, Users, Eye,
-  Layers, Sliders, Truck, Search, Mail, Smile, Phone, Paperclip, Home, Menu, LogOut, DollarSign, LayoutGrid
+  Layers, Sliders, Truck, Search, Mail, Smile, Phone, Paperclip, Home, Menu, LogOut, DollarSign, LayoutGrid,
+  RotateCw, ArrowUpRight, TrendingDown
 } from 'lucide-react';
 
 export default function TailorView({ 
@@ -241,6 +242,49 @@ export default function TailorView({
   const [stitchingCapacity, setStitchingCapacity] = useState('30');
   const [kycStatus, setKycStatus] = useState('Verified');
   const [bankAccount, setBankAccount] = useState('HDFC Bank •••• 9821');
+
+  // Real-time Orders Command Center States
+  const [ordersListState, setOrdersListState] = useState([
+    { id: 'ORD-1024', customer: 'Priya Sharma', image: '/bridal 5.jpg', outfit: 'Bridal Lehenga', fabric: 'Net Fabric', date: '22 May 2026', daysLeft: '3 days left', progress: 65, status: 'In Progress', amount: 8500, createdDate: '2026-05-10' },
+    { id: 'ORD-1023', customer: 'Amit Verma', image: '/men1.jpg', outfit: 'Sherwani', fabric: 'Silk Fabric', date: '25 May 2026', daysLeft: '6 days left', progress: 30, status: 'Stitching', amount: 12350, createdDate: '2026-05-12' },
+    { id: 'ORD-1022', customer: 'Megha Reddy', image: '/bridal2.jpg', outfit: 'Anarkali Suit', fabric: 'Georgette', date: '28 May 2026', daysLeft: '9 days left', progress: 20, status: 'Cutting', amount: 6750, createdDate: '2026-05-14' },
+    { id: 'ORD-1021', customer: 'Rahul Nair', image: '/men2.jpg', outfit: 'Formal Shirt', fabric: 'Cotton', date: '29 May 2026', daysLeft: '10 days left', progress: 0, status: 'Pending', amount: 2150, createdDate: '2026-05-15' },
+    { id: 'ORD-1019', customer: 'Neha Singh', image: '/bridal 5.jpg', outfit: 'Saree Blouse', fabric: 'Silk', date: '31 May 2026', daysLeft: '12 days left', progress: 75, status: 'In Progress', amount: 1850, createdDate: '2026-05-08' },
+    { id: 'ORD-1018', customer: 'Karan Johar', image: '/men2.jpg', outfit: 'Bandhgala Suit', fabric: 'Velvet', date: '15 May 2026', daysLeft: 'Completed', progress: 100, status: 'Completed', amount: 15000, createdDate: '2026-05-01' },
+    { id: 'ORD-1017', customer: 'Sita Ram', image: '/bridal2.jpg', outfit: 'Salwar Kameez', fabric: 'Cotton silk', date: '10 May 2026', daysLeft: 'Completed', progress: 100, status: 'Completed', amount: 3200, createdDate: '2026-04-28' },
+    { id: 'ORD-1016', customer: 'Vijay Devar', image: '/men1.jpg', outfit: 'Kurta Pyjama', fabric: 'Linen', date: '05 May 2026', daysLeft: 'Cancelled', progress: 0, status: 'Cancelled', amount: 2500, createdDate: '2026-04-25' }
+  ]);
+
+  const [orderSearchQuery, setOrderSearchQuery] = useState('');
+  const [ordersSortBy, setOrdersSortBy] = useState('date');
+  const [ordersSortAsc, setOrdersSortAsc] = useState(true);
+  const [ordersPage, setOrdersPage] = useState(1);
+  const [ordersPerPage, setOrdersPerPage] = useState(10);
+  const [ordersFilterModalOpen, setOrdersFilterModalOpen] = useState(false);
+  const [ordersFilterStatus, setOrdersFilterStatus] = useState('all');
+  const [ordersFilterFabric, setOrdersFilterFabric] = useState('all');
+  const [ordersFilterMinPrice, setOrdersFilterMinPrice] = useState('');
+  const [selectedOrderForEdit, setSelectedOrderForEdit] = useState(null);
+  const [ordersLastUpdatedSeconds, setOrdersLastUpdatedSeconds] = useState(3);
+  const [ordersTimeRange, setOrdersTimeRange] = useState('Today');
+  const [ordersDonutTimeRange, setOrdersDonutTimeRange] = useState('This Week');
+  const [performanceTimeRange, setPerformanceTimeRange] = useState('This Week');
+  const [revenueTimeRange, setRevenueTimeRange] = useState('7 Days');
+
+  const [ordersActivityLog, setOrdersActivityLog] = useState([
+    { id: 1, customer: 'Rahul Nair', text: 'Order #ORD-1021 placed in Pending Queue', time: 'Just now', type: 'pending' },
+    { id: 2, customer: 'Priya Sharma', text: 'Bridal Lehenga trial completed', time: '2 min ago', type: 'progress' },
+    { id: 3, customer: 'Amit Verma', text: 'Sherwani sleeve measurement verified', time: '5 min ago', type: 'measurement' },
+    { id: 4, customer: 'Megha Reddy', text: 'Georgette fabric cutting initiated', time: '8 min ago', type: 'cutting' }
+  ]);
+
+  // Live timer tick effect
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setOrdersLastUpdatedSeconds(prev => (prev > 59 ? 0 : prev + 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Interactive Stitching Queue progress state
   const [stitchingQueue, setStitchingQueue] = useState([
@@ -1255,26 +1299,99 @@ export default function TailorView({
           </div>
         )}
 
-        {/* TAB 2: ORDERS */}
+        {/* TAB 2: ORDERS - REAL-TIME PRODUCTION COMMAND CENTER */}
         {activeTab === 'orders' && (() => {
-          const allOrdersList = [
-            { id: 'ORD-1024', customer: 'Priya Sharma', image: '/bridal 5.jpg', outfit: 'Bridal Lehenga', fabric: 'Net Fabric', date: '22 May 2026', daysLeft: '3 days left', progress: 65, status: 'In Progress', amount: '₹8,500' },
-            { id: 'ORD-1023', customer: 'Amit Verma', image: '/men1.jpg', outfit: 'Sherwani', fabric: 'Silk Fabric', date: '25 May 2026', daysLeft: '6 days left', progress: 30, status: 'Stitching', amount: '₹12,350' },
-            { id: 'ORD-1022', customer: 'Megha Reddy', image: '/bridal2.jpg', outfit: 'Anarkali Suit', fabric: 'Georgette', date: '28 May 2026', daysLeft: '9 days left', progress: 10, status: 'Cutting', amount: '₹6,750' },
-            { id: 'ORD-1021', customer: 'Rahul Nair', image: '/men2.jpg', outfit: 'Formal Shirt', fabric: 'Cotton', date: '29 May 2026', daysLeft: '10 days left', progress: 0, status: 'Pending', amount: '₹2,150' },
-            { id: 'ORD-1019', customer: 'Neha Singh', image: '/bridal 5.jpg', outfit: 'Saree Blouse', fabric: 'Silk', date: '31 May 2026', daysLeft: '12 days left', progress: 50, status: 'In Progress', amount: '₹1,850' },
-            { id: 'ORD-1018', customer: 'Karan Johar', image: '/men2.jpg', outfit: 'Bandhgala Suit', fabric: 'Velvet', date: '15 May 2026', daysLeft: 'Completed', progress: 100, status: 'Completed', amount: '₹15,000' },
-            { id: 'ORD-1017', customer: 'Sita Ram', image: '/bridal2.jpg', outfit: 'Salwar Kameez', fabric: 'Cotton silk', date: '10 May 2026', daysLeft: 'Completed', progress: 100, status: 'Completed', amount: '₹3,200' },
-            { id: 'ORD-1016', customer: 'Vijay Devar', image: '/men1.jpg', outfit: 'Kurta Pyjama', fabric: 'Linen', date: '05 May 2026', daysLeft: 'Cancelled', progress: 0, status: 'Cancelled', amount: '₹2,500' }
-          ];
+          // 1. Dynamic Calculations from ordersListState
+          const activeOrdersCount = ordersListState.filter(o => !['Completed', 'Cancelled'].includes(o.status)).length;
+          const inProgressCount = ordersListState.filter(o => o.status === 'In Progress').length;
+          const cuttingStitchingCount = ordersListState.filter(o => ['Cutting', 'Stitching'].includes(o.status)).length;
+          const readyCount = ordersListState.filter(o => o.status === 'Ready').length;
+          const completedCount = ordersListState.filter(o => o.status === 'Completed').length;
+          const cancelledCount = ordersListState.filter(o => o.status === 'Cancelled').length;
+          const pendingCount = ordersListState.filter(o => o.status === 'Pending').length;
 
-          const filteredOrders = allOrdersList.filter(order => {
+          // Donut Chart Segment Deg Calculations
+          const totalOrders = ordersListState.length;
+          const inProgPct = totalOrders ? Math.round((inProgressCount / totalOrders) * 100) : 0;
+          const stitchPct = totalOrders ? Math.round((cuttingStitchingCount / totalOrders) * 100) : 0;
+          const readyPct = totalOrders ? Math.round((readyCount / totalOrders) * 100) : 0;
+          const compPct = totalOrders ? Math.round((completedCount / totalOrders) * 100) : 0;
+          const pendPct = totalOrders ? Math.round((pendingCount / totalOrders) * 100) : 0;
+
+          // Subtab filtering
+          let filteredByTab = ordersListState.filter(order => {
             if (ordersSubTab === 'new') return order.status === 'Pending';
-            if (ordersSubTab === 'active') return ['In Progress', 'Stitching', 'Cutting'].includes(order.status);
+            if (ordersSubTab === 'active') return ['In Progress', 'Stitching', 'Cutting', 'Ready'].includes(order.status);
             if (ordersSubTab === 'completed') return order.status === 'Completed';
             if (ordersSubTab === 'cancelled') return order.status === 'Cancelled';
             return true;
           });
+
+          // Search filtering
+          if (orderSearchQuery.trim()) {
+            const q = orderSearchQuery.toLowerCase();
+            filteredByTab = filteredByTab.filter(o => 
+              o.customer.toLowerCase().includes(q) ||
+              o.id.toLowerCase().includes(q) ||
+              o.outfit.toLowerCase().includes(q) ||
+              o.fabric.toLowerCase().includes(q)
+            );
+          }
+
+          // Modal Filter: Fabric & Price
+          if (ordersFilterFabric !== 'all') {
+            filteredByTab = filteredByTab.filter(o => o.fabric.toLowerCase().includes(ordersFilterFabric.toLowerCase()));
+          }
+          if (ordersFilterMinPrice) {
+            filteredByTab = filteredByTab.filter(o => o.amount >= Number(ordersFilterMinPrice));
+          }
+
+          // Sorting
+          filteredByTab.sort((a, b) => {
+            let res = 0;
+            if (ordersSortBy === 'customer') res = a.customer.localeCompare(b.customer);
+            else if (ordersSortBy === 'amount') res = a.amount - b.amount;
+            else if (ordersSortBy === 'progress') res = a.progress - b.progress;
+            else if (ordersSortBy === 'status') res = a.status.localeCompare(b.status);
+            else res = a.id.localeCompare(b.id);
+            return ordersSortAsc ? res : -res;
+          });
+
+          // Pagination
+          const totalRows = filteredByTab.length;
+          const totalPages = Math.ceil(totalRows / ordersPerPage) || 1;
+          const currentPage = Math.min(ordersPage, totalPages);
+          const startIndex = (currentPage - 1) * ordersPerPage;
+          const paginatedOrders = filteredByTab.slice(startIndex, startIndex + ordersPerPage);
+
+          const handleSort = (field) => {
+            if (ordersSortBy === field) {
+              setOrdersSortAsc(!ordersSortAsc);
+            } else {
+              setOrdersSortBy(field);
+              setOrdersSortAsc(true);
+            }
+          };
+
+          const handleUpdateStage = (orderId, newStatus) => {
+            let newProg = 0;
+            if (newStatus === 'Pending') newProg = 0;
+            else if (newStatus === 'Cutting') newProg = 20;
+            else if (newStatus === 'Stitching') newProg = 50;
+            else if (newStatus === 'In Progress') newProg = 75;
+            else if (newStatus === 'Ready') newProg = 90;
+            else if (newStatus === 'Completed') newProg = 100;
+
+            setOrdersListState(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus, progress: newProg } : o));
+            
+            const targetOrder = ordersListState.find(o => o.id === orderId);
+            setOrdersActivityLog(prev => [
+              { id: Date.now(), customer: targetOrder?.customer || 'Client', text: `Order #${orderId} moved to ${newStatus}`, time: 'Just now', type: 'progress' },
+              ...prev.slice(0, 5)
+            ]);
+            setOrdersLastUpdatedSeconds(0);
+            setSelectedOrderForEdit(null);
+          };
 
           return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: "'Inter', sans-serif" }}>
@@ -1282,33 +1399,58 @@ export default function TailorView({
               {/* PAGE HEADER */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                  <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1.2' }}>Orders</h2>
-                  <p style={{ margin: '3px 0 0 0', fontSize: '12px', fontWeight: 400, color: 'var(--text-secondary)' }}>Manage and track all stitching orders</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1.2' }}>Orders</h2>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(18,183,106,0.1)', color: '#12B76A', padding: '3px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: 600 }}>
+                      <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#12B76A' }}></span>
+                      ● Live
+                    </div>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      Last updated: {ordersLastUpdatedSeconds}s ago
+                      <RotateCw 
+                        size={12} 
+                        style={{ cursor: 'pointer', transition: 'transform 0.3s ease' }} 
+                        onClick={() => setOrdersLastUpdatedSeconds(0)} 
+                        title="Refresh now"
+                      />
+                    </span>
+                  </div>
+                  <p style={{ margin: '4px 0 0 0', fontSize: '13px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+                    Manage and track all stitching orders in real-time
+                  </p>
                 </div>
                 
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  {/* Search Input */}
                   <div style={{ position: 'relative', width: '260px' }}>
                     <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input 
                       type="text" 
+                      value={orderSearchQuery}
+                      onChange={e => { setOrderSearchQuery(e.target.value); setOrdersPage(1); }}
                       placeholder="Search by order ID, customer or outfit..." 
                       className="form-input" 
-                      style={{ paddingLeft: '36px', width: '100%', height: '38px', borderRadius: '8px', fontSize: '12px' }}
+                      style={{ paddingLeft: '36px', width: '100%', height: '40px', borderRadius: '9px', fontSize: '12px', border: '1px solid var(--border-color)' }}
                     />
+                    {orderSearchQuery && (
+                      <X size={14} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer', color: 'var(--text-muted)' }} onClick={() => setOrderSearchQuery('')} />
+                    )}
                   </div>
                   
+                  {/* Filter Toggle Button */}
                   <button 
+                    onClick={() => setOrdersFilterModalOpen(!ordersFilterModalOpen)}
                     title="Filter options"
                     style={{
-                      background: theme === 'dark' ? '#141126' : '#ffffff',
-                      border: '1px solid var(--border-color)',
-                      borderRadius: '8px',
-                      width: '38px',
-                      height: '38px',
+                      background: ordersFilterModalOpen || ordersFilterFabric !== 'all' || ordersFilterMinPrice ? 'rgba(247,37,133,0.1)' : (theme === 'dark' ? '#141126' : '#ffffff'),
+                      border: ordersFilterFabric !== 'all' || ordersFilterMinPrice ? '1px solid var(--primary)' : '1px solid var(--border-color)',
+                      borderRadius: '9px',
+                      width: '40px',
+                      height: '40px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: 'var(--text-primary)',
+                      color: ordersFilterFabric !== 'all' || ordersFilterMinPrice ? 'var(--primary)' : 'var(--text-primary)',
                       cursor: 'pointer',
                       boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
                     }}
@@ -1316,42 +1458,97 @@ export default function TailorView({
                     <Sliders size={16} />
                   </button>
 
+                  {/* New Request Button */}
                   <button 
                     className="btn btn-primary" 
-                    style={{ height: '38px', display: 'flex', alignItems: 'center', gap: '6px', padding: '0 16px', fontSize: '12px', fontWeight: 600, borderRadius: '8px' }} 
-                    onClick={() => alert("Creating new customer request...")}
+                    style={{ height: '40px', display: 'flex', alignItems: 'center', gap: '6px', padding: '0 18px', fontSize: '12px', fontWeight: 600, borderRadius: '9px', background: '#F72585', border: 'none', color: '#fff' }} 
+                    onClick={() => alert("Opening New Customer Order Modal...")}
                   >
                     <Plus size={16} /> New Request
                   </button>
                 </div>
               </div>
 
-              {/* ORDER STATUS TABS */}
+              {/* ADVANCED FILTER PANEL MODAL (IF OPEN) */}
+              {ordersFilterModalOpen && (
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '16px 20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '20px',
+                  flexWrap: 'wrap',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+                }}>
+                  <strong style={{ fontSize: '12px', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Filter size={14} color="var(--primary)" /> Advanced Filters:
+                  </strong>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Fabric:</span>
+                    <select 
+                      value={ordersFilterFabric}
+                      onChange={e => setOrdersFilterFabric(e.target.value)}
+                      className="form-select"
+                      style={{ padding: '4px 8px', fontSize: '11px', borderRadius: '6px' }}
+                    >
+                      <option value="all">All Fabrics</option>
+                      <option value="silk">Silk</option>
+                      <option value="cotton">Cotton</option>
+                      <option value="georgette">Georgette</option>
+                      <option value="velvet">Velvet</option>
+                    </select>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Min Amount (₹):</span>
+                    <input 
+                      type="number"
+                      placeholder="e.g. 5000"
+                      value={ordersFilterMinPrice}
+                      onChange={e => setOrdersFilterMinPrice(e.target.value)}
+                      style={{ width: '90px', padding: '4px 8px', fontSize: '11px', borderRadius: '6px', border: '1px solid var(--border-color)', background: theme === 'dark' ? '#0b0914' : '#fff', color: 'var(--text-primary)' }}
+                    />
+                  </div>
+
+                  <button 
+                    onClick={() => { setOrdersFilterFabric('all'); setOrdersFilterMinPrice(''); setOrderSearchQuery(''); }}
+                    style={{ background: 'none', border: 'none', color: '#F04438', fontSize: '11px', fontWeight: 600, cursor: 'pointer', marginLeft: 'auto' }}
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              )}
+
+              {/* ORDER FILTER TABS */}
               <div style={{ display: 'flex', gap: '10px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
                 {[
-                  { id: 'new', label: 'New Requests', count: 4 },
-                  { id: 'active', label: 'Active Stitching', count: 12 },
-                  { id: 'completed', label: 'Completed', count: 48 },
-                  { id: 'cancelled', label: 'Cancelled', count: 3 }
+                  { id: 'active', label: 'Active Stitching', count: activeOrdersCount },
+                  { id: 'new', label: 'New Requests', count: pendingCount },
+                  { id: 'completed', label: 'Completed', count: completedCount },
+                  { id: 'cancelled', label: 'Cancelled', count: cancelledCount },
+                  { id: 'all', label: 'All Orders', count: ordersListState.length }
                 ].map(sub => {
                   const isActive = ordersSubTab === sub.id;
                   return (
                     <button
                       key={sub.id}
-                      onClick={() => setOrdersSubTab(sub.id)}
+                      onClick={() => { setOrdersSubTab(sub.id); setOrdersPage(1); }}
                       style={{
-                        padding: '6px 14px',
+                        padding: '6px 16px',
                         borderRadius: '20px',
                         fontSize: '12px',
                         fontWeight: 600,
-                        border: isActive ? '1px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: isActive ? 'var(--primary)' : (theme === 'dark' ? '#141126' : '#ffffff'),
+                        border: isActive ? '1px solid #F72585' : '1px solid var(--border-color)',
+                        background: isActive ? '#F72585' : (theme === 'dark' ? '#141126' : '#ffffff'),
                         color: isActive ? '#ffffff' : 'var(--text-secondary)',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        boxShadow: isActive ? '0 2px 6px rgba(247,37,133,0.25)' : 'none'
                       }}
                     >
                       <span>{sub.label}</span>
@@ -1370,14 +1567,15 @@ export default function TailorView({
                 })}
               </div>
 
-              {/* STATISTICS CARDS ROW */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+              {/* REAL-TIME KPI CARDS ROW (5 CARDS) */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '14px' }}>
                 {[
-                  { label: 'Active Orders', value: '12', change: '↑ 2 from yesterday', color: '#f72585', icon: <ShoppingBag size={18} /> },
-                  { label: 'In Progress', value: '8', change: '↑ 3 from yesterday', color: '#8b5cf6', icon: <Clock size={18} /> },
-                  { label: 'Cutting / Stitching', value: '4', change: '↑ 1 from yesterday', color: '#f59e0b', icon: <Scissors size={18} /> },
-                  { label: 'Ready for Delivery', value: '0', change: 'No change', color: '#3b82f6', icon: <Truck size={18} /> }
-                ].map((card, idx) => (
+                  { label: 'ACTIVE ORDERS', value: activeOrdersCount, change: '↑ 2 from yesterday', color: '#F72585', icon: <ShoppingBag size={18} />, sparkline: 'M0 20 Q 15 5, 30 15 T 60 8 T 90 4' },
+                  { label: 'IN PROGRESS', value: inProgressCount, change: '↑ 3 from yesterday', color: '#8B2CF5', icon: <Clock size={18} />, sparkline: 'M0 18 Q 15 15, 30 8 T 60 12 T 90 2' },
+                  { label: 'CUTTING / STITCHING', value: cuttingStitchingCount, change: '↑ 1 from yesterday', color: '#F79009', icon: <Scissors size={18} />, sparkline: 'M0 12 Q 15 18, 30 10 T 60 14 T 90 6' },
+                  { label: 'READY FOR DELIVERY', value: readyCount, change: 'No change', color: '#2E90FA', icon: <Truck size={18} />, sparkline: 'M0 15 Q 15 15, 30 15 T 60 15 T 90 15' },
+                  { label: 'COMPLETED TODAY', value: completedCount, change: '↑ 2 today', color: '#12B76A', icon: <Check size={18} />, sparkline: 'M0 22 Q 15 12, 30 18 T 60 6 T 90 2' }
+                ].map((kpi, idx) => (
                   <div 
                     key={idx} 
                     style={{
@@ -1386,320 +1584,742 @@ export default function TailorView({
                       borderRadius: '12px',
                       padding: '16px',
                       display: 'flex',
-                      alignItems: 'center',
-                      gap: '14px',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
-                      height: '84px',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      boxShadow: '0 2px 8px rgba(16,24,40,0.04)',
+                      height: '92px',
                       boxSizing: 'border-box'
                     }}
                   >
-                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${card.color}15`, color: card.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      {card.icon}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500 }}>{kpi.label}</span>
+                      <div style={{ color: kpi.color }}>{kpi.icon}</div>
                     </div>
-                    <div>
-                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', fontWeight: 500 }}>{card.label}</span>
-                      <strong style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1.1' }}>{card.value}</strong>
-                      <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', marginTop: '1px' }}>{card.change}</span>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '4px' }}>
+                      <div>
+                        <strong style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1' }}>{kpi.value}</strong>
+                        <span style={{ fontSize: '10px', color: kpi.change.includes('↑') ? '#12B76A' : 'var(--text-muted)', display: 'block', marginTop: '2px', fontWeight: 500 }}>
+                          {kpi.change}
+                        </span>
+                      </div>
+                      
+                      {/* Mini Sparkline */}
+                      <svg width="60" height="24" viewBox="0 0 90 25" style={{ overflow: 'visible' }}>
+                        <path d={kpi.sparkline} fill="none" stroke={kpi.color} strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* MAIN CONTENT SPLIT GRID: 67% LEFT / 33% RIGHT */}
+              {/* ROW 2: REAL-TIME PROGRESS LINE CHART + ORDER STATUS DONUT CHART */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
                 
-                {/* LEFT COLUMN: ORDERS TABLE CONTAINER (67% Desktop Ratio) */}
-                <div style={{ flex: '2', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  
-                  <div style={{
-                    background: theme === 'dark' ? '#141126' : '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '16px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                        {ordersSubTab === 'new' ? 'New Booking Requests' : ordersSubTab === 'completed' ? 'Completed Orders' : ordersSubTab === 'cancelled' ? 'Cancelled Orders' : 'Active Orders'} ({filteredOrders.length})
-                      </h4>
-                      <button onClick={() => alert("Viewing all orders...")} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
-                        View all →
-                      </button>
-                    </div>
-                    
-                    {/* Orders Table */}
-                    <div style={{ overflowX: 'auto' }}>
-                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                          <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', textAlign: 'left' }}>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Customer</th>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Outfit & Fabric</th>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Delivery Date</th>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Progress</th>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Status</th>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Amount</th>
-                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredOrders.length === 0 ? (
-                            <tr>
-                              <td colSpan="7" style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '12px' }}>
-                                No orders found in this category.
-                              </td>
-                            </tr>
-                          ) : (
-                            filteredOrders.map(row => (
-                              <tr key={row.id} style={{ borderBottom: '1px solid var(--border-color)', height: '58px' }}>
-                                {/* Customer Cell */}
-                                <td style={{ padding: '10px 6px' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                                      <img src={row.image} alt={row.customer} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                    </div>
-                                    <div>
-                                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.customer}</div>
-                                      <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>#{row.id}</span>
-                                    </div>
-                                  </div>
-                                </td>
-
-                                {/* Outfit & Fabric */}
-                                <td style={{ padding: '10px 6px' }}>
-                                  <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>{row.outfit}</div>
-                                  <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{row.fabric}</span>
-                                </td>
-
-                                {/* Delivery Date */}
-                                <td style={{ padding: '10px 6px' }}>
-                                  <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.date}</div>
-                                  <span style={{ fontSize: '11px', fontWeight: 400, color: row.daysLeft.includes('3 days') ? '#f59e0b' : row.daysLeft.includes('Completed') ? '#10b981' : '#ef4444' }}>
-                                    {row.daysLeft}
-                                  </span>
-                                </td>
-
-                                {/* Progress */}
-                                <td style={{ padding: '10px 6px' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                    <div style={{ flex: 1, height: '5px', minWidth: '50px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
-                                      <div style={{ height: '100%', width: `${row.progress}%`, background: row.progress === 100 ? '#10b981' : 'var(--primary)', borderRadius: '3px' }}></div>
-                                    </div>
-                                    <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.progress}%</span>
-                                  </div>
-                                </td>
-
-                                {/* Status */}
-                                <td style={{ padding: '10px 6px' }}>
-                                  <span style={{
-                                    padding: '3px 8px',
-                                    borderRadius: '12px',
-                                    fontSize: '10px',
-                                    fontWeight: 600,
-                                    background: row.status === 'Completed' || row.status === 'Ready' ? 'rgba(16,185,129,0.1)' : 
-                                                row.status === 'Stitching' ? 'rgba(139,92,246,0.1)' : 
-                                                row.status === 'Cutting' ? 'rgba(245,158,11,0.1)' : 
-                                                row.status === 'Pending' ? (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9') : 
-                                                row.status === 'Cancelled' ? 'rgba(239,68,68,0.1)' :
-                                                'rgba(247,37,133,0.1)',
-                                    color: row.status === 'Completed' || row.status === 'Ready' ? '#10b981' : 
-                                           row.status === 'Stitching' ? '#8b5cf6' : 
-                                           row.status === 'Cutting' ? '#f59e0b' : 
-                                           row.status === 'Pending' ? 'var(--text-muted)' : 
-                                           row.status === 'Cancelled' ? '#ef4444' :
-                                           'var(--primary)'
-                                  }}>{row.status}</span>
-                                </td>
-
-                                {/* Amount */}
-                                <td style={{ padding: '10px 6px', textAlign: 'right', fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                                  {row.amount}
-                                </td>
-
-                                {/* Actions */}
-                                <td style={{ padding: '10px 6px', textAlign: 'right' }}>
-                                  <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
-                                    <button 
-                                      title="Message Client"
-                                      className="btn btn-secondary" 
-                                      style={{ padding: '0', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
-                                      onClick={() => setActiveTab('chat')}
-                                    >
-                                      <MessageSquare size={13} />
-                                    </button>
-                                    <button 
-                                      title="Edit / View Order"
-                                      className="btn btn-secondary" 
-                                      style={{ padding: '0', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
-                                      onClick={() => handleUpdateProgress(row.id, 10)}
-                                    >
-                                      <Edit size={13} />
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
+                {/* 1. REAL-TIME ORDER PROGRESS CHART */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>Real-time Order Progress</h4>
+                      <span style={{ fontSize: '11px', color: '#12B76A', background: 'rgba(18,183,106,0.1)', padding: '2px 8px', borderRadius: '10px', fontWeight: 600 }}>● Live</span>
                     </div>
 
-                    {/* Table Pagination Footer */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingTop: '8px', borderTop: '1px solid var(--border-color)' }}>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>
-                        Showing 1 to {filteredOrders.length} of {filteredOrders.length} orders
-                      </span>
-                      <div style={{ display: 'flex', gap: '4px' }}>
-                        <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600 }}>‹</button>
-                        <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: '4px' }}>1</button>
-                        <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '4px' }}>2</button>
-                        <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '4px' }}>3</button>
-                        <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600 }}>›</button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* RIGHT COLUMN: SIDEBAR WIDGETS (33% Desktop Ratio) */}
-                <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  
-                  {/* 1. Order Summary Donut Chart */}
-                  <div style={{
-                    background: theme === 'dark' ? '#141126' : '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '14px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Order Summary</h4>
-                      <select className="form-select" style={{ width: '100px', padding: '4px 8px', fontSize: '11px', borderRadius: '6px' }}>
-                        <option>This Week</option>
-                        <option>This Month</option>
-                      </select>
-                    </div>
-
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                      {/* 85px Donut Chart */}
-                      <div style={{ position: 'relative', width: '85px', height: '85px', borderRadius: '50%', background: 'conic-gradient(#10b981 0% 67%, #f59e0b 67% 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <div style={{ width: '58px', height: '58px', borderRadius: '50%', background: theme === 'dark' ? '#141126' : '#ffffff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                          <strong style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1' }}>12</strong>
-                          <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 400 }}>Total</span>
-                        </div>
-                      </div>
-
-                      {/* Legend */}
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span> In Progress
-                          </span>
-                          <strong style={{ color: 'var(--text-primary)' }}>8 (67%)</strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span> Stitching
-                          </span>
-                          <strong style={{ color: 'var(--text-primary)' }}>4 (33%)</strong>
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }}></span> Ready
-                          </span>
-                          <strong style={{ color: 'var(--text-primary)' }}>0 (0%)</strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 2. Upcoming Deliveries */}
-                  <div style={{
-                    background: theme === 'dark' ? '#141126' : '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '14px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Upcoming Deliveries</h4>
-                      <span style={{ fontSize: '11px', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer' }} onClick={() => setActiveTab('calendar')}>
-                        View Calendar →
-                      </span>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      {[
-                        { date: '22 May 2026', label: 'Priya Sharma · Bridal Lehenga', days: '3 days left', color: 'var(--primary)' },
-                        { date: '25 May 2026', label: 'Amit Verma · Sherwani', days: '6 days left', color: '#f59e0b' },
-                        { date: '28 May 2026', label: 'Megha Reddy · Anarkali Suit', days: '9 days left', color: '#3b82f6' }
-                      ].map((deliv, idx) => (
-                        <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '11px', borderBottom: idx < 2 ? '1px solid var(--border-color)' : 'none', paddingBottom: idx < 2 ? '10px' : '0' }}>
-                          <div style={{ padding: '6px', borderRadius: '6px', background: `${deliv.color}15`, color: deliv.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Calendar size={16} />
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <strong style={{ display: 'block', color: 'var(--text-primary)', fontSize: '12px', fontWeight: 600 }}>{deliv.date}</strong>
-                            <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 400 }}>{deliv.label}</span>
-                          </div>
-                          <span style={{ fontSize: '11px', color: '#ef4444', fontWeight: 600 }}>{deliv.days}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 3. Quick Actions 2x2 Grid */}
-                  <div style={{
-                    background: theme === 'dark' ? '#141126' : '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '14px',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
-                  }}>
-                    <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Quick Actions</h4>
-                    
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      {[
-                        { label: 'New Request', icon: <Plus size={16} />, isPrimary: true },
-                        { label: 'Upload Design', icon: <Upload size={16} />, isPrimary: false },
-                        { label: 'Measurement', icon: <Ruler size={16} />, isPrimary: false },
-                        { label: 'Message Client', icon: <MessageSquare size={16} />, isPrimary: false }
-                      ].map((act, idx) => (
+                    <div style={{ display: 'flex', gap: '4px', background: theme === 'dark' ? '#0b0914' : '#f1f5f9', padding: '3px', borderRadius: '8px' }}>
+                      {['Today', '7 Days', '30 Days'].map(t => (
                         <button 
-                          key={idx}
-                          onClick={() => alert(`Executing: ${act.label}...`)}
+                          key={t}
+                          onClick={() => setOrdersTimeRange(t)}
                           style={{
-                            background: act.isPrimary ? 'rgba(247,37,133,0.08)' : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#f8fafc'),
-                            border: act.isPrimary ? '1px solid var(--primary)' : '1px solid var(--border-color)',
-                            borderRadius: '8px',
-                            padding: '12px 10px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '6px',
+                            padding: '4px 10px',
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            border: 'none',
+                            borderRadius: '6px',
+                            background: ordersTimeRange === t ? (theme === 'dark' ? '#141126' : '#fff') : 'transparent',
+                            color: ordersTimeRange === t ? 'var(--text-primary)' : 'var(--text-secondary)',
                             cursor: 'pointer',
-                            transition: 'all 0.2s ease'
+                            boxShadow: ordersTimeRange === t ? '0 1px 3px rgba(0,0,0,0.05)' : 'none'
                           }}
                         >
-                          <span style={{ color: act.isPrimary ? 'var(--primary)' : 'var(--text-secondary)', display: 'flex' }}>{act.icon}</span>
-                          <span style={{ fontSize: '11px', fontWeight: 600, color: act.isPrimary ? 'var(--primary)' : 'var(--text-primary)' }}>{act.label}</span>
+                          {t}
                         </button>
                       ))}
                     </div>
                   </div>
+
+                  {/* SVG REAL TIME LINE CHART */}
+                  <div style={{ position: 'relative', height: '180px', width: '100%' }}>
+                    <svg viewBox="0 0 500 160" style={{ width: '100%', height: '100%' }}>
+                      {/* Grid lines */}
+                      <line x1="40" y1="20" x2="480" y2="20" stroke="var(--border-color)" strokeDasharray="3 3" />
+                      <line x1="40" y1="60" x2="480" y2="60" stroke="var(--border-color)" strokeDasharray="3 3" />
+                      <line x1="40" y1="100" x2="480" y2="100" stroke="var(--border-color)" strokeDasharray="3 3" />
+                      <line x1="40" y1="140" x2="480" y2="140" stroke="var(--border-color)" />
+
+                      {/* Y Labels */}
+                      <text x="25" y="25" fill="var(--text-muted)" fontSize="9">12</text>
+                      <text x="25" y="65" fill="var(--text-muted)" fontSize="9">8</text>
+                      <text x="25" y="105" fill="var(--text-muted)" fontSize="9">4</text>
+                      <text x="25" y="145" fill="var(--text-muted)" fontSize="9">0</text>
+
+                      {/* Line 1: In Progress (#F72585) */}
+                      <path d="M 40 100 Q 100 70, 160 50 T 280 40 T 400 30 T 480 25" fill="none" stroke="#F72585" strokeWidth="3" />
+                      
+                      {/* Line 2: Stitching (#8B2CF5) */}
+                      <path d="M 40 130 Q 100 110, 160 90 T 280 70 T 400 65 T 480 60" fill="none" stroke="#8B2CF5" strokeWidth="2.5" />
+
+                      {/* Line 3: Cutting (#F79009) */}
+                      <path d="M 40 120 Q 100 130, 160 110 T 280 120 T 400 100 T 480 110" fill="none" stroke="#F79009" strokeWidth="2" />
+
+                      {/* Dots */}
+                      <circle cx="480" cy="25" r="4" fill="#F72585" />
+                      <circle cx="480" cy="60" r="4" fill="#8B2CF5" />
+                      <circle cx="480" cy="110" r="4" fill="#F79009" />
+
+                      {/* X Labels */}
+                      {['10 AM', '12 PM', '2 PM', '4 PM', '6 PM'].map((lbl, idx) => (
+                        <text key={idx} x={40 + idx * 110} y="156" fill="var(--text-muted)" fontSize="9">{lbl}</text>
+                      ))}
+                    </svg>
+                  </div>
+
+                  {/* Chart Legend */}
+                  <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', fontSize: '11px', flexWrap: 'wrap' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F72585' }}></span> In Progress
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8B2CF5' }}></span> Stitching
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F79009' }}></span> Cutting
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2E90FA' }}></span> Ready
+                    </span>
+                  </div>
+                </div>
+
+                {/* 2. ORDER STATUS DONUT CHART CARD */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>Order Status</h4>
+                    <select 
+                      value={ordersDonutTimeRange}
+                      onChange={e => setOrdersDonutTimeRange(e.target.value)}
+                      className="form-select" 
+                      style={{ width: '100px', padding: '4px 8px', fontSize: '11px', borderRadius: '6px' }}
+                    >
+                      <option>Today</option>
+                      <option>This Week</option>
+                      <option>This Month</option>
+                    </select>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '20px', alignItems: 'center', height: '100%' }}>
+                    {/* Dynamic Donut */}
+                    <div style={{ 
+                      position: 'relative', 
+                      width: '110px', 
+                      height: '110px', 
+                      borderRadius: '50%', 
+                      background: `conic-gradient(#F72585 0% ${inProgPct}%, #8B2CF5 ${inProgPct}% ${inProgPct + stitchPct}%, #12B76A ${inProgPct + stitchPct}% ${inProgPct + stitchPct + compPct}%, #F79009 ${inProgPct + stitchPct + compPct}% 100%)`, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      flexShrink: 0 
+                    }}>
+                      <div style={{ width: '74px', height: '74px', borderRadius: '50%', background: theme === 'dark' ? '#141126' : '#ffffff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <strong style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1' }}>{totalOrders}</strong>
+                        <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 400 }}>Total</span>
+                      </div>
+                    </div>
+
+                    {/* Donut Legend */}
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F72585' }}></span> In Progress
+                        </span>
+                        <strong style={{ color: 'var(--text-primary)' }}>{inProgressCount} · {inProgPct}%</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8B2CF5' }}></span> Stitching
+                        </span>
+                        <strong style={{ color: 'var(--text-primary)' }}>{cuttingStitchingCount} · {stitchPct}%</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#12B76A' }}></span> Completed
+                        </span>
+                        <strong style={{ color: 'var(--text-primary)' }}>{completedCount} · {compPct}%</strong>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F79009' }}></span> Pending / Cutting
+                        </span>
+                        <strong style={{ color: 'var(--text-primary)' }}>{pendingCount} · {pendPct}%</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* ROW 3: MAIN ORDERS PRODUCTION TABLE */}
+              <div style={{
+                background: theme === 'dark' ? '#141126' : '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '12px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    Orders ({filteredByTab.length})
+                  </h4>
+                  <button onClick={() => alert("Showing all orders view...")} style={{ background: 'none', border: 'none', color: '#F72585', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+                    View All →
+                  </button>
+                </div>
+
+                {/* Table */}
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', textAlign: 'left', background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F7F8FA' }}>
+                        <th onClick={() => handleSort('customer')} style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                          Customer {ordersSortBy === 'customer' ? (ordersSortAsc ? '↑' : '↓') : ''}
+                        </th>
+                        <th style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600 }}>Outfit & Fabric</th>
+                        <th onClick={() => handleSort('date')} style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                          Delivery Date {ordersSortBy === 'date' ? (ordersSortAsc ? '↑' : '↓') : ''}
+                        </th>
+                        <th onClick={() => handleSort('progress')} style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                          Progress {ordersSortBy === 'progress' ? (ordersSortAsc ? '↑' : '↓') : ''}
+                        </th>
+                        <th onClick={() => handleSort('status')} style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                          Status {ordersSortBy === 'status' ? (ordersSortAsc ? '↑' : '↓') : ''}
+                        </th>
+                        <th onClick={() => handleSort('amount')} style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600, textAlign: 'right', cursor: 'pointer' }}>
+                          Amount {ordersSortBy === 'amount' ? (ordersSortAsc ? '↑' : '↓') : ''}
+                        </th>
+                        <th style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paginatedOrders.length === 0 ? (
+                        <tr>
+                          <td colSpan="7" style={{ padding: '32px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '13px' }}>
+                            <div>No orders found matching current criteria.</div>
+                            <button 
+                              onClick={() => { setOrderSearchQuery(''); setOrdersFilterStatus('all'); setOrdersFilterFabric('all'); setOrdersFilterMinPrice(''); }}
+                              style={{ marginTop: '8px', padding: '6px 14px', background: '#F72585', color: '#fff', border: 'none', borderRadius: '6px', fontSize: '11px', cursor: 'pointer' }}
+                            >
+                              Create New Order / Clear Filter
+                            </button>
+                          </td>
+                        </tr>
+                      ) : (
+                        paginatedOrders.map(row => (
+                          <tr key={row.id} style={{ borderBottom: '1px solid var(--border-color)', height: '62px', transition: 'background 0.15s ease' }}>
+                            {/* Customer Cell */}
+                            <td style={{ padding: '10px 10px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                                  <img src={row.image} alt={row.customer} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                </div>
+                                <div>
+                                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.customer}</div>
+                                  <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>#{row.id}</span>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Outfit & Fabric */}
+                            <td style={{ padding: '10px 10px' }}>
+                              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.outfit}</div>
+                              <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{row.fabric}</span>
+                            </td>
+
+                            {/* Delivery Date */}
+                            <td style={{ padding: '10px 10px' }}>
+                              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.date}</div>
+                              <span style={{ 
+                                fontSize: '11px', 
+                                fontWeight: 400, 
+                                color: row.daysLeft.includes('3 days') ? '#F79009' : row.daysLeft.includes('Completed') ? '#12B76A' : row.daysLeft.includes('Cancelled') ? 'var(--text-muted)' : '#F04438' 
+                              }}>
+                                {row.daysLeft}
+                              </span>
+                            </td>
+
+                            {/* Real-time Progress Bar */}
+                            <td style={{ padding: '10px 10px' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ flex: 1, height: '6px', minWidth: '60px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
+                                  <div style={{ height: '100%', width: `${row.progress}%`, background: row.progress === 100 ? '#12B76A' : '#F72585', borderRadius: '10px', transition: 'width 0.3s ease' }}></div>
+                                </div>
+                                <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.progress}%</span>
+                              </div>
+                            </td>
+
+                            {/* Status Badges */}
+                            <td style={{ padding: '10px 10px' }}>
+                              <span style={{
+                                padding: '4px 10px',
+                                borderRadius: '12px',
+                                fontSize: '11px',
+                                fontWeight: 600,
+                                background: row.status === 'Completed' ? 'rgba(18,183,106,0.1)' : 
+                                            row.status === 'Stitching' ? 'rgba(139,44,245,0.1)' : 
+                                            row.status === 'Cutting' ? 'rgba(247,144,9,0.1)' : 
+                                            row.status === 'Pending' ? (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#F7F8FA') : 
+                                            row.status === 'Cancelled' ? 'rgba(240,68,56,0.1)' :
+                                            'rgba(247,37,133,0.1)',
+                                color: row.status === 'Completed' ? '#12B76A' : 
+                                       row.status === 'Stitching' ? '#8B2CF5' : 
+                                       row.status === 'Cutting' ? '#F79009' : 
+                                       row.status === 'Pending' ? 'var(--text-muted)' : 
+                                       row.status === 'Cancelled' ? '#F04438' :
+                                       '#F72585'
+                              }}>{row.status}</span>
+                            </td>
+
+                            {/* Amount */}
+                            <td style={{ padding: '10px 10px', textAlign: 'right', fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                              ₹{row.amount.toLocaleString()}
+                            </td>
+
+                            {/* Actions */}
+                            <td style={{ padding: '10px 10px', textAlign: 'right' }}>
+                              <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                                <button 
+                                  title="Message Client"
+                                  className="btn btn-secondary" 
+                                  style={{ padding: '0', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                                  onClick={() => setActiveTab('chat')}
+                                >
+                                  <MessageSquare size={13} />
+                                </button>
+                                <button 
+                                  title="Update Production Stage"
+                                  className="btn btn-secondary" 
+                                  style={{ padding: '0', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(247,37,133,0.08)', color: '#F72585', border: '1px solid rgba(247,37,133,0.2)' }} 
+                                  onClick={() => setSelectedOrderForEdit(row)}
+                                >
+                                  <Edit size={13} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Table Functional Pagination Footer */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>
+                      Showing {totalRows === 0 ? 0 : startIndex + 1}–{Math.min(startIndex + ordersPerPage, totalRows)} of {totalRows} orders
+                    </span>
+                    <select 
+                      value={ordersPerPage}
+                      onChange={e => { setOrdersPerPage(Number(e.target.value)); setOrdersPage(1); }}
+                      style={{ padding: '2px 6px', fontSize: '11px', borderRadius: '4px', border: '1px solid var(--border-color)', background: theme === 'dark' ? '#141126' : '#fff', color: 'var(--text-primary)' }}
+                    >
+                      <option value={10}>10 per page</option>
+                      <option value={25}>25 per page</option>
+                      <option value={50}>50 per page</option>
+                    </select>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '4px' }}>
+                    <button 
+                      disabled={currentPage === 1}
+                      onClick={() => setOrdersPage(prev => Math.max(1, prev - 1))}
+                      className="btn btn-secondary" 
+                      style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, opacity: currentPage === 1 ? 0.5 : 1 }}
+                    >
+                      Previous
+                    </button>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                      <button 
+                        key={p}
+                        onClick={() => setOrdersPage(p)}
+                        style={{
+                          padding: '4px 10px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          borderRadius: '4px',
+                          border: p === currentPage ? 'none' : '1px solid var(--border-color)',
+                          background: p === currentPage ? '#F72585' : (theme === 'dark' ? '#141126' : '#ffffff'),
+                          color: p === currentPage ? '#ffffff' : 'var(--text-primary)',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {p}
+                      </button>
+                    ))}
+
+                    <button 
+                      disabled={currentPage === totalPages}
+                      onClick={() => setOrdersPage(prev => Math.min(totalPages, prev + 1))}
+                      className="btn btn-secondary" 
+                      style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, opacity: currentPage === totalPages ? 0.5 : 1 }}
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
+
+              {/* ROW 4: ORDER PERFORMANCE & REVENUE CHARTS */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+                
+                {/* 1. ORDER PERFORMANCE BAR CHART */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>Order Performance</h4>
+                    <select 
+                      value={performanceTimeRange}
+                      onChange={e => setPerformanceTimeRange(e.target.value)}
+                      className="form-select" 
+                      style={{ width: '110px', padding: '4px 8px', fontSize: '11px', borderRadius: '6px' }}
+                    >
+                      <option>Today</option>
+                      <option>This Week</option>
+                      <option>This Month</option>
+                    </select>
+                  </div>
+
+                  {/* SVG Bar Chart */}
+                  <div style={{ height: '160px', width: '100%' }}>
+                    <svg viewBox="0 0 450 140" style={{ width: '100%', height: '100%' }}>
+                      <line x1="30" y1="20" x2="430" y2="20" stroke="var(--border-color)" strokeDasharray="3 3" />
+                      <line x1="30" y1="60" x2="430" y2="60" stroke="var(--border-color)" strokeDasharray="3 3" />
+                      <line x1="30" y1="100" x2="430" y2="100" stroke="var(--border-color)" />
+
+                      {[
+                        { day: 'Mon', r: 5, c: 4 },
+                        { day: 'Tue', r: 7, c: 6 },
+                        { day: 'Wed', r: 4, c: 5 },
+                        { day: 'Thu', r: 8, c: 7 },
+                        { day: 'Fri', r: 10, c: 9 },
+                        { day: 'Sat', r: 6, c: 4 },
+                        { day: 'Sun', r: 3, c: 2 }
+                      ].map((item, idx) => {
+                        const xBase = 50 + idx * 54;
+                        const rHeight = item.r * 8;
+                        const cHeight = item.c * 8;
+                        return (
+                          <g key={idx}>
+                            {/* Received Bar */}
+                            <rect x={xBase} y={100 - rHeight} width="12" height={rHeight} fill="#F72585" rx="3" />
+                            {/* Completed Bar */}
+                            <rect x={xBase + 16} y={100 - cHeight} width="12" height={cHeight} fill="#12B76A" rx="3" />
+                            <text x={xBase + 10} y="118" fill="var(--text-muted)" fontSize="9" textAnchor="middle">{item.day}</text>
+                          </g>
+                        );
+                      })}
+                    </svg>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', fontSize: '11px' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F72585' }}></span> Orders Received
+                    </span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#12B76A' }}></span> Orders Completed
+                    </span>
+                  </div>
+                </div>
+
+                {/* 2. REVENUE FROM ORDERS LINE CHART */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>Revenue from Orders</h4>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                        <strong style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)' }}>₹48,200</strong>
+                        <span style={{ fontSize: '11px', color: '#12B76A', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '2px' }}>
+                          <ArrowUpRight size={12} /> ↑ 18%
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <select 
+                      value={revenueTimeRange}
+                      onChange={e => setRevenueTimeRange(e.target.value)}
+                      className="form-select" 
+                      style={{ width: '100px', padding: '4px 8px', fontSize: '11px', borderRadius: '6px' }}
+                    >
+                      <option>Today</option>
+                      <option>7 Days</option>
+                      <option>30 Days</option>
+                    </select>
+                  </div>
+
+                  {/* SVG Revenue Line Chart */}
+                  <div style={{ height: '140px', width: '100%' }}>
+                    <svg viewBox="0 0 450 120" style={{ width: '100%', height: '100%' }}>
+                      <defs>
+                        <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#12B76A" stopOpacity="0.25" />
+                          <stop offset="100%" stopColor="#12B76A" stopOpacity="0.0" />
+                        </linearGradient>
+                      </defs>
+                      
+                      <path d="M 20 90 Q 90 70, 160 80 T 300 40 T 430 20 L 430 110 L 20 110 Z" fill="url(#revGrad)" />
+                      <path d="M 20 90 Q 90 70, 160 80 T 300 40 T 430 20" fill="none" stroke="#12B76A" strokeWidth="3" />
+                      <circle cx="430" cy="20" r="5" fill="#12B76A" />
+
+                      {['15 May', '18 May', '21 May', '24 May', '27 May', '30 May'].map((dt, idx) => (
+                        <text key={idx} x={20 + idx * 80} y="118" fill="var(--text-muted)" fontSize="9">{dt}</text>
+                      ))}
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* ROW 5: UPCOMING DELIVERIES + LIVE ORDER ACTIVITY + QUICK ACTIONS */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+                
+                {/* 1. UPCOMING DELIVERIES */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Upcoming Deliveries</h4>
+                    <span style={{ fontSize: '11px', color: '#F72585', fontWeight: 600, cursor: 'pointer' }} onClick={() => setActiveTab('calendar')}>
+                      View Calendar →
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {[
+                      { date: '22 May 2026', label: 'Priya Sharma · Bridal Lehenga', days: '3 days left', color: '#F72585', urgent: true },
+                      { date: '25 May 2026', label: 'Amit Verma · Sherwani', days: '6 days left', color: '#F79009', urgent: false },
+                      { date: '28 May 2026', label: 'Megha Reddy · Anarkali Suit', days: '9 days left', color: '#2E90FA', urgent: false }
+                    ].map((deliv, idx) => (
+                      <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '11px', borderBottom: idx < 2 ? '1px solid var(--border-color)' : 'none', paddingBottom: idx < 2 ? '10px' : '0' }}>
+                        <div style={{ padding: '6px', borderRadius: '6px', background: `${deliv.color}15`, color: deliv.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Calendar size={16} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <strong style={{ display: 'block', color: 'var(--text-primary)', fontSize: '12px', fontWeight: 600 }}>{deliv.date}</strong>
+                          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 400 }}>{deliv.label}</span>
+                        </div>
+                        <span style={{ fontSize: '11px', color: deliv.urgent ? '#F04438' : 'var(--text-muted)', fontWeight: 600 }}>{deliv.days}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. LIVE ORDER ACTIVITY FEED */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Live Order Activity</h4>
+                    <span style={{ fontSize: '10px', color: '#12B76A', background: 'rgba(18,183,106,0.1)', padding: '2px 6px', borderRadius: '8px', fontWeight: 600 }}>● Live</span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    {ordersActivityLog.map(act => (
+                      <div key={act.id} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', fontSize: '11px' }}>
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#F72585', marginTop: '6px', flexShrink: 0 }}></span>
+                        <div style={{ flex: 1 }}>
+                          <strong style={{ color: 'var(--text-primary)', display: 'block' }}>{act.customer}</strong>
+                          <span style={{ color: 'var(--text-secondary)' }}>{act.text}</span>
+                        </div>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '10px', flexShrink: 0 }}>{act.time}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. QUICK ACTIONS GRID */}
+                <div style={{
+                  background: theme === 'dark' ? '#141126' : '#ffffff',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  boxShadow: '0 2px 8px rgba(16,24,40,0.04)'
+                }}>
+                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Quick Actions</h4>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    {[
+                      { label: 'New Request', icon: <Plus size={16} />, isPrimary: true },
+                      { label: 'Upload Design', icon: <Upload size={16} />, isPrimary: false },
+                      { label: 'Measurement', icon: <Ruler size={16} />, isPrimary: false },
+                      { label: 'Message Client', icon: <MessageSquare size={16} />, isPrimary: false }
+                    ].map((act, idx) => (
+                      <button 
+                        key={idx}
+                        onClick={() => alert(`Executing action: ${act.label}...`)}
+                        style={{
+                          background: act.isPrimary ? 'rgba(247,37,133,0.08)' : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F7F8FA'),
+                          border: act.isPrimary ? '1px solid #F72585' : '1px solid var(--border-color)',
+                          borderRadius: '8px',
+                          padding: '12px 10px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          gap: '6px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <span style={{ color: act.isPrimary ? '#F72585' : 'var(--text-secondary)', display: 'flex' }}>{act.icon}</span>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: act.isPrimary ? '#F72585' : 'var(--text-primary)' }}>{act.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* MODAL: UPDATE PRODUCTION STAGE MODAL */}
+              {selectedOrderForEdit && (
+                <div style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background: 'rgba(0,0,0,0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 9999,
+                  padding: '20px'
+                }}>
+                  <div style={{
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    borderRadius: '14px',
+                    padding: '24px',
+                    width: '100%',
+                    maxWidth: '420px',
+                    border: '1px solid var(--border-color)',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        Update Stage: #{selectedOrderForEdit.id}
+                      </h3>
+                      <X size={18} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} onClick={() => setSelectedOrderForEdit(null)} />
+                    </div>
+
+                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      Customer: <strong>{selectedOrderForEdit.customer}</strong> ({selectedOrderForEdit.outfit})
+                    </p>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>Select New Stage:</label>
+                      {['Pending', 'Cutting', 'Stitching', 'In Progress', 'Ready', 'Completed'].map(st => (
+                        <button
+                          key={st}
+                          onClick={() => handleUpdateStage(selectedOrderForEdit.id, st)}
+                          style={{
+                            padding: '10px 14px',
+                            borderRadius: '8px',
+                            border: selectedOrderForEdit.status === st ? '1px solid #F72585' : '1px solid var(--border-color)',
+                            background: selectedOrderForEdit.status === st ? 'rgba(247,37,133,0.1)' : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F7F8FA'),
+                            color: selectedOrderForEdit.status === st ? '#F72585' : 'var(--text-primary)',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <span>{st}</span>
+                          {selectedOrderForEdit.status === st && <Check size={14} color="#F72585" />}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
+                      <button 
+                        className="btn btn-secondary"
+                        style={{ padding: '8px 16px', fontSize: '12px', borderRadius: '8px' }}
+                        onClick={() => setSelectedOrderForEdit(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
             </div>
           );
         })()}
