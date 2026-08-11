@@ -169,6 +169,7 @@ export function EarningsTrendChart({ data, range, onRangeChange, liveSeconds, th
             <button
               key={r}
               onClick={() => onRangeChange(r)}
+              className={range === r ? 'btn-text-white-force' : ''}
               style={{
                 background: range === r ? '#F72585' : 'transparent',
                 color: range === r ? '#ffffff' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467'),
@@ -431,6 +432,7 @@ export function PayoutSummary({ nextAmount, estimatedDate, totalPayouts, success
 
         <button 
           onClick={onRequestPayout}
+          className="btn-text-white-force"
           style={{
             marginTop: '6px',
             padding: '10px',
@@ -596,6 +598,7 @@ export function RecentTransactions({ transactions, theme }) {
               <button
                 key={type}
                 onClick={() => { setTypeFilter(type); setCurrentPage(1); }}
+                className={typeFilter === type ? 'btn-text-white-force' : ''}
                 style={{
                   padding: '4px 10px',
                   borderRadius: '6px',
@@ -713,6 +716,7 @@ export function RecentTransactions({ transactions, theme }) {
             <button 
               key={idx}
               onClick={() => setCurrentPage(idx + 1)}
+              className={currentPage === idx + 1 ? 'btn-text-white-force' : ''}
               style={{
                 padding: '4px 8px',
                 fontSize: '10px',
@@ -867,6 +871,7 @@ export default function EarningsPage({ theme }) {
             <button
               key={p}
               onClick={() => setFilterPeriod(p)}
+              className={filterPeriod === p ? 'btn-text-white-force' : ''}
               style={{
                 fontSize: '11px',
                 fontWeight: 600,
