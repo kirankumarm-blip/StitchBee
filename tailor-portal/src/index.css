@@ -10155,14 +10155,29 @@ body.dark-theme .drawer-nav-item.active .drawer-nav-icon-box {
   transform: translateY(-2px);
 }
 
-/* Media Query to switch desktop nav to mobile hamburger menu dropdown */
+/* Responsive Navigation Rules for Web vs Mobile Modes */
+.mobile-menu-toggle-btn {
+  display: none !important;
+}
+
+.mobile-bottom-nav {
+  display: none !important;
+}
+
 @media (max-width: 900px) {
   .desktop-nav-menu,
-  .desktop-header-nav {
+  .desktop-header-nav,
+  .role-switcher {
     display: none !important;
   }
   .mobile-menu-toggle-btn {
     display: flex !important;
+  }
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+  main {
+    padding-bottom: 90px !important;
   }
   .header-logo-image {
     height: 70px !important;
@@ -10170,6 +10185,18 @@ body.dark-theme .drawer-nav-item.active .drawer-nav-icon-box {
     max-width: 220px !important;
     margin-left: -65px !important;
     margin-right: -40px !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .role-switcher {
+    display: flex !important;
+  }
+  .mobile-menu-toggle-btn {
+    display: none !important;
+  }
+  .mobile-bottom-nav {
+    display: none !important;
   }
 }
 

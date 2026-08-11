@@ -527,9 +527,10 @@ export default function TailorView({
     }}>
       {/* 1. TOP HEADER BANNER NAVIGATION */}
       <header className="top-nav">
-        {/* Hamburger Menu & Logo */}
+        {/* Logo & Mobile Menu Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button 
+            className="mobile-menu-toggle-btn"
             onClick={() => setSidebarOpen(!sidebarOpen)} 
             style={{ 
               background: 'rgba(247,37,133,0.08)', 
@@ -538,7 +539,6 @@ export default function TailorView({
               padding: '8px 12px', 
               color: 'var(--primary)', 
               cursor: 'pointer', 
-              display: 'flex', 
               alignItems: 'center', 
               gap: '6px',
               fontWeight: 700,
@@ -556,6 +556,29 @@ export default function TailorView({
           >
             <img src="/logo.png" alt="StitchBee" style={{ height: '80px', width: '240px', objectFit: 'contain', display: 'block', marginLeft: '-40px' }} />
           </div>
+        </div>
+
+        {/* Web / Desktop Header Navigation Options */}
+        <div className="role-switcher">
+          {[
+            { id: 'dashboard', label: 'Dashboard' },
+            { id: 'orders', label: 'Orders' },
+            { id: 'measurements', label: 'Measurements' },
+            { id: 'inventory', label: 'Inventory' },
+            { id: 'calendar', label: 'Calendar' },
+            { id: 'earnings', label: 'Earnings' },
+            { id: 'chat', label: 'Chat Center' },
+            { id: 'reviews', label: 'Reviews' },
+            { id: 'profile', label: 'Profile & Settings' }
+          ].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`role-btn ${activeTab === tab.id ? 'active' : ''}`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Right Side Quick Controls */}
