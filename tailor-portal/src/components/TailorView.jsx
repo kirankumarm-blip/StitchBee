@@ -3549,13 +3549,24 @@ export default function TailorView({
           <div 
             className="left-nav-drawer"
             onClick={(e) => e.stopPropagation()}
-            style={{ top: '64px', height: 'calc(100vh - 64px)', zIndex: 999 }}
+            style={{ 
+              top: '64px', 
+              height: 'calc(100vh - 64px)', 
+              zIndex: 999,
+              background: theme === 'dark' ? '#0F0C1B' : '#F8F9FC',
+              color: theme === 'dark' ? '#ffffff' : '#172033',
+              borderRight: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB'
+            }}
           >
             <div className="drawer-top-header" style={{ marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <img src="/logo.png" alt="StitchBee" style={{ height: '45px', width: '130px', objectFit: 'contain' }} />
               </div>
-              <button className="drawer-close-btn" onClick={() => setSidebarOpen(false)}>
+              <button 
+                className="drawer-close-btn" 
+                onClick={() => setSidebarOpen(false)}
+                style={{ color: theme === 'dark' ? '#ffffff' : '#172033', background: 'transparent', border: 'none', cursor: 'pointer' }}
+              >
                 <X size={20} />
               </button>
             </div>
@@ -3604,10 +3615,22 @@ export default function TailorView({
                       setActiveTab(tab.id);
                       setSidebarOpen(false);
                     }}
+                    style={{
+                      background: isActive 
+                        ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6') 
+                        : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent'),
+                      borderRadius: '10px',
+                      padding: '10px 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
                   >
                     {isActive && <div className="drawer-nav-indicator" style={{ background: 'var(--primary)' }} />}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                      <div className="drawer-nav-icon-box" style={{ color: isActive ? 'var(--primary)' : 'inherit' }}>
+                      <div className="drawer-nav-icon-box" style={{ color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#6B7280') }}>
                         {tab.icon}
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
@@ -3618,7 +3641,7 @@ export default function TailorView({
                         }}>
                           {tab.label}
                         </span>
-                        <span style={{ fontSize: '0.72rem', color: isActive ? 'var(--primary)' : '#6B7280', opacity: isActive ? 0.9 : 0.8 }}>
+                        <span style={{ fontSize: '0.72rem', color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280') }}>
                           {tab.subtitle}
                         </span>
                       </div>
@@ -3626,7 +3649,7 @@ export default function TailorView({
                     <ChevronRight 
                       size={18} 
                       style={{ 
-                        color: isActive ? 'var(--primary)' : '#9CA3AF',
+                        color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#9CA3AF'),
                         transition: 'transform 0.2s ease'
                       }} 
                     />
@@ -3664,6 +3687,21 @@ export default function TailorView({
               onClick={() => {
                 setSidebarOpen(false);
                 if (onLogout) onLogout();
+              }}
+              style={{
+                background: theme === 'dark' ? 'rgba(239,68,68,0.15)' : '#FEF2F2',
+                color: '#EF4444',
+                border: 'none',
+                padding: '12px',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                cursor: 'pointer',
+                marginTop: '8px'
               }}
             >
               <LogOut size={18} /> Logout Tailor Account

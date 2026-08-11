@@ -239,14 +239,8 @@ export default function ChatSupportPage({ theme }) {
         </div>
       </div>
 
-      {/* MAIN 3-COLUMN LAYOUT (GRID: 24% 52% 24%) */}
+      {/* MAIN 3-COLUMN LAYOUT (GRID: 24% 52% 24% ON DESKTOP, STACKED ON TABLET/MOBILE) */}
       <div 
-        style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'minmax(260px, 24%) minmax(320px, 52%) minmax(260px, 24%)', 
-          gap: '18px', 
-          alignItems: 'start' 
-        }}
         className="support-center-grid-layout"
       >
         

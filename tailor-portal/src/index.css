@@ -12135,5 +12135,21 @@ body.light-theme .premium-footer h5 {
   }
 }
 
+/* Responsive Grid Layout for Support / Chat Center */
+.support-center-grid-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 24%) minmax(300px, 52%) minmax(240px, 24%);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .support-center-grid-layout {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+
 
 
