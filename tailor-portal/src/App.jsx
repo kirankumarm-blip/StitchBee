@@ -5,6 +5,7 @@ import TailorView from './components/TailorView';
 import AuthModal from './components/AuthModal';
 import AuthPage from './components/AuthPage';
 import BecomeTailorView from './components/BecomeTailorView';
+import DesignerView from './components/designer/DesignerView';
 
 export default function App() {
   const [role, setRole] = useState('become-tailor'); // Default to tailor homepage
@@ -1809,6 +1810,17 @@ export default function App() {
           setTheme={setTheme}
           currentUser={currentUser}
           onLogout={handleLogout}
+          onSwitchToDesigner={() => setRole('designer')}
+        />
+      )}
+
+      {role === 'designer' && (
+        <DesignerView
+          theme={theme}
+          setTheme={setTheme}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          onSwitchToTailor={() => setRole('tailor')}
         />
       )}
 

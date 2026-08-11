@@ -14,7 +14,7 @@ import ChatSupportPage from './chat/ChatSupportPage';
 import InventoryPage from './inventory/InventoryPage';
 
 export default function TailorView({ 
-  tailors, setTailors, orders, updateOrderStatus, theme, setTheme, currentUser, onLogout 
+  tailors, setTailors, orders, updateOrderStatus, theme, setTheme, currentUser, onLogout, onSwitchToDesigner 
 }) {
   // Simulating logged-in tailor: Vogue Craft Tailors (id: 't1')
   const [selectedStoreId, setSelectedStoreId] = useState('t1');
@@ -755,6 +755,9 @@ export default function TailorView({
                 </li>
                 <li className="dropdown-item" onClick={() => { setActiveTab('dashboard'); setShowProfileDropdown(false); }}>
                   <TrendingUp size={14} style={{ marginRight: '8px' }} /> Dashboard
+                </li>
+                <li className="dropdown-item" onClick={() => { if (onSwitchToDesigner) onSwitchToDesigner(); setShowProfileDropdown(false); }} style={{ color: '#F72585', fontWeight: 600 }}>
+                  <Palette size={14} style={{ marginRight: '8px' }} /> Designer Portal
                 </li>
                 <li className="dropdown-item" onClick={() => { if (onLogout) onLogout(); }} style={{ color: 'var(--danger)', borderTop: '1px solid var(--border-color)' }}>
                   <X size={14} style={{ marginRight: '8px' }} /> Logout
