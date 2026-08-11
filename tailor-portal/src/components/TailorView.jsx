@@ -716,29 +716,88 @@ export default function TailorView({
       {/* 2. BODY CONTAINER FOR SELECTED TABS */}
       <main style={{ flex: 1, padding: '24px 24px 90px 24px', width: '100%' }}>
 
-        {/* TAB 1: DASHBOARD */}
+        {/* TAB 1: STITCHBEE TAILOR DASHBOARD */}
         {activeTab === 'dashboard' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: "'Inter', sans-serif" }}>
-            {/* Welcome banner */}
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center', background: theme === 'dark' ? 'rgba(247,37,133,0.04)' : 'rgba(247,37,133,0.02)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden' }}>
-                <img src="/bridal 5.jpg" alt="Rajesh" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: "'Inter', sans-serif" }}>
+            
+            {/* 1. WELCOME BANNER */}
+            <div style={{ 
+              display: 'flex', 
+              gap: '16px', 
+              alignItems: 'center', 
+              background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff', 
+              padding: '18px 20px', 
+              borderRadius: '12px', 
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+            }}>
+              <div style={{ width: '44px', height: '44px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary)', flexShrink: 0 }}>
+                <img src="/bridal 5.jpg" alt="Master Rajesh" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, lineHeight: '1.3', color: 'var(--text-primary)' }}>Welcome back, Master Rajesh Kumar 👋</h3>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px', fontWeight: 400, color: 'var(--text-secondary)' }}>Here's what is happening with your store today.</p>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, lineHeight: '1.3', color: 'var(--text-primary)' }}>
+                  Welcome back, Master Rajesh Kumar 👋
+                </h3>
+                <p style={{ margin: '3px 0 0 0', fontSize: '12px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+                  Here's what is happening with your store today.
+                </p>
               </div>
             </div>
 
-            {/* Performance Cards */}
+            {/* 2. SIX STATISTICS CARDS IN ONE ROW ON DESKTOP */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
               {[
-                { label: 'Today\'s Orders', value: '8', change: '↑ 2 from yesterday', color: '#f72585', bg: 'rgba(247,37,133,0.08)' },
-                { label: 'In Progress', value: '14', change: 'View details →', color: '#7209b7', bg: 'rgba(114,9,183,0.08)', action: () => setActiveTab('orders') },
-                { label: 'Completed Orders', value: '24', change: '↑ 12% this week', color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
-                { label: 'Today\'s Earnings', value: '₹4,500', change: '↑ 8% from yesterday', color: '#fbbf24', bg: 'rgba(245,158,11,0.08)' },
-                { label: 'Store Rating', value: '4.8', change: '★★★★★ (120 reviews)', color: '#4cc9f0', bg: 'rgba(76,201,240,0.08)', action: () => setActiveTab('reviews') },
-                { label: 'Pending Payments', value: '₹12,350', change: 'View details →', color: '#ef4444', bg: 'rgba(239,68,68,0.08)', action: () => setActiveTab('earnings') }
+                { 
+                  label: "Today's Orders", 
+                  value: '8', 
+                  change: '↑ 2 from yesterday', 
+                  accentColor: '#f72585', 
+                  badgeBg: 'rgba(247,37,133,0.1)',
+                  isGrowth: true
+                },
+                { 
+                  label: 'In Progress', 
+                  value: '14', 
+                  change: 'View details →', 
+                  accentColor: '#f72585', 
+                  badgeBg: 'rgba(247,37,133,0.1)',
+                  action: () => setActiveTab('orders'),
+                  isLink: true
+                },
+                { 
+                  label: 'Completed Orders', 
+                  value: '24', 
+                  change: '↑ 12% this week', 
+                  accentColor: '#10b981', 
+                  badgeBg: 'rgba(16,185,129,0.1)',
+                  isGrowth: true
+                },
+                { 
+                  label: "Today's Earnings", 
+                  value: '₹4,500', 
+                  change: '↑ 8% from yesterday', 
+                  accentColor: '#f59e0b', 
+                  badgeBg: 'rgba(245,158,11,0.1)',
+                  isGrowth: true
+                },
+                { 
+                  label: 'Store Rating', 
+                  value: '4.8', 
+                  change: '★★★★★ (120 reviews)', 
+                  accentColor: '#3b82f6', 
+                  badgeBg: 'rgba(59,130,246,0.1)',
+                  action: () => setActiveTab('reviews'),
+                  isRating: true
+                },
+                { 
+                  label: 'Pending Payments', 
+                  value: '₹12,350', 
+                  change: 'View details →', 
+                  accentColor: '#ef4444', 
+                  badgeBg: 'rgba(239,68,68,0.1)',
+                  action: () => setActiveTab('earnings'),
+                  isLink: true
+                }
               ].map((card, idx) => (
                 <div 
                   key={idx} 
@@ -750,81 +809,109 @@ export default function TailorView({
                     padding: '16px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '8px',
+                    justifyContent: 'space-between',
+                    gap: '10px',
                     cursor: card.action ? 'pointer' : 'default',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                    transition: 'all 0.2s ease',
+                    position: 'relative'
                   }}
                 >
-                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 600 }}>{card.label}</span>
-                  <span style={{ fontSize: '28px', fontWeight: 700, color: card.color, lineHeight: '1.2' }}>{card.value}</span>
-                  <span style={{ fontSize: '11px', fontWeight: card.action ? 500 : 400, color: card.action ? card.color : 'var(--text-muted)' }}>{card.change}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 500 }}>{card.label}</span>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: card.accentColor, opacity: 0.8 }}></span>
+                  </div>
+                  
+                  <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1.1' }}>
+                    {card.value}
+                  </div>
+
+                  <div style={{ fontSize: '11px', fontWeight: card.isLink ? 600 : 400, color: card.isLink ? card.accentColor : card.isRating ? '#f59e0b' : 'var(--text-muted)' }}>
+                    {card.change}
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Active Queue & Schedule */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+            {/* 3. MAIN CONTENT GRID: 50% / 50% ACTIVE STITCHING QUEUE & TODAY'S SCHEDULE */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
+              
               {/* Left Column: Active Stitching Queue */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', flex: '2', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{
+                background: theme === 'dark' ? '#141126' : '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '12px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+              }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Active Stitching Queue</h4>
-                  <button onClick={() => setActiveTab('orders')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>View All Orders →</button>
+                  <button onClick={() => setActiveTab('orders')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+                    View All Orders →
+                  </button>
                 </div>
+                
                 <div style={{ overflowX: 'auto' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', textAlign: 'left' }}>
-                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Customer</th>
-                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Outfit & Fabric</th>
-                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Delivery Date</th>
-                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Progress</th>
-                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600 }}>Status</th>
-                        <th style={{ padding: '8px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Action</th>
+                        <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Customer</th>
+                        <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Outfit & Fabric</th>
+                        <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Delivery Date</th>
+                        <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Progress</th>
+                        <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Status</th>
+                        <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {stitchingQueue.map(item => (
                         <tr key={item.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                          <td style={{ padding: '10px 8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden' }}>
-                              <img src={item.image} alt={item.customer} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            </div>
-                            <div>
-                              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.customer}</div>
-                              <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>#{item.id}</span>
-                            </div>
+                          <td style={{ padding: '12px 6px' }}>
+                            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.customer}</div>
+                            <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>#{item.id}</span>
                           </td>
-                          <td style={{ padding: '10px 8px' }}>
+                          <td style={{ padding: '12px 6px' }}>
                             <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>{item.outfit}</div>
                             <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{item.fabric}</span>
                           </td>
-                          <td style={{ padding: '10px 8px' }}>
-                            <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>{item.date}</div>
-                            <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--danger)' }}>{item.daysLeft}</span>
+                          <td style={{ padding: '12px 6px' }}>
+                            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.date}</div>
+                            <span style={{ fontSize: '11px', fontWeight: 600, color: '#ef4444' }}>{item.daysLeft}</span>
                           </td>
-                          <td style={{ padding: '10px 8px' }}>
+                          <td style={{ padding: '12px 6px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <div style={{ flex: 1, height: '4px', width: '60px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
-                                <div style={{ height: '100%', width: `${item.progress}%`, background: item.progress === 100 ? '#10b981' : 'var(--primary)' }}></div>
+                              <div style={{ flex: 1, height: '5px', minWidth: '50px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
+                                <div style={{ height: '100%', width: `${item.progress}%`, background: item.progress === 100 ? '#10b981' : 'var(--primary)', borderRadius: '3px' }}></div>
                               </div>
                               <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.progress}%</span>
                             </div>
                           </td>
-                          <td style={{ padding: '10px 8px' }}>
+                          <td style={{ padding: '12px 6px' }}>
                             <span style={{
-                              padding: '2px 8px',
+                              padding: '3px 8px',
                               borderRadius: '12px',
-                              fontSize: '11px',
+                              fontSize: '10px',
                               fontWeight: 600,
-                              background: item.status === 'Ready' ? 'rgba(16,185,129,0.1)' : item.status === 'Pending' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)',
-                              color: item.status === 'Ready' ? '#10b981' : item.status === 'Pending' ? 'var(--text-muted)' : 'var(--primary)'
+                              background: item.status === 'Ready' ? 'rgba(16,185,129,0.1)' : 
+                                          item.status === 'Stitching' ? 'rgba(114,9,183,0.1)' :
+                                          item.status === 'Cutting' ? 'rgba(245,158,11,0.1)' :
+                                          item.status === 'Pending' ? (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9') : 
+                                          'rgba(247,37,133,0.1)',
+                              color: item.status === 'Ready' ? '#10b981' : 
+                                     item.status === 'Stitching' ? '#8b5cf6' :
+                                     item.status === 'Cutting' ? '#f59e0b' :
+                                     item.status === 'Pending' ? 'var(--text-muted)' : 
+                                     'var(--primary)'
                             }}>{item.status}</span>
                           </td>
-                          <td style={{ padding: '10px 8px', textAlign: 'right' }}>
+                          <td style={{ padding: '12px 6px', textAlign: 'right' }}>
                             {item.progress < 100 ? (
                               <button 
                                 className="btn btn-primary" 
-                                style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600 }}
+                                style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '20px' }}
                                 onClick={() => handleUpdateProgress(item.id, 15)}
                               >
                                 Update
@@ -832,7 +919,7 @@ export default function TailorView({
                             ) : (
                               <button 
                                 className="btn btn-secondary" 
-                                style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600, borderColor: '#10b981', color: '#10b981' }}
+                                style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '20px', borderColor: '#10b981', color: '#10b981' }}
                                 onClick={() => alert(`${item.customer}'s order marked ready for delivery Handover!`)}
                               >
                                 Handover
@@ -846,7 +933,7 @@ export default function TailorView({
                 </div>
               </div>
 
-              {/* Right Column: Dynamic Actual Calendar Today's Schedule */}
+              {/* Right Column: Today's Schedule */}
               {(() => {
                 const activeDate = selectedCalendarDate || new Date(2026, 5, 20);
                 
@@ -871,15 +958,24 @@ export default function TailorView({
 
                 // Helper for border badge colors
                 const getEventBorderColor = (type) => {
-                  if (type === 'Pick up & Delivery') return '#fbbf24';
+                  if (type === 'Pick up & Delivery') return '#f59e0b';
                   if (type === 'Stitching Deadline') return '#10b981';
-                  if (type === 'Appointment') return '#4cc9f0';
+                  if (type === 'Appointment') return '#3b82f6';
                   if (type === 'Blocked Date') return '#ef4444';
                   return 'var(--primary)';
                 };
 
                 return (
-                  <div className="glass-card-no-hover" style={{ padding: '20px', flex: '1', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div>
                         <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Today's Schedule</h4>
@@ -892,7 +988,7 @@ export default function TailorView({
                       </button>
                     </div>
 
-                    {/* Dynamic Week Carousel (Synced with Actual Calendar) */}
+                    {/* Dynamic 7-Day Date Carousel */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '4px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
                       {weekDaysList.map((dayDate, idx) => {
                         const isSelected = dayDate.toDateString() === activeDate.toDateString();
@@ -930,19 +1026,21 @@ export default function TailorView({
                       })}
                     </div>
 
-                    {/* Dynamic Schedule Event List from Actual Calendar */}
+                    {/* Schedule Event List */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', minHeight: '140px' }}>
                       {activeDayEvents.length > 0 ? (
                         activeDayEvents.map((evt, idx) => (
                           <div key={idx} style={{
-                            padding: '12px',
+                            padding: '12px 14px',
                             borderRadius: '8px',
-                            background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
+                            background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#f8fafc',
                             borderLeft: `4px solid ${getEventBorderColor(evt.type)}`,
+                            borderTop: '1px solid var(--border-color)',
+                            borderRight: '1px solid var(--border-color)',
+                            borderBottom: '1px solid var(--border-color)',
                             display: 'flex',
                             justifyContent: 'space-between',
-                            alignItems: 'center',
-                            boxShadow: 'var(--shadow-sm)'
+                            alignItems: 'center'
                           }}>
                             <div>
                               <span style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>
@@ -952,14 +1050,14 @@ export default function TailorView({
                                 {evt.customer ? `Customer: ${evt.customer}` : evt.type}
                               </span>
                             </div>
-                            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)' }}>
+                            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-primary)' }}>
                               {evt.time}
                             </span>
                           </div>
                         ))
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '24px 12px', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
-                          <Calendar size={22} style={{ color: 'var(--text-muted)', opacity: 0.6 }} />
+                          <Calendar size={20} style={{ color: 'var(--text-muted)', opacity: 0.6 }} />
                           <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400, textAlign: 'center' }}>No schedule or deadlines for this day</span>
                           <button 
                             className="btn btn-secondary" 
@@ -976,13 +1074,23 @@ export default function TailorView({
               })()}
             </div>
 
-            {/* Row 3: New Bookings & Inventory Snapshot & Messages */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-              {/* New Booking Requests */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {/* 4. SECONDARY CONTENT: THREE EQUAL COLUMNS */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+              
+              {/* Column 1: New Booking Requests */}
+              <div style={{
+                background: theme === 'dark' ? '#141126' : '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '12px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '14px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+              }}>
                 <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>New Booking Requests</h4>
                 {bookingRequests.length === 0 ? (
-                  <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>No pending requests.</p>
+                  <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>No pending booking requests.</p>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {bookingRequests.map(req => (
@@ -990,18 +1098,18 @@ export default function TailorView({
                         padding: '12px',
                         border: '1px solid var(--border-color)',
                         borderRadius: '8px',
-                        background: theme === 'dark' ? 'rgba(255,255,255,0.01)' : 'transparent'
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.01)' : '#f8fafc'
                       }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{req.customer}</span>
-                          <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)' }}>{req.estPrice}</span>
+                          <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--primary)' }}>{req.estPrice}</span>
                         </div>
                         <p style={{ margin: '4px 0', fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>Outfit: {req.outfit} • Fabric: {req.fabric}</p>
-                        <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>📍 Distance: {req.distance} • {req.date}</span>
+                        <span style={{ fontSize: '10px', fontWeight: 400, color: 'var(--text-muted)' }}>📍 Distance: {req.distance} • {req.date}</span>
                         <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
                           <button 
                             className="btn btn-primary" 
-                            style={{ flex: 1, padding: '4px', fontSize: '11px', fontWeight: 600 }}
+                            style={{ flex: 1, padding: '5px', fontSize: '11px', fontWeight: 600, borderRadius: '6px' }}
                             onClick={() => {
                               alert(`Booking request accepted! Added to active stitch queue.`);
                               setBookingRequests(bookingRequests.filter(b => b.id !== req.id));
@@ -1011,7 +1119,7 @@ export default function TailorView({
                           </button>
                           <button 
                             className="btn btn-secondary" 
-                            style={{ flex: 1, padding: '4px', fontSize: '11px', fontWeight: 600 }}
+                            style={{ flex: 1, padding: '5px', fontSize: '11px', fontWeight: 600, borderRadius: '6px' }}
                             onClick={() => setBookingRequests(bookingRequests.filter(b => b.id !== req.id))}
                           >
                             Reject
@@ -1023,25 +1131,38 @@ export default function TailorView({
                 )}
               </div>
 
-              {/* Inventory Snapshot */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {/* Column 2: Inventory Snapshot */}
+              <div style={{
+                background: theme === 'dark' ? '#141126' : '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '12px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '14px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+              }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Inventory Snapshot</h4>
-                  <button onClick={() => setActiveTab('inventory')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>View Stock →</button>
+                  <button onClick={() => setActiveTab('inventory')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+                    View Stock →
+                  </button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   {inventoryStock.map(item => (
                     <div key={item.id} style={{
-                      padding: '10px',
+                      padding: '12px 10px',
                       border: '1px solid var(--border-color)',
                       borderRadius: '8px',
                       textAlign: 'center',
-                      background: item.status === 'Low Stock' ? 'rgba(239,68,68,0.05)' : 'transparent'
+                      background: item.status === 'Low Stock' ? (theme === 'dark' ? 'rgba(239,68,68,0.1)' : 'rgba(254,242,242,0.8)') : (theme === 'dark' ? 'rgba(255,255,255,0.01)' : '#f8fafc')
                     }}>
                       <div style={{ color: item.status === 'Low Stock' ? '#ef4444' : 'var(--primary)', marginBottom: '4px', display: 'flex', justifyContent: 'center' }}>
                         {item.icon}
                       </div>
-                      <strong style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>{item.quantity} {item.unit === 'meters' ? 'm' : ''}</strong>
+                      <strong style={{ fontSize: '14px', fontWeight: 700, display: 'block', color: 'var(--text-primary)' }}>
+                        {item.quantity} {item.unit === 'meters' ? 'm' : ''}
+                      </strong>
                       <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{item.category}</span>
                       {item.status === 'Low Stock' && (
                         <span style={{ fontSize: '10px', fontWeight: 600, color: '#ef4444', display: 'block', marginTop: '2px' }}>Low Stock</span>
@@ -1051,31 +1172,42 @@ export default function TailorView({
                 </div>
               </div>
 
-              {/* Unread Chats Preview */}
-              <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {/* Column 3: Recent Messages */}
+              <div style={{
+                background: theme === 'dark' ? '#141126' : '#ffffff',
+                border: '1px solid var(--border-color)',
+                borderRadius: '12px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '14px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+              }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Recent Messages</h4>
-                  <button onClick={() => setActiveTab('chat')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>Chat Center →</button>
+                  <button onClick={() => setActiveTab('chat')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+                    Chat Center →
+                  </button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {[
                     { name: 'Priya Sharma', text: 'When will my lehenga be ready?', time: '2m ago', avatar: '/bridal 5.jpg', count: 2 },
-                    { name: 'Amit Verma', text: 'Thank you! I will share measurements.', time: '15m ago', avatar: '/men1.jpg', count: 1 },
-                    { name: 'Admin Support', text: 'Payment of order #ORD-1023 received.', time: '45m ago', avatar: '/stany.4f315ea9.jpg' }
+                    { name: 'Amit Verma', text: 'Thank you! I will share measurement...', time: '15m ago', avatar: '/men1.jpg', count: 1 },
+                    { name: 'Admin Support', text: 'Payment of order #ORD-1023 rec...', time: '45m ago', avatar: '/stany.4f315ea9.jpg' }
                   ].map((chat, idx) => (
-                    <div key={idx} onClick={() => setActiveTab('chat')} style={{ display: 'flex', gap: '10px', alignItems: 'center', cursor: 'pointer', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
-                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden' }}>
+                    <div key={idx} onClick={() => setActiveTab('chat')} style={{ display: 'flex', gap: '10px', alignItems: 'center', cursor: 'pointer', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
                         <img src={chat.avatar} alt="User" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
-                      <div style={{ flex: 1 }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{chat.name}</span>
-                          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{chat.time}</span>
+                          <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{chat.name}</span>
+                          <span style={{ fontSize: '10px', fontWeight: 400, color: 'var(--text-muted)' }}>{chat.time}</span>
                         </div>
-                        <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap', maxWidth: '180px' }}>{chat.text}</p>
+                        <p style={{ margin: '2px 0 0 0', fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{chat.text}</p>
                       </div>
                       {chat.count && (
-                        <span style={{ background: 'var(--primary)', color: '#fff', fontSize: '10px', fontWeight: 600, width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ background: 'var(--primary)', color: '#fff', fontSize: '10px', fontWeight: 600, width: '16px', height: '16px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           {chat.count}
                         </span>
                       )}
@@ -1083,22 +1215,43 @@ export default function TailorView({
                   ))}
                 </div>
               </div>
+
             </div>
 
-            {/* Monthly Goal Progress bar */}
-            <div className="glass-card-no-hover" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+            {/* 5. MONTHLY GOAL PROGRESS CARD */}
+            <div style={{
+              background: theme === 'dark' ? '#141126' : '#ffffff',
+              border: '1px solid var(--border-color)',
+              borderRadius: '12px',
+              padding: '18px 20px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '16px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+            }}>
               <div>
-                <strong style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Monthly Goal Progress</strong>
-                <p style={{ margin: '2px 0 0 0', fontSize: '11px', fontWeight: 400, color: 'var(--text-secondary)' }}>Complete 10 more orders this month to unlock Gold Partner Badge and extra commissions!</p>
+                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Monthly Goal Progress</h4>
+                <p style={{ margin: '3px 0 0 0', fontSize: '12px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+                  Complete 10 more orders this month to unlock Gold Partner Badge and extra commissions!
+                </p>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>20 / 30 Orders</span>
-                <div style={{ width: '150px', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ width: '66%', height: '100%', background: 'var(--primary)' }}></div>
+                <div style={{ width: '160px', height: '8px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '67%', height: '100%', background: 'var(--primary)', borderRadius: '4px' }}></div>
                 </div>
-                <button className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '11px', fontWeight: 600 }} onClick={() => alert("Unlocking benefits: Free express fabric pickup & 5% higher payouts!")}>View Benefits</button>
+                <button 
+                  className="btn btn-secondary" 
+                  style={{ padding: '6px 14px', fontSize: '11px', fontWeight: 600, borderRadius: '20px' }} 
+                  onClick={() => alert("Unlocking benefits: Free express fabric pickup & 5% higher payouts!")}
+                >
+                  View Benefits
+                </button>
               </div>
             </div>
+
           </div>
         )}
 
