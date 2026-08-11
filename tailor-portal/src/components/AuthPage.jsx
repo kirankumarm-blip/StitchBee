@@ -285,12 +285,14 @@ export default function AuthPage({
     setOtpVerified(true);
 
     if (tab === 'login') {
+      const isDesigner = mobileNumber === '9876543211' || initialRole === 'designer';
       const partnerUser = {
-        name: 'StitchBee Partner',
+        name: isDesigner ? 'Ananya Roy' : 'Master Rajesh',
         phone: mobileNumber || '9876543210',
-        email: 'partner@stitchbee.com',
-        role: 'tailor',
-        businessName: 'StitchBee Studio',
+        email: isDesigner ? 'ananya@stitchbee.com' : 'partner@stitchbee.com',
+        role: isDesigner ? 'designer' : 'tailor',
+        partnerSubRole: isDesigner ? 'designer' : 'tailor',
+        businessName: isDesigner ? 'Ananya Roy Designer Studio' : 'Vogue Craft Tailors',
         isVerified: true
       };
       localStorage.setItem('stitchbee_user', JSON.stringify(partnerUser));

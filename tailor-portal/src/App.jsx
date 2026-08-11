@@ -453,10 +453,10 @@ export default function App() {
     if (savedUser) {
       try {
         const parsed = JSON.parse(savedUser);
-        if (parsed && (parsed.role === 'tailor' || !parsed.role)) {
-          const tailorUser = { ...parsed, role: 'tailor' };
-          setCurrentUser(tailorUser);
-          setRole('tailor');
+        if (parsed) {
+          const userRole = parsed.role || (parsed.partnerSubRole === 'designer' ? 'designer' : 'tailor');
+          setCurrentUser(parsed);
+          setRole(userRole);
         } else {
           setCurrentUser(null);
           setRole('become-tailor');
@@ -561,10 +561,12 @@ export default function App() {
   };
 
   const handleLoginSuccess = (userData) => {
-    const tailorUser = { ...userData, role: 'tailor' };
-    setCurrentUser(tailorUser);
-    localStorage.setItem('stitchbee_user', JSON.stringify(tailorUser));
-    setRole('tailor');
+    const isDesigner = userData?.role === 'designer' || userData?.partnerSubRole === 'designer' || userData?.phone?.includes('9876543211');
+    const userRole = isDesigner ? 'designer' : 'tailor';
+    const userObj = { ...userData, role: userRole };
+    setCurrentUser(userObj);
+    localStorage.setItem('stitchbee_user', JSON.stringify(userObj));
+    setRole(userRole);
   };
 
   const handleLogout = () => {
