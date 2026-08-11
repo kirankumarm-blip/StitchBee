@@ -10076,17 +10076,17 @@ body.dark-theme .drawer-nav-item.active {
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: #F3F4F6;
+  background: #F1F5F9;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1B1B2F;
+  color: #475467;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 body.dark-theme .drawer-nav-icon-box {
-  background: #231E3B;
+  background: rgba(255, 255, 255, 0.08);
   color: #E2E8F0;
 }
 

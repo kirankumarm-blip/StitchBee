@@ -3619,7 +3619,17 @@ export default function TailorView({
                   >
                     {isActive && <div className="drawer-nav-indicator" style={{ background: 'var(--primary)' }} />}
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                      <div className="drawer-nav-icon-box" style={{ color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#6B7280') }}>
+                      <div 
+                        className="drawer-nav-icon-box" 
+                        style={{ 
+                          background: isActive 
+                            ? (theme === 'dark' ? 'rgba(247,37,133,0.2)' : '#FFE4F2') 
+                            : (theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F1F5F9'),
+                          color: isActive 
+                            ? '#F72585' 
+                            : (theme === 'dark' ? '#E2E8F0' : '#475467') 
+                        }}
+                      >
                         {tab.icon}
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
