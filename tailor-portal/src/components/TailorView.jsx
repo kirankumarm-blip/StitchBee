@@ -625,25 +625,24 @@ export default function TailorView({
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={isActive ? 'btn-text-white-force' : ''}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '8px 14px',
+                  padding: '7px 15px',
                   fontSize: '13px',
-                  fontWeight: 600,
-                  borderRadius: '8px',
-                  border: 'none',
+                  fontWeight: 700,
+                  borderRadius: '20px',
+                  border: isActive ? '1.5px solid #F72585' : '1.5px solid transparent',
                   background: isActive 
-                    ? 'linear-gradient(135deg, #F72585 0%, #8B12C9 100%)' 
+                    ? (theme === 'dark' ? 'rgba(247,37,133,0.14)' : '#FFF0F6') 
                     : 'transparent',
                   color: isActive 
-                    ? '#ffffff' 
+                    ? '#F72585' 
                     : (theme === 'dark' ? 'rgba(255,255,255,0.85)' : '#475467'),
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
-                  boxShadow: isActive ? '0 4px 12px rgba(247,37,133,0.3)' : 'none'
+                  boxShadow: isActive ? '0 0 12px rgba(247,37,133,0.2)' : 'none'
                 }}
               >
                 {tab.icon}

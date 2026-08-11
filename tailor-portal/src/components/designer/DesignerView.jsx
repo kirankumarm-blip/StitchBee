@@ -184,7 +184,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="desktop-header-nav">
           {[
             { id: 'dashboard', label: 'Dashboard', icon: <Home size={15} /> },
-            { id: 'studio', label: 'Design Studio', icon: <Palette size={15} />, isHighlight: true },
+            { id: 'studio', label: 'Design Studio', icon: <Palette size={15} /> },
             { id: 'orders', label: 'Orders', icon: <ShoppingBag size={15} /> },
             { id: 'measurements', label: 'Measurements', icon: <Ruler size={15} /> },
             { id: 'customers', label: 'Customers', icon: <Users size={15} /> },
@@ -197,25 +197,24 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={isActive ? 'btn-text-white-force' : ''}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '8px 14px',
+                  padding: '7px 15px',
                   fontSize: '13px',
-                  fontWeight: 600,
-                  borderRadius: '8px',
-                  border: 'none',
+                  fontWeight: 700,
+                  borderRadius: '20px',
+                  border: isActive ? '1.5px solid #F72585' : '1.5px solid transparent',
                   background: isActive 
-                    ? 'linear-gradient(135deg, #F72585 0%, #8B12C9 100%)' 
-                    : (tab.isHighlight ? (theme === 'dark' ? 'rgba(247,37,133,0.12)' : '#FFF0F6') : 'transparent'),
+                    ? (theme === 'dark' ? 'rgba(247,37,133,0.14)' : '#FFF0F6') 
+                    : 'transparent',
                   color: isActive 
-                    ? '#ffffff' 
-                    : (tab.isHighlight ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.85)' : '#475467')),
+                    ? '#F72585' 
+                    : (theme === 'dark' ? 'rgba(255,255,255,0.85)' : '#475467'),
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
-                  boxShadow: isActive ? '0 4px 12px rgba(247,37,133,0.3)' : 'none'
+                  boxShadow: isActive ? '0 0 12px rgba(247,37,133,0.2)' : 'none'
                 }}
               >
                 {tab.icon}
