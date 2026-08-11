@@ -3558,18 +3558,7 @@ export default function TailorView({
               borderRight: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB'
             }}
           >
-            <div className="drawer-top-header" style={{ marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <img src="/logo.png" alt="StitchBee" style={{ height: '45px', width: '130px', objectFit: 'contain' }} />
-              </div>
-              <button 
-                className="drawer-close-btn" 
-                onClick={() => setSidebarOpen(false)}
-                style={{ color: theme === 'dark' ? '#ffffff' : '#172033', background: 'transparent', border: 'none', cursor: 'pointer' }}
-              >
-                <X size={20} />
-              </button>
-            </div>
+
 
             {/* Tailor Welcome Card */}
             <div className="drawer-welcome-card" style={{ background: 'linear-gradient(135deg, #1B0F2A 0%, #3B154C 50%, var(--primary) 100%)' }}>
