@@ -295,7 +295,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                 zIndex: 200
               }}>
                 <button
-                  onClick={() => { setActiveTab('dashboard'); setProfileDropdownOpen(false); }}
+                  onClick={() => { setActiveTab('profile'); setProfileDropdownOpen(false); }}
                   style={{ width: '100%', padding: '8px 16px', textAlign: 'left', background: 'transparent', border: 'none', color: theme === 'dark' ? '#ffffff' : '#172033', fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
                 >
                   <User size={14} /> Profile & Reviews (4.9 ★)
@@ -1034,6 +1034,80 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
               </div>
             )}
+
+          </div>
+        )}
+
+        {/* ==================================================================== */}
+        {/* TAB 9: 👤 PROFILE & STUDIO SETTINGS                                  */}
+        {/* ==================================================================== */}
+        {activeTab === 'profile' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Designer Profile & Studio Settings</h1>
+              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
+                Manage your fashion designer bio, studio credentials, consultation rates, and client reviews.
+              </p>
+            </div>
+
+            {/* Profile Header Card */}
+            <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Ananya Roy" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '3px solid #F72585' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <h2 style={{ margin: 0, fontSize: '22px', fontWeight: 700 }}>Ananya Roy</h2>
+                  <span style={{ fontSize: '11px', fontWeight: 700, background: 'rgba(16,185,129,0.1)', color: '#10B981', padding: '3px 10px', borderRadius: '12px' }}>
+                    ✓ Verified Designer
+                  </span>
+                </div>
+                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
+                  Ananya Roy Fashion Studio • Senior Bridal & Haute Couture Designer
+                </p>
+                <div style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: '12px', fontWeight: 600 }}>
+                  <span style={{ color: '#F59E0B' }}>★ 4.9 Rating (42 Client Reviews)</span>
+                  <span style={{ color: '#F72585' }}>24 Completed Designs</span>
+                  <span style={{ color: '#10B981' }}>7 Years Experience</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Settings Form */}
+            <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '24px' }}>
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700 }}>Studio Details & Pricing</h3>
+
+              <form onSubmit={e => { e.preventDefault(); alert("Designer Profile settings saved successfully!"); }} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600 }}>Designer Name</label>
+                  <input type="text" defaultValue="Ananya Roy" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600 }}>Studio Name</label>
+                  <input type="text" defaultValue="Ananya Roy Couture Studio" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600 }}>Specialization</label>
+                  <input type="text" defaultValue="Bridal Lehenga, Anarkali & Indo-Western" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600 }}>Sketch & Design Consultation Fee (₹)</label>
+                  <input type="number" defaultValue="1500" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: 'span 2' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600 }}>Studio Address & Location</label>
+                  <input type="text" defaultValue="104, 100 Feet Road, Indiranagar, Bengaluru - 560038" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                </div>
+
+                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '12px', marginTop: '12px' }}>
+                  <button type="submit" className="btn-text-white-force" style={{ padding: '10px 24px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer' }}>
+                    Save Profile Changes
+                  </button>
+                </div>
+              </form>
+            </div>
 
           </div>
         )}
