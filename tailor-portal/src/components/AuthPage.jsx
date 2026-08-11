@@ -556,6 +556,7 @@ export default function AuthPage({
           {/* 10-SECOND SEAMLESS HERO IMAGE SLIDESHOW (NO BOX, NO CORNER RADIUS) */}
           {/* ------------------------------------------------------------------ */}
           <div
+            className="auth-hero-image-card"
             style={{
               position: 'relative',
               width: '100%',
@@ -785,7 +786,7 @@ export default function AuthPage({
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
                           <label style={{ fontSize: '12px', fontWeight: 600, color: colorTextPrimary, letterSpacing: '0.01em' }}>Phone Number</label>
                           <span 
                             onClick={() => setMobileNumber('9876543210')}
