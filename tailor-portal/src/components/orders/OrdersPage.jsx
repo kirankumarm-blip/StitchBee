@@ -280,6 +280,7 @@ export default function OrdersPage({ theme, setActiveTab }) {
           return (
             <button
               key={tb.id}
+              className={isActive ? "btn-primary" : ""}
               onClick={() => { setSubTab(tb.id); setCurrentPage(1); }}
               style={{
                 padding: '6px 16px',
@@ -297,7 +298,7 @@ export default function OrdersPage({ theme, setActiveTab }) {
                 boxShadow: isActive ? '0 2px 6px rgba(247,37,133,0.25)' : 'none'
               }}
             >
-              <span>{tb.label}</span>
+              <span style={{ color: isActive ? '#ffffff' : 'var(--text-secondary)' }}>{tb.label}</span>
               <span style={{
                 padding: '1px 6px',
                 borderRadius: '10px',
