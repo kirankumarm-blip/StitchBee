@@ -27,13 +27,13 @@ export default function OrderStatusDonut({ orders, theme, timeRange, setTimeRang
       background: theme === 'dark' ? '#141126' : '#ffffff',
       border: '1px solid var(--border-color)',
       borderRadius: '12px',
-      padding: '18px 20px',
+      padding: '20px',
       display: 'flex',
       flexDirection: 'column',
+      justifyContent: 'space-between',
       gap: '14px',
       boxShadow: '0 2px 8px rgba(16,24,40,0.04)',
-      height: 'fit-content',
-      minHeight: '240px',
+      height: '100%',
       boxSizing: 'border-box'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -316,9 +316,9 @@ export default function OrdersPage({ theme, setActiveTab }) {
       {/* KPI CARDS (REAL RECHARTS SPARKELINES) */}
       <OrderStats orders={orders} theme={theme} />
 
-      {/* REAL-TIME LINE CHART (65%) + ASYMMETRIC DONUT CHART (35%) */}
-      <div style={{ display: 'flex', gap: '18px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-        <div style={{ flex: '1 1 62%', minWidth: '320px' }}>
+      {/* REAL-TIME LINE CHART (62%) + EQUAL-HEIGHT DONUT CHART (38%) */}
+      <div style={{ display: 'flex', gap: '18px', alignItems: 'stretch', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 60%', minWidth: '320px' }}>
           <RealTimeOrderChart 
             trendData={realTimeTrendData} 
             timeRange={realtimeTimeRange} 
@@ -328,7 +328,7 @@ export default function OrdersPage({ theme, setActiveTab }) {
             theme={theme} 
           />
         </div>
-        <div style={{ flex: '1 1 33%', minWidth: '280px' }}>
+        <div style={{ flex: '1 1 35%', minWidth: '280px', display: 'flex', flexDirection: 'column' }}>
           <OrderStatusDonut 
             orders={orders} 
             timeRange={donutTimeRange} 
