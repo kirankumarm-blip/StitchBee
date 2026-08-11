@@ -732,6 +732,7 @@ export default function TailorView({
           <div style={{ position: 'relative' }}>
             <div 
               onClick={() => {
+                setActiveTab('profile');
                 setShowProfileDropdown(!showProfileDropdown);
                 setShowNotifications(false);
               }}
@@ -3340,7 +3341,35 @@ export default function TailorView({
         {/* TAB 9: PROFILE & SETTINGS */}
         {activeTab === 'profile' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Profile & Shop Settings</h3>
+            <div>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Profile & Shop Settings</h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                Manage master tailor details, store specialization, working hours, and worker allocations.
+              </p>
+            </div>
+
+            {/* Master Profile Header Card */}
+            <div className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--primary)', flexShrink: 0 }}>
+                <img src="/bridal 5.jpg" alt="Master Rajesh" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <h4 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '800' }}>{ownerName}</h4>
+                  <span className="badge badge-success" style={{ fontSize: '0.65rem', padding: '3px 8px' }}>
+                    ✓ Verified Tailor Store
+                  </span>
+                </div>
+                <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  {shopName} • Master Tailor & Custom Suit Specialist
+                </p>
+                <div style={{ display: 'flex', gap: '16px', marginTop: '8px', fontSize: '0.75rem', fontWeight: 600 }}>
+                  <span style={{ color: '#F59E0B' }}>★ 4.8 Rating (142 Store Orders)</span>
+                  <span style={{ color: 'var(--primary)' }}>Capacity: {stitchingCapacity} Suits/Mo</span>
+                  <span style={{ color: '#10B981' }}>{kycStatus} Partner</span>
+                </div>
+              </div>
+            </div>
 
             {/* Shop info form */}
             <div className="glass-card-no-hover" style={{ padding: '24px' }}>
