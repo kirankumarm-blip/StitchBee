@@ -4,7 +4,7 @@ import {
   Trash2, Clock, Send, MessageSquare, ShieldAlert, Calendar, ShieldCheck, Database, 
   Bell, Sun, Moon, Sparkles, Star, Edit, Upload, User, Video, MapPin, Map, CreditCard, 
   ChevronDown, ChevronRight, ChevronLeft, X, Info, Heart, List, HelpCircle, Activity, FileText, Filter, Users, Eye,
-  Layers, Sliders, Truck, Search, Mail, Smile, Phone, Paperclip
+  Layers, Sliders, Truck, Search, Mail, Smile, Phone, Paperclip, Home, Menu, LogOut, DollarSign, LayoutGrid
 } from 'lucide-react';
 
 export default function TailorView({ 
@@ -19,6 +19,7 @@ export default function TailorView({
   const [isOnline, setIsOnline] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Orders tab sub-filtering: 'new' | 'active' | 'completed' | 'cancelled'
   const [ordersSubTab, setOrdersSubTab] = useState('active');
@@ -526,35 +527,35 @@ export default function TailorView({
     }}>
       {/* 1. TOP HEADER BANNER NAVIGATION */}
       <header className="top-nav">
-        {/* Logo */}
-        <div 
-          onClick={() => setActiveTab('dashboard')} 
-          className="logo" 
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-        >
-          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
-        </div>
+        {/* Hamburger Menu & Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button 
+            onClick={() => setSidebarOpen(!sidebarOpen)} 
+            style={{ 
+              background: 'rgba(247,37,133,0.08)', 
+              border: '1px solid rgba(247,37,133,0.2)', 
+              borderRadius: '10px', 
+              padding: '8px 12px', 
+              color: 'var(--primary)', 
+              cursor: 'pointer', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '6px',
+              fontWeight: 700,
+              fontSize: '0.85rem'
+            }}
+          >
+            <Menu size={20} />
+            <span>Menu</span>
+          </button>
 
-        <div className="role-switcher">
-          {[
-            { id: 'dashboard', label: 'Dashboard' },
-            { id: 'orders', label: 'Orders' },
-            { id: 'measurements', label: 'Measurements' },
-            { id: 'inventory', label: 'Inventory' },
-            { id: 'calendar', label: 'Calendar' },
-            { id: 'earnings', label: 'Earnings' },
-            { id: 'chat', label: 'Chat Center' },
-            { id: 'reviews', label: 'Reviews' },
-            { id: 'profile', label: 'Profile & Settings' }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`role-btn ${activeTab === tab.id ? 'active' : ''}`}
-            >
-              {tab.label}
-            </button>
-          ))}
+          <div 
+            onClick={() => setActiveTab('dashboard')} 
+            className="logo" 
+            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+          >
+            <img src="/logo.png" alt="StitchBee" style={{ height: '80px', width: '240px', objectFit: 'contain', display: 'block', marginLeft: '-40px' }} />
+          </div>
         </div>
 
         {/* Right Side Quick Controls */}
@@ -694,7 +695,7 @@ export default function TailorView({
       </header>
 
       {/* 2. BODY CONTAINER FOR SELECTED TABS */}
-      <main style={{ flex: 1, padding: '24px', width: '100%' }}>
+      <main style={{ flex: 1, padding: '24px 24px 90px 24px', width: '100%' }}>
 
         {/* TAB 1: DASHBOARD */}
         {activeTab === 'dashboard' && (
@@ -5422,6 +5423,238 @@ export default function TailorView({
         )}
 
       </main>
+
+      {/* 3. SLIDE-OUT NAVIGATION DRAWER */}
+      {sidebarOpen && (
+        <>
+          <div 
+            className="drawer-backdrop"
+            onClick={() => setSidebarOpen(false)}
+            style={{ top: 0 }}
+          />
+
+          <div 
+            className="left-nav-drawer"
+            onClick={(e) => e.stopPropagation()}
+            style={{ top: 0, height: '100vh', zIndex: 1005 }}
+          >
+            <div className="drawer-top-header" style={{ marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="/logo.png" alt="StitchBee" style={{ height: '45px', width: '130px', objectFit: 'contain' }} />
+              </div>
+              <button className="drawer-close-btn" onClick={() => setSidebarOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Tailor Welcome Card */}
+            <div className="drawer-welcome-card" style={{ background: 'linear-gradient(135deg, #1B0F2A 0%, #3B154C 50%, var(--primary) 100%)' }}>
+              <div className="drawer-welcome-inner">
+                <div className="drawer-welcome-icon-box" style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)' }}>
+                  <Scissors size={24} color="#ffffff" />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.75rem', opacity: 0.95, fontWeight: 500, color: '#ffffff' }}>
+                    Master Tailor Portal
+                  </div>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: '2px 0 2px 0', color: '#ffffff' }}>
+                    Master Rajesh 👋
+                  </h3>
+                  <p style={{ fontSize: '0.72rem', opacity: 0.9, margin: 0, color: '#ffffff' }}>
+                    Vogue Craft Tailors • Senior Designer
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Items List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', flex: 1, overflowY: 'auto' }}>
+              {[
+                { id: 'dashboard', label: 'Dashboard', subtitle: 'Store Overview & Active Queue', icon: <Home size={20} /> },
+                { id: 'orders', label: 'Orders', subtitle: 'Stitching & Alteration Orders', icon: <ShoppingBag size={20} /> },
+                { id: 'measurements', label: 'Measurements', subtitle: 'Customer Measurement Records', icon: <Ruler size={20} /> },
+                { id: 'inventory', label: 'Inventory', subtitle: 'Fabric & Material Stock', icon: <Database size={20} /> },
+                { id: 'calendar', label: 'Calendar', subtitle: 'Deadlines & Appointments', icon: <Calendar size={20} /> },
+                { id: 'earnings', label: 'Earnings', subtitle: 'Payouts & Revenue Ledgers', icon: <TrendingUp size={20} /> },
+                { id: 'chat', label: 'Chat Center', subtitle: 'Customer & Support Messages', icon: <MessageSquare size={20} /> },
+                { id: 'material-requests', label: 'Material Orders', subtitle: 'Fabric & Trim Purchases', icon: <Layers size={20} /> },
+                { id: 'team', label: 'Team Staff', subtitle: 'Assistants & Cutting Specialists', icon: <Users size={20} /> },
+                { id: 'reviews', label: 'Reviews', subtitle: 'Ratings & Customer Feedback', icon: <Star size={20} /> },
+                { id: 'profile', label: 'Store Profile', subtitle: 'Shop Info & Operating Hours', icon: <User size={20} /> }
+              ].map(tab => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <div
+                    key={tab.id}
+                    className={`drawer-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setSidebarOpen(false);
+                    }}
+                  >
+                    {isActive && <div className="drawer-nav-indicator" style={{ background: 'var(--primary)' }} />}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                      <div className="drawer-nav-icon-box" style={{ color: isActive ? 'var(--primary)' : 'inherit' }}>
+                        {tab.icon}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                        <span style={{ 
+                          fontSize: '0.9rem', 
+                          fontWeight: 700, 
+                          color: isActive ? 'var(--primary)' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                        }}>
+                          {tab.label}
+                        </span>
+                        <span style={{ fontSize: '0.72rem', color: isActive ? 'var(--primary)' : '#6B7280', opacity: isActive ? 0.9 : 0.8 }}>
+                          {tab.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight 
+                      size={18} 
+                      style={{ 
+                        color: isActive ? 'var(--primary)' : '#9CA3AF',
+                        transition: 'transform 0.2s ease'
+                      }} 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Tailor Partner Tier Progress Card */}
+            <div className="drawer-tier-card" style={{ background: 'linear-gradient(135deg, var(--secondary) 0%, #4a0072 100%)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.3rem' }}>🥇</span>
+                  <div>
+                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#ffffff' }}>
+                      Gold Tailor Partner
+                    </div>
+                    <div style={{ fontSize: '0.72rem', opacity: 0.9, color: '#ffffff', marginTop: '1px' }}>
+                      Completed: 20 / 30 Orders (66%)
+                    </div>
+                  </div>
+                </div>
+                <span style={{ background: 'rgba(255, 255, 255, 0.2)', padding: '4px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 700, color: '#ffffff' }}>
+                  Tier v4.8
+                </span>
+              </div>
+              <div className="drawer-tier-progress-bar">
+                <div className="drawer-tier-progress-fill" style={{ width: '66%', background: 'linear-gradient(90deg, var(--primary) 0%, #10b981 100%)' }} />
+              </div>
+            </div>
+
+            {/* Logout Button */}
+            <button 
+              className="drawer-logout-btn"
+              onClick={() => {
+                setSidebarOpen(false);
+                if (onLogout) onLogout();
+              }}
+            >
+              <LogOut size={18} /> Logout Tailor Account
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* 4. BOTTOM FOOTER NAVIGATION BAR */}
+      <footer 
+        className="mobile-bottom-nav" 
+        style={{ 
+          position: 'fixed', 
+          bottom: 0, 
+          left: 0, 
+          right: 0, 
+          background: theme === 'dark' ? '#0e0b1a' : '#ffffff', 
+          borderTop: '1px solid var(--border-color)', 
+          display: 'flex', 
+          justifyContent: 'space-around', 
+          padding: '6px 0',
+          boxShadow: '0 -4px 20px rgba(0,0,0,0.15)',
+          zIndex: 1000
+        }}
+      >
+        {[
+          { id: 'dashboard', label: 'Home', icon: <Home size={18} /> },
+          { id: 'measurements', label: 'Measurements', icon: <Ruler size={18} /> },
+          { id: 'calendar', label: 'Calendar', icon: <Calendar size={18} /> },
+          { id: 'earnings', label: 'Earnings', icon: <TrendingUp size={18} /> },
+          { id: 'chat', label: 'Support', icon: <MessageSquare size={18} /> },
+          { id: 'menu', label: 'More', icon: <Menu size={18} />, isMenu: true }
+        ].map(item => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                if (item.isMenu) {
+                  setSidebarOpen(true);
+                } else {
+                  setActiveTab(item.id);
+                }
+              }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+                cursor: 'pointer',
+                flex: 1,
+                height: '54px',
+                padding: 0
+              }}
+            >
+              {/* Floating Circle Bubble containing Icon */}
+              <div
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: isActive 
+                    ? 'linear-gradient(135deg, var(--primary), var(--secondary))' 
+                    : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                  transform: isActive 
+                    ? 'translateY(-14px) scale(1.1) rotateY(10deg)' 
+                    : 'translateY(0) scale(1) rotateY(0)',
+                  boxShadow: isActive 
+                    ? '0 8px 18px rgba(247, 37, 133, 0.45), inset 0 2px 4px rgba(255,255,255,0.2)' 
+                    : 'none',
+                  transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  zIndex: 2
+                }}
+              >
+                {item.icon}
+              </div>
+
+              {/* Text Label under Bubble */}
+              <span
+                style={{
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  color: isActive ? 'var(--primary)' : 'var(--text-secondary)',
+                  opacity: isActive ? 1 : 0.8,
+                  transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                  transition: 'all 0.25s ease',
+                  position: 'absolute',
+                  bottom: '4px',
+                  zIndex: 1
+                }}
+              >
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </footer>
     </div>
   );
 }
