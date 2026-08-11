@@ -268,7 +268,10 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
           {/* Profile Dropdown */}
           <div style={{ position: 'relative' }}>
             <div
-              onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+              onClick={() => {
+                setActiveTab('profile');
+                setProfileDropdownOpen(!profileDropdownOpen);
+              }}
               style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
             >
               <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid #F72585' }}>
