@@ -793,12 +793,20 @@ export default function AuthPage({
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
                           <label style={{ fontSize: '12px', fontWeight: 600, color: colorTextPrimary, letterSpacing: '0.01em' }}>Phone Number</label>
-                          <span 
-                            onClick={() => setMobileNumber('9876543210')}
-                            style={{ fontSize: '11px', color: '#f72585', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
-                          >
-                            Quick Fill Test Number
-                          </span>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <span 
+                              onClick={() => setMobileNumber('9876543210')}
+                              style={{ fontSize: '11px', color: '#f72585', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
+                            >
+                              Tailor (9876543210)
+                            </span>
+                            <span 
+                              onClick={() => setMobileNumber('9876543211')}
+                              style={{ fontSize: '11px', color: '#8B12C9', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
+                            >
+                              Designer (9876543211)
+                            </span>
+                          </div>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: inputBg }}>
