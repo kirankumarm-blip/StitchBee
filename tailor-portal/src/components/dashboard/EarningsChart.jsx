@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
-export default function EarningsChart({ data, summary }) {
+export default function EarningsChart({ data, summary, theme }) {
   const [activeTimeframe, setActiveTimeframe] = useState('This Month');
 
   const currentChartData = data?.[activeTimeframe] || data?.['This Month'] || [];
+
+  const axisColor = theme === 'dark' ? '#98A2B3' : '#667085';
+  const gridColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E6EAF0';
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div style={{
-          background: 'var(--sb-card-bg)',
-          border: '1px solid var(--sb-border)',
+          background: theme === 'dark' ? '#141126' : '#FFFFFF',
+          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E6EAF0',
           borderRadius: '8px',
           padding: '10px 14px',
-          boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
           fontSize: '12px'
         }}>
-          <div style={{ fontWeight: 700, color: 'var(--sb-navy)', marginBottom: '4px' }}>{label}</div>
+          <div style={{ fontWeight: 700, color: theme === 'dark' ? '#FFFFFF' : '#101828', marginBottom: '4px' }}>{label}</div>
           <div style={{ color: '#F72585', fontWeight: 700 }}>
             Earnings: ₹{payload[0].value.toLocaleString()}
           </div>
@@ -89,9 +92,9 @@ export default function EarningsChart({ data, summary }) {
                 <stop offset="95%" stopColor="#F72585" stopOpacity={0.0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--sb-border)" vertical={false} opacity={0.6} />
-            <XAxis dataKey="date" stroke="var(--sb-text-secondary)" fontSize={11} tickLine={false} axisLine={false} />
-            <YAxis stroke="var(--sb-text-secondary)" fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />
+            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} vertical={false} opacity={0.6} />
+            <XAxis dataKey="date" stroke={axisColor} fontSize={11} tickLine={false} axisLine={false} />
+            <YAxis stroke={axisColor} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `₹${v / 1000}k`} />
             <Tooltip content={<CustomTooltip />} />
             <Area 
               type="monotone" 

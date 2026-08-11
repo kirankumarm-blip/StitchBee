@@ -316,6 +316,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         {/* ==================================================================== */}
         {activeTab === 'dashboard' && (
           <DesignerDashboard 
+            theme={theme}
             onNavigateTab={(tab, subTab) => {
               setActiveTab(tab);
               if (subTab) setStudioSubTab(subTab);

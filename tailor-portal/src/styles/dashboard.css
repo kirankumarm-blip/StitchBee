@@ -34,15 +34,18 @@
 
 /* Dark Mode Overrides */
 body.dark-theme .designer-dashboard-fullwidth,
+body.dark .designer-dashboard-fullwidth,
+body.dark-mode .designer-dashboard-fullwidth,
+.designer-dashboard-fullwidth.dark-mode,
 .theme-dark .designer-dashboard-fullwidth {
-  --sb-bg-light: #0B0914;
-  --sb-card-bg: #131022;
-  --sb-navy: #F9FAFB;
-  --sb-text-secondary: #98A2B3;
-  --sb-border: rgba(255, 255, 255, 0.08);
-  --sb-border-hover: rgba(255, 255, 255, 0.16);
-  --sb-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --sb-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --sb-bg-light: #0B0914 !important;
+  --sb-card-bg: #131022 !important;
+  --sb-navy: #F9FAFB !important;
+  --sb-text-secondary: #98A2B3 !important;
+  --sb-border: rgba(255, 255, 255, 0.08) !important;
+  --sb-border-hover: rgba(255, 255, 255, 0.16) !important;
+  --sb-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  --sb-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.6) !important;
 }
 
 /* ---------------------------------------------------- */

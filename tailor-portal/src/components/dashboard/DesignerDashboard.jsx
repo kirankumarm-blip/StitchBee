@@ -10,7 +10,7 @@ import UpcomingAppointments from './UpcomingAppointments';
 import RecentActivity from './RecentActivity';
 import '../../styles/dashboard.css';
 
-export default function DesignerDashboard({ onNavigateTab }) {
+export default function DesignerDashboard({ theme, onNavigateTab }) {
   // Driven from central data state for API integration
   const [data, setData] = useState(initialDashboardData);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -65,7 +65,7 @@ export default function DesignerDashboard({ onNavigateTab }) {
   };
 
   return (
-    <div className="designer-dashboard-fullwidth">
+    <div className={`designer-dashboard-fullwidth ${theme === 'dark' ? 'dark-mode' : ''}`}>
       
       {/* ==================================================================== */}
       {/* SECTION 1 — Welcome + Quick Actions (Full-Width Card across dashboard)*/}
@@ -87,17 +87,20 @@ export default function DesignerDashboard({ onNavigateTab }) {
       <div className="three-column-grid">
         {/* Column 1 (~50% width): Earnings Overview with Recharts AreaChart */}
         <EarningsChart 
+          theme={theme}
           data={data.earningsOverview.timeframeData} 
           summary={data.earningsOverview.summary} 
         />
 
         {/* Column 2 (~25% width): Project Status Donut Chart */}
         <ProjectStatusChart 
+          theme={theme}
           data={data.projectStatus} 
         />
 
         {/* Column 3 (~25% width): Project Progress Bars & Weekly Performance */}
         <ProjectProgress 
+          theme={theme}
           progressItems={data.projectProgressItems} 
           weeklyChart={data.weeklyPerformanceChart} 
         />
