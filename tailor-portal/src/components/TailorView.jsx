@@ -2262,13 +2262,13 @@ export default function TailorView({
           };
 
           return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: "'Inter', sans-serif" }}>
               
               {/* HEADER VIEW CONTROL BAR */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '800' }}>Deliveries & Appointments Calendar</h3>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Manage your stitching deadlines and customer appointments</span>
+                  <h3 style={{ margin: 0, fontSize: '22px', fontWeight: 700, lineHeight: '30px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>Deliveries & Appointments Calendar</h3>
+                  <span style={{ fontSize: '12px', fontWeight: 400, lineHeight: '18px', color: 'var(--text-secondary)' }}>Manage your stitching deadlines and customer appointments</span>
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -2283,26 +2283,26 @@ export default function TailorView({
                     padding: '4px 10px',
                     gap: '12px'
                   }}>
-                    <strong style={{ fontSize: '0.85rem', minWidth: '85px', textAlign: 'center' }}>
+                    <strong style={{ fontSize: '13px', fontWeight: 600, minWidth: '85px', textAlign: 'center', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>
                       {activeMonthName} {activeYear}
                     </strong>
                     <div style={{ display: 'flex', gap: '4px' }}>
                       <button 
                         onClick={() => setCalendarDate(new Date(activeYear, activeMonth - 1, 1))}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '4px' }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '4px', fontSize: '12px', fontWeight: 600 }}
                       >
                         <ChevronLeft size={16} />
                       </button>
                       <button 
                         onClick={() => setCalendarDate(new Date(activeYear, activeMonth + 1, 1))}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '4px' }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '4px', fontSize: '12px', fontWeight: 600 }}
                       >
                         <ChevronRight size={16} />
                       </button>
                     </div>
                   </div>
 
-                  <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '0.8rem' }} onClick={() => {
+                  <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px' }} onClick={() => {
                     const today = new Date();
                     setCalendarDate(new Date(2026, 5, 1));
                     setSelectedCalendarDate(new Date(2026, 5, 2));
@@ -2314,7 +2314,7 @@ export default function TailorView({
                   <div style={{ position: 'relative' }}>
                     <button 
                       className="btn btn-secondary" 
-                      style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                      style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}
                       onClick={() => setShowFilterDropdown(!showFilterDropdown)}
                     >
                       <Filter size={14} /> Filter
@@ -2336,12 +2336,12 @@ export default function TailorView({
                         flexDirection: 'column',
                         gap: '10px'
                       }}>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--text-muted)' }}>FILTER BY TYPE</span>
+                        <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em', color: 'var(--text-muted)' }}>FILTER BY TYPE</span>
                         {['Stitching Deadline', 'Pick up & Delivery', 'Appointment', 'Holiday', 'Blocked Date'].map(type => {
                           const isChecked = calendarFilters.includes(type);
                           const col = getEventColors(type).text;
                           return (
-                            <label key={type} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', cursor: 'pointer' }}>
+                            <label key={type} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: isChecked ? 600 : 500, cursor: 'pointer' }}>
                               <input 
                                 type="checkbox"
                                 checked={isChecked}
@@ -2351,7 +2351,7 @@ export default function TailorView({
                                 }}
                                 style={{ accentColor: 'var(--primary)' }}
                               />
-                              <span style={{ color: isChecked ? col : 'var(--text-secondary)', fontWeight: isChecked ? 'bold' : 'normal' }}>{type}</span>
+                              <span style={{ color: isChecked ? col : 'var(--text-secondary)' }}>{type}</span>
                             </label>
                           );
                         })}
@@ -2359,11 +2359,11 @@ export default function TailorView({
                     )}
                   </div>
 
-                  <button className="btn btn-secondary" style={{ color: 'var(--primary)', borderColor: 'var(--primary)', padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => setShowAddEventModal(true)}>
+                  <button className="btn btn-secondary" style={{ color: 'var(--primary)', borderColor: 'var(--primary)', padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px', display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => setShowAddEventModal(true)}>
                     <Plus size={14} /> Add Event
                   </button>
                   
-                  <button className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '0.8rem', fontWeight: 'bold' }} onClick={() => setShowBlockDatesModal(true)}>
+                  <button className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px' }} onClick={() => setShowBlockDatesModal(true)}>
                     Block Dates
                   </button>
                 </div>
@@ -2396,8 +2396,9 @@ export default function TailorView({
                                 : 'transparent',
                               border: 'none',
                               color: calendarViewMode === mode ? 'var(--primary)' : 'var(--text-secondary)',
-                              fontWeight: 'bold',
-                              fontSize: '0.75rem',
+                              fontWeight: 600,
+                              fontSize: '11px',
+                              lineHeight: '16px',
                               padding: '6px 14px',
                               borderRadius: '6px',
                               cursor: 'pointer',
@@ -2419,7 +2420,7 @@ export default function TailorView({
                         {/* Weekday Labels Header */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? '#121020' : '#f8fafc' }}>
                           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                            <div key={day} style={{ padding: '10px', textAlign: 'center', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-secondary)' }}>{day}</div>
+                            <div key={day} style={{ padding: '10px', textAlign: 'center', fontSize: '10px', fontWeight: 600, lineHeight: '14px', color: 'var(--text-secondary)' }}>{day}</div>
                           ))}
                         </div>
 
@@ -2460,8 +2461,9 @@ export default function TailorView({
                                 }}
                               >
                                 <span style={{ 
-                                  fontSize: '0.75rem', 
-                                  fontWeight: 'bold', 
+                                  fontSize: '11px', 
+                                  fontWeight: isSelected ? 700 : 500, 
+                                  lineHeight: '16px',
                                   color: isSelected ? 'var(--primary)' : 'var(--text-secondary)',
                                   display: 'inline-flex',
                                   alignItems: 'center',
@@ -2486,8 +2488,9 @@ export default function TailorView({
                                           background: col.bg,
                                           border: col.border,
                                           color: col.text,
-                                          fontSize: '0.62rem',
-                                          fontWeight: 'bold',
+                                          fontSize: '10px',
+                                          fontWeight: 600,
+                                          lineHeight: '14px',
                                           textOverflow: 'ellipsis',
                                           overflow: 'hidden',
                                           whiteSpace: 'nowrap'
@@ -2547,10 +2550,10 @@ export default function TailorView({
                                 }}
                               >
                                 <div style={{ textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '6px' }}>
-                                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block', fontWeight: 'bold' }}>
+                                  <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', fontWeight: 600, lineHeight: '14px' }}>
                                     {wDate.toLocaleString('default', { weekday: 'short' })}
                                   </span>
-                                  <strong style={{ fontSize: '1.1rem', color: isSelected ? 'var(--primary)' : 'var(--text-primary)' }}>
+                                  <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: isSelected ? 'var(--primary)' : 'var(--text-primary)' }}>
                                     {wDate.getDate()}
                                   </strong>
                                 </div>
@@ -2564,16 +2567,17 @@ export default function TailorView({
                                         background: getEventColors(evt.type).bg,
                                         border: getEventColors(evt.type).border,
                                         color: getEventColors(evt.type).text,
-                                        fontSize: '0.65rem',
-                                        fontWeight: '700'
+                                        fontSize: '10px',
+                                        fontWeight: 600,
+                                        lineHeight: '14px'
                                       }}
                                     >
-                                      <span style={{ display: 'block', fontSize: '0.55rem', opacity: 0.85 }}>{evt.time}</span>
+                                      <span style={{ display: 'block', fontSize: '9px', fontWeight: 500, lineHeight: '13px', opacity: 0.85 }}>{evt.time}</span>
                                       {evt.customer}
                                     </div>
                                   ))}
                                   {wEvents.length === 0 && (
-                                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textAlign: 'center', marginTop: '12px' }}>No events</span>
+                                    <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '12px' }}>No events</span>
                                   )}
                                 </div>
                               </div>
@@ -2587,10 +2591,10 @@ export default function TailorView({
                     {calendarViewMode === 'day' && (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: theme === 'dark' ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <strong style={{ fontSize: '0.95rem' }}>
+                          <strong style={{ fontSize: '15px', fontWeight: 700, lineHeight: '22px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>
                             Schedule for {selectedCalendarDate ? selectedCalendarDate.toLocaleDateString('default', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Selected Day'}
                           </strong>
-                          <span style={{ fontSize: '0.75rem', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '10px', fontWeight: 'bold' }}>
+                          <span style={{ fontSize: '10px', fontWeight: 600, lineHeight: '14px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '10px' }}>
                             {selectedDayEvents.length} Events Scheduled
                           </span>
                         </div>
@@ -2609,20 +2613,20 @@ export default function TailorView({
                               }}
                             >
                               <div style={{ borderRight: '2px solid var(--border-color)', paddingRight: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                <strong style={{ fontSize: '0.85rem', color: getEventColors(evt.type).text }}>{evt.time}</strong>
+                                <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: getEventColors(evt.type).text }}>{evt.time}</strong>
                               </div>
                               <div>
-                                <span style={{ fontSize: '0.7rem', color: getEventColors(evt.type).text, fontWeight: '800', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{evt.type}</span>
-                                <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>{evt.customer}</strong>
-                                <p style={{ margin: '4px 0 0 0', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{evt.details}</p>
+                                <span style={{ fontSize: '11px', fontWeight: 700, lineHeight: '16px', letterSpacing: '0.02em', color: getEventColors(evt.type).text, display: 'block', textTransform: 'uppercase' }}>{evt.type}</span>
+                                <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>{evt.customer}</strong>
+                                <p style={{ margin: '4px 0 0 0', fontSize: '11px', fontWeight: 400, lineHeight: '17px', color: 'var(--text-secondary)' }}>{evt.details}</p>
                               </div>
                             </div>
                           ))}
                           {selectedDayEvents.length === 0 && (
                             <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
                               <Clock size={28} style={{ color: 'var(--text-muted)', marginBottom: '10px', opacity: 0.6 }} />
-                              <h5 style={{ margin: '0 0 4px 0', fontSize: '0.85rem' }}>No events scheduled</h5>
-                              <p style={{ margin: 0, fontSize: '0.75rem' }}>Add new appointments or stitching deadlines to display them here.</p>
+                              <h5 style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>No events scheduled</h5>
+                              <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, lineHeight: '17px', color: 'var(--text-secondary)' }}>Add new appointments or stitching deadlines to display them here.</p>
                             </div>
                           )}
                         </div>
@@ -2636,10 +2640,10 @@ export default function TailorView({
                       borderTop: '1px solid var(--border-color)', 
                       paddingTop: '12px', 
                       flexWrap: 'wrap',
-                      fontSize: '0.75rem',
+                      fontSize: '11px',
                       alignItems: 'center'
                     }}>
-                      <span style={{ fontWeight: 'bold', color: 'var(--text-secondary)' }}>Event Types</span>
+                      <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-secondary)' }}>Event Types</span>
                       {[
                         { label: 'Stitching Deadline', color: 'var(--primary)' },
                         { label: 'Pick up & Delivery', color: 'var(--secondary)' },
@@ -2649,7 +2653,7 @@ export default function TailorView({
                       ].map(item => (
                         <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }}></span>
-                          <span style={{ color: 'var(--text-secondary)' }}>{item.label}</span>
+                          <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-secondary)' }}>{item.label}</span>
                         </div>
                       ))}
                     </div>
@@ -2663,26 +2667,26 @@ export default function TailorView({
                   {/* Small mini calendar overview card */}
                   <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>{activeMonthName} {activeYear}</strong>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>{activeMonthName} {activeYear}</strong>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         <button 
                           onClick={() => setCalendarDate(new Date(activeYear, activeMonth - 1, 1))}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '2px' }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '2px', fontSize: '12px', fontWeight: 600 }}
                         >
                           <ChevronLeft size={14} />
                         </button>
                         <button 
                           onClick={() => setCalendarDate(new Date(activeYear, activeMonth + 1, 1))}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '2px' }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '2px', fontSize: '12px', fontWeight: 600 }}
                         >
                           <ChevronRight size={14} />
                         </button>
                       </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px', textAlign: 'center', fontSize: '0.7rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px', textAlign: 'center' }}>
                       {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((wDay, idx) => (
-                        <span key={idx} style={{ color: 'var(--text-muted)', fontWeight: 'bold' }}>{wDay}</span>
+                        <span key={idx} style={{ color: 'var(--text-muted)', fontSize: '10px', fontWeight: 600, lineHeight: '14px' }}>{wDay}</span>
                       ))}
                       
                       {cells.map((cell, idx) => {
@@ -2713,7 +2717,9 @@ export default function TailorView({
                               cursor: 'pointer',
                               background: isSelected ? 'var(--primary)' : 'transparent',
                               color: isSelected ? '#ffffff' : (cell.isCurrentMonth ? 'var(--text-primary)' : 'var(--text-muted)'),
-                              fontWeight: isSelected ? 'bold' : '500',
+                              fontSize: '11px',
+                              fontWeight: isSelected ? 700 : 500,
+                              lineHeight: '16px',
                               opacity: cell.isCurrentMonth ? 1 : 0.4,
                               display: 'flex',
                               flexDirection: 'column',
@@ -2722,7 +2728,6 @@ export default function TailorView({
                               height: '24px',
                               width: '24px',
                               margin: '0 auto',
-                              fontSize: '0.75rem',
                               transition: 'all 0.15s'
                             }}
                           >
@@ -2746,9 +2751,9 @@ export default function TailorView({
                   {/* Upcoming events list */}
                   <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Upcoming Events</strong>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>UPCOMING EVENTS</strong>
                       <span 
-                        style={{ fontSize: '0.7rem', color: 'var(--primary)', cursor: 'pointer', fontWeight: 'bold' }}
+                        style={{ fontSize: '10px', fontWeight: 600, color: 'var(--primary)', cursor: 'pointer' }}
                         onClick={() => setSelectedCalendarDate(null)}
                       >
                         View All
@@ -2769,44 +2774,43 @@ export default function TailorView({
                               background: col.bg,
                               display: 'flex',
                               justifyContent: 'space-between',
-                              alignItems: 'center',
-                              fontSize: '0.75rem'
+                              alignItems: 'center'
                             }}
                           >
                             <div>
-                              <span style={{ display: 'block', fontSize: '0.62rem', fontWeight: '800', color: col.text, textTransform: 'uppercase' }}>{evt.type}</span>
-                              <strong style={{ color: 'var(--text-primary)' }}>{evt.customer}</strong>
+                              <span style={{ display: 'block', fontSize: '9px', fontWeight: 700, lineHeight: '13px', letterSpacing: '0.02em', color: col.text, textTransform: 'uppercase' }}>{evt.type}</span>
+                              <strong style={{ fontSize: '11px', fontWeight: 600, lineHeight: '16px', color: 'var(--text-primary)' }}>{evt.customer}</strong>
                             </div>
-                            <div style={{ textAlign: 'right', fontSize: '0.65rem', color: 'var(--text-muted)' }}>
+                            <div style={{ textAlign: 'right', fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: 'var(--text-muted)' }}>
                               <div>{evt.date.toLocaleDateString('default', { day: 'numeric', month: 'short' })}</div>
-                              <div style={{ fontWeight: '500' }}>{evt.time}</div>
+                              <div style={{ fontWeight: 600 }}>{evt.time}</div>
                             </div>
                           </div>
                         );
                       })}
 
                       {(selectedCalendarDate ? selectedDayEvents : filteredMonthEvents).length === 0 && (
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center', padding: '16px 0' }}>No upcoming events</span>
+                        <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: 'var(--text-muted)', textAlign: 'center', padding: '16px 0' }}>No upcoming events</span>
                       )}
                     </div>
                   </div>
 
                   {/* Monthly statistics overview */}
                   <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <strong style={{ fontSize: '0.85rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>This Month Overview</strong>
+                    <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>THIS MONTH OVERVIEW</strong>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', textAlign: 'center' }}>
                       <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', padding: '8px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', display: 'block' }}>Total Events</span>
-                        <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{totalEventsCount}</strong>
+                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: 'var(--text-muted)', display: 'block' }}>Total Events</span>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: 'var(--text-primary)' }}>{totalEventsCount}</strong>
                       </div>
                       <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', padding: '8px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', display: 'block' }}>Deadlines</span>
-                        <strong style={{ fontSize: '1rem', color: 'var(--primary)' }}>{deadlinesCount}</strong>
+                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: 'var(--text-muted)', display: 'block' }}>Deadlines</span>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: 'var(--primary)' }}>{deadlinesCount}</strong>
                       </div>
                       <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', padding: '8px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', display: 'block' }}>Deliveries</span>
-                        <strong style={{ fontSize: '1rem', color: 'var(--secondary)' }}>{deliveriesCount}</strong>
+                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: 'var(--text-muted)', display: 'block' }}>Deliveries</span>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: 'var(--secondary)' }}>{deliveriesCount}</strong>
                       </div>
                     </div>
                   </div>
