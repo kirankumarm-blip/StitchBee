@@ -512,10 +512,11 @@ export default function AuthPage({
           {/* Headline & Subtitle */}
           <div>
             <h1
+              className="auth-hero-headline"
               style={{
                 fontSize: '52px',
                 fontWeight: 800,
-                lineHeight: '1.05',
+                lineHeight: '1.1',
                 letterSpacing: '-2px',
                 color: colorTextPrimary,
                 margin: 0,
@@ -523,10 +524,14 @@ export default function AuthPage({
                 flexDirection: 'column'
               }}
             >
-              <span>Crafting</span>
-              <span style={{ color: '#f72585' }}>Style.</span>
-              <span style={{ color: '#7209b7' }}>Precision.</span>
-              <span>Perfection.</span>
+              <div className="headline-line-1" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <span>Crafting</span>
+                <span style={{ color: '#f72585' }}>Style.</span>
+              </div>
+              <div className="headline-line-2" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <span style={{ color: '#7209b7' }}>Precision.</span>
+                <span>Perfection.</span>
+              </div>
             </h1>
             <div
               style={{

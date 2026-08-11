@@ -12171,10 +12171,19 @@ body.light-theme .premium-footer h5 {
 
   .auth-left-column h1 {
     width: 100% !important;
-    font-size: 34px !important;
+    font-size: 32px !important;
     letter-spacing: -1px !important;
-    line-height: 1.15 !important;
+    line-height: 1.2 !important;
     text-align: center !important;
+    align-items: center !important;
+  }
+
+  .headline-line-1, .headline-line-2 {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
   }
 
   .auth-left-column p {
@@ -12227,8 +12236,16 @@ body.light-theme .premium-footer h5 {
 
   .auth-left-column h1 {
     width: 100% !important;
-    font-size: 30px !important;
+    font-size: 24px !important;
     letter-spacing: -0.5px !important;
+  }
+
+  .headline-line-1, .headline-line-2 {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
   }
 
   .auth-left-column p {
