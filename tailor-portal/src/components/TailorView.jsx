@@ -740,11 +740,11 @@ export default function TailorView({
               <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary)' }}>
                 <img src="/bridal 5.jpg" alt="Tailor" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <div className="desktop-header-user-info" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>Master Rajesh</span>
                 <span style={{ fontSize: '0.6rem', color: 'var(--primary)', fontWeight: 'bold' }}>TAILOR</span>
               </div>
-              <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} />
+              <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} className="desktop-header-user-info" />
             </div>
 
             {/* Profile Dropdown Menu */}
@@ -3543,13 +3543,13 @@ export default function TailorView({
           <div 
             className="drawer-backdrop"
             onClick={() => setSidebarOpen(false)}
-            style={{ top: 0 }}
+            style={{ top: '64px' }}
           />
 
           <div 
             className="left-nav-drawer"
             onClick={(e) => e.stopPropagation()}
-            style={{ top: 0, height: '100vh', zIndex: 1005 }}
+            style={{ top: '64px', height: 'calc(100vh - 64px)', zIndex: 999 }}
           >
             <div className="drawer-top-header" style={{ marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -3694,8 +3694,7 @@ export default function TailorView({
           { id: 'measurements', label: 'Measurements', icon: <Ruler size={18} /> },
           { id: 'calendar', label: 'Calendar', icon: <Calendar size={18} /> },
           { id: 'earnings', label: 'Earnings', icon: <TrendingUp size={18} /> },
-          { id: 'chat', label: 'Support', icon: <MessageSquare size={18} /> },
-          { id: 'menu', label: 'More', icon: <Menu size={18} />, isMenu: true }
+          { id: 'chat', label: 'Support', icon: <MessageSquare size={18} /> }
         ].map(item => {
           const isActive = activeTab === item.id;
           return (

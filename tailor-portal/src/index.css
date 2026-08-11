@@ -12129,4 +12129,11 @@ body.light-theme .premium-footer h5 {
   }
 }
 
+@media (max-width: 768px) {
+  .desktop-header-user-info {
+    display: none !important;
+  }
+}
+
+
 
