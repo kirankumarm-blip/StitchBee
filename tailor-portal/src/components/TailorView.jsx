@@ -1366,11 +1366,11 @@ export default function TailorView({
                 alignItems: 'center',
                 flexWrap: 'wrap',
                 gap: '24px',
-                border: theme === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid #E4E7EC'
+                border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={{ 
-                    background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(247,37,133,0.1)', 
+                    background: theme === 'dark' ? 'rgba(247,37,133,0.15)' : 'rgba(247,37,133,0.1)', 
                     padding: '12px', 
                     borderRadius: '50%', 
                     color: '#F72585' 
@@ -1458,7 +1458,7 @@ export default function TailorView({
                   gap: '16px',
                   padding: '20px',
                   background: theme === 'dark' ? '#141126' : '#ffffff',
-                  border: '1px solid #E4E7EC',
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
                   borderRadius: '12px'
                 }} className="glass-card-no-hover measurements-sidebar">
                   <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.02em', color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#344054', display: 'block' }}>
@@ -1468,26 +1468,35 @@ export default function TailorView({
                   {/* Search and filter */}
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <div style={{ position: 'relative', flex: 1 }}>
-                      <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#98A2B3' }} />
+                      <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : '#98A2B3' }} />
                       <input 
                         type="text" 
                         placeholder="Search customer..." 
                         className="form-input" 
                         value={measurementSearch}
                         onChange={(e) => setMeasurementSearch(e.target.value)}
-                        style={{ paddingLeft: '32px', width: '100%', height: '36px', fontSize: '12px', fontWeight: 400, color: theme === 'dark' ? '#fff' : '#344054', border: '1px solid #E4E7EC' }}
+                        style={{ 
+                          paddingLeft: '32px', 
+                          width: '100%', 
+                          height: '36px', 
+                          fontSize: '12px', 
+                          fontWeight: 400, 
+                          color: theme === 'dark' ? '#ffffff' : '#344054', 
+                          background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff',
+                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC'
+                        }}
                       />
                     </div>
                     <button style={{
-                      background: theme === 'dark' ? '#1c1830' : '#ffffff',
-                      border: '1px solid #E4E7EC',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff',
+                      border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC',
                       borderRadius: '8px',
                       width: '36px',
                       height: '36px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: theme === 'dark' ? '#fff' : '#344054',
+                      color: theme === 'dark' ? '#ffffff' : '#344054',
                       cursor: 'pointer'
                     }}>
                       <Sliders size={14} />
@@ -1504,7 +1513,7 @@ export default function TailorView({
                     paddingRight: '4px' 
                   }}>
                     {filteredCustomers.length === 0 ? (
-                      <div style={{ padding: '20px', textAlign: 'center', color: '#98A2B3', fontSize: '12px' }}>No customers found</div>
+                      <div style={{ padding: '20px', textAlign: 'center', color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : '#98A2B3', fontSize: '12px' }}>No customers found</div>
                     ) : (
                       filteredCustomers.map(cust => {
                         const isSelected = selectedCustomerId === cust.id;
@@ -1515,8 +1524,8 @@ export default function TailorView({
                             style={{
                               padding: '10px 12px',
                               borderRadius: '10px',
-                              border: isSelected ? '1px solid #F72585' : '1px solid #E4E7EC',
-                              background: isSelected ? (theme === 'dark' ? 'rgba(247,37,133,0.1)' : 'rgba(247,37,133,0.03)') : 'transparent',
+                              border: isSelected ? '1px solid #F72585' : (theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'),
+                              background: isSelected ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : 'rgba(247,37,133,0.03)') : 'transparent',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'space-between',
@@ -1529,8 +1538,8 @@ export default function TailorView({
                                 <img src={cust.image} alt={cust.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               </div>
                               <div>
-                                <strong style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: isSelected ? '#172033' : (theme === 'dark' ? '#ffffff' : '#1D2939') }}>{cust.name}</strong>
-                                <span style={{ fontSize: '10px', fontWeight: 400, color: '#98A2B3' }}>{cust.id}</span>
+                                <strong style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: isSelected ? (theme === 'dark' ? '#FF66B2' : '#F72585') : (theme === 'dark' ? '#ffffff' : '#1D2939') }}>{cust.name}</strong>
+                                <span style={{ fontSize: '10px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#98A2B3' }}>{cust.id}</span>
                               </div>
                             </div>
                             <span style={{
@@ -1538,8 +1547,8 @@ export default function TailorView({
                               borderRadius: '12px',
                               fontSize: '9px',
                               fontWeight: 600,
-                              background: cust.cat === 'Women' ? '#FCE7F3' : '#EFF6FF',
-                              color: cust.cat === 'Women' ? '#D63384' : '#2563EB'
+                              background: cust.cat === 'Women' ? (theme === 'dark' ? 'rgba(247,37,133,0.18)' : '#FCE7F3') : (theme === 'dark' ? 'rgba(37,99,235,0.18)' : '#EFF6FF'),
+                              color: cust.cat === 'Women' ? (theme === 'dark' ? '#FF66B2' : '#D63384') : (theme === 'dark' ? '#60A5FA' : '#2563EB')
                             }}>{cust.cat}</span>
                           </div>
                         );
@@ -1581,7 +1590,7 @@ export default function TailorView({
                   gap: '20px',
                   padding: '24px',
                   background: theme === 'dark' ? '#141126' : '#ffffff',
-                  border: '1px solid #E4E7EC',
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
                   borderRadius: '12px'
                 }} className="glass-card-no-hover measurements-main-panel">
                   
@@ -1592,7 +1601,7 @@ export default function TailorView({
                     alignItems: 'center',
                     flexWrap: 'wrap',
                     gap: '16px',
-                    borderBottom: '1px solid #E4E7EC',
+                    borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
                     paddingBottom: '16px'
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -1607,33 +1616,33 @@ export default function TailorView({
                             borderRadius: '12px',
                             fontSize: '9px',
                             fontWeight: 600,
-                            background: activeCust.cat === 'Women' ? '#FCE7F3' : '#EFF6FF',
-                            color: activeCust.cat === 'Women' ? '#D63384' : '#2563EB'
+                            background: activeCust.cat === 'Women' ? (theme === 'dark' ? 'rgba(247,37,133,0.18)' : '#FCE7F3') : (theme === 'dark' ? 'rgba(37,99,235,0.18)' : '#EFF6FF'),
+                            color: activeCust.cat === 'Women' ? (theme === 'dark' ? '#FF66B2' : '#D63384') : (theme === 'dark' ? '#60A5FA' : '#2563EB')
                           }}>{activeCust.cat}</span>
                         </div>
-                        <span style={{ fontSize: '11px', fontWeight: 400, color: '#475467' }}>
+                        <span style={{ fontSize: '11px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467' }}>
                           📞 {activeCust.phone} &nbsp;•&nbsp; ✉ {activeCust.email}
                         </span>
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '16px', color: '#475467', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '16px', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467', alignItems: 'center' }}>
                       <div>
-                        <span style={{ color: '#98A2B3', display: 'block', fontSize: '9px', fontWeight: 500 }}>Profile ID</span>
-                        <strong style={{ fontSize: '11px', fontWeight: 600, color: '#344054' }}>{activeCust.id}</strong>
+                        <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : '#98A2B3', display: 'block', fontSize: '9px', fontWeight: 500 }}>Profile ID</span>
+                        <strong style={{ fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{activeCust.id}</strong>
                       </div>
-                      <div style={{ borderLeft: '1px solid #E4E7EC', paddingLeft: '16px' }}>
-                        <span style={{ color: '#98A2B3', display: 'block', fontSize: '9px', fontWeight: 500 }}>Last Updated</span>
-                        <strong style={{ fontSize: '11px', fontWeight: 600, color: '#344054' }}>{activeCust.updated}</strong>
+                      <div style={{ borderLeft: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', paddingLeft: '16px' }}>
+                        <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : '#98A2B3', display: 'block', fontSize: '9px', fontWeight: 500 }}>Last Updated</span>
+                        <strong style={{ fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{activeCust.updated}</strong>
                       </div>
-                      <button className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 600, color: '#344054', height: '30px', borderRadius: '6px', border: '1px solid #E4E7EC' }} onClick={() => alert("Edit customer details...")}>
+                      <button className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff', height: '30px', borderRadius: '6px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC' }} onClick={() => alert("Edit customer details...")}>
                         <Edit size={12} style={{ marginRight: '4px' }} /> Edit Info
                       </button>
                     </div>
                   </div>
 
                   {/* Inner sub-tabs switcher */}
-                  <div style={{ display: 'flex', gap: '10px', borderBottom: '1px solid #E4E7EC', paddingBottom: '12px' }}>
+                  <div style={{ display: 'flex', gap: '10px', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', paddingBottom: '12px' }}>
                     {[
                       { id: 'body', label: 'Body Measurements', icon: <Ruler size={14} /> },
                       { id: 'chart', label: 'Measurement Chart', icon: <FileText size={14} /> },
@@ -1650,12 +1659,12 @@ export default function TailorView({
                           }}
                           className={isActive ? "btn-primary" : ""}
                           style={{
-                            background: isActive ? 'rgba(247,37,133,0.08)' : 'transparent',
+                            background: isActive ? 'rgba(247,37,133,0.15)' : 'transparent',
                             border: isActive ? '1px solid #F72585' : 'none',
                             borderRadius: '6px',
                             fontSize: '11px',
                             fontWeight: isActive ? 600 : 500,
-                            color: isDisabled ? '#98A2B3' : (isActive ? '#F72585' : '#667085'),
+                            color: isDisabled ? (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3') : (isActive ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085')),
                             padding: '6px 12px',
                             cursor: isDisabled ? 'not-allowed' : 'pointer',
                             display: 'flex',
@@ -1663,7 +1672,7 @@ export default function TailorView({
                             gap: '6px'
                           }}
                         >
-                          {tab.icon} <span style={{ color: isDisabled ? '#98A2B3' : (isActive ? '#F72585' : '#667085') }}>{tab.label}</span>
+                          {tab.icon} <span style={{ color: isDisabled ? (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3') : (isActive ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085')) }}>{tab.label}</span>
                         </button>
                       );
                     })}
@@ -1680,14 +1689,14 @@ export default function TailorView({
                           background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#F8F9FB', 
                           borderRadius: '8px', 
                           padding: '3px',
-                          border: '1px solid #E4E7EC'
+                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'
                         }}>
                           <button
                             onClick={() => setMeasurementUnit('inch')}
                             style={{
-                              background: measurementUnit === 'inch' ? (theme === 'dark' ? '#1c1830' : '#ffffff') : 'transparent',
+                              background: measurementUnit === 'inch' ? (theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#ffffff') : 'transparent',
                               border: 'none',
-                              color: measurementUnit === 'inch' ? '#344054' : '#98A2B3',
+                              color: measurementUnit === 'inch' ? (theme === 'dark' ? '#ffffff' : '#344054') : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#98A2B3'),
                               fontWeight: 600,
                               fontSize: '10px',
                               padding: '5px 14px',
@@ -1701,9 +1710,9 @@ export default function TailorView({
                           <button
                             onClick={() => setMeasurementUnit('cm')}
                             style={{
-                              background: measurementUnit === 'cm' ? (theme === 'dark' ? '#1c1830' : '#ffffff') : 'transparent',
+                              background: measurementUnit === 'cm' ? (theme === 'dark' ? 'rgba(255,255,255,0.12)' : '#ffffff') : 'transparent',
                               border: 'none',
-                              color: measurementUnit === 'cm' ? '#344054' : '#98A2B3',
+                              color: measurementUnit === 'cm' ? (theme === 'dark' ? '#ffffff' : '#344054') : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#98A2B3'),
                               fontWeight: 600,
                               fontSize: '10px',
                               padding: '5px 14px',
@@ -1726,9 +1735,9 @@ export default function TailorView({
                             position: 'relative', 
                             width: '100%',
                             maxWidth: '280px', 
-                            background: theme === 'dark' ? 'rgba(255,255,255,0.01)' : '#F8F9FB',
+                            background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8F9FB',
                             borderRadius: '12px',
-                            border: '1px solid #E4E7EC',
+                            border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
                             overflow: 'hidden',
                             padding: '16px',
                             display: 'flex',
@@ -1753,7 +1762,7 @@ export default function TailorView({
                             )}
                           </div>
                           <span 
-                            style={{ fontSize: '11px', fontWeight: 400, color: '#667085', display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                            style={{ fontSize: '11px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085', display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
                             onClick={() => alert("Interactive measurement hotspots overlay automatically highlights points during hover.")}
                           >
                             <Info size={12} /> View Measurement Guide
@@ -1767,7 +1776,7 @@ export default function TailorView({
                           <div style={{ overflowX: 'auto', flex: 1 }}>
                             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
                               <thead>
-                                <tr style={{ borderBottom: '1px solid #E4E7EC', color: '#667085', textAlign: 'left' }}>
+                                <tr style={{ borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', textAlign: 'left' }}>
                                   <th style={{ padding: '8px 4px', fontSize: '11px', fontWeight: 600 }}>Measurement</th>
                                   <th style={{ padding: '8px 4px', textAlign: 'center', fontSize: '11px', fontWeight: 600 }}>Size</th>
                                   <th style={{ padding: '8px 4px', fontSize: '11px', fontWeight: 600 }}>Notes</th>
@@ -1791,8 +1800,8 @@ export default function TailorView({
                                       onMouseEnter={() => setHoveredMeasurementRow(row.key)}
                                       onMouseLeave={() => setHoveredMeasurementRow(null)}
                                       style={{ 
-                                        borderBottom: '1px solid #E4E7EC',
-                                        background: isRowHovered ? '#FFF7FB' : 'transparent',
+                                        borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid #E4E7EC',
+                                        background: isRowHovered ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF7FB') : 'transparent',
                                         transition: 'background 0.2s'
                                       }}
                                     >
@@ -1801,20 +1810,20 @@ export default function TailorView({
                                           width: '18px',
                                           height: '18px',
                                           borderRadius: '50%',
-                                          border: isRowHovered ? '1px solid #F72585' : '1px solid #E4E7EC',
+                                          border: isRowHovered ? '1px solid #F72585' : (theme === 'dark' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E4E7EC'),
                                           display: 'inline-flex',
                                           alignItems: 'center',
                                           justifyContent: 'center',
                                           fontSize: '10px',
                                           fontWeight: 600,
-                                          color: isRowHovered ? '#F72585' : '#98A2B3',
+                                          color: isRowHovered ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#98A2B3'),
                                           background: isRowHovered ? 'rgba(247,37,133,0.1)' : 'transparent',
                                           transition: 'all 0.2s'
                                         }}>{row.id}</span>
                                         <span style={{ 
                                           fontSize: '12px',
                                           fontWeight: isRowHovered ? 600 : 500,
-                                          color: '#344054',
+                                          color: theme === 'dark' ? '#ffffff' : '#344054',
                                           transition: 'color 0.2s'
                                         }}>{row.label}</span>
                                       </td>
@@ -1827,9 +1836,9 @@ export default function TailorView({
                                             onChange={(e) => handleValueChange(row.key, e.target.value)}
                                             style={{
                                               border: 'none',
-                                              borderBottom: '1px dashed #E4E7EC',
+                                              borderBottom: theme === 'dark' ? '1px dashed rgba(255,255,255,0.2)' : '1px dashed #E4E7EC',
                                               background: 'transparent',
-                                              color: isRowHovered ? '#F72585' : (theme === 'dark' ? '#fff' : '#172033'),
+                                              color: isRowHovered ? '#F72585' : (theme === 'dark' ? '#ffffff' : '#172033'),
                                               textAlign: 'center',
                                               width: '50px',
                                               fontWeight: 700,
@@ -1838,12 +1847,12 @@ export default function TailorView({
                                               transition: 'color 0.2s ease'
                                             }}
                                           />
-                                          <span style={{ fontSize: '11px', color: isRowHovered ? '#F72585' : '#98A2B3', fontWeight: 500 }}>
+                                          <span style={{ fontSize: '11px', color: isRowHovered ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#98A2B3'), fontWeight: 500 }}>
                                             {measurementUnit === 'inch' ? '"' : ' cm'}
                                           </span>
                                         </div>
                                       </td>
-                                      <td style={{ padding: '8px 4px', color: row.note === '—' ? '#98A2B3' : '#667085', fontSize: '11px', fontWeight: 400 }}>{row.note}</td>
+                                      <td style={{ padding: '8px 4px', color: row.note === '—' ? (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3') : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085'), fontSize: '11px', fontWeight: 400 }}>{row.note}</td>
                                     </tr>
                                   );
                                 })}
@@ -1861,9 +1870,9 @@ export default function TailorView({
                         gap: '12px', 
                         marginTop: 'auto',
                         paddingTop: '12px',
-                        borderTop: '1px solid #E4E7EC'
+                        borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'
                       }}>
-                        <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', fontWeight: 600, color: '#344054', padding: '8px 16px', borderRadius: '6px', border: '1px solid #E4E7EC' }} onClick={() => alert("Generating size PDF sheet...")}>
+                        <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff', padding: '8px 16px', borderRadius: '6px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC' }} onClick={() => alert("Generating size PDF sheet...")}>
                           <Upload size={14} /> Download PDF
                         </button>
                         <button className="btn btn-primary" style={{ fontSize: '11px', fontWeight: 600, color: '#FFFFFF', background: '#F72585', border: 'none', borderRadius: '6px', padding: '8px 24px', cursor: 'pointer' }} onClick={() => {
@@ -1878,11 +1887,11 @@ export default function TailorView({
                   {/* Measurement Chart Sub-tab */}
                   {measurementsSubTab === 'chart' && (
                     <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }} className="animate-fade-in">
-                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#172033', display: 'block' }}>Size Scaling Analysis</span>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8F9FB', padding: '24px', borderRadius: '12px', textAlign: 'center', border: '1px solid #E4E7EC' }}>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033', display: 'block' }}>Size Scaling Analysis</span>
+                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8F9FB', padding: '24px', borderRadius: '12px', textAlign: 'center', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
                         <TrendingUp size={36} style={{ color: '#F72585', marginBottom: '10px' }} />
-                        <h5 style={{ margin: '0 0 6px 0', fontSize: '13px', fontWeight: 700, color: '#172033' }}>Historical Size Deviation Tracker</h5>
-                        <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, color: '#667085' }}>Mannequin scan telemetry indicates fit parameters have stayed 98% consistent since first capture.</p>
+                        <h5 style={{ margin: '0 0 6px 0', fontSize: '13px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033' }}>Historical Size Deviation Tracker</h5>
+                        <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085' }}>Mannequin scan telemetry indicates fit parameters have stayed 98% consistent since first capture.</p>
                       </div>
                     </div>
                   )}
@@ -1897,20 +1906,20 @@ export default function TailorView({
                   padding: '20px',
                   gap: '16px',
                   background: theme === 'dark' ? '#141126' : '#ffffff',
-                  border: '1px solid #E4E7EC',
+                  border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
                   borderRadius: '12px'
                 }}>
                   
                   {/* Measurement Notes box */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: '1 1 auto', overflowY: 'auto' }}>
-                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '13px', fontWeight: 700, color: '#172033' }}>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '13px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033' }}>
                       <FileText size={16} style={{ color: '#F72585' }} />
                       <span>Measurement Notes</span>
                     </div>
-                    <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, color: '#667085', lineHeight: '1.4', overflowY: 'auto', maxHeight: '70px', paddingRight: '4px' }}>
+                    <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085', lineHeight: '1.4', overflowY: 'auto', maxHeight: '70px', paddingRight: '4px' }}>
                       {activeCust.notes}
                     </p>
-                    <button className="btn btn-secondary" style={{ width: '100%', fontSize: '11px', fontWeight: 600, color: '#344054', height: '28px', padding: '4px 8px', marginTop: 'auto', borderRadius: '6px', border: '1px solid #E4E7EC' }} onClick={() => {
+                    <button className="btn btn-secondary" style={{ width: '100%', fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff', height: '28px', padding: '4px 8px', marginTop: 'auto', borderRadius: '6px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC' }} onClick={() => {
                       const note = prompt("Enter customer notes:", activeCust.notes);
                       if (note !== null) {
                         setCustomersList(customersList.map(c => {
@@ -1923,11 +1932,11 @@ export default function TailorView({
                     </button>
                   </div>
 
-                  <hr style={{ border: 'none', borderTop: '1px solid #E4E7EC', margin: 0 }} />
+                  <hr style={{ border: 'none', borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', margin: 0 }} />
 
                   {/* Measurement History box */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: '1 1 auto' }}>
-                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '12px', fontWeight: 700, color: '#344054' }}>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '12px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#344054' }}>
                       <Clock size={16} style={{ color: '#F72585' }} />
                       <span>Measurement History</span>
                     </div>
@@ -1935,51 +1944,51 @@ export default function TailorView({
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px 0', overflowY: 'auto', maxHeight: '75px', paddingRight: '4px' }}>
                       {activeCust.history.map((hist, idx) => (
                         <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span style={{ color: '#475467', fontSize: '10px', fontWeight: 500 }}>{hist.date}</span>
+                          <span style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467', fontSize: '10px', fontWeight: 500 }}>{hist.date}</span>
                           <span style={{
                             padding: '2px 8px',
                             borderRadius: '12px',
                             fontSize: '9px',
                             fontWeight: 600,
-                            background: hist.source === 'AI Scan' ? '#FCE7F3' : hist.source === 'Manual' ? '#EFF6FF' : '#FEF0C7',
-                            color: hist.source === 'AI Scan' ? '#D63384' : hist.source === 'Manual' ? '#2563EB' : '#F79009'
+                            background: hist.source === 'AI Scan' ? (theme === 'dark' ? 'rgba(247,37,133,0.18)' : '#FCE7F3') : hist.source === 'Manual' ? (theme === 'dark' ? 'rgba(37,99,235,0.18)' : '#EFF6FF') : (theme === 'dark' ? 'rgba(245,158,11,0.18)' : '#FEF0C7'),
+                            color: hist.source === 'AI Scan' ? (theme === 'dark' ? '#FF66B2' : '#D63384') : hist.source === 'Manual' ? (theme === 'dark' ? '#60A5FA' : '#2563EB') : (theme === 'dark' ? '#FBBF24' : '#F79009')
                           }}>{hist.source}</span>
                         </div>
                       ))}
                     </div>
 
-                    <button className="btn btn-secondary" style={{ width: '100%', fontSize: '11px', fontWeight: 600, color: '#344054', height: '28px', padding: '4px 8px', marginTop: 'auto', borderRadius: '6px', border: '1px solid #E4E7EC' }} onClick={() => alert("Showing history logs...")}>
+                    <button className="btn btn-secondary" style={{ width: '100%', fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff', height: '28px', padding: '4px 8px', marginTop: 'auto', borderRadius: '6px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC' }} onClick={() => alert("Showing history logs...")}>
                       View All History
                     </button>
                   </div>
 
-                  <hr style={{ border: 'none', borderTop: '1px solid #E4E7EC', margin: 0 }} />
+                  <hr style={{ border: 'none', borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', margin: 0 }} />
 
                   {/* Quick Stats box */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: '1 1 auto' }}>
-                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '12px', fontWeight: 700, color: '#344054' }}>
+                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center', fontSize: '12px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#344054' }}>
                       <Activity size={16} style={{ color: '#F72585' }} />
                       <span>Quick Stats</span>
                     </div>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', textAlign: 'center' }}>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: '1px solid #E4E7EC' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, color: '#667085', display: 'block' }}>Total Scans</span>
-                        <strong style={{ fontSize: '14px', fontWeight: 700, color: '#172033' }}>{activeCust.history.length}</strong>
+                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
+                        <span style={{ fontSize: '9px', fontWeight: 500, color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block' }}>Total Scans</span>
+                        <strong style={{ fontSize: '14px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033' }}>{activeCust.history.length}</strong>
                       </div>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: '1px solid #E4E7EC' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, color: '#667085', display: 'block' }}>Avg Updates</span>
-                        <strong style={{ fontSize: '14px', fontWeight: 700, color: '#172033' }}>2.1/cust</strong>
+                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
+                        <span style={{ fontSize: '9px', fontWeight: 500, color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block' }}>Avg Updates</span>
+                        <strong style={{ fontSize: '14px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033' }}>2.1/cust</strong>
                       </div>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: '1px solid #E4E7EC' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, color: '#667085', display: 'block' }}>AI Scan</span>
+                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
+                        <span style={{ fontSize: '9px', fontWeight: 500, color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block' }}>AI Scan</span>
                         <strong style={{ fontSize: '14px', fontWeight: 700, color: '#F72585' }}>
                           {activeCust.history.filter(h => h.source === 'AI Scan').length}
                         </strong>
                       </div>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: '1px solid #E4E7EC' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, color: '#667085', display: 'block' }}>Manual</span>
-                        <strong style={{ fontSize: '14px', fontWeight: 700, color: '#172033' }}>
+                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#F8F9FB', padding: '6px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
+                        <span style={{ fontSize: '9px', fontWeight: 500, color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block' }}>Manual</span>
+                        <strong style={{ fontSize: '14px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033' }}>
                           {activeCust.history.filter(h => h.source === 'Manual').length}
                         </strong>
                       </div>
@@ -1997,12 +2006,12 @@ export default function TailorView({
                 flexDirection: 'column', 
                 gap: '20px',
                 background: theme === 'dark' ? '#141126' : '#ffffff',
-                border: '1px solid #E4E7EC',
+                border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
                 borderRadius: '12px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h4 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#172033' }}>Recent Measurements</h4>
-                  <button className="btn btn-ghost" style={{ fontSize: '11px', fontWeight: 600, color: '#344054', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => alert("Viewing all customer registry...")}>
+                  <button className="btn btn-ghost" style={{ fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#344054', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => alert("Viewing all customer registry...")}>
                     View all <ArrowRight size={14} />
                   </button>
                 </div>
@@ -2010,7 +2019,7 @@ export default function TailorView({
                 <div style={{ overflowX: 'auto' }}>
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
                     <thead>
-                      <tr style={{ borderBottom: '1px solid #E4E7EC', color: '#667085', textAlign: 'left' }}>
+                      <tr style={{ borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', textAlign: 'left' }}>
                         <th style={{ padding: '12px 10px', fontSize: '10px', fontWeight: 600 }}>Customer</th>
                         <th style={{ padding: '12px 10px', fontSize: '10px', fontWeight: 600 }}>Category</th>
                         <th style={{ padding: '12px 10px', fontSize: '10px', fontWeight: 600 }}>Source</th>
@@ -2024,15 +2033,15 @@ export default function TailorView({
                     </thead>
                     <tbody>
                       {filteredCustomers.map((cust, idx) => (
-                        <tr key={cust.id} style={{ borderBottom: '1px solid #E4E7EC' }}>
+                        <tr key={cust.id} style={{ borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid #E4E7EC' }}>
                           <td style={{ padding: '12px 10px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                               <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden' }}>
                                 <img src={cust.image} alt={cust.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               </div>
                               <div>
-                                <strong style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#344054' }}>{cust.name}</strong>
-                                <span style={{ fontSize: '10px', fontWeight: 400, color: '#98A2B3' }}>{cust.id}</span>
+                                <strong style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{cust.name}</strong>
+                                <span style={{ fontSize: '10px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : '#98A2B3' }}>{cust.id}</span>
                               </div>
                             </div>
                           </td>
@@ -2042,8 +2051,8 @@ export default function TailorView({
                               borderRadius: '12px',
                               fontSize: '9px',
                               fontWeight: 600,
-                              background: cust.cat === 'Women' ? '#FCE7F3' : '#EFF6FF',
-                              color: cust.cat === 'Women' ? '#D63384' : '#2563EB'
+                              background: cust.cat === 'Women' ? (theme === 'dark' ? 'rgba(247,37,133,0.18)' : '#FCE7F3') : (theme === 'dark' ? 'rgba(37,99,235,0.18)' : '#EFF6FF'),
+                              color: cust.cat === 'Women' ? (theme === 'dark' ? '#FF66B2' : '#D63384') : (theme === 'dark' ? '#60A5FA' : '#2563EB')
                             }}>{cust.cat}</span>
                           </td>
                           <td style={{ padding: '12px 10px' }}>
@@ -2052,25 +2061,25 @@ export default function TailorView({
                               borderRadius: '12px',
                               fontSize: '9px',
                               fontWeight: 600,
-                              background: cust.source === 'AI Scan' ? '#FCE7F3' : cust.source === 'Manual' ? '#EFF6FF' : '#FEF0C7',
-                              color: cust.source === 'AI Scan' ? '#D63384' : cust.source === 'Manual' ? '#2563EB' : '#F79009'
+                              background: cust.source === 'AI Scan' ? (theme === 'dark' ? 'rgba(247,37,133,0.18)' : '#FCE7F3') : cust.source === 'Manual' ? (theme === 'dark' ? 'rgba(37,99,235,0.18)' : '#EFF6FF') : (theme === 'dark' ? 'rgba(245,158,11,0.18)' : '#FEF0C7'),
+                              color: cust.source === 'AI Scan' ? (theme === 'dark' ? '#FF66B2' : '#D63384') : cust.source === 'Manual' ? (theme === 'dark' ? '#60A5FA' : '#2563EB') : (theme === 'dark' ? '#FBBF24' : '#F79009')
                             }}>{cust.source}</span>
                           </td>
-                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: '#344054' }}>{formatValue(cust.chest)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
-                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: '#344054' }}>{formatValue(cust.waist)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
-                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: '#344054' }}>{formatValue(cust.hip)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
-                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: '#344054' }}>{formatValue(cust.fullLength)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
-                          <td style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 400, color: '#667085' }}>{cust.updated}</td>
+                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{formatValue(cust.chest)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
+                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{formatValue(cust.waist)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
+                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{formatValue(cust.hip)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
+                          <td style={{ padding: '12px 10px', textAlign: 'center', fontSize: '12px', fontWeight: 600, color: theme === 'dark' ? '#ffffff' : '#344054' }}>{formatValue(cust.fullLength)}{measurementUnit === 'inch' ? '"' : ' cm'}</td>
+                          <td style={{ padding: '12px 10px', fontSize: '11px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085' }}>{cust.updated}</td>
                           <td style={{ padding: '12px 10px', textAlign: 'right' }}>
                             <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                              <button className="btn btn-secondary" style={{ padding: '6px', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #E4E7EC' }} onClick={() => {
+                              <button className="btn btn-secondary" style={{ padding: '6px', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#344054', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC' }} onClick={() => {
                                 setSelectedCustomerId(cust.id);
                                 setMeasurementsSubTab('body');
                                 alert(`Loaded sizes for ${cust.name}`);
                               }}>
                                 <Eye size={12} />
                               </button>
-                              <button className="btn btn-secondary" style={{ padding: '6px', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #E4E7EC' }} onClick={() => {
+                              <button className="btn btn-secondary" style={{ padding: '6px', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#344054', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC' }} onClick={() => {
                                 setSelectedCustomerId(cust.id);
                                 setMeasurementsSubTab('body');
                               }}>
