@@ -611,7 +611,7 @@ export default function App() {
     <div className="app-container">
       
       {/* Top sticky navigation bar */}
-      {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
+      {!['customer', 'tailor', 'designer', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
         <>
           <header className="top-nav">
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>

@@ -609,26 +609,49 @@ export default function TailorView({
         </div>
 
         {/* Web / Desktop Header Navigation Options */}
-        <div className="role-switcher">
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="desktop-header-nav">
           {[
-            { id: 'dashboard', label: 'Dashboard' },
-            { id: 'orders', label: 'Orders' },
-            { id: 'measurements', label: 'Measurements' },
-            { id: 'inventory', label: 'Inventory' },
-            { id: 'calendar', label: 'Calendar' },
-            { id: 'earnings', label: 'Earnings' },
-            { id: 'chat', label: 'Support' },
-            { id: 'reviews', label: 'Reviews' }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`role-btn ${activeTab === tab.id ? 'active' : ''}`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+            { id: 'dashboard', label: 'Dashboard', icon: <Home size={15} /> },
+            { id: 'orders', label: 'Orders', icon: <ShoppingBag size={15} /> },
+            { id: 'measurements', label: 'Measurements', icon: <Ruler size={15} /> },
+            { id: 'inventory', label: 'Inventory', icon: <Database size={15} /> },
+            { id: 'calendar', label: 'Calendar', icon: <Calendar size={15} /> },
+            { id: 'earnings', label: 'Earnings', icon: <DollarSign size={15} /> },
+            { id: 'chat', label: 'Support', icon: <MessageSquare size={15} /> },
+            { id: 'reviews', label: 'Reviews', icon: <Star size={15} /> }
+          ].map(tab => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={isActive ? 'btn-text-white-force' : ''}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 14px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: isActive 
+                    ? 'linear-gradient(135deg, #F72585 0%, #8B12C9 100%)' 
+                    : 'transparent',
+                  color: isActive 
+                    ? '#ffffff' 
+                    : (theme === 'dark' ? 'rgba(255,255,255,0.85)' : '#475467'),
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: isActive ? '0 4px 12px rgba(247,37,133,0.3)' : 'none'
+                }}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            );
+          })}
+        </nav>
 
         {/* Right Side Quick Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
