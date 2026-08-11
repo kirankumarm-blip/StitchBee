@@ -316,30 +316,26 @@ export default function OrdersPage({ theme, setActiveTab }) {
       {/* KPI CARDS (REAL RECHARTS SPARKELINES) */}
       <OrderStats orders={orders} theme={theme} />
 
-      {/* REAL-TIME LINE CHART (65%) + DONUT CHART (35%) */}
+      {/* REAL-TIME LINE CHART + DONUT CHART */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-        <div style={{ flex: '65', minWidth: '320px' }}>
-          <RealTimeOrderChart 
-            trendData={realTimeTrendData} 
-            timeRange={realtimeTimeRange} 
-            setTimeRange={setRealtimeTimeRange} 
-            lastUpdatedSeconds={lastUpdatedSeconds}
-            onRefresh={() => setLastUpdatedSeconds(0)}
-            theme={theme} 
-          />
-        </div>
-        <div style={{ flex: '35', minWidth: '280px' }}>
-          <OrderStatusDonut 
-            orders={orders} 
-            timeRange={donutTimeRange} 
-            setTimeRange={setDonutTimeRange} 
-            theme={theme} 
-          />
-        </div>
+        <RealTimeOrderChart 
+          trendData={realTimeTrendData} 
+          timeRange={realtimeTimeRange} 
+          setTimeRange={setRealtimeTimeRange} 
+          lastUpdatedSeconds={lastUpdatedSeconds}
+          onRefresh={() => setLastUpdatedSeconds(0)}
+          theme={theme} 
+        />
+        <OrderStatusDonut 
+          orders={orders} 
+          timeRange={donutTimeRange} 
+          setTimeRange={setDonutTimeRange} 
+          theme={theme} 
+        />
       </div>
 
-      {/* ORDERS TABLE — FULL WIDTH */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
+      {/* MAIN ORDERS PRODUCTION TABLE */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <OrderTable 
           orders={paginatedOrders} 
           onEditStage={setSelectedOrderForEdit} 
@@ -362,7 +358,7 @@ export default function OrdersPage({ theme, setActiveTab }) {
         />
       </div>
 
-      {/* ORDER PERFORMANCE (50%) + REVENUE (50%) */}
+      {/* PERFORMANCE BAR CHART + REVENUE LINE CHART */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
         <OrderPerformanceChart 
           performanceData={performanceData} 
@@ -380,8 +376,8 @@ export default function OrdersPage({ theme, setActiveTab }) {
         />
       </div>
 
-      {/* UPCOMING DELIVERIES (33%) + LIVE ACTIVITY (33%) + QUICK ACTIONS (33%) */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+      {/* UPCOMING DELIVERIES + LIVE ACTIVITY + QUICK ACTIONS */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
         <UpcomingDeliveries 
           orders={orders} 
           onViewCalendar={() => setActiveTab('calendar')} 
