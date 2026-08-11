@@ -11,6 +11,7 @@ import OrdersPage from './orders/OrdersPage';
 import EarningsPage from './earnings/EarningsPage';
 import ReviewsPage from './reviews/ReviewsPage';
 import ChatSupportPage from './chat/ChatSupportPage';
+import InventoryPage from './inventory/InventoryPage';
 
 export default function TailorView({ 
   tailors, setTailors, orders, updateOrderStatus, theme, setTheme, currentUser, onLogout 
@@ -2110,67 +2111,10 @@ export default function TailorView({
 
         {/* TAB 4: INVENTORY */}
         {activeTab === 'inventory' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-              <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Inventory Stock Manager</h3>
-              <button className="btn btn-primary" onClick={() => setActiveTab('material-requests')}>Request Material from Admin</button>
-            </div>
-
-            {/* Inventory cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
-              {inventoryStock.map(stock => (
-                <div key={stock.id} className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ color: 'var(--primary)' }}>{stock.icon}</span>
-                    <span style={{
-                      padding: '2px 8px',
-                      borderRadius: '12px',
-                      fontSize: '0.7rem',
-                      background: stock.status === 'Low Stock' ? 'rgba(239,68,68,0.1)' : 'rgba(16,185,129,0.1)',
-                      color: stock.status === 'Low Stock' ? '#ef4444' : '#10b981'
-                    }}>{stock.status}</span>
-                  </div>
-                  <div>
-                    <strong style={{ fontSize: '1.2rem', display: 'block', color: 'var(--text-primary)' }}>{stock.quantity} {stock.unit}</strong>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{stock.name}</span>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginTop: '2px' }}>Category: {stock.category}</span>
-                  </div>
-                  <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
-                    <button className="btn btn-secondary" style={{ flex: 1, padding: '4px', fontSize: '0.7rem' }} onClick={() => {
-                      setInventoryStock(inventoryStock.map(i => i.id === stock.id ? {...i, quantity: i.quantity + 20, status: 'Good'} : i));
-                    }}>+ 20</button>
-                    <button className="btn btn-secondary" style={{ flex: 1, padding: '4px', fontSize: '0.7rem' }} onClick={() => {
-                      setInventoryStock(inventoryStock.map(i => i.id === stock.id ? {...i, quantity: Math.max(0, i.quantity - 10), status: i.quantity - 10 < 50 ? 'Low Stock' : 'Good'} : i));
-                    }}>- 10</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Add Stock Form */}
-            <div className="glass-card-no-hover" style={{ padding: '20px' }}>
-              <h4 style={{ margin: '0 0 16px 0', fontSize: '0.95rem', fontWeight: '800' }}>Add Stock Entry</h4>
-              <form onSubmit={handleAddStock} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', alignItems: 'end' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Category</label>
-                  <select className="form-select" value={newStockCategory} onChange={e => setNewStockCategory(e.target.value)}>
-                    <option value="Fabric Rolls">Fabric Rolls</option>
-                    <option value="Thread Spools">Thread Spools</option>
-                    <option value="Accessories">Accessories</option>
-                  </select>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Material Name</label>
-                  <input type="text" className="form-input" placeholder="e.g. Red Silk Velvet" value={newStockName} onChange={e => setNewStockName(e.target.value)} required />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: '700' }}>Quantity</label>
-                  <input type="number" className="form-input" placeholder="e.g. 50" value={newStockQty} onChange={e => setNewStockQty(e.target.value)} required />
-                </div>
-                <button type="submit" className="btn btn-primary">Add Entry</button>
-              </form>
-            </div>
-          </div>
+          <InventoryPage 
+            theme={theme} 
+            onRequestMaterial={() => setActiveTab('material-requests')} 
+          />
         )}
 
         {/* TAB 5: CALENDAR */}
