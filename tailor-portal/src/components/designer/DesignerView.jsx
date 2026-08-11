@@ -201,23 +201,23 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '7px 15px',
+                  padding: '7px 18px',
                   fontSize: '13px',
                   fontWeight: 700,
-                  borderRadius: '20px',
-                  border: isActive ? '1.5px solid #F72585' : '1.5px solid transparent',
+                  borderRadius: '24px',
+                  border: isActive ? '2px solid #F72585' : '2px solid transparent',
                   background: isActive 
-                    ? (theme === 'dark' ? 'rgba(247,37,133,0.14)' : '#FFF0F6') 
+                    ? (theme === 'dark' ? 'rgba(247,37,133,0.12)' : '#FFF0F6') 
                     : 'transparent',
                   color: isActive 
                     ? '#F72585' 
                     : (theme === 'dark' ? 'rgba(255,255,255,0.85)' : '#475467'),
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
-                  boxShadow: isActive ? '0 0 12px rgba(247,37,133,0.2)' : 'none'
+                  boxShadow: isActive ? '0 2px 10px rgba(247,37,133,0.15)' : 'none'
                 }}
               >
-                {tab.icon}
+                {React.cloneElement(tab.icon, { color: isActive ? '#F72585' : 'currentColor' })}
                 {tab.label}
               </button>
             );
