@@ -1277,45 +1277,57 @@ export default function TailorView({
           });
 
           return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              {/* Page Header */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: "'Inter', sans-serif" }}>
+              
+              {/* PAGE HEADER */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                  <h2 style={{ margin: 0, fontSize: '1.75rem', fontWeight: '800', color: theme === 'dark' ? '#ffffff' : '#0f172a' }}>Orders</h2>
-                  <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Manage and track all stitching orders</p>
+                  <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1.2' }}>Orders</h2>
+                  <p style={{ margin: '3px 0 0 0', fontSize: '12px', fontWeight: 400, color: 'var(--text-secondary)' }}>Manage and track all stitching orders</p>
                 </div>
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+                
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <div style={{ position: 'relative', width: '260px' }}>
-                    <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                    <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                     <input 
                       type="text" 
                       placeholder="Search by order ID, customer or outfit..." 
                       className="form-input" 
-                      style={{ paddingLeft: '34px', width: '100%', height: '38px', borderRadius: '8px' }}
+                      style={{ paddingLeft: '36px', width: '100%', height: '38px', borderRadius: '8px', fontSize: '12px' }}
                     />
                   </div>
-                  <button style={{
-                    background: theme === 'dark' ? '#1c1830' : '#ffffff',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '8px',
-                    width: '38px',
-                    height: '38px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--text-primary)',
-                    cursor: 'pointer'
-                  }}>
+                  
+                  <button 
+                    title="Filter options"
+                    style={{
+                      background: theme === 'dark' ? '#141126' : '#ffffff',
+                      border: '1px solid var(--border-color)',
+                      borderRadius: '8px',
+                      width: '38px',
+                      height: '38px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                    }}
+                  >
                     <Sliders size={16} />
                   </button>
-                  <button className="btn btn-primary" style={{ height: '38px', display: 'flex', alignItems: 'center', gap: '8px', padding: '0 16px', fontWeight: 'bold' }} onClick={() => alert("Creating new customer request...")}>
+
+                  <button 
+                    className="btn btn-primary" 
+                    style={{ height: '38px', display: 'flex', alignItems: 'center', gap: '6px', padding: '0 16px', fontSize: '12px', fontWeight: 600, borderRadius: '8px' }} 
+                    onClick={() => alert("Creating new customer request...")}
+                  >
                     <Plus size={16} /> New Request
                   </button>
                 </div>
               </div>
 
-              {/* Category / Status Tabs */}
-              <div style={{ display: 'flex', gap: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
+              {/* ORDER STATUS TABS */}
+              <div style={{ display: 'flex', gap: '10px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', overflowX: 'auto', whiteSpace: 'nowrap' }}>
                 {[
                   { id: 'new', label: 'New Requests', count: 4 },
                   { id: 'active', label: 'Active Stitching', count: 12 },
@@ -1327,126 +1339,203 @@ export default function TailorView({
                     <button
                       key={sub.id}
                       onClick={() => setOrdersSubTab(sub.id)}
-                      className={`filter-capsule ${isActive ? 'active' : ''}`}
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '20px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        border: isActive ? '1px solid var(--primary)' : '1px solid var(--border-color)',
+                        background: isActive ? 'var(--primary)' : (theme === 'dark' ? '#141126' : '#ffffff'),
+                        color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'all 0.2s ease'
+                      }}
                     >
-                      {sub.label}
-                      <span className="filter-count">{sub.count}</span>
+                      <span>{sub.label}</span>
+                      <span style={{
+                        padding: '1px 6px',
+                        borderRadius: '10px',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        background: isActive ? 'rgba(255,255,255,0.25)' : (theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#f1f5f9'),
+                        color: isActive ? '#ffffff' : 'var(--text-muted)'
+                      }}>
+                        {sub.count}
+                      </span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Split Workspace */}
-              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '24px' }}>
-                
-                {/* Left Column: Active Orders Table & Cards */}
-                <div style={{ flex: '2', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                  
-                  {/* Analytics Cards row (Aligned inside left column) */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-                    {[
-                      { label: 'Active Orders', value: '12', change: '↑ 2 from yesterday', color: '#f72585', bg: 'rgba(247,37,133,0.08)', icon: <ShoppingBag size={20} /> },
-                      { label: 'In Progress', value: '8', change: '↑ 3 from yesterday', color: '#7209b7', bg: 'rgba(114,9,183,0.08)', icon: <Scissors size={20} /> },
-                      { label: 'Cutting / Stitching', value: '4', change: '↓ 1 from yesterday', color: '#fbbf24', bg: 'rgba(245,158,11,0.08)', icon: <Scissors size={20} /> },
-                      { label: 'Ready for Delivery', value: '0', change: '- No change', color: '#4cc9f0', bg: 'rgba(76,201,240,0.08)', icon: <ShoppingBag size={20} /> }
-                    ].map((card, idx) => (
-                      <div 
-                        key={idx} 
-                        style={{
-                          background: theme === 'dark' ? '#141126' : '#ffffff',
-                          border: '1px solid var(--border-color)',
-                          borderRadius: '12px',
-                          padding: '16px 20px',
-                          display: 'flex',
-                          gap: '16px',
-                          alignItems: 'center',
-                          boxShadow: '0 4px 6px rgba(0,0,0,0.02)'
-                        }}
-                      >
-                        <div style={{ padding: '10px', borderRadius: '8px', background: card.bg, color: card.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          {card.icon}
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', fontWeight: '600' }}>{card.label}</span>
-                          <strong style={{ fontSize: '1.4rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a' }}>{card.value}</strong>
-                          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block', marginTop: '2px' }}>{card.change}</span>
-                        </div>
-                      </div>
-                    ))}
+              {/* STATISTICS CARDS ROW */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                {[
+                  { label: 'Active Orders', value: '12', change: '↑ 2 from yesterday', color: '#f72585', icon: <ShoppingBag size={18} /> },
+                  { label: 'In Progress', value: '8', change: '↑ 3 from yesterday', color: '#8b5cf6', icon: <Clock size={18} /> },
+                  { label: 'Cutting / Stitching', value: '4', change: '↑ 1 from yesterday', color: '#f59e0b', icon: <Scissors size={18} /> },
+                  { label: 'Ready for Delivery', value: '0', change: 'No change', color: '#3b82f6', icon: <Truck size={18} /> }
+                ].map((card, idx) => (
+                  <div 
+                    key={idx} 
+                    style={{
+                      background: theme === 'dark' ? '#141126' : '#ffffff',
+                      border: '1px solid var(--border-color)',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '14px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                      height: '84px',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${card.color}15`, color: card.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {card.icon}
+                    </div>
+                    <div>
+                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', fontWeight: 500 }}>{card.label}</span>
+                      <strong style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1.1' }}>{card.value}</strong>
+                      <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', marginTop: '1px' }}>{card.change}</span>
+                    </div>
                   </div>
+                ))}
+              </div>
 
-                  {/* Table Box */}
-                  <div className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px', flex: '1' }}>
-                    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '800' }}>
-                      {ordersSubTab === 'new' ? 'New Booking Requests' : ordersSubTab === 'completed' ? 'Completed Orders' : ordersSubTab === 'cancelled' ? 'Cancelled Orders' : 'Active Orders'} ({filteredOrders.length})
-                    </h3>
+              {/* MAIN CONTENT SPLIT GRID: 67% LEFT / 33% RIGHT */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+                
+                {/* LEFT COLUMN: ORDERS TABLE CONTAINER (67% Desktop Ratio) */}
+                <div style={{ flex: '2', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  
+                  <div style={{
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        {ordersSubTab === 'new' ? 'New Booking Requests' : ordersSubTab === 'completed' ? 'Completed Orders' : ordersSubTab === 'cancelled' ? 'Cancelled Orders' : 'Active Orders'} ({filteredOrders.length})
+                      </h4>
+                      <button onClick={() => alert("Viewing all orders...")} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
+                        View all →
+                      </button>
+                    </div>
                     
-                    {/* Table */}
-                    <div style={{ overflowX: 'auto', flex: '1' }}>
-                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                    {/* Orders Table */}
+                    <div style={{ overflowX: 'auto' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                           <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', textAlign: 'left' }}>
-                            <th style={{ padding: '12px 10px' }}>Customer</th>
-                            <th style={{ padding: '12px 10px' }}>Outfit & Fabric</th>
-                            <th style={{ padding: '12px 10px' }}>Delivery Date</th>
-                            <th style={{ padding: '12px 10px' }}>Progress</th>
-                            <th style={{ padding: '12px 10px' }}>Status</th>
-                            <th style={{ padding: '12px 10px' }}>Amount</th>
-                            <th style={{ padding: '12px 10px', textAlign: 'right' }}>Actions</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Customer</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Outfit & Fabric</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Delivery Date</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Progress</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600 }}>Status</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Amount</th>
+                            <th style={{ padding: '8px 6px', fontSize: '11px', fontWeight: 600, textAlign: 'right' }}>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                           {filteredOrders.length === 0 ? (
                             <tr>
-                              <td colSpan="7" style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                                No orders found in this status category.
+                              <td colSpan="7" style={{ padding: '24px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '12px' }}>
+                                No orders found in this category.
                               </td>
                             </tr>
                           ) : (
                             filteredOrders.map(row => (
-                              <tr key={row.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                <td style={{ padding: '12px 10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden' }}>
-                                    <img src={row.image} alt={row.customer} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                  </div>
-                                  <div>
-                                    <strong style={{ display: 'block', color: theme === 'dark' ? '#fff' : '#0f172a' }}>{row.customer}</strong>
-                                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>#{row.id}</span>
-                                  </div>
-                                </td>
-                                <td style={{ padding: '12px 10px' }}>
-                                  <div style={{ fontWeight: '500' }}>{row.outfit}</div>
-                                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{row.fabric}</span>
-                                </td>
-                                <td style={{ padding: '12px 10px' }}>
-                                  <div>{row.date}</div>
-                                  <span style={{ fontSize: '0.7rem', color: row.daysLeft.includes('Completed') ? '#10b981' : 'var(--danger)', fontWeight: 'bold' }}>{row.daysLeft}</span>
-                                </td>
-                                <td style={{ padding: '12px 10px' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <div style={{ flex: 1, height: '4px', width: '60px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
-                                      <div style={{ height: '100%', width: `${row.progress}%`, background: row.progress === 100 ? '#10b981' : 'var(--primary)' }}></div>
+                              <tr key={row.id} style={{ borderBottom: '1px solid var(--border-color)', height: '58px' }}>
+                                {/* Customer Cell */}
+                                <td style={{ padding: '10px 6px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                                      <img src={row.image} alt={row.customer} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                     </div>
-                                    <span>{row.progress}%</span>
+                                    <div>
+                                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.customer}</div>
+                                      <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>#{row.id}</span>
+                                    </div>
                                   </div>
                                 </td>
-                                <td style={{ padding: '12px 10px' }}>
+
+                                {/* Outfit & Fabric */}
+                                <td style={{ padding: '10px 6px' }}>
+                                  <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>{row.outfit}</div>
+                                  <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--text-muted)' }}>{row.fabric}</span>
+                                </td>
+
+                                {/* Delivery Date */}
+                                <td style={{ padding: '10px 6px' }}>
+                                  <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.date}</div>
+                                  <span style={{ fontSize: '11px', fontWeight: 400, color: row.daysLeft.includes('3 days') ? '#f59e0b' : row.daysLeft.includes('Completed') ? '#10b981' : '#ef4444' }}>
+                                    {row.daysLeft}
+                                  </span>
+                                </td>
+
+                                {/* Progress */}
+                                <td style={{ padding: '10px 6px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <div style={{ flex: 1, height: '5px', minWidth: '50px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
+                                      <div style={{ height: '100%', width: `${row.progress}%`, background: row.progress === 100 ? '#10b981' : 'var(--primary)', borderRadius: '3px' }}></div>
+                                    </div>
+                                    <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{row.progress}%</span>
+                                  </div>
+                                </td>
+
+                                {/* Status */}
+                                <td style={{ padding: '10px 6px' }}>
                                   <span style={{
-                                    padding: '2px 8px',
+                                    padding: '3px 8px',
                                     borderRadius: '12px',
-                                    fontSize: '0.7rem',
-                                    background: row.status === 'In Progress' || row.status === 'Completed' ? 'rgba(16,185,129,0.1)' : row.status === 'Stitching' ? 'rgba(245,158,11,0.1)' : row.status === 'Cutting' ? 'rgba(76,201,240,0.1)' : 'rgba(255,255,255,0.05)',
-                                    color: row.status === 'In Progress' || row.status === 'Completed' ? '#10b981' : row.status === 'Stitching' ? '#f59e0b' : row.status === 'Cutting' ? '#4cc9f0' : 'var(--text-secondary)'
+                                    fontSize: '10px',
+                                    fontWeight: 600,
+                                    background: row.status === 'Completed' || row.status === 'Ready' ? 'rgba(16,185,129,0.1)' : 
+                                                row.status === 'Stitching' ? 'rgba(139,92,246,0.1)' : 
+                                                row.status === 'Cutting' ? 'rgba(245,158,11,0.1)' : 
+                                                row.status === 'Pending' ? (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9') : 
+                                                row.status === 'Cancelled' ? 'rgba(239,68,68,0.1)' :
+                                                'rgba(247,37,133,0.1)',
+                                    color: row.status === 'Completed' || row.status === 'Ready' ? '#10b981' : 
+                                           row.status === 'Stitching' ? '#8b5cf6' : 
+                                           row.status === 'Cutting' ? '#f59e0b' : 
+                                           row.status === 'Pending' ? 'var(--text-muted)' : 
+                                           row.status === 'Cancelled' ? '#ef4444' :
+                                           'var(--primary)'
                                   }}>{row.status}</span>
                                 </td>
-                                <td style={{ padding: '12px 10px', fontWeight: 'bold' }}>{row.amount}</td>
-                                <td style={{ padding: '12px 10px', textAlign: 'right' }}>
-                                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-                                    <button className="btn btn-secondary" style={{ padding: '6px', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setActiveTab('chat')}>
-                                      <MessageSquare size={12} />
+
+                                {/* Amount */}
+                                <td style={{ padding: '10px 6px', textAlign: 'right', fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                                  {row.amount}
+                                </td>
+
+                                {/* Actions */}
+                                <td style={{ padding: '10px 6px', textAlign: 'right' }}>
+                                  <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                                    <button 
+                                      title="Message Client"
+                                      className="btn btn-secondary" 
+                                      style={{ padding: '0', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                                      onClick={() => setActiveTab('chat')}
+                                    >
+                                      <MessageSquare size={13} />
                                     </button>
-                                    <button className="btn btn-secondary" style={{ padding: '6px', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => handleUpdateProgress(row.id, 10)}>
-                                      <Edit size={12} />
+                                    <button 
+                                      title="Edit / View Order"
+                                      className="btn btn-secondary" 
+                                      style={{ padding: '0', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                                      onClick={() => handleUpdateProgress(row.id, 10)}
+                                    >
+                                      <Edit size={13} />
                                     </button>
                                   </div>
                                 </td>
@@ -1457,101 +1546,144 @@ export default function TailorView({
                       </table>
                     </div>
 
-                    {/* Pagination footer */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingTop: '10px' }}>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Showing 1 to {filteredOrders.length} of {filteredOrders.length} orders</span>
+                    {/* Table Pagination Footer */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingTop: '8px', borderTop: '1px solid var(--border-color)' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>
+                        Showing 1 to {filteredOrders.length} of {filteredOrders.length} orders
+                      </span>
                       <div style={{ display: 'flex', gap: '4px' }}>
-                        <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '0.75rem' }}>‹</button>
-                        <button className="btn btn-primary" style={{ padding: '4px 12px', fontSize: '0.75rem', background: 'var(--primary)', color: '#fff', border: 'none' }}>1</button>
-                        <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: '0.75rem' }}>2</button>
-                        <button className="btn btn-secondary" style={{ padding: '4px 12px', fontSize: '0.75rem' }}>3</button>
-                        <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '0.75rem' }}>›</button>
+                        <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600 }}>‹</button>
+                        <button className="btn btn-primary" style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: '4px' }}>1</button>
+                        <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '4px' }}>2</button>
+                        <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '4px' }}>3</button>
+                        <button className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: '11px', fontWeight: 600 }}>›</button>
                       </div>
                     </div>
                   </div>
+
                 </div>
 
-                {/* Right Column: Widgets */}
-                <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                  {/* Donut chart (Order Summary) */}
-                  <div className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* RIGHT COLUMN: SIDEBAR WIDGETS (33% Desktop Ratio) */}
+                <div style={{ flex: '1', minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  
+                  {/* 1. Order Summary Donut Chart */}
+                  <div style={{
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '14px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800' }}>Order Summary</h4>
-                      <select className="form-select" style={{ width: '110px', padding: '4px', fontSize: '0.75rem' }}>
+                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Order Summary</h4>
+                      <select className="form-select" style={{ width: '100px', padding: '4px 8px', fontSize: '11px', borderRadius: '6px' }}>
                         <option>This Week</option>
                         <option>This Month</option>
                       </select>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                      <div style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '50%', background: 'conic-gradient(#10b981 0% 67%, #fbbf24 67% 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div style={{ width: '68px', height: '68px', borderRadius: '50%', background: theme === 'dark' ? '#141126' : '#ffffff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                          <strong style={{ fontSize: '1.25rem', fontWeight: '800' }}>12</strong>
-                          <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)' }}>Total</span>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                      {/* 85px Donut Chart */}
+                      <div style={{ position: 'relative', width: '85px', height: '85px', borderRadius: '50%', background: 'conic-gradient(#10b981 0% 67%, #f59e0b 67% 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <div style={{ width: '58px', height: '58px', borderRadius: '50%', background: theme === 'dark' ? '#141126' : '#ffffff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                          <strong style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: '1' }}>12</strong>
+                          <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 400 }}>Total</span>
                         </div>
                       </div>
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.75rem' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span> In Progress</span>
-                          <strong>8 (67%)</strong>
+
+                      {/* Legend */}
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981' }}></span> In Progress
+                          </span>
+                          <strong style={{ color: 'var(--text-primary)' }}>8 (67%)</strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#fbbf24' }}></span> Stitching</span>
-                          <strong>4 (33%)</strong>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b' }}></span> Stitching
+                          </span>
+                          <strong style={{ color: 'var(--text-primary)' }}>4 (33%)</strong>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#4cc9f0' }}></span> Ready</span>
-                          <strong>0 (0%)</strong>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-secondary)' }}>
+                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }}></span> Ready
+                          </span>
+                          <strong style={{ color: 'var(--text-primary)' }}>0 (0%)</strong>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Upcoming Deliveries */}
-                  <div className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* 2. Upcoming Deliveries */}
+                  <div style={{
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '14px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800' }}>Upcoming Deliveries</h4>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setActiveTab('calendar')}>View Calendar →</span>
+                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Upcoming Deliveries</h4>
+                      <span style={{ fontSize: '11px', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer' }} onClick={() => setActiveTab('calendar')}>
+                        View Calendar →
+                      </span>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {[
-                        { date: '22 May 2026', label: 'Priya Sharma - Bridal Lehenga', days: '3 days left', color: 'var(--primary)' },
-                        { date: '25 May 2026', label: 'Amit Verma - Sherwani', days: '6 days left', color: '#fbbf24' },
-                        { date: '28 May 2026', label: 'Megha Reddy - Anarkali Suit', days: '9 days left', color: '#4cc9f0' }
+                        { date: '22 May 2026', label: 'Priya Sharma · Bridal Lehenga', days: '3 days left', color: 'var(--primary)' },
+                        { date: '25 May 2026', label: 'Amit Verma · Sherwani', days: '6 days left', color: '#f59e0b' },
+                        { date: '28 May 2026', label: 'Megha Reddy · Anarkali Suit', days: '9 days left', color: '#3b82f6' }
                       ].map((deliv, idx) => (
-                        <div key={idx} style={{ display: 'flex', gap: '12px', alignItems: 'center', fontSize: '0.75rem' }}>
-                          <div style={{ padding: '8px', borderRadius: '8px', background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', color: deliv.color }}>
+                        <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '11px', borderBottom: idx < 2 ? '1px solid var(--border-color)' : 'none', paddingBottom: idx < 2 ? '10px' : '0' }}>
+                          <div style={{ padding: '6px', borderRadius: '6px', background: `${deliv.color}15`, color: deliv.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <Calendar size={16} />
                           </div>
                           <div style={{ flex: 1 }}>
-                            <strong style={{ display: 'block' }}>{deliv.date}</strong>
-                            <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{deliv.label}</span>
+                            <strong style={{ display: 'block', color: 'var(--text-primary)', fontSize: '12px', fontWeight: 600 }}>{deliv.date}</strong>
+                            <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 400 }}>{deliv.label}</span>
                           </div>
-                          <span style={{ fontSize: '0.7rem', color: 'var(--danger)', fontWeight: 'bold' }}>{deliv.days}</span>
+                          <span style={{ fontSize: '11px', color: '#ef4444', fontWeight: 600 }}>{deliv.days}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* Quick Actions */}
-                  <div className="glass-card-no-hover" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '800' }}>Quick Actions</h4>
+                  {/* 3. Quick Actions 2x2 Grid */}
+                  <div style={{
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '14px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  }}>
+                    <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Quick Actions</h4>
+                    
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                       {[
-                        { label: 'New Request', icon: <Plus size={16} />, color: 'var(--primary)', bg: 'rgba(247,37,133,0.08)' },
-                        { label: 'Upload Design', icon: <Upload size={16} />, color: '#7209b7', bg: 'rgba(114,9,183,0.08)' },
-                        { label: 'Measurement', icon: <Ruler size={16} />, color: '#fbbf24', bg: 'rgba(245,158,11,0.08)' },
-                        { label: 'Message Client', icon: <MessageSquare size={16} />, color: '#4cc9f0', bg: 'rgba(76,201,240,0.08)' }
+                        { label: 'New Request', icon: <Plus size={16} />, isPrimary: true },
+                        { label: 'Upload Design', icon: <Upload size={16} />, isPrimary: false },
+                        { label: 'Measurement', icon: <Ruler size={16} />, isPrimary: false },
+                        { label: 'Message Client', icon: <MessageSquare size={16} />, isPrimary: false }
                       ].map((act, idx) => (
                         <button 
                           key={idx}
                           onClick={() => alert(`Executing: ${act.label}...`)}
                           style={{
-                            background: theme === 'dark' ? '#1c1830' : '#f8fafc',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: '10px',
-                            padding: '12px',
+                            background: act.isPrimary ? 'rgba(247,37,133,0.08)' : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#f8fafc'),
+                            border: act.isPrimary ? '1px solid var(--primary)' : '1px solid var(--border-color)',
+                            borderRadius: '8px',
+                            padding: '12px 10px',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -1559,17 +1691,14 @@ export default function TailorView({
                             cursor: 'pointer',
                             transition: 'all 0.2s ease'
                           }}
-                          onMouseEnter={e => e.currentTarget.style.borderColor = act.color}
-                          onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border-color)'}
                         >
-                          <span style={{ color: act.color, display: 'flex', padding: '6px', borderRadius: '50%', background: act.bg }}>{act.icon}</span>
-                          <span style={{ fontSize: '0.65rem', fontWeight: 'bold', color: 'var(--text-secondary)' }}>{act.label}</span>
+                          <span style={{ color: act.isPrimary ? 'var(--primary)' : 'var(--text-secondary)', display: 'flex' }}>{act.icon}</span>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: act.isPrimary ? 'var(--primary)' : 'var(--text-primary)' }}>{act.label}</span>
                         </button>
                       ))}
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           );
