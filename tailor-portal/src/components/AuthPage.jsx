@@ -524,11 +524,11 @@ export default function AuthPage({
                 flexDirection: 'column'
               }}
             >
-              <div className="headline-line-1" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <div className="headline-line-1">
                 <span>Crafting</span>
                 <span style={{ color: '#f72585' }}>Style.</span>
               </div>
-              <div className="headline-line-2" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <div className="headline-line-2">
                 <span style={{ color: '#7209b7' }}>Precision.</span>
                 <span>Perfection.</span>
               </div>

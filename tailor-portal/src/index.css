@@ -12151,6 +12151,12 @@ body.light-theme .premium-footer h5 {
 }
 
 /* Tailor Partner AuthPage Login & Signup Responsive Media Queries */
+.headline-line-1, .headline-line-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 @media (max-width: 1024px) {
   .auth-main-wrapper {
     flex-direction: column !important;
