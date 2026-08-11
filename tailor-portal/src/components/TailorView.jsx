@@ -1650,6 +1650,9 @@ export default function TailorView({
                     ].map(tab => {
                       const isActive = measurementsSubTab === tab.id;
                       const isDisabled = tab.id === '3d';
+                      const textColor = isDisabled 
+                        ? (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3') 
+                        : (isActive ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085'));
                       return (
                         <button
                           key={tab.id}
@@ -1657,22 +1660,23 @@ export default function TailorView({
                             if (!isDisabled) setMeasurementsSubTab(tab.id);
                             else alert("3D Mannequin fitting telemetry coming in StitchBee 2.0!");
                           }}
-                          className={isActive ? "btn-primary" : ""}
                           style={{
-                            background: isActive ? 'rgba(247,37,133,0.15)' : 'transparent',
-                            border: isActive ? '1px solid #F72585' : 'none',
+                            background: isActive ? (theme === 'dark' ? 'rgba(247,37,133,0.18)' : 'rgba(247,37,133,0.08)') : 'transparent',
+                            border: isActive ? '1px solid #F72585' : '1px solid transparent',
                             borderRadius: '6px',
                             fontSize: '11px',
                             fontWeight: isActive ? 600 : 500,
-                            color: isDisabled ? (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3') : (isActive ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085')),
+                            color: textColor,
                             padding: '6px 12px',
                             cursor: isDisabled ? 'not-allowed' : 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px'
+                            gap: '6px',
+                            transition: 'all 0.2s ease'
                           }}
                         >
-                          {tab.icon} <span style={{ color: isDisabled ? (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3') : (isActive ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085')) }}>{tab.label}</span>
+                          <span style={{ color: textColor, display: 'inline-flex', alignItems: 'center' }}>{tab.icon}</span>
+                          <span style={{ color: textColor }}>{tab.label}</span>
                         </button>
                       );
                     })}
