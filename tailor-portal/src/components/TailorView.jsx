@@ -533,20 +533,16 @@ export default function TailorView({
             className="mobile-menu-toggle-btn"
             onClick={() => setSidebarOpen(!sidebarOpen)} 
             style={{ 
-              background: 'rgba(247,37,133,0.08)', 
-              border: '1px solid rgba(247,37,133,0.2)', 
-              borderRadius: '10px', 
-              padding: '8px 12px', 
-              color: 'var(--primary)', 
+              background: 'none', 
+              border: 'none', 
+              padding: '6px', 
+              color: 'var(--text-primary)', 
               cursor: 'pointer', 
-              alignItems: 'center', 
-              gap: '6px',
-              fontWeight: 700,
-              fontSize: '0.85rem'
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
-            <Menu size={20} />
-            <span>Menu</span>
+            <Menu size={24} />
           </button>
 
           <div 
