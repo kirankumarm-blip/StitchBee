@@ -304,7 +304,12 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
       </header>
 
       {/* MAIN CONTAINER */}
-      <main style={{ padding: '24px', maxWidth: '1440px', margin: '0 auto' }}>
+      <main style={{ 
+        padding: activeTab === 'dashboard' ? '0' : '24px', 
+        maxWidth: activeTab === 'dashboard' ? '100%' : '1440px', 
+        margin: activeTab === 'dashboard' ? '0' : '0 auto',
+        width: '100%'
+      }}>
         
         {/* ==================================================================== */}
         {/* TAB 1: 🏠 DASHBOARD (DESIGNER MASTER OVERVIEW - PRODUCTION READY)     */}

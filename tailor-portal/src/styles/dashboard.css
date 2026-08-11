@@ -1,92 +1,130 @@
-/* Modern Production-Ready StitchBee Designer Studio Dashboard Stylesheet */
+/* Premium StitchBee Designer Studio Full-Width SaaS Dashboard Stylesheet */
 
 :root {
-  --sb-pink: #EC168C;
-  --sb-pink-hover: #D00F7A;
-  --sb-pink-light: #FFF0F6;
-  --sb-purple: #7B1FE8;
-  --sb-purple-light: #F3E8FF;
-  --sb-navy: #111827;
-  --sb-text-secondary: #64748B;
-  --sb-bg-light: #F7F8FA;
+  --sb-pink: #F72585;
+  --sb-purple: #8B12C8;
+  --sb-navy: #101828;
+  --sb-text-secondary: #667085;
+  --sb-bg-light: #F6F8FB;
   --sb-card-bg: #FFFFFF;
-  --sb-border: #E7EAF0;
-  --sb-border-hover: #CBD5E1;
-  --sb-success: #10B981;
-  --sb-warning: #F59E0B;
-  --sb-danger: #EF4444;
+  --sb-border: #E6EAF0;
+  --sb-border-hover: #D0D5DD;
+  --sb-success: #12B76A;
+  --sb-warning: #F79009;
+  --sb-danger: #F04438;
   --sb-info: #3B82F6;
-  --sb-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --sb-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --sb-font: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-shadow: 0 1px 3px rgba(16, 24, 40, 0.05), 0 1px 2px rgba(16, 24, 40, 0.03);
+  --sb-shadow-hover: 0 8px 20px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
 }
 
-.designer-dashboard-wrapper {
+/* 100% Full-Width Wrapper - NO max-width constraint! */
+.designer-dashboard-fullwidth {
   font-family: var(--sb-font);
   background-color: var(--sb-bg-light);
   color: var(--sb-navy);
-  padding: 24px;
-  max-width: 1440px;
-  margin: 0 auto;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 20px 24px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  box-sizing: border-box;
+  gap: 20px;
 }
 
 /* Dark Mode Overrides */
-body.dark-theme .designer-dashboard-wrapper,
-.theme-dark .designer-dashboard-wrapper {
-  --sb-bg-light: #0F0C1B;
-  --sb-card-bg: #141126;
-  --sb-navy: #FFFFFF;
-  --sb-text-secondary: #94A3B8;
+body.dark-theme .designer-dashboard-fullwidth,
+.theme-dark .designer-dashboard-fullwidth {
+  --sb-bg-light: #0B0914;
+  --sb-card-bg: #131022;
+  --sb-navy: #F9FAFB;
+  --sb-text-secondary: #98A2B3;
   --sb-border: rgba(255, 255, 255, 0.08);
   --sb-border-hover: rgba(255, 255, 255, 0.16);
   --sb-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   --sb-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* 1. Page Intro / Welcome Section */
-.dashboard-intro-card {
+/* ---------------------------------------------------- */
+/* SECTION 1 — Welcome + Quick Actions (Full-Width Card)*/
+/* ---------------------------------------------------- */
+.section-welcome-card {
   background: var(--sb-card-bg);
   border: 1px solid var(--sb-border);
   border-radius: 16px;
   padding: 20px 24px;
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--sb-shadow);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.welcome-header-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: wrap;
-  box-shadow: var(--sb-shadow);
 }
 
-.intro-text-group h1 {
+.welcome-header-title {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--sb-navy);
 }
 
-.intro-text-group p {
+.welcome-header-subtitle {
   margin: 4px 0 0 0;
   font-size: 13px;
   color: var(--sb-text-secondary);
+  font-weight: 500;
 }
 
-.intro-actions-group {
+.live-badge-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(18, 183, 106, 0.1);
+  color: var(--sb-success);
+  border: 1px solid rgba(18, 183, 106, 0.2);
+}
+
+.btn-refresh-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--sb-text-secondary);
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.btn-refresh-icon:hover {
+  color: var(--sb-pink);
+}
+
+.quick-actions-bar {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.btn-primary-gradient {
+.btn-action-primary {
   background: linear-gradient(135deg, var(--sb-pink) 0%, var(--sb-purple) 100%);
   color: #ffffff;
   border: none;
   padding: 9px 18px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -94,20 +132,20 @@ body.dark-theme .designer-dashboard-wrapper,
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(236, 22, 140, 0.25);
+  box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25);
 }
 
-.btn-primary-gradient:hover {
+.btn-action-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(236, 22, 140, 0.35);
+  box-shadow: 0 6px 16px rgba(247, 37, 133, 0.35);
 }
 
-.btn-secondary-white {
+.btn-action-secondary {
   background: var(--sb-card-bg);
   color: var(--sb-navy);
   border: 1px solid var(--sb-border);
   padding: 9px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -117,52 +155,67 @@ body.dark-theme .designer-dashboard-wrapper,
   transition: all 0.2s ease;
 }
 
-.btn-secondary-white:hover {
+.btn-action-secondary:hover {
   border-color: var(--sb-border-hover);
   background: rgba(0, 0, 0, 0.02);
   transform: translateY(-1px);
 }
 
-/* Live Indicator Badge */
-.live-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  background: rgba(16, 185, 129, 0.1);
-  color: var(--sb-success);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-/* 2. KPI / Performance Cards Grid */
-.kpi-cards-grid {
+/* ---------------------------------------------------- */
+/* SECTION 2 & 3 GRIDS (Exact 3-Column 50% / 25% / 25%) */
+/* ---------------------------------------------------- */
+.kpi-row-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
+  width: 100%;
 }
 
 @media (max-width: 1200px) {
-  .kpi-cards-grid {
+  .kpi-row-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .kpi-cards-grid {
+  .kpi-row-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .kpi-cards-grid {
+  .kpi-row-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.kpi-card {
+.three-column-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr; /* ~50% / ~25% / ~25% */
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .three-column-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .three-column-grid > div:first-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .three-column-grid {
+    grid-template-columns: 1fr;
+  }
+  .three-column-grid > div:first-child {
+    grid-column: span 1;
+  }
+}
+
+/* Generic Reusable Dashboard Card */
+.sb-dashboard-card {
   background: var(--sb-card-bg);
   border: 1px solid var(--sb-border);
   border-radius: 14px;
@@ -170,95 +223,16 @@ body.dark-theme .designer-dashboard-wrapper,
   box-shadow: var(--sb-shadow);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: all 0.2s ease;
-}
-
-.kpi-card:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--sb-shadow-hover);
-  border-color: var(--sb-border-hover);
-}
-
-.kpi-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.kpi-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--sb-text-secondary);
-}
-
-.kpi-icon-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.kpi-body {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.kpi-value {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0;
-  line-height: 1.1;
-}
-
-.kpi-subtext {
-  font-size: 11px;
-  font-weight: 600;
-  margin-top: 4px;
-  display: block;
-}
-
-.kpi-sparkline {
-  width: 70px;
-  height: 32px;
-}
-
-/* Dashboard Section Layout Grids */
-.dashboard-grid-two-col {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
-}
-
-@media (max-width: 1024px) {
-  .dashboard-grid-two-col {
-    grid-template-columns: 1fr;
-  }
-}
-
-.dashboard-card {
-  background: var(--sb-card-bg);
-  border: 1px solid var(--sb-border);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: var(--sb-shadow);
-  display: flex;
-  flex-direction: column;
   gap: 16px;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
-.dashboard-card:hover {
+.sb-dashboard-card:hover {
   box-shadow: var(--sb-shadow-hover);
 }
 
-.card-title-row {
+.card-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -266,13 +240,19 @@ body.dark-theme .designer-dashboard-wrapper,
   gap: 8px;
 }
 
-.card-title {
+.card-heading {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
+  color: var(--sb-navy);
 }
 
-.card-link {
+.card-subtext {
+  font-size: 12px;
+  color: var(--sb-text-secondary);
+}
+
+.card-action-link {
   font-size: 12px;
   font-weight: 600;
   color: var(--sb-pink);
@@ -285,70 +265,216 @@ body.dark-theme .designer-dashboard-wrapper,
   gap: 4px;
 }
 
-.card-link:hover {
+.card-action-link:hover {
   text-decoration: underline;
 }
 
-/* 3A. Summary Metrics Header */
-.earnings-metrics-header {
+/* ---------------------------------------------------- */
+/* SECTION 2 — KPI Cards Component                      */
+/* ---------------------------------------------------- */
+.kpi-card-box {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: var(--sb-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.kpi-card-box:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sb-shadow-hover);
+  border-color: var(--sb-border-hover);
+}
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.kpi-title-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sb-text-secondary);
+}
+
+.kpi-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-main-val {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.1;
+  color: var(--sb-navy);
+}
+
+.kpi-bottom-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.kpi-trend-text {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------- */
+/* SECTION 2 — Earnings Overview Summary Header         */
+/* ---------------------------------------------------- */
+.earnings-summary-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   background: var(--sb-bg-light);
-  padding: 12px;
+  padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid var(--sb-border);
 }
 
-@media (max-width: 640px) {
-  .earnings-metrics-header {
+@media (max-width: 600px) {
+  .earnings-summary-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.metric-item {
+.earnings-summary-item {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.metric-item label {
+.earnings-summary-item label {
   font-size: 11px;
   color: var(--sb-text-secondary);
   font-weight: 500;
 }
 
-.metric-item strong {
+.earnings-summary-item strong {
   font-size: 15px;
   font-weight: 700;
+  color: var(--sb-navy);
 }
 
-/* 3B. Donut Chart Legends */
-.donut-legend-list {
+/* ---------------------------------------------------- */
+/* SECTION 2 — Project Progress Item & Bars            */
+/* ---------------------------------------------------- */
+.progress-list-item {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--sb-bg-light);
+  border: 1px solid var(--sb-border);
 }
 
-.donut-legend-item {
+.progress-item-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 12px;
+}
+
+.real-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--sb-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.real-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* ---------------------------------------------------- */
+/* SECTION 3 — Active Projects List / Table Controls    */
+/* ---------------------------------------------------- */
+.table-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
-.legend-color-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 6px;
+.search-input-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--sb-border);
+  background: var(--sb-bg-light);
+  font-size: 12px;
 }
 
-/* 4. Upcoming Appointments Cards */
-.appointment-item {
+.search-input-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 12px;
+  color: var(--sb-navy);
+}
+
+.project-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--sb-bg-light);
+  border: 1px solid var(--sb-border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--sb-text-secondary);
+  padding-top: 8px;
+  border-top: 1px solid var(--sb-border);
+}
+
+.page-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--sb-border);
+  background: var(--sb-card-bg);
+  cursor: pointer;
+  color: var(--sb-navy);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------- */
+/* SECTION 3 — Appointments & Activity Feed             */
+/* ---------------------------------------------------- */
+.appointment-card-item {
   padding: 12px 14px;
   border-radius: 10px;
   background: var(--sb-bg-light);
@@ -358,166 +484,37 @@ body.dark-theme .designer-dashboard-wrapper,
   gap: 4px;
 }
 
-.appointment-item-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-}
-
-.appointment-title {
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.appointment-time {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--sb-text-secondary);
-}
-
-.appointment-detail {
-  font-size: 12px;
-  color: var(--sb-text-secondary);
-  margin: 0;
-}
-
-/* 5. Real Progress Bar Indicator */
-.real-progress-container {
-  width: 100%;
-  height: 6px;
-  background: var(--sb-border);
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-}
-
-.real-progress-fill {
-  height: 100%;
-  border-radius: 10px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 5. Active Design Projects List / Table */
-.projects-table-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.project-row-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px;
-  border-radius: 12px;
-  background: var(--sb-bg-light);
-  border: 1px solid var(--sb-border);
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.project-meta-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 2;
-  min-width: 200px;
-}
-
-.project-thumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-.project-progress-col {
-  flex: 1.5;
-  min-width: 140px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.project-status-col {
-  flex: 1;
-  min-width: 100px;
-  text-align: right;
-}
-
-.status-badge-pill {
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  display: inline-block;
-}
-
-/* 7. Recent Clients */
-.client-row-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: var(--sb-bg-light);
-  border: 1px solid var(--sb-border);
-}
-
-.client-avatar-thumb {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* 8. Activity Timeline */
-.timeline-list {
+.activity-feed-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
   position: relative;
-  padding-left: 24px;
+  padding-left: 20px;
 }
 
-.timeline-list::before {
+.activity-feed-list::before {
   content: '';
   position: absolute;
-  left: 9px;
+  left: 7px;
   top: 4px;
   bottom: 4px;
   width: 2px;
   background: var(--sb-border);
 }
 
-.timeline-item {
+.activity-feed-item {
   position: relative;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.timeline-dot {
+.activity-feed-dot {
   position: absolute;
-  left: -24px;
-  top: 2px;
-  width: 20px;
-  height: 20px;
+  left: -20px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: #ffffff;
-  box-shadow: 0 0 0 3px var(--sb-card-bg);
-}
-
-/* Responsive Overflows */
-@media (max-width: 640px) {
-  .designer-dashboard-wrapper {
-    padding: 14px;
-    gap: 16px;
-  }
+  border: 2px solid var(--sb-card-bg);
 }

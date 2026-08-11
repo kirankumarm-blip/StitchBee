@@ -1,171 +1,129 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, FileText, Upload, Users, Calendar, Sparkles, RefreshCw } from 'lucide-react';
 import { initialDashboardData } from '../../data/dashboardData';
-import StatCard from './StatCard';
+import WelcomeSection from './WelcomeSection';
+import KpiCards from './KpiCards';
 import EarningsChart from './EarningsChart';
-import ProjectStatusDonut from './ProjectStatusDonut';
-import UpcomingAppointments from './UpcomingAppointments';
+import ProjectStatusChart from './ProjectStatusChart';
+import ProjectProgress from './ProjectProgress';
 import ActiveProjects from './ActiveProjects';
-import TopDesignsChart from './TopDesignsChart';
-import RecentClients from './RecentClients';
-import ActivityTimeline from './ActivityTimeline';
+import UpcomingAppointments from './UpcomingAppointments';
+import RecentActivity from './RecentActivity';
 import '../../styles/dashboard.css';
 
 export default function DesignerDashboard({ onNavigateTab }) {
-  // Driven from central data state for easy REST/WebSocket API integration
+  // Driven from central data state for API integration
   const [data, setData] = useState(initialDashboardData);
-  const [lastUpdatedTime, setLastUpdatedTime] = useState('Just now');
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Simulated Real-Time Updates (polling simulation every 30 seconds)
+  // Simulated Real-Time Data Updates (polls/updates state every 30 seconds without page reload)
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsUpdating(true);
+      setIsRefreshing(true);
       
-      setData((prevData) => {
+      setData((prev) => {
         const now = new Date();
-        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        setLastUpdatedTime(`Updated at ${timeStr}`);
-
-        // Slightly nudge progress or data to simulate real-time activity
-        const updatedProjects = prevData.activeProjects.map((p) => {
+        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        
+        // Dynamic state nudge for live behavior
+        const updatedProjects = prev.activeProjects.map((p) => {
           if (p.progress < 100 && Math.random() > 0.6) {
-            return { ...p, progress: Math.min(100, p.progress + 5) };
+            return { ...p, progress: Math.min(100, p.progress + 4) };
           }
           return p;
         });
 
         return {
-          ...prevData,
+          ...prev,
+          liveStatus: {
+            ...prev.liveStatus,
+            lastUpdatedText: `Updated at ${timeString}`
+          },
           activeProjects: updatedProjects
         };
       });
 
-      setTimeout(() => setIsUpdating(false), 800);
+      setTimeout(() => setIsRefreshing(false), 700);
     }, 30000);
 
     return () => clearInterval(interval);
   }, []);
 
   const handleManualRefresh = () => {
-    setIsUpdating(true);
+    setIsRefreshing(true);
     const now = new Date();
-    setLastUpdatedTime(`Updated at ${now.toLocaleTimeString()}`);
-    setTimeout(() => setIsUpdating(false), 500);
+    const timeString = now.toLocaleTimeString();
+    
+    setData((prev) => ({
+      ...prev,
+      liveStatus: {
+        ...prev.liveStatus,
+        lastUpdatedText: `Updated at ${timeString}`
+      }
+    }));
+
+    setTimeout(() => setIsRefreshing(false), 500);
   };
 
   return (
-    <div className="designer-dashboard-wrapper">
+    <div className="designer-dashboard-fullwidth">
       
       {/* ==================================================================== */}
-      {/* 1. PAGE INTRO / WELCOME SECTION                                      */}
+      {/* SECTION 1 — Welcome + Quick Actions (Full-Width Card across dashboard)*/}
       {/* ==================================================================== */}
-      <section className="dashboard-intro-card">
-        <div className="intro-text-group">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <h1>Welcome back, Ananya! 👋</h1>
-            <div className="live-status-pill">
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' }} />
-              ● Live — {lastUpdatedTime}
-            </div>
-            <button 
-              onClick={handleManualRefresh}
-              title="Refresh Data"
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--sb-text-secondary)', padding: 0 }}
-            >
-              <RefreshCw size={14} className={isUpdating ? 'spin' : ''} />
-            </button>
-          </div>
-          <p>Here's what's happening with your design studio today.</p>
-        </div>
-
-        {/* Quick Actions Bar */}
-        <div className="intro-actions-group">
-          <button 
-            onClick={() => onNavigateTab && onNavigateTab('studio', 'create')}
-            className="btn-primary-gradient"
-          >
-            <Plus size={15} /> + Create Design
-          </button>
-          <button 
-            onClick={() => onNavigateTab && onNavigateTab('studio', 'requests')}
-            className="btn-secondary-white"
-          >
-            <FileText size={15} color="#7B1FE8" /> New Design Request (6)
-          </button>
-          <button 
-            onClick={() => onNavigateTab && onNavigateTab('studio')}
-            className="btn-secondary-white"
-          >
-            <Upload size={15} /> Upload Sketch
-          </button>
-          <button 
-            onClick={() => onNavigateTab && onNavigateTab('customers')}
-            className="btn-secondary-white"
-          >
-            <Users size={15} /> Add Customer
-          </button>
-          <button 
-            onClick={() => onNavigateTab && onNavigateTab('calendar')}
-            className="btn-secondary-white"
-          >
-            <Calendar size={15} /> Schedule Appointment
-          </button>
-        </div>
-      </section>
+      <WelcomeSection 
+        liveStatus={data.liveStatus}
+        onRefresh={handleManualRefresh}
+        onNavigateAction={onNavigateTab}
+        isRefreshing={isRefreshing}
+      />
 
       {/* ==================================================================== */}
-      {/* 2. KPI / PERFORMANCE CARDS (5 Cards with Recharts mini sparklines)  */}
+      {/* SECTION 2 — KPI + Analytics                                         */}
       {/* ==================================================================== */}
-      <section className="kpi-cards-grid">
-        {data.stats && data.stats.map((stat) => (
-          <StatCard key={stat.id} stat={stat} />
-        ))}
-      </section>
+      {/* First Row: 5 Full-Width KPI Cards with Recharts mini sparklines */}
+      <KpiCards stats={data.kpiStats} />
 
-      {/* ==================================================================== */}
-      {/* 3. MAIN ANALYTICS SECTION (Earnings AreaChart & Project DonutChart)  */}
-      {/* ==================================================================== */}
-      <section className="dashboard-grid-two-col">
+      {/* Second Row: 3-Column Analytics Layout (~50% / ~25% / ~25%) */}
+      <div className="three-column-grid">
+        {/* Column 1 (~50% width): Earnings Overview with Recharts AreaChart */}
         <EarningsChart 
-          data={data.earningsOverview.chartData} 
+          data={data.earningsOverview.timeframeData} 
           summary={data.earningsOverview.summary} 
         />
-        <ProjectStatusDonut 
-          data={data.projectStatusData} 
+
+        {/* Column 2 (~25% width): Project Status Donut Chart */}
+        <ProjectStatusChart 
+          data={data.projectStatus} 
         />
-      </section>
+
+        {/* Column 3 (~25% width): Project Progress Bars & Weekly Performance */}
+        <ProjectProgress 
+          progressItems={data.projectProgressItems} 
+          weeklyChart={data.weeklyPerformanceChart} 
+        />
+      </div>
 
       {/* ==================================================================== */}
-      {/* 5. ACTIVE DESIGN PROJECTS + TOP DESIGNS & RECENT CLIENTS STACK        */}
+      {/* SECTION 3 — Operational Dashboard (3-Column Layout ~50% / ~25% / ~25%)*/}
       {/* ==================================================================== */}
-      <section className="dashboard-grid-two-col">
-        {/* Left Column: Active Projects List */}
+      <div className="three-column-grid">
+        {/* Column 1 (~50% width): Active Design Projects List/Table with Search, Filter & Pagination */}
         <ActiveProjects 
           projects={data.activeProjects} 
           onViewAll={() => onNavigateTab && onNavigateTab('studio')} 
         />
 
-        {/* Right Column Stack: Top Designs Horizontal BarChart + Recent Clients */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <TopDesignsChart data={data.topDesigns} />
-          <RecentClients 
-            clients={data.recentClients} 
-            onViewAll={() => onNavigateTab && onNavigateTab('customers')} 
-          />
-        </div>
-      </section>
-
-      {/* ==================================================================== */}
-      {/* 8. RECENT ACTIVITY TIMELINE + UPCOMING APPOINTMENTS                   */}
-      {/* ==================================================================== */}
-      <section className="dashboard-grid-two-col">
-        <ActivityTimeline activities={data.activities} />
+        {/* Column 2 (~25% width): Upcoming Appointments */}
         <UpcomingAppointments 
           appointments={data.appointments} 
           onViewCalendar={() => onNavigateTab && onNavigateTab('calendar')} 
         />
-      </section>
+
+        {/* Column 3 (~25% width): Recent Activity Feed */}
+        <RecentActivity 
+          activities={data.activities} 
+        />
+      </div>
 
     </div>
   );

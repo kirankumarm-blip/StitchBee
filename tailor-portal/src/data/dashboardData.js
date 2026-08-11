@@ -1,22 +1,21 @@
-// Centralized Mock Data Structure for StitchBee Designer Dashboard
-// Designed for seamless REST API / WebSocket integration
+// Centralized API-ready JavaScript Data Layer for StitchBee Designer Dashboard
 
 export const initialDashboardData = {
   liveStatus: {
     isLive: true,
-    lastUpdated: 'Just now',
-    statusText: '● Live — Syncing with Atelier API'
+    lastUpdatedText: 'Updated just now'
   },
-  
-  stats: [
+
+  // SECTION 2: 5 KPI Cards
+  kpiStats: [
     {
       id: 'active_projects',
       label: 'Active Projects',
       value: '14',
       subtext: '+3 from last week',
       trend: 'up',
-      accentColor: '#EC168C',
-      badgeBg: 'rgba(236,22,140,0.1)',
+      accentColor: '#F72585',
+      badgeBg: 'rgba(247,37,133,0.1)',
       icon: 'Palette',
       sparkline: [
         { date: 'Mon', val: 9 },
@@ -33,8 +32,8 @@ export const initialDashboardData = {
       value: '6',
       subtext: '2 Action Required',
       trend: 'warning',
-      accentColor: '#7B1FE8',
-      badgeBg: 'rgba(123,31,232,0.1)',
+      accentColor: '#8B12C8',
+      badgeBg: 'rgba(139,18,200,0.1)',
       icon: 'FileText',
       sparkline: [
         { date: 'Mon', val: 2 },
@@ -51,8 +50,8 @@ export const initialDashboardData = {
       value: '₹48,200',
       subtext: '↑ 18% from last month',
       trend: 'up',
-      accentColor: '#10B981',
-      badgeBg: 'rgba(16,185,129,0.1)',
+      accentColor: '#12B76A',
+      badgeBg: 'rgba(18,183,106,0.1)',
       icon: 'DollarSign',
       sparkline: [
         { date: 'Mon', val: 32000 },
@@ -69,8 +68,8 @@ export const initialDashboardData = {
       value: '₹12,350',
       subtext: 'Expected on 07 Jun 2026',
       trend: 'info',
-      accentColor: '#F59E0B',
-      badgeBg: 'rgba(245,158,11,0.1)',
+      accentColor: '#F79009',
+      badgeBg: 'rgba(247,144,9,0.1)',
       icon: 'Clock',
       sparkline: [
         { date: 'Mon', val: 8000 },
@@ -101,6 +100,7 @@ export const initialDashboardData = {
     }
   ],
 
+  // SECTION 2 Col 1: Earnings Overview
   earningsOverview: {
     summary: {
       totalEarnings: '₹48,200',
@@ -108,181 +108,207 @@ export const initialDashboardData = {
       avgOrderValue: '₹18,550',
       commission: '₹2,850'
     },
-    chartData: [
-      { date: '01 May', earnings: 6200, change: '+12%' },
-      { date: '05 May', earnings: 12800, change: '+15%' },
-      { date: '10 May', earnings: 11200, change: '-4%' },
-      { date: '15 May', earnings: 18400, change: '+22%' },
-      { date: '20 May', earnings: 26800, change: '+18%' },
-      { date: '25 May', earnings: 39200, change: '+25%' },
-      { date: '31 May', earnings: 48200, change: '+18%' }
-    ]
+    timeframeData: {
+      'Today': [
+        { date: '09 AM', earnings: 1200 },
+        { date: '11 AM', earnings: 2800 },
+        { date: '01 PM', earnings: 4500 },
+        { date: '03 PM', earnings: 6200 },
+        { date: '05 PM', earnings: 8100 }
+      ],
+      '7 Days': [
+        { date: 'Mon', earnings: 14200 },
+        { date: 'Tue', earnings: 18500 },
+        { date: 'Wed', earnings: 22100 },
+        { date: 'Thu', earnings: 29400 },
+        { date: 'Fri', earnings: 36800 },
+        { date: 'Sat', earnings: 42100 },
+        { date: 'Sun', earnings: 48200 }
+      ],
+      '30 Days': [
+        { date: 'Week 1', earnings: 12800 },
+        { date: 'Week 2', earnings: 24500 },
+        { date: 'Week 3', earnings: 36200 },
+        { date: 'Week 4', earnings: 48200 }
+      ],
+      'This Month': [
+        { date: '01 May', earnings: 6200 },
+        { date: '05 May', earnings: 12800 },
+        { date: '10 May', earnings: 11200 },
+        { date: '15 May', earnings: 18400 },
+        { date: '20 May', earnings: 26800 },
+        { date: '25 May', earnings: 39200 },
+        { date: '31 May', earnings: 48200 }
+      ],
+      'This Year': [
+        { date: 'Jan', earnings: 120000 },
+        { date: 'Feb', earnings: 185000 },
+        { date: 'Mar', earnings: 240000 },
+        { date: 'Apr', earnings: 310000 },
+        { date: 'May', earnings: 418200 }
+      ]
+    }
   },
 
-  projectStatusData: [
-    { name: 'In Progress', value: 7, percentage: '50%', color: '#EC168C' },
-    { name: 'Stitching', value: 3, percentage: '21%', color: '#7B1FE8' },
-    { name: 'Approved', value: 2, percentage: '14%', color: '#10B981' },
-    { name: 'On Hold', value: 1, percentage: '7%', color: '#F59E0B' },
+  // SECTION 2 Col 2: Project Status Donut Chart
+  projectStatus: [
+    { name: 'In Progress', value: 7, percentage: '50%', color: '#F72585' },
+    { name: 'Stitching', value: 3, percentage: '21%', color: '#8B12C8' },
+    { name: 'Approved', value: 2, percentage: '14%', color: '#12B76A' },
+    { name: 'On Hold', value: 1, percentage: '7%', color: '#F79009' },
     { name: 'Completed', value: 1, percentage: '7%', color: '#3B82F6' }
   ],
 
-  appointments: [
-    {
-      id: 'app-1',
-      title: 'Bridal Fitting Appointment',
-      client: 'Priya Sharma',
-      outfit: 'Royal Bridal Lehenga',
-      time: 'Today, 03:00 PM',
-      type: 'fitting', // left border pink
-      color: '#EC168C'
-    },
-    {
-      id: 'app-2',
-      title: 'Custom Measurement Session',
-      client: 'Amit Verma',
-      outfit: 'Velvet Sherwani 3D Scan',
-      time: 'Tomorrow, 11:30 AM',
-      type: 'measurement', // left border purple
-      color: '#7B1FE8'
-    },
-    {
-      id: 'app-3',
-      title: 'Design Discussion',
-      client: 'Sneha Iyer',
-      outfit: 'Reception Gown',
-      time: '27 May 2026, 04:00 PM',
-      type: 'discussion', // left border green
-      color: '#10B981'
-    }
+  // SECTION 2 Col 3: Project Progress & Weekly Performance
+  projectProgressItems: [
+    { name: 'Royal Bridal Lehenga', progress: 82, status: 'In Progress', deadline: '28 May', color: '#F72585' },
+    { name: 'Zardozi Silk Anarkali', progress: 65, status: 'Stitching', deadline: '30 May', color: '#8B12C8' },
+    { name: 'Embroidered Velvet Sherwani', progress: 48, status: 'Pattern Making', deadline: '02 Jun', color: '#3B82F6' },
+    { name: 'Chanderi Silk Suit', progress: 91, status: 'Final Trial', deadline: '26 May', color: '#12B76A' }
+  ],
+  weeklyPerformanceChart: [
+    { day: 'M', completed: 4 },
+    { day: 'T', completed: 6 },
+    { day: 'W', completed: 5 },
+    { day: 'T', completed: 8 },
+    { day: 'F', completed: 7 },
+    { day: 'S', completed: 9 }
   ],
 
+  // SECTION 3 Col 1: Active Design Projects Table
   activeProjects: [
     {
       id: 'proj-1',
       name: 'Royal Bridal Lehenga',
-      client: 'Priya Sharma',
-      version: 'v3.0',
-      progress: 80,
-      status: 'In Progress',
-      statusColor: '#EC168C',
-      statusBg: 'rgba(236,22,140,0.1)',
+      customer: 'Priya Sharma',
       amount: '₹18,500',
+      status: 'In Progress',
+      statusColor: '#F72585',
+      statusBg: 'rgba(247,37,133,0.1)',
+      progress: 82,
+      deadline: '28 May 2026',
       image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=200'
     },
     {
       id: 'proj-2',
       name: 'Zardozi Silk Anarkali',
-      client: 'Ananya Roy',
-      version: 'v2.1',
-      progress: 100,
-      status: 'Approved',
-      statusColor: '#10B981',
-      statusBg: 'rgba(16,185,129,0.1)',
+      customer: 'Ananya Roy',
       amount: '₹14,200',
+      status: 'Approved',
+      statusColor: '#12B76A',
+      statusBg: 'rgba(18,183,106,0.1)',
+      progress: 100,
+      deadline: '25 May 2026',
       image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=200'
     },
     {
       id: 'proj-3',
       name: 'Embroidered Velvet Sherwani',
-      client: 'Amit Verma',
-      version: 'v1.0',
-      progress: 60,
-      status: 'Stitching',
-      statusColor: '#7B1FE8',
-      statusBg: 'rgba(123,31,232,0.1)',
+      customer: 'Amit Verma',
       amount: '₹22,000',
+      status: 'Stitching',
+      statusColor: '#8B12C8',
+      statusBg: 'rgba(139,18,200,0.1)',
+      progress: 60,
+      deadline: '02 Jun 2026',
       image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=200'
     },
     {
       id: 'proj-4',
       name: 'Chanderi Silk Anarkali Suit',
-      client: 'Sneha Iyer',
-      version: 'v1.2',
-      progress: 40,
-      status: 'In Progress',
-      statusColor: '#EC168C',
-      statusBg: 'rgba(236,22,140,0.1)',
+      customer: 'Sneha Iyer',
       amount: '₹12,800',
+      status: 'In Progress',
+      statusColor: '#F72585',
+      statusBg: 'rgba(247,37,133,0.1)',
+      progress: 40,
+      deadline: '05 Jun 2026',
       image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=200'
+    },
+    {
+      id: 'proj-5',
+      name: 'Designer Reception Gown',
+      customer: 'Rhea Patel',
+      amount: '₹26,500',
+      status: 'On Hold',
+      statusColor: '#F79009',
+      statusBg: 'rgba(247,144,9,0.1)',
+      progress: 25,
+      deadline: '10 Jun 2026',
+      image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=200'
     }
   ],
 
-  topDesigns: [
-    { name: 'Bridal Lehenga Collection', revenue: 28450 },
-    { name: 'Sherwani Collection', revenue: 16250 },
-    { name: 'Anarkali Collection', revenue: 11800 },
-    { name: 'Reception Gowns', revenue: 8900 },
-    { name: 'Saree Blouse Designs', revenue: 5600 }
-  ],
-
-  recentClients: [
+  // SECTION 3 Col 2: Upcoming Appointments
+  appointments: [
     {
-      id: 'cli-1',
-      name: 'Priya Sharma',
-      ordersCount: 12,
-      designsCount: 6,
-      lastOrderTime: '2 days ago',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150'
+      id: 'app-1',
+      customer: 'Priya Sharma',
+      type: 'Bridal Fitting Appointment',
+      outfit: 'Royal Bridal Lehenga',
+      date: 'Today',
+      time: '03:00 PM',
+      status: 'Confirmed',
+      color: '#F72585'
     },
     {
-      id: 'cli-2',
-      name: 'Amit Verma',
-      ordersCount: 8,
-      designsCount: 3,
-      lastOrderTime: '1 week ago',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150'
+      id: 'app-2',
+      customer: 'Amit Verma',
+      type: 'Custom Measurement Session',
+      outfit: 'Velvet Sherwani 3D Scan',
+      date: 'Tomorrow',
+      time: '11:30 AM',
+      status: 'Scheduled',
+      color: '#8B12C8'
     },
     {
-      id: 'cli-3',
-      name: 'Sneha Iyer',
-      ordersCount: 5,
-      designsCount: 4,
-      lastOrderTime: '1 week ago',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=150'
+      id: 'app-3',
+      customer: 'Sneha Iyer',
+      type: 'Design Discussion',
+      outfit: 'Reception Gown Sketch Review',
+      date: '27 May 2026',
+      time: '04:00 PM',
+      status: 'Pending Review',
+      color: '#12B76A'
     }
   ],
 
+  // SECTION 3 Col 3: Recent Activity / Notifications Feed
   activities: [
     {
       id: 'act-1',
-      title: 'New design request received',
-      desc: 'Bridal Lehenga Design',
-      time: '10 mins ago',
-      color: '#7B1FE8',
-      icon: 'FileText'
+      text: 'New design request received from Priya Sharma',
+      subtext: 'Bridal Lehenga Design',
+      timestamp: 'Just now',
+      color: '#F72585'
     },
     {
       id: 'act-2',
-      title: 'Measurement added',
-      desc: 'Amit Verma — 3D Scan Completed',
-      time: '45 mins ago',
-      color: '#3B82F6',
-      icon: 'Ruler'
+      text: 'Customer measurement updated by Master Rajesh',
+      subtext: 'Amit Verma — 3D Scan Completed',
+      timestamp: '5 min ago',
+      color: '#3B82F6'
     },
     {
       id: 'act-3',
-      title: 'Project approved',
-      desc: 'Zardozi Silk Anarkali',
-      time: '2 hours ago',
-      color: '#10B981',
-      icon: 'CheckCircle2'
+      text: 'Design approved by client',
+      subtext: 'Zardozi Silk Anarkali',
+      timestamp: '20 min ago',
+      color: '#12B76A'
     },
     {
       id: 'act-4',
-      title: 'Payment received',
-      desc: '₹18,500 from Priya Sharma',
-      time: '3 hours ago',
-      color: '#EC168C',
-      icon: 'DollarSign'
+      text: 'Payment received: ₹18,500',
+      subtext: 'From Priya Sharma via UPI',
+      timestamp: '1 hour ago',
+      color: '#8B12C8'
     },
     {
       id: 'act-5',
-      title: 'Appointment scheduled',
-      desc: 'Tomorrow, 11:30 AM',
-      time: '5 hours ago',
-      color: '#F59E0B',
-      icon: 'Calendar'
+      text: 'Appointment scheduled with Sneha Iyer',
+      subtext: 'Design Discussion for 27 May',
+      timestamp: '3 hours ago',
+      color: '#F79009'
     }
   ]
 };
