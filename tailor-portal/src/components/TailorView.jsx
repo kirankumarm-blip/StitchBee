@@ -5,7 +5,7 @@ import {
   Bell, Sun, Moon, Sparkles, Star, Edit, Upload, User, Video, MapPin, Map, CreditCard, 
   ChevronDown, ChevronRight, ChevronLeft, X, Info, Heart, List, HelpCircle, Activity, FileText, Filter, Users, Eye,
   Layers, Sliders, Truck, Search, Mail, Smile, Phone, Paperclip, Home, Menu, LogOut, DollarSign, LayoutGrid,
-  RotateCw, ArrowUpRight, TrendingDown
+  RotateCw, ArrowUpRight, TrendingDown, Lock
 } from 'lucide-react';
 import OrdersPage from './orders/OrdersPage';
 
@@ -203,18 +203,22 @@ export default function TailorView({
   const [calendarViewMode, setCalendarViewMode] = useState('month'); // 'month' | 'week' | 'day'
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(new Date(2026, 5, 20)); // Default June 20, 2026
   const [calendarEvents, setCalendarEvents] = useState([
-    { id: 1, date: new Date(2026, 5, 19), time: '10:00 AM', type: 'Pick up & Delivery', customer: 'Priya Sharma', details: 'Pick up: Silk Fabric' },
-    { id: 2, date: new Date(2026, 5, 20), time: '10:00 AM', type: 'Pick up & Delivery', customer: 'Priya Sharma', details: 'Pick up: Silk Fabric' },
-    { id: 3, date: new Date(2026, 5, 20), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Delivery: Lehenga' },
-    { id: 4, date: new Date(2026, 5, 20), time: '06:00 PM', type: 'Appointment', customer: 'Amit Verma', details: 'Fitting Appointment' },
-    { id: 5, date: new Date(2026, 5, 21), time: '11:30 AM', type: 'Appointment', customer: 'Sneha Iyer', details: 'Measurement & Fabric Choice' },
-    { id: 6, date: new Date(2026, 5, 22), time: '01:00 PM', type: 'Stitching Deadline', customer: 'Neha Singh', details: 'Salwar Suit Stitching Deadline' },
-    { id: 7, date: new Date(2026, 5, 23), time: '02:30 PM', type: 'Stitching Deadline', customer: 'Ananya Goel', details: 'Designer Blouse Trial' },
-    { id: 8, date: new Date(2026, 5, 24), time: '05:00 PM', type: 'Pick up & Delivery', customer: 'Vikram Seth', details: 'Linen Suit Delivery' },
-    { id: 9, date: new Date(2026, 5, 25), time: '03:00 PM', type: 'Pick up & Delivery', customer: 'Sanjay Mehta', details: 'Kurta Home Delivery' },
-    { id: 10, date: new Date(2026, 5, 2), time: '02:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Lehenga stitching completion' },
-    { id: 11, date: new Date(2026, 5, 10), time: '11:00 AM', type: 'Stitching Deadline', customer: 'Amit Verma', details: 'Custom Suit stitching completion' },
-    { id: 12, date: new Date(2026, 5, 15), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Megha Reddy', details: 'Anarkali stitching completion' }
+    { id: 1, date: new Date(2026, 5, 19), time: '10:00 AM', type: 'Pick up & Delivery', customer: 'Priya Sharma', details: 'Pick up: Silk Fabric', service: 'Lehenga Stitching' },
+    { id: 2, date: new Date(2026, 5, 20), time: '10:00 AM', type: 'Pick up & Delivery', customer: 'Priya Sharma', details: 'Pick up: Silk Fabric', service: 'Lehenga Stitching' },
+    { id: 3, date: new Date(2026, 5, 20), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Delivery: Lehenga', service: 'Bridal Lehenga' },
+    { id: 4, date: new Date(2026, 5, 20), time: '06:00 PM', type: 'Appointment', customer: 'Amit Verma', details: 'Fitting Appointment', service: '3-Piece Suit' },
+    { id: 5, date: new Date(2026, 5, 20), time: '03:30 PM', type: 'Appointment', customer: 'Kavitha Iyer', details: 'Suit Alteration Fitting', service: 'Suit Alteration' },
+    { id: 6, date: new Date(2026, 5, 21), time: '11:30 AM', type: 'Appointment', customer: 'Sneha Iyer', details: 'Measurement & Fabric Choice', service: 'Anarkali Suit' },
+    { id: 7, date: new Date(2026, 5, 22), time: '10:00 AM', type: 'Stitching Deadline', customer: 'Neha Singh', details: 'Blouse Stitching Deadline', service: 'Blouse Stitching' },
+    { id: 8, date: new Date(2026, 5, 22), time: '01:00 PM', type: 'Stitching Deadline', customer: 'Neha Singh', details: 'Salwar Suit Stitching Deadline', service: 'Salwar Suit' },
+    { id: 9, date: new Date(2026, 5, 22), time: '04:30 PM', type: 'Pick up & Delivery', customer: 'Rohit Roy', details: 'Sherwani Delivery', service: 'Wedding Sherwani' },
+    { id: 10, date: new Date(2026, 5, 23), time: '02:30 PM', type: 'Stitching Deadline', customer: 'Ananya Goel', details: 'Designer Blouse Trial', service: 'Designer Blouse' },
+    { id: 11, date: new Date(2026, 5, 24), time: '05:00 PM', type: 'Pick up & Delivery', customer: 'Vikram Seth', details: 'Linen Suit Delivery', service: 'Linen Suit' },
+    { id: 12, date: new Date(2026, 5, 25), time: '03:00 PM', type: 'Pick up & Delivery', customer: 'Sanjay Mehta', details: 'Kurta Home Delivery', service: 'Silk Kurta' },
+    { id: 13, date: new Date(2026, 5, 2), time: '02:00 PM', type: 'Stitching Deadline', customer: 'Priya Sharma', details: 'Lehenga stitching completion', service: 'Lehenga' },
+    { id: 14, date: new Date(2026, 5, 10), time: '11:00 AM', type: 'Stitching Deadline', customer: 'Amit Verma', details: 'Custom Suit stitching completion', service: 'Custom Suit' },
+    { id: 15, date: new Date(2026, 5, 12), time: '09:30 AM', type: 'Appointment', customer: 'Priya Sharma', details: 'Lehenga Stitching Fitting', service: 'Lehenga Fitting' },
+    { id: 16, date: new Date(2026, 5, 15), time: '04:00 PM', type: 'Stitching Deadline', customer: 'Megha Reddy', details: 'Anarkali stitching completion', service: 'Anarkali' }
   ]);
   const [calendarFilters, setCalendarFilters] = useState(['Stitching Deadline', 'Pick up & Delivery', 'Appointment', 'Holiday', 'Blocked Date']);
   const [showAddEventModal, setShowAddEventModal] = useState(false);
@@ -2213,21 +2217,57 @@ export default function TailorView({
           // Active month name
           const activeMonthName = calendarDate.toLocaleString('default', { month: 'long' });
 
-          // Event type colors resolver
-          const getEventColors = (type) => {
+          // Event type colors & icons resolver
+          const getEventConfig = (type) => {
             switch (type) {
               case 'Stitching Deadline':
-                return { bg: 'rgba(247,37,133,0.08)', border: '1px solid rgba(247,37,133,0.18)', text: 'var(--primary)' };
+                return { 
+                  bg: theme === 'dark' ? 'rgba(247,37,133,0.14)' : '#FFF0F6', 
+                  border: 'rgba(247,37,133,0.3)', 
+                  text: '#F72585',
+                  accent: '#F72585',
+                  icon: <Scissors size={11} /> 
+                };
               case 'Pick up & Delivery':
-                return { bg: 'rgba(114,9,183,0.08)', border: '1px solid rgba(114,9,183,0.18)', text: 'var(--secondary)' };
+                return { 
+                  bg: theme === 'dark' ? 'rgba(114,9,183,0.14)' : '#F3E8FF', 
+                  border: 'rgba(114,9,183,0.3)', 
+                  text: '#7209B7',
+                  accent: '#7209B7',
+                  icon: <Truck size={11} /> 
+                };
               case 'Appointment':
-                return { bg: 'rgba(76,201,240,0.08)', border: '1px solid rgba(76,201,240,0.18)', text: '#06b6d4' };
+                return { 
+                  bg: theme === 'dark' ? 'rgba(6,182,212,0.14)' : '#E0F2FE', 
+                  border: 'rgba(6,182,212,0.3)', 
+                  text: '#0284C7',
+                  accent: '#06B6D4',
+                  icon: <User size={11} /> 
+                };
               case 'Holiday':
-                return { bg: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.18)', text: '#d97706' };
+                return { 
+                  bg: theme === 'dark' ? 'rgba(245,158,11,0.14)' : '#FEF3C7', 
+                  border: 'rgba(245,158,11,0.3)', 
+                  text: '#D97706',
+                  accent: '#F59E0B',
+                  icon: <Sparkles size={11} /> 
+                };
               case 'Blocked Date':
-                return { bg: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(15,23,42,0.04)', border: '1px solid var(--border-color)', text: 'var(--text-muted)' };
+                return { 
+                  bg: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#F1F5F9', 
+                  border: theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#E2E8F0', 
+                  text: theme === 'dark' ? '#94A3B8' : '#64748B',
+                  accent: '#64748B',
+                  icon: <Lock size={11} /> 
+                };
               default:
-                return { bg: 'rgba(15,23,42,0.03)', border: '1px solid var(--border-color)', text: 'var(--text-secondary)' };
+                return { 
+                  bg: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#F8FAFC', 
+                  border: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E2E8F0', 
+                  text: theme === 'dark' ? '#CBD5E1' : '#475467',
+                  accent: '#475467',
+                  icon: <Calendar size={11} /> 
+                };
             }
           };
 
@@ -2250,71 +2290,93 @@ export default function TailorView({
           // Month Overview counts
           const totalEventsCount = filteredMonthEvents.length;
           const deadlinesCount = filteredMonthEvents.filter(e => e.type === 'Stitching Deadline').length;
-          const deliveriesCount = filteredMonthEvents.filter(e => e.type === 'Pick up & Delivery').length;
+          const appointmentsCount = filteredMonthEvents.filter(e => e.type === 'Appointment').length;
 
-          // Event type colors mapping for mini calendar dots
+          // Event type dot colors for mini calendar
           const getDotColor = (type) => {
-            if (type === 'Stitching Deadline') return 'var(--primary)';
-            if (type === 'Pick up & Delivery') return 'var(--secondary)';
-            if (type === 'Appointment') return '#06b6d4';
-            if (type === 'Holiday') return '#f59e0b';
-            return 'var(--text-muted)';
+            if (type === 'Stitching Deadline') return '#F72585';
+            if (type === 'Pick up & Delivery') return '#7209B7';
+            if (type === 'Appointment') return '#06B6D4';
+            if (type === 'Holiday') return '#F59E0B';
+            return '#64748B';
           };
 
           return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', fontFamily: "'Inter', sans-serif" }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontFamily: "'Inter', sans-serif" }}>
               
-              {/* HEADER VIEW CONTROL BAR */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+              {/* COMPACT PAGE HEADER BELOW TOP NAV */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                  <h3 style={{ margin: 0, fontSize: '22px', fontWeight: 700, lineHeight: '30px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>Deliveries & Appointments Calendar</h3>
-                  <span style={{ fontSize: '12px', fontWeight: 400, lineHeight: '18px', color: 'var(--text-secondary)' }}>Manage your stitching deadlines and customer appointments</span>
+                  <h2 style={{ margin: 0, fontSize: '22px', fontWeight: 700, lineHeight: '30px', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>Deliveries & Appointments</h2>
+                  <span style={{ fontSize: '12px', fontWeight: 400, lineHeight: '18px', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467' }}>Manage your stitching deadlines, fittings and customer appointments</span>
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                   
-                  {/* Month Switcher Controls */}
+                  {/* Integrated Month Selector */}
                   <div style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
                     background: theme === 'dark' ? '#141126' : '#ffffff',
-                    border: '1px solid var(--border-color)',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC',
                     borderRadius: '10px',
                     padding: '4px 10px',
-                    gap: '12px'
+                    gap: '10px'
                   }}>
-                    <strong style={{ fontSize: '13px', fontWeight: 600, minWidth: '85px', textAlign: 'center', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>
+                    <strong style={{ fontSize: '13px', fontWeight: 600, minWidth: '85px', textAlign: 'center', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>
                       {activeMonthName} {activeYear}
                     </strong>
-                    <div style={{ display: 'flex', gap: '4px' }}>
+                    <div style={{ display: 'flex', gap: '2px' }}>
                       <button 
                         onClick={() => setCalendarDate(new Date(activeYear, activeMonth - 1, 1))}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '4px', fontSize: '12px', fontWeight: 600 }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467', display: 'flex', padding: '4px', borderRadius: '4px' }}
                       >
                         <ChevronLeft size={16} />
                       </button>
                       <button 
                         onClick={() => setCalendarDate(new Date(activeYear, activeMonth + 1, 1))}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '4px', fontSize: '12px', fontWeight: 600 }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467', display: 'flex', padding: '4px', borderRadius: '4px' }}
                       >
                         <ChevronRight size={16} />
                       </button>
                     </div>
                   </div>
 
-                  <button className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px' }} onClick={() => {
-                    const today = new Date();
-                    setCalendarDate(new Date(2026, 5, 1));
-                    setSelectedCalendarDate(new Date(2026, 5, 2));
-                  }}>
+                  <button 
+                    className="btn btn-secondary" 
+                    style={{ 
+                      padding: '8px 16px', 
+                      fontSize: '11px', 
+                      fontWeight: 600, 
+                      lineHeight: '16px',
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff',
+                      color: theme === 'dark' ? '#ffffff' : '#344054',
+                      border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC'
+                    }} 
+                    onClick={() => {
+                      setCalendarDate(new Date(2026, 5, 1));
+                      setSelectedCalendarDate(new Date(2026, 5, 20));
+                    }}
+                  >
                     Today
                   </button>
 
-                  {/* Filter Switcher Button */}
+                  {/* Filter Switcher Dropdown */}
                   <div style={{ position: 'relative' }}>
                     <button 
                       className="btn btn-secondary" 
-                      style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                      style={{ 
+                        padding: '8px 16px', 
+                        fontSize: '11px', 
+                        fontWeight: 600, 
+                        lineHeight: '16px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '6px',
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#ffffff',
+                        color: theme === 'dark' ? '#ffffff' : '#344054',
+                        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC'
+                      }}
                       onClick={() => setShowFilterDropdown(!showFilterDropdown)}
                     >
                       <Filter size={14} /> Filter
@@ -2325,9 +2387,9 @@ export default function TailorView({
                         position: 'absolute',
                         top: '42px',
                         right: '0',
-                        width: '210px',
+                        width: '220px',
                         background: theme === 'dark' ? '#141126' : '#ffffff',
-                        border: '1px solid var(--border-color)',
+                        border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC',
                         borderRadius: '12px',
                         padding: '16px',
                         boxShadow: '0 8px 30px rgba(0,0,0,0.15)',
@@ -2336,10 +2398,10 @@ export default function TailorView({
                         flexDirection: 'column',
                         gap: '10px'
                       }}>
-                        <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em', color: 'var(--text-muted)' }}>FILTER BY TYPE</span>
+                        <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.02em', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085' }}>FILTER BY EVENT TYPE</span>
                         {['Stitching Deadline', 'Pick up & Delivery', 'Appointment', 'Holiday', 'Blocked Date'].map(type => {
                           const isChecked = calendarFilters.includes(type);
-                          const col = getEventColors(type).text;
+                          const cfg = getEventConfig(type);
                           return (
                             <label key={type} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', fontWeight: isChecked ? 600 : 500, cursor: 'pointer' }}>
                               <input 
@@ -2349,9 +2411,9 @@ export default function TailorView({
                                   if (isChecked) setCalendarFilters(calendarFilters.filter(f => f !== type));
                                   else setCalendarFilters([...calendarFilters, type]);
                                 }}
-                                style={{ accentColor: 'var(--primary)' }}
+                                style={{ accentColor: '#F72585' }}
                               />
-                              <span style={{ color: isChecked ? col : 'var(--text-secondary)' }}>{type}</span>
+                              <span style={{ color: isChecked ? cfg.text : (theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#475467') }}>{type}</span>
                             </label>
                           );
                         })}
@@ -2359,30 +2421,70 @@ export default function TailorView({
                     )}
                   </div>
 
-                  <button className="btn btn-secondary" style={{ color: 'var(--primary)', borderColor: 'var(--primary)', padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px', display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => setShowAddEventModal(true)}>
+                  {/* Add Event Button */}
+                  <button 
+                    className="btn btn-secondary" 
+                    style={{ 
+                      color: '#F72585', 
+                      borderColor: '#F72585', 
+                      padding: '8px 16px', 
+                      fontSize: '11px', 
+                      fontWeight: 600, 
+                      lineHeight: '16px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '6px',
+                      background: theme === 'dark' ? 'rgba(247,37,133,0.08)' : '#FFF0F6'
+                    }} 
+                    onClick={() => setShowAddEventModal(true)}
+                  >
                     <Plus size={14} /> Add Event
                   </button>
                   
-                  <button className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '11px', fontWeight: 600, lineHeight: '16px' }} onClick={() => setShowBlockDatesModal(true)}>
-                    Block Dates
+                  {/* Block Date Button (StitchBee Pink) */}
+                  <button 
+                    className="btn btn-primary" 
+                    style={{ 
+                      padding: '8px 16px', 
+                      fontSize: '11px', 
+                      fontWeight: 600, 
+                      lineHeight: '16px',
+                      background: '#F72585',
+                      color: '#ffffff',
+                      border: 'none',
+                      boxShadow: '0 2px 6px rgba(247,37,133,0.3)'
+                    }} 
+                    onClick={() => setShowBlockDatesModal(true)}
+                  >
+                    Block Date
                   </button>
                 </div>
               </div>
 
-              {/* TWO COLUMN CONTENT LAYOUT */}
-              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'stretch' }}>
+              {/* 70 / 30 SPLIT MAIN WORKSPACE LAYOUT */}
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'stretch' }}>
                 
-                {/* LEFT COLUMN: CALENDAR GRID (2/3 width) */}
-                <div style={{ flex: '2', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* LEFT WORKSPACE (70% width) */}
+                <div style={{ flex: '7', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   
-                  {/* Grid Calendar Card */}
-                  <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
+                  {/* Premium White Rounded Calendar Card */}
+                  <div style={{ 
+                    padding: '24px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '20px', 
+                    flex: 1,
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+                  }}>
                     
-                    {/* View mode sub-tabs */}
-                    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    {/* Integrated View Controls Header */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
                       <div style={{ 
                         display: 'flex', 
-                        background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)', 
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#F1F5F9', 
                         borderRadius: '8px', 
                         padding: '3px' 
                       }}>
@@ -2392,11 +2494,11 @@ export default function TailorView({
                             onClick={() => setCalendarViewMode(mode)}
                             style={{
                               background: calendarViewMode === mode 
-                                ? (theme === 'dark' ? 'rgba(247,37,133,0.2)' : 'rgba(247,37,133,0.1)') 
+                                ? (theme === 'dark' ? '#1E1B38' : '#ffffff') 
                                 : 'transparent',
                               border: 'none',
-                              color: calendarViewMode === mode ? 'var(--primary)' : 'var(--text-secondary)',
-                              fontWeight: 600,
+                              color: calendarViewMode === mode ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#64748B'),
+                              fontWeight: calendarViewMode === mode ? 700 : 500,
                               fontSize: '11px',
                               lineHeight: '16px',
                               padding: '6px 14px',
@@ -2404,29 +2506,38 @@ export default function TailorView({
                               cursor: 'pointer',
                               textTransform: 'capitalize',
                               transition: 'all 0.2s ease',
-                              boxShadow: calendarViewMode === mode ? '0 1px 2px rgba(247,37,133,0.05)' : 'none'
+                              boxShadow: calendarViewMode === mode ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
                             }}
                           >
                             {mode}
                           </button>
                         ))}
                       </div>
+
+                      {/* Small Integrated Today Indicator */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ display: 'inline-flex', width: '8px', height: '8px', borderRadius: '50%', background: '#F72585' }}></span>
+                        <span style={{ fontSize: '11px', fontWeight: 600, color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467' }}>
+                          Today: Jun 20, 2026
+                        </span>
+                      </div>
                     </div>
 
                     {/* MONTH VIEW CALENDAR GRID */}
                     {calendarViewMode === 'month' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--border-color)', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E4E7EC', borderRadius: '12px', overflow: 'hidden', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
                         
                         {/* Weekday Labels Header */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? '#121020' : '#f8fafc' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? '#18142e' : '#F8FAFC' }}>
                           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                            <div key={day} style={{ padding: '10px', textAlign: 'center', fontSize: '10px', fontWeight: 600, lineHeight: '14px', color: 'var(--text-secondary)' }}>{day}</div>
+                            <div key={day} style={{ padding: '10px', textAlign: 'center', fontSize: '10px', fontWeight: 700, lineHeight: '14px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#64748B', letterSpacing: '0.02em', textTransform: 'uppercase' }}>{day}</div>
                           ))}
                         </div>
 
                         {/* Cells Grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: 'var(--border-color)', gap: '1px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E4E7EC', gap: '1px' }}>
                           {cells.map((cell, idx) => {
+                            const isTodayDate = cell.date.getFullYear() === 2026 && cell.date.getMonth() === 5 && cell.date.getDate() === 20;
                             const isSelected = selectedCalendarDate && 
                               selectedCalendarDate.getFullYear() === cell.date.getFullYear() && 
                               selectedCalendarDate.getMonth() === cell.date.getMonth() && 
@@ -2446,61 +2557,103 @@ export default function TailorView({
                                 key={idx}
                                 onClick={() => setSelectedCalendarDate(cell.date)}
                                 style={{
-                                  minHeight: '90px',
-                                  padding: '6px',
-                                  background: isBlocked 
-                                    ? (theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.03)')
-                                    : (isSelected 
-                                      ? (theme === 'dark' ? '#1c152a' : '#fff3f8') 
-                                      : (theme === 'dark' ? '#141126' : '#ffffff')),
-                                  border: isSelected ? '1px solid var(--primary)' : 'none',
+                                  minHeight: '105px',
+                                  padding: '8px',
+                                  background: isTodayDate 
+                                    ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6')
+                                    : (isBlocked 
+                                      ? (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8FAFC')
+                                      : (isSelected 
+                                        ? (theme === 'dark' ? '#1c152a' : '#FAF5FF') 
+                                        : (theme === 'dark' ? '#141126' : '#ffffff'))),
+                                  border: isTodayDate 
+                                    ? '1px solid rgba(247,37,133,0.4)' 
+                                    : (isSelected ? '1px solid #7209B7' : 'none'),
                                   position: 'relative',
                                   cursor: 'pointer',
-                                  opacity: cell.isCurrentMonth ? 1 : 0.45,
-                                  transition: 'all 0.15s ease'
+                                  opacity: cell.isCurrentMonth ? 1 : 0.4,
+                                  transition: 'all 0.15s ease',
+                                  display: 'flex',
+                                  flexDirection: 'column'
                                 }}
                               >
-                                <span style={{ 
-                                  fontSize: '11px', 
-                                  fontWeight: isSelected ? 700 : 500, 
-                                  lineHeight: '16px',
-                                  color: isSelected ? 'var(--primary)' : 'var(--text-secondary)',
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  borderRadius: '50%',
-                                  width: '20px',
-                                  height: '20px',
-                                  background: isSelected ? 'rgba(247,37,133,0.1)' : 'transparent'
-                                }}>
-                                  {cell.day}
-                                </span>
+                                {/* Date Number Row */}
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                                  <span style={{ 
+                                    fontSize: '11px', 
+                                    fontWeight: isTodayDate || isSelected ? 700 : 500, 
+                                    lineHeight: '16px',
+                                    color: isTodayDate ? '#ffffff' : (isSelected ? '#7209B7' : (theme === 'dark' ? '#ffffff' : '#344054')),
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderRadius: '50%',
+                                    width: '22px',
+                                    height: '22px',
+                                    background: isTodayDate ? '#F72585' : (isSelected ? 'rgba(114,9,183,0.12)' : 'transparent'),
+                                    boxShadow: isTodayDate ? '0 2px 6px rgba(247,37,133,0.3)' : 'none'
+                                  }}>
+                                    {cell.day}
+                                  </span>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '4px' }}>
-                                  {cellEvents.map(evt => {
-                                    const col = getEventColors(evt.type);
+                                  {isTodayDate && (
+                                    <span style={{ fontSize: '9px', fontWeight: 700, color: '#F72585', textTransform: 'uppercase', letterSpacing: '0.02em' }}>Today</span>
+                                  )}
+                                </div>
+
+                                {/* Rich Event Cards Container */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                                  {cellEvents.slice(0, 2).map(evt => {
+                                    const cfg = getEventConfig(evt.type);
                                     return (
                                       <div 
                                         key={evt.id} 
                                         style={{
-                                          padding: '2px 6px',
-                                          borderRadius: '4px',
-                                          background: col.bg,
-                                          border: col.border,
-                                          color: col.text,
-                                          fontSize: '10px',
-                                          fontWeight: 600,
-                                          lineHeight: '14px',
-                                          textOverflow: 'ellipsis',
-                                          overflow: 'hidden',
-                                          whiteSpace: 'nowrap'
+                                          padding: '4px 6px',
+                                          borderRadius: '6px',
+                                          background: cfg.bg,
+                                          borderLeft: `3px solid ${cfg.accent}`,
+                                          borderTop: `1px solid ${cfg.border}`,
+                                          borderRight: `1px solid ${cfg.border}`,
+                                          borderBottom: `1px solid ${cfg.border}`,
+                                          color: theme === 'dark' ? '#ffffff' : '#1D2939',
+                                          display: 'flex',
+                                          flexDirection: 'column',
+                                          gap: '1px'
                                         }}
-                                        title={`${evt.type}: ${evt.customer}`}
+                                        title={`${evt.type}: ${evt.customer} - ${evt.time}`}
                                       >
-                                        {evt.type === 'Blocked Date' ? 'Blocked' : evt.customer}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                          <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
+                                          <strong style={{ fontSize: '10px', fontWeight: 600, lineHeight: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            {evt.type === 'Blocked Date' ? 'Blocked' : evt.customer}
+                                          </strong>
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8.5px', color: cfg.text, fontWeight: 600 }}>
+                                          <span style={{ letterSpacing: '0.02em', textTransform: 'uppercase' }}>{evt.type === 'Stitching Deadline' ? 'Deadline' : (evt.type === 'Pick up & Delivery' ? 'Delivery' : evt.type)}</span>
+                                          <span>{evt.time}</span>
+                                        </div>
                                       </div>
                                     );
                                   })}
+
+                                  {/* +N More Indicator */}
+                                  {cellEvents.length > 2 && (
+                                    <div 
+                                      style={{
+                                        fontSize: '9px',
+                                        fontWeight: 600,
+                                        color: '#F72585',
+                                        background: theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6',
+                                        borderRadius: '4px',
+                                        padding: '2px 5px',
+                                        textAlign: 'center',
+                                        marginTop: 'auto'
+                                      }}
+                                    >
+                                      +{cellEvents.length - 2} more
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             );
@@ -2525,7 +2678,7 @@ export default function TailorView({
                       }
 
                       return (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '12px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '10px' }}>
                           {weekDays.map((wDate, idx) => {
                             const isSelected = selectedCalendarDate && selectedCalendarDate.getDate() === wDate.getDate();
                             const wEvents = calendarEvents.filter(e => 
@@ -2538,46 +2691,55 @@ export default function TailorView({
                                 key={idx} 
                                 onClick={() => setSelectedCalendarDate(wDate)}
                                 style={{
-                                  padding: '12px',
+                                  padding: '10px',
                                   borderRadius: '12px',
-                                  border: isSelected ? '1px solid var(--primary)' : '1px solid var(--border-color)',
-                                  background: isSelected ? (theme === 'dark' ? '#1c152a' : '#fff3f8') : (theme === 'dark' ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)'),
+                                  border: isSelected ? '1px solid #F72585' : (theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'),
+                                  background: isSelected ? (theme === 'dark' ? 'rgba(247,37,133,0.12)' : '#FFF0F6') : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff'),
                                   cursor: 'pointer',
-                                  minHeight: '220px',
+                                  minHeight: '230px',
                                   display: 'flex',
                                   flexDirection: 'column',
                                   gap: '8px'
                                 }}
                               >
-                                <div style={{ textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '6px' }}>
-                                  <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', fontWeight: 600, lineHeight: '14px' }}>
+                                <div style={{ textAlign: 'center', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', paddingBottom: '6px' }}>
+                                  <span style={{ fontSize: '10px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block', fontWeight: 600, lineHeight: '14px' }}>
                                     {wDate.toLocaleString('default', { weekday: 'short' })}
                                   </span>
-                                  <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: isSelected ? 'var(--primary)' : 'var(--text-primary)' }}>
+                                  <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: isSelected ? '#F72585' : (theme === 'dark' ? '#ffffff' : '#1D2939') }}>
                                     {wDate.getDate()}
                                   </strong>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', overflowY: 'auto' }}>
-                                  {wEvents.map(evt => (
-                                    <div 
-                                      key={evt.id} 
-                                      style={{
-                                        padding: '4px 6px',
-                                        borderRadius: '6px',
-                                        background: getEventColors(evt.type).bg,
-                                        border: getEventColors(evt.type).border,
-                                        color: getEventColors(evt.type).text,
-                                        fontSize: '10px',
-                                        fontWeight: 600,
-                                        lineHeight: '14px'
-                                      }}
-                                    >
-                                      <span style={{ display: 'block', fontSize: '9px', fontWeight: 500, lineHeight: '13px', opacity: 0.85 }}>{evt.time}</span>
-                                      {evt.customer}
-                                    </div>
-                                  ))}
+                                  {wEvents.map(evt => {
+                                    const cfg = getEventConfig(evt.type);
+                                    return (
+                                      <div 
+                                        key={evt.id} 
+                                        style={{
+                                          padding: '6px 8px',
+                                          borderRadius: '8px',
+                                          background: cfg.bg,
+                                          borderLeft: `3px solid ${cfg.accent}`,
+                                          borderTop: `1px solid ${cfg.border}`,
+                                          borderRight: `1px solid ${cfg.border}`,
+                                          borderBottom: `1px solid ${cfg.border}`,
+                                          color: theme === 'dark' ? '#ffffff' : '#1D2939',
+                                          fontSize: '10px',
+                                          fontWeight: 600,
+                                          lineHeight: '14px'
+                                        }}
+                                      >
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                          <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
+                                          <span>{evt.customer}</span>
+                                        </div>
+                                        <span style={{ display: 'block', fontSize: '9px', fontWeight: 500, color: cfg.text, marginTop: '2px' }}>{evt.time}</span>
+                                      </div>
+                                    );
+                                  })}
                                   {wEvents.length === 0 && (
-                                    <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: 'var(--text-muted)', textAlign: 'center', marginTop: '12px' }}>No events</span>
+                                    <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#98A2B3', textAlign: 'center', marginTop: '16px' }}>No events</span>
                                   )}
                                 </div>
                               </div>
@@ -2589,71 +2751,80 @@ export default function TailorView({
 
                     {/* DAY VIEW DETAIL PANEL */}
                     {calendarViewMode === 'day' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: theme === 'dark' ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.01)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8FAFC', padding: '16px', borderRadius: '12px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <strong style={{ fontSize: '15px', fontWeight: 700, lineHeight: '22px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>
+                          <strong style={{ fontSize: '15px', fontWeight: 700, lineHeight: '22px', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>
                             Schedule for {selectedCalendarDate ? selectedCalendarDate.toLocaleDateString('default', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Selected Day'}
                           </strong>
-                          <span style={{ fontSize: '10px', fontWeight: 600, lineHeight: '14px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '2px 8px', borderRadius: '10px' }}>
+                          <span style={{ fontSize: '10px', fontWeight: 600, lineHeight: '14px', background: 'rgba(247,37,133,0.1)', color: '#F72585', padding: '4px 10px', borderRadius: '10px' }}>
                             {selectedDayEvents.length} Events Scheduled
                           </span>
                         </div>
                         
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                          {selectedDayEvents.map(evt => (
-                            <div 
-                              key={evt.id} 
-                              style={{ 
-                                display: 'flex', 
-                                gap: '12px', 
-                                padding: '12px', 
-                                borderRadius: '10px', 
-                                background: getEventColors(evt.type).bg,
-                                border: getEventColors(evt.type).border
-                              }}
-                            >
-                              <div style={{ borderRight: '2px solid var(--border-color)', paddingRight: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: getEventColors(evt.type).text }}>{evt.time}</strong>
+                          {selectedDayEvents.map(evt => {
+                            const cfg = getEventConfig(evt.type);
+                            return (
+                              <div 
+                                key={evt.id} 
+                                style={{ 
+                                  display: 'flex', 
+                                  gap: '14px', 
+                                  padding: '14px', 
+                                  borderRadius: '10px', 
+                                  background: cfg.bg,
+                                  borderLeft: `4px solid ${cfg.accent}`,
+                                  borderTop: `1px solid ${cfg.border}`,
+                                  borderRight: `1px solid ${cfg.border}`,
+                                  borderBottom: `1px solid ${cfg.border}`
+                                }}
+                              >
+                                <div style={{ borderRight: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC', paddingRight: '14px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                  <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: cfg.text }}>{evt.time}</strong>
+                                </div>
+                                <div>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                                    <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
+                                    <span style={{ fontSize: '11px', fontWeight: 700, lineHeight: '16px', letterSpacing: '0.02em', color: cfg.text, textTransform: 'uppercase' }}>{evt.type}</span>
+                                  </div>
+                                  <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>{evt.customer}</strong>
+                                  <p style={{ margin: '4px 0 0 0', fontSize: '11px', fontWeight: 400, lineHeight: '17px', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467' }}>{evt.details}</p>
+                                </div>
                               </div>
-                              <div>
-                                <span style={{ fontSize: '11px', fontWeight: 700, lineHeight: '16px', letterSpacing: '0.02em', color: getEventColors(evt.type).text, display: 'block', textTransform: 'uppercase' }}>{evt.type}</span>
-                                <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>{evt.customer}</strong>
-                                <p style={{ margin: '4px 0 0 0', fontSize: '11px', fontWeight: 400, lineHeight: '17px', color: 'var(--text-secondary)' }}>{evt.details}</p>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                           {selectedDayEvents.length === 0 && (
-                            <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                              <Clock size={28} style={{ color: 'var(--text-muted)', marginBottom: '10px', opacity: 0.6 }} />
-                              <h5 style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#fff' : 'var(--text-primary)' }}>No events scheduled</h5>
-                              <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, lineHeight: '17px', color: 'var(--text-secondary)' }}>Add new appointments or stitching deadlines to display them here.</p>
+                            <div style={{ padding: '40px', textAlign: 'center', color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#667085' }}>
+                              <Clock size={28} style={{ color: '#F72585', marginBottom: '10px', opacity: 0.6 }} />
+                              <h5 style={{ margin: '0 0 4px 0', fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>No events scheduled</h5>
+                              <p style={{ margin: 0, fontSize: '11px', fontWeight: 400, lineHeight: '17px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085' }}>Add new appointments or stitching deadlines to display them here.</p>
                             </div>
                           )}
                         </div>
                       </div>
                     )}
 
-                    {/* Legend of Event Types */}
+                    {/* Visually Distinct Event Types Legend */}
                     <div style={{ 
                       display: 'flex', 
                       gap: '16px', 
-                      borderTop: '1px solid var(--border-color)', 
-                      paddingTop: '12px', 
+                      borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', 
+                      paddingTop: '16px', 
                       flexWrap: 'wrap',
                       fontSize: '11px',
                       alignItems: 'center'
                     }}>
-                      <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-secondary)' }}>Event Types</span>
+                      <span style={{ fontSize: '12px', fontWeight: 700, color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>Event Types</span>
                       {[
-                        { label: 'Stitching Deadline', color: 'var(--primary)' },
-                        { label: 'Pick up & Delivery', color: 'var(--secondary)' },
-                        { label: 'Appointment', color: '#06b6d4' },
-                        { label: 'Holiday', color: '#f59e0b' },
-                        { label: 'Blocked Date', color: 'var(--text-muted)' }
+                        { label: 'Stitching Deadline', color: '#F72585', icon: <Scissors size={11} /> },
+                        { label: 'Pick up & Delivery', color: '#7209B7', icon: <Truck size={11} /> },
+                        { label: 'Appointment', color: '#06B6D4', icon: <User size={11} /> },
+                        { label: 'Holiday', color: '#F59E0B', icon: <Sparkles size={11} /> },
+                        { label: 'Blocked Date', color: '#64748B', icon: <Lock size={11} /> }
                       ].map(item => (
                         <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }}></span>
-                          <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-secondary)' }}>{item.label}</span>
+                          <span style={{ fontSize: '11px', fontWeight: 500, color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467' }}>{item.label}</span>
                         </div>
                       ))}
                     </div>
@@ -2661,32 +2832,41 @@ export default function TailorView({
                   </div>
                 </div>
 
-                {/* RIGHT COLUMN: MINI CALENDAR & LISTS (1/3 width) */}
-                <div style={{ flex: '1', minWidth: '280px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {/* RIGHT SIDEBAR (30% width) */}
+                <div style={{ flex: '3', minWidth: '280px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   
-                  {/* Small mini calendar overview card */}
-                  <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* CARD 1 — MINI CALENDAR */}
+                  <div style={{ 
+                    padding: '16px 20px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '14px',
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+                  }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>{activeMonthName} {activeYear}</strong>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>{activeMonthName} {activeYear}</strong>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         <button 
                           onClick={() => setCalendarDate(new Date(activeYear, activeMonth - 1, 1))}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '2px', fontSize: '12px', fontWeight: 600 }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467', display: 'flex', padding: '2px', borderRadius: '4px' }}
                         >
                           <ChevronLeft size={14} />
                         </button>
                         <button 
                           onClick={() => setCalendarDate(new Date(activeYear, activeMonth + 1, 1))}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', padding: '2px', fontSize: '12px', fontWeight: 600 }}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#475467', display: 'flex', padding: '2px', borderRadius: '4px' }}
                         >
                           <ChevronRight size={14} />
                         </button>
                       </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px', textAlign: 'center' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', textAlign: 'center' }}>
                       {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((wDay, idx) => (
-                        <span key={idx} style={{ color: 'var(--text-muted)', fontSize: '10px', fontWeight: 600, lineHeight: '14px' }}>{wDay}</span>
+                        <span key={idx} style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#98A2B3', fontSize: '10px', fontWeight: 600, lineHeight: '14px' }}>{wDay}</span>
                       ))}
                       
                       {cells.map((cell, idx) => {
@@ -2694,17 +2874,13 @@ export default function TailorView({
                           selectedCalendarDate.getDate() === cell.date.getDate() && 
                           selectedCalendarDate.getMonth() === cell.date.getMonth();
                         
-                        const hasEvt = calendarEvents.some(e => 
+                        const dayEvents = calendarEvents.filter(e => 
                           e.date.getDate() === cell.date.getDate() &&
                           e.date.getMonth() === cell.date.getMonth() &&
                           calendarFilters.includes(e.type)
                         );
 
-                        const mainEvtType = calendarEvents.find(e => 
-                          e.date.getDate() === cell.date.getDate() &&
-                          e.date.getMonth() === cell.date.getMonth() &&
-                          calendarFilters.includes(e.type)
-                        )?.type;
+                        const mainEvtType = dayEvents.find(e => calendarFilters.includes(e.type))?.type;
 
                         return (
                           <div 
@@ -2712,11 +2888,11 @@ export default function TailorView({
                             onClick={() => setSelectedCalendarDate(cell.date)}
                             style={{
                               position: 'relative',
-                              padding: '4px 0',
+                              padding: '2px 0',
                               borderRadius: '50%',
                               cursor: 'pointer',
-                              background: isSelected ? 'var(--primary)' : 'transparent',
-                              color: isSelected ? '#ffffff' : (cell.isCurrentMonth ? 'var(--text-primary)' : 'var(--text-muted)'),
+                              background: isSelected ? '#F72585' : 'transparent',
+                              color: isSelected ? '#ffffff' : (cell.isCurrentMonth ? (theme === 'dark' ? '#ffffff' : '#1D2939') : (theme === 'dark' ? 'rgba(255,255,255,0.3)' : '#98A2B3')),
                               fontSize: '11px',
                               fontWeight: isSelected ? 700 : 500,
                               lineHeight: '16px',
@@ -2732,7 +2908,7 @@ export default function TailorView({
                             }}
                           >
                             <span>{cell.day}</span>
-                            {hasEvt && !isSelected && (
+                            {dayEvents.length > 0 && !isSelected && (
                               <span style={{ 
                                 position: 'absolute', 
                                 bottom: '2px', 
@@ -2748,69 +2924,223 @@ export default function TailorView({
                     </div>
                   </div>
 
-                  {/* Upcoming events list */}
-                  <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {/* CARD 2 — UPCOMING EVENTS */}
+                  <div style={{ 
+                    padding: '20px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '14px',
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+                  }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>UPCOMING EVENTS</strong>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>Upcoming Events</strong>
                       <span 
-                        style={{ fontSize: '10px', fontWeight: 600, color: 'var(--primary)', cursor: 'pointer' }}
+                        style={{ fontSize: '10px', fontWeight: 600, color: '#F72585', cursor: 'pointer' }}
                         onClick={() => setSelectedCalendarDate(null)}
                       >
                         View All
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '200px', overflowY: 'auto' }}>
-                      {/* If a date is selected, show events for selected day, otherwise show all active month events */}
-                      {(selectedCalendarDate ? selectedDayEvents : filteredMonthEvents).map(evt => {
-                        const col = getEventColors(evt.type);
-                        return (
-                          <div 
-                            key={evt.id} 
-                            style={{ 
-                              padding: '8px 12px', 
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '240px', overflowY: 'auto' }}>
+                      {[
+                        { id: 'u1', customer: 'Priya Sharma', service: 'Lehenga Stitching', date: '12 Jun · 09:30 AM', icon: '👗', badge: 'Upcoming', bg: 'rgba(247,37,133,0.08)', text: '#F72585' },
+                        { id: 'u2', customer: 'Kavitha Iyer', service: 'Suit Alteration', date: '20 Jun · 03:30 PM', icon: '👕', badge: 'Upcoming', bg: 'rgba(6,182,212,0.08)', text: '#0284C7' },
+                        { id: 'u3', customer: 'Neha Singh', service: 'Blouse Stitching', date: '22 Jun · 10:00 AM', icon: '🧵', badge: 'Upcoming', bg: 'rgba(114,9,183,0.08)', text: '#7209B7' },
+                        { id: 'u4', customer: 'Vikram Seth', service: 'Linen Suit Delivery', date: '24 Jun · 05:00 PM', icon: '📦', badge: 'Confirmed', bg: 'rgba(18,183,106,0.08)', text: '#12B76A' }
+                      ].map(item => (
+                        <div 
+                          key={item.id}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '10px 12px',
+                            borderRadius: '10px',
+                            background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8FAFC',
+                            border: theme === 'dark' ? '1px solid rgba(255,255,255,0.06)' : '1px solid #F1F5F9'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ 
+                              width: '32px', 
+                              height: '32px', 
                               borderRadius: '8px', 
-                              border: col.border, 
-                              background: col.bg,
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <div>
-                              <span style={{ display: 'block', fontSize: '9px', fontWeight: 700, lineHeight: '13px', letterSpacing: '0.02em', color: col.text, textTransform: 'uppercase' }}>{evt.type}</span>
-                              <strong style={{ fontSize: '11px', fontWeight: 600, lineHeight: '16px', color: 'var(--text-primary)' }}>{evt.customer}</strong>
+                              background: item.bg, 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center',
+                              fontSize: '14px' 
+                            }}>
+                              {item.icon}
                             </div>
-                            <div style={{ textAlign: 'right', fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: 'var(--text-muted)' }}>
-                              <div>{evt.date.toLocaleDateString('default', { day: 'numeric', month: 'short' })}</div>
-                              <div style={{ fontWeight: 600 }}>{evt.time}</div>
+                            <div>
+                              <strong style={{ display: 'block', fontSize: '11px', fontWeight: 600, lineHeight: '16px', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>{item.customer}</strong>
+                              <span style={{ display: 'block', fontSize: '10px', fontWeight: 400, color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085' }}>{item.service}</span>
+                              <span style={{ display: 'block', fontSize: '9px', fontWeight: 500, color: theme === 'dark' ? 'rgba(255,255,255,0.45)' : '#98A2B3', marginTop: '1px' }}>{item.date}</span>
                             </div>
                           </div>
-                        );
-                      })}
-
-                      {(selectedCalendarDate ? selectedDayEvents : filteredMonthEvents).length === 0 && (
-                        <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: 'var(--text-muted)', textAlign: 'center', padding: '16px 0' }}>No upcoming events</span>
-                      )}
+                          <span style={{ fontSize: '9px', fontWeight: 600, color: item.text, background: item.bg, padding: '2px 8px', borderRadius: '10px' }}>
+                            {item.badge}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
-                  {/* Monthly statistics overview */}
-                  <div className="glass-card-no-hover" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>THIS MONTH OVERVIEW</strong>
+                  {/* CARD 3 — MONTH OVERVIEW */}
+                  <div style={{ 
+                    padding: '20px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '14px',
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+                  }}>
+                    <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>THIS MONTH OVERVIEW</strong>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', textAlign: 'center' }}>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', padding: '8px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: 'var(--text-muted)', display: 'block' }}>Total Events</span>
-                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: 'var(--text-primary)' }}>{totalEventsCount}</strong>
+                      <div style={{ background: theme === 'dark' ? 'rgba(247,37,133,0.1)' : '#FFF0F6', padding: '10px 6px', borderRadius: '10px', border: '1px solid rgba(247,37,133,0.2)' }}>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: '#F72585', display: 'block' }}>12</strong>
+                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085', marginTop: '2px', display: 'block' }}>Total Events</span>
                       </div>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', padding: '8px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: 'var(--text-muted)', display: 'block' }}>Deadlines</span>
-                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: 'var(--primary)' }}>{deadlinesCount}</strong>
+                      <div style={{ background: theme === 'dark' ? 'rgba(114,9,183,0.1)' : '#F3E8FF', padding: '10px 6px', borderRadius: '10px', border: '1px solid rgba(114,9,183,0.2)' }}>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: '#7209B7', display: 'block' }}>6</strong>
+                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085', marginTop: '2px', display: 'block' }}>Stitching Deadlines</span>
                       </div>
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', padding: '8px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: 'var(--text-muted)', display: 'block' }}>Deliveries</span>
-                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: 'var(--secondary)' }}>{deliveriesCount}</strong>
+                      <div style={{ background: theme === 'dark' ? 'rgba(6,182,212,0.1)' : '#E0F2FE', padding: '10px 6px', borderRadius: '10px', border: '1px solid rgba(6,182,212,0.2)' }}>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, lineHeight: '20px', color: '#0284C7', display: 'block' }}>4</strong>
+                        <span style={{ fontSize: '9px', fontWeight: 500, lineHeight: '13px', color: theme === 'dark' ? 'rgba(255,255,255,0.7)' : '#667085', marginTop: '2px', display: 'block' }}>Appointments</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CARD 4 — QUICK ACTIONS */}
+                  <div style={{ 
+                    padding: '20px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '14px',
+                    background: theme === 'dark' ? '#141126' : '#ffffff',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+                  }}>
+                    <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', textTransform: 'uppercase', color: theme === 'dark' ? '#ffffff' : '#1D2939' }}>QUICK ACTIONS</strong>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                      <button 
+                        onClick={() => setShowAddEventModal(true)}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '10px',
+                          background: theme === 'dark' ? 'rgba(247,37,133,0.1)' : '#FFF0F6',
+                          border: '1px solid rgba(247,37,133,0.2)',
+                          color: '#F72585',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Plus size={14} /> + Add Event
+                      </button>
+
+                      <button 
+                        onClick={() => setShowBlockDatesModal(true)}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '10px',
+                          background: theme === 'dark' ? 'rgba(114,9,183,0.1)' : '#F3E8FF',
+                          border: '1px solid rgba(114,9,183,0.2)',
+                          color: '#7209B7',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Lock size={14} /> Block Date
+                      </button>
+
+                      <button 
+                        onClick={() => setActiveTab('orders')}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '10px',
+                          background: theme === 'dark' ? 'rgba(6,182,212,0.1)' : '#E0F2FE',
+                          border: '1px solid rgba(6,182,212,0.2)',
+                          color: '#0284C7',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <ShoppingBag size={14} /> View Orders
+                      </button>
+
+                      <button 
+                        onClick={() => alert("Downloading June 2026 StitchBee Tailor Calendar schedule PDF...")}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: '10px',
+                          background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#F8FAFC',
+                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E4E7EC',
+                          color: theme === 'dark' ? '#ffffff' : '#344054',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <FileText size={14} /> Export Calendar
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* OPTIONAL INSIGHT CARD */}
+                  <div style={{ 
+                    padding: '16px 20px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    gap: '10px',
+                    background: theme === 'dark' ? 'rgba(247,37,133,0.08)' : '#FFF0F6',
+                    border: '1px solid rgba(247,37,133,0.2)',
+                    borderRadius: '16px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Sparkles size={14} style={{ color: '#F72585' }} />
+                      <strong style={{ fontSize: '13px', fontWeight: 700, color: '#F72585' }}>Busy Week Ahead</strong>
+                    </div>
+                    <span style={{ fontSize: '11px', fontWeight: 400, lineHeight: '16px', color: theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467' }}>
+                      5 stitching deadlines and 3 appointments scheduled this week.
+                    </span>
+
+                    <div style={{ marginTop: '4px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', fontWeight: 600, color: '#F72585', marginBottom: '4px' }}>
+                        <span>Weekly Schedule</span>
+                        <span>72% booked</span>
+                      </div>
+                      <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(247,37,133,0.15)', overflow: 'hidden' }}>
+                        <div style={{ width: '72%', height: '100%', borderRadius: '3px', background: '#F72585' }}></div>
                       </div>
                     </div>
                   </div>
