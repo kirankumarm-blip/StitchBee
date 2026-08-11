@@ -1,0 +1,523 @@
+/* Modern Production-Ready StitchBee Designer Studio Dashboard Stylesheet */
+
+:root {
+  --sb-pink: #EC168C;
+  --sb-pink-hover: #D00F7A;
+  --sb-pink-light: #FFF0F6;
+  --sb-purple: #7B1FE8;
+  --sb-purple-light: #F3E8FF;
+  --sb-navy: #111827;
+  --sb-text-secondary: #64748B;
+  --sb-bg-light: #F7F8FA;
+  --sb-card-bg: #FFFFFF;
+  --sb-border: #E7EAF0;
+  --sb-border-hover: #CBD5E1;
+  --sb-success: #10B981;
+  --sb-warning: #F59E0B;
+  --sb-danger: #EF4444;
+  --sb-info: #3B82F6;
+  --sb-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --sb-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+.designer-dashboard-wrapper {
+  font-family: var(--sb-font);
+  background-color: var(--sb-bg-light);
+  color: var(--sb-navy);
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+/* Dark Mode Overrides */
+body.dark-theme .designer-dashboard-wrapper,
+.theme-dark .designer-dashboard-wrapper {
+  --sb-bg-light: #0F0C1B;
+  --sb-card-bg: #141126;
+  --sb-navy: #FFFFFF;
+  --sb-text-secondary: #94A3B8;
+  --sb-border: rgba(255, 255, 255, 0.08);
+  --sb-border-hover: rgba(255, 255, 255, 0.16);
+  --sb-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --sb-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* 1. Page Intro / Welcome Section */
+.dashboard-intro-card {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: var(--sb-shadow);
+}
+
+.intro-text-group h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.intro-text-group p {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: var(--sb-text-secondary);
+}
+
+.intro-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-primary-gradient {
+  background: linear-gradient(135deg, var(--sb-pink) 0%, var(--sb-purple) 100%);
+  color: #ffffff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(236, 22, 140, 0.25);
+}
+
+.btn-primary-gradient:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(236, 22, 140, 0.35);
+}
+
+.btn-secondary-white {
+  background: var(--sb-card-bg);
+  color: var(--sb-navy);
+  border: 1px solid var(--sb-border);
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary-white:hover {
+  border-color: var(--sb-border-hover);
+  background: rgba(0, 0, 0, 0.02);
+  transform: translateY(-1px);
+}
+
+/* Live Indicator Badge */
+.live-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--sb-success);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* 2. KPI / Performance Cards Grid */
+.kpi-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1200px) {
+  .kpi-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kpi-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-card {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--sb-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sb-shadow-hover);
+  border-color: var(--sb-border-hover);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sb-text-secondary);
+}
+
+.kpi-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.kpi-subtext {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+  display: block;
+}
+
+.kpi-sparkline {
+  width: 70px;
+  height: 32px;
+}
+
+/* Dashboard Section Layout Grids */
+.dashboard-grid-two-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-grid-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-card {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--sb-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: var(--sb-shadow-hover);
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.card-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sb-pink);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* 3A. Summary Metrics Header */
+.earnings-metrics-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  background: var(--sb-bg-light);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--sb-border);
+}
+
+@media (max-width: 640px) {
+  .earnings-metrics-header {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-item label {
+  font-size: 11px;
+  color: var(--sb-text-secondary);
+  font-weight: 500;
+}
+
+.metric-item strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* 3B. Donut Chart Legends */
+.donut-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  gap: 12px;
+}
+
+.legend-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* 4. Upcoming Appointments Cards */
+.appointment-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--sb-bg-light);
+  border-left: 4px solid var(--sb-pink);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointment-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.appointment-title {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.appointment-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sb-text-secondary);
+}
+
+.appointment-detail {
+  font-size: 12px;
+  color: var(--sb-text-secondary);
+  margin: 0;
+}
+
+/* 5. Real Progress Bar Indicator */
+.real-progress-container {
+  width: 100%;
+  height: 6px;
+  background: var(--sb-border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.real-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 5. Active Design Projects List / Table */
+.projects-table-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--sb-bg-light);
+  border: 1px solid var(--sb-border);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-meta-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 2;
+  min-width: 200px;
+}
+
+.project-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.project-progress-col {
+  flex: 1.5;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-status-col {
+  flex: 1;
+  min-width: 100px;
+  text-align: right;
+}
+
+.status-badge-pill {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+/* 7. Recent Clients */
+.client-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--sb-bg-light);
+  border: 1px solid var(--sb-border);
+}
+
+.client-avatar-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 8. Activity Timeline */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--sb-border);
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -24px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px var(--sb-card-bg);
+}
+
+/* Responsive Overflows */
+@media (max-width: 640px) {
+  .designer-dashboard-wrapper {
+    padding: 14px;
+    gap: 16px;
+  }
+}

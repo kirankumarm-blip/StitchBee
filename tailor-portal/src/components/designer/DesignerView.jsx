@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import HeaderProfileModal from '../HeaderProfileModal';
+import DesignerDashboard from '../dashboard/DesignerDashboard';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -306,187 +307,15 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
       <main style={{ padding: '24px', maxWidth: '1440px', margin: '0 auto' }}>
         
         {/* ==================================================================== */}
-        {/* TAB 1: 🏠 DASHBOARD (DESIGNER OVERVIEW)                               */}
+        {/* TAB 1: 🏠 DASHBOARD (DESIGNER MASTER OVERVIEW - PRODUCTION READY)     */}
         {/* ==================================================================== */}
         {activeTab === 'dashboard' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            
-            {/* Header Title */}
-            <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Designer Master Overview</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                Welcome back, Ananya! Track your active design projects, client requests, and stitching workflows.
-              </p>
-            </div>
-
-            {/* Quick Actions Bar */}
-            <div style={{
-              background: theme === 'dark' ? '#141126' : '#ffffff',
-              border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
-              borderRadius: '16px',
-              padding: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              flexWrap: 'wrap'
-            }}>
-              <span style={{ fontSize: '13px', fontWeight: 700, marginRight: '4px' }}>Quick Actions:</span>
-              <button
-                onClick={() => { setActiveTab('studio'); setStudioSubTab('create'); }}
-                className="btn-text-white-force"
-                style={{ padding: '8px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-              >
-                <Plus size={15} /> Create Design
-              </button>
-              <button
-                onClick={() => { setActiveTab('studio'); setStudioSubTab('requests'); }}
-                style={{ padding: '8px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E5E7EB', background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#172033', cursor: 'pointer' }}
-              >
-                New Design Request (6)
-              </button>
-              <button
-                onClick={() => setActiveTab('customers')}
-                style={{ padding: '8px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E5E7EB', background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#172033', cursor: 'pointer' }}
-              >
-                Add Customer
-              </button>
-              <button
-                onClick={() => setActiveTab('studio')}
-                style={{ padding: '8px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E5E7EB', background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#172033', cursor: 'pointer' }}
-              >
-                Upload Design Sketch
-              </button>
-              <button
-                onClick={() => setActiveTab('calendar')}
-                style={{ padding: '8px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #E5E7EB', background: 'transparent', color: theme === 'dark' ? '#ffffff' : '#172033', cursor: 'pointer' }}
-              >
-                Schedule Appointment
-              </button>
-            </div>
-
-            {/* KPI Cards Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-              
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>Active Projects</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(247,37,133,0.1)', color: '#F72585', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Palette size={16} />
-                  </div>
-                </div>
-                <strong style={{ fontSize: '24px', fontWeight: 700, display: 'block', marginTop: '8px' }}>14 Projects</strong>
-                <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '2px', marginTop: '4px' }}>
-                  <ArrowUpRight size={12} /> +3 this week
-                </span>
-              </div>
-
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>New Requests</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(139,18,201,0.1)', color: '#8B12C9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <FileText size={16} />
-                  </div>
-                </div>
-                <strong style={{ fontSize: '24px', fontWeight: 700, display: 'block', marginTop: '8px' }}>6 Requests</strong>
-                <span style={{ fontSize: '11px', color: '#F59E0B', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '2px', marginTop: '4px' }}>
-                  ● Action Required
-                </span>
-              </div>
-
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>Total Earnings</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <DollarSign size={16} />
-                  </div>
-                </div>
-                <strong style={{ fontSize: '24px', fontWeight: 700, display: 'block', marginTop: '8px' }}>₹48,200</strong>
-                <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, display: 'block', marginTop: '4px' }}>
-                  ₹12,350 Pending Payout
-                </span>
-              </div>
-
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>Design Rating</span>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(245,158,11,0.15)', color: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Award size={16} />
-                  </div>
-                </div>
-                <strong style={{ fontSize: '24px', fontWeight: 700, display: 'block', marginTop: '8px' }}>4.9 ★</strong>
-                <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 600, display: 'block', marginTop: '4px' }}>
-                  96% Satisfaction Rate
-                </span>
-              </div>
-
-            </div>
-
-            {/* Active Design Projects & Upcoming Appointments Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-              
-              {/* Active Projects List */}
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Active Design Projects</h3>
-                  <button onClick={() => setActiveTab('studio')} style={{ fontSize: '12px', color: '#F72585', fontWeight: 600, background: 'transparent', border: 'none', cursor: 'pointer' }}>View All →</button>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  {designs.map(d => (
-                    <div key={d.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', borderRadius: '12px', background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.05)' : '1px solid #F1F5F9' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <img src={d.image} alt={d.name} style={{ width: '45px', height: '45px', borderRadius: '10px', objectFit: 'cover' }} />
-                        <div>
-                          <strong style={{ fontSize: '14px', fontWeight: 700, display: 'block' }}>{d.name}</strong>
-                          <span style={{ fontSize: '12px', color: '#64748B' }}>Client: {d.customer} • {d.version}</span>
-                        </div>
-                      </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <span style={{ fontSize: '13px', fontWeight: 700, color: '#F72585', display: 'block' }}>₹{d.estimatedPrice.toLocaleString()}</span>
-                        <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 600 }}>{d.status}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Upcoming Deadlines & Appointments */}
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>Upcoming Appointments</h3>
-                  <button onClick={() => setActiveTab('calendar')} style={{ fontSize: '12px', color: '#F72585', fontWeight: 600, background: 'transparent', border: 'none', cursor: 'pointer' }}>Calendar →</button>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ padding: '12px', borderRadius: '10px', borderLeft: '4px solid #F72585', background: theme === 'dark' ? 'rgba(247,37,133,0.08)' : '#FFF0F6' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '13px', color: '#F72585' }}>🌸 Bridal Fitting Appointment</strong>
-                      <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B' }}>Today, 03:00 PM</span>
-                    </div>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '12px' }}>Priya Sharma — Royal Bridal Lehenga Final Trial</p>
-                  </div>
-
-                  <div style={{ padding: '12px', borderRadius: '10px', borderLeft: '4px solid #8B12C9', background: theme === 'dark' ? 'rgba(139,18,201,0.08)' : '#F3E8FF' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '13px', color: '#8B12C9' }}>🟣 Custom Measurement Session</strong>
-                      <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B' }}>Tomorrow, 11:30 AM</span>
-                    </div>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '12px' }}>Amit Verma — Velvet Sherwani 3D Scan</p>
-                  </div>
-
-                  <div style={{ padding: '12px', borderRadius: '10px', borderLeft: '4px solid #10B981', background: theme === 'dark' ? 'rgba(16,185,129,0.08)' : '#ECFDF5' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '13px', color: '#10B981' }}>🟢 Final Atelier Delivery</strong>
-                      <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B' }}>28 May 2026</span>
-                    </div>
-                    <p style={{ margin: '4px 0 0 0', fontSize: '12px' }}>Ananya Roy — Chanderi Silk Anarkali Suit</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
+          <DesignerDashboard 
+            onNavigateTab={(tab, subTab) => {
+              setActiveTab(tab);
+              if (subTab) setStudioSubTab(subTab);
+            }} 
+          />
         )}
 
         {/* ==================================================================== */}
