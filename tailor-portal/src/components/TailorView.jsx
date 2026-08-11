@@ -614,9 +614,8 @@ export default function TailorView({
             { id: 'inventory', label: 'Inventory' },
             { id: 'calendar', label: 'Calendar' },
             { id: 'earnings', label: 'Earnings' },
-            { id: 'chat', label: 'Chat Center' },
-            { id: 'reviews', label: 'Reviews' },
-            { id: 'profile', label: 'Profile & Settings' }
+            { id: 'chat', label: 'Support' },
+            { id: 'reviews', label: 'Reviews' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -1237,7 +1236,7 @@ export default function TailorView({
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)' }}>Recent Messages</h4>
                   <button onClick={() => setActiveTab('chat')} style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '12px', fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter', sans-serif" }}>
-                    Chat Center →
+                    Support →
                   </button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -4472,7 +4471,7 @@ export default function TailorView({
                 { id: 'inventory', label: 'Inventory', subtitle: 'Fabric & Material Stock', icon: <Database size={20} /> },
                 { id: 'calendar', label: 'Calendar', subtitle: 'Deadlines & Appointments', icon: <Calendar size={20} /> },
                 { id: 'earnings', label: 'Earnings', subtitle: 'Payouts & Revenue Ledgers', icon: <TrendingUp size={20} /> },
-                { id: 'chat', label: 'Chat Center', subtitle: 'Customer & Support Messages', icon: <MessageSquare size={20} /> },
+                { id: 'chat', label: 'Support', subtitle: 'Customer & Support Messages', icon: <MessageSquare size={20} /> },
                 { id: 'material-requests', label: 'Material Orders', subtitle: 'Fabric & Trim Purchases', icon: <Layers size={20} /> },
                 { id: 'team', label: 'Team Staff', subtitle: 'Assistants & Cutting Specialists', icon: <Users size={20} /> },
                 { id: 'reviews', label: 'Reviews', subtitle: 'Ratings & Customer Feedback', icon: <Star size={20} /> },
