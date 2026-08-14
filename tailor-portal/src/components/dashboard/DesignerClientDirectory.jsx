@@ -40,7 +40,7 @@ export default function DesignerClientDirectory({
     {
       id: 'CUST-1024',
       name: 'Priya Sharma',
-      avatar: '/images/designs/royal bridal lehenga.jpg',
+      avatar: '/images/customers/priya sharma.jpg',
       phone: '+91 98765 43210',
       email: 'priya.sharma@email.com',
       location: 'Delhi, India',
@@ -82,7 +82,7 @@ export default function DesignerClientDirectory({
     {
       id: 'CUST-1008',
       name: 'Amit Verma',
-      avatar: '/images/designs/embroidered velvet sherwani.jpg',
+      avatar: '/images/customers/Amit Verma.jpg',
       phone: '+91 91234 56789',
       email: 'amit.verma@email.com',
       location: 'Lucknow, India',
@@ -124,7 +124,7 @@ export default function DesignerClientDirectory({
     {
       id: 'CUST-1088',
       name: 'Ananya Roy',
-      avatar: '/images/designs/zardoni silk anarkali.jpg',
+      avatar: '/images/customers/Ananya Roy.jpg',
       phone: '+91 99876 54321',
       email: 'ananya.roy@email.com',
       location: 'Kolkata, India',
@@ -166,7 +166,7 @@ export default function DesignerClientDirectory({
     {
       id: 'CUST-2041',
       name: 'Neha Verma',
-      avatar: '/images/designs/pastel lehenga.jpg',
+      avatar: '/images/customers/neha verma.jpg',
       phone: '+91 98712 34567',
       email: 'neha.verma@email.com',
       location: 'Mumbai, India',
@@ -208,7 +208,7 @@ export default function DesignerClientDirectory({
     {
       id: 'CUST-3045',
       name: 'Kavya Iyer',
-      avatar: '/images/designs/emerald gown.jpg',
+      avatar: '/images/customers/kavya iyer.jpg',
       phone: '+91 99099 11223',
       email: 'kavya.iyer@email.com',
       location: 'Chennai, India',
@@ -250,7 +250,7 @@ export default function DesignerClientDirectory({
     {
       id: 'CUST-3050',
       name: 'Ritik Malhotra',
-      avatar: '/images/designs/indo western sherwani.jpg',
+      avatar: '/images/customers/ritik malhotra.jpg',
       phone: '+91 80808 33445',
       email: 'ritik.malhotra@email.com',
       location: 'Bengaluru, India',
