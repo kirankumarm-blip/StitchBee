@@ -37,7 +37,7 @@ export default function DesignerStudioWorkspace({
   const mutedTextColor = isDark ? '#64748B' : '#94A3B8';
   const lightBg = isDark ? '#0B0914' : '#F7F8FA';
 
-  // Sample 8 Outfit Design Cards matching user specification
+  // Sample 8 Outfit Design Cards matching user specification with local images
   const studioDesignsList = [
     {
       id: 'd-1',
@@ -51,7 +51,7 @@ export default function DesignerStudioWorkspace({
       status: 'In Progress',
       statusColor: '#EC168C',
       statusBg: '#FFF0F7',
-      image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/royal bridal lehenga.jpg',
       category: 'Bridal Wear',
       created: '10 May 2026',
       progress: 80,
@@ -70,7 +70,7 @@ export default function DesignerStudioWorkspace({
       status: 'Pending Approval',
       statusColor: '#7C3AED',
       statusBg: '#F3E8FF',
-      image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/velvet shervani.jpg',
       category: 'Sherwani & Grooms',
       created: '12 May 2026',
       progress: 60,
@@ -89,7 +89,7 @@ export default function DesignerStudioWorkspace({
       status: 'Approved',
       statusColor: '#059669',
       statusBg: '#ECFDF5',
-      image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/zardoni silk anarkali.jpg',
       category: 'Anarkali Suits',
       created: '08 May 2026',
       progress: 100,
@@ -108,7 +108,7 @@ export default function DesignerStudioWorkspace({
       status: 'Stitching',
       statusColor: '#D97706',
       statusBg: '#FFF7ED',
-      image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/chanderi silk saree.jpg',
       category: 'Ethnic Sarees',
       created: '05 May 2026',
       progress: 45,
@@ -127,7 +127,7 @@ export default function DesignerStudioWorkspace({
       status: 'In Progress',
       statusColor: '#EC168C',
       statusBg: '#FFF0F7',
-      image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/reception gown.jpg',
       category: 'Indo-Western',
       created: '01 May 2026',
       progress: 70,
@@ -146,7 +146,7 @@ export default function DesignerStudioWorkspace({
       status: 'Draft',
       statusColor: '#475569',
       statusBg: '#F1F5F9',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/men kurta set.jpg',
       category: 'Menswear',
       created: '03 May 2026',
       progress: 20,
@@ -165,7 +165,7 @@ export default function DesignerStudioWorkspace({
       status: 'On Hold',
       statusColor: '#D97706',
       statusBg: '#FFF7ED',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/pastel lehenga.jpg',
       category: 'Bridal Wear',
       created: '28 Apr 2026',
       progress: 35,
@@ -184,7 +184,7 @@ export default function DesignerStudioWorkspace({
       status: 'Completed',
       statusColor: '#2563EB',
       statusBg: '#EFF6FF',
-      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400',
+      image: '/images/designs/kids party wear.jpg',
       category: 'Kids Wear',
       created: '20 Apr 2026',
       progress: 100,
@@ -602,7 +602,7 @@ export default function DesignerStudioWorkspace({
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div style={{ padding: '10px 12px', borderRadius: '10px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=100" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <img src="/images/designs/pastel lehenga.jpg" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div>
                       <strong style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'block' }}>Summer Cotton Kurti</strong>
                       <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.2 • Updated 2 days ago</span>
@@ -612,7 +612,7 @@ export default function DesignerStudioWorkspace({
                 </div>
                 <div style={{ padding: '10px 12px', borderRadius: '10px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=100" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <img src="/images/designs/men kurta set.jpg" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div>
                       <strong style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'block' }}>Festive Jacket Design</strong>
                       <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.1 • Updated 5 days ago</span>
@@ -631,17 +631,17 @@ export default function DesignerStudioWorkspace({
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
                 <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
-                  <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
+                  <img src="/images/designs/royal bridal lehenga.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
                   <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Bridal Collection</strong>
                   <span style={{ fontSize: '10px', color: secTextColor }}>12 Designs</span>
                 </div>
                 <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
-                  <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
+                  <img src="/images/designs/velvet shervani.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
                   <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Sherwani Collection</strong>
                   <span style={{ fontSize: '10px', color: secTextColor }}>8 Designs</span>
                 </div>
                 <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
-                  <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
+                  <img src="/images/designs/reception gown.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
                   <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Party Wear</strong>
                   <span style={{ fontSize: '10px', color: secTextColor }}>15 Designs</span>
                 </div>
