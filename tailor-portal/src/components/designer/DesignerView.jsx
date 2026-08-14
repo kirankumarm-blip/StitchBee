@@ -9,6 +9,7 @@ import {
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import HeaderProfileModal from '../HeaderProfileModal';
 import DesignerDashboard from '../dashboard/DesignerDashboard';
+import DesignerStudioWorkspace from '../dashboard/DesignerStudioWorkspace';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -325,173 +326,27 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 2: 🎨 DESIGN STUDIO — MOST IMPORTANT PRIMARY WORKSPACE            */}
+        {/* TAB 2: 🎨 DESIGN STUDIO — 3-COLUMN PRIMARY WORKSPACE                 */}
         {/* ==================================================================== */}
         {activeTab === 'studio' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            
-            {/* Header & Subsection Tabs */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-              <div>
-                <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Design Studio Workspace</h1>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                  Create, review, and manage custom outfit sketches, references, and stitching specifications.
-                </p>
-              </div>
-
-              <button
-                onClick={() => setStudioSubTab('create')}
-                className="btn-text-white-force"
-                style={{ padding: '10px 20px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-              >
-                <Plus size={16} /> Create New Design
-              </button>
-            </div>
-
-            {/* Subsections Navigation Pills */}
-            <div style={{ display: 'flex', gap: '8px', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', paddingBottom: '12px', overflowX: 'auto' }}>
-              {[
-                { id: 'my-designs', label: 'My Designs (14)' },
-                { id: 'create', label: 'Create New Design' },
-                { id: 'requests', label: 'Design Requests (6)' },
-                { id: 'drafts', label: 'Drafts (4)' },
-                { id: 'published', label: 'Published Designs (18)' },
-                { id: 'archived', label: 'Archived Designs (2)' }
-              ].map(sub => (
-                <button
-                  key={sub.id}
-                  onClick={() => setStudioSubTab(sub.id)}
-                  style={{
-                    padding: '8px 16px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    borderRadius: '20px',
-                    border: 'none',
-                    background: studioSubTab === sub.id ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#E2E8F0'),
-                    color: studioSubTab === sub.id ? '#ffffff' : (theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467'),
-                    cursor: 'pointer'
-                  }}
-                >
-                  {sub.label}
-                </button>
-              ))}
-            </div>
-
-            {/* CREATE NEW DESIGN FORM SUBSECTION */}
-            {studioSubTab === 'create' && (
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '24px' }}>
-                <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700 }}>Create New Outfit Design</h3>
-
-                <form onSubmit={handleCreateDesign} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
-                  
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Design Name</label>
-                    <input type="text" placeholder="e.g. Royal Zardozi Bridal Lehenga" value={newDesignName} onChange={e => setNewDesignName(e.target.value)} required style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }} />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Category</label>
-                    <select value={newCategory} onChange={e => setNewCategory(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }}>
-                      <option value="Bridal Wear">Bridal Wear</option>
-                      <option value="Lehenga Choli">Lehenga Choli</option>
-                      <option value="Anarkali Suits">Anarkali Suits</option>
-                      <option value="Sherwani & Grooms">Sherwani & Grooms</option>
-                      <option value="Indo-Western">Indo-Western</option>
-                    </select>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: '600' }}>Outfit Type</label>
-                    <input type="text" placeholder="e.g. Heavy Bridal Lehenga" value={newOutfitType} onChange={e => setNewOutfitType(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }} />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Fabric Specifications</label>
-                    <input type="text" placeholder="e.g. Italian Silk & Velvet" value={newFabric} onChange={e => setNewFabric(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }} />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Color Palette</label>
-                    <input type="text" placeholder="e.g. Ruby Red & Antique Gold" value={newColor} onChange={e => setNewColor(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }} />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Client Name</label>
-                    <select value={newCustomer} onChange={e => setNewCustomer(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }}>
-                      <option value="Priya Sharma">Priya Sharma</option>
-                      <option value="Ananya Roy">Ananya Roy</option>
-                      <option value="Amit Verma">Amit Verma</option>
-                    </select>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Estimated Price (₹)</label>
-                    <input type="number" placeholder="e.g. 18500" value={newPrice} onChange={e => setNewPrice(e.target.value)} required style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }} />
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: 'span 2' }}>
-                    <label style={{ fontSize: '12px', fontWeight: 600 }}>Stitching & Embroidery Notes</label>
-                    <textarea rows={3} placeholder="Add detailed handwork, zari embroidery specs, and seam notes..." value={newInstructions} onChange={e => setNewInstructions(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }} />
-                  </div>
-
-                  <div style={{ gridColumn: 'span 2', display: 'flex', gap: '12px', marginTop: '12px' }}>
-                    <button type="submit" className="btn-text-white-force" style={{ padding: '10px 24px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer' }}>
-                      Save & Publish Design
-                    </button>
-                    <button type="button" onClick={() => setStudioSubTab('my-designs')} style={{ padding: '10px 20px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: '1px solid #E5E7EB', background: 'transparent', cursor: 'pointer' }}>
-                      Cancel
-                    </button>
-                  </div>
-
-                </form>
-              </div>
-            )}
-
-            {/* MY DESIGNS CARDS GRID */}
-            {studioSubTab !== 'create' && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-                {designs.map(d => (
-                  <div key={d.id} style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ position: 'relative', height: '200px' }}>
-                      <img src={d.image} alt={d.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      <span style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', color: '#ffffff', fontSize: '11px', fontWeight: 600, padding: '4px 10px', borderRadius: '12px' }}>
-                        {d.version}
-                      </span>
-                      <span style={{ position: 'absolute', bottom: '12px', left: '12px', background: '#F72585', color: '#ffffff', fontSize: '11px', fontWeight: 700, padding: '4px 10px', borderRadius: '6px' }}>
-                        {d.status}
-                      </span>
-                    </div>
-
-                    <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700 }}>{d.name}</h3>
-                          <strong style={{ fontSize: '16px', color: '#F72585' }}>₹{d.estimatedPrice.toLocaleString()}</strong>
-                        </div>
-                        <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#64748B' }}>Category: {d.category} • {d.outfitType}</p>
-                      </div>
-
-                      <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '10px', borderRadius: '8px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <div><strong>Client:</strong> {d.customer}</div>
-                        <div><strong>Fabric:</strong> {d.fabric} ({d.color})</div>
-                        <div><strong>Deadline:</strong> {d.deadline}</div>
-                      </div>
-
-                      <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
-                        <button onClick={() => alert(`Opening details modal for ${d.name}...`)} style={{ flex: 1, padding: '8px', fontSize: '12px', fontWeight: 600, borderRadius: '6px', border: '1px solid #F72585', background: 'transparent', color: '#F72585', cursor: 'pointer' }}>
-                          View Details & Notes
-                        </button>
-                        <button onClick={() => alert(`Sending ${d.name} to StitchBee Atelier`)} className="btn-text-white-force" style={{ flex: 1, padding: '8px', fontSize: '12px', fontWeight: 600, borderRadius: '6px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer' }}>
-                          Send to Atelier
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-          </div>
+          <DesignerStudioWorkspace 
+            theme={theme}
+            designs={designs}
+            handleCreateDesign={handleCreateDesign}
+            newDesignName={newDesignName} setNewDesignName={setNewDesignName}
+            newCategory={newCategory} setNewCategory={setNewCategory}
+            newOutfitType={newOutfitType} setNewOutfitType={setNewOutfitType}
+            newFabric={newFabric} setNewFabric={setNewFabric}
+            newColor={newColor} setNewColor={setNewColor}
+            newCustomer={newCustomer} setNewCustomer={setNewCustomer}
+            newPrice={newPrice} setNewPrice={setNewPrice}
+            newInstructions={newInstructions} setNewInstructions={setNewInstructions}
+            studioSubTab={studioSubTab} setStudioSubTab={setStudioSubTab}
+            onNavigateTab={(tab, subTab) => {
+              setActiveTab(tab);
+              if (subTab) setStudioSubTab(subTab);
+            }}
+          />
         )}
 
         {/* ==================================================================== */}
