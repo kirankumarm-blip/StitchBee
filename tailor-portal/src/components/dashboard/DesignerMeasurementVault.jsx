@@ -469,231 +469,352 @@ export default function DesignerMeasurementVault({
         </div>
 
         {/* ==================================================================== */}
-        {/* 4. MAIN WORKSPACE (70% LEFT DATABASE TABLE / 30% RIGHT PROFILE PANEL)*/}
+        {/* 4. MAIN WORKSPACE (70% LEFT COLUMN / 30% RIGHT PROFILE PANEL)        */}
         {/* ==================================================================== */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '70% 30%',
           gap: '20px',
           width: '100%',
-          alignItems: 'stretch'
+          alignItems: 'flex-start'
         }}>
           
-          {/* LEFT 70% — CUSTOMER MEASUREMENT DATABASE TABLE */}
-          <div style={{
-            background: cardBg,
-            border: `1px solid ${borderColor}`,
-            borderRadius: '16px',
-            padding: '24px',
-            boxShadow: '0 4px 20px rgba(16,24,40,0.04)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px'
-          }}>
+          {/* LEFT 70% COLUMN (DATABASE TABLE + MEASUREMENT ANALYTICS UNDERNEATH) */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0 }}>
             
-            {/* Search + Filter Toolbar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+            {/* 1. CUSTOMER MEASUREMENT DATABASE TABLE */}
+            <div style={{
+              background: cardBg,
+              border: `1px solid ${borderColor}`,
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 4px 20px rgba(16,24,40,0.04)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px'
+            }}>
               
-              {/* Search Field (320px width, 40px height) */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '0 14px',
-                height: '40px',
-                borderRadius: '9px',
-                border: `1px solid ${borderColor}`,
-                background: inputBg,
-                width: '320px'
-              }}>
-                <Search size={16} color={mutedTextColor} />
-                <input 
-                  type="text" 
-                  placeholder="Search customers by name, phone or ID..." 
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '13px', color: textColor, width: '100%' }}
-                />
+              {/* Search + Filter Toolbar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                
+                {/* Search Field (320px width, 40px height) */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '0 14px',
+                  height: '40px',
+                  borderRadius: '9px',
+                  border: `1px solid ${borderColor}`,
+                  background: inputBg,
+                  width: '320px'
+                }}>
+                  <Search size={16} color={mutedTextColor} />
+                  <input 
+                    type="text" 
+                    placeholder="Search customers by name, phone or ID..." 
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '13px', color: textColor, width: '100%' }}
+                  />
+                </div>
+
+                {/* Filter Dropdowns */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <select 
+                    value={selectedDesignerFilter}
+                    onChange={e => setSelectedDesignerFilter(e.target.value)}
+                    style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
+                  >
+                    <option value="All Designers">All Designers</option>
+                    <option value="Current Designer">Current Designer (Ananya)</option>
+                    <option value="Other Designers">Other Designers</option>
+                  </select>
+
+                  <select 
+                    value={selectedMeasurementType}
+                    onChange={e => setSelectedMeasurementType(e.target.value)}
+                    style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
+                  >
+                    <option value="All">Measurement Type: All</option>
+                    <option value="Full Body">Full Body</option>
+                    <option value="3D Body Scan">3D Body Scan</option>
+                    <option value="Upper Body">Upper Body</option>
+                    <option value="Manual">Manual</option>
+                  </select>
+
+                  <select 
+                    value={selectedTimeframe}
+                    onChange={e => setSelectedTimeframe(e.target.value)}
+                    style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
+                  >
+                    <option value="Last 30 Days">Last 30 Days</option>
+                    <option value="Last 7 Days">Last 7 Days</option>
+                    <option value="Last 3 Months">Last 3 Months</option>
+                  </select>
+
+                  <button style={{ height: '40px', padding: '0 14px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <Filter size={14} color={textColor} /> More Filters
+                  </button>
+                </div>
+
               </div>
 
-              {/* Filter Dropdowns */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                <select 
-                  value={selectedDesignerFilter}
-                  onChange={e => setSelectedDesignerFilter(e.target.value)}
-                  style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
-                >
-                  <option value="All Designers">All Designers</option>
-                  <option value="Current Designer">Current Designer (Ananya)</option>
-                  <option value="Other Designers">Other Designers</option>
-                </select>
+              {/* Customer Data Table */}
+              <div style={{ width: '100%', overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                  <thead>
+                    <tr style={{ borderBottom: `1px solid ${borderColor}`, fontSize: '11px', fontWeight: 600, color: secTextColor, letterSpacing: '0.04em' }}>
+                      <th style={{ padding: '12px 16px', width: '30%' }}>CUSTOMER</th>
+                      <th style={{ padding: '12px 16px', width: '28%' }}>MEASUREMENT SUMMARY</th>
+                      <th style={{ padding: '12px 16px', width: '15%' }}>TYPE</th>
+                      <th style={{ padding: '12px 16px', width: '15%' }}>LAST UPDATED</th>
+                      <th style={{ padding: '12px 16px', width: '12%', textAlign: 'right' }}>ACTIONS</th>
+                    </tr>
+                  </thead>
 
-                <select 
-                  value={selectedMeasurementType}
-                  onChange={e => setSelectedMeasurementType(e.target.value)}
-                  style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
-                >
-                  <option value="All">Measurement Type: All</option>
-                  <option value="Full Body">Full Body</option>
-                  <option value="3D Body Scan">3D Body Scan</option>
-                  <option value="Upper Body">Upper Body</option>
-                  <option value="Manual">Manual</option>
-                </select>
+                  <tbody>
+                    {filteredCustomers.map(cust => {
+                      const isSelected = selectedCustomerId === cust.id;
+                      return (
+                        <tr 
+                          key={cust.id}
+                          onClick={() => setSelectedCustomerId(cust.id)}
+                          style={{
+                            borderBottom: `1px solid ${borderColor}`,
+                            background: isSelected ? (isDark ? 'rgba(236,22,127,0.12)' : '#FFF0F7') : 'transparent',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
+                          
+                          {/* Col 1 — Customer Info & Avatar */}
+                          <td style={{ padding: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                              <img src={cust.avatar} alt={cust.name} style={{ width: '54px', height: '54px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+                              <div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                  <strong style={{ fontSize: '14px', fontWeight: 600, color: textColor }}>{cust.name}</strong>
+                                  <span style={{ fontSize: '10px', color: primaryPink, fontWeight: 700 }}>ID: {cust.id}</span>
+                                </div>
+                                <span style={{ fontSize: '11px', color: secTextColor, display: 'block', marginTop: '2px' }}>{cust.phone}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                                  {cust.is3DScan && (
+                                    <span style={{ fontSize: '10px', fontWeight: 600, background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', color: '#3B82F6', padding: '1px 6px', borderRadius: '4px' }}>
+                                      3D Scan
+                                    </span>
+                                  )}
+                                  {cust.isVerified && (
+                                    <span style={{ fontSize: '10px', fontWeight: 600, background: isDark ? 'rgba(18,183,106,0.2)' : '#ECFDF3', color: '#12B76A', padding: '1px 6px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                                      <Check size={10} /> Verified
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
 
+                          {/* Col 2 — Inline Measurement Summary */}
+                          <td style={{ padding: '16px' }}>
+                            <div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: textColor, fontWeight: 600 }}>
+                                <span>Bust <strong>{cust.bust}</strong></span>
+                                <span>Waist <strong>{cust.waist}</strong></span>
+                                <span>Hips <strong>{cust.hips}</strong></span>
+                              </div>
+                              <span style={{ fontSize: '11px', color: secTextColor, display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
+                                <Ruler size={12} color={secTextColor} /> {cust.totalCount} Measurements
+                              </span>
+                            </div>
+                          </td>
+
+                          {/* Col 3 — Measurement Type Pill */}
+                          <td style={{ padding: '16px' }}>
+                            <span style={{
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              padding: '4px 10px',
+                              borderRadius: '6px',
+                              background: cust.typeBadgeBg,
+                              color: cust.typeBadgeColor,
+                              display: 'inline-block'
+                            }}>
+                              {cust.type}
+                            </span>
+                          </td>
+
+                          {/* Col 4 — Last Updated Date/Time */}
+                          <td style={{ padding: '16px' }}>
+                            <div>
+                              <strong style={{ fontSize: '12px', fontWeight: 600, color: textColor, display: 'block' }}>{cust.lastUpdatedDate}</strong>
+                              <span style={{ fontSize: '11px', color: secTextColor }}>{cust.lastUpdatedTime}</span>
+                            </div>
+                          </td>
+
+                          {/* Col 5 — Action Circular Icon Buttons (36x36px) */}
+                          <td style={{ padding: '16px', textAlign: 'right' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); setSelectedCustomerId(cust.id); }}
+                                title="View Customer Profile"
+                                style={{ width: '36px', height: '36px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                              >
+                                <Eye size={15} color={textColor} />
+                              </button>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); setIsAddModalOpen(true); }}
+                                title="Edit Measurements"
+                                style={{ width: '36px', height: '36px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                              >
+                                <Edit3 size={15} color={textColor} />
+                              </button>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); alert(`Downloading PDF for ${cust.name}...`); }}
+                                title="Download PDF"
+                                style={{ width: '36px', height: '36px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                              >
+                                <MoreVertical size={15} color={textColor} />
+                              </button>
+                            </div>
+                          </td>
+
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination Footer */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${borderColor}`, paddingTop: '16px', fontSize: '12px', color: secTextColor }}>
+                <span>Showing 1 to {filteredCustomers.length} of 128 profiles</span>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>Previous</button>
+                  <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${primaryPink}`, background: '#FFF0F7', color: primaryPink, fontWeight: 700, cursor: 'pointer', height: '32px' }}>1</button>
+                  <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>2</button>
+                  <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>3</button>
+                  <span>...</span>
+                  <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>26</button>
+                  <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>Next</button>
+                </div>
+              </div>
+
+            </div>
+
+            {/* 2. MEASUREMENT ANALYTICS SECTION (PLACED DIRECTLY UNDERNEATH TABLE INSIDE LEFT 70% COLUMN - MATCHING IMAGE 1) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '4px' }}>
+              
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: textColor }}>Measurement Analytics</h3>
+                
                 <select 
                   value={selectedTimeframe}
                   onChange={e => setSelectedTimeframe(e.target.value)}
-                  style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
+                  style={{ height: '36px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
                 >
                   <option value="Last 30 Days">Last 30 Days</option>
                   <option value="Last 7 Days">Last 7 Days</option>
                   <option value="Last 3 Months">Last 3 Months</option>
                 </select>
-
-                <button style={{ height: '40px', padding: '0 14px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                  <Filter size={14} color={textColor} /> More Filters
-                </button>
               </div>
 
-            </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '16px',
+                width: '100%'
+              }}>
+                
+                {/* Card 1 — Measurement Types Donut Chart */}
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 600, color: textColor }}>Measurement Types</h4>
+                  
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
+                    <div style={{ position: 'relative', width: '110px', height: '110px', flexShrink: 0 }}>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie data={donutTypesData} cx="50%" cy="50%" innerRadius={35} outerRadius={50} paddingAngle={3} dataKey="value">
+                            {donutTypesData.map((entry, idx) => (
+                              <Cell key={`c-${idx}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
+                        <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1 }}>128</strong>
+                        <span style={{ fontSize: '9px', color: secTextColor }}>Profiles</span>
+                      </div>
+                    </div>
 
-            {/* Customer Data Table */}
-            <div style={{ width: '100%', overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                <thead>
-                  <tr style={{ borderBottom: `1px solid ${borderColor}`, fontSize: '11px', fontWeight: 600, color: secTextColor, letterSpacing: '0.04em' }}>
-                    <th style={{ padding: '12px 16px', width: '30%' }}>CUSTOMER</th>
-                    <th style={{ padding: '12px 16px', width: '28%' }}>MEASUREMENT SUMMARY</th>
-                    <th style={{ padding: '12px 16px', width: '15%' }}>TYPE</th>
-                    <th style={{ padding: '12px 16px', width: '15%' }}>LAST UPDATED</th>
-                    <th style={{ padding: '12px 16px', width: '12%', textAlign: 'right' }}>ACTIONS</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {filteredCustomers.map(cust => {
-                    const isSelected = selectedCustomerId === cust.id;
-                    return (
-                      <tr 
-                        key={cust.id}
-                        onClick={() => setSelectedCustomerId(cust.id)}
-                        style={{
-                          borderBottom: `1px solid ${borderColor}`,
-                          background: isSelected ? (isDark ? 'rgba(236,22,127,0.12)' : '#FFF0F7') : 'transparent',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease'
-                        }}
-                      >
-                        
-                        {/* Col 1 — Customer Info & Avatar */}
-                        <td style={{ padding: '16px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                            <img src={cust.avatar} alt={cust.name} style={{ width: '54px', height: '54px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
-                            <div>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <strong style={{ fontSize: '14px', fontWeight: 600, color: textColor }}>{cust.name}</strong>
-                                <span style={{ fontSize: '10px', color: primaryPink, fontWeight: 700 }}>ID: {cust.id}</span>
-                              </div>
-                              <span style={{ fontSize: '11px', color: secTextColor, display: 'block', marginTop: '2px' }}>{cust.phone}</span>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
-                                {cust.is3DScan && (
-                                  <span style={{ fontSize: '10px', fontWeight: 600, background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', color: '#3B82F6', padding: '1px 6px', borderRadius: '4px' }}>
-                                    3D Scan
-                                  </span>
-                                )}
-                                {cust.isVerified && (
-                                  <span style={{ fontSize: '10px', fontWeight: 600, background: isDark ? 'rgba(18,183,106,0.2)' : '#ECFDF3', color: '#12B76A', padding: '1px 6px', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
-                                    <Check size={10} /> Verified
-                                  </span>
-                                )}
-                              </div>
-                            </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                      {donutTypesData.map(item => (
+                        <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '10px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: item.color }} />
+                            <span style={{ color: textColor, fontWeight: 500 }}>{item.name}</span>
                           </div>
-                        </td>
+                          <span style={{ color: secTextColor, fontWeight: 600 }}>{item.count} <span style={{ color: mutedTextColor }}>({item.percentage})</span></span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-                        {/* Col 2 — Inline Measurement Summary */}
-                        <td style={{ padding: '16px' }}>
-                          <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: textColor, fontWeight: 600 }}>
-                              <span>Bust <strong>{cust.bust}</strong></span>
-                              <span>Waist <strong>{cust.waist}</strong></span>
-                              <span>Hips <strong>{cust.hips}</strong></span>
-                            </div>
-                            <span style={{ fontSize: '11px', color: secTextColor, display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                              <Ruler size={12} color={secTextColor} /> {cust.totalCount} Measurements
-                            </span>
-                          </div>
-                        </td>
+                {/* Card 2 — Measurements Over Time Line Chart */}
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: textColor }}>Measurements Over Time</h4>
+                    <span style={{ fontSize: '10px', color: secTextColor }}>Number of profiles created</span>
+                  </div>
 
-                        {/* Col 3 — Measurement Type Pill */}
-                        <td style={{ padding: '16px' }}>
-                          <span style={{
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            padding: '4px 10px',
-                            borderRadius: '6px',
-                            background: cust.typeBadgeBg,
-                            color: cust.typeBadgeColor,
-                            display: 'inline-block'
-                          }}>
-                            {cust.type}
-                          </span>
-                        </td>
+                  <div style={{ width: '100%', height: '130px', marginTop: '8px' }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={overTimeData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="colorProfiles" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor={primaryPink} stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor={primaryPink} stopOpacity={0.0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
+                        <XAxis dataKey="date" stroke={mutedTextColor} fontSize={9} tickLine={false} />
+                        <YAxis stroke={mutedTextColor} fontSize={9} tickLine={false} />
+                        <Tooltip contentStyle={{ background: isDark ? '#1F1B2E' : '#172033', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px' }} />
+                        <Area type="monotone" dataKey="profiles" stroke={primaryPink} strokeWidth={2.5} fillOpacity={1} fill="url(#colorProfiles)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
 
-                        {/* Col 4 — Last Updated Date/Time */}
-                        <td style={{ padding: '16px' }}>
-                          <div>
-                            <strong style={{ fontSize: '12px', fontWeight: 600, color: textColor, display: 'block' }}>{cust.lastUpdatedDate}</strong>
-                            <span style={{ fontSize: '11px', color: secTextColor }}>{cust.lastUpdatedTime}</span>
-                          </div>
-                        </td>
+                {/* Card 3 — Accuracy Trend Line Chart */}
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: textColor }}>Accuracy Trend</h4>
+                    <span style={{ fontSize: '10px', color: '#12B76A', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                      <ArrowUpRight size={12} /> +2.4% <span style={{ color: secTextColor, fontWeight: 400 }}>from last month</span>
+                    </span>
+                  </div>
 
-                        {/* Col 5 — Action Circular Icon Buttons (36x36px) */}
-                        <td style={{ padding: '16px', textAlign: 'right' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); setSelectedCustomerId(cust.id); }}
-                              title="View Customer Profile"
-                              style={{ width: '36px', height: '36px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                            >
-                              <Eye size={15} color={textColor} />
-                            </button>
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); setIsAddModalOpen(true); }}
-                              title="Edit Measurements"
-                              style={{ width: '36px', height: '36px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                            >
-                              <Edit3 size={15} color={textColor} />
-                            </button>
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); alert(`Downloading PDF for ${cust.name}...`); }}
-                              title="Download PDF"
-                              style={{ width: '36px', height: '36px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-                            >
-                              <MoreVertical size={15} color={textColor} />
-                            </button>
-                          </div>
-                        </td>
+                  <div style={{ width: '100%', height: '130px', marginTop: '8px' }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={accuracyTrendData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="colorAcc" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor={secondaryPurple} stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor={secondaryPurple} stopOpacity={0.0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
+                        <XAxis dataKey="date" stroke={mutedTextColor} fontSize={9} tickLine={false} />
+                        <YAxis domain={[90, 100]} stroke={mutedTextColor} fontSize={9} tickLine={false} tickFormatter={(v) => `${v}%`} />
+                        <Tooltip contentStyle={{ background: isDark ? '#1F1B2E' : '#172033', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px' }} formatter={(val) => [`${val}%`, 'Accuracy']} />
+                        <Area type="monotone" dataKey="accuracy" stroke={secondaryPurple} strokeWidth={2.5} fillOpacity={1} fill="url(#colorAcc)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
 
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination Footer */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${borderColor}`, paddingTop: '16px', fontSize: '12px', color: secTextColor }}>
-              <span>Showing 1 to {filteredCustomers.length} of 128 profiles</span>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>Previous</button>
-                <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${primaryPink}`, background: '#FFF0F7', color: primaryPink, fontWeight: 700, cursor: 'pointer', height: '32px' }}>1</button>
-                <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>2</button>
-                <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>3</button>
-                <span>...</span>
-                <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>26</button>
-                <button style={{ padding: '4px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', height: '32px' }}>Next</button>
               </div>
             </div>
 
@@ -890,125 +1011,6 @@ export default function DesignerMeasurementVault({
             }}>
               <span style={{ color: '#FFFFFF', fontWeight: 600 }}>View Full Profile →</span>
             </button>
-
-          </div>
-
-        </div>
-
-        {/* ==================================================================== */}
-        {/* 5. MEASUREMENT ANALYTICS (3 EQUAL CARDS AT BOTTOM)                   */}
-        {/* ==================================================================== */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: textColor }}>Measurement Analytics</h3>
-            
-            <select 
-              value={selectedTimeframe}
-              onChange={e => setSelectedTimeframe(e.target.value)}
-              style={{ height: '36px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
-            >
-              <option value="Last 30 Days">Last 30 Days</option>
-              <option value="Last 7 Days">Last 7 Days</option>
-              <option value="Last 3 Months">Last 3 Months</option>
-            </select>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '20px',
-            width: '100%'
-          }}>
-            
-            {/* Card 1 — Measurement Types Donut Chart */}
-            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 600, color: textColor }}>Measurement Types</h4>
-              
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '14px' }}>
-                <div style={{ position: 'relative', width: '130px', height: '130px', flexShrink: 0 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie data={donutTypesData} cx="50%" cy="50%" innerRadius={42} outerRadius={60} paddingAngle={3} dataKey="value">
-                        {donutTypesData.map((entry, idx) => (
-                          <Cell key={`c-${idx}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                    <strong style={{ fontSize: '18px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1 }}>128</strong>
-                    <span style={{ fontSize: '10px', color: secTextColor }}>Profiles</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
-                  {donutTypesData.map(item => (
-                    <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
-                        <span style={{ color: textColor, fontWeight: 500 }}>{item.name}</span>
-                      </div>
-                      <span style={{ color: secTextColor, fontWeight: 600 }}>{item.count} <span style={{ color: mutedTextColor }}>({item.percentage})</span></span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2 — Measurements Over Time Line Chart */}
-            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor }}>Measurements Over Time</h4>
-                <span style={{ fontSize: '11px', color: secTextColor }}>Number of profiles created</span>
-              </div>
-
-              <div style={{ width: '100%', height: '150px', marginTop: '10px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={overTimeData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorProfiles" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={primaryPink} stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor={primaryPink} stopOpacity={0.0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
-                    <XAxis dataKey="date" stroke={mutedTextColor} fontSize={10} tickLine={false} />
-                    <YAxis stroke={mutedTextColor} fontSize={10} tickLine={false} />
-                    <Tooltip contentStyle={{ background: isDark ? '#1F1B2E' : '#172033', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px' }} />
-                    <Area type="monotone" dataKey="profiles" stroke={primaryPink} strokeWidth={2.5} fillOpacity={1} fill="url(#colorProfiles)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* Card 3 — Accuracy Trend Line Chart */}
-            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor }}>Accuracy Trend</h4>
-                <span style={{ fontSize: '11px', color: '#12B76A', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
-                  <ArrowUpRight size={13} /> +2.4% <span style={{ color: secTextColor, fontWeight: 400 }}>from last month</span>
-                </span>
-              </div>
-
-              <div style={{ width: '100%', height: '150px', marginTop: '10px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={accuracyTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="colorAcc" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={secondaryPurple} stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor={secondaryPurple} stopOpacity={0.0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
-                    <XAxis dataKey="date" stroke={mutedTextColor} fontSize={10} tickLine={false} />
-                    <YAxis domain={[90, 100]} stroke={mutedTextColor} fontSize={10} tickLine={false} tickFormatter={(v) => `${v}%`} />
-                    <Tooltip contentStyle={{ background: isDark ? '#1F1B2E' : '#172033', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px' }} formatter={(val) => [`${val}%`, 'Accuracy']} />
-                    <Area type="monotone" dataKey="accuracy" stroke={secondaryPurple} strokeWidth={2.5} fillOpacity={1} fill="url(#colorAcc)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
 
           </div>
 
