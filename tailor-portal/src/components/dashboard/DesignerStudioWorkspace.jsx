@@ -209,44 +209,39 @@ export default function DesignerStudioWorkspace({
 
   return (
     <div style={{
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       backgroundColor: lightBg,
       color: textColor,
       width: '100%',
-      maxWidth: '1900px',
-      margin: '0 auto',
-      padding: '20px 24px',
+      margin: 0,
+      padding: 0,
       boxSizing: 'border-box',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px'
+      display: 'grid',
+      gridTemplateColumns: '230px minmax(0, 1fr) 300px',
+      gap: '20px',
+      alignItems: 'stretch',
+      minHeight: 'calc(100vh - 64px)'
     }}>
       
-      {/* 3-COLUMN STUDIO LAYOUT: Left Sidebar (220px) -> Center Workspace -> Right Panel (300px) */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '220px minmax(0, 1fr) 300px',
-        gap: '18px',
-        width: '100%',
-        boxSizing: 'border-box',
-        alignItems: 'start'
+      {/* ==================================================================== */}
+      {/* 1. LEFT SIDEBAR (FLUSH TO EXTREME LEFT SCREEN EDGE, FULL HEIGHT)    */}
+      {/* ==================================================================== */}
+      <aside style={{
+        background: cardBg,
+        borderRight: `1px solid ${borderColor}`,
+        borderTop: 'none',
+        borderLeft: 'none',
+        borderBottom: 'none',
+        borderRadius: '0',
+        padding: '20px 14px',
+        boxShadow: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        width: '230px',
+        minHeight: 'calc(100vh - 64px)',
+        boxSizing: 'border-box'
       }}>
-
-        {/* ==================================================================== */}
-        {/* 1. LEFT SIDEBAR (220px Compact)                                     */}
-        {/* ==================================================================== */}
-        <aside style={{
-          background: cardBg,
-          border: `1px solid ${borderColor}`,
-          borderRadius: '12px',
-          padding: '16px 12px',
-          boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          width: '100%',
-          boxSizing: 'border-box'
-        }}>
           
           {/* Sidebar Section Title */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 6px 8px 6px', borderBottom: `1px solid ${borderColor}` }}>
@@ -835,8 +830,6 @@ export default function DesignerStudioWorkspace({
           </div>
 
         </aside>
-
-      </div>
 
     </div>
   );
