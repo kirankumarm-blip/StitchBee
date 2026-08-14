@@ -365,11 +365,6 @@ export default function DesignerStudioWorkspace({
           
           {/* Page Header Bar */}
           <div style={{
-            background: cardBg,
-            border: `1px solid ${borderColor}`,
-            borderRadius: '14px',
-            padding: '18px 20px',
-            boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
             display: 'flex',
             flexDirection: 'column',
             gap: '16px'
