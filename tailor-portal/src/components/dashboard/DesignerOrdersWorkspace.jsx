@@ -647,7 +647,7 @@ export default function DesignerOrdersWorkspace({
             </div>
           </div>
 
-          {/* Chart 2 — Order Status Distribution (Donut Chart) */}
+          {/* Chart 2 — Order Status Distribution (LARGE CENTERED DONUT CHART - MATCHING IMAGE 3) */}
           <div style={{
             background: cardBg,
             border: `1px solid ${borderColor}`,
@@ -656,24 +656,25 @@ export default function DesignerOrdersWorkspace({
             boxShadow: '0 4px 18px rgba(16,24,40,0.04)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            height: '100%'
           }}>
-            <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: 600, color: textColor }}>
+            <h3 style={{ margin: '0 0 10px 0', fontSize: '16px', fontWeight: 600, color: textColor }}>
               Order Status Distribution
             </h3>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flex: 1 }}>
               
-              {/* Donut Chart with Center Label */}
-              <div style={{ position: 'relative', width: '130px', height: '130px', flexShrink: 0 }}>
+              {/* Donut Chart with Center Label (190px x 190px Large Ring) */}
+              <div style={{ position: 'relative', width: '190px', height: '190px', flexShrink: 0 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={donutChartData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={45}
-                      outerRadius={62}
+                      innerRadius={55}
+                      outerRadius={85}
                       paddingAngle={3}
                       dataKey="value"
                     >
@@ -690,13 +691,13 @@ export default function DesignerOrdersWorkspace({
                   transform: 'translate(-50%, -50%)',
                   textAlign: 'center'
                 }}>
-                  <strong style={{ fontSize: '20px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1 }}>24</strong>
-                  <span style={{ fontSize: '10px', color: secTextColor }}>Total</span>
+                  <strong style={{ fontSize: '24px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1 }}>24</strong>
+                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500 }}>Total</span>
                 </div>
               </div>
 
               {/* Status Counts & Percentages Legend List */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 {donutChartData.map(item => (
                   <div 
                     key={item.name}
@@ -705,18 +706,18 @@ export default function DesignerOrdersWorkspace({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      fontSize: '11px',
+                      fontSize: '12px',
                       cursor: 'pointer',
-                      padding: '2px 4px',
-                      borderRadius: '4px',
+                      padding: '4px 6px',
+                      borderRadius: '6px',
                       transition: 'background 0.15s ease'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
-                      <span style={{ color: textColor, fontWeight: 500 }}>{item.name}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: item.color }} />
+                      <span style={{ color: textColor, fontWeight: 600 }}>{item.name}</span>
                     </div>
-                    <span style={{ color: secTextColor, fontWeight: 600 }}>{item.count} <span style={{ color: mutedTextColor, fontWeight: 400 }}>({item.percentage})</span></span>
+                    <span style={{ color: secTextColor, fontWeight: 700 }}>{item.count} <span style={{ color: mutedTextColor, fontWeight: 400 }}>({item.percentage})</span></span>
                   </div>
                 ))}
               </div>
@@ -724,7 +725,7 @@ export default function DesignerOrdersWorkspace({
             </div>
           </div>
 
-          {/* Chart 3 — Revenue Overview (Bar Chart) */}
+          {/* Chart 3 — Revenue Overview (PERFECTLY ALIGNED BAR CHART WITH CLEAN Y-AXIS) */}
           <div style={{
             background: cardBg,
             border: `1px solid ${borderColor}`,
@@ -733,7 +734,8 @@ export default function DesignerOrdersWorkspace({
             boxShadow: '0 4px 18px rgba(16,24,40,0.04)',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            height: '100%'
           }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -745,19 +747,24 @@ export default function DesignerOrdersWorkspace({
               <strong style={{ fontSize: '22px', fontWeight: 700, color: textColor, display: 'block', marginTop: '4px' }}>₹1,48,700</strong>
             </div>
 
-            <div style={{ width: '100%', height: '170px', marginTop: '10px' }}>
+            <div style={{ width: '100%', height: '220px', marginTop: '8px' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={barChartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                <BarChart data={barChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
-                  <XAxis dataKey="day" stroke={mutedTextColor} fontSize={10} tickLine={false} />
-                  <YAxis stroke={mutedTextColor} fontSize={10} tickLine={false} />
+                  <XAxis dataKey="day" stroke={mutedTextColor} fontSize={11} tickLine={false} />
+                  <YAxis 
+                    stroke={mutedTextColor} 
+                    fontSize={11} 
+                    tickLine={false} 
+                    tickFormatter={(val) => val >= 1000 ? `${val / 1000}k` : val}
+                  />
                   <Tooltip 
                     contentStyle={{
                       background: isDark ? '#1F1B2E' : '#172033',
                       border: 'none',
                       borderRadius: '8px',
                       color: '#FFFFFF',
-                      fontSize: '11px',
+                      fontSize: '12px',
                       boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
                     }}
                     formatter={(val) => [`₹${val.toLocaleString()}`, 'Revenue']}
