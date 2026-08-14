@@ -23,9 +23,6 @@ export default function WelcomeSection({ liveStatus, onRefresh, onNavigateAction
           </button>
         </div>
       </div>
-
-      {/* Quick Action Buttons */}
-      <QuickActions onNavigateAction={onNavigateAction} />
     </section>
   );
 }
