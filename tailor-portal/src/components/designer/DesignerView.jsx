@@ -12,6 +12,7 @@ import DesignerDashboard from '../dashboard/DesignerDashboard';
 import DesignerStudioWorkspace from '../dashboard/DesignerStudioWorkspace';
 import DesignerOrdersWorkspace from '../dashboard/DesignerOrdersWorkspace';
 import DesignerMeasurementVault from '../dashboard/DesignerMeasurementVault';
+import DesignerClientDirectory from '../dashboard/DesignerClientDirectory';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -307,7 +308,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
       {/* MAIN CONTAINER */}
       <main style={{ 
-        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements') ? '0' : '24px', 
+        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements' || activeTab === 'customers') ? '0' : '24px', 
         maxWidth: '100%', 
         margin: '0',
         width: '100%'
@@ -371,37 +372,13 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 5: 👥 CUSTOMERS (DESIGNER CLIENT DIRECTORY)                        */}
+        {/* TAB 5: 👥 CUSTOMERS (PREMIUM STITCHBEE CLIENT DIRECTORY)              */}
         {/* ==================================================================== */}
         {activeTab === 'customers' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Client Directory</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                Manage designer clients, view past custom orders, design preferences, and appointment records.
-              </p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-              {[
-                { name: 'Priya Sharma', orders: 12, designs: 8, lastOrder: '2 days ago', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200' },
-                { name: 'Amit Verma', orders: 5, designs: 3, lastOrder: '1 week ago', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200' },
-                { name: 'Ananya Roy', orders: 8, designs: 5, lastOrder: '3 days ago', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200' }
-              ].map((c, idx) => (
-                <div key={idx} style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  <img src={c.avatar} alt={c.name} style={{ width: '54px', height: '54px', borderRadius: '50%', objectFit: 'cover' }} />
-                  <div style={{ flex: 1 }}>
-                    <strong style={{ fontSize: '16px', fontWeight: 700, display: 'block' }}>{c.name}</strong>
-                    <span style={{ fontSize: '12px', color: '#64748B' }}>{c.orders} Orders • {c.designs} Custom Designs</span>
-                    <span style={{ fontSize: '11px', color: '#F72585', fontWeight: 600, display: 'block', marginTop: '2px' }}>Last Order: {c.lastOrder}</span>
-                  </div>
-                  <button onClick={() => setSelectedCustomer(c)} style={{ padding: '8px 12px', fontSize: '12px', fontWeight: 600, borderRadius: '6px', border: '1px solid #F72585', background: 'transparent', color: '#F72585', cursor: 'pointer' }}>
-                    View Profile
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
+          <DesignerClientDirectory 
+            theme={theme}
+            onNavigateTab={(tab) => setActiveTab(tab)}
+          />
         )}
 
         {/* ==================================================================== */}
