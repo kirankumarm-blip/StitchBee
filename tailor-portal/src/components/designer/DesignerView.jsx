@@ -11,6 +11,7 @@ import HeaderProfileModal from '../HeaderProfileModal';
 import DesignerDashboard from '../dashboard/DesignerDashboard';
 import DesignerStudioWorkspace from '../dashboard/DesignerStudioWorkspace';
 import DesignerOrdersWorkspace from '../dashboard/DesignerOrdersWorkspace';
+import DesignerMeasurementVault from '../dashboard/DesignerMeasurementVault';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -306,7 +307,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
       {/* MAIN CONTAINER */}
       <main style={{ 
-        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders') ? '0' : '24px', 
+        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements') ? '0' : '24px', 
         maxWidth: '100%', 
         margin: '0',
         width: '100%'
@@ -360,72 +361,13 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 4: 📏 MEASUREMENTS (DESIGNER MEASUREMENT DATABASE)               */}
+        {/* TAB 4: 📏 MEASUREMENTS (PREMIUM STITCHBEE MEASUREMENT VAULT)         */}
         {/* ==================================================================== */}
         {activeTab === 'measurements' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-              <div>
-                <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Client Measurement Vault</h1>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                  Search, review, add, or download 3D AI scan measurement profiles for custom fitting.
-                </p>
-              </div>
-
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button onClick={() => alert("Launching 3D AI Body Scanner...")} style={{ padding: '9px 16px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: '1px solid #8B12C9', background: 'transparent', color: '#8B12C9', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                  <Sparkles size={16} /> View AI 3D Scans
-                </button>
-                <button onClick={() => alert("Add measurement form modal...")} className="btn-text-white-force" style={{ padding: '9px 18px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                  <Plus size={16} /> Add Measurements
-                </button>
-              </div>
-            </div>
-
-            {/* Measurement Search */}
-            <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
-              <Search size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#64748B' }} />
-              <input
-                type="text"
-                placeholder="Search customers by name or phone..."
-                value={customerSearch}
-                onChange={e => setCustomerSearch(e.target.value)}
-                style={{ padding: '10px 14px 10px 38px', fontSize: '13px', width: '100%', borderRadius: '8px', border: '1px solid #E5E7EB', outline: 'none' }}
-              />
-            </div>
-
-            {/* Measurement Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
-              {[
-                { name: 'Priya Sharma', phone: 'CUST-1024', bust: '36"', waist: '30"', hips: '39"', shoulder: '14.5"', blouseLength: '15"' },
-                { name: 'Ananya Roy', phone: 'CUST-1088', bust: '34"', waist: '28"', hips: '37"', shoulder: '14.0"', blouseLength: '14.5"' },
-                { name: 'Amit Verma', phone: 'CUST-2045', chest: '40"', waist: '34"', shoulder: '18.0"', inseam: '32"', sherwaniLength: '42"' }
-              ].map((m, idx) => (
-                <div key={idx} style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <strong style={{ fontSize: '16px', fontWeight: 700, display: 'block' }}>{m.name}</strong>
-                      <span style={{ fontSize: '11px', color: '#F72585', fontWeight: 600 }}>ID: {m.phone}</span>
-                    </div>
-                    <button onClick={() => alert(`Downloading Measurement PDF for ${m.name}`)} style={{ padding: '6px 10px', fontSize: '11px', fontWeight: 600, borderRadius: '6px', border: '1px solid #E5E7EB', background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Download size={13} /> PDF
-                    </button>
-                  </div>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '12px', borderRadius: '10px', fontSize: '12px' }}>
-                    <div><strong>Bust/Chest:</strong> {m.bust || m.chest}</div>
-                    <div><strong>Waist:</strong> {m.waist}</div>
-                    <div><strong>Hips:</strong> {m.hips || 'N/A'}</div>
-                    <div><strong>Shoulder:</strong> {m.shoulder}</div>
-                    <div><strong>Length:</strong> {m.blouseLength || m.sherwaniLength}</div>
-                    <div><strong>Inseam:</strong> {m.inseam || 'N/A'}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-          </div>
+          <DesignerMeasurementVault 
+            theme={theme}
+            onNavigateTab={(tab) => setActiveTab(tab)}
+          />
         )}
 
         {/* ==================================================================== */}
