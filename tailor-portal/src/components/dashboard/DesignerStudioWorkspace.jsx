@@ -363,96 +363,103 @@ export default function DesignerStudioWorkspace({
         {/* ==================================================================== */}
         <main style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0, paddingTop: '20px', paddingBottom: '20px' }}>
           
-          {/* Page Header Bar */}
+          {/* Header Row: Title & Subtitle on left, Search/Filter/New Design on right */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '4px' }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: '#172033', lineHeight: 1.2 }}>My Designs</h1>
+              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: secTextColor }}>
+                Manage all your design projects in one place.
+              </p>
+            </div>
+
+            {/* Search Box, Filter Button & New Design Button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              
+              {/* Search Box */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '0 14px',
+                height: '40px',
+                borderRadius: '9px',
+                border: isSearchFocused ? '1px solid #EC168C' : `1px solid ${borderColor}`,
+                boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.08)' : 'none',
+                background: '#FFFFFF',
+                width: '280px',
+                transition: 'all 0.15s ease'
+              }}>
+                <Search size={15} color={mutedTextColor} />
+                <input 
+                  type="text" 
+                  placeholder="Search designs by name, client, category..."
+                  value={searchQuery}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setIsSearchFocused(false)}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '13px', color: textColor, width: '100%' }}
+                />
+              </div>
+
+              {/* Filter Button */}
+              <button 
+                onClick={() => setIsFilterActive(!isFilterActive)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  height: '40px',
+                  padding: '0 16px',
+                  borderRadius: '9px',
+                  border: isFilterActive ? '1px solid #EC168C' : '1px solid #DDE2E8',
+                  background: isFilterActive ? '#FFF0F7' : '#FFFFFF',
+                  color: isFilterActive ? '#EC168C' : '#172033',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <Filter size={14} /> Filter
+              </button>
+
+              {/* New Design Primary CTA Button */}
+              <button 
+                onClick={() => setStudioSubTab('create')}
+                style={{
+                  height: '40px',
+                  padding: '0 18px',
+                  background: 'linear-gradient(135deg, #EC168C, #8B22D9)',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '9px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 14px rgba(236,22,140,0.22)',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <Plus size={16} /> New Design
+              </button>
+
+            </div>
+          </div>
+
+          {/* MAIN WORKSPACE WHITE CARD CONTAINER (STARTS BELOW MY DESIGNS HEADER) */}
           <div style={{
+            background: cardBg,
+            border: `1px solid ${borderColor}`,
+            borderRadius: '16px',
+            padding: '20px',
+            boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px'
+            gap: '20px'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-              <div>
-                <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: '#172033', lineHeight: 1.2 }}>My Designs</h1>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: secTextColor }}>
-                  Manage all your design projects in one place.
-                </p>
-              </div>
-
-              {/* Search Box, Filter Button & New Design Button */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                
-                {/* Search Box */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '0 14px',
-                  height: '40px',
-                  borderRadius: '9px',
-                  border: isSearchFocused ? '1px solid #EC168C' : `1px solid ${borderColor}`,
-                  boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.08)' : 'none',
-                  background: '#FFFFFF',
-                  width: '280px',
-                  transition: 'all 0.15s ease'
-                }}>
-                  <Search size={15} color={mutedTextColor} />
-                  <input 
-                    type="text" 
-                    placeholder="Search designs by name, client, category..."
-                    value={searchQuery}
-                    onFocus={() => setIsSearchFocused(true)}
-                    onBlur={() => setIsSearchFocused(false)}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '13px', color: textColor, width: '100%' }}
-                  />
-                </div>
-
-                {/* Filter Button */}
-                <button 
-                  onClick={() => setIsFilterActive(!isFilterActive)}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    height: '40px',
-                    padding: '0 16px',
-                    borderRadius: '9px',
-                    border: isFilterActive ? '1px solid #EC168C' : '1px solid #DDE2E8',
-                    background: isFilterActive ? '#FFF0F7' : '#FFFFFF',
-                    color: isFilterActive ? '#EC168C' : '#172033',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  <Filter size={14} /> Filter
-                </button>
-
-                {/* New Design Primary CTA Button */}
-                <button 
-                  onClick={() => setStudioSubTab('create')}
-                  style={{
-                    height: '40px',
-                    padding: '0 18px',
-                    background: 'linear-gradient(135deg, #EC168C, #8B22D9)',
-                    color: '#FFFFFF',
-                    border: 'none',
-                    borderRadius: '9px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    boxShadow: '0 4px 14px rgba(236,22,140,0.22)',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  <Plus size={16} /> New Design
-                </button>
-
-              </div>
-            </div>
 
             {/* Status Filter Tabs with Pink Underline Bar for Active Tab */}
             <div style={{ display: 'flex', gap: '16px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '0px', overflowX: 'auto' }}>
@@ -502,84 +509,85 @@ export default function DesignerStudioWorkspace({
                 );
               })}
             </div>
-          </div>
 
-          {/* DESIGN CARDS GRID (TALL PORTRAIT OUTFIT CARDS - MATCHING IMAGE 1) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px' }}>
-            {studioDesignsList
-              .filter(d => selectedCategoryTab === 'All Designs' || d.status === selectedCategoryTab)
-              .map(d => {
-                const isSelected = selectedDesignId === d.id;
-                return (
-                  <div 
-                    key={d.id}
-                    onClick={() => setSelectedDesignId(d.id)}
-                    style={{
-                      background: cardBg,
-                      border: isSelected ? '1.5px solid #EC168C' : `1px solid ${borderColor}`,
-                      borderRadius: '14px',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      boxShadow: isSelected ? '0 4px 14px rgba(236,22,140,0.14)' : '0 2px 8px rgba(15,23,42,0.04)',
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease'
-                    }}
-                  >
-                    <div style={{ position: 'relative', height: '220px' }}>
-                      <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      
-                      {/* Soft Pastel Status Badge */}
-                      <span style={{
-                        position: 'absolute',
-                        top: '10px',
-                        left: '10px',
-                        background: d.statusBg,
-                        color: d.statusColor,
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        height: '24px',
-                        padding: '0 10px',
-                        borderRadius: '6px',
-                        display: 'inline-flex',
-                        alignItems: 'center'
-                      }}>
-                        {d.status}
-                      </span>
-
-                      <span style={{
-                        position: 'absolute',
-                        top: '10px',
-                        right: '10px',
-                        background: 'rgba(255,255,255,0.9)',
-                        color: '#172033',
-                        width: '26px',
-                        height: '26px',
-                        borderRadius: '50%',
+            {/* DESIGN CARDS GRID (TALL PORTRAIT OUTFIT CARDS) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px' }}>
+              {studioDesignsList
+                .filter(d => selectedCategoryTab === 'All Designs' || d.status === selectedCategoryTab)
+                .map(d => {
+                  const isSelected = selectedDesignId === d.id;
+                  return (
+                    <div 
+                      key={d.id}
+                      onClick={() => setSelectedDesignId(d.id)}
+                      style={{
+                        background: cardBg,
+                        border: isSelected ? '1.5px solid #EC168C' : `1px solid ${borderColor}`,
+                        borderRadius: '14px',
+                        overflow: 'hidden',
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <MoreVertical size={13} />
-                      </span>
-                    </div>
+                        flexDirection: 'column',
+                        boxShadow: isSelected ? '0 4px 14px rgba(236,22,140,0.14)' : '0 2px 8px rgba(15,23,42,0.04)',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <div style={{ position: 'relative', height: '220px' }}>
+                        <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        
+                        {/* Soft Pastel Status Badge */}
+                        <span style={{
+                          position: 'absolute',
+                          top: '10px',
+                          left: '10px',
+                          background: d.statusBg,
+                          color: d.statusColor,
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          height: '24px',
+                          padding: '0 10px',
+                          borderRadius: '6px',
+                          display: 'inline-flex',
+                          alignItems: 'center'
+                        }}>
+                          {d.status}
+                        </span>
 
-                    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#172033' }}>{d.title}</h4>
-                      <span style={{ fontSize: '13px', color: secTextColor }}>Client: {d.client}</span>
-                      <span style={{ fontSize: '12px', color: mutedTextColor }}>{d.version} • {d.updated}</span>
+                        <span style={{
+                          position: 'absolute',
+                          top: '10px',
+                          right: '10px',
+                          background: 'rgba(255,255,255,0.9)',
+                          color: '#172033',
+                          width: '26px',
+                          height: '26px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}>
+                          <MoreVertical size={13} />
+                        </span>
+                      </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', paddingTop: '8px', borderTop: `1px solid ${borderColor}` }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: secTextColor }}>
-                          <span>👁 {d.views}</span>
-                          <span>💬 {d.comments}</span>
+                      <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#172033' }}>{d.title}</h4>
+                        <span style={{ fontSize: '13px', color: secTextColor }}>Client: {d.client}</span>
+                        <span style={{ fontSize: '12px', color: mutedTextColor }}>{d.version} • {d.updated}</span>
+
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', paddingTop: '8px', borderTop: `1px solid ${borderColor}` }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: secTextColor }}>
+                            <span>👁 {d.views}</span>
+                            <span>💬 {d.comments}</span>
+                          </div>
+                          <strong style={{ fontSize: '15px', color: '#EC168C', fontWeight: 700 }}>{d.price}</strong>
                         </div>
-                        <strong style={{ fontSize: '15px', color: '#EC168C', fontWeight: 700 }}>{d.price}</strong>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
+
           </div>
 
           {/* BOTTOM ROW (3 EQUAL COLUMNS - MATCHING IMAGE 1) */}
