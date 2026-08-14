@@ -26,13 +26,12 @@ export default function DesignerCalendarWorkspace({
   const mutedTextColor = isDark ? '#718096' : '#98A2B3';
   const inputBg = isDark ? '#231D34' : '#FFFFFF';
 
-  // States
-  const [selectedMonth, setSelectedMonth] = useState('June 2025');
-  const [viewType, setViewType] = useState('Month');
+  // DYNAMIC CALENDAR DATE ENGINE STATE (Defaults to June 2025 for initial view, can navigate to any date)
+  const [viewDate, setViewDate] = useState(new Date(2025, 5, 10)); // Year 2025, Month June (0-indexed 5), Day 10
+  const [viewType, setViewType] = useState('Month'); // 'Month' | 'Week' | 'Day'
   const [selectedDesigner, setSelectedDesigner] = useState('Ananya Roy');
   const [eventTypeFilter, setEventTypeFilter] = useState('All Event Types');
   const [designerFilter, setDesignerFilter] = useState('All Designers');
-  const [dateRange, setDateRange] = useState('01 Jun 2025 – 30 Jun 2025');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // New Event Form State
@@ -41,6 +40,7 @@ export default function DesignerCalendarWorkspace({
   const [newEventType, setNewEventType] = useState('Design Deadline');
   const [newEventDate, setNewEventDate] = useState('2025-06-10');
   const [newEventTime, setNewEventTime] = useState('10:00 AM');
+  const [newEventDesigner, setNewEventDesigner] = useState('Ananya Roy');
 
   // Designers List Data
   const designers = [
@@ -94,82 +94,181 @@ export default function DesignerCalendarWorkspace({
     }
   };
 
-  // Calendar Days Grid Data (June 2025 — 35 cells matching exact image layout)
-  const calendarGrid = [
-    // Week 1 (May 25 - May 31)
-    { dayNum: 25, isOtherMonth: true, events: [{ label: '2 Deliveries', type: 'Client Delivery' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 26, isOtherMonth: true, events: [{ label: 'Client: Priya S.', type: 'Client Appointment' }, { label: 'Measurement', type: 'Trial/Measurement' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 27, isOtherMonth: true, events: [{ label: 'Design Deadline', type: 'Design Deadline' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 28, isOtherMonth: true, events: [{ label: 'Trial Fitting', type: 'Trial/Measurement' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 29, isOtherMonth: true, events: [] },
-    { dayNum: 30, isOtherMonth: true, events: [{ label: 'Client: Neha K.', type: 'Client Appointment' }] },
-    { dayNum: 31, isOtherMonth: true, events: [{ label: 'Delivery Due', type: 'Client Delivery' }] },
+  // DYNAMIC EVENTS STATE DATABASE
+  const [eventsList, setEventsList] = useState([
+    { id: 1, date: '2025-05-25', title: '2 Deliveries', type: 'Client Delivery', time: '11:00 AM', customer: 'Atelier Dispatch', designer: 'Ananya Roy' },
+    { id: 2, date: '2025-05-26', title: 'Client: Priya S.', type: 'Client Appointment', time: '02:00 PM', customer: 'Priya Sharma', designer: 'Ananya Roy' },
+    { id: 3, date: '2025-05-26', title: 'Measurement', type: 'Trial/Measurement', time: '04:30 PM', customer: 'Priya Sharma', designer: 'Ananya Roy' },
+    { id: 4, date: '2025-05-27', title: 'Design Deadline', type: 'Design Deadline', time: '05:00 PM', customer: 'Royal Bridal Lehenga', designer: 'Ananya Roy' },
+    { id: 5, date: '2025-05-28', title: 'Trial Fitting', type: 'Trial/Measurement', time: '10:30 AM', customer: 'Amit Verma', designer: 'Rohit Sharma' },
+    { id: 6, date: '2025-05-30', title: 'Client: Neha K.', type: 'Client Appointment', time: '01:00 PM', customer: 'Neha Kapoor', designer: 'Neha Iyer' },
+    { id: 7, date: '2025-05-31', title: 'Delivery Due', type: 'Client Delivery', time: '06:00 PM', customer: 'Zardozi Sherwani', designer: 'Ananya Roy' },
 
-    // Week 2 (Jun 1 - Jun 7)
-    { dayNum: 1, isOtherMonth: false, events: [] },
-    { dayNum: 2, isOtherMonth: false, events: [] },
-    { dayNum: 3, isOtherMonth: false, events: [] },
-    { dayNum: 4, isOtherMonth: false, events: [] },
-    { dayNum: 5, isOtherMonth: false, events: [] },
-    { dayNum: 6, isOtherMonth: false, events: [] },
-    { dayNum: 7, isOtherMonth: false, events: [] },
+    { id: 8, date: '2025-06-09', title: 'Measurement', type: 'Trial/Measurement', time: '11:00 AM', customer: 'Arjun Mehta', designer: 'Ananya Roy' },
+    { id: 9, date: '2025-06-09', title: 'Client: Arjun M.', type: 'Client Appointment', time: '03:00 PM', customer: 'Arjun Mehta', designer: 'Ananya Roy' },
 
-    // Week 3 (Jun 8 - Jun 14)
-    { dayNum: 8, isOtherMonth: false, events: [] },
-    { dayNum: 9, isOtherMonth: false, events: [{ label: 'Measurement', type: 'Trial/Measurement' }, { label: 'Client: Arjun M.', type: 'Client Appointment' }] },
-    { dayNum: 10, isOtherMonth: false, isToday: true, events: [{ label: 'Design Deadline', type: 'Design Deadline' }, { label: 'Trial Fitting', type: 'Trial/Measurement' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 11, isOtherMonth: false, events: [{ label: 'Client: Sneha R.', type: 'Client Appointment' }] },
-    { dayNum: 12, isOtherMonth: false, events: [{ label: 'Measurement', type: 'Trial/Measurement' }] },
-    { dayNum: 13, isOtherMonth: false, events: [] },
-    { dayNum: 14, isOtherMonth: false, events: [{ label: 'Delivery Due', type: 'Client Delivery' }, { label: '+1 more', isMore: true }] },
+    { id: 10, date: '2025-06-10', title: 'Design Discussion', type: 'Design Deadline', time: '09:30 AM', customer: 'Priya Sharma', designer: 'Ananya Roy' },
+    { id: 11, date: '2025-06-10', title: 'Trial Fitting', type: 'Trial/Measurement', time: '11:00 AM', customer: 'Rahul Verma', designer: 'Ananya Roy' },
+    { id: 12, date: '2025-06-10', title: 'Client Appointment', type: 'Client Appointment', time: '01:30 PM', customer: 'Neha Kapoor', designer: 'Ananya Roy' },
+    { id: 13, date: '2025-06-10', title: 'Design Deadline', type: 'Design Deadline', time: '04:00 PM', customer: 'Wedding Lehenga', designer: 'Ananya Roy' },
 
-    // Week 4 (Jun 15 - Jun 21)
-    { dayNum: 15, isOtherMonth: false, events: [{ label: 'Design Deadline', type: 'Design Deadline' }] },
-    { dayNum: 16, isOtherMonth: false, events: [{ label: 'Trial Fitting', type: 'Trial/Measurement' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 17, isOtherMonth: false, events: [] },
-    { dayNum: 18, isOtherMonth: false, events: [{ label: 'Client: Kiran S.', type: 'Client Appointment' }] },
-    { dayNum: 19, isOtherMonth: false, events: [{ label: 'Measurement', type: 'Trial/Measurement' }, { label: 'Design Deadline', type: 'Design Deadline' }] },
-    { dayNum: 20, isOtherMonth: false, events: [] },
-    { dayNum: 21, isOtherMonth: false, events: [{ label: 'Delivery Due', type: 'Client Delivery' }] },
+    { id: 14, date: '2025-06-11', title: 'Client: Sneha R.', type: 'Client Appointment', time: '10:00 AM', customer: 'Sneha Reddy', designer: 'Ananya Roy' },
+    { id: 15, date: '2025-06-11', title: 'Measurement Session', type: 'Trial/Measurement', time: '02:00 PM', customer: 'Arjun Mehta', designer: 'Ananya Roy' },
 
-    // Week 5 (Jun 22 - Jun 28)
-    { dayNum: 22, isOtherMonth: false, events: [] },
-    { dayNum: 23, isOtherMonth: false, events: [{ label: 'Measurement', type: 'Trial/Measurement' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 24, isOtherMonth: false, events: [{ label: 'Client: Divya P.', type: 'Client Appointment' }] },
-    { dayNum: 25, isOtherMonth: false, events: [{ label: 'Trial Fitting', type: 'Trial/Measurement' }] },
-    { dayNum: 26, isOtherMonth: false, events: [] },
-    { dayNum: 27, isOtherMonth: false, events: [{ label: 'Design Deadline', type: 'Design Deadline' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 28, isOtherMonth: false, events: [] },
+    { id: 16, date: '2025-06-12', title: 'Measurement', type: 'Trial/Measurement', time: '11:30 AM', customer: 'Kavya Iyer', designer: 'Neha Iyer' },
+    { id: 17, date: '2025-06-14', title: 'Delivery Due', type: 'Client Delivery', time: '05:00 PM', customer: 'Silk Anarkali', designer: 'Ananya Roy' },
 
-    // Week 6 (Jun 29 - Jul 5)
-    { dayNum: 29, isOtherMonth: false, events: [{ label: 'Delivery Due', type: 'Client Delivery' }, { label: '+1 more', isMore: true }] },
-    { dayNum: 30, isOtherMonth: false, events: [{ label: 'Measurement', type: 'Trial/Measurement' }] },
-    { dayNum: 1, isOtherMonth: true, events: [] },
-    { dayNum: 2, isOtherMonth: true, events: [] },
-    { dayNum: 3, isOtherMonth: true, events: [] },
-    { dayNum: 4, isOtherMonth: true, events: [] },
-    { dayNum: 5, isOtherMonth: true, events: [] }
-  ];
+    { id: 18, date: '2025-06-15', title: 'Design Deadline', type: 'Design Deadline', time: '06:00 PM', customer: 'Chanderi Saree', designer: 'Rohit Sharma' },
+    { id: 19, date: '2025-06-16', title: 'Trial Fitting', type: 'Trial/Measurement', time: '01:00 PM', customer: 'Ritika Singh', designer: 'Ananya Roy' },
+    { id: 20, date: '2025-06-18', title: 'Client: Kiran S.', type: 'Client Appointment', time: '04:00 PM', customer: 'Kiran Sharma', designer: 'Ananya Roy' },
+    { id: 21, date: '2025-06-19', title: 'Measurement', type: 'Trial/Measurement', time: '10:30 AM', customer: 'Divya Patel', designer: 'Ananya Roy' },
+    { id: 22, date: '2025-06-19', title: 'Design Deadline', type: 'Design Deadline', time: '03:30 PM', customer: 'Reception Gown', designer: 'Ananya Roy' },
+    { id: 23, date: '2025-06-21', title: 'Delivery Due', type: 'Client Delivery', time: '05:30 PM', customer: 'Pastel Lehenga', designer: 'Ananya Roy' },
 
-  // Upcoming Events Panel Data
-  const upcomingEvents = [
-    {
-      group: 'Today · Tue, 10 Jun 2025',
-      items: [
-        { time: '09:30 AM', title: 'Design Discussion', client: 'Priya Sharma', type: 'Design Deadline' },
-        { time: '11:00 AM', title: 'Trial Fitting', client: 'Rahul Verma', type: 'Trial/Measurement' },
-        { time: '01:30 PM', title: 'Client Appointment', client: 'Neha Kapoor', type: 'Client Appointment' },
-        { time: '04:00 PM', title: 'Design Deadline', client: 'Wedding Lehenga', type: 'Design Deadline' }
-      ]
-    },
-    {
-      group: 'Tomorrow · Wed, 11 Jun 2025',
-      items: [
-        { time: '10:00 AM', title: 'Client Appointment', client: 'Sneha Reddy', type: 'Client Appointment' },
-        { time: '02:00 PM', title: 'Measurement Session', client: 'Arjun Mehta', type: 'Trial/Measurement' }
-      ]
+    { id: 24, date: '2025-06-23', title: 'Measurement', type: 'Trial/Measurement', time: '02:30 PM', customer: 'Meera Kapoor', designer: 'Rohit Sharma' },
+    { id: 25, date: '2025-06-24', title: 'Client: Divya P.', type: 'Client Appointment', time: '11:00 AM', customer: 'Divya Patel', designer: 'Ananya Roy' },
+    { id: 26, date: '2025-06-25', title: 'Trial Fitting', type: 'Trial/Measurement', time: '04:00 PM', customer: 'Ananya Roy', designer: 'Ananya Roy' },
+    { id: 27, date: '2025-06-27', title: 'Design Deadline', type: 'Design Deadline', time: '05:00 PM', customer: 'Velvet Sherwani', designer: 'Ananya Roy' },
+
+    { id: 28, date: '2025-06-29', title: 'Delivery Due', type: 'Client Delivery', time: '06:00 PM', customer: 'Emerald Gown', designer: 'Ananya Roy' },
+    { id: 29, date: '2025-06-30', title: 'Measurement', type: 'Trial/Measurement', time: '12:00 PM', customer: 'Ritik Malhotra', designer: 'Ananya Roy' },
+
+    // August 2026 Live Dates
+    { id: 30, date: '2026-08-15', title: 'Design Discussion', type: 'Design Deadline', time: '10:00 AM', customer: 'Priya Sharma', designer: 'Ananya Roy' },
+    { id: 31, date: '2026-08-15', title: 'Trial Fitting', type: 'Trial/Measurement', time: '02:30 PM', customer: 'Amit Verma', designer: 'Ananya Roy' },
+    { id: 32, date: '2026-08-20', title: 'Client Appointment', type: 'Client Appointment', time: '04:00 PM', customer: 'Neha Verma', designer: 'Ananya Roy' },
+    { id: 33, date: '2026-08-28', title: 'Delivery Due', type: 'Client Delivery', time: '05:00 PM', customer: 'Royal Bridal Lehenga', designer: 'Ananya Roy' }
+  ]);
+
+  // DYNAMIC CALENDAR MATRIX GENERATOR
+  const currYear = viewDate.getFullYear();
+  const currMonth = viewDate.getMonth(); // 0 to 11
+
+  // Month Title string (e.g. "June 2025", "August 2026")
+  const monthTitle = viewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+  // Navigation handlers
+  const handlePrevMonth = () => {
+    setViewDate(new Date(currYear, currMonth - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setViewDate(new Date(currYear, currMonth + 1, 1));
+  };
+
+  const handleToday = () => {
+    setViewDate(new Date()); // Navigates dynamically to current real-time today
+  };
+
+  // Helper to format Date object into YYYY-MM-DD
+  const formatYMD = (year, monthZeroIdx, dayNum) => {
+    const y = year;
+    const m = String(monthZeroIdx + 1).padStart(2, '0');
+    const d = String(dayNum).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  // Generate dynamic day grid cells (35 or 42 cells)
+  const generateDynamicCalendarGrid = () => {
+    const firstDayIndex = new Date(currYear, currMonth, 1).getDay(); // 0 (Sun) to 6 (Sat)
+    const daysInCurrentMonth = new Date(currYear, currMonth + 1, 0).getDate();
+    const daysInPrevMonth = new Date(currYear, currMonth, 0).getDate();
+
+    const todayNow = new Date();
+    const todayY = todayNow.getFullYear();
+    const todayM = todayNow.getMonth();
+    const todayD = todayNow.getDate();
+
+    const grid = [];
+
+    // Trailing days from Previous Month
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      const dayNum = daysInPrevMonth - i;
+      const prevM = currMonth === 0 ? 11 : currMonth - 1;
+      const prevY = currMonth === 0 ? currYear - 1 : currYear;
+      const ymd = formatYMD(prevY, prevM, dayNum);
+
+      grid.push({
+        dayNum,
+        isOtherMonth: true,
+        ymd,
+        isToday: false
+      });
     }
-  ];
+
+    // Days for Current Month
+    for (let i = 1; i <= daysInCurrentMonth; i++) {
+      const ymd = formatYMD(currYear, currMonth, i);
+      const isToday = (i === todayD && currMonth === todayM && currYear === todayY);
+
+      grid.push({
+        dayNum: i,
+        isOtherMonth: false,
+        ymd,
+        isToday
+      });
+    }
+
+    // Leading days for Next Month to complete 35 or 42 grid cells
+    const totalCells = grid.length > 35 ? 42 : 35;
+    const remainingCells = totalCells - grid.length;
+    for (let i = 1; i <= remainingCells; i++) {
+      const nextM = currMonth === 11 ? 0 : currMonth + 1;
+      const nextY = currMonth === 11 ? currYear + 1 : currYear;
+      const ymd = formatYMD(nextY, nextM, i);
+
+      grid.push({
+        dayNum: i,
+        isOtherMonth: true,
+        ymd,
+        isToday: false
+      });
+    }
+
+    return grid;
+  };
+
+  const dynamicGridCells = generateDynamicCalendarGrid();
+
+  // Filtered Events
+  const getEventsForDate = (ymdString) => {
+    return eventsList.filter(ev => {
+      const matchesDate = ev.date === ymdString;
+      const matchesType = eventTypeFilter === 'All Event Types' || ev.type === eventTypeFilter;
+      const matchesDesigner = designerFilter === 'All Designers' || ev.designer === designerFilter;
+      return matchesDate && matchesType && matchesDesigner;
+    });
+  };
+
+  // Add New Event Handler
+  const handleCreateNewEvent = (e) => {
+    e.preventDefault();
+    if (!newEventTitle || !newEventCustomer) {
+      alert("Please fill in event title and customer name!");
+      return;
+    }
+
+    const newEv = {
+      id: Date.now(),
+      date: newEventDate,
+      title: newEventTitle,
+      type: newEventType,
+      time: newEventTime,
+      customer: newEventCustomer,
+      designer: newEventDesigner
+    };
+
+    setEventsList(prev => [...prev, newEv]);
+
+    // Automatically navigate view date to newly added event's month
+    const [y, m] = newEventDate.split('-').map(Number);
+    setViewDate(new Date(y, m - 1, 1));
+
+    setIsAddModalOpen(false);
+    setNewEventTitle('');
+    setNewEventCustomer('');
+    alert(`Successfully added event "${newEventTitle}" on ${newEventDate}!`);
+  };
 
   return (
     <div style={{
@@ -179,14 +278,14 @@ export default function DesignerCalendarWorkspace({
       width: '100%',
       minHeight: 'calc(100vh - 64px)',
       boxSizing: 'border-box',
-      padding: '28px 32px'
+      padding: '24px 28px'
     }}>
       
-      {/* Edge-to-Edge Container */}
-      <div style={{ width: '100%', maxWidth: '1500px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* 100% Dynamic Screen Width Container (No side gaps) */}
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* ==================================================================== */}
-        {/* 1. PAGE HEADER & ACTIONS                                              */}
+        {/* 1. PAGE HEADER & DYNAMIC CONTROLS                                    */}
         {/* ==================================================================== */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
@@ -202,7 +301,7 @@ export default function DesignerCalendarWorkspace({
             
             {/* Today Button */}
             <button 
-              onClick={() => alert("Navigated to Today's schedule")}
+              onClick={handleToday}
               style={{
                 height: '40px',
                 padding: '0 16px',
@@ -222,10 +321,13 @@ export default function DesignerCalendarWorkspace({
               <span>Today</span>
             </button>
 
-            {/* Month Selector */}
+            {/* Dynamic Month Selector */}
             <select 
-              value={selectedMonth}
-              onChange={e => setSelectedMonth(e.target.value)}
+              value={`${currYear}-${String(currMonth + 1).padStart(2, '0')}`}
+              onChange={e => {
+                const [y, m] = e.target.value.split('-').map(Number);
+                setViewDate(new Date(y, m - 1, 1));
+              }}
               style={{
                 height: '40px',
                 padding: '0 14px',
@@ -237,12 +339,13 @@ export default function DesignerCalendarWorkspace({
                 color: textColor,
                 cursor: 'pointer',
                 outline: 'none',
-                minWidth: '130px'
+                minWidth: '150px'
               }}
             >
-              <option value="May 2025">May 2025</option>
-              <option value="June 2025">June 2025</option>
-              <option value="July 2025">July 2025</option>
+              <option value="2025-05">May 2025</option>
+              <option value="2025-06">June 2025</option>
+              <option value="2025-07">July 2025</option>
+              <option value="2026-08">August 2026 (Live)</option>
             </select>
 
             {/* Primary Button — + Add Event */}
@@ -316,7 +419,7 @@ export default function DesignerCalendarWorkspace({
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
               <span style={{ color: secTextColor }}>Events</span>
-              <button onClick={() => alert("Viewing today's schedule")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View today →</button>
+              <button onClick={handleToday} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View today →</button>
             </div>
           </div>
 
@@ -333,7 +436,7 @@ export default function DesignerCalendarWorkspace({
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
               <span style={{ color: secTextColor }}>Upcoming</span>
-              <button onClick={() => alert("Viewing upcoming client appointments")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
+              <button onClick={() => setEventTypeFilter('Client Appointment')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
             </div>
           </div>
 
@@ -350,7 +453,7 @@ export default function DesignerCalendarWorkspace({
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
               <span style={{ color: secTextColor }}>Upcoming</span>
-              <button onClick={() => alert("Viewing trials & measurements")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
+              <button onClick={() => setEventTypeFilter('Trial/Measurement')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
             </div>
           </div>
 
@@ -367,7 +470,7 @@ export default function DesignerCalendarWorkspace({
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
               <span style={{ color: secTextColor }}>Upcoming</span>
-              <button onClick={() => alert("Viewing deliveries due")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
+              <button onClick={() => setEventTypeFilter('Client Delivery')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
             </div>
           </div>
 
@@ -384,7 +487,7 @@ export default function DesignerCalendarWorkspace({
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
               <span style={{ color: secTextColor }}>Events</span>
-              <button onClick={() => alert("Viewing overdue deadlines")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View details →</button>
+              <button onClick={() => setEventTypeFilter('Overdue')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View details →</button>
             </div>
           </div>
 
@@ -395,7 +498,7 @@ export default function DesignerCalendarWorkspace({
         {/* ==================================================================== */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '270px 1fr 340px',
+          gridTemplateColumns: '260px 1fr 320px',
           gap: '16px',
           width: '100%',
           alignItems: 'flex-start'
@@ -418,10 +521,11 @@ export default function DesignerCalendarWorkspace({
                   style={{ width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', outline: 'none', cursor: 'pointer' }}
                 >
                   <option value="All Event Types">All Event Types</option>
-                  <option value="Fitting/Design Deadline">Design Deadline</option>
+                  <option value="Design Deadline">Fitting/Design Deadline</option>
                   <option value="Client Appointment">Client Appointment</option>
                   <option value="Trial/Measurement">Trial/Measurement</option>
                   <option value="Client Delivery">Client Delivery</option>
+                  <option value="Overdue">Overdue</option>
                 </select>
               </div>
 
@@ -436,20 +540,21 @@ export default function DesignerCalendarWorkspace({
                   <option value="Ananya Roy">Ananya Roy</option>
                   <option value="Rohit Sharma">Rohit Sharma</option>
                   <option value="Neha Iyer">Neha Iyer</option>
+                  <option value="Vikram Menon">Vikram Menon</option>
                 </select>
               </div>
 
               <div>
-                <label style={{ fontSize: '11px', fontWeight: 600, color: secTextColor, display: 'block', marginBottom: '4px' }}>Date Range</label>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, fontSize: '11px', color: textColor }}>
-                  <span>{dateRange}</span>
+                <label style={{ fontSize: '11px', fontWeight: 600, color: secTextColor, display: 'block', marginBottom: '4px' }}>Active Month View</label>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, fontSize: '11px', color: textColor, fontWeight: 600 }}>
+                  <span>{monthTitle}</span>
                   <CalendarIcon size={14} color={secTextColor} />
                 </div>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
                 <button 
-                  onClick={() => alert("Filters applied successfully!")}
+                  onClick={() => alert(`Filters applied: ${eventTypeFilter} • ${designerFilter}`)}
                   style={{
                     flex: 1,
                     height: '38px',
@@ -496,7 +601,10 @@ export default function DesignerCalendarWorkspace({
                   return (
                     <div 
                       key={d.name}
-                      onClick={() => setSelectedDesigner(d.name)}
+                      onClick={() => {
+                        setSelectedDesigner(d.name);
+                        setDesignerFilter(d.name);
+                      }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -527,7 +635,7 @@ export default function DesignerCalendarWorkspace({
               </div>
 
               <button 
-                onClick={() => alert("Viewing all studio designers...")}
+                onClick={() => setDesignerFilter('All Designers')}
                 style={{
                   width: '100%',
                   height: '36px',
@@ -541,29 +649,37 @@ export default function DesignerCalendarWorkspace({
                   marginTop: '4px'
                 }}
               >
-                View All Designers
+                Show All Designers
               </button>
             </div>
 
           </div>
 
           {/* ================================================================== */}
-          {/* COLUMN 2: CENTER MAIN CALENDAR (~58% Width)                         */}
+          {/* COLUMN 2: CENTER DYNAMIC CALENDAR GRID                              */}
           {/* ================================================================== */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', gap: '16px', width: '100%' }}>
             
-            {/* Calendar Card Header */}
+            {/* Dynamic Calendar Card Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '14px', borderBottom: `1px solid ${borderColor}` }}>
               <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: textColor }}>
-                {selectedMonth}
+                {monthTitle}
               </h2>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', border: `1px solid ${borderColor}`, borderRadius: '7px', overflow: 'hidden' }}>
-                  <button style={{ width: '32px', height: '32px', border: 'none', background: cardBg, color: secTextColor, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button 
+                    onClick={handlePrevMonth}
+                    title="Previous Month"
+                    style={{ width: '32px', height: '32px', border: 'none', background: cardBg, color: textColor, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
                     <ChevronLeft size={16} />
                   </button>
-                  <button style={{ width: '32px', height: '32px', border: 'none', borderLeft: `1px solid ${borderColor}`, background: cardBg, color: secTextColor, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button 
+                    onClick={handleNextMonth}
+                    title="Next Month"
+                    style={{ width: '32px', height: '32px', border: 'none', borderLeft: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
                     <ChevronRight size={16} />
                   </button>
                 </div>
@@ -589,9 +705,13 @@ export default function DesignerCalendarWorkspace({
               ))}
             </div>
 
-            {/* 35 Calendar Cells Matrix Grid */}
+            {/* DYNAMIC CALENDAR CELLS MATRIX GRID */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', background: softBorderColor, borderRadius: '8px', overflow: 'hidden' }}>
-              {calendarGrid.map((cell, idx) => {
+              {dynamicGridCells.map((cell, idx) => {
+                const cellEvents = getEventsForDate(cell.ymd);
+                const displayEvents = cellEvents.slice(0, 2);
+                const overflowCount = cellEvents.length - 2;
+
                 return (
                   <div
                     key={idx}
@@ -602,7 +722,8 @@ export default function DesignerCalendarWorkspace({
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '4px',
-                      boxSizing: 'border-box'
+                      boxSizing: 'border-box',
+                      transition: 'background 0.15s ease'
                     }}
                   >
                     {/* Date Number Badge */}
@@ -637,20 +758,13 @@ export default function DesignerCalendarWorkspace({
 
                     {/* Events List inside Cell */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                      {cell.events.map((ev, evIdx) => {
-                        if (ev.isMore) {
-                          return (
-                            <span key={evIdx} style={{ fontSize: '10px', color: mutedTextColor, fontWeight: 500, paddingLeft: '4px', marginTop: '1px' }}>
-                              {ev.label}
-                            </span>
-                          );
-                        }
-
+                      {displayEvents.map(ev => {
                         const styleConfig = eventStyles[ev.type] || eventStyles['Design Deadline'];
 
                         return (
                           <div 
-                            key={evIdx}
+                            key={ev.id}
+                            title={`${ev.time} - ${ev.title} (${ev.customer})`}
                             style={{
                               background: styleConfig.bg,
                               border: `1px solid ${styleConfig.border}`,
@@ -669,10 +783,16 @@ export default function DesignerCalendarWorkspace({
                             }}
                           >
                             <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: styleConfig.dotColor, flexShrink: 0 }} />
-                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{ev.label}</span>
+                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{ev.title}</span>
                           </div>
                         );
                       })}
+
+                      {overflowCount > 0 && (
+                        <span style={{ fontSize: '10px', color: mutedTextColor, fontWeight: 500, paddingLeft: '4px', marginTop: '1px' }}>
+                          +{overflowCount} more
+                        </span>
+                      )}
                     </div>
                   </div>
                 );
@@ -681,14 +801,14 @@ export default function DesignerCalendarWorkspace({
 
             {/* Bottom Statement Footer */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', fontSize: '11px', color: secTextColor, paddingTop: '8px' }}>
-              <span>Showing May 25 – July 5, 2025 Schedule · All times are in IST</span>
+              <span>Showing {monthTitle} Schedule · All times are in IST</span>
               <Info size={13} color={secTextColor} />
             </div>
 
           </div>
 
           {/* ================================================================== */}
-          {/* COLUMN 3: RIGHT UPCOMING EVENTS PANEL (~23% Width)                 */}
+          {/* COLUMN 3: RIGHT UPCOMING EVENTS PANEL                              */}
           {/* ================================================================== */}
           <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             
@@ -700,58 +820,56 @@ export default function DesignerCalendarWorkspace({
               </button>
             </div>
 
-            {/* Events Grouped by Day */}
+            {/* Events List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              {upcomingEvents.map((grp, grpIdx) => (
-                <div key={grpIdx} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 600, color: primaryPink }}>
-                    {grp.group}
-                  </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: primaryPink }}>
+                  Dynamic Feed · {monthTitle}
+                </span>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {grp.items.map((item, itemIdx) => {
-                      const styleConfig = eventStyles[item.type] || eventStyles['Design Deadline'];
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {eventsList.slice(0, 6).map((item) => {
+                    const styleConfig = eventStyles[item.type] || eventStyles['Design Deadline'];
 
-                      return (
-                        <div 
-                          key={itemIdx}
-                          style={{
-                            borderLeft: `3px solid ${styleConfig.color}`,
-                            paddingLeft: '10px',
-                            display: 'flex',
-                            justify: 'space-between',
-                            alignItems: 'flex-start',
-                            gap: '8px'
-                          }}
-                        >
-                          <div>
-                            <span style={{ fontSize: '10px', color: secTextColor, display: 'block' }}>{item.time}</span>
-                            <strong style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'block', marginTop: '1px' }}>{item.title}</strong>
-                            <span style={{ fontSize: '11px', color: secTextColor, display: 'block', marginTop: '1px' }}>{item.client}</span>
-                          </div>
-
-                          <span style={{
-                            fontSize: '9px',
-                            fontWeight: 600,
-                            padding: '2px 6px',
-                            borderRadius: '4px',
-                            background: styleConfig.badgeBg,
-                            color: styleConfig.badgeText,
-                            whiteSpace: 'nowrap'
-                          }}>
-                            {item.type}
-                          </span>
+                    return (
+                      <div 
+                        key={item.id}
+                        style={{
+                          borderLeft: `3px solid ${styleConfig.color}`,
+                          paddingLeft: '10px',
+                          display: 'flex',
+                          justify: 'space-between',
+                          alignItems: 'flex-start',
+                          gap: '8px'
+                        }}
+                      >
+                        <div>
+                          <span style={{ fontSize: '10px', color: secTextColor, display: 'block' }}>{item.time} ({item.date.split('-')[2]} {monthTitle.split(' ')[0]})</span>
+                          <strong style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'block', marginTop: '1px' }}>{item.title}</strong>
+                          <span style={{ fontSize: '11px', color: secTextColor, display: 'block', marginTop: '1px' }}>{item.customer}</span>
                         </div>
-                      );
-                    })}
-                  </div>
+
+                        <span style={{
+                          fontSize: '9px',
+                          fontWeight: 600,
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          background: styleConfig.badgeBg,
+                          color: styleConfig.badgeText,
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {item.type}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
+              </div>
             </div>
 
             {/* Sync Calendar Button */}
             <button 
-              onClick={() => alert("Calendar synced with Atelier schedule!")}
+              onClick={() => alert("Calendar synced with Atelier live schedule!")}
               style={{
                 width: '100%',
                 height: '38px',
@@ -780,7 +898,7 @@ export default function DesignerCalendarWorkspace({
       </div>
 
       {/* ==================================================================== */}
-      {/* 5. ADD EVENT MODAL (WIDTH 500px)                                     */}
+      {/* 5. ADD EVENT MODAL (DYNAMICS LIVE INJECTION)                         */}
       {/* ==================================================================== */}
       {isAddModalOpen && (
         <div style={{
@@ -815,7 +933,7 @@ export default function DesignerCalendarWorkspace({
               </button>
             </div>
 
-            <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <form onSubmit={handleCreateNewEvent} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label style={{ fontSize: '12px', fontWeight: 600, color: textColor, display: 'block', marginBottom: '4px' }}>Event Title *</label>
                 <input 
@@ -823,6 +941,7 @@ export default function DesignerCalendarWorkspace({
                   placeholder="e.g. Design Discussion / Trial Fitting" 
                   value={newEventTitle}
                   onChange={e => setNewEventTitle(e.target.value)}
+                  required
                   style={{ width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', outline: 'none' }} 
                 />
               </div>
@@ -834,6 +953,7 @@ export default function DesignerCalendarWorkspace({
                   placeholder="e.g. Priya Sharma" 
                   value={newEventCustomer}
                   onChange={e => setNewEventCustomer(e.target.value)}
+                  required
                   style={{ width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', outline: 'none' }} 
                 />
               </div>
@@ -865,29 +985,41 @@ export default function DesignerCalendarWorkspace({
                 </div>
               </div>
 
-              <div>
-                <label style={{ fontSize: '12px', fontWeight: 600, color: textColor, display: 'block', marginBottom: '4px' }}>Date</label>
-                <input 
-                  type="date" 
-                  value={newEventDate}
-                  onChange={e => setNewEventDate(e.target.value)}
-                  style={{ width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', outline: 'none' }} 
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor, display: 'block', marginBottom: '4px' }}>Date</label>
+                  <input 
+                    type="date" 
+                    value={newEventDate}
+                    onChange={e => setNewEventDate(e.target.value)}
+                    style={{ width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', outline: 'none' }} 
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor, display: 'block', marginBottom: '4px' }}>Assigned Designer</label>
+                  <select 
+                    value={newEventDesigner}
+                    onChange={e => setNewEventDesigner(e.target.value)}
+                    style={{ width: '100%', height: '40px', padding: '0 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '13px', outline: 'none' }}
+                  >
+                    <option value="Ananya Roy">Ananya Roy</option>
+                    <option value="Rohit Sharma">Rohit Sharma</option>
+                    <option value="Neha Iyer">Neha Iyer</option>
+                    <option value="Vikram Menon">Vikram Menon</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <div style={{ padding: '16px 20px', borderTop: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-              <button onClick={() => setIsAddModalOpen(false)} style={{ height: '38px', padding: '0 16px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-              <button 
-                onClick={() => {
-                  alert(`Successfully created event "${newEventTitle || 'New Event'}" on ${newEventDate}!`);
-                  setIsAddModalOpen(false);
-                }}
-                style={{ height: '38px', padding: '0 18px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '12px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(236,22,127,0.25)' }}
-              >
-                <span style={{ color: '#FFFFFF', fontWeight: 600 }}>Create Event</span>
-              </button>
-            </div>
+              <div style={{ padding: '16px 0 0 0', borderTop: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button type="button" onClick={() => setIsAddModalOpen(false)} style={{ height: '38px', padding: '0 16px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+                <button 
+                  type="submit"
+                  style={{ height: '38px', padding: '0 18px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '12px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(236,22,127,0.25)' }}
+                >
+                  <span style={{ color: '#FFFFFF', fontWeight: 600 }}>Create Event</span>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
