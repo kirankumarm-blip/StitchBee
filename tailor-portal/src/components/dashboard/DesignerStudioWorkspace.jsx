@@ -233,19 +233,18 @@ export default function DesignerStudioWorkspace({
         borderLeft: 'none',
         borderBottom: 'none',
         borderRadius: '0',
-        padding: '20px 14px',
+        padding: '20px 16px',
         boxShadow: 'none',
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px',
         width: '230px',
         minHeight: 'calc(100vh - 64px)',
         boxSizing: 'border-box'
       }}>
           
           {/* Sidebar Section Title */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 6px 8px 6px', borderBottom: `1px solid ${borderColor}` }}>
-            <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>Design Studio</h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '8px', marginBottom: '18px', borderBottom: `1px solid ${borderColor}` }}>
+            <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, lineHeight: '20px', color: textColor }}>Design Studio</h3>
             <span style={{ fontSize: '12px', color: secTextColor, cursor: 'pointer' }}>⇅</span>
           </div>
 
@@ -261,31 +260,32 @@ export default function DesignerStudioWorkspace({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '8px 10px',
+                    height: '38px',
+                    padding: '0 12px',
                     borderRadius: '8px',
                     border: 'none',
                     background: isSelected ? '#FFF0F7' : 'transparent',
                     color: isSelected ? '#EC168C' : textColor,
-                    fontSize: '13px',
-                    fontWeight: isSelected ? 600 : 500,
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                     width: '100%',
                     textAlign: 'left'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', color: isSelected ? '#EC168C' : secTextColor }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', width: '16px', color: isSelected ? '#EC168C' : secTextColor }}>
                       {item.icon}
                     </span>
-                    <span style={{ color: isSelected ? '#EC168C' : textColor, fontWeight: 600 }}>{item.label}</span>
+                    <span style={{ fontSize: '13px', lineHeight: '18px', color: isSelected ? '#EC168C' : textColor, fontWeight: isSelected ? 600 : 500 }}>
+                      {item.label}
+                    </span>
                   </div>
                   {item.count !== undefined && (
                     <span style={{
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      padding: '2px 8px',
-                      borderRadius: '12px',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      padding: '2px 7px',
+                      borderRadius: '10px',
                       background: '#FFF0F7',
                       color: '#EC168C'
                     }}>
@@ -299,31 +299,32 @@ export default function DesignerStudioWorkspace({
 
           {/* Storage Card */}
           <div style={{
+            marginTop: '26px',
             background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC',
             border: `1px solid ${borderColor}`,
             borderRadius: '10px',
             padding: '12px'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <HardDrive size={14} color="#EC168C" />
                 <span style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Storage Used</span>
               </div>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#EC168C' }}>25%</span>
+              <span style={{ fontSize: '10px', fontWeight: 600, color: '#EC168C' }}>25%</span>
             </div>
-            <div style={{ fontSize: '11px', color: secTextColor, marginBottom: '8px', fontWeight: 400 }}>
+            <div style={{ fontSize: '10px', fontWeight: 400, lineHeight: '15px', color: secTextColor, marginBottom: '8px' }}>
               12.6 GB of 50 GB used
             </div>
-            <ProgressBar value={25.2} color="#EC168C" height={6} />
+            <ProgressBar value={25.2} color="#EC168C" height={4} />
             <button style={{
               width: '100%',
+              height: '30px',
               marginTop: '10px',
-              padding: '7px 10px',
-              borderRadius: '7px',
+              borderRadius: '8px',
               border: 'none',
               background: '#FFF0F7',
               color: '#EC168C',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: 600,
               cursor: 'pointer',
               display: 'inline-flex',
@@ -337,6 +338,7 @@ export default function DesignerStudioWorkspace({
 
           {/* Quick Tips Card */}
           <div style={{
+            marginTop: '16px',
             background: 'rgba(124, 43, 239, 0.05)',
             border: '1px solid rgba(124, 43, 239, 0.15)',
             borderRadius: '10px',
@@ -344,12 +346,12 @@ export default function DesignerStudioWorkspace({
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
               <Sparkles size={14} color="#7C2BEF" />
-              <strong style={{ fontSize: '13px', color: '#7C2BEF', fontWeight: 650 }}>Quick Tips</strong>
+              <strong style={{ fontSize: '12px', color: '#7C2BEF', fontWeight: 600 }}>Quick Tips</strong>
             </div>
-            <p style={{ margin: '0 0 6px 0', fontSize: '12px', color: secTextColor, lineHeight: 1.4 }}>
+            <p style={{ margin: '0 0 6px 0', fontSize: '10px', fontWeight: 400, lineHeight: '15px', color: secTextColor }}>
               Organize your designs into collections to manage them easily.
             </p>
-            <a href="#learn" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>
+            <a href="#learn" style={{ fontSize: '10px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>
               Learn More →
             </a>
           </div>
