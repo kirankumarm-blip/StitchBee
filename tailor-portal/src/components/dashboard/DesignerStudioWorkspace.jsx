@@ -278,7 +278,7 @@ export default function DesignerStudioWorkspace({
                     <span style={{ display: 'flex', alignItems: 'center', color: isSelected ? '#EC168C' : secTextColor }}>
                       {item.icon}
                     </span>
-                    <span>{item.label}</span>
+                    <span style={{ color: isSelected ? '#EC168C' : textColor, fontWeight: isSelected ? 700 : 500 }}>{item.label}</span>
                   </div>
                   {item.count !== undefined && (
                     <span style={{
