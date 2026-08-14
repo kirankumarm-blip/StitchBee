@@ -207,11 +207,12 @@ export default function DesignerStudioWorkspace({
 
   return (
     <div style={{
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       backgroundColor: lightBg,
       color: textColor,
       width: '100%',
-      margin: 0,
+      maxWidth: '1900px',
+      margin: '0 auto',
       padding: '20px 24px',
       boxSizing: 'border-box',
       display: 'flex',
@@ -219,10 +220,10 @@ export default function DesignerStudioWorkspace({
       gap: '20px'
     }}>
       
-      {/* 3-COLUMN STUDIO LAYOUT: Left Sidebar (230px) -> Center Main Workspace -> Right Panel (320px) */}
+      {/* 3-COLUMN STUDIO LAYOUT: Left Sidebar (220px) -> Center Main Workspace -> Right Panel (300px) */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '230px 1fr 320px',
+        gridTemplateColumns: '220px minmax(0, 1fr) 300px',
         gap: '20px',
         width: '100%',
         boxSizing: 'border-box',

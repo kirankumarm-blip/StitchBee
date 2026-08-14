@@ -306,9 +306,9 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
       {/* MAIN CONTAINER */}
       <main style={{ 
-        padding: activeTab === 'dashboard' ? '0' : '24px', 
-        maxWidth: activeTab === 'dashboard' ? '100%' : '1440px', 
-        margin: activeTab === 'dashboard' ? '0' : '0 auto',
+        padding: (activeTab === 'dashboard' || activeTab === 'studio') ? '0' : '24px', 
+        maxWidth: (activeTab === 'dashboard' || activeTab === 'studio') ? '100%' : '1800px', 
+        margin: (activeTab === 'dashboard' || activeTab === 'studio') ? '0' : '0 auto',
         width: '100%'
       }}>
         
