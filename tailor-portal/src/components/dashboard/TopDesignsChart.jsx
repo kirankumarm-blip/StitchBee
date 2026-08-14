@@ -44,9 +44,9 @@ export default function TopDesignsChart({ data }) {
             outline: 'none'
           }}
         >
+          <option value="This Week">This Week</option>
           <option value="This Month">This Month</option>
-          <option value="Last Month">Last Month</option>
-          <option value="This Quarter">This Quarter</option>
+          <option value="This Year">This Year</option>
         </select>
       </div>
 

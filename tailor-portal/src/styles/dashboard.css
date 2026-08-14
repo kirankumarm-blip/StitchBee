@@ -1,24 +1,25 @@
 /* Premium StitchBee Designer Studio Full-Width SaaS Dashboard Stylesheet */
 
 :root {
-  --sb-pink: #F72585;
-  --sb-purple: #8B12C8;
-  --sb-navy: #101828;
-  --sb-text-secondary: #667085;
-  --sb-bg-light: #F6F8FB;
+  --sb-pink: #EC168C;
+  --sb-pink-dark: #D41478;
+  --sb-purple: #7C3AED;
+  --sb-navy: #111827;
+  --sb-text-secondary: #64748B;
+  --sb-bg-light: #F6F7F9;
   --sb-card-bg: #FFFFFF;
-  --sb-border: #E6EAF0;
-  --sb-border-hover: #D0D5DD;
-  --sb-success: #12B76A;
-  --sb-warning: #F79009;
-  --sb-danger: #F04438;
+  --sb-border: #E5E7EB;
+  --sb-border-hover: #D1D5DB;
+  --sb-success: #10B981;
+  --sb-warning: #F59E0B;
+  --sb-danger: #EF4444;
   --sb-info: #3B82F6;
-  --sb-font: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --sb-shadow: 0 1px 3px rgba(16, 24, 40, 0.05), 0 1px 2px rgba(16, 24, 40, 0.03);
-  --sb-shadow-hover: 0 8px 20px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --sb-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sb-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --sb-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.07);
 }
 
-/* 100% Full-Width Wrapper - NO max-width constraint! */
+/* 100% Full-Width Dashboard Container */
 .designer-dashboard-fullwidth {
   font-family: var(--sb-font);
   background-color: var(--sb-bg-light);
@@ -49,7 +50,227 @@ body.dark-mode .designer-dashboard-fullwidth,
 }
 
 /* ---------------------------------------------------- */
-/* SECTION 1 — Welcome + Quick Actions (Full-Width Card)*/
+/* MAIN 3-COLUMN LAYOUT (Sidebar -> Workspace -> Right)  */
+/* ---------------------------------------------------- */
+.studio-three-column-layout {
+  display: grid;
+  grid-template-columns: 230px 1fr 320px; /* Sidebar -> Center Main Workspace -> Right Panel */
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1280px) {
+  .studio-three-column-layout {
+    grid-template-columns: 220px 1fr;
+  }
+  .designer-right-panel-container {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .studio-three-column-layout {
+    grid-template-columns: 1fr;
+  }
+  .designer-right-panel-container {
+    grid-column: span 1;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Center Main Workspace Flex Stack */
+.center-workspace-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0; /* prevents flex overflow */
+}
+
+/* ---------------------------------------------------- */
+/* LEFT SIDEBAR STYLING                                  */
+/* ---------------------------------------------------- */
+.designer-sidebar-container {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-border);
+  border-radius: 16px;
+  padding: 18px 14px;
+  box-shadow: var(--sb-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+.sidebar-title-box {
+  padding: 0 8px 8px 8px;
+  border-bottom: 1px solid var(--sb-border);
+}
+
+.sidebar-heading {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--sb-navy);
+}
+
+.sidebar-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: var(--sb-navy);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav-btn:hover {
+  background: var(--sb-bg-light);
+}
+
+.sidebar-nav-btn.selected {
+  background: #FFF0F6;
+  color: #EC168C;
+  font-weight: 600;
+}
+
+body.dark-theme .sidebar-nav-btn.selected,
+.dark-mode .sidebar-nav-btn.selected {
+  background: rgba(236, 22, 140, 0.14);
+  color: #EC168C;
+}
+
+.sidebar-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-icon {
+  display: flex;
+  align-items: center;
+  color: var(--sb-text-secondary);
+}
+
+.sidebar-nav-btn.selected .sidebar-icon {
+  color: #EC168C;
+}
+
+.sidebar-count-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: var(--sb-bg-light);
+  color: var(--sb-text-secondary);
+}
+
+.sidebar-count-badge.selected {
+  background: rgba(236, 22, 140, 0.15);
+  color: #EC168C;
+}
+
+.sidebar-storage-card {
+  background: var(--sb-bg-light);
+  border: 1px solid var(--sb-border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.sidebar-upgrade-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--sb-border);
+  background: var(--sb-card-bg);
+  color: #EC168C;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-upgrade-btn:hover {
+  border-color: #EC168C;
+  background: #FFF0F6;
+}
+
+.sidebar-tips-card {
+  background: rgba(124, 58, 237, 0.05);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+/* ---------------------------------------------------- */
+/* RIGHT PANEL CONTAINER & AI ASSISTANT CARD            */
+/* ---------------------------------------------------- */
+.designer-right-panel-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.ai-assistant-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(236, 22, 140, 0.06) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: var(--sb-shadow);
+}
+
+.ai-icon-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-open-btn {
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 9px;
+  border: none;
+  background: linear-gradient(135deg, #7C3AED 0%, #EC168C 100%);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+}
+
+.ai-open-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+}
+
+/* ---------------------------------------------------- */
+/* SECTION 1 — Welcome + Header                         */
 /* ---------------------------------------------------- */
 .section-welcome-card {
   background: var(--sb-card-bg);
@@ -74,7 +295,7 @@ body.dark-mode .designer-dashboard-fullwidth,
 
 .welcome-header-title {
   margin: 0;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--sb-navy);
@@ -84,7 +305,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   margin: 4px 0 0 0;
   font-size: 13px;
   color: var(--sb-text-secondary);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .live-badge-box {
@@ -95,9 +316,9 @@ body.dark-mode .designer-dashboard-fullwidth,
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
-  background: rgba(18, 183, 106, 0.1);
+  background: rgba(16, 185, 129, 0.1);
   color: var(--sb-success);
-  border: 1px solid rgba(18, 183, 106, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .btn-refresh-icon {
@@ -115,105 +336,38 @@ body.dark-mode .designer-dashboard-fullwidth,
   color: var(--sb-pink);
 }
 
-.quick-actions-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn-action-primary {
-  background: linear-gradient(135deg, var(--sb-pink) 0%, var(--sb-purple) 100%);
-  color: #ffffff;
-  border: none;
-  padding: 9px 18px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25);
-}
-
-.btn-action-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(247, 37, 133, 0.35);
-}
-
-.btn-action-secondary {
-  background: var(--sb-card-bg);
-  color: var(--sb-navy);
-  border: 1px solid var(--sb-border);
-  padding: 9px 16px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-}
-
-.btn-action-secondary:hover {
-  border-color: var(--sb-border-hover);
-  background: rgba(0, 0, 0, 0.02);
-  transform: translateY(-1px);
-}
-
 /* ---------------------------------------------------- */
-/* SECTION 2 & 3 GRIDS (Exact 3-Column 50% / 25% / 25%) */
+/* SECTION 2 & 3 GRIDS                                  */
 /* ---------------------------------------------------- */
 .kpi-row-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
+  gap: 14px;
   width: 100%;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
   .kpi-row-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .kpi-row-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 480px) {
-  .kpi-row-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.three-column-grid {
+.analytics-two-column-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr; /* ~50% / ~25% / ~25% */
+  grid-template-columns: 65% 35%; /* 65% Earnings Overview / 35% Projects Status */
   gap: 16px;
   width: 100%;
 }
 
-@media (max-width: 1100px) {
-  .three-column-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .three-column-grid > div:first-child {
-    grid-column: span 2;
-  }
-}
-
-@media (max-width: 768px) {
-  .three-column-grid {
+@media (max-width: 960px) {
+  .analytics-two-column-grid {
     grid-template-columns: 1fr;
-  }
-  .three-column-grid > div:first-child {
-    grid-column: span 1;
   }
 }
 
@@ -222,7 +376,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   background: var(--sb-card-bg);
   border: 1px solid var(--sb-border);
   border-radius: 14px;
-  padding: 20px;
+  padding: 18px 20px;
   box-shadow: var(--sb-shadow);
   display: flex;
   flex-direction: column;
@@ -272,14 +426,12 @@ body.dark-mode .designer-dashboard-fullwidth,
   text-decoration: underline;
 }
 
-/* ---------------------------------------------------- */
-/* SECTION 2 — KPI Cards Component                      */
-/* ---------------------------------------------------- */
+/* KPI Card Styling */
 .kpi-card-box {
   background: var(--sb-card-bg);
   border: 1px solid var(--sb-border);
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 16px;
   box-shadow: var(--sb-shadow);
   display: flex;
   flex-direction: column;
@@ -297,7 +449,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .kpi-title-label {
@@ -307,8 +459,8 @@ body.dark-mode .designer-dashboard-fullwidth,
 }
 
 .kpi-icon-wrapper {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -316,7 +468,7 @@ body.dark-mode .designer-dashboard-fullwidth,
 }
 
 .kpi-main-val {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
   margin: 0;
@@ -328,7 +480,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 .kpi-trend-text {
@@ -336,9 +488,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   font-weight: 600;
 }
 
-/* ---------------------------------------------------- */
-/* SECTION 2 — Earnings Overview Summary Header         */
-/* ---------------------------------------------------- */
+/* Earnings Summary Grid */
 .earnings-summary-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -373,43 +523,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   color: var(--sb-navy);
 }
 
-/* ---------------------------------------------------- */
-/* SECTION 2 — Project Progress Item & Bars            */
-/* ---------------------------------------------------- */
-.progress-list-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px;
-  border-radius: 10px;
-  background: var(--sb-bg-light);
-  border: 1px solid var(--sb-border);
-}
-
-.progress-item-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-}
-
-.real-bar-track {
-  width: 100%;
-  height: 6px;
-  background: var(--sb-border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.real-bar-fill {
-  height: 100%;
-  border-radius: 10px;
-  transition: width 0.6s ease;
-}
-
-/* ---------------------------------------------------- */
-/* SECTION 3 — Active Projects List / Table Controls    */
-/* ---------------------------------------------------- */
+/* Active Projects Table & Controls */
 .table-filter-bar {
   display: flex;
   align-items: center;
@@ -474,9 +588,7 @@ body.dark-mode .designer-dashboard-fullwidth,
   cursor: not-allowed;
 }
 
-/* ---------------------------------------------------- */
-/* SECTION 3 — Appointments & Activity Feed             */
-/* ---------------------------------------------------- */
+/* Appointments & Recent Clients */
 .appointment-card-item {
   padding: 12px 14px;
   border-radius: 10px;
@@ -487,6 +599,24 @@ body.dark-mode .designer-dashboard-fullwidth,
   gap: 4px;
 }
 
+.client-row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--sb-bg-light);
+  border: 1px solid var(--sb-border);
+}
+
+.client-avatar-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Activity Feed */
 .activity-feed-list {
   display: flex;
   flex-direction: column;
@@ -520,4 +650,19 @@ body.dark-mode .designer-dashboard-fullwidth,
   height: 14px;
   border-radius: 50%;
   border: 2px solid var(--sb-card-bg);
+}
+
+/* Progress bar tracks */
+.real-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--sb-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.real-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
 }

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { initialDashboardData } from '../../data/dashboardData';
+import DesignerSidebar from './DesignerSidebar';
+import DesignerRightPanel from './DesignerRightPanel';
 import WelcomeSection from './WelcomeSection';
 import KpiCards from './KpiCards';
 import EarningsChart from './EarningsChart';
 import ProjectStatusChart from './ProjectStatusChart';
-import ProjectProgress from './ProjectProgress';
 import ActiveProjects from './ActiveProjects';
-import UpcomingAppointments from './UpcomingAppointments';
+import TopDesignsChart from './TopDesignsChart';
 import RecentActivity from './RecentActivity';
 import '../../styles/dashboard.css';
 
 export default function DesignerDashboard({ theme, onNavigateTab }) {
-  // Driven from central data state for API integration
   const [data, setData] = useState(initialDashboardData);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [sidebarNavTab, setSidebarNavTab] = useState('my-designs');
 
   // Simulated Real-Time Data Updates (polls/updates state every 30 seconds without page reload)
   useEffect(() => {
@@ -68,64 +69,71 @@ export default function DesignerDashboard({ theme, onNavigateTab }) {
     <div className={`designer-dashboard-fullwidth ${theme === 'dark' ? 'dark-mode' : ''}`}>
       
       {/* ==================================================================== */}
-      {/* SECTION 1 — Welcome + Quick Actions (Full-Width Card across dashboard)*/}
+      {/* MAIN 3-COLUMN STUDIO LAYOUT                                         */}
+      {/* Left Sidebar (230px) -> Center Workspace -> Right Panel (320px)      */}
       {/* ==================================================================== */}
-      <WelcomeSection 
-        liveStatus={data.liveStatus}
-        onRefresh={handleManualRefresh}
-        onNavigateAction={onNavigateTab}
-        isRefreshing={isRefreshing}
-      />
+      <div className="studio-three-column-layout">
 
-      {/* ==================================================================== */}
-      {/* SECTION 2 — KPI + Analytics                                         */}
-      {/* ==================================================================== */}
-      {/* First Row: 5 Full-Width KPI Cards with Recharts mini sparklines */}
-      <KpiCards stats={data.kpiStats} />
-
-      {/* Second Row: 3-Column Analytics Layout (~50% / ~25% / ~25%) */}
-      <div className="three-column-grid">
-        {/* Column 1 (~50% width): Earnings Overview with Recharts AreaChart */}
-        <EarningsChart 
-          theme={theme}
-          data={data.earningsOverview.timeframeData} 
-          summary={data.earningsOverview.summary} 
+        {/* 1. LEFT SIDEBAR CONTAINER */}
+        <DesignerSidebar 
+          activeTab={sidebarNavTab} 
+          onSelectNav={(tabId) => {
+            setSidebarNavTab(tabId);
+            if (tabId === 'create' || tabId === 'requests') {
+              if (onNavigateTab) onNavigateTab('studio', tabId);
+            }
+          }}
         />
 
-        {/* Column 2 (~25% width): Project Status Donut Chart */}
-        <ProjectStatusChart 
-          theme={theme}
-          data={data.projectStatus} 
-        />
+        {/* 2. CENTER MAIN WORKSPACE */}
+        <main className="center-workspace-stack">
 
-        {/* Column 3 (~25% width): Project Progress Bars & Weekly Performance */}
-        <ProjectProgress 
-          theme={theme}
-          progressItems={data.projectProgressItems} 
-          weeklyChart={data.weeklyPerformanceChart} 
-        />
-      </div>
+          {/* Section 5: Welcome Header + Live Badge */}
+          <WelcomeSection 
+            liveStatus={data.liveStatus}
+            onRefresh={handleManualRefresh}
+            isRefreshing={isRefreshing}
+          />
 
-      {/* ==================================================================== */}
-      {/* SECTION 3 — Operational Dashboard (3-Column Layout ~50% / ~25% / ~25%)*/}
-      {/* ==================================================================== */}
-      <div className="three-column-grid">
-        {/* Column 1 (~50% width): Active Design Projects List/Table with Search, Filter & Pagination */}
-        <ActiveProjects 
-          projects={data.activeProjects} 
-          onViewAll={() => onNavigateTab && onNavigateTab('studio')} 
-        />
+          {/* Section 6: 5 KPI Cards in Horizontal Row */}
+          <KpiCards stats={data.kpiStats} />
 
-        {/* Column 2 (~25% width): Upcoming Appointments */}
-        <UpcomingAppointments 
+          {/* Section 7 & 8: Main Analytics (65% Earnings AreaChart / 35% Project Status Donut) */}
+          <section className="analytics-two-column-grid">
+            <EarningsChart 
+              theme={theme}
+              data={data.earningsOverview.timeframeData} 
+              summary={data.earningsOverview.summary} 
+            />
+            <ProjectStatusChart 
+              theme={theme}
+              data={data.projectStatus} 
+            />
+          </section>
+
+          {/* Section 10: Active Design Projects Table */}
+          <ActiveProjects 
+            projects={data.activeProjects} 
+            onViewAll={() => onNavigateTab && onNavigateTab('studio')} 
+          />
+
+          {/* Section 11: Top Performing Designs Horizontal Bar Chart */}
+          <TopDesignsChart data={data.topDesigns} />
+
+          {/* Section 13: Recent Activity Timeline */}
+          <RecentActivity activities={data.activities} />
+
+        </main>
+
+        {/* 3. RIGHT PANEL CONTAINER */}
+        <DesignerRightPanel 
           appointments={data.appointments} 
+          clients={data.recentClients} 
           onViewCalendar={() => onNavigateTab && onNavigateTab('calendar')} 
+          onViewClients={() => onNavigateTab && onNavigateTab('customers')} 
+          onOpenAI={() => onNavigateTab && onNavigateTab('support')} 
         />
 
-        {/* Column 3 (~25% width): Recent Activity Feed */}
-        <RecentActivity 
-          activities={data.activities} 
-        />
       </div>
 
     </div>
