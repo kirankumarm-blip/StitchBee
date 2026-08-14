@@ -28,16 +28,18 @@ export default function DesignerStudioWorkspace({
   const [isFilterActive, setIsFilterActive] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
-  // Exact Design System Color Tokens
+  // Exact Design System Color Tokens for Light & Dark Mode
   const isDark = theme === 'dark';
-  const cardBg = isDark ? '#131022' : '#FFFFFF';
-  const borderColor = isDark ? 'rgba(255,255,255,0.08)' : '#E5E7EB';
+  const cardBg = isDark ? '#191528' : '#FFFFFF';
+  const borderColor = isDark ? 'rgba(255, 255, 255, 0.12)' : '#E5E7EB';
   const textColor = isDark ? '#F9FAFB' : '#172033';
-  const secTextColor = isDark ? '#98A2B3' : '#64748B';
-  const mutedTextColor = isDark ? '#64748B' : '#94A3B8';
-  const lightBg = isDark ? '#0B0914' : '#F7F8FA';
+  const secTextColor = isDark ? '#A0AEC0' : '#64748B';
+  const mutedTextColor = isDark ? '#718096' : '#94A3B8';
+  const lightBg = isDark ? '#0D0A1A' : '#F7F8FA';
+  const inputBg = isDark ? '#231D34' : '#FFFFFF';
+  const itemHoverBg = isDark ? 'rgba(255, 255, 255, 0.05)' : '#F8FAFC';
 
-  // Sample 8 Outfit Design Cards matching user specification with local images
+  // Sample 8 Outfit Design Cards
   const studioDesignsList = [
     {
       id: 'd-1',
@@ -50,7 +52,7 @@ export default function DesignerStudioWorkspace({
       price: '₹18,500',
       status: 'In Progress',
       statusColor: '#EC168C',
-      statusBg: '#FFF0F7',
+      statusBg: isDark ? 'rgba(236,22,140,0.2)' : '#FFF0F7',
       image: '/images/designs/royal bridal lehenga.jpg',
       category: 'Bridal Wear',
       created: '10 May 2026',
@@ -69,7 +71,7 @@ export default function DesignerStudioWorkspace({
       price: '₹12,800',
       status: 'Pending Approval',
       statusColor: '#7C3AED',
-      statusBg: '#F3E8FF',
+      statusBg: isDark ? 'rgba(124,58,237,0.2)' : '#F3E8FF',
       image: '/images/designs/velvet shervani.jpg',
       category: 'Sherwani & Grooms',
       created: '12 May 2026',
@@ -88,7 +90,7 @@ export default function DesignerStudioWorkspace({
       price: '₹14,200',
       status: 'Approved',
       statusColor: '#059669',
-      statusBg: '#ECFDF5',
+      statusBg: isDark ? 'rgba(5,150,105,0.2)' : '#ECFDF5',
       image: '/images/designs/zardoni silk anarkali.jpg',
       category: 'Anarkali Suits',
       created: '08 May 2026',
@@ -107,7 +109,7 @@ export default function DesignerStudioWorkspace({
       price: '₹8,900',
       status: 'Stitching',
       statusColor: '#D97706',
-      statusBg: '#FFF7ED',
+      statusBg: isDark ? 'rgba(217,119,6,0.2)' : '#FFF7ED',
       image: '/images/designs/chanderi silk saree.jpg',
       category: 'Ethnic Sarees',
       created: '05 May 2026',
@@ -126,7 +128,7 @@ export default function DesignerStudioWorkspace({
       price: '₹16,500',
       status: 'In Progress',
       statusColor: '#EC168C',
-      statusBg: '#FFF0F7',
+      statusBg: isDark ? 'rgba(236,22,140,0.2)' : '#FFF0F7',
       image: '/images/designs/reception gown.jpg',
       category: 'Indo-Western',
       created: '01 May 2026',
@@ -144,8 +146,8 @@ export default function DesignerStudioWorkspace({
       comments: 0,
       price: '—',
       status: 'Draft',
-      statusColor: '#475569',
-      statusBg: '#F1F5F9',
+      statusColor: isDark ? '#A0AEC0' : '#475569',
+      statusBg: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
       image: '/images/designs/men kurta set.jpg',
       category: 'Menswear',
       created: '03 May 2026',
@@ -164,7 +166,7 @@ export default function DesignerStudioWorkspace({
       price: '₹13,900',
       status: 'On Hold',
       statusColor: '#D97706',
-      statusBg: '#FFF7ED',
+      statusBg: isDark ? 'rgba(217,119,6,0.2)' : '#FFF7ED',
       image: '/images/designs/pastel lehenga.jpg',
       category: 'Bridal Wear',
       created: '28 Apr 2026',
@@ -183,7 +185,7 @@ export default function DesignerStudioWorkspace({
       price: '₹4,200',
       status: 'Completed',
       statusColor: '#2563EB',
-      statusBg: '#EFF6FF',
+      statusBg: isDark ? 'rgba(37,99,235,0.2)' : '#EFF6FF',
       image: '/images/designs/kids party wear.jpg',
       category: 'Kids Wear',
       created: '20 Apr 2026',
@@ -208,7 +210,7 @@ export default function DesignerStudioWorkspace({
   ];
 
   return (
-    <div style={{
+    <div className="designer-studio-workspace-container" style={{
       fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       backgroundColor: lightBg,
       color: textColor,
@@ -216,157 +218,224 @@ export default function DesignerStudioWorkspace({
       margin: 0,
       padding: 0,
       boxSizing: 'border-box',
-      display: 'grid',
-      gridTemplateColumns: '230px minmax(0, 1fr) 350px',
-      gap: '20px',
-      alignItems: 'stretch',
       minHeight: 'calc(100vh - 64px)'
     }}>
+
+      {/* Embedded Responsive & Dark Mode Styles */}
+      <style>{`
+        .designer-studio-grid-layout {
+          display: grid;
+          grid-template-columns: 230px minmax(0, 1fr) 350px;
+          gap: 20px;
+          align-items: stretch;
+          width: 100%;
+        }
+
+        .studio-outfit-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        .bottom-three-cols-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 18px;
+          width: 100%;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1280px) {
+          .designer-studio-grid-layout {
+            grid-template-columns: 220px minmax(0, 1fr) 320px;
+            gap: 16px;
+          }
+          .studio-outfit-cards-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .designer-studio-grid-layout {
+            grid-template-columns: 200px minmax(0, 1fr);
+          }
+          .studio-right-details-aside {
+            grid-column: span 2;
+            width: 100% !important;
+            padding-right: 0 !important;
+          }
+          .studio-outfit-cards-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .designer-studio-grid-layout {
+            grid-template-columns: 1fr;
+          }
+          .studio-left-sidebar-aside {
+            width: 100% !important;
+            min-height: auto !important;
+            border-right: none !important;
+            border-bottom: 1px solid ${borderColor} !important;
+          }
+          .studio-right-details-aside {
+            grid-column: span 1;
+          }
+          .studio-outfit-cards-grid {
+            grid-template-columns: repeat(1, 1fr);
+          }
+          .bottom-three-cols-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
       
-      {/* ==================================================================== */}
-      {/* 1. LEFT SIDEBAR (FLUSH TO EXTREME LEFT SCREEN EDGE, FULL HEIGHT)    */}
-      {/* ==================================================================== */}
-      <aside style={{
-        background: cardBg,
-        borderRight: `1px solid ${borderColor}`,
-        borderTop: 'none',
-        borderLeft: 'none',
-        borderBottom: 'none',
-        borderRadius: '0',
-        padding: '20px 16px',
-        boxShadow: 'none',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '230px',
-        minHeight: 'calc(100vh - 64px)',
-        boxSizing: 'border-box'
-      }}>
-          
-          {/* Sidebar Section Title */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '8px', marginBottom: '18px', borderBottom: `1px solid ${borderColor}` }}>
-            <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, lineHeight: '20px', color: textColor }}>Design Studio</h3>
-            <span style={{ fontSize: '12px', color: secTextColor, cursor: 'pointer' }}>⇅</span>
-          </div>
-
-          {/* Navigation Options List */}
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '3px', width: '100%' }}>
-            {sidebarNavItems.map(item => {
-              const isSelected = studioSubTab === item.id || (studioSubTab === 'my-designs' && item.id === 'my-designs');
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setStudioSubTab(item.id)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    height: '38px',
-                    padding: '0 12px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: isSelected ? '#FFF0F7' : 'transparent',
-                    color: isSelected ? '#EC168C' : textColor,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                    width: '100%',
-                    textAlign: 'left'
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', width: '16px', color: isSelected ? '#EC168C' : secTextColor }}>
-                      {item.icon}
-                    </span>
-                    <span style={{ fontSize: '13px', lineHeight: '18px', color: isSelected ? '#EC168C' : textColor, fontWeight: 600 }}>
-                      {item.label}
-                    </span>
-                  </div>
-                  {item.count !== undefined && (
-                    <span style={{
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      padding: '2px 7px',
-                      borderRadius: '10px',
-                      background: '#FFF0F7',
-                      color: '#EC168C'
-                    }}>
-                      {item.count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Storage Card */}
-          <div style={{
-            marginTop: '26px',
-            background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC',
-            border: `1px solid ${borderColor}`,
-            borderRadius: '10px',
-            padding: '12px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <HardDrive size={14} color="#EC168C" />
-                <span style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Storage Used</span>
-              </div>
-              <span style={{ fontSize: '10px', fontWeight: 600, color: '#EC168C' }}>25%</span>
+      <div className="designer-studio-grid-layout">
+        
+        {/* ==================================================================== */}
+        {/* 1. LEFT SIDEBAR (FLUSH TO EXTREME LEFT SCREEN EDGE, FULL HEIGHT)    */}
+        {/* ==================================================================== */}
+        <aside className="studio-left-sidebar-aside" style={{
+          background: cardBg,
+          borderRight: `1px solid ${borderColor}`,
+          borderRadius: '0',
+          padding: '20px 16px',
+          boxShadow: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          width: '230px',
+          minHeight: 'calc(100vh - 64px)',
+          boxSizing: 'border-box'
+        }}>
+            
+            {/* Sidebar Section Title */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '8px', marginBottom: '18px', borderBottom: `1px solid ${borderColor}` }}>
+              <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 700, lineHeight: '20px', color: textColor }}>Design Studio</h3>
+              <span style={{ fontSize: '12px', color: secTextColor, cursor: 'pointer' }}>⇅</span>
             </div>
-            <div style={{ fontSize: '10px', fontWeight: 400, lineHeight: '15px', color: secTextColor, marginBottom: '8px' }}>
-              12.6 GB of 50 GB used
-            </div>
-            <ProgressBar value={25.2} color="#EC168C" height={4} />
-            <button style={{
-              width: '100%',
-              height: '30px',
-              marginTop: '10px',
-              borderRadius: '8px',
-              border: 'none',
-              background: '#FFF0F7',
-              color: '#EC168C',
-              fontSize: '11px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px'
+
+            {/* Navigation Options List */}
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: '3px', width: '100%' }}>
+              {sidebarNavItems.map(item => {
+                const isSelected = studioSubTab === item.id || (studioSubTab === 'my-designs' && item.id === 'my-designs');
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setStudioSubTab(item.id)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      height: '38px',
+                      padding: '0 12px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      background: isSelected ? (isDark ? 'rgba(236,22,140,0.18)' : '#FFF0F7') : 'transparent',
+                      color: isSelected ? '#EC168C' : textColor,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                      width: '100%',
+                      textAlign: 'left'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', width: '16px', color: isSelected ? '#EC168C' : secTextColor }}>
+                        {item.icon}
+                      </span>
+                      <span style={{ fontSize: '13px', lineHeight: '18px', color: isSelected ? '#EC168C' : textColor, fontWeight: 600 }}>
+                        {item.label}
+                      </span>
+                    </div>
+                    {item.count !== undefined && (
+                      <span style={{
+                        fontSize: '10px',
+                        fontWeight: 600,
+                        padding: '2px 7px',
+                        borderRadius: '10px',
+                        background: isDark ? 'rgba(236,22,140,0.2)' : '#FFF0F7',
+                        color: '#EC168C'
+                      }}>
+                        {item.count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Storage Card */}
+            <div style={{
+              marginTop: '26px',
+              background: itemHoverBg,
+              border: `1px solid ${borderColor}`,
+              borderRadius: '10px',
+              padding: '12px'
             }}>
-              👑 Upgrade Storage
-            </button>
-          </div>
-
-          {/* Quick Tips Card */}
-          <div style={{
-            marginTop: '16px',
-            background: 'rgba(124, 43, 239, 0.05)',
-            border: '1px solid rgba(124, 43, 239, 0.15)',
-            borderRadius: '10px',
-            padding: '12px'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-              <Sparkles size={14} color="#7C2BEF" />
-              <strong style={{ fontSize: '12px', color: '#7C2BEF', fontWeight: 600 }}>Quick Tips</strong>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <HardDrive size={14} color="#EC168C" />
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Storage Used</span>
+                </div>
+                <span style={{ fontSize: '10px', fontWeight: 600, color: '#EC168C' }}>25%</span>
+              </div>
+              <div style={{ fontSize: '10px', fontWeight: 400, lineHeight: '15px', color: secTextColor, marginBottom: '8px' }}>
+                12.6 GB of 50 GB used
+              </div>
+              <ProgressBar value={25.2} color="#EC168C" height={4} />
+              <button style={{
+                width: '100%',
+                height: '32px',
+                marginTop: '10px',
+                borderRadius: '8px',
+                border: 'none',
+                background: 'linear-gradient(135deg, #EC168C, #8B22D9)',
+                color: '#FFFFFF',
+                fontSize: '11px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+                boxShadow: '0 2px 8px rgba(236,22,140,0.2)'
+              }}>
+                👑 Upgrade Storage
+              </button>
             </div>
-            <p style={{ margin: '0 0 6px 0', fontSize: '10px', fontWeight: 400, lineHeight: '15px', color: secTextColor }}>
-              Organize your designs into collections to manage them easily.
-            </p>
-            <a href="#learn" style={{ fontSize: '10px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>
-              Learn More →
-            </a>
-          </div>
+
+            {/* Quick Tips Card */}
+            <div style={{
+              marginTop: '16px',
+              background: isDark ? 'rgba(124, 43, 239, 0.12)' : 'rgba(124, 43, 239, 0.05)',
+              border: '1px solid rgba(124, 43, 239, 0.25)',
+              borderRadius: '10px',
+              padding: '12px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                <Sparkles size={14} color="#7C2BEF" />
+                <strong style={{ fontSize: '12px', color: '#7C2BEF', fontWeight: 600 }}>Quick Tips</strong>
+              </div>
+              <p style={{ margin: '0 0 6px 0', fontSize: '10px', fontWeight: 400, lineHeight: '15px', color: secTextColor }}>
+                Organize your designs into collections to manage them easily.
+              </p>
+              <a href="#learn" style={{ fontSize: '10px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>
+                Learn More →
+              </a>
+            </div>
 
         </aside>
 
         {/* ==================================================================== */}
-        {/* 2. CENTER CONTENT (MY DESIGNS WORKSPACE - MATCHING IMAGE 1 EXACTLY)  */}
+        {/* 2. CENTER CONTENT (MY DESIGNS WORKSPACE - SPANNING 100% WIDTH)       */}
         {/* ==================================================================== */}
         <main style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0, paddingTop: '20px', paddingBottom: '20px' }}>
           
           {/* Header Row: Title & Subtitle on left, Search/Filter/New Design on right */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '4px' }}>
             <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: '#172033', lineHeight: 1.2 }}>My Designs</h1>
+              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: textColor, lineHeight: 1.2 }}>My Designs</h1>
               <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: secTextColor }}>
                 Manage all your design projects in one place.
               </p>
@@ -384,8 +453,8 @@ export default function DesignerStudioWorkspace({
                 height: '40px',
                 borderRadius: '9px',
                 border: isSearchFocused ? '1px solid #EC168C' : `1px solid ${borderColor}`,
-                boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.08)' : 'none',
-                background: '#FFFFFF',
+                boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.12)' : 'none',
+                background: inputBg,
                 width: '280px',
                 transition: 'all 0.15s ease'
               }}>
@@ -411,19 +480,19 @@ export default function DesignerStudioWorkspace({
                   height: '40px',
                   padding: '0 16px',
                   borderRadius: '9px',
-                  border: isFilterActive ? '1px solid #EC168C' : '1px solid #DDE2E8',
-                  background: isFilterActive ? '#FFF0F7' : '#FFFFFF',
-                  color: isFilterActive ? '#EC168C' : '#172033',
+                  border: isFilterActive ? '1px solid #EC168C' : `1px solid ${borderColor}`,
+                  background: isFilterActive ? (isDark ? 'rgba(236,22,140,0.18)' : '#FFF0F7') : inputBg,
+                  color: isFilterActive ? '#EC168C' : textColor,
                   fontSize: '13px',
                   fontWeight: 600,
                   cursor: 'pointer',
                   transition: 'all 0.15s ease'
                 }}
               >
-                <Filter size={14} /> Filter
+                <Filter size={14} color={isFilterActive ? '#EC168C' : textColor} /> Filter
               </button>
 
-              {/* New Design Primary CTA Button */}
+              {/* New Design Primary CTA Button (WHITE TEXT BY DEFAULT) */}
               <button 
                 onClick={() => setStudioSubTab('create')}
                 style={{
@@ -443,13 +512,13 @@ export default function DesignerStudioWorkspace({
                   transition: 'all 0.15s ease'
                 }}
               >
-                <Plus size={16} /> New Design
+                <Plus size={16} color="#FFFFFF" /> <span style={{ color: '#FFFFFF', fontWeight: 600 }}>New Design</span>
               </button>
 
             </div>
           </div>
 
-          {/* MAIN WORKSPACE WHITE CARD CONTAINER (STARTS BELOW MY DESIGNS HEADER) */}
+          {/* MAIN WORKSPACE CARD CONTAINER (FILLS 100% WIDTH - ZERO RIGHT SIDE GAP) */}
           <div style={{
             background: cardBg,
             border: `1px solid ${borderColor}`,
@@ -458,7 +527,9 @@ export default function DesignerStudioWorkspace({
             boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '20px'
+            gap: '20px',
+            width: '100%',
+            boxSizing: 'border-box'
           }}>
 
             {/* Status Filter Tabs with Pink Underline Bar for Active Tab */}
@@ -484,7 +555,7 @@ export default function DesignerStudioWorkspace({
                       border: 'none',
                       borderBottom: isActive ? '3px solid #EC168C' : '3px solid transparent',
                       background: 'transparent',
-                      color: isActive ? '#EC168C' : '#475569',
+                      color: isActive ? '#EC168C' : secTextColor,
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -492,15 +563,17 @@ export default function DesignerStudioWorkspace({
                       transition: 'all 0.15s ease'
                     }}
                   >
-                    <span style={{ color: isActive ? '#EC168C' : '#475569', fontWeight: isActive ? 700 : 500 }}>{cat.label}</span>
+                    <span style={{ color: isActive ? '#EC168C' : (isDark ? '#CBD5E1' : '#475569'), fontWeight: isActive ? 700 : 500 }}>
+                      {cat.label}
+                    </span>
                     {cat.count !== undefined && (
                       <span style={{
                         fontSize: '11px',
                         fontWeight: 600,
                         padding: '2px 8px',
                         borderRadius: '10px',
-                        background: isActive ? 'rgba(236,22,140,0.12)' : '#F1F5F9',
-                        color: isActive ? '#EC168C' : '#475569'
+                        background: isActive ? (isDark ? 'rgba(236,22,140,0.25)' : 'rgba(236,22,140,0.12)') : (isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9'),
+                        color: isActive ? '#EC168C' : (isDark ? '#CBD5E1' : '#475569')
                       }}>
                         {cat.count}
                       </span>
@@ -510,8 +583,8 @@ export default function DesignerStudioWorkspace({
               })}
             </div>
 
-            {/* DESIGN CARDS GRID (300px CARD WIDTH) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 300px))', gap: '18px' }}>
+            {/* DESIGN CARDS GRID (EVENLY DISTRIBUTED 4-COLUMNS - FILLING 100% WIDTH) */}
+            <div className="studio-outfit-cards-grid">
               {studioDesignsList
                 .filter(d => selectedCategoryTab === 'All Designs' || d.status === selectedCategoryTab)
                 .map(d => {
@@ -528,13 +601,12 @@ export default function DesignerStudioWorkspace({
                         display: 'flex',
                         flexDirection: 'column',
                         width: '100%',
-                        maxWidth: '300px',
-                        boxShadow: isSelected ? '0 4px 14px rgba(236,22,140,0.14)' : '0 2px 8px rgba(15,23,42,0.04)',
+                        boxShadow: isSelected ? '0 4px 14px rgba(236,22,140,0.18)' : '0 2px 8px rgba(15,23,42,0.04)',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
                       }}
                     >
-                      <div style={{ position: 'relative', height: '250px', width: '100%', overflow: 'hidden' }}>
+                      <div style={{ position: 'relative', height: '240px', width: '100%', overflow: 'hidden' }}>
                         <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                         
                         {/* Soft Pastel Status Badge */}
@@ -551,7 +623,7 @@ export default function DesignerStudioWorkspace({
                           borderRadius: '6px',
                           display: 'inline-flex',
                           alignItems: 'center',
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.06)'
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                         }}>
                           {d.status}
                         </span>
@@ -560,8 +632,8 @@ export default function DesignerStudioWorkspace({
                           position: 'absolute',
                           top: '10px',
                           right: '10px',
-                          background: 'rgba(255,255,255,0.9)',
-                          color: '#172033',
+                          background: isDark ? 'rgba(19, 16, 34, 0.85)' : 'rgba(255,255,255,0.9)',
+                          color: textColor,
                           width: '26px',
                           height: '26px',
                           borderRadius: '50%',
@@ -570,12 +642,12 @@ export default function DesignerStudioWorkspace({
                           justifyContent: 'center',
                           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                         }}>
-                          <MoreVertical size={13} />
+                          <MoreVertical size={13} color={textColor} />
                         </span>
                       </div>
 
                       <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: '#172033' }}>{d.title}</h4>
+                        <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>{d.title}</h4>
                         <span style={{ fontSize: '13px', color: secTextColor }}>Client: {d.client}</span>
                         <span style={{ fontSize: '12px', color: mutedTextColor }}>{d.version} • {d.updated}</span>
 
@@ -594,8 +666,8 @@ export default function DesignerStudioWorkspace({
 
           </div>
 
-          {/* BOTTOM ROW (3 EQUAL COLUMNS) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '18px' }}>
+          {/* BOTTOM ROW (3 EQUAL COLUMNS - FILLING 100% WIDTH) */}
+          <div className="bottom-three-cols-grid">
             
             {/* Col 1 — Recent Drafts */}
             <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
@@ -604,7 +676,7 @@ export default function DesignerStudioWorkspace({
                 <a href="#drafts" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div style={{ padding: '10px 12px', borderRadius: '10px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ padding: '10px 12px', borderRadius: '10px', background: itemHoverBg, border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <img src="/images/designs/pastel lehenga.jpg" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div>
@@ -612,9 +684,9 @@ export default function DesignerStudioWorkspace({
                       <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.2 • Updated 2 days ago</span>
                     </div>
                   </div>
-                  <span style={{ fontSize: '11px', background: '#F1F5F9', color: '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
+                  <span style={{ fontSize: '11px', background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9', color: isDark ? '#CBD5E1' : '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
                 </div>
-                <div style={{ padding: '10px 12px', borderRadius: '10px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ padding: '10px 12px', borderRadius: '10px', background: itemHoverBg, border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <img src="/images/designs/men kurta set.jpg" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div>
@@ -622,7 +694,7 @@ export default function DesignerStudioWorkspace({
                       <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.1 • Updated 5 days ago</span>
                     </div>
                   </div>
-                  <span style={{ fontSize: '11px', background: '#F1F5F9', color: '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
+                  <span style={{ fontSize: '11px', background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9', color: isDark ? '#CBD5E1' : '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
                 </div>
               </div>
             </div>
@@ -634,17 +706,17 @@ export default function DesignerStudioWorkspace({
                 <a href="#collections" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
+                <div style={{ background: itemHoverBg, padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
                   <img src="/images/designs/royal bridal lehenga.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
                   <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Bridal Collection</strong>
                   <span style={{ fontSize: '10px', color: secTextColor }}>12 Designs</span>
                 </div>
-                <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
+                <div style={{ background: itemHoverBg, padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
                   <img src="/images/designs/velvet shervani.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
                   <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Sherwani Collection</strong>
                   <span style={{ fontSize: '10px', color: secTextColor }}>8 Designs</span>
                 </div>
-                <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
+                <div style={{ background: itemHoverBg, padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
                   <img src="/images/designs/reception gown.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
                   <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Party Wear</strong>
                   <span style={{ fontSize: '10px', color: secTextColor }}>15 Designs</span>
@@ -695,9 +767,9 @@ export default function DesignerStudioWorkspace({
         </main>
 
         {/* ==================================================================== */}
-        {/* 3. RIGHT DETAILS PANEL (350px WIDE - MATCHING USER SCREENSHOT)      */}
+        {/* 3. RIGHT DETAILS PANEL (350px WIDE)                                 */}
         {/* ==================================================================== */}
-        <aside style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '350px', paddingTop: '20px', paddingRight: '24px', paddingBottom: '20px' }}>
+        <aside className="studio-right-details-aside" style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '350px', paddingTop: '20px', paddingRight: '24px', paddingBottom: '20px', boxSizing: 'border-box' }}>
           
           {/* Design Details Card */}
           <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
@@ -731,7 +803,7 @@ export default function DesignerStudioWorkspace({
                 <span>Design Progress</span>
                 <span style={{ color: '#EC168C' }}>{activeDesign.progress}%</span>
               </div>
-              <div style={{ width: '100%', height: '7px', background: '#E9EEF3', borderRadius: '999px', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '7px', background: isDark ? 'rgba(255,255,255,0.1)' : '#E9EEF3', borderRadius: '999px', overflow: 'hidden' }}>
                 <div style={{ width: `${activeDesign.progress}%`, height: '100%', background: 'linear-gradient(90deg, #EC168C, #8B22D9)', borderRadius: '999px', transition: 'width 0.4s ease' }} />
               </div>
 
@@ -752,20 +824,20 @@ export default function DesignerStudioWorkspace({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#EC168C', fontWeight: 600 }}>
                   <Circle size={12} fill="#EC168C" color="#EC168C" /> Client Review
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#CBD5E1' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: isDark ? '#4A5568' : '#CBD5E1' }}>
                   <Circle size={12} /> Approved
                 </div>
               </div>
             </div>
 
             {/* Next Step Box */}
-            <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '10px 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, marginBottom: '16px', fontSize: '11px' }}>
+            <div style={{ background: itemHoverBg, padding: '10px 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, marginBottom: '16px', fontSize: '11px' }}>
               <strong style={{ color: textColor, display: 'block', marginBottom: '3px' }}>Next Step</strong>
               <p style={{ margin: '0 0 4px 0', color: secTextColor }}>{activeDesign.nextStep}</p>
               <span style={{ color: secTextColor }}>Expected review date: <strong style={{ color: '#EC168C', fontWeight: 600 }}>{activeDesign.expectedDate}</strong></span>
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons (WHITE TEXT BY DEFAULT ON GRADIENT/PRIMARY BUTTONS) */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <button style={{
                 width: '100%',
@@ -780,17 +852,18 @@ export default function DesignerStudioWorkspace({
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px'
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(236,22,140,0.22)'
               }}>
-                <Edit size={14} /> Edit Design
+                <Edit size={14} color="#FFFFFF" /> <span style={{ color: '#FFFFFF', fontWeight: 600 }}>Edit Design</span>
               </button>
               <button style={{
                 width: '100%',
                 height: '38px',
                 borderRadius: '8px',
-                border: '1px solid #DDE2E8',
-                background: cardBg,
-                color: '#334155',
+                border: `1px solid ${borderColor}`,
+                background: isDark ? '#231D34' : '#FFFFFF',
+                color: textColor,
                 fontSize: '12px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -799,15 +872,15 @@ export default function DesignerStudioWorkspace({
                 justifyContent: 'center',
                 gap: '6px'
               }}>
-                <Upload size={14} /> Upload New Version
+                <Upload size={14} color={textColor} /> <span>Upload New Version</span>
               </button>
               <button style={{
                 width: '100%',
                 height: '38px',
                 borderRadius: '8px',
-                border: '1px solid #DDE2E8',
-                background: cardBg,
-                color: '#334155',
+                border: `1px solid ${borderColor}`,
+                background: isDark ? '#231D34' : '#FFFFFF',
+                color: textColor,
                 fontSize: '12px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -816,15 +889,17 @@ export default function DesignerStudioWorkspace({
                 justifyContent: 'center',
                 gap: '6px'
               }}>
-                <Share2 size={14} /> Share with Client
+                <Share2 size={14} color={textColor} /> <span>Share with Client</span>
               </button>
             </div>
           </div>
 
-          {/* AI Design Assistant Card (Placed at Bottom Right below Design Details) */}
+          {/* AI Design Assistant Card */}
           <div style={{
-            background: 'linear-gradient(135deg, rgba(124, 43, 239, 0.05) 0%, rgba(236, 22, 140, 0.05) 100%)',
-            border: '1px solid rgba(124, 43, 239, 0.18)',
+            background: isDark 
+              ? 'linear-gradient(135deg, rgba(124, 43, 239, 0.15) 0%, rgba(236, 22, 140, 0.15) 100%)' 
+              : 'linear-gradient(135deg, rgba(124, 43, 239, 0.05) 0%, rgba(236, 22, 140, 0.05) 100%)',
+            border: isDark ? '1px solid rgba(124, 43, 239, 0.35)' : '1px solid rgba(124, 43, 239, 0.18)',
             borderRadius: '16px',
             padding: '16px',
             boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
@@ -863,7 +938,7 @@ export default function DesignerStudioWorkspace({
                 height: '34px',
                 borderRadius: '8px',
                 border: '1px solid rgba(124, 43, 239, 0.3)',
-                background: cardBg,
+                background: isDark ? '#231D34' : cardBg,
                 color: '#7C2BEF',
                 fontSize: '12px',
                 fontWeight: 600,
@@ -885,6 +960,7 @@ export default function DesignerStudioWorkspace({
 
         </aside>
 
+      </div>
     </div>
   );
 }
