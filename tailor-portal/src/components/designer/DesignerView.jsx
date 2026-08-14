@@ -183,16 +183,16 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         </div>
 
         {/* 8 Primary Tabs: Dashboard → Design Studio → Orders → Measurements → Customers → Calendar → Earnings → Support */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="desktop-header-nav">
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '4px', height: '100%' }} className="desktop-header-nav">
           {[
-            { id: 'dashboard', label: 'Dashboard', icon: <Home size={15} /> },
-            { id: 'studio', label: 'Design Studio', icon: <Palette size={15} /> },
-            { id: 'orders', label: 'Orders', icon: <ShoppingBag size={15} /> },
-            { id: 'measurements', label: 'Measurements', icon: <Ruler size={15} /> },
-            { id: 'customers', label: 'Customers', icon: <Users size={15} /> },
-            { id: 'calendar', label: 'Calendar', icon: <Calendar size={15} /> },
-            { id: 'earnings', label: 'Earnings', icon: <DollarSign size={15} /> },
-            { id: 'support', label: 'Support', icon: <HelpCircle size={15} /> }
+            { id: 'dashboard', label: 'Dashboard', icon: <Home size={16} /> },
+            { id: 'studio', label: 'Design Studio', icon: <Palette size={16} /> },
+            { id: 'orders', label: 'Orders', icon: <ShoppingBag size={16} /> },
+            { id: 'measurements', label: 'Measurements', icon: <Ruler size={16} /> },
+            { id: 'customers', label: 'Customers', icon: <Users size={16} /> },
+            { id: 'calendar', label: 'Calendar', icon: <Calendar size={16} /> },
+            { id: 'earnings', label: 'Earnings', icon: <DollarSign size={16} /> },
+            { id: 'support', label: 'Support', icon: <HelpCircle size={16} /> }
           ].map(tab => {
             const isActive = activeTab === tab.id;
             return (
@@ -202,25 +202,24 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  padding: '7px 18px',
-                  fontSize: '13px',
+                  gap: '8px',
+                  height: '64px',
+                  padding: '0 16px',
+                  fontSize: '13.5px',
                   fontWeight: 700,
-                  borderRadius: '24px',
-                  border: isActive ? '2px solid #F72585' : '2px solid transparent',
-                  background: isActive 
-                    ? (theme === 'dark' ? 'rgba(247,37,133,0.12)' : '#FFF0F6') 
-                    : 'transparent',
+                  borderRadius: '0',
+                  border: 'none',
+                  borderBottom: isActive ? '3px solid #EC168C' : '3px solid transparent',
+                  background: 'transparent',
                   color: isActive 
-                    ? '#F72585' 
-                    : (theme === 'dark' ? 'rgba(255,255,255,0.85)' : '#475467'),
+                    ? '#EC168C' 
+                    : (theme === 'dark' ? '#E2E8F0' : '#172033'),
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: isActive ? '0 2px 10px rgba(247,37,133,0.15)' : 'none'
+                  transition: 'all 0.15s ease'
                 }}
               >
-                {React.cloneElement(tab.icon, { color: isActive ? '#F72585' : 'currentColor' })}
-                {tab.label}
+                {React.cloneElement(tab.icon, { color: isActive ? '#EC168C' : (theme === 'dark' ? '#CBD5E1' : '#334155'), size: 16 })}
+                <span>{tab.label}</span>
               </button>
             );
           })}
