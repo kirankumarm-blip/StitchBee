@@ -673,91 +673,97 @@ export default function DesignerStudioWorkspace({
             <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>Recent Drafts</h4>
-                <a href="#drafts" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
+                <a href="#drafts" style={{ fontSize: '12px', color: textColor, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>View All →</a>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div style={{ padding: '10px 12px', borderRadius: '10px', background: itemHoverBg, border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src="/images/designs/pastel lehenga.jpg" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
+                <div style={{ padding: '12px', borderRadius: '12px', background: itemHoverBg, border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <img src="/images/designs/pastel lehenga.jpg" style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div>
-                      <strong style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'block' }}>Summer Cotton Kurti</strong>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, color: textColor, display: 'block' }}>Summer Cotton Kurti</strong>
                       <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.2 • Updated 2 days ago</span>
                     </div>
                   </div>
-                  <span style={{ fontSize: '11px', background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9', color: isDark ? '#CBD5E1' : '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
+                  <span style={{ fontSize: '11px', background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9', color: isDark ? '#CBD5E1' : '#475569', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
                 </div>
-                <div style={{ padding: '10px 12px', borderRadius: '10px', background: itemHoverBg, border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src="/images/designs/men kurta set.jpg" style={{ width: '44px', height: '44px', borderRadius: '8px', objectFit: 'cover' }} />
+                <div style={{ padding: '12px', borderRadius: '12px', background: itemHoverBg, border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <img src="/images/designs/men kurta set.jpg" style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover' }} />
                     <div>
-                      <strong style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'block' }}>Festive Jacket Design</strong>
+                      <strong style={{ fontSize: '13px', fontWeight: 700, color: textColor, display: 'block' }}>Festive Jacket Design</strong>
                       <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.1 • Updated 5 days ago</span>
                     </div>
                   </div>
-                  <span style={{ fontSize: '11px', background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9', color: isDark ? '#CBD5E1' : '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
+                  <span style={{ fontSize: '11px', background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9', color: isDark ? '#CBD5E1' : '#475569', padding: '4px 10px', borderRadius: '6px', fontWeight: 600 }}>Draft</span>
                 </div>
               </div>
             </div>
 
-            {/* Col 2 — Design Collections */}
+            {/* Col 2 — Design Collections (MATCHING IMAGE 2: TEXT ON TOP, IMAGE ON BOTTOM) */}
             <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>Design Collections</h4>
-                <a href="#collections" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
+                <a href="#collections" style={{ fontSize: '12px', color: textColor, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>View All →</a>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-                <div style={{ background: itemHoverBg, padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
-                  <img src="/images/designs/royal bridal lehenga.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
-                  <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Bridal Collection</strong>
-                  <span style={{ fontSize: '10px', color: secTextColor }}>12 Designs</span>
+                <div style={{ background: itemHoverBg, padding: '12px', borderRadius: '12px', border: `1px solid ${borderColor}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <strong style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: textColor }}>Bridal Collection</strong>
+                    <span style={{ fontSize: '11px', color: secTextColor }}>12 Designs</span>
+                  </div>
+                  <img src="/images/designs/royal bridal lehenga.jpg" style={{ width: '100%', height: '95px', borderRadius: '8px', objectFit: 'cover', marginTop: '10px' }} />
                 </div>
-                <div style={{ background: itemHoverBg, padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
-                  <img src="/images/designs/velvet shervani.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
-                  <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Sherwani Collection</strong>
-                  <span style={{ fontSize: '10px', color: secTextColor }}>8 Designs</span>
+                <div style={{ background: itemHoverBg, padding: '12px', borderRadius: '12px', border: `1px solid ${borderColor}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <strong style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: textColor }}>Sherwani Collection</strong>
+                    <span style={{ fontSize: '11px', color: secTextColor }}>8 Designs</span>
+                  </div>
+                  <img src="/images/designs/velvet shervani.jpg" style={{ width: '100%', height: '95px', borderRadius: '8px', objectFit: 'cover', marginTop: '10px' }} />
                 </div>
-                <div style={{ background: itemHoverBg, padding: '8px', borderRadius: '10px', border: `1px solid ${borderColor}`, textAlign: 'center' }}>
-                  <img src="/images/designs/reception gown.jpg" style={{ width: '100%', height: '80px', borderRadius: '8px', objectFit: 'cover' }} />
-                  <strong style={{ fontSize: '11px', fontWeight: 600, display: 'block', marginTop: '6px', color: textColor }}>Party Wear</strong>
-                  <span style={{ fontSize: '10px', color: secTextColor }}>15 Designs</span>
+                <div style={{ background: itemHoverBg, padding: '12px', borderRadius: '12px', border: `1px solid ${borderColor}`, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <strong style={{ fontSize: '13px', fontWeight: 700, display: 'block', color: textColor }}>Party Wear</strong>
+                    <span style={{ fontSize: '11px', color: secTextColor }}>15 Designs</span>
+                  </div>
+                  <img src="/images/designs/reception gown.jpg" style={{ width: '100%', height: '95px', borderRadius: '8px', objectFit: 'cover', marginTop: '10px' }} />
                 </div>
               </div>
             </div>
 
-            {/* Col 3 — Popular Fabrics */}
+            {/* Col 3 — Popular Fabrics (MATCHING IMAGE 2: REAL FABRIC SWATCH IMAGES FROM DESKTOP SILK FOLDER) */}
             <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>Popular Fabrics</h4>
-                <a href="#fabrics" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
+                <a href="#fabrics" style={{ fontSize: '12px', color: textColor, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>View All →</a>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${borderColor}` }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ width: '20px', height: '20px', borderRadius: '5px', background: '#D97706' }} />
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: textColor }}>Silk</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <img src="/images/fabrics/silk.jpg" alt="Silk" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: textColor }}>Silk</span>
                   </div>
-                  <span style={{ fontSize: '12px', color: secTextColor }}>18 Designs</span>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: secTextColor }}>18 Designs</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${borderColor}` }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ width: '20px', height: '20px', borderRadius: '5px', background: '#991B1B' }} />
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: textColor }}>Velvet</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <img src="/images/fabrics/velvet.jpg" alt="Velvet" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: textColor }}>Velvet</span>
                   </div>
-                  <span style={{ fontSize: '12px', color: secTextColor }}>12 Designs</span>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: secTextColor }}>12 Designs</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: `1px solid ${borderColor}` }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ width: '20px', height: '20px', borderRadius: '5px', background: '#0284C7' }} />
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: textColor }}>Net</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <img src="/images/fabrics/net.jpg" alt="Net" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: textColor }}>Net</span>
                   </div>
-                  <span style={{ fontSize: '12px', color: secTextColor }}>9 Designs</span>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: secTextColor }}>9 Designs</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ width: '20px', height: '20px', borderRadius: '5px', background: '#EC4899' }} />
-                    <span style={{ fontSize: '13px', fontWeight: 600, color: textColor }}>Chiffon</span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <img src="/images/fabrics/chiffon.jpg" alt="Chiffon" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: textColor }}>Chiffon</span>
                   </div>
-                  <span style={{ fontSize: '12px', color: secTextColor }}>7 Designs</span>
+                  <span style={{ fontSize: '12px', fontWeight: 600, color: secTextColor }}>7 Designs</span>
                 </div>
               </div>
             </div>
