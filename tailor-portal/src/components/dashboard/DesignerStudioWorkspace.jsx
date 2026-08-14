@@ -386,7 +386,7 @@ export default function DesignerStudioWorkspace({
               <ProgressBar value={25.2} color="#EC168C" height={4} />
               <button style={{
                 width: '100%',
-                height: '32px',
+                height: '34px',
                 marginTop: '10px',
                 borderRadius: '8px',
                 border: 'none',
@@ -399,9 +399,9 @@ export default function DesignerStudioWorkspace({
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '4px',
-                boxShadow: '0 2px 8px rgba(236,22,140,0.2)'
+                boxShadow: '0 2px 8px rgba(236,22,140,0.22)'
               }}>
-                👑 Upgrade Storage
+                <span style={{ color: '#FFFFFF', fontWeight: 600 }}>👑 Upgrade Storage</span>
               </button>
             </div>
 
@@ -606,7 +606,7 @@ export default function DesignerStudioWorkspace({
                         transition: 'all 0.15s ease'
                       }}
                     >
-                      <div style={{ position: 'relative', height: '240px', width: '100%', overflow: 'hidden' }}>
+                      <div style={{ position: 'relative', height: '340px', width: '100%', overflow: 'hidden' }}>
                         <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                         
                         {/* Soft Pastel Status Badge */}
