@@ -492,7 +492,7 @@ export default function DesignerStudioWorkspace({
                       transition: 'all 0.15s ease'
                     }}
                   >
-                    <span>{cat.label}</span>
+                    <span style={{ color: isActive ? '#EC168C' : '#475569', fontWeight: isActive ? 700 : 500 }}>{cat.label}</span>
                     {cat.count !== undefined && (
                       <span style={{
                         fontSize: '11px',
