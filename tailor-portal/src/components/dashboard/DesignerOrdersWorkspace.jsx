@@ -283,11 +283,11 @@ export default function DesignerOrdersWorkspace({
       width: '100%',
       minHeight: 'calc(100vh - 64px)',
       boxSizing: 'border-box',
-      padding: '24px 32px'
+      padding: '20px 24px'
     }}>
       
-      {/* Maximum Content Container (1440px max-width) */}
-      <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      {/* 100% Full Width Screen Container */}
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '32px' }}>
         
         {/* ==================================================================== */}
         {/* 1. PAGE HEADER (Designer Orders ✦ & Export Report)                   */}
