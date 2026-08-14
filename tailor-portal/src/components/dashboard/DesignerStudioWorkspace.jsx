@@ -283,11 +283,11 @@ export default function DesignerStudioWorkspace({
                   {item.count !== undefined && (
                     <span style={{
                       fontSize: '11px',
-                      fontWeight: 600,
-                      padding: '2px 6px',
-                      borderRadius: '10px',
-                      background: isSelected ? 'rgba(236,22,140,0.15)' : '#F1F5F9',
-                      color: isSelected ? '#EC168C' : secTextColor
+                      fontWeight: 700,
+                      padding: '2px 8px',
+                      borderRadius: '12px',
+                      background: '#FFF0F7',
+                      color: '#EC168C'
                     }}>
                       {item.count}
                     </span>
