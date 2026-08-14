@@ -3,12 +3,18 @@ import AIDesignAssistant from './AIDesignAssistant';
 import UpcomingAppointments from './UpcomingAppointments';
 import RecentClients from './RecentClients';
 
-export default function DesignerRightPanel({ appointments, clients, onViewCalendar, onViewClients, onOpenAI }) {
+export default function DesignerRightPanel({ theme, appointments, clients, onViewCalendar, onViewClients, onOpenAI }) {
   return (
-    <aside className="designer-right-panel-container">
+    <aside style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '20px',
+      minWidth: 0,
+      width: '100%'
+    }}>
       
       {/* 14. AI Design Assistant Card */}
-      <AIDesignAssistant onOpenAssistant={onOpenAI} />
+      <AIDesignAssistant theme={theme} onOpenAssistant={onOpenAI} />
 
       {/* 9. Upcoming Appointments */}
       <UpcomingAppointments 
