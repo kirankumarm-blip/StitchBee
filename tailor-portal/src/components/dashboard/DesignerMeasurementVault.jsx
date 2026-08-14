@@ -892,31 +892,18 @@ export default function DesignerMeasurementVault({
               {/* Minimal Fashion Fitting Diagram Graphic + Key Values Column */}
               <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: '16px', alignItems: 'center', background: itemHoverBg, padding: '12px', borderRadius: '12px', border: `1px solid ${borderColor}` }}>
                 
-                {/* Clean Vector Fashion Body Silhouette */}
-                <div style={{ textAlign: 'center', position: 'relative' }}>
-                  <svg width="100" height="180" viewBox="0 0 100 180" fill="none">
-                    {/* Head */}
-                    <circle cx="50" cy="20" r="12" fill={isDark ? '#3A3250' : '#D0D5DD'} />
-                    {/* Neck */}
-                    <rect x="46" y="32" width="8" height="8" fill={isDark ? '#3A3250' : '#D0D5DD'} />
-                    {/* Torso & Arms Silhouette */}
-                    <path d="M25 42 Q50 38 75 42 L68 90 Q50 95 32 90 Z" fill={isDark ? '#3A3250' : '#D0D5DD'} opacity="0.8" />
-                    {/* Legs */}
-                    <path d="M34 90 L38 170 L47 170 L48 95 L52 95 L53 170 L62 170 L66 90 Z" fill={isDark ? '#3A3250' : '#D0D5DD'} opacity="0.8" />
-                    
-                    {/* Pink Fitting Guidelines */}
-                    {/* Bust Line */}
-                    <line x1="15" y1="52" x2="85" y2="52" stroke={primaryPink} strokeWidth="1.5" strokeDasharray="3 3" />
-                    <circle cx="50" cy="52" r="3" fill={primaryPink} />
-                    
-                    {/* Waist Line */}
-                    <line x1="20" y1="72" x2="80" y2="72" stroke={primaryPink} strokeWidth="1.5" strokeDasharray="3 3" />
-                    <circle cx="50" cy="72" r="3" fill={primaryPink} />
-
-                    {/* Hips Line */}
-                    <line x1="18" y1="92" x2="82" y2="92" stroke={primaryPink} strokeWidth="1.5" strokeDasharray="3 3" />
-                    <circle cx="50" cy="92" r="3" fill={primaryPink} />
-                  </svg>
+                {/* High-Resolution Transparent 3D Mannequin Image */}
+                <div style={{ textAlign: 'center', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '230px' }}>
+                  <img 
+                    src="/images/mannequin_3d.png" 
+                    alt="3D Body Fitting Mannequin" 
+                    style={{ 
+                      maxHeight: '220px', 
+                      maxWidth: '100%', 
+                      objectFit: 'contain',
+                      filter: isDark ? 'drop-shadow(0 4px 12px rgba(236,22,127,0.3))' : 'none'
+                    }} 
+                  />
                 </div>
 
                 {/* Measurements Value Grid */}
