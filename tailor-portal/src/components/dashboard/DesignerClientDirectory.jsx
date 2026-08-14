@@ -106,13 +106,13 @@ export default function DesignerClientDirectory({
         statusColor: '#12B76A',
         price: '₹24,800',
         deliveryDate: '20 May 2026',
-        image: '/images/designs/embroidered velvet sherwani.jpg'
+        image: '/images/designs/velvet shervani.jpg'
       },
       recentDesign: {
         id: '#DS-192',
         name: 'Zardozi Sherwani',
         status: 'Delivered',
-        image: '/images/designs/embroidered velvet sherwani.jpg'
+        image: '/images/designs/velvet shervani.jpg'
       },
       measurementsSnapshot: {
         bust: '40"',
@@ -232,13 +232,13 @@ export default function DesignerClientDirectory({
         statusColor: '#12B76A',
         price: '₹19,600',
         deliveryDate: '17 May 2026',
-        image: '/images/designs/emerald gown.jpg'
+        image: '/images/designs/reception gown.jpg'
       },
       recentDesign: {
         id: '#DS-162',
         name: 'Emerald Gown',
         status: 'Delivered',
-        image: '/images/designs/emerald gown.jpg'
+        image: '/images/designs/reception gown.jpg'
       },
       measurementsSnapshot: {
         bust: '32"',
@@ -274,13 +274,13 @@ export default function DesignerClientDirectory({
         statusColor: primaryPink,
         price: '₹16,750',
         deliveryDate: '29 May 2026',
-        image: '/images/designs/indo western sherwani.jpg'
+        image: '/images/designs/men kurta set.jpg'
       },
       recentDesign: {
         id: '#DS-154',
         name: 'Indo Western Set',
         status: 'Approved',
-        image: '/images/designs/indo western sherwani.jpg'
+        image: '/images/designs/men kurta set.jpg'
       },
       measurementsSnapshot: {
         bust: '38"',
