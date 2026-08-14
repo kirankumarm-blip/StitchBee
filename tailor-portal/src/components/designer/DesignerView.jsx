@@ -219,7 +219,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                 }}
               >
                 {React.cloneElement(tab.icon, { color: isActive ? '#EC168C' : (theme === 'dark' ? '#CBD5E1' : '#334155'), size: 16 })}
-                <span>{tab.label}</span>
+                <span style={{ color: isActive ? '#EC168C' : (theme === 'dark' ? '#E2E8F0' : '#172033'), fontWeight: 700 }}>{tab.label}</span>
               </button>
             );
           })}
