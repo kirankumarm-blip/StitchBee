@@ -534,8 +534,8 @@ export default function DesignerStudioWorkspace({
                         transition: 'all 0.15s ease'
                       }}
                     >
-                      <div style={{ position: 'relative', height: '210px', width: '100%', background: isDark ? '#1A162B' : '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                        <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                      <div style={{ position: 'relative', height: '250px', width: '100%', overflow: 'hidden' }}>
+                        <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
                         
                         {/* Soft Pastel Status Badge */}
                         <span style={{
@@ -708,7 +708,7 @@ export default function DesignerStudioWorkspace({
 
             {/* Top Row: Thumbnail Image on Left + Title & Metadata on Right */}
             <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', marginBottom: '16px' }}>
-              <img src={activeDesign.image} alt={activeDesign.title} style={{ width: '105px', height: '135px', borderRadius: '10px', objectFit: 'contain', background: isDark ? '#1A162B' : '#F8FAFC', flexShrink: 0 }} />
+              <img src={activeDesign.image} alt={activeDesign.title} style={{ width: '105px', height: '135px', borderRadius: '10px', objectFit: 'cover', objectPosition: 'center top', flexShrink: 0 }} />
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                 <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>{activeDesign.title}</h4>
