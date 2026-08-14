@@ -10,6 +10,7 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, R
 import HeaderProfileModal from '../HeaderProfileModal';
 import DesignerDashboard from '../dashboard/DesignerDashboard';
 import DesignerStudioWorkspace from '../dashboard/DesignerStudioWorkspace';
+import DesignerOrdersWorkspace from '../dashboard/DesignerOrdersWorkspace';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -349,76 +350,13 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 3: 📦 ORDERS (DESIGNER-SPECIFIC ORDER MANAGEMENT)                 */}
+        {/* TAB 3: 📦 ORDERS (PREMIUM STITCHBEE DESIGNER ORDERS DASHBOARD)      */}
         {/* ==================================================================== */}
         {activeTab === 'orders' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Designer Order Workflow</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                Track custom order milestones from initial design approval to atelier stitching and final fitting delivery.
-              </p>
-            </div>
-
-            {/* Order Filter Tabs */}
-            <div style={{ display: 'flex', gap: '8px', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', paddingBottom: '12px', overflowX: 'auto' }}>
-              {['All', 'New Requests', 'Active', 'Design Pending', 'Stitching', 'Ready', 'Completed', 'Cancelled'].map(f => (
-                <button
-                  key={f}
-                  onClick={() => setOrderFilter(f.toLowerCase())}
-                  style={{
-                    padding: '8px 16px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    borderRadius: '20px',
-                    border: 'none',
-                    background: orderFilter === f.toLowerCase() ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#E2E8F0'),
-                    color: orderFilter === f.toLowerCase() ? '#ffffff' : (theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467'),
-                    cursor: 'pointer'
-                  }}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-
-            {/* Orders Cards List */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {designs.map(ord => (
-                <div key={ord.id} style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                      <img src={ord.image} alt={ord.name} style={{ width: '50px', height: '50px', borderRadius: '10px', objectFit: 'cover' }} />
-                      <div>
-                        <strong style={{ fontSize: '16px', fontWeight: 700, display: 'block' }}>{ord.name}</strong>
-                        <span style={{ fontSize: '12px', color: '#64748B' }}>Order #{ord.id} • Customer: {ord.customer}</span>
-                      </div>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <strong style={{ fontSize: '18px', color: '#F72585', display: 'block' }}>₹{ord.estimatedPrice.toLocaleString()}</strong>
-                      <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 600 }}>Delivery: {ord.deadline}</span>
-                    </div>
-                  </div>
-
-                  {/* Workflow Milestones Tracker */}
-                  <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '14px', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#10B981' }}>✓ Design Approved</span>
-                    <ChevronRight size={14} color="#64748B" />
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#10B981' }}>✓ Customer Approval</span>
-                    <ChevronRight size={14} color="#64748B" />
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#F72585' }}>● Stitching at Atelier (75%)</span>
-                    <ChevronRight size={14} color="#64748B" />
-                    <span style={{ fontSize: '12px', fontWeight: 500, color: '#64748B' }}>○ Fitting Session</span>
-                    <ChevronRight size={14} color="#64748B" />
-                    <span style={{ fontSize: '12px', fontWeight: 500, color: '#64748B' }}>○ Final Delivery</span>
-                  </div>
-
-                </div>
-              ))}
-            </div>
-
-          </div>
+          <DesignerOrdersWorkspace 
+            theme={theme}
+            onNavigateTab={(tab) => setActiveTab(tab)}
+          />
         )}
 
         {/* ==================================================================== */}
