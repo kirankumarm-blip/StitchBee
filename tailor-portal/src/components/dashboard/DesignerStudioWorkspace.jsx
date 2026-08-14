@@ -3,7 +3,6 @@ import { Plus, Palette, FileText, Layers, CheckCircle, Archive, Disc, Lightbulb,
 import DesignerSidebar from './DesignerSidebar';
 import DesignerRightPanel from './DesignerRightPanel';
 import { initialDashboardData } from '../../data/dashboardData';
-import '../../styles/dashboard.css';
 
 export default function DesignerStudioWorkspace({ 
   theme, 
@@ -22,39 +21,14 @@ export default function DesignerStudioWorkspace({
 }) {
   const [data] = useState(initialDashboardData);
 
-  const cardBg = theme === 'dark' ? '#131022' : '#ffffff';
-  const borderColor = theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E5E7EB';
-  const textColor = theme === 'dark' ? '#F9FAFB' : '#111827';
-  const secTextColor = theme === 'dark' ? '#98A2B3' : '#64748B';
-  const lightBg = theme === 'dark' ? '#0B0914' : '#F6F7F9';
-
   return (
-    <div style={{
-      fontFamily: "'Inter', sans-serif",
-      backgroundColor: lightBg,
-      color: textColor,
-      width: '100%',
-      margin: 0,
-      padding: '20px 24px',
-      boxSizing: 'border-box',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px'
-    }}>
+    <div className={`designer-dashboard-fullwidth ${theme === 'dark' ? 'dark-mode' : ''}`}>
       
-      {/* 3-Column Studio Layout: Left Sidebar (240px) -> Center Workspace -> Right Panel (320px) */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '240px 1fr 320px',
-        gap: '20px',
-        width: '100%',
-        boxSizing: 'border-box',
-        alignItems: 'start'
-      }}>
+      {/* 3-Column Studio Layout: Left Sidebar (230px) -> Center Workspace -> Right Panel (320px) */}
+      <div className="studio-three-column-layout">
 
         {/* 1. LEFT SIDEBAR (Design Studio Navigation, Storage Progress, Quick Tips) */}
         <DesignerSidebar 
-          theme={theme}
           activeTab={studioSubTab} 
           onSelectNav={(tabId) => {
             setStudioSubTab(tabId);
@@ -68,47 +42,28 @@ export default function DesignerStudioWorkspace({
         />
 
         {/* 2. CENTER MAIN WORKSPACE */}
-        <main style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0 }}>
+        <main className="center-workspace-stack">
           
           {/* Header & Title Bar */}
-          <div style={{
-            background: cardBg,
-            border: `1px solid ${borderColor}`,
-            borderRadius: '16px',
-            padding: '20px 24px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-          }}>
+          <div className="sb-dashboard-card" style={{ padding: '20px 24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: textColor }}>Design Studio Workspace</h1>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: secTextColor }}>
+                <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: 'var(--sb-navy)' }}>Design Studio Workspace</h1>
+                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--sb-text-secondary)' }}>
                   Create, review, and manage custom outfit sketches, references, and stitching specifications.
                 </p>
               </div>
 
               <button
                 onClick={() => setStudioSubTab('create')}
-                style={{
-                  background: 'linear-gradient(135deg, #EC168C 0%, #7C3AED 100%)',
-                  color: '#ffffff',
-                  border: 'none',
-                  padding: '9px 18px',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  boxShadow: '0 4px 12px rgba(236, 22, 140, 0.25)'
-                }}
+                className="btn-action-primary"
               >
                 <Plus size={16} /> Create New Design
               </button>
             </div>
 
             {/* Subsections Navigation Pills */}
-            <div style={{ display: 'flex', gap: '8px', borderBottom: `1px solid ${borderColor}`, paddingTop: '16px', paddingBottom: '10px', overflowX: 'auto' }}>
+            <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--sb-border)', paddingTop: '16px', paddingBottom: '10px', overflowX: 'auto' }}>
               {[
                 { id: 'my-designs', label: `My Designs (${designs.length || 12})` },
                 { id: 'create', label: 'Create New Design' },
@@ -126,8 +81,8 @@ export default function DesignerStudioWorkspace({
                     fontWeight: 600,
                     borderRadius: '20px',
                     border: 'none',
-                    background: studioSubTab === sub.id ? '#EC168C' : (theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'),
-                    color: studioSubTab === sub.id ? '#ffffff' : secTextColor,
+                    background: studioSubTab === sub.id ? '#EC168C' : (theme === 'dark' ? 'rgba(255,255,255,0.06)' : 'var(--sb-bg-light)'),
+                    color: studioSubTab === sub.id ? '#ffffff' : 'var(--sb-text-secondary)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease'
                   }}
@@ -140,27 +95,21 @@ export default function DesignerStudioWorkspace({
 
           {/* CREATE NEW DESIGN FORM SUBSECTION */}
           {studioSubTab === 'create' && (
-            <div style={{
-              background: cardBg,
-              border: `1px solid ${borderColor}`,
-              borderRadius: '16px',
-              padding: '24px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-            }}>
-              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700, color: textColor }}>
+            <div className="sb-dashboard-card" style={{ padding: '24px' }}>
+              <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700, color: 'var(--sb-navy)' }}>
                 Create New Outfit Design
               </h3>
 
               <form onSubmit={handleCreateDesign} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Design Name</label>
-                  <input type="text" placeholder="e.g. Royal Zardozi Bridal Lehenga" value={newDesignName} onChange={e => setNewDesignName(e.target.value)} required style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }} />
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Design Name</label>
+                  <input type="text" placeholder="e.g. Royal Zardozi Bridal Lehenga" value={newDesignName} onChange={e => setNewDesignName(e.target.value)} required style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Category</label>
-                  <select value={newCategory} onChange={e => setNewCategory(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Category</label>
+                  <select value={newCategory} onChange={e => setNewCategory(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }}>
                     <option value="Bridal Wear">Bridal Wear</option>
                     <option value="Lehenga Choli">Lehenga Choli</option>
                     <option value="Anarkali Suits">Anarkali Suits</option>
@@ -170,23 +119,23 @@ export default function DesignerStudioWorkspace({
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Outfit Type</label>
-                  <input type="text" placeholder="e.g. Heavy Bridal Lehenga" value={newOutfitType} onChange={e => setNewOutfitType(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }} />
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Outfit Type</label>
+                  <input type="text" placeholder="e.g. Heavy Bridal Lehenga" value={newOutfitType} onChange={e => setNewOutfitType(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Fabric Specifications</label>
-                  <input type="text" placeholder="e.g. Italian Silk & Velvet" value={newFabric} onChange={e => setNewFabric(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }} />
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Fabric Specifications</label>
+                  <input type="text" placeholder="e.g. Italian Silk & Velvet" value={newFabric} onChange={e => setNewFabric(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Color Palette</label>
-                  <input type="text" placeholder="e.g. Ruby Red & Antique Gold" value={newColor} onChange={e => setNewColor(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }} />
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Color Palette</label>
+                  <input type="text" placeholder="e.g. Ruby Red & Antique Gold" value={newColor} onChange={e => setNewColor(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Client Name</label>
-                  <select value={newCustomer} onChange={e => setNewCustomer(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }}>
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Client Name</label>
+                  <select value={newCustomer} onChange={e => setNewCustomer(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }}>
                     <option value="Priya Sharma">Priya Sharma</option>
                     <option value="Ananya Roy">Ananya Roy</option>
                     <option value="Amit Verma">Amit Verma</option>
@@ -194,20 +143,20 @@ export default function DesignerStudioWorkspace({
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Estimated Price (₹)</label>
-                  <input type="number" placeholder="e.g. 18500" value={newPrice} onChange={e => setNewPrice(e.target.value)} required style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }} />
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Estimated Price (₹)</label>
+                  <input type="number" placeholder="e.g. 18500" value={newPrice} onChange={e => setNewPrice(e.target.value)} required style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: 'span 2' }}>
-                  <label style={{ fontSize: '12px', fontWeight: 600, color: textColor }}>Stitching & Embroidery Notes</label>
-                  <textarea rows={3} placeholder="Add detailed handwork, zari embroidery specs, and seam notes..." value={newInstructions} onChange={e => setNewInstructions(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: `1px solid ${borderColor}`, outline: 'none', background: lightBg, color: textColor }} />
+                  <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--sb-navy)' }}>Stitching & Embroidery Notes</label>
+                  <textarea rows={3} placeholder="Add detailed handwork, zari embroidery specs, and seam notes..." value={newInstructions} onChange={e => setNewInstructions(e.target.value)} style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--sb-border)', outline: 'none', background: 'var(--sb-bg-light)', color: 'var(--sb-navy)' }} />
                 </div>
 
                 <div style={{ gridColumn: 'span 2', display: 'flex', gap: '12px', marginTop: '12px' }}>
-                  <button type="submit" style={{ background: 'linear-gradient(135deg, #EC168C 0%, #7C3AED 100%)', color: '#ffffff', border: 'none', padding: '10px 24px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
+                  <button type="submit" className="btn-action-primary">
                     Save & Publish Design
                   </button>
-                  <button type="button" onClick={() => setStudioSubTab('my-designs')} style={{ padding: '10px 20px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', border: `1px solid ${borderColor}`, background: 'transparent', color: textColor, cursor: 'pointer' }}>
+                  <button type="button" onClick={() => setStudioSubTab('my-designs')} className="btn-action-secondary">
                     Cancel
                   </button>
                 </div>
@@ -220,7 +169,7 @@ export default function DesignerStudioWorkspace({
           {studioSubTab !== 'create' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
               {designs.map(d => (
-                <div key={d.id} style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div key={d.id} className="sb-dashboard-card" style={{ padding: 0, overflow: 'hidden' }}>
                   <div style={{ position: 'relative', height: '200px' }}>
                     <img src={d.image} alt={d.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <span style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', color: '#ffffff', fontSize: '11px', fontWeight: 600, padding: '4px 10px', borderRadius: '12px' }}>
@@ -234,25 +183,25 @@ export default function DesignerStudioWorkspace({
                   <div style={{ padding: '18px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1, justifyContent: 'space-between' }}>
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: textColor }}>{d.name}</h3>
+                        <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--sb-navy)' }}>{d.name}</h3>
                         <strong style={{ fontSize: '16px', color: '#EC168C' }}>₹{d.estimatedPrice?.toLocaleString()}</strong>
                       </div>
-                      <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: secTextColor }}>
+                      <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: 'var(--sb-text-secondary)' }}>
                         Category: {d.category} • {d.outfitType}
                       </p>
                     </div>
 
-                    <div style={{ background: lightBg, padding: '10px', borderRadius: '8px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '4px', border: `1px solid ${borderColor}` }}>
+                    <div style={{ background: 'var(--sb-bg-light)', padding: '10px', borderRadius: '8px', fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '4px', border: '1px solid var(--sb-border)' }}>
                       <div><strong>Client:</strong> {d.customer}</div>
                       <div><strong>Fabric:</strong> {d.fabric} ({d.color})</div>
                       <div><strong>Deadline:</strong> {d.deadline}</div>
                     </div>
 
                     <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
-                      <button onClick={() => alert(`Opening details modal for ${d.name}...`)} style={{ flex: 1, padding: '8px', fontSize: '12px', fontWeight: 600, borderRadius: '6px', border: `1px solid ${borderColor}`, background: cardBg, color: textColor, cursor: 'pointer' }}>
+                      <button onClick={() => alert(`Opening details modal for ${d.name}...`)} className="btn-action-secondary" style={{ flex: 1, justifyContent: 'center' }}>
                         Details & Notes
                       </button>
-                      <button onClick={() => alert(`Sending ${d.name} to StitchBee Atelier`)} style={{ flex: 1, padding: '8px', fontSize: '12px', fontWeight: 600, borderRadius: '6px', background: 'linear-gradient(135deg, #EC168C, #7C3AED)', color: '#ffffff', border: 'none', cursor: 'pointer' }}>
+                      <button onClick={() => alert(`Sending ${d.name} to StitchBee Atelier`)} className="btn-action-primary" style={{ flex: 1, justifyContent: 'center' }}>
                         Send to Atelier
                       </button>
                     </div>
@@ -266,7 +215,6 @@ export default function DesignerStudioWorkspace({
 
         {/* 3. RIGHT PANEL (AI Assistant, Upcoming Appointments, Recent Clients) */}
         <DesignerRightPanel 
-          theme={theme}
           appointments={data.appointments}
           clients={data.recentClients}
           onViewCalendar={() => onNavigateTab && onNavigateTab('calendar')}
