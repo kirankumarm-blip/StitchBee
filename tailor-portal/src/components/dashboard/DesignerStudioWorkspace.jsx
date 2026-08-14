@@ -510,8 +510,8 @@ export default function DesignerStudioWorkspace({
               })}
             </div>
 
-            {/* DESIGN CARDS GRID (TALL PORTRAIT OUTFIT CARDS WITH TOP-CENTER OBJECT POSITION) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px' }}>
+            {/* DESIGN CARDS GRID (250px MAX CARD WIDTH, FULL UNUNCUT OUTFIT IMAGES) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 250px))', gap: '18px' }}>
               {studioDesignsList
                 .filter(d => selectedCategoryTab === 'All Designs' || d.status === selectedCategoryTab)
                 .map(d => {
@@ -527,13 +527,15 @@ export default function DesignerStudioWorkspace({
                         overflow: 'hidden',
                         display: 'flex',
                         flexDirection: 'column',
+                        width: '100%',
+                        maxWidth: '250px',
                         boxShadow: isSelected ? '0 4px 14px rgba(236,22,140,0.14)' : '0 2px 8px rgba(15,23,42,0.04)',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
                       }}
                     >
-                      <div style={{ position: 'relative', height: '220px', width: '100%', overflow: 'hidden' }}>
-                        <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+                      <div style={{ position: 'relative', height: '210px', width: '100%', background: isDark ? '#1A162B' : '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                        <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                         
                         {/* Soft Pastel Status Badge */}
                         <span style={{
@@ -548,7 +550,8 @@ export default function DesignerStudioWorkspace({
                           padding: '0 10px',
                           borderRadius: '6px',
                           display: 'inline-flex',
-                          alignItems: 'center'
+                          alignItems: 'center',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.06)'
                         }}>
                           {d.status}
                         </span>
@@ -564,7 +567,8 @@ export default function DesignerStudioWorkspace({
                           borderRadius: '50%',
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center'
+                          justifyContent: 'center',
+                          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                         }}>
                           <MoreVertical size={13} />
                         </span>
@@ -704,7 +708,7 @@ export default function DesignerStudioWorkspace({
 
             {/* Top Row: Thumbnail Image on Left + Title & Metadata on Right */}
             <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', marginBottom: '16px' }}>
-              <img src={activeDesign.image} alt={activeDesign.title} style={{ width: '105px', height: '135px', borderRadius: '10px', objectFit: 'cover', objectPosition: 'top center', flexShrink: 0 }} />
+              <img src={activeDesign.image} alt={activeDesign.title} style={{ width: '105px', height: '135px', borderRadius: '10px', objectFit: 'contain', background: isDark ? '#1A162B' : '#F8FAFC', flexShrink: 0 }} />
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                 <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 700, color: textColor }}>{activeDesign.title}</h4>
