@@ -510,8 +510,8 @@ export default function DesignerStudioWorkspace({
               })}
             </div>
 
-            {/* DESIGN CARDS GRID (250px MAX CARD WIDTH, FULL UNUNCUT OUTFIT IMAGES) */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 250px))', gap: '18px' }}>
+            {/* DESIGN CARDS GRID (300px CARD WIDTH) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 300px))', gap: '18px' }}>
               {studioDesignsList
                 .filter(d => selectedCategoryTab === 'All Designs' || d.status === selectedCategoryTab)
                 .map(d => {
@@ -528,7 +528,7 @@ export default function DesignerStudioWorkspace({
                         display: 'flex',
                         flexDirection: 'column',
                         width: '100%',
-                        maxWidth: '250px',
+                        maxWidth: '300px',
                         boxShadow: isSelected ? '0 4px 14px rgba(236,22,140,0.14)' : '0 2px 8px rgba(15,23,42,0.04)',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
