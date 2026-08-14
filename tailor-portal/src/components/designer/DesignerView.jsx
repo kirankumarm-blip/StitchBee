@@ -13,6 +13,7 @@ import DesignerStudioWorkspace from '../dashboard/DesignerStudioWorkspace';
 import DesignerOrdersWorkspace from '../dashboard/DesignerOrdersWorkspace';
 import DesignerMeasurementVault from '../dashboard/DesignerMeasurementVault';
 import DesignerClientDirectory from '../dashboard/DesignerClientDirectory';
+import DesignerCalendarWorkspace from '../dashboard/DesignerCalendarWorkspace';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -308,7 +309,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
       {/* MAIN CONTAINER */}
       <main style={{ 
-        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements' || activeTab === 'customers') ? '0' : '24px', 
+        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements' || activeTab === 'customers' || activeTab === 'calendar') ? '0' : '24px', 
         maxWidth: '100%', 
         margin: '0',
         width: '100%'
@@ -382,30 +383,13 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 6: 📅 CALENDAR (COLOR-CODED DESIGN APPOINTMENTS)                  */}
+        {/* TAB 6: 📅 CALENDAR (PREMIUM STITCHBEE CALENDAR & DEADLINES)          */}
         {/* ==================================================================== */}
         {activeTab === 'calendar' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Designer Calendar & Deadlines</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                Color-coded schedule for client appointments, measurement trials, and atelier delivery deadlines.
-              </p>
-            </div>
-
-            {/* Color Legend */}
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '12px', fontWeight: 600 }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F72585' }} /> 🌸 Pink: Design Deadline</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#8B12C9' }} /> 🟣 Purple: Appointment</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#0EA5E9' }} /> 🔵 Blue: Measurement</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981' }} /> 🟢 Green: Delivery</span>
-            </div>
-
-            <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '24px', textAlign: 'center' }}>
-              <h3>Interactive Designer Calendar Matrix</h3>
-              <p style={{ fontSize: '13px', color: '#64748B' }}>Showing May/June 2026 Schedule • 4 Active Fitting Sessions Today</p>
-            </div>
-          </div>
+          <DesignerCalendarWorkspace 
+            theme={theme}
+            onNavigateTab={(tab) => setActiveTab(tab)}
+          />
         )}
 
         {/* ==================================================================== */}
