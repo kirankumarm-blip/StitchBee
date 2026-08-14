@@ -359,55 +359,55 @@ export default function DesignerStudioWorkspace({
         </aside>
 
         {/* ==================================================================== */}
-        {/* 2. CENTER CONTENT (60-65% FLEXIBLE WORKSPACE)                        */}
+        {/* 2. CENTER CONTENT (MY DESIGNS WORKSPACE)                              */}
         {/* ==================================================================== */}
-        <main style={{ display: 'flex', flexDirection: 'column', gap: '18px', minWidth: 0 }}>
+        <main style={{ display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0, paddingTop: '20px', paddingBottom: '20px' }}>
           
           {/* Page Header Bar */}
           <div style={{
             background: cardBg,
             border: `1px solid ${borderColor}`,
-            borderRadius: '12px',
-            padding: '18px 20px',
+            borderRadius: '8px',
+            padding: '14px 16px',
             boxShadow: '0 2px 8px rgba(15,23,42,0.04)',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px'
+            gap: '14px'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
               <div>
-                <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700, color: '#172033', lineHeight: 1.2 }}>My Designs</h1>
-                <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: secTextColor }}>
+                <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#172033', lineHeight: 1.2 }}>My Designs</h1>
+                <p style={{ margin: '2px 0 0 0', fontSize: '10px', fontWeight: 400, color: secTextColor }}>
                   Manage all your design projects in one place.
                 </p>
               </div>
 
               {/* Search Box, Filter Button & New Design Button */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 
-                {/* Search Box with Pink Focus Ring */}
+                {/* Search Box */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  padding: '0 12px',
-                  height: '38px',
-                  borderRadius: '9px',
+                  gap: '6px',
+                  padding: '0 10px',
+                  height: '34px',
+                  borderRadius: '7px',
                   border: isSearchFocused ? '1px solid #EC168C' : `1px solid ${borderColor}`,
                   boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.08)' : 'none',
                   background: '#FFFFFF',
-                  width: '250px',
+                  width: '220px',
                   transition: 'all 0.15s ease'
                 }}>
                   <Search size={14} color={mutedTextColor} />
                   <input 
                     type="text" 
-                    placeholder="Search designs by name, client, category..."
+                    placeholder="Search designs..."
                     value={searchQuery}
                     onFocus={() => setIsSearchFocused(true)}
                     onBlur={() => setIsSearchFocused(false)}
                     onChange={e => setSearchQuery(e.target.value)}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '12px', color: textColor, width: '100%' }}
+                    style={{ border: 'none', background: 'transparent', outline: 'none', fontSize: '11px', color: textColor, width: '100%' }}
                   />
                 </div>
 
@@ -417,14 +417,14 @@ export default function DesignerStudioWorkspace({
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    height: '38px',
-                    padding: '0 14px',
-                    borderRadius: '9px',
+                    gap: '5px',
+                    height: '34px',
+                    padding: '0 12px',
+                    borderRadius: '7px',
                     border: isFilterActive ? '1px solid #EC168C' : '1px solid #DDE2E8',
                     background: isFilterActive ? '#FFF0F7' : '#FFFFFF',
                     color: isFilterActive ? '#EC168C' : '#172033',
-                    fontSize: '13px',
+                    fontSize: '11px',
                     fontWeight: 600,
                     cursor: 'pointer',
                     transition: 'all 0.15s ease'
@@ -437,30 +437,30 @@ export default function DesignerStudioWorkspace({
                 <button 
                   onClick={() => setStudioSubTab('create')}
                   style={{
-                    height: '40px',
-                    padding: '0 18px',
+                    height: '34px',
+                    padding: '0 14px',
                     background: 'linear-gradient(135deg, #EC168C, #8B22D9)',
                     color: '#FFFFFF',
                     border: 'none',
-                    borderRadius: '9px',
-                    fontSize: '13px',
+                    borderRadius: '7px',
+                    fontSize: '11px',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    boxShadow: '0 4px 12px rgba(236,22,140,0.20)',
+                    gap: '5px',
+                    boxShadow: '0 4px 12px rgba(236,22,140,0.18)',
                     transition: 'all 0.15s ease'
                   }}
                 >
-                  <Plus size={16} /> New Design
+                  <Plus size={14} /> New Design
                 </button>
 
               </div>
             </div>
 
             {/* Status Filter Tabs */}
-            <div style={{ display: 'flex', gap: '10px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '8px', overflowX: 'auto' }}>
+            <div style={{ display: 'flex', gap: '6px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '6px', overflowX: 'auto' }}>
               {[
                 { id: 'All Designs', label: 'All Designs' },
                 { id: 'In Progress', label: 'In Progress (7)' },
@@ -475,11 +475,11 @@ export default function DesignerStudioWorkspace({
                     key={cat.id}
                     onClick={() => setSelectedCategoryTab(cat.id)}
                     style={{
-                      height: '36px',
-                      padding: '0 14px',
-                      fontSize: '12px',
+                      height: '34px',
+                      padding: '0 12px',
+                      fontSize: '11px',
                       fontWeight: isActive ? 600 : 500,
-                      borderRadius: '8px',
+                      borderRadius: '6px',
                       border: 'none',
                       background: isActive ? '#FFF0F7' : 'transparent',
                       color: isActive ? '#EC168C' : '#475569',
@@ -495,7 +495,7 @@ export default function DesignerStudioWorkspace({
           </div>
 
           {/* DESIGN CARDS GRID (4 COLUMNS ON DESKTOP) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px' }}>
             {studioDesignsList
               .filter(d => selectedCategoryTab === 'All Designs' || d.status === selectedCategoryTab)
               .map(d => {
@@ -507,7 +507,7 @@ export default function DesignerStudioWorkspace({
                     style={{
                       background: cardBg,
                       border: isSelected ? '1.5px solid #EC168C' : `1px solid ${borderColor}`,
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       overflow: 'hidden',
                       display: 'flex',
                       flexDirection: 'column',
@@ -516,21 +516,21 @@ export default function DesignerStudioWorkspace({
                       transition: 'all 0.15s ease'
                     }}
                   >
-                    <div style={{ position: 'relative', height: '170px' }}>
+                    <div style={{ position: 'relative', height: '145px' }}>
                       <img src={d.image} alt={d.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       
                       {/* Soft Pastel Status Badge */}
                       <span style={{
                         position: 'absolute',
-                        top: '10px',
-                        left: '10px',
+                        top: '8px',
+                        left: '8px',
                         background: d.statusBg,
                         color: d.statusColor,
-                        fontSize: '11px',
+                        fontSize: '9px',
                         fontWeight: 600,
-                        height: '22px',
-                        padding: '0 8px',
-                        borderRadius: '6px',
+                        height: '20px',
+                        padding: '0 6px',
+                        borderRadius: '4px',
                         display: 'inline-flex',
                         alignItems: 'center'
                       }}>
@@ -539,32 +539,32 @@ export default function DesignerStudioWorkspace({
 
                       <span style={{
                         position: 'absolute',
-                        top: '10px',
-                        right: '10px',
+                        top: '8px',
+                        right: '8px',
                         background: 'rgba(255,255,255,0.9)',
                         color: '#172033',
-                        width: '24px',
-                        height: '24px',
+                        width: '22px',
+                        height: '22px',
                         borderRadius: '50%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
                       }}>
-                        <MoreVertical size={13} />
+                        <MoreVertical size={12} />
                       </span>
                     </div>
 
-                    <div style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 650, color: '#172033' }}>{d.title}</h4>
-                      <span style={{ fontSize: '12px', color: secTextColor }}>Client: {d.client}</span>
-                      <span style={{ fontSize: '11px', color: mutedTextColor }}>{d.version} • {d.updated}</span>
+                    <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 600, color: '#172033' }}>{d.title}</h4>
+                      <span style={{ fontSize: '10px', color: secTextColor }}>Client: {d.client}</span>
+                      <span style={{ fontSize: '9px', color: mutedTextColor }}>{d.version} • {d.updated}</span>
 
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px', paddingTop: '8px', borderTop: `1px solid ${borderColor}` }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: secTextColor }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px', paddingTop: '6px', borderTop: `1px solid ${borderColor}` }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '9px', color: secTextColor }}>
                           <span>👁 {d.views}</span>
                           <span>💬 {d.comments}</span>
                         </div>
-                        <strong style={{ fontSize: '14px', color: '#EC168C', fontWeight: 700 }}>{d.price}</strong>
+                        <strong style={{ fontSize: '12px', color: '#EC168C', fontWeight: 700 }}>{d.price}</strong>
                       </div>
                     </div>
                   </div>
@@ -573,79 +573,79 @@ export default function DesignerStudioWorkspace({
           </div>
 
           {/* BOTTOM ROW (3 EQUAL COLUMNS) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
             
             {/* Col 1 — Recent Drafts */}
-            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: textColor }}>Recent Drafts</h4>
-                <a href="#drafts" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
+            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '8px', padding: '12px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 700, color: textColor }}>Recent Drafts</h4>
+                <a href="#drafts" style={{ fontSize: '10px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ padding: '10px', borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ padding: '8px 10px', borderRadius: '6px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <strong style={{ fontSize: '12px', color: textColor, display: 'block' }}>Summer Cotton Kurti</strong>
-                    <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.2 • Updated 2 days ago</span>
+                    <strong style={{ fontSize: '11px', fontWeight: 600, color: textColor, display: 'block' }}>Summer Cotton Kurti</strong>
+                    <span style={{ fontSize: '9px', color: secTextColor }}>Version 0.2 • Updated 2 days ago</span>
                   </div>
-                  <span style={{ fontSize: '11px', background: '#F1F5F9', color: '#475569', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>Draft</span>
+                  <span style={{ fontSize: '9px', background: '#F1F5F9', color: '#475569', padding: '2px 5px', borderRadius: '4px', fontWeight: 600 }}>Draft</span>
                 </div>
-                <div style={{ padding: '10px', borderRadius: '8px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ padding: '8px 10px', borderRadius: '6px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <strong style={{ fontSize: '12px', color: textColor, display: 'block' }}>Festive Jacket Design</strong>
-                    <span style={{ fontSize: '11px', color: secTextColor }}>Version 0.1 • Updated 5 days ago</span>
+                    <strong style={{ fontSize: '11px', fontWeight: 600, color: textColor, display: 'block' }}>Festive Jacket Design</strong>
+                    <span style={{ fontSize: '9px', color: secTextColor }}>Version 0.1 • Updated 5 days ago</span>
                   </div>
-                  <span style={{ fontSize: '11px', background: '#F1F5F9', color: '#475569', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>Draft</span>
+                  <span style={{ fontSize: '9px', background: '#F1F5F9', color: '#475569', padding: '2px 5px', borderRadius: '4px', fontWeight: 600 }}>Draft</span>
                 </div>
               </div>
             </div>
 
             {/* Col 2 — Design Collections */}
-            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: textColor }}>Design Collections</h4>
-                <a href="#collections" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
+            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '8px', padding: '12px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 700, color: textColor }}>Design Collections</h4>
+                <a href="#collections" style={{ fontSize: '10px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
                 <div style={{ textAlign: 'center' }}>
-                  <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '60px', borderRadius: '6px', objectFit: 'cover' }} />
-                  <strong style={{ fontSize: '10px', display: 'block', marginTop: '4px', color: textColor }}>Bridal Collection</strong>
+                  <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '52px', borderRadius: '6px', objectFit: 'cover' }} />
+                  <strong style={{ fontSize: '10px', fontWeight: 600, display: 'block', marginTop: '4px', color: textColor }}>Bridal</strong>
                   <span style={{ fontSize: '9px', color: secTextColor }}>12 Designs</span>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '60px', borderRadius: '6px', objectFit: 'cover' }} />
-                  <strong style={{ fontSize: '10px', display: 'block', marginTop: '4px', color: textColor }}>Sherwani Collection</strong>
+                  <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '52px', borderRadius: '6px', objectFit: 'cover' }} />
+                  <strong style={{ fontSize: '10px', fontWeight: 600, display: 'block', marginTop: '4px', color: textColor }}>Sherwani</strong>
                   <span style={{ fontSize: '9px', color: secTextColor }}>8 Designs</span>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '60px', borderRadius: '6px', objectFit: 'cover' }} />
-                  <strong style={{ fontSize: '10px', display: 'block', marginTop: '4px', color: textColor }}>Party Wear</strong>
+                  <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=150" style={{ width: '100%', height: '52px', borderRadius: '6px', objectFit: 'cover' }} />
+                  <strong style={{ fontSize: '10px', fontWeight: 600, display: 'block', marginTop: '4px', color: textColor }}>Party Wear</strong>
                   <span style={{ fontSize: '9px', color: secTextColor }}>15 Designs</span>
                 </div>
               </div>
             </div>
 
             {/* Col 3 — Popular Fabrics */}
-            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: textColor }}>Popular Fabrics</h4>
-                <a href="#fabrics" style={{ fontSize: '12px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
+            <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '8px', padding: '12px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 700, color: textColor }}>Popular Fabrics</h4>
+                <a href="#fabrics" style={{ fontSize: '10px', color: '#EC168C', fontWeight: 600, textDecoration: 'none' }}>View All →</a>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '11px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '18px', height: '18px', borderRadius: '4px', background: '#D97706' }} />
-                  <span><strong>Silk</strong> <span style={{ color: secTextColor }}>(18)</span></span>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', fontSize: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ width: '14px', height: '14px', borderRadius: '3px', background: '#D97706' }} />
+                  <span><strong>Silk</strong> <span style={{ color: secTextColor, fontSize: '9px' }}>(18)</span></span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '18px', height: '18px', borderRadius: '4px', background: '#991B1B' }} />
-                  <span><strong>Velvet</strong> <span style={{ color: secTextColor }}>(12)</span></span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ width: '14px', height: '14px', borderRadius: '3px', background: '#991B1B' }} />
+                  <span><strong>Velvet</strong> <span style={{ color: secTextColor, fontSize: '9px' }}>(12)</span></span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '18px', height: '18px', borderRadius: '4px', background: '#0284C7' }} />
-                  <span><strong>Net</strong> <span style={{ color: secTextColor }}>(9)</span></span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ width: '14px', height: '14px', borderRadius: '3px', background: '#0284C7' }} />
+                  <span><strong>Net</strong> <span style={{ color: secTextColor, fontSize: '9px' }}>(9)</span></span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ width: '18px', height: '18px', borderRadius: '4px', background: '#EC4899' }} />
-                  <span><strong>Chiffon</strong> <span style={{ color: secTextColor }}>(7)</span></span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ width: '14px', height: '14px', borderRadius: '3px', background: '#EC4899' }} />
+                  <span><strong>Chiffon</strong> <span style={{ color: secTextColor, fontSize: '9px' }}>(7)</span></span>
                 </div>
               </div>
             </div>
@@ -655,26 +655,26 @@ export default function DesignerStudioWorkspace({
         </main>
 
         {/* ==================================================================== */}
-        {/* 3. RIGHT DETAILS PANEL (280px–310px COMPACT)                        */}
+        {/* 3. RIGHT DETAILS PANEL (300px COMPACT)                              */}
         {/* ==================================================================== */}
-        <aside style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%' }}>
+        <aside style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '300px', paddingTop: '20px', paddingRight: '24px', paddingBottom: '20px' }}>
           
           {/* Design Details Card */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: textColor }}>Design Details</h3>
-              <Maximize2 size={14} color={secTextColor} style={{ cursor: 'pointer' }} />
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '8px', padding: '14px', boxShadow: '0 2px 8px rgba(15,23,42,0.04)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: textColor }}>Design Details</h3>
+              <Maximize2 size={13} color={secTextColor} style={{ cursor: 'pointer' }} />
             </div>
 
             {/* Outfit Preview Image & Meta */}
-            <img src={activeDesign.image} alt={activeDesign.title} style={{ width: '100%', height: '170px', borderRadius: '10px', objectFit: 'cover', marginBottom: '12px' }} />
+            <img src={activeDesign.image} alt={activeDesign.title} style={{ width: '100%', height: '160px', borderRadius: '8px', objectFit: 'cover', marginBottom: '10px' }} />
             
-            <h4 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: 700, color: textColor }}>{activeDesign.title}</h4>
-            <div style={{ fontSize: '11px', color: secTextColor, marginBottom: '12px' }}>
-              {activeDesign.version} • <span style={{ color: activeDesign.statusColor, fontWeight: 700 }}>● {activeDesign.status}</span>
+            <h4 style={{ margin: '0 0 2px 0', fontSize: '13px', fontWeight: 700, color: textColor }}>{activeDesign.title}</h4>
+            <div style={{ fontSize: '10px', color: secTextColor, marginBottom: '10px' }}>
+              {activeDesign.version} • <span style={{ color: activeDesign.statusColor, fontWeight: 600 }}>● {activeDesign.status}</span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '10px 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, marginBottom: '14px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '10px', lineHeight: '18px', background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, marginBottom: '12px' }}>
               <div><strong>Client:</strong> {activeDesign.client}</div>
               <div><strong>Category:</strong> {activeDesign.category}</div>
               <div><strong>Created:</strong> {activeDesign.created}</div>
@@ -682,97 +682,97 @@ export default function DesignerStudioWorkspace({
             </div>
 
             {/* Dynamic Design Progress Bar */}
-            <div style={{ marginBottom: '14px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', fontWeight: 700, color: textColor, marginBottom: '6px' }}>
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', fontWeight: 600, color: textColor, marginBottom: '4px' }}>
                 <span>Design Progress</span>
-                <span style={{ color: '#EC168C' }}>{activeDesign.progress}%</span>
+                <span style={{ color: '#EC168C', fontWeight: 700 }}>{activeDesign.progress}%</span>
               </div>
-              <div style={{ width: '100%', height: '7px', background: '#E9EEF3', borderRadius: '999px', overflow: 'hidden' }}>
+              <div style={{ width: '100%', height: '5px', background: '#E9EEF3', borderRadius: '999px', overflow: 'hidden' }}>
                 <div style={{ width: `${activeDesign.progress}%`, height: '100%', background: 'linear-gradient(90deg, #EC168C, #8B22D9)', borderRadius: '999px', transition: 'width 0.4s ease' }} />
               </div>
 
               {/* Milestone Checklist */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '10px', fontSize: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontWeight: 600 }}>
-                  <Check size={14} /> Concept & Inspiration
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '8px', fontSize: '10px', lineHeight: '22px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', fontWeight: 600 }}>
+                  <Check size={13} /> Concept & Inspiration
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontWeight: 600 }}>
-                  <Check size={14} /> Sketch & Illustration
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', fontWeight: 600 }}>
+                  <Check size={13} /> Sketch & Illustration
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontWeight: 600 }}>
-                  <Check size={14} /> Fabric & Color Selection
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', fontWeight: 600 }}>
+                  <Check size={13} /> Fabric & Color Selection
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', fontWeight: 600 }}>
-                  <Check size={14} /> Design Finalization
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', fontWeight: 600 }}>
+                  <Check size={13} /> Design Finalization
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#EC168C', fontWeight: 600 }}>
-                  <Circle size={12} fill="#EC168C" color="#EC168C" /> Client Review
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#EC168C', fontWeight: 600 }}>
+                  <Circle size={11} fill="#EC168C" color="#EC168C" /> Client Review
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#CBD5E1' }}>
-                  <Circle size={12} /> Approved
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#CBD5E1' }}>
+                  <Circle size={11} /> Approved
                 </div>
               </div>
             </div>
 
             {/* Next Step Box */}
-            <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '10px 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, marginBottom: '14px', fontSize: '11px' }}>
-              <strong style={{ color: textColor, display: 'block', marginBottom: '2px' }}>Next Step</strong>
-              <p style={{ margin: '0 0 4px 0', color: secTextColor }}>{activeDesign.nextStep}</p>
-              <span style={{ color: secTextColor }}>Expected review date: <strong style={{ color: '#EC168C' }}>{activeDesign.expectedDate}</strong></span>
+            <div style={{ background: isDark ? 'rgba(255,255,255,0.03)' : '#F8FAFC', padding: '8px 10px', borderRadius: '6px', border: `1px solid ${borderColor}`, marginBottom: '12px', fontSize: '10px' }}>
+              <strong style={{ color: textColor, display: 'block', fontSize: '11px', fontWeight: 600, marginBottom: '2px' }}>Next Step</strong>
+              <p style={{ margin: '0 0 3px 0', color: secTextColor, fontSize: '10px' }}>{activeDesign.nextStep}</p>
+              <span style={{ color: secTextColor }}>Expected review date: <strong style={{ color: '#EC168C', fontWeight: 600 }}>{activeDesign.expectedDate}</strong></span>
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <button style={{
                 width: '100%',
-                height: '38px',
-                borderRadius: '8px',
+                height: '34px',
+                borderRadius: '7px',
                 border: 'none',
                 background: 'linear-gradient(135deg, #EC168C, #8B22D9)',
                 color: '#FFFFFF',
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px'
+                gap: '5px'
               }}>
-                <Edit size={14} /> Edit Design
+                <Edit size={13} /> Edit Design
               </button>
               <button style={{
                 width: '100%',
-                height: '38px',
-                borderRadius: '8px',
+                height: '34px',
+                borderRadius: '7px',
                 border: '1px solid #DDE2E8',
                 background: cardBg,
                 color: '#334155',
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px'
+                gap: '5px'
               }}>
-                <Upload size={14} /> Upload New Version
+                <Upload size={13} /> Upload New Version
               </button>
               <button style={{
                 width: '100%',
-                height: '38px',
-                borderRadius: '8px',
+                height: '34px',
+                borderRadius: '7px',
                 border: '1px solid #DDE2E8',
                 background: cardBg,
                 color: '#334155',
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px'
+                gap: '5px'
               }}>
-                <Share2 size={14} /> Share with Client
+                <Share2 size={13} /> Share with Client
               </button>
             </div>
           </div>
@@ -781,31 +781,31 @@ export default function DesignerStudioWorkspace({
           <div style={{
             background: 'linear-gradient(135deg, rgba(124, 43, 239, 0.06) 0%, rgba(236, 22, 140, 0.06) 100%)',
             border: '1px solid rgba(124, 43, 239, 0.20)',
-            borderRadius: '12px',
-            padding: '16px',
+            borderRadius: '8px',
+            padding: '12px',
             boxShadow: '0 2px 8px rgba(15,23,42,0.04)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
               <div style={{
-                width: '30px',
-                height: '30px',
+                width: '26px',
+                height: '26px',
                 borderRadius: '50%',
                 background: 'rgba(124, 43, 239, 0.12)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Sparkles size={15} color="#7C2BEF" />
+                <Sparkles size={13} color="#7C2BEF" />
               </div>
               <div>
-                <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: textColor }}>
+                <h4 style={{ margin: 0, fontSize: '12px', fontWeight: 700, color: textColor }}>
                   AI Design Assistant
                 </h4>
-                <span style={{ fontSize: '10px', color: '#7C2BEF', fontWeight: 600 }}>StitchBee Studio AI</span>
+                <span style={{ fontSize: '9px', color: '#7C2BEF', fontWeight: 600 }}>StitchBee Studio AI</span>
               </div>
             </div>
 
-            <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: secTextColor, lineHeight: 1.4 }}>
+            <p style={{ margin: '0 0 8px 0', fontSize: '10px', color: secTextColor, lineHeight: 1.4 }}>
               Get AI suggestions, color palettes, fabric recommendations and more.
             </p>
 
@@ -813,18 +813,18 @@ export default function DesignerStudioWorkspace({
               onClick={() => onNavigateTab && onNavigateTab('support')} 
               style={{
                 width: '100%',
-                height: '36px',
-                borderRadius: '8px',
+                height: '32px',
+                borderRadius: '6px',
                 border: '1px solid rgba(124, 43, 239, 0.3)',
                 background: cardBg,
                 color: '#7C2BEF',
-                fontSize: '12px',
+                fontSize: '10px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px'
+                gap: '5px'
               }}
             >
               Open Assistant →
