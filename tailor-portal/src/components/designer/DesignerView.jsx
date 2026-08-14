@@ -176,6 +176,9 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         {/* Brand Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img src="/logo.png" alt="StitchBee" style={{ height: '42px', width: '120px', objectFit: 'contain' }} />
+          <span style={{ fontSize: '11px', fontWeight: 700, background: 'linear-gradient(135deg, #EC168C, #7C3AED)', color: '#ffffff', padding: '3px 10px', borderRadius: '12px', letterSpacing: '0.04em' }}>
+            DESIGNER STUDIO
+          </span>
         </div>
 
         {/* 8 Primary Tabs: Dashboard → Design Studio → Orders → Measurements → Customers → Calendar → Earnings → Support */}
