@@ -12294,6 +12294,117 @@ body.light-theme .premium-footer h5 {
   }
 }
 
+/* ==================================================================== */
+/* DESIGNER STUDIO MASTER MOBILE & TABLET RESPONSIVE DESIGN SYSTEM      */
+/* ==================================================================== */
+
+@media (max-width: 1024px) {
+  /* Workspace Container Outer Padding */
+  div[style*="padding: '0 32px'"],
+  div[style*="padding: 0 32px"],
+  div[style*="padding: '24px 32px'"] {
+    padding: 0 16px !important;
+  }
+
+  /* 4 KPI Cards Grid Responsive Overrides */
+  div[style*="gridTemplateColumns: 'repeat(4, 1fr)'"],
+  div[style*="gridTemplateColumns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* 60% / 40% Analytics Split Overrides */
+  div[style*="gridTemplateColumns: '60% 40%'"],
+  div[style*="gridTemplateColumns: 60% 40%"],
+  div[style*="gridTemplateColumns: '65% 35%'"],
+  div[style*="gridTemplateColumns: 65% 35%"],
+  div[style*="gridTemplateColumns: '70% 30%'"],
+  div[style*="gridTemplateColumns: 70% 30%"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* 3-Column Secondary Section (32% 36% 32%) Overrides */
+  div[style*="gridTemplateColumns: '32% 36% 32%'"],
+  div[style*="gridTemplateColumns: 32% 36% 32%"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* 3-Column Design Cards Grid Overrides */
+  div[style*="gridTemplateColumns: 'repeat(3, 1fr)'"],
+  div[style*="gridTemplateColumns: repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  /* Client Directory 4-Column Cards Grid Overrides */
+  div[style*="gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))'"],
+  div[style*="gridTemplateColumns: repeat(auto-fill, minmax(280px, 1fr))"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Main Container Touch Safety Margin */
+  main {
+    padding-bottom: 90px !important;
+  }
+
+  /* Outer Padding for Mobile */
+  div[style*="padding: '0 32px'"],
+  div[style*="padding: 0 32px"],
+  div[style*="padding: '24px 32px'"] {
+    padding: 0 12px !important;
+  }
+
+  /* 4 KPI Cards Grid -> Single Column on Mobile */
+  div[style*="gridTemplateColumns: 'repeat(4, 1fr)'"],
+  div[style*="gridTemplateColumns: repeat(4, 1fr)"],
+  div[style*="gridTemplateColumns: 'repeat(2, 1fr)'"],
+  div[style*="gridTemplateColumns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Design Cards & Customer Cards -> Single Column on Mobile */
+  div[style*="gridTemplateColumns: 'repeat(3, 1fr)'"],
+  div[style*="gridTemplateColumns: repeat(3, 1fr)"],
+  div[style*="gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))'"],
+  div[style*="gridTemplateColumns: repeat(auto-fill, minmax(280px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Header Controls & Filter Bars Flex Wrap */
+  div[style*="justifyContent: 'space-between'"],
+  div[style*="justify-content: space-between"] {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  /* Top Earning Category Banner Mobile Refinement */
+  div[style*="background: linear-gradient(90deg, #FFF8FC"],
+  div[style*="background: linear-gradient(90deg, rgba(236,22,127"] {
+    height: auto !important;
+    min-height: 74px !important;
+    padding: 12px 14px !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Tables Horizontal Overflow */
+  table {
+    min-width: 580px !important;
+  }
+
+  /* Recharts Charts Height Mobile Adjustments */
+  .recharts-responsive-container {
+    min-height: 200px !important;
+  }
+}
+
+
 
 
 

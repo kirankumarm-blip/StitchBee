@@ -521,3 +521,31 @@ body.dark-mode .designer-dashboard-fullwidth,
   border-radius: 50%;
   border: 2px solid var(--sb-card-bg);
 }
+
+/* ---------------------------------------------------- */
+/* RESPONSIVE MEDIA QUERIES FOR MOBILE & TABLET         */
+/* ---------------------------------------------------- */
+@media (max-width: 1024px) {
+  .designer-dashboard-fullwidth {
+    padding: 16px !important;
+  }
+  .section-analytics-grid,
+  .section-bottom-grid,
+  .kpi-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .designer-dashboard-fullwidth {
+    padding: 12px !important;
+  }
+  .section-analytics-grid,
+  .section-bottom-grid,
+  .kpi-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .quick-action-buttons-row {
+    flex-wrap: wrap !important;
+  }
+}
