@@ -728,25 +728,24 @@ export default function DesignerEarningsWorkspace({
               </div>
 
               {/* Middle Right: Amount & Percentage */}
-              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '70px' }}>
+              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '75px' }}>
                 <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
                 <span style={{ fontSize: '10px', color: secTextColor, display: 'block', marginTop: '1px' }}>46.7% of total earnings</span>
               </div>
 
-              {/* Far Right: Cleanly Fitted 3D Pink Mannequin Illustration */}
+              {/* Far Right: 3D Pink Mannequin Illustration aligned to bottom right base */}
               <img 
                 src="/images/mannequin.png" 
                 alt="Mannequin Illustration" 
                 style={{ 
-                  height: '52px', 
+                  height: '74px', 
                   width: 'auto', 
                   objectFit: 'contain',
                   position: 'absolute',
-                  right: '14px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
+                  right: '8px',
+                  bottom: '-8px',
                   zIndex: 1,
-                  filter: 'drop-shadow(0 2px 6px rgba(236,22,127,0.2))'
+                  filter: 'drop-shadow(0 2px 6px rgba(236,22,127,0.25))'
                 }} 
               />
             </div>
