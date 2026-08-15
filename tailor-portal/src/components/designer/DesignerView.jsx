@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  Home, Palette, ShoppingBag, Ruler, Users, Calendar, DollarSign, HelpCircle,
+  Home, Palette, ShoppingBag, Ruler, Users, Calendar, DollarSign, HelpCircle, Menu, User, LogOut,
   Plus, Search, Filter, Bell, Sun, Moon, CheckCircle2, Clock, AlertCircle,
   FileText, Upload, Sparkles, Download, ArrowUpRight, ArrowDownRight, ChevronRight,
   TrendingUp, Scissors, ChevronDown, Check, X, Shield, Lock, Info, MessageSquare,
@@ -19,6 +19,7 @@ import ChatSupportPage from '../chat/ChatSupportPage';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -180,9 +181,29 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         justifyContent: 'space-between'
       }}>
         
-        {/* Brand Logo */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <img src="/logo.png" alt="StitchBee" style={{ height: '42px', width: '120px', objectFit: 'contain' }} />
+        {/* Brand Logo & Mobile Menu Toggle Button */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button 
+            className="mobile-menu-toggle-btn"
+            onClick={() => setSidebarOpen(!sidebarOpen)} 
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              padding: '6px', 
+              color: theme === 'dark' ? '#ffffff' : '#172033', 
+              cursor: 'pointer', 
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            title="Open Menu"
+          >
+            <Menu size={24} />
+          </button>
+
+          <div onClick={() => setActiveTab('dashboard')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="StitchBee" style={{ height: '42px', width: '120px', objectFit: 'contain' }} />
+          </div>
         </div>
 
         {/* 8 Primary Tabs: Dashboard → Design Studio → Orders → Measurements → Customers → Calendar → Earnings → Support */}
@@ -483,6 +504,222 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
       </main>
+
+      {/* SLIDE-OUT MOBILE/TABLET SIDE NAVIGATION DRAWER */}
+      {sidebarOpen && (
+        <>
+          <div 
+            className="drawer-backdrop"
+            onClick={() => setSidebarOpen(false)}
+            style={{ top: '64px' }}
+          />
+
+          <div 
+            className="left-nav-drawer"
+            onClick={(e) => e.stopPropagation()}
+            style={{ 
+              top: '64px', 
+              height: 'calc(100vh - 64px)', 
+              zIndex: 9999,
+              background: theme === 'dark' ? '#0F0C1B' : '#F8F9FC',
+              color: theme === 'dark' ? '#ffffff' : '#172033',
+              borderRight: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '16px'
+            }}
+          >
+
+            {/* Designer Welcome Card */}
+            <div className="drawer-welcome-card" style={{ background: 'linear-gradient(135deg, #1B0F2A 0%, #3B154C 50%, #EC167F 100%)', padding: '16px', borderRadius: '12px', marginBottom: '14px' }}>
+              <div className="drawer-welcome-inner" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Ananya Roy" style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #EC167F' }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '0.72rem', opacity: 0.95, fontWeight: 500, color: '#ffffff' }}>
+                    StitchBee Fashion Studio
+                  </div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: '2px 0 2px 0', color: '#ffffff' }}>
+                    Ananya Roy 👋
+                  </h3>
+                  <p style={{ fontSize: '0.70rem', opacity: 0.9, margin: 0, color: '#ffffff' }}>
+                    Senior Couture Designer • Verified ✓
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Items List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', flex: 1, overflowY: 'auto' }}>
+              {[
+                { id: 'dashboard', label: 'Dashboard', subtitle: 'Studio Command Center & KPI Feed', icon: <Home size={18} /> },
+                { id: 'studio', label: 'Design Studio', subtitle: 'Outfits, Sketches & CAD Designs', icon: <Palette size={18} /> },
+                { id: 'orders', label: 'Orders', subtitle: 'Active Client Orders & Delivery SLAs', icon: <ShoppingBag size={18} /> },
+                { id: 'measurements', label: 'Measurements', subtitle: '3D Body Scans & Measurement Vault', icon: <Ruler size={18} /> },
+                { id: 'customers', label: 'Customers', subtitle: 'Client Directory & Fashion Profiles', icon: <Users size={18} /> },
+                { id: 'calendar', label: 'Calendar', subtitle: 'Design Deadlines & Fittings', icon: <Calendar size={18} /> },
+                { id: 'earnings', label: 'Earnings', subtitle: 'Payouts, Revenue & Financials', icon: <DollarSign size={18} /> },
+                { id: 'support', label: 'Support', subtitle: 'Chat Support, Tickets & Help Center', icon: <HelpCircle size={18} /> },
+                { id: 'profile', label: 'Studio Profile', subtitle: 'Bio, Rates & Consultation Hours', icon: <User size={18} /> }
+              ].map(tab => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <div
+                    key={tab.id}
+                    className={`drawer-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      setSidebarOpen(false);
+                    }}
+                    style={{
+                      background: isActive 
+                        ? (theme === 'dark' ? 'rgba(236,22,127,0.15)' : '#FFF0F6') 
+                        : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent'),
+                      borderRadius: '10px',
+                      padding: '10px 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justify: 'space-between',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div 
+                        style={{ 
+                          width: '32px', 
+                          height: '32px', 
+                          borderRadius: '8px', 
+                          background: isActive 
+                            ? (theme === 'dark' ? 'rgba(236,22,127,0.25)' : '#FFE4F2') 
+                            : (theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F1F5F9'),
+                          color: isActive 
+                            ? '#EC167F' 
+                            : (theme === 'dark' ? '#E2E8F0' : '#475467'),
+                          display: 'flex',
+                          alignItems: 'center',
+                          justify: 'center'
+                        }}
+                      >
+                        {tab.icon}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                        <span style={{ 
+                          fontSize: '0.88rem', 
+                          fontWeight: 700, 
+                          color: isActive ? '#EC167F' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                        }}>
+                          {tab.label}
+                        </span>
+                        <span style={{ fontSize: '0.70rem', color: isActive ? '#EC167F' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280') }}>
+                          {tab.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight 
+                      size={16} 
+                      style={{ 
+                        color: isActive ? '#EC167F' : (theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#9CA3AF')
+                      }} 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Designer Tier Card */}
+            <div className="drawer-tier-card" style={{ background: 'linear-gradient(135deg, #7C3AED 0%, #4a0072 100%)', padding: '12px', borderRadius: '10px', marginTop: 'auto' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.2rem' }}>👑</span>
+                  <div>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>
+                      Couture Designer Elite
+                    </div>
+                    <div style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.8)' }}>
+                      ★ 4.9 Rating (42 Reviews)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </>
+      )}
+
+      {/* MOBILE BOTTOM FLOATING NAVIGATION BAR */}
+      <footer className="mobile-bottom-nav">
+        {[
+          { id: 'dashboard', label: 'Home', icon: <Home size={18} /> },
+          { id: 'studio', label: 'Studio', icon: <Palette size={18} /> },
+          { id: 'orders', label: 'Orders', icon: <ShoppingBag size={18} /> },
+          { id: 'earnings', label: 'Earnings', icon: <DollarSign size={18} /> },
+          { id: 'menu', label: 'Menu', icon: <Menu size={18} />, isMenu: true }
+        ].map(item => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                if (item.isMenu) {
+                  setSidebarOpen(!sidebarOpen);
+                } else {
+                  setActiveTab(item.id);
+                  setSidebarOpen(false);
+                }
+              }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justify: 'space-between',
+                position: 'relative',
+                cursor: 'pointer',
+                flex: 1,
+                height: '54px',
+                padding: 0
+              }}
+            >
+              <div
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: isActive 
+                    ? 'linear-gradient(135deg, #EC167F, #7C3AED)' 
+                    : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justify: 'center',
+                  color: isActive ? '#ffffff' : (theme === 'dark' ? '#98A2B3' : '#667085'),
+                  transform: isActive 
+                    ? 'translateY(-12px) scale(1.1)' 
+                    : 'translateY(0) scale(1)',
+                  boxShadow: isActive 
+                    ? '0 8px 18px rgba(236, 22, 127, 0.45)' 
+                    : 'none',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                }}
+              >
+                {item.icon}
+              </div>
+              <span
+                style={{
+                  fontSize: '0.62rem',
+                  fontWeight: 700,
+                  color: isActive ? '#EC167F' : (theme === 'dark' ? '#98A2B3' : '#667085'),
+                  position: 'absolute',
+                  bottom: '4px'
+                }}
+              >
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </footer>
 
     </div>
   );
