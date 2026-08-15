@@ -704,12 +704,12 @@ export default function DesignerEarningsWorkspace({
 
             </div>
 
-            {/* Top Earning Category Premium Compact Information Banner */}
+            {/* Top Earning Category Premium Compact Information Banner with Space-Between Layout */}
             <div style={{ 
               background: isDark ? 'linear-gradient(90deg, rgba(236,22,127,0.12) 0%, rgba(236,22,127,0.06) 100%)' : 'linear-gradient(90deg, #FFF8FC 0%, #FFF5FA 100%)', 
               border: `1px solid ${pinkBorder}`, 
               borderRadius: '10px', 
-              padding: '10px 18px', 
+              padding: '10px 16px', 
               display: 'flex', 
               alignItems: 'center', 
               justify: 'space-between', 
@@ -719,30 +719,30 @@ export default function DesignerEarningsWorkspace({
               boxSizing: 'border-box',
               boxShadow: '0 2px 8px rgba(236,22,127,0.06)'
             }}>
-              {/* 1. Left: Icon + Category Label + Main Category Name */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
+              {/* 1. Far Left: Icon + Category Label + Category Name */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', zIndex: 2, flexShrink: 0 }}>
                 <span style={{ fontSize: '22px', display: 'flex', alignItems: 'center', flexShrink: 0 }}>👗</span>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.2', letterSpacing: '0.01em' }}>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.2' }}>
                     Top Earning Category
                   </span>
-                  <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, lineHeight: '1.3', marginTop: '2px' }}>
+                  <strong style={{ fontSize: '13px', fontWeight: 700, color: primaryPink, lineHeight: '1.3', marginTop: '2px' }}>
                     Bridal Wear
                   </strong>
                 </div>
               </div>
 
-              {/* 2 & 3. Right Side Aligned: Main Value + Supporting Percentage/Stat */}
-              <div style={{ textAlign: 'right', zIndex: 2, paddingRight: '55px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <strong style={{ fontSize: '16px', fontWeight: 700, color: primaryPink, lineHeight: '1.2' }}>
+              {/* 2 & 3. Center Space-Between: Main Value + Supporting Stat */}
+              <div style={{ textAlign: 'center', zIndex: 2, flex: 1, padding: '0 50px 0 10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, lineHeight: '1.2' }}>
                   ₹22,450
                 </strong>
-                <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.3', marginTop: '2px' }}>
+                <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.3', marginTop: '2px', whiteSpace: 'nowrap' }}>
                   46.7% of total earnings
                 </span>
               </div>
 
-              {/* 4. Far Right: 100% Cleanly Fitted 3D Pink Mannequin Illustration */}
+              {/* 4. Far Right: 3D Pink Mannequin Illustration */}
               <img 
                 src="/images/mannequin.png" 
                 alt="Mannequin Illustration" 
