@@ -776,83 +776,93 @@ export default function DesignerEarningsWorkspace({
           alignItems: 'stretch'
         }}>
           
-          {/* COLUMN 1: EARNINGS SUMMARY (4 METRICS + LIFETIME EARNINGS CARD) */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {/* COLUMN 1: EARNINGS SUMMARY (4 METRIC SUB-CARDS + LIFETIME EARNINGS CARD) */}
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <h3 style={{ margin: '0 0 14px 0', fontSize: '15px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
               Earnings Summary <Info size={14} color={secTextColor} />
             </h3>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', margin: '12px 0' }}>
-              {/* Metric 1 — Avg Order Value */}
-              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '9px', padding: '10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <TrendingUp size={14} color={primaryPink} />
-                  </div>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500 }}>Average Order Value</span>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+              
+              {/* Metric 1 — Average Order Value */}
+              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <TrendingUp size={18} color={primaryPink} />
                 </div>
-                <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block' }}>₹1,506</strong>
-                <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 600, marginTop: '2px', display: 'block' }}>↑ 8.4%</span>
+                <div>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block', lineHeight: 1.2 }}>Average Order Value</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+                    <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor }}>₹1,506</strong>
+                    <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 700 }}>↑ 8.4%</span>
+                  </div>
+                </div>
               </div>
 
               {/* Metric 2 — Total Orders Completed */}
-              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '9px', padding: '10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Receipt size={14} color="#3B82F6" />
-                  </div>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500 }}>Total Orders Completed</span>
+              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Receipt size={18} color="#3B82F6" />
                 </div>
-                <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block' }}>128</strong>
-                <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 600, marginTop: '2px', display: 'block' }}>↑ 16</span>
+                <div>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block', lineHeight: 1.2 }}>Total Orders Completed</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+                    <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor }}>128</strong>
+                    <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 700 }}>↑ 16</span>
+                  </div>
+                </div>
               </div>
 
               {/* Metric 3 — Payout Success Rate */}
-              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '9px', padding: '10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: isDark ? 'rgba(124,58,237,0.2)' : '#F4EEFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <ShieldCheck size={14} color="#7C3AED" />
-                  </div>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500 }}>Payout Success Rate</span>
+              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: isDark ? 'rgba(124,58,237,0.2)' : '#F4EEFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <ShieldCheck size={18} color="#7C3AED" />
                 </div>
-                <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block' }}>98.6%</strong>
-                <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 600, marginTop: '2px', display: 'block' }}>↑ 2.1%</span>
+                <div>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block', lineHeight: 1.2 }}>Payout Success Rate</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+                    <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor }}>98.6%</strong>
+                    <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 700 }}>↑ 2.1%</span>
+                  </div>
+                </div>
               </div>
 
               {/* Metric 4 — Repeat Client Rate */}
-              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '9px', padding: '10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: isDark ? 'rgba(22,163,106,0.2)' : '#ECFDF3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <CheckCircle2 size={14} color="#16A36A" />
-                  </div>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500 }}>Repeat Client Rate</span>
+              <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: isDark ? 'rgba(22,163,106,0.2)' : '#ECFDF3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <CheckCircle2 size={18} color="#16A36A" />
                 </div>
-                <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block' }}>62%</strong>
-                <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 600, marginTop: '2px', display: 'block' }}>↑ 5%</span>
+                <div>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block', lineHeight: 1.2 }}>Repeat Client Rate</span>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
+                    <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor }}>62%</strong>
+                    <span style={{ fontSize: '10px', color: '#16A36A', fontWeight: 700 }}>↑ 5%</span>
+                  </div>
+                </div>
               </div>
+
             </div>
 
-            {/* Lifetime Earnings Highlighted Card */}
-            <div style={{ background: isDark ? 'rgba(245,158,11,0.12)' : '#FFF9EC', border: `1px solid ${isDark ? 'rgba(245,158,11,0.3)' : '#FDE68A'}`, borderRadius: '10px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            {/* Lifetime Earnings Highlighted Gold Card */}
+            <div style={{ background: isDark ? 'rgba(245,158,11,0.12)' : '#FFF9EC', border: `1px solid ${isDark ? 'rgba(245,158,11,0.3)' : '#FDE68A'}`, borderRadius: '10px', padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Star size={16} color="#FFFFFF" fill="#FFFFFF" />
+                <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Star size={17} color="#FFFFFF" fill="#FFFFFF" />
                 </div>
                 <div>
                   <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Lifetime Earnings</span>
-                  <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block' }}>₹4,85,650</strong>
+                  <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block', marginTop: '1px' }}>₹4,85,650</strong>
                 </div>
               </div>
 
-              <button onClick={() => alert("Viewing lifetime financial stats...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '10px', fontWeight: 600, cursor: 'pointer' }}>
+              <button onClick={() => alert("Viewing lifetime financial stats...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', padding: 0 }}>
                 View all-time stats →
               </button>
             </div>
           </div>
 
           {/* COLUMN 2: RECENT PAYOUTS COMPACT TABLE */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor }}>Recent Payouts</h3>
               <button onClick={() => alert("Viewing all recent payouts...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View All</button>
             </div>
@@ -861,11 +871,11 @@ export default function DesignerEarningsWorkspace({
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${softBorderColor}`, textAlign: 'left', color: secTextColor }}>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Payout ID</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Date</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Amount</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Mode</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Status</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Payout ID</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Date</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Amount</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Mode</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -877,12 +887,12 @@ export default function DesignerEarningsWorkspace({
                     { id: '#PAYOUT-1240', date: '28 Apr 2025', amount: '₹6,200', mode: 'UPI' }
                   ].map((row, idx) => (
                     <tr key={idx} style={{ borderBottom: `1px solid ${softBorderColor}` }}>
-                      <td style={{ padding: '8px 4px', fontWeight: 600, color: textColor }}>{row.id}</td>
-                      <td style={{ padding: '8px 4px', color: secTextColor }}>{row.date}</td>
-                      <td style={{ padding: '8px 4px', fontWeight: 700, color: textColor }}>{row.amount}</td>
-                      <td style={{ padding: '8px 4px', color: secTextColor }}>🏦 {row.mode}</td>
-                      <td style={{ padding: '8px 4px' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 600, padding: '2px 8px', borderRadius: '12px', background: isDark ? 'rgba(18,183,106,0.2)' : '#ECFDF3', color: '#16A36A' }}>
+                      <td style={{ padding: '9px 4px', fontWeight: 600, color: textColor }}>{row.id}</td>
+                      <td style={{ padding: '9px 4px', color: secTextColor }}>{row.date}</td>
+                      <td style={{ padding: '9px 4px', fontWeight: 700, color: textColor }}>{row.amount}</td>
+                      <td style={{ padding: '9px 4px', color: secTextColor }}>🏦 {row.mode}</td>
+                      <td style={{ padding: '9px 4px' }}>
+                        <span style={{ fontSize: '10px', fontWeight: 600, padding: '3px 10px', borderRadius: '12px', background: isDark ? 'rgba(18,183,106,0.2)' : '#ECFDF3', color: '#16A36A' }}>
                           Completed
                         </span>
                       </td>
@@ -893,9 +903,9 @@ export default function DesignerEarningsWorkspace({
             </div>
           </div>
 
-          {/* COLUMN 3: PENDING PAYOUTS TABLE & NEXT PAYOUT HIGHLIGHT */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+          {/* COLUMN 3: PENDING PAYOUTS TABLE & NEXT PAYOUT HIGHLIGHT CARD */}
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor }}>Pending Payouts</h3>
               <button onClick={() => alert("Viewing all pending payouts...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View All</button>
             </div>
@@ -904,10 +914,10 @@ export default function DesignerEarningsWorkspace({
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${softBorderColor}`, textAlign: 'left', color: secTextColor }}>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Payout ID</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Expected Date</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Amount</th>
-                    <th style={{ padding: '6px 4px', fontWeight: 600 }}>Status</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Payout ID</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Expected Date</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Amount</th>
+                    <th style={{ padding: '8px 4px', fontWeight: 600 }}>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -916,11 +926,11 @@ export default function DesignerEarningsWorkspace({
                     { id: '#PEND-1299', date: '10 Jun 2025', amount: '₹5,150' }
                   ].map((row, idx) => (
                     <tr key={idx} style={{ borderBottom: `1px solid ${softBorderColor}` }}>
-                      <td style={{ padding: '8px 4px', fontWeight: 600, color: textColor }}>{row.id}</td>
-                      <td style={{ padding: '8px 4px', color: secTextColor }}>{row.date}</td>
-                      <td style={{ padding: '8px 4px', fontWeight: 700, color: textColor }}>{row.amount}</td>
-                      <td style={{ padding: '8px 4px' }}>
-                        <span style={{ fontSize: '9px', fontWeight: 600, padding: '2px 8px', borderRadius: '12px', background: isDark ? 'rgba(245,158,11,0.2)' : '#FFF7E6', color: '#F59E0B' }}>
+                      <td style={{ padding: '9px 4px', fontWeight: 600, color: textColor }}>{row.id}</td>
+                      <td style={{ padding: '9px 4px', color: secTextColor }}>{row.date}</td>
+                      <td style={{ padding: '9px 4px', fontWeight: 700, color: textColor }}>{row.amount}</td>
+                      <td style={{ padding: '9px 4px' }}>
+                        <span style={{ fontSize: '10px', fontWeight: 600, padding: '3px 10px', borderRadius: '12px', background: isDark ? 'rgba(245,158,11,0.2)' : '#FFF7E6', color: '#F59E0B' }}>
                           Processing
                         </span>
                       </td>
@@ -931,18 +941,28 @@ export default function DesignerEarningsWorkspace({
             </div>
 
             {/* Next Payout Highlight Card */}
-            <div style={{ background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', border: `1px solid ${pinkBorder}`, borderRadius: '10px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '82px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Calendar size={18} color={primaryPink} />
+            <div style={{ background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', border: `1px solid ${pinkBorder}`, borderRadius: '12px', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px', position: 'relative' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Calendar size={20} color={primaryPink} />
                 </div>
                 <div>
                   <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Next Payout Date</span>
-                  <strong style={{ fontSize: '15px', fontWeight: 700, color: textColor, display: 'block' }}>05 June 2025</strong>
-                  <span style={{ fontSize: '10px', color: primaryPink, fontWeight: 600 }}>2 payouts scheduled</span>
+                  <strong style={{ fontSize: '15px', fontWeight: 700, color: textColor, display: 'block', marginTop: '1px' }}>05 June 2025</strong>
+                  <span style={{ fontSize: '10px', color: primaryPink, fontWeight: 600, marginTop: '1px', display: 'block' }}>2 payouts scheduled</span>
                 </div>
               </div>
-              <span style={{ fontSize: '26px' }}>🎁</span>
+
+              {/* 3D Gift / Wallet Graphic SVG */}
+              <div style={{ width: '48px', height: '48px', flexShrink: 0 }}>
+                <svg width="100%" height="100%" viewBox="0 0 48 48" fill="none">
+                  <rect x="6" y="16" width="36" height="24" rx="6" fill="#EC167F" />
+                  <path d="M6,20 C6,17.8 7.8,16 10,16 L38,16 C40.2,16 42,17.8 42,20 L42,22 L6,22 L6,20 Z" fill="#F7B6D5" />
+                  <rect x="22" y="16" width="4" height="24" fill="#FFFFFF" opacity="0.35" />
+                  <circle cx="36" cy="28" r="5" fill="#F59E0B" stroke="#FFFFFF" strokeWidth="1.5" />
+                  <path d="M24 16 L24 10 C24 8 20 8 20 10 L20 16 Z" fill="#EC167F" />
+                </svg>
+              </div>
             </div>
           </div>
 
