@@ -15,6 +15,7 @@ import DesignerMeasurementVault from '../dashboard/DesignerMeasurementVault';
 import DesignerClientDirectory from '../dashboard/DesignerClientDirectory';
 import DesignerCalendarWorkspace from '../dashboard/DesignerCalendarWorkspace';
 import DesignerEarningsWorkspace from '../dashboard/DesignerEarningsWorkspace';
+import ChatSupportPage from '../chat/ChatSupportPage';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -401,91 +402,10 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 8: 🛟 SUPPORT (CONTROLLED SUPPORT CENTER & AI ASSISTANT)        */}
+        {/* TAB 8: 🛟 SUPPORT (CHAT SUPPORT CENTER & AI ASSISTANT)             */}
         {/* ==================================================================== */}
         {activeTab === 'support' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Designer Support Center</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                Controlled help desk, ticket resolution, and 24/7 AI assistance for fashion designers.
-              </p>
-            </div>
-
-            {/* Support Subtabs */}
-            <div style={{ display: 'flex', gap: '8px', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', paddingBottom: '12px' }}>
-              {['ai-assistant', 'help-center', 'my-tickets', 'create-ticket', 'announcements'].map(st => (
-                <button
-                  key={st}
-                  onClick={() => setActiveSupportSubTab(st)}
-                  style={{
-                    padding: '8px 16px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    borderRadius: '20px',
-                    border: 'none',
-                    background: activeSupportSubTab === st ? '#F72585' : (theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#E2E8F0'),
-                    color: activeSupportSubTab === st ? '#ffffff' : (theme === 'dark' ? 'rgba(255,255,255,0.8)' : '#475467'),
-                    cursor: 'pointer',
-                    textTransform: 'capitalize'
-                  }}
-                >
-                  {st.replace('-', ' ')}
-                </button>
-              ))}
-            </div>
-
-            {/* AI Assistant Section */}
-            {activeSupportSubTab === 'ai-assistant' && (
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                
-                <div>
-                  <h3 style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 700 }}>✨ StitchBee AI Designer Assistant</h3>
-                  <p style={{ margin: 0, fontSize: '13px', color: '#64748B' }}>Click any suggested question below for instant guidance.</p>
-                </div>
-
-                {/* Suggested Questions Pills */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {[
-                    "How do I create a design?",
-                    "How do I update measurements?",
-                    "How do I accept an order?",
-                    "Where is my payout?",
-                    "How do I report an issue?",
-                    "How do I upload a design?"
-                  ].map((q, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleAiQuestionClick(q)}
-                      style={{
-                        padding: '8px 14px',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        borderRadius: '20px',
-                        border: '1px solid #F72585',
-                        background: theme === 'dark' ? 'rgba(247,37,133,0.1)' : '#FFF0F6',
-                        color: '#F72585',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      💡 {q}
-                    </button>
-                  ))}
-                </div>
-
-                {/* AI Chat History */}
-                <div style={{ background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#F8FAFC', borderRadius: '12px', padding: '16px', minHeight: '180px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {aiChatMessages.map((msg, idx) => (
-                    <div key={idx} style={{ alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '80%', padding: '12px 16px', borderRadius: '12px', background: msg.sender === 'user' ? '#F72585' : (theme === 'dark' ? '#231E3B' : '#ffffff'), color: msg.sender === 'user' ? '#ffffff' : (theme === 'dark' ? '#ffffff' : '#172033'), fontSize: '13px', lineHeight: '1.4' }}>
-                      {msg.text}
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-            )}
-
-          </div>
+          <ChatSupportPage theme={theme} />
         )}
 
         {/* ==================================================================== */}
