@@ -704,48 +704,59 @@ export default function DesignerEarningsWorkspace({
 
             </div>
 
-            {/* Top Earning Category Highlight Card matching reference screenshot */}
+            {/* Top Earning Category Premium Compact Information Banner */}
             <div style={{ 
-              background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', 
+              background: isDark ? 'linear-gradient(90deg, rgba(236,22,127,0.12) 0%, rgba(236,22,127,0.06) 100%)' : 'linear-gradient(90deg, #FFF8FC 0%, #FFF5FA 100%)', 
               border: `1px solid ${pinkBorder}`, 
-              borderRadius: '12px', 
-              padding: '12px 18px', 
+              borderRadius: '10px', 
+              padding: '12px 24px', 
               display: 'flex', 
               alignItems: 'center', 
               justify: 'space-between', 
-              height: '64px', 
-              marginTop: '8px',
+              height: '74px', 
+              marginTop: '10px',
               position: 'relative',
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
+              boxShadow: '0 2px 8px rgba(236,22,127,0.06)',
+              overflow: 'visible'
             }}>
-              {/* Left Side: Pink Dress Icon & Category Name */}
+              {/* 1. Left: Icon + Category Label + Main Category Name */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
-                <span style={{ fontSize: '22px', display: 'flex', alignItems: 'center' }}>👗</span>
-                <div>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Top Earning Category</span>
-                  <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, display: 'block', marginTop: '1px' }}>Bridal Wear</strong>
+                <span style={{ fontSize: '24px', display: 'flex', alignItems: 'center', flexShrink: 0 }}>👗</span>
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.2', letterSpacing: '0.01em' }}>
+                    Top Earning Category
+                  </span>
+                  <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, lineHeight: '1.3', marginTop: '2px' }}>
+                    Bridal Wear
+                  </strong>
                 </div>
               </div>
 
-              {/* Middle Right: Amount & Percentage */}
-              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '75px' }}>
-                <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
-                <span style={{ fontSize: '10px', color: secTextColor, display: 'block', marginTop: '1px' }}>46.7% of total earnings</span>
+              {/* 2 & 3. Center/Right-Center: Main Value + Supporting Percentage/Stat */}
+              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '85px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <strong style={{ fontSize: '16px', fontWeight: 700, color: primaryPink, lineHeight: '1.2' }}>
+                  ₹22,450
+                </strong>
+                <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.3', marginTop: '2px' }}>
+                  46.7% of total earnings
+                </span>
               </div>
 
-              {/* Far Right: 3D Pink Mannequin Illustration aligned to bottom right base */}
+              {/* 4. Far Right: Decorative 3D Pink Mannequin Illustration */}
               <img 
                 src="/images/mannequin.png" 
                 alt="Mannequin Illustration" 
                 style={{ 
-                  height: '74px', 
+                  height: '76px', 
                   width: 'auto', 
                   objectFit: 'contain',
                   position: 'absolute',
-                  right: '8px',
-                  bottom: '-8px',
+                  right: '10px',
+                  bottom: '-6px',
                   zIndex: 1,
-                  filter: 'drop-shadow(0 2px 6px rgba(236,22,127,0.25))'
+                  filter: 'drop-shadow(0 2px 8px rgba(236,22,127,0.22))',
+                  pointerEvents: 'none'
                 }} 
               />
             </div>
