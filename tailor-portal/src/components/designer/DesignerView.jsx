@@ -14,6 +14,7 @@ import DesignerOrdersWorkspace from '../dashboard/DesignerOrdersWorkspace';
 import DesignerMeasurementVault from '../dashboard/DesignerMeasurementVault';
 import DesignerClientDirectory from '../dashboard/DesignerClientDirectory';
 import DesignerCalendarWorkspace from '../dashboard/DesignerCalendarWorkspace';
+import DesignerEarningsWorkspace from '../dashboard/DesignerEarningsWorkspace';
 
 export default function DesignerView({ theme, setTheme, currentUser, onLogout, onSwitchToTailor }) {
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard' | 'studio' | 'orders' | 'measurements' | 'customers' | 'calendar' | 'earnings' | 'support'
@@ -306,7 +307,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
       {/* MAIN CONTAINER */}
       <main style={{ 
-        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements' || activeTab === 'customers' || activeTab === 'calendar') ? '0' : '24px', 
+        padding: (activeTab === 'dashboard' || activeTab === 'studio' || activeTab === 'orders' || activeTab === 'measurements' || activeTab === 'customers' || activeTab === 'calendar' || activeTab === 'earnings') ? '0' : '24px', 
         maxWidth: '100%', 
         margin: '0',
         width: '100%'
@@ -390,73 +391,13 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 7: 💰 EARNINGS (DESIGNER RECHARTS ANALYTICS)                     */}
+        {/* TAB 7: 💰 EARNINGS (PREMIUM STITCHBEE EARNINGS DASHBOARD)           */}
         {/* ==================================================================== */}
         {activeTab === 'earnings' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            <div>
-              <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 700 }}>Designer Revenue Analytics</h1>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#64748B' }}>
-                Track total payouts, pending balances, and design category revenue breakdowns.
-              </p>
-            </div>
-
-            {/* Financial KPI Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>Total Earnings</span>
-                <strong style={{ fontSize: '26px', fontWeight: 700, display: 'block', color: '#F72585', marginTop: '6px' }}>₹48,200</strong>
-              </div>
-
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>Pending Payouts</span>
-                <strong style={{ fontSize: '26px', fontWeight: 700, display: 'block', color: '#F59E0B', marginTop: '6px' }}>₹12,350</strong>
-              </div>
-
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '14px', padding: '20px' }}>
-                <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>Completed Payouts</span>
-                <strong style={{ fontSize: '26px', fontWeight: 700, display: 'block', color: '#10B981', marginTop: '6px' }}>₹35,850</strong>
-              </div>
-            </div>
-
-            {/* Recharts Area & Bar Charts */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
-              
-              {/* Earnings Growth Area Chart */}
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px' }}>
-                <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 700 }}>Monthly Revenue Growth</h3>
-                <div style={{ width: '100%', height: '240px' }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={earningsTrendData}>
-                      <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                      <XAxis dataKey="month" stroke="#64748B" fontSize={11} />
-                      <YAxis stroke="#64748B" fontSize={11} />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="earnings" stroke="#F72585" fill="rgba(247,37,133,0.2)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-              {/* Category Bar Chart */}
-              <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '20px' }}>
-                <h3 style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: 700 }}>Earnings by Category</h3>
-                <div style={{ width: '100%', height: '240px' }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={categoryEarningsData}>
-                      <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
-                      <XAxis dataKey="category" stroke="#64748B" fontSize={11} />
-                      <YAxis stroke="#64748B" fontSize={11} />
-                      <Tooltip />
-                      <Bar dataKey="amount" fill="#8B12C9" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
+          <DesignerEarningsWorkspace 
+            theme={theme}
+            onNavigateTab={(tab) => setActiveTab(tab)}
+          />
         )}
 
         {/* ==================================================================== */}
