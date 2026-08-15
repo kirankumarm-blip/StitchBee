@@ -229,6 +229,7 @@ export default function DesignerStudioWorkspace({
           gap: 20px;
           align-items: stretch;
           width: 100%;
+          box-sizing: border-box;
         }
 
         .studio-outfit-cards-grid {
@@ -245,11 +246,25 @@ export default function DesignerStudioWorkspace({
           width: 100%;
         }
 
+        .studio-left-sidebar-aside {
+          width: 230px;
+        }
+
+        .studio-right-details-aside {
+          width: 350px;
+        }
+
         /* Responsive Breakpoints */
         @media (max-width: 1280px) {
           .designer-studio-grid-layout {
             grid-template-columns: 220px minmax(0, 1fr) 320px;
             gap: 16px;
+          }
+          .studio-left-sidebar-aside {
+            width: 220px;
+          }
+          .studio-right-details-aside {
+            width: 320px;
           }
           .studio-outfit-cards-grid {
             grid-template-columns: repeat(3, 1fr);
@@ -258,36 +273,40 @@ export default function DesignerStudioWorkspace({
 
         @media (max-width: 1024px) {
           .designer-studio-grid-layout {
-            grid-template-columns: 200px minmax(0, 1fr);
-          }
-          .studio-right-details-aside {
-            grid-column: span 2;
-            width: 100% !important;
-            padding-right: 0 !important;
-          }
-          .studio-outfit-cards-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .designer-studio-grid-layout {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+            padding: 0 16px !important;
           }
           .studio-left-sidebar-aside {
             width: 100% !important;
             min-height: auto !important;
             border-right: none !important;
             border-bottom: 1px solid ${borderColor} !important;
+            padding: 16px !important;
           }
           .studio-right-details-aside {
-            grid-column: span 1;
+            width: 100% !important;
+            padding-right: 0 !important;
+            padding-top: 0 !important;
           }
           .studio-outfit-cards-grid {
-            grid-template-columns: repeat(1, 1fr);
+            grid-template-columns: repeat(2, 1fr) !important;
           }
           .bottom-three-cols-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .designer-studio-grid-layout {
+            padding: 0 12px !important;
+          }
+          .studio-outfit-cards-grid {
+            grid-template-columns: repeat(1, 1fr) !important;
+          }
+          .studio-search-bar-wrapper {
+            width: 100% !important;
+            flex: 1 1 100% !important;
           }
         }
       `}</style>
@@ -445,19 +464,24 @@ export default function DesignerStudioWorkspace({
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               
               {/* Search Box */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '0 14px',
-                height: '40px',
-                borderRadius: '9px',
-                border: isSearchFocused ? '1px solid #EC168C' : `1px solid ${borderColor}`,
-                boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.12)' : 'none',
-                background: inputBg,
-                width: '280px',
-                transition: 'all 0.15s ease'
-              }}>
+              <div 
+                className="studio-search-bar-wrapper"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '0 14px',
+                  height: '40px',
+                  borderRadius: '9px',
+                  border: isSearchFocused ? '1px solid #EC168C' : `1px solid ${borderColor}`,
+                  boxShadow: isSearchFocused ? '0 0 0 3px rgba(236,22,140,0.12)' : 'none',
+                  background: inputBg,
+                  flex: '1 1 220px',
+                  minWidth: '180px',
+                  maxWidth: '100%',
+                  transition: 'all 0.15s ease'
+                }}
+              >
                 <Search size={15} color={mutedTextColor} />
                 <input 
                   type="text" 
@@ -486,7 +510,8 @@ export default function DesignerStudioWorkspace({
                   fontSize: '13px',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  transition: 'all 0.15s ease'
+                  transition: 'all 0.15s ease',
+                  whiteSpace: 'nowrap'
                 }}
               >
                 <Filter size={14} color={isFilterActive ? '#EC168C' : textColor} /> Filter
@@ -509,7 +534,8 @@ export default function DesignerStudioWorkspace({
                   alignItems: 'center',
                   gap: '6px',
                   boxShadow: '0 4px 14px rgba(236,22,140,0.22)',
-                  transition: 'all 0.15s ease'
+                  transition: 'all 0.15s ease',
+                  whiteSpace: 'nowrap'
                 }}
               >
                 <Plus size={16} color="#FFFFFF" /> <span style={{ color: '#FFFFFF', fontWeight: 600 }}>New Design</span>
@@ -533,7 +559,7 @@ export default function DesignerStudioWorkspace({
           }}>
 
             {/* Status Filter Tabs with Pink Underline Bar for Active Tab */}
-            <div style={{ display: 'flex', gap: '16px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '0px', overflowX: 'auto' }}>
+            <div className="studio-subtabs-bar" style={{ display: 'flex', gap: '16px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '0px', overflowX: 'auto', scrollbarWidth: 'none' }}>
               {[
                 { id: 'All Designs', label: 'All Designs' },
                 { id: 'In Progress', label: 'In Progress', count: 7 },
@@ -560,10 +586,12 @@ export default function DesignerStudioWorkspace({
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '8px',
-                      transition: 'all 0.15s ease'
+                      transition: 'all 0.15s ease',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0
                     }}
                   >
-                    <span style={{ color: isActive ? '#EC168C' : (isDark ? '#CBD5E1' : '#475569'), fontWeight: isActive ? 700 : 500 }}>
+                    <span style={{ color: isActive ? '#EC168C' : (isDark ? '#CBD5E1' : '#475569'), fontWeight: isActive ? 700 : 500, whiteSpace: 'nowrap' }}>
                       {cat.label}
                     </span>
                     {cat.count !== undefined && (
