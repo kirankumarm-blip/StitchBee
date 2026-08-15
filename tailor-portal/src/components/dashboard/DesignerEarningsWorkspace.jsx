@@ -704,23 +704,23 @@ export default function DesignerEarningsWorkspace({
 
             </div>
 
-            {/* Top Earning Category Highlight Card matching reference image */}
+            {/* Top Earning Category Highlight Card matching reference screenshot */}
             <div style={{ 
               background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', 
               border: `1px solid ${pinkBorder}`, 
               borderRadius: '12px', 
-              padding: '10px 18px', 
+              padding: '12px 18px', 
               display: 'flex', 
               alignItems: 'center', 
               justify: 'space-between', 
-              height: '66px', 
+              height: '64px', 
               marginTop: '8px',
               position: 'relative',
-              overflow: 'hidden'
+              boxSizing: 'border-box'
             }}>
               {/* Left Side: Pink Dress Icon & Category Name */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
-                <span style={{ fontSize: '24px', display: 'flex', alignItems: 'center' }}>👗</span>
+                <span style={{ fontSize: '22px', display: 'flex', alignItems: 'center' }}>👗</span>
                 <div>
                   <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Top Earning Category</span>
                   <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, display: 'block', marginTop: '1px' }}>Bridal Wear</strong>
@@ -728,24 +728,25 @@ export default function DesignerEarningsWorkspace({
               </div>
 
               {/* Middle Right: Amount & Percentage */}
-              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '80px' }}>
+              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '70px' }}>
                 <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
                 <span style={{ fontSize: '10px', color: secTextColor, display: 'block', marginTop: '1px' }}>46.7% of total earnings</span>
               </div>
 
-              {/* Far Right: 3D Pink Mannequin Illustration */}
+              {/* Far Right: Cleanly Fitted 3D Pink Mannequin Illustration */}
               <img 
                 src="/images/mannequin.png" 
                 alt="Mannequin Illustration" 
                 style={{ 
-                  height: '78px', 
+                  height: '52px', 
                   width: 'auto', 
                   objectFit: 'contain',
                   position: 'absolute',
-                  right: '12px',
-                  bottom: '-6px',
+                  right: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
                   zIndex: 1,
-                  filter: 'drop-shadow(0 2px 8px rgba(236,22,127,0.25))'
+                  filter: 'drop-shadow(0 2px 6px rgba(236,22,127,0.2))'
                 }} 
               />
             </div>
