@@ -709,20 +709,19 @@ export default function DesignerEarningsWorkspace({
               background: isDark ? 'linear-gradient(90deg, rgba(236,22,127,0.12) 0%, rgba(236,22,127,0.06) 100%)' : 'linear-gradient(90deg, #FFF8FC 0%, #FFF5FA 100%)', 
               border: `1px solid ${pinkBorder}`, 
               borderRadius: '10px', 
-              padding: '12px 24px', 
+              padding: '10px 18px', 
               display: 'flex', 
               alignItems: 'center', 
               justify: 'space-between', 
-              height: '74px', 
+              height: '68px', 
               marginTop: '10px',
               position: 'relative',
               boxSizing: 'border-box',
-              boxShadow: '0 2px 8px rgba(236,22,127,0.06)',
-              overflow: 'visible'
+              boxShadow: '0 2px 8px rgba(236,22,127,0.06)'
             }}>
               {/* 1. Left: Icon + Category Label + Main Category Name */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
-                <span style={{ fontSize: '24px', display: 'flex', alignItems: 'center', flexShrink: 0 }}>👗</span>
+                <span style={{ fontSize: '22px', display: 'flex', alignItems: 'center', flexShrink: 0 }}>👗</span>
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, lineHeight: '1.2', letterSpacing: '0.01em' }}>
                     Top Earning Category
@@ -733,8 +732,8 @@ export default function DesignerEarningsWorkspace({
                 </div>
               </div>
 
-              {/* 2 & 3. Center/Right-Center: Main Value + Supporting Percentage/Stat */}
-              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '85px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              {/* 2 & 3. Right Side Aligned: Main Value + Supporting Percentage/Stat */}
+              <div style={{ textAlign: 'right', zIndex: 2, paddingRight: '55px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <strong style={{ fontSize: '16px', fontWeight: 700, color: primaryPink, lineHeight: '1.2' }}>
                   ₹22,450
                 </strong>
@@ -743,19 +742,20 @@ export default function DesignerEarningsWorkspace({
                 </span>
               </div>
 
-              {/* 4. Far Right: Decorative 3D Pink Mannequin Illustration */}
+              {/* 4. Far Right: 100% Cleanly Fitted 3D Pink Mannequin Illustration */}
               <img 
                 src="/images/mannequin.png" 
                 alt="Mannequin Illustration" 
                 style={{ 
-                  height: '76px', 
+                  height: '56px', 
                   width: 'auto', 
                   objectFit: 'contain',
                   position: 'absolute',
                   right: '10px',
-                  bottom: '-6px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
                   zIndex: 1,
-                  filter: 'drop-shadow(0 2px 8px rgba(236,22,127,0.22))',
+                  filter: 'drop-shadow(0 2px 6px rgba(236,22,127,0.2))',
                   pointerEvents: 'none'
                 }} 
               />
