@@ -432,8 +432,8 @@ export default function DesignerEarningsWorkspace({
           alignItems: 'stretch'
         }}>
           
-          {/* LEFT 60% — REVENUE PERFORMANCE MULTI-LINE SPLINE CHART */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {/* LEFT 60% — REVENUE PERFORMANCE MULTI-LINE SPLINE CHART WITH DATA BADGES */}
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -452,7 +452,8 @@ export default function DesignerEarningsWorkspace({
                 </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '8px', padding: '3px' }}>
+              {/* Premium Timeframe Filter Pills */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '3px', background: isDark ? '#231D34' : '#F1F5F9', border: `1px solid ${borderColor}`, borderRadius: '9px', padding: '3px' }}>
                 {['Monthly', 'Quarterly', 'Yearly'].map(tf => {
                   const isActive = chartTimeframe === tf;
                   return (
@@ -460,14 +461,16 @@ export default function DesignerEarningsWorkspace({
                       key={tf}
                       onClick={() => setChartTimeframe(tf)}
                       style={{
-                        padding: '4px 10px',
+                        padding: '5px 14px',
                         fontSize: '11px',
-                        fontWeight: 600,
-                        borderRadius: '6px',
-                        border: isActive ? `1px solid ${primaryPink}` : '1px solid transparent',
-                        background: isActive ? '#FFF0F7' : 'transparent',
-                        color: isActive ? primaryPink : secTextColor,
-                        cursor: 'pointer'
+                        fontWeight: 700,
+                        borderRadius: '7px',
+                        border: 'none',
+                        background: isActive ? primaryPink : 'transparent',
+                        color: isActive ? '#FFFFFF' : secTextColor,
+                        boxShadow: isActive ? '0 2px 8px rgba(236,22,127,0.35)' : 'none',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
                       }}
                     >
                       {tf}
@@ -477,35 +480,100 @@ export default function DesignerEarningsWorkspace({
               </div>
             </div>
 
-            {/* Recharts AreaChart & Multi-Line Container */}
-            <div style={{ width: '100%', height: '260px' }}>
+            {/* Recharts Multi-Area Curve Chart with Vertex Data Badges */}
+            <div style={{ width: '100%', height: '280px' }}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={revenuePerformanceData} margin={{ top: 15, right: 20, left: -10, bottom: 0 }}>
+                <AreaChart data={revenuePerformanceData} margin={{ top: 25, right: 25, left: -10, bottom: 0 }}>
                   <defs>
                     <linearGradient id="totalEarningsGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#EC167F" stopOpacity={0.25} />
+                      <stop offset="5%" stopColor="#EC167F" stopOpacity={0.28} />
                       <stop offset="95%" stopColor="#EC167F" stopOpacity={0.0} />
+                    </linearGradient>
+                    <linearGradient id="completedPayoutsGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#16A36A" stopOpacity={0.22} />
+                      <stop offset="95%" stopColor="#16A36A" stopOpacity={0.0} />
+                    </linearGradient>
+                    <linearGradient id="pendingPayoutsGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.18} />
+                      <stop offset="95%" stopColor="#F59E0B" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke={softBorderColor} vertical={false} opacity={0.7} />
                   <XAxis dataKey="month" stroke={secTextColor} fontSize={11} tickLine={false} axisLine={false} />
-                  <YAxis stroke={secTextColor} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `${v / 1000}K`} />
+                  <YAxis stroke={secTextColor} fontSize={11} tickLine={false} axisLine={false} tickFormatter={v => `${v / 1000}K`} domain={[0, 60000]} />
                   <Tooltip content={<CustomRevenueTooltip />} />
-                  <Area type="monotone" dataKey="totalEarnings" stroke="#EC167F" strokeWidth={3} fill="url(#totalEarningsGrad)" fillOpacity={1} />
-                  <Area type="monotone" dataKey="completedPayouts" stroke="#16A36A" strokeWidth={2.5} fill="none" />
-                  <Area type="monotone" dataKey="pendingPayouts" stroke="#F59E0B" strokeWidth={2.5} fill="none" />
+                  
+                  {/* Total Earnings Area & Line */}
+                  <Area 
+                    type="monotone" 
+                    dataKey="totalEarnings" 
+                    stroke="#EC167F" 
+                    strokeWidth={3} 
+                    fill="url(#totalEarningsGrad)" 
+                    dot={(props) => {
+                      const { cx, cy, value, index } = props;
+                      if (!cx || !cy) return null;
+                      return (
+                        <g key={`pink-dot-${index}`}>
+                          <circle cx={cx} cy={cy} r={4.5} fill="#EC167F" stroke="#FFFFFF" strokeWidth={2} />
+                          <rect x={cx - 22} y={cy - 20} width={44} height={14} rx={4} fill="#FFF0F7" stroke="#F8B5D5" strokeWidth={0.8} />
+                          <text x={cx} y={cy - 9} fill="#EC167F" fontSize={9} fontWeight={700} textAnchor="middle">{value?.toLocaleString()}</text>
+                        </g>
+                      );
+                    }} 
+                  />
+
+                  {/* Completed Payouts Area & Line */}
+                  <Area 
+                    type="monotone" 
+                    dataKey="completedPayouts" 
+                    stroke="#16A36A" 
+                    strokeWidth={2.5} 
+                    fill="url(#completedPayoutsGrad)" 
+                    dot={(props) => {
+                      const { cx, cy, value, index } = props;
+                      if (!cx || !cy) return null;
+                      return (
+                        <g key={`green-dot-${index}`}>
+                          <circle cx={cx} cy={cy} r={4} fill="#16A36A" stroke="#FFFFFF" strokeWidth={2} />
+                          <rect x={cx - 22} y={cy + 8} width={44} height={14} rx={4} fill="#ECFDF3" stroke="#B7E8CF" strokeWidth={0.8} />
+                          <text x={cx} y={cy + 18} fill="#16A36A" fontSize={8.5} fontWeight={700} textAnchor="middle">{value?.toLocaleString()}</text>
+                        </g>
+                      );
+                    }} 
+                  />
+
+                  {/* Pending Payouts Area & Line */}
+                  <Area 
+                    type="monotone" 
+                    dataKey="pendingPayouts" 
+                    stroke="#F59E0B" 
+                    strokeWidth={2.5} 
+                    fill="url(#pendingPayoutsGrad)" 
+                    dot={(props) => {
+                      const { cx, cy, value, index } = props;
+                      if (!cx || !cy) return null;
+                      return (
+                        <g key={`orange-dot-${index}`}>
+                          <circle cx={cx} cy={cy} r={4} fill="#F59E0B" stroke="#FFFFFF" strokeWidth={2} />
+                          <rect x={cx - 22} y={cy + 8} width={44} height={14} rx={4} fill="#FFF7E6" stroke="#FAD89B" strokeWidth={0.8} />
+                          <text x={cx} y={cy + 18} fill="#F59E0B" fontSize={8.5} fontWeight={700} textAnchor="middle">{value?.toLocaleString()}</text>
+                        </g>
+                      );
+                    }} 
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '4px', fontSize: '10px', color: secTextColor, marginTop: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '4px', fontSize: '10px', color: secTextColor, marginTop: '4px' }}>
               <span>All amounts are in INR (₹)</span>
               <Info size={12} color={secTextColor} />
             </div>
           </div>
 
-          {/* RIGHT 40% — EARNINGS BY CATEGORY DONUT CHART */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '20px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {/* RIGHT 40% — EARNINGS BY CATEGORY ENLARGED DONUT CHART */}
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
               <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
                 Earnings by Category <Info size={14} color={secTextColor} />
@@ -522,20 +590,20 @@ export default function DesignerEarningsWorkspace({
               </select>
             </div>
 
-            {/* Donut Chart + Category Legend Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: '16px', alignItems: 'center', margin: '8px 0' }}>
+            {/* Enlarged Donut Chart (210px x 210px) + Category Legend Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '210px 1fr', gap: '16px', alignItems: 'center', margin: '8px 0' }}>
               
-              {/* Donut Container with Center Label */}
-              <div style={{ width: '160px', height: '160px', position: 'relative' }}>
+              {/* Enlarged Donut Container with Center Label */}
+              <div style={{ width: '210px', height: '210px', position: 'relative' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={categoryData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={52}
-                      outerRadius={75}
-                      paddingAngle={3}
+                      innerRadius={65}
+                      outerRadius={95}
+                      paddingAngle={4}
                       dataKey="value"
                     >
                       {categoryData.map((entry, index) => (
@@ -547,17 +615,17 @@ export default function DesignerEarningsWorkspace({
                 
                 {/* Center Total Text */}
                 <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Total</span>
-                  <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1.1 }}>₹48,200</strong>
+                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, display: 'block' }}>Total</span>
+                  <strong style={{ fontSize: '20px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1.1 }}>₹48,200</strong>
                 </div>
               </div>
 
               {/* Category Breakdown Table */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px' }}>
                 {categoryData.map((c, idx) => (
                   <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: c.color }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: c.color }} />
                       <span style={{ color: textColor, fontWeight: 500 }}>{c.name}</span>
                     </div>
                     <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
