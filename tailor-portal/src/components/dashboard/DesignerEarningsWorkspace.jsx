@@ -704,54 +704,50 @@ export default function DesignerEarningsWorkspace({
 
             </div>
 
-            {/* Top Earning Category Highlight Card with 3D Pink Mannequin Illustration */}
+            {/* Top Earning Category Highlight Card matching reference image */}
             <div style={{ 
               background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', 
               border: `1px solid ${pinkBorder}`, 
               borderRadius: '12px', 
-              padding: '10px 16px', 
+              padding: '10px 18px', 
               display: 'flex', 
               alignItems: 'center', 
               justify: 'space-between', 
-              height: '70px', 
+              height: '66px', 
               marginTop: '8px',
               position: 'relative',
               overflow: 'hidden'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', zIndex: 2 }}>
-                <img 
-                  src="/images/mannequin.png" 
-                  alt="Mannequin" 
-                  style={{ 
-                    height: '54px', 
-                    width: 'auto', 
-                    objectFit: 'contain',
-                    filter: 'drop-shadow(0 2px 8px rgba(236,22,127,0.3))'
-                  }} 
-                />
+              {/* Left Side: Pink Dress Icon & Category Name */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
+                <span style={{ fontSize: '24px', display: 'flex', alignItems: 'center' }}>👗</span>
                 <div>
-                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, display: 'block' }}>Top Earning Category</span>
-                  <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block', marginTop: '1px' }}>Bridal Wear</strong>
+                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Top Earning Category</span>
+                  <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, display: 'block', marginTop: '1px' }}>Bridal Wear</strong>
                 </div>
               </div>
 
-              <div style={{ textAlign: 'right', zIndex: 2, display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div>
-                  <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
-                  <span style={{ fontSize: '10px', color: secTextColor, display: 'block', marginTop: '1px' }}>46.7% of total earnings</span>
-                </div>
-                <img 
-                  src="/images/mannequin.png" 
-                  alt="Mannequin Accent" 
-                  style={{ 
-                    height: '60px', 
-                    width: 'auto', 
-                    objectFit: 'contain',
-                    opacity: 0.9,
-                    filter: 'drop-shadow(0 4px 10px rgba(236,22,127,0.35))'
-                  }} 
-                />
+              {/* Middle Right: Amount & Percentage */}
+              <div style={{ textAlign: 'right', zIndex: 2, marginRight: '80px' }}>
+                <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
+                <span style={{ fontSize: '10px', color: secTextColor, display: 'block', marginTop: '1px' }}>46.7% of total earnings</span>
               </div>
+
+              {/* Far Right: 3D Pink Mannequin Illustration */}
+              <img 
+                src="/images/mannequin.png" 
+                alt="Mannequin Illustration" 
+                style={{ 
+                  height: '78px', 
+                  width: 'auto', 
+                  objectFit: 'contain',
+                  position: 'absolute',
+                  right: '12px',
+                  bottom: '-6px',
+                  zIndex: 1,
+                  filter: 'drop-shadow(0 2px 8px rgba(236,22,127,0.25))'
+                }} 
+              />
             </div>
 
           </div>
