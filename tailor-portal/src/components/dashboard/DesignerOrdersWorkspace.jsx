@@ -276,15 +276,89 @@ export default function DesignerOrdersWorkspace({
   });
 
   return (
-    <div style={{
-      fontFamily: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
-      backgroundColor: pageBg,
-      color: textColor,
-      width: '100%',
-      minHeight: 'calc(100vh - 64px)',
-      boxSizing: 'border-box',
-      padding: '20px 24px'
-    }}>
+    <div 
+      className="orders-workspace-padding"
+      style={{
+        fontFamily: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
+        backgroundColor: pageBg,
+        color: textColor,
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        boxSizing: 'border-box',
+        padding: '20px 24px'
+      }}
+    >
+      <style>{`
+        .orders-kpi-5col-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        .orders-analytics-3col-grid {
+          display: grid;
+          grid-template-columns: 40% 30% 30%;
+          gap: 20px;
+          width: 100%;
+          align-items: stretch;
+        }
+
+        .orders-secondary-3col-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          width: 100%;
+          align-items: stretch;
+        }
+
+        @media (max-width: 1280px) {
+          .orders-kpi-5col-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+          .orders-analytics-3col-grid {
+            grid-template-columns: 1fr 1fr;
+          }
+          .orders-analytics-3col-grid > div:first-child {
+            grid-column: span 2;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .orders-workspace-padding {
+            padding: 16px !important;
+          }
+          .orders-kpi-5col-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .orders-analytics-3col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .orders-analytics-3col-grid > div:first-child {
+            grid-column: span 1 !important;
+          }
+          .orders-secondary-3col-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .orders-workspace-padding {
+            padding: 12px !important;
+          }
+          .orders-kpi-5col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .orders-search-wrapper {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+          }
+          .orders-status-subtabs button {
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+          }
+        }
+      `}</style>
       
       {/* 100% Full Width Screen Container */}
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '32px' }}>
@@ -398,12 +472,7 @@ export default function DesignerOrdersWorkspace({
         {/* ==================================================================== */}
         {/* 3. KPI SECTION (5 EQUAL COLUMNS DESKTOP CARDS WITH SPARK LINES)     */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '16px',
-          width: '100%'
-        }}>
+        <div className="orders-kpi-5col-grid">
           
           {/* KPI 1 — Total Orders */}
           <div style={{
@@ -576,13 +645,7 @@ export default function DesignerOrdersWorkspace({
         {/* ==================================================================== */}
         {/* 4. PRIMARY ANALYTICS SECTION (40% / 30% / 30% GRID DESKTOP)          */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '40% 30% 30%',
-          gap: '20px',
-          width: '100%',
-          alignItems: 'stretch'
-        }}>
+        <div className="orders-analytics-3col-grid">
           
           {/* Chart 1 — Orders Overview (Line/Area Chart) */}
           <div style={{
@@ -780,12 +843,7 @@ export default function DesignerOrdersWorkspace({
         {/* ==================================================================== */}
         {/* 5. SECONDARY ANALYTICS ROW (COMPLETION RATE, AVG TIME, ON-TIME)    */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '20px',
-          width: '100%'
-        }}>
+        <div className="orders-secondary-3col-grid">
           
           {/* Secondary 1 — Completion Rate */}
           <div style={{
@@ -885,7 +943,7 @@ export default function DesignerOrdersWorkspace({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '4px' }}>
             
             {/* Status Filter Tabs */}
-            <div style={{ display: 'flex', gap: '18px', overflowX: 'auto' }}>
+            <div className="orders-status-subtabs" style={{ display: 'flex', gap: '18px', overflowX: 'auto', scrollbarWidth: 'none' }}>
               {[
                 { id: 'All Orders', label: 'All Orders', count: ordersList.length },
                 { id: 'New Requests', label: 'New Requests', count: 7, badgeBg: '#7B2CFF' },
@@ -914,10 +972,12 @@ export default function DesignerOrdersWorkspace({
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '8px',
-                      transition: 'all 0.15s ease'
+                      transition: 'all 0.15s ease',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0
                     }}
                   >
-                    <span>{tab.label}</span>
+                    <span style={{ whiteSpace: 'nowrap' }}>{tab.label}</span>
                     {tab.count > 0 && (
                       <span style={{
                         fontSize: '10px',
@@ -938,18 +998,23 @@ export default function DesignerOrdersWorkspace({
             {/* Search Field & Action Buttons */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               
-              {/* Search Field (280px width, 40px height) */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '0 14px',
-                height: '40px',
-                borderRadius: '9px',
-                border: `1px solid ${borderColor}`,
-                background: inputBg,
-                width: '280px'
-              }}>
+              {/* Search Field */}
+              <div 
+                className="orders-search-wrapper"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '0 14px',
+                  height: '40px',
+                  borderRadius: '9px',
+                  border: `1px solid ${borderColor}`,
+                  background: inputBg,
+                  flex: '1 1 220px',
+                  minWidth: '180px',
+                  maxWidth: '100%'
+                }}
+              >
                 <Search size={15} color={mutedTextColor} />
                 <input 
                   type="text"
