@@ -168,102 +168,254 @@ export default function DesignerEarningsWorkspace({
         }}>
           
           {/* KPI Card 1 — Total Earnings */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '138px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Wallet size={20} color={primaryPink} />
+          <div style={{
+            background: cardBg,
+            border: `1px solid ${borderColor}`,
+            borderRadius: '14px',
+            padding: '18px',
+            boxShadow: '0 2px 8px rgba(16,24,40,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '142px',
+            position: 'relative'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+              <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Wallet size={22} color={primaryPink} />
                 </div>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: secTextColor }}>Total Earnings <Info size={13} color={secTextColor} /></span>
+                <div>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    Total Earnings <Info size={13} color={secTextColor} />
+                  </span>
+                  <strong style={{ fontSize: '26px', fontWeight: 700, color: primaryPink, lineHeight: 1.15, marginTop: '4px', display: 'block' }}>
+                    ₹48,200
+                  </strong>
+                  <span style={{ fontSize: '11px', color: '#16A36A', fontWeight: 600, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    <ArrowUpRight size={13} color="#16A36A" /> 18.6% vs Apr 2025
+                  </span>
+                </div>
               </div>
-              <div>
-                <strong style={{ fontSize: '25px', fontWeight: 700, color: primaryPink, lineHeight: 1.1, display: 'block' }}>₹48,200</strong>
-                <span style={{ fontSize: '11px', color: '#16A36A', fontWeight: 600, marginTop: '4px', display: 'block' }}>↑ 18.6% vs Apr 2025</span>
+
+              {/* Pink Sparkline SVG with Dots & Gradient Fill */}
+              <div style={{ width: '95px', height: '52px', flexShrink: 0 }}>
+                <svg width="100%" height="100%" viewBox="0 0 95 52">
+                  <defs>
+                    <linearGradient id="pinkSparkGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#EC167F" stopOpacity={0.28} />
+                      <stop offset="100%" stopColor="#EC167F" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <polygon points="0,52 0,38 15,26 30,34 45,18 60,28 75,12 95,4 95,52" fill="url(#pinkSparkGrad)" />
+                  <path d="M0,38 L15,26 L30,34 L45,18 L60,28 L75,12 L95,4" fill="none" stroke="#EC167F" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="0" cy="38" r="3" fill="#EC167F" />
+                  <circle cx="15" cy="26" r="3" fill="#EC167F" />
+                  <circle cx="30" cy="34" r="3" fill="#EC167F" />
+                  <circle cx="45" cy="18" r="3" fill="#EC167F" />
+                  <circle cx="60" cy="28" r="3" fill="#EC167F" />
+                  <circle cx="75" cy="12" r="3" fill="#EC167F" />
+                  <circle cx="95" cy="4" r="3.5" fill="#EC167F" stroke="#FFFFFF" strokeWidth="1.5" />
+                </svg>
               </div>
-              <button onClick={() => alert("Viewing detailed earnings statement...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', padding: 0 }}>View details →</button>
             </div>
-            
-            {/* Sparkline SVG */}
-            <div style={{ width: '80px', height: '45px' }}>
-              <svg width="100%" height="100%" viewBox="0 0 80 45">
-                <path d="M0,35 Q15,25 30,30 T60,15 T80,5" fill="none" stroke="#EC167F" strokeWidth="2.5" />
-                <circle cx="80" cy="5" r="3.5" fill="#EC167F" />
-              </svg>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <button 
+                onClick={() => alert("Viewing detailed total earnings breakdown...")}
+                style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: 0 }}
+              >
+                View details →
+              </button>
             </div>
           </div>
 
           {/* KPI Card 2 — Pending Payouts */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '138px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: isDark ? 'rgba(245,158,11,0.2)' : '#FFF7E6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Clock size={20} color="#F59E0B" />
+          <div style={{
+            background: cardBg,
+            border: `1px solid ${borderColor}`,
+            borderRadius: '14px',
+            padding: '18px',
+            boxShadow: '0 2px 8px rgba(16,24,40,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '142px',
+            position: 'relative'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+              <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: isDark ? 'rgba(245,158,11,0.2)' : '#FFF7E6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Clock size={22} color="#F59E0B" />
                 </div>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: secTextColor }}>Pending Payouts <Info size={13} color={secTextColor} /></span>
+                <div>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    Pending Payouts <Info size={13} color={secTextColor} />
+                  </span>
+                  <strong style={{ fontSize: '26px', fontWeight: 700, color: '#F59E0B', lineHeight: 1.15, marginTop: '4px', display: 'block' }}>
+                    ₹12,350
+                  </strong>
+                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Calendar size={13} color="#F59E0B" /> 2 payouts pending
+                  </span>
+                </div>
               </div>
-              <div>
-                <strong style={{ fontSize: '25px', fontWeight: 700, color: '#F59E0B', lineHeight: 1.1, display: 'block' }}>₹12,350</strong>
-                <span style={{ fontSize: '11px', color: secTextColor, marginTop: '4px', display: 'block' }}>2 payouts pending</span>
+
+              {/* Orange Sparkline SVG with Dots & Gradient Fill */}
+              <div style={{ width: '95px', height: '52px', flexShrink: 0 }}>
+                <svg width="100%" height="100%" viewBox="0 0 95 52">
+                  <defs>
+                    <linearGradient id="orangeSparkGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.28} />
+                      <stop offset="100%" stopColor="#F59E0B" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <polygon points="0,52 0,40 15,28 30,36 45,20 60,30 75,16 95,8 95,52" fill="url(#orangeSparkGrad)" />
+                  <path d="M0,40 L15,28 L30,36 L45,20 L60,30 L75,16 L95,8" fill="none" stroke="#F59E0B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="0" cy="40" r="3" fill="#F59E0B" />
+                  <circle cx="15" cy="28" r="3" fill="#F59E0B" />
+                  <circle cx="30" cy="36" r="3" fill="#F59E0B" />
+                  <circle cx="45" cy="20" r="3" fill="#F59E0B" />
+                  <circle cx="60" cy="30" r="3" fill="#F59E0B" />
+                  <circle cx="75" cy="16" r="3" fill="#F59E0B" />
+                  <circle cx="95" cy="8" r="3.5" fill="#F59E0B" stroke="#FFFFFF" strokeWidth="1.5" />
+                </svg>
               </div>
-              <button onClick={() => alert("Viewing pending payouts...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', padding: 0 }}>View payouts →</button>
             </div>
-            
-            {/* Orange Sparkline SVG */}
-            <div style={{ width: '80px', height: '45px' }}>
-              <svg width="100%" height="100%" viewBox="0 0 80 45">
-                <path d="M0,25 Q20,35 40,20 T60,28 T80,10" fill="none" stroke="#F59E0B" strokeWidth="2.5" />
-                <circle cx="80" cy="10" r="3.5" fill="#F59E0B" />
-              </svg>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <button 
+                onClick={() => alert("Viewing pending payout schedule...")}
+                style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: 0 }}
+              >
+                View payouts →
+              </button>
             </div>
           </div>
 
           {/* KPI Card 3 — Completed Payouts */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '138px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: isDark ? 'rgba(22,163,106,0.2)' : '#ECFDF3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Banknote size={20} color="#16A36A" />
+          <div style={{
+            background: cardBg,
+            border: `1px solid ${borderColor}`,
+            borderRadius: '14px',
+            padding: '18px',
+            boxShadow: '0 2px 8px rgba(16,24,40,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '142px',
+            position: 'relative'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+              <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: isDark ? 'rgba(22,163,106,0.2)' : '#ECFDF3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Banknote size={22} color="#16A36A" />
                 </div>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: secTextColor }}>Completed Payouts <Info size={13} color={secTextColor} /></span>
+                <div>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    Completed Payouts <Info size={13} color={secTextColor} />
+                  </span>
+                  <strong style={{ fontSize: '26px', fontWeight: 700, color: '#16A36A', lineHeight: 1.15, marginTop: '4px', display: 'block' }}>
+                    ₹35,850
+                  </strong>
+                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <CheckCircle2 size={13} color="#16A36A" /> 8 payouts completed
+                  </span>
+                </div>
               </div>
-              <div>
-                <strong style={{ fontSize: '25px', fontWeight: 700, color: '#16A36A', lineHeight: 1.1, display: 'block' }}>₹35,850</strong>
-                <span style={{ fontSize: '11px', color: secTextColor, marginTop: '4px', display: 'block' }}>8 payouts completed</span>
+
+              {/* Green Sparkline SVG with Dots & Gradient Fill */}
+              <div style={{ width: '95px', height: '52px', flexShrink: 0 }}>
+                <svg width="100%" height="100%" viewBox="0 0 95 52">
+                  <defs>
+                    <linearGradient id="greenSparkGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#16A36A" stopOpacity={0.28} />
+                      <stop offset="100%" stopColor="#16A36A" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <polygon points="0,52 0,36 15,26 30,32 45,14 60,24 75,10 95,6 95,52" fill="url(#greenSparkGrad)" />
+                  <path d="M0,36 L15,26 L30,32 L45,14 L60,24 L75,10 L95,6" fill="none" stroke="#16A36A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="0" cy="36" r="3" fill="#16A36A" />
+                  <circle cx="15" cy="26" r="3" fill="#16A36A" />
+                  <circle cx="30" cy="32" r="3" fill="#16A36A" />
+                  <circle cx="45" cy="14" r="3" fill="#16A36A" />
+                  <circle cx="60" cy="24" r="3" fill="#16A36A" />
+                  <circle cx="75" cy="10" r="3" fill="#16A36A" />
+                  <circle cx="95" cy="6" r="3.5" fill="#16A36A" stroke="#FFFFFF" strokeWidth="1.5" />
+                </svg>
               </div>
-              <button onClick={() => alert("Viewing completed payout history...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', padding: 0 }}>View history →</button>
             </div>
-            
-            {/* Green Sparkline SVG */}
-            <div style={{ width: '80px', height: '45px' }}>
-              <svg width="100%" height="100%" viewBox="0 0 80 45">
-                <path d="M0,30 Q20,25 40,28 T60,15 T80,8" fill="none" stroke="#16A36A" strokeWidth="2.5" />
-                <circle cx="80" cy="8" r="3.5" fill="#16A36A" />
-              </svg>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <button 
+                onClick={() => alert("Viewing completed payout history...")}
+                style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: 0 }}
+              >
+                View history →
+              </button>
             </div>
           </div>
 
           {/* KPI Card 4 — This Month Orders */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '138px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: isDark ? 'rgba(124,58,237,0.2)' : '#F4EEFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Receipt size={20} color="#7C3AED" />
+          <div style={{
+            background: cardBg,
+            border: `1px solid ${borderColor}`,
+            borderRadius: '14px',
+            padding: '18px',
+            boxShadow: '0 2px 8px rgba(16,24,40,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '142px',
+            position: 'relative'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+              <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '50%', background: isDark ? 'rgba(124,58,237,0.2)' : '#F4EEFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Receipt size={22} color="#7C3AED" />
                 </div>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: secTextColor }}>This Month Orders <Info size={13} color={secTextColor} /></span>
+                <div>
+                  <span style={{ fontSize: '13px', fontWeight: 600, color: textColor, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    This Month Orders <Info size={13} color={secTextColor} />
+                  </span>
+                  <strong style={{ fontSize: '26px', fontWeight: 700, color: '#7C3AED', lineHeight: 1.15, marginTop: '4px', display: 'block' }}>
+                    32
+                  </strong>
+                  <span style={{ fontSize: '11px', color: '#16A36A', fontWeight: 600, marginTop: '4px', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    <ArrowUpRight size={13} color="#16A36A" /> 12 vs Apr 2025
+                  </span>
+                </div>
               </div>
-              <div>
-                <strong style={{ fontSize: '25px', fontWeight: 700, color: '#7C3AED', lineHeight: 1.1, display: 'block' }}>32</strong>
-                <span style={{ fontSize: '11px', color: '#16A36A', fontWeight: 600, marginTop: '4px', display: 'block' }}>↑ 12 vs Apr 2025</span>
+
+              {/* Purple Sparkline SVG with Dots & Gradient Fill */}
+              <div style={{ width: '95px', height: '52px', flexShrink: 0 }}>
+                <svg width="100%" height="100%" viewBox="0 0 95 52">
+                  <defs>
+                    <linearGradient id="purpleSparkGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#7C3AED" stopOpacity={0.28} />
+                      <stop offset="100%" stopColor="#7C3AED" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <polygon points="0,52 0,38 15,24 30,32 45,14 60,26 75,12 95,4 95,52" fill="url(#purpleSparkGrad)" />
+                  <path d="M0,38 L15,24 L30,32 L45,14 L60,26 L75,12 L95,4" fill="none" stroke="#7C3AED" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="0" cy="38" r="3" fill="#7C3AED" />
+                  <circle cx="15" cy="24" r="3" fill="#7C3AED" />
+                  <circle cx="30" cy="32" r="3" fill="#7C3AED" />
+                  <circle cx="45" cy="14" r="3" fill="#7C3AED" />
+                  <circle cx="60" cy="26" r="3" fill="#7C3AED" />
+                  <circle cx="75" cy="12" r="3" fill="#7C3AED" />
+                  <circle cx="95" cy="4" r="3.5" fill="#7C3AED" stroke="#FFFFFF" strokeWidth="1.5" />
+                </svg>
               </div>
-              <button onClick={() => onNavigateTab && onNavigateTab('orders')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', textAlign: 'left', padding: 0 }}>View orders →</button>
             </div>
-            
-            {/* Purple Sparkline SVG */}
-            <div style={{ width: '80px', height: '45px' }}>
-              <svg width="100%" height="100%" viewBox="0 0 80 45">
-                <path d="M0,32 Q20,18 40,24 T60,20 T80,5" fill="none" stroke="#7C3AED" strokeWidth="2.5" />
-                <circle cx="80" cy="5" r="3.5" fill="#7C3AED" />
-              </svg>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <button 
+                onClick={() => onNavigateTab && onNavigateTab('orders')}
+                style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px', padding: 0 }}
+              >
+                View orders →
+              </button>
             </div>
           </div>
 
