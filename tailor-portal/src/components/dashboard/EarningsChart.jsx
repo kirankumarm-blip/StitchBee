@@ -98,7 +98,7 @@ export default function EarningsChart({ data, summary, theme }) {
       </div>
 
       {/* Premium Summary Metrics Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', margin: '16px 0 10px 0' }}>
+      <div className="earnings-summary-grid" style={{ margin: '16px 0 10px 0' }}>
         <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '10px', padding: '10px 12px' }}>
           <span style={{ fontSize: '11px', color: secTextColor, display: 'block', fontWeight: 500 }}>Total Earnings</span>
           <strong style={{ fontSize: '18px', fontWeight: 700, color: '#EC167F', marginTop: '2px', display: 'block' }}>
@@ -126,7 +126,7 @@ export default function EarningsChart({ data, summary, theme }) {
       </div>
 
       {/* Interactive Recharts AreaChart with Pink-Purple Gradient */}
-      <div style={{ width: '100%', height: '240px' }}>
+      <div style={{ width: '100%', height: '220px', minHeight: '180px', overflow: 'hidden' }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={currentChartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
             <defs>

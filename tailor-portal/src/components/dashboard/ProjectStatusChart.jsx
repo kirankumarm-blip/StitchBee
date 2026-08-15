@@ -76,14 +76,14 @@ export default function ProjectStatusChart({ data }) {
         </div>
 
         {/* Legend List */}
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px', overflow: 'hidden' }}>
           {data && data.map((item, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
-                <span style={{ color: 'var(--sb-navy)', fontWeight: 600 }}>{item.name}</span>
+            <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', gap: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, overflow: 'hidden' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color, flexShrink: 0 }} />
+                <span style={{ color: 'var(--sb-navy)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</span>
               </div>
-              <strong style={{ fontSize: '12px', color: 'var(--sb-navy)' }}>
+              <strong style={{ fontSize: '12px', color: 'var(--sb-navy)', flexShrink: 0 }}>
                 {item.value} <span style={{ color: 'var(--sb-text-secondary)', fontWeight: 400, fontSize: '11px' }}>({item.percentage})</span>
               </strong>
             </div>

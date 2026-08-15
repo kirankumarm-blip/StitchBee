@@ -528,24 +528,51 @@ body.dark-mode .designer-dashboard-fullwidth,
 @media (max-width: 1024px) {
   .designer-dashboard-fullwidth {
     padding: 16px !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
   .section-analytics-grid,
   .section-bottom-grid,
   .kpi-cards-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
+  .three-column-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .three-column-grid > div:first-child {
+    grid-column: span 2 !important;
+  }
 }
 
 @media (max-width: 768px) {
   .designer-dashboard-fullwidth {
     padding: 12px !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
   .section-analytics-grid,
   .section-bottom-grid,
-  .kpi-cards-grid {
+  .kpi-cards-grid,
+  .three-column-grid,
+  .earnings-summary-grid {
     grid-template-columns: 1fr !important;
+    width: 100% !important;
   }
-  .quick-action-buttons-row {
+  .three-column-grid > div,
+  .three-column-grid > div:first-child {
+    grid-column: span 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .quick-action-buttons-row,
+  .table-filter-bar,
+  .project-card-row {
     flex-wrap: wrap !important;
+  }
+  .earnings-summary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
   }
 }
