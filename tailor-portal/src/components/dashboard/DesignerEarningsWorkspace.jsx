@@ -704,19 +704,53 @@ export default function DesignerEarningsWorkspace({
 
             </div>
 
-            {/* Top Earning Category Highlight Card */}
-            <div style={{ background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', border: `1px solid ${pinkBorder}`, borderRadius: '10px', padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px', marginTop: '6px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '22px' }}>👗</span>
+            {/* Top Earning Category Highlight Card with 3D Pink Mannequin Illustration */}
+            <div style={{ 
+              background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', 
+              border: `1px solid ${pinkBorder}`, 
+              borderRadius: '12px', 
+              padding: '10px 16px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justify: 'space-between', 
+              height: '70px', 
+              marginTop: '8px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', zIndex: 2 }}>
+                <img 
+                  src="/images/mannequin.png" 
+                  alt="Mannequin" 
+                  style={{ 
+                    height: '54px', 
+                    width: 'auto', 
+                    objectFit: 'contain',
+                    filter: 'drop-shadow(0 2px 8px rgba(236,22,127,0.3))'
+                  }} 
+                />
                 <div>
-                  <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 500, display: 'block' }}>Top Earning Category</span>
-                  <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, display: 'block' }}>Bridal Wear</strong>
+                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, display: 'block' }}>Top Earning Category</span>
+                  <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block', marginTop: '1px' }}>Bridal Wear</strong>
                 </div>
               </div>
 
-              <div style={{ textAlign: 'right' }}>
-                <strong style={{ fontSize: '14px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
-                <span style={{ fontSize: '10px', color: secTextColor, display: 'block' }}>46.7% of total earnings</span>
+              <div style={{ textAlign: 'right', zIndex: 2, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div>
+                  <strong style={{ fontSize: '15px', fontWeight: 700, color: primaryPink, display: 'block' }}>₹22,450</strong>
+                  <span style={{ fontSize: '10px', color: secTextColor, display: 'block', marginTop: '1px' }}>46.7% of total earnings</span>
+                </div>
+                <img 
+                  src="/images/mannequin.png" 
+                  alt="Mannequin Accent" 
+                  style={{ 
+                    height: '60px', 
+                    width: 'auto', 
+                    objectFit: 'contain',
+                    opacity: 0.9,
+                    filter: 'drop-shadow(0 4px 10px rgba(236,22,127,0.35))'
+                  }} 
+                />
               </div>
             </div>
 
