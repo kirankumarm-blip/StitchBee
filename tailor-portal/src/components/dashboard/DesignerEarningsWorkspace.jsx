@@ -461,19 +461,21 @@ export default function DesignerEarningsWorkspace({
                       key={tf}
                       onClick={() => setChartTimeframe(tf)}
                       style={{
-                        padding: '5px 14px',
+                        padding: '6px 14px',
                         fontSize: '11px',
                         fontWeight: 700,
                         borderRadius: '7px',
                         border: 'none',
-                        background: isActive ? primaryPink : 'transparent',
+                        background: isActive ? '#EC167F' : 'transparent',
                         color: isActive ? '#FFFFFF' : secTextColor,
-                        boxShadow: isActive ? '0 2px 8px rgba(236,22,127,0.35)' : 'none',
+                        boxShadow: isActive ? '0 2px 10px rgba(236,22,127,0.4)' : 'none',
                         cursor: 'pointer',
                         transition: 'all 0.2s ease'
                       }}
                     >
-                      {tf}
+                      <span style={{ color: isActive ? '#FFFFFF' : secTextColor, fontWeight: 700 }}>
+                        {tf}
+                      </span>
                     </button>
                   );
                 })}
