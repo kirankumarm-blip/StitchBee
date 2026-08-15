@@ -285,6 +285,9 @@ body.dark-mode .designer-dashboard-fullwidth,
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.2s ease;
+  overflow: hidden !important;
+  position: relative !important;
+  box-sizing: border-box !important;
 }
 
 .kpi-card-box:hover {
@@ -329,6 +332,9 @@ body.dark-mode .designer-dashboard-fullwidth,
   align-items: flex-end;
   justify-content: space-between;
   margin-top: 8px;
+  overflow: hidden !important;
+  position: relative !important;
+  gap: 8px;
 }
 
 .kpi-trend-text {

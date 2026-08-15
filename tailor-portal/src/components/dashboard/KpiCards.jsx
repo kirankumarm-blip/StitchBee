@@ -45,9 +45,9 @@ export default function KpiCards({ stats }) {
 
             {/* REAL Recharts Sparkline */}
             {stat.sparkline && (
-              <div style={{ width: '64px', height: '28px' }}>
+              <div style={{ width: '64px', height: '28px', minWidth: '64px', minHeight: '28px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={stat.sparkline}>
+                  <LineChart data={stat.sparkline} margin={{ top: 4, right: 4, left: 4, bottom: 4 }}>
                     <Line 
                       type="monotone" 
                       dataKey="val" 
