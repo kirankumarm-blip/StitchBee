@@ -312,6 +312,21 @@ export default function DesignerOrdersWorkspace({
           align-items: stretch;
         }
 
+        .orders-bottom-summary-grid {
+          display: grid;
+          grid-template-columns: 65% 35%;
+          gap: 20px;
+          width: 100%;
+          align-items: stretch;
+        }
+
+        .orders-weekly-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          margin-top: 16px;
+        }
+
         @media (max-width: 1280px) {
           .orders-kpi-5col-grid {
             grid-template-columns: repeat(3, 1fr);
@@ -340,6 +355,9 @@ export default function DesignerOrdersWorkspace({
           .orders-secondary-3col-grid {
             grid-template-columns: 1fr !important;
           }
+          .orders-bottom-summary-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
 
         @media (max-width: 640px) {
@@ -348,6 +366,10 @@ export default function DesignerOrdersWorkspace({
           }
           .orders-kpi-5col-grid {
             grid-template-columns: 1fr !important;
+          }
+          .orders-weekly-stats-grid {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
           }
           .orders-search-wrapper {
             width: 100% !important;
@@ -1267,13 +1289,7 @@ export default function DesignerOrdersWorkspace({
         {/* ==================================================================== */}
         {/* 7. BOTTOM ROW: WEEKLY PERFORMANCE SUMMARY + PERFORMANCE INSIGHT CARD */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '70% 30%',
-          gap: '20px',
-          width: '100%',
-          alignItems: 'stretch'
-        }}>
+        <div className="orders-bottom-summary-grid">
           
           {/* Col 1 — Weekly Performance Summary Card */}
           <div style={{
@@ -1291,7 +1307,7 @@ export default function DesignerOrdersWorkspace({
               <span style={{ fontSize: '12px', color: secTextColor }}>18 May – 24 May 2026</span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginTop: '16px' }}>
+            <div className="orders-weekly-stats-grid">
               <div>
                 <span style={{ fontSize: '12px', color: secTextColor, display: 'block' }}>Orders Completed</span>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '4px' }}>
