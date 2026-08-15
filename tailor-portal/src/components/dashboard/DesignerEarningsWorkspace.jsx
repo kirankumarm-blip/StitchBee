@@ -35,6 +35,7 @@ export default function DesignerEarningsWorkspace({
   const [dateRange, setDateRange] = useState('01 May 2025 – 31 May 2025');
   const [chartTimeframe, setChartTimeframe] = useState('Monthly'); // 'Monthly' | 'Quarterly' | 'Yearly'
   const [categoryFilter, setCategoryFilter] = useState('All Categories');
+  const [hoveredCategoryIndex, setHoveredCategoryIndex] = useState(null);
 
   // Revenue Performance Chart Data (Matching Exact Image Dataset)
   const revenuePerformanceData = [
@@ -592,10 +593,10 @@ export default function DesignerEarningsWorkspace({
               </select>
             </div>
 
-            {/* Enlarged Donut Chart (210px x 210px) + Category Legend Grid */}
+            {/* Enlarged Donut Chart (210px x 210px) + Category Legend Grid with Bi-directional Hover */}
             <div style={{ display: 'grid', gridTemplateColumns: '210px 1fr', gap: '16px', alignItems: 'center', margin: '8px 0' }}>
               
-              {/* Enlarged Donut Container with Center Label */}
+              {/* Enlarged Donut Container with Dynamic Center Label */}
               <div style={{ width: '210px', height: '210px', position: 'relative' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -607,35 +608,98 @@ export default function DesignerEarningsWorkspace({
                       outerRadius={95}
                       paddingAngle={4}
                       dataKey="value"
+                      onMouseEnter={(_, idx) => setHoveredCategoryIndex(idx)}
+                      onMouseLeave={() => setHoveredCategoryIndex(null)}
                     >
-                      {categoryData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
+                      {categoryData.map((entry, index) => {
+                        const isHovered = hoveredCategoryIndex === index;
+                        return (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={entry.color} 
+                            stroke={isHovered ? '#FFFFFF' : 'none'}
+                            strokeWidth={isHovered ? 3 : 0}
+                            opacity={hoveredCategoryIndex === null || isHovered ? 1 : 0.4}
+                            style={{ 
+                              transform: isHovered ? 'scale(1.06)' : 'scale(1)', 
+                              transformOrigin: 'center center', 
+                              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
+                              cursor: 'pointer',
+                              filter: isHovered ? `drop-shadow(0 4px 12px ${entry.color}88)` : 'none'
+                            }}
+                          />
+                        );
+                      })}
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
                 
-                {/* Center Total Text */}
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                  <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, display: 'block' }}>Total</span>
-                  <strong style={{ fontSize: '20px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1.1 }}>₹48,200</strong>
+                {/* Center Label: Switches dynamically on hover */}
+                <div style={{ 
+                  position: 'absolute', 
+                  top: '50%', 
+                  left: '50%', 
+                  transform: 'translate(-50%, -50%)', 
+                  textAlign: 'center',
+                  transition: 'all 0.25s ease',
+                  pointerEvents: 'none',
+                  width: '120px'
+                }}>
+                  {hoveredCategoryIndex !== null ? (
+                    <>
+                      <span style={{ fontSize: '10px', color: categoryData[hoveredCategoryIndex].color, fontWeight: 700, display: 'block', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        {categoryData[hoveredCategoryIndex].name}
+                      </span>
+                      <strong style={{ fontSize: '18px', fontWeight: 700, color: categoryData[hoveredCategoryIndex].color, display: 'block', lineHeight: 1.15, margin: '2px 0' }}>
+                        ₹{categoryData[hoveredCategoryIndex].value.toLocaleString()}
+                      </strong>
+                      <span style={{ fontSize: '10px', color: secTextColor, fontWeight: 600 }}>
+                        {categoryData[hoveredCategoryIndex].percentage}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, display: 'block' }}>Total</span>
+                      <strong style={{ fontSize: '20px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1.1 }}>₹48,200</strong>
+                    </>
+                  )}
                 </div>
               </div>
 
-              {/* Category Breakdown Table */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '11px' }}>
-                {categoryData.map((c, idx) => (
-                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: c.color }} />
-                      <span style={{ color: textColor, fontWeight: 500 }}>{c.name}</span>
+              {/* Category Breakdown Table with Interactive Hover Sync */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '11px' }}>
+                {categoryData.map((c, idx) => {
+                  const isHovered = hoveredCategoryIndex === idx;
+                  return (
+                    <div 
+                      key={idx} 
+                      onMouseEnter={() => setHoveredCategoryIndex(idx)}
+                      onMouseLeave={() => setHoveredCategoryIndex(null)}
+                      style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center',
+                        padding: '6px 10px',
+                        borderRadius: '8px',
+                        background: isHovered ? (isDark ? 'rgba(236,22,127,0.18)' : '#FFF0F7') : 'transparent',
+                        border: isHovered ? `1px solid ${pinkBorder}` : '1px solid transparent',
+                        transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
+                        boxShadow: isHovered ? '0 2px 8px rgba(236,22,127,0.15)' : 'none',
+                        transition: 'all 0.25s ease',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: c.color, boxShadow: isHovered ? `0 0 8px ${c.color}` : 'none' }} />
+                        <span style={{ color: isHovered ? primaryPink : textColor, fontWeight: isHovered ? 700 : 500 }}>{c.name}</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <strong style={{ color: isHovered ? primaryPink : textColor, fontWeight: isHovered ? 700 : 600 }}>₹{c.value.toLocaleString()}</strong>
+                        <span style={{ color: isHovered ? primaryPink : secTextColor, fontSize: '10px', width: '38px', textAlign: 'right', fontWeight: isHovered ? 700 : 500 }}>{c.percentage}</span>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                      <strong style={{ color: textColor, fontWeight: 600 }}>₹{c.value.toLocaleString()}</strong>
-                      <span style={{ color: secTextColor, fontSize: '10px', width: '38px', textAlign: 'right' }}>{c.percentage}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
             </div>
