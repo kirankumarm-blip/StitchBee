@@ -940,9 +940,21 @@ export default function DesignerEarningsWorkspace({
               </table>
             </div>
 
-            {/* Next Payout Highlight Card */}
-            <div style={{ background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', border: `1px solid ${pinkBorder}`, borderRadius: '12px', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '80px', position: 'relative' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Next Payout Highlight Card with 3D Pink Gift Wallet Illustration */}
+            <div style={{ 
+              background: isDark ? 'rgba(236,22,127,0.1)' : '#FFF8FC', 
+              border: `1px solid ${pinkBorder}`, 
+              borderRadius: '12px', 
+              padding: '12px 16px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between', 
+              height: '82px', 
+              position: 'relative',
+              boxSizing: 'border-box',
+              overflow: 'hidden'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
                 <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Calendar size={20} color={primaryPink} />
                 </div>
@@ -952,17 +964,22 @@ export default function DesignerEarningsWorkspace({
                   <span style={{ fontSize: '10px', color: primaryPink, fontWeight: 600, marginTop: '1px', display: 'block' }}>2 payouts scheduled</span>
                 </div>
               </div>
-
-              {/* 3D Gift / Wallet Graphic SVG */}
-              <div style={{ width: '48px', height: '48px', flexShrink: 0 }}>
-                <svg width="100%" height="100%" viewBox="0 0 48 48" fill="none">
-                  <rect x="6" y="16" width="36" height="24" rx="6" fill="#EC167F" />
-                  <path d="M6,20 C6,17.8 7.8,16 10,16 L38,16 C40.2,16 42,17.8 42,20 L42,22 L6,22 L6,20 Z" fill="#F7B6D5" />
-                  <rect x="22" y="16" width="4" height="24" fill="#FFFFFF" opacity="0.35" />
-                  <circle cx="36" cy="28" r="5" fill="#F59E0B" stroke="#FFFFFF" strokeWidth="1.5" />
-                  <path d="M24 16 L24 10 C24 8 20 8 20 10 L20 16 Z" fill="#EC167F" />
-                </svg>
-              </div>
+              {/* 3D Pink Wallet Illustration fitted perfectly on right side */}
+              <img 
+                src="/images/pink_wallet.png" 
+                alt="Pink Wallet Payout" 
+                style={{ 
+                  height: '74px', 
+                  width: 'auto', 
+                  objectFit: 'contain',
+                  position: 'absolute',
+                  right: '8px',
+                  bottom: '-4px',
+                  zIndex: 1,
+                  filter: 'drop-shadow(0 4px 10px rgba(236,22,127,0.25))',
+                  pointerEvents: 'none'
+                }} 
+              />
             </div>
           </div>
 
