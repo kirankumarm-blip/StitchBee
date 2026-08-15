@@ -647,8 +647,27 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         </>
       )}
 
-      {/* MOBILE BOTTOM FLOATING NAVIGATION BAR */}
-      <footer className="mobile-bottom-nav">
+      {/* MOBILE BOTTOM FLOATING ANIMATED NAVIGATION BAR */}
+      <footer 
+        className="mobile-bottom-nav"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '66px',
+          zIndex: 99999,
+          background: theme === 'dark' ? 'rgba(15,12,27,0.92)' : 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
+          boxShadow: theme === 'dark' ? '0 -4px 25px rgba(0,0,0,0.5)' : '0 -4px 20px rgba(0,0,0,0.08)',
+          padding: '0 12px',
+          boxSizing: 'border-box',
+          alignItems: 'center',
+          justify: 'space-around'
+        }}
+      >
         {[
           { id: 'dashboard', label: 'Home', icon: <Home size={18} /> },
           { id: 'studio', label: 'Studio', icon: <Palette size={18} /> },
@@ -656,7 +675,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
           { id: 'earnings', label: 'Earnings', icon: <DollarSign size={18} /> },
           { id: 'menu', label: 'Menu', icon: <Menu size={18} />, isMenu: true }
         ].map(item => {
-          const isActive = activeTab === item.id;
+          const isActive = item.isMenu ? sidebarOpen : activeTab === item.id;
           return (
             <button
               key={item.id}
@@ -674,44 +693,53 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justify: 'space-between',
+                justify: 'center',
                 position: 'relative',
                 cursor: 'pointer',
                 flex: 1,
-                height: '54px',
+                height: '100%',
                 padding: 0
               }}
             >
+              {/* Floating Animated Circle Bubble containing Icon */}
               <div
                 style={{
-                  width: '38px',
-                  height: '38px',
+                  width: '40px',
+                  height: '40px',
                   borderRadius: '50%',
                   background: isActive 
-                    ? 'linear-gradient(135deg, #EC167F, #7C3AED)' 
+                    ? 'linear-gradient(135deg, #EC167F 0%, #7C3AED 100%)' 
                     : 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   justify: 'center',
-                  color: isActive ? '#ffffff' : (theme === 'dark' ? '#98A2B3' : '#667085'),
+                  color: isActive ? '#FFFFFF' : (theme === 'dark' ? '#98A2B3' : '#667085'),
                   transform: isActive 
-                    ? 'translateY(-12px) scale(1.1)' 
-                    : 'translateY(0) scale(1)',
+                    ? 'translateY(-16px) scale(1.15) rotateY(10deg)' 
+                    : 'translateY(0) scale(1) rotateY(0)',
                   boxShadow: isActive 
-                    ? '0 8px 18px rgba(236, 22, 127, 0.45)' 
+                    ? '0 8px 22px rgba(236, 22, 127, 0.45), inset 0 2px 4px rgba(255,255,255,0.3)' 
                     : 'none',
-                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                  transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  zIndex: 2
                 }}
               >
                 {item.icon}
               </div>
+
+              {/* Animated Text Label under Bubble */}
               <span
                 style={{
                   fontSize: '0.62rem',
                   fontWeight: 700,
                   color: isActive ? '#EC167F' : (theme === 'dark' ? '#98A2B3' : '#667085'),
+                  opacity: isActive ? 1 : 0.75,
+                  transform: isActive ? 'scale(1.05) translateY(-2px)' : 'scale(1) translateY(0)',
+                  transition: 'all 0.25s ease',
                   position: 'absolute',
-                  bottom: '4px'
+                  bottom: '6px',
+                  zIndex: 1,
+                  letterSpacing: '0.01em'
                 }}
               >
                 {item.label}
