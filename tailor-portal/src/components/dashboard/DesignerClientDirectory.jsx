@@ -304,15 +304,85 @@ export default function DesignerClientDirectory({
   });
 
   return (
-    <div style={{
-      fontFamily: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
-      backgroundColor: pageBg,
-      color: textColor,
-      width: '100%',
-      minHeight: 'calc(100vh - 64px)',
-      boxSizing: 'border-box',
-      padding: '24px 32px'
-    }}>
+    <div 
+      className="client-dir-workspace-padding"
+      style={{
+        fontFamily: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
+        backgroundColor: pageBg,
+        color: textColor,
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        boxSizing: 'border-box',
+        padding: '24px 32px'
+      }}
+    >
+      <style>{`
+        .client-dir-kpi-4col-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        .client-dir-main-grid {
+          display: grid;
+          grid-template-columns: 1fr 430px;
+          gap: 20px;
+          width: 100%;
+          align-items: flex-start;
+        }
+
+        .client-dir-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        @media (max-width: 1400px) {
+          .client-dir-cards-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 1280px) {
+          .client-dir-kpi-4col-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .client-dir-main-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .client-dir-workspace-padding {
+            padding: 16px !important;
+          }
+          .client-dir-cards-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .client-dir-workspace-padding {
+            padding: 12px !important;
+          }
+          .client-dir-kpi-4col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .client-dir-search-wrapper {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+          }
+          .client-dir-header-buttons {
+            width: 100% !important;
+          }
+          .client-dir-header-buttons button {
+            flex: 1 !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
       
       {/* Edge-to-Edge Workspace Container */}
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -330,7 +400,7 @@ export default function DesignerClientDirectory({
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div className="client-dir-header-buttons" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             
             {/* Secondary Button — Import Customers */}
             <button 
@@ -383,17 +453,12 @@ export default function DesignerClientDirectory({
         {/* ==================================================================== */}
         {/* 2. CUSTOMER SUMMARY CARDS (4 Compact Equal Columns)                  */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '16px',
-          width: '100%'
-        }}>
+        <div className="client-dir-kpi-4col-grid">
           
           {/* Card 1 — Total Clients */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '92px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '92px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(123,44,255,0.2)' : '#F4F0FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(123,44,255,0.2)' : '#F4F0FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Users size={20} color={secondaryPurple} />
               </div>
               <div>
@@ -405,9 +470,9 @@ export default function DesignerClientDirectory({
           </div>
 
           {/* Card 2 — Active Clients */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '92px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '92px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(247,144,9,0.2)' : '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(247,144,9,0.2)' : '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <UserCheck size={20} color="#F79009" />
               </div>
               <div>
@@ -419,9 +484,9 @@ export default function DesignerClientDirectory({
           </div>
 
           {/* Card 3 — New This Month */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '92px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '92px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Briefcase size={20} color="#3B82F6" />
               </div>
               <div>
@@ -433,9 +498,9 @@ export default function DesignerClientDirectory({
           </div>
 
           {/* Card 4 — Upcoming Appointments */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '92px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '16px', boxShadow: '0 2px 10px rgba(16,24,40,0.03)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: '92px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Calendar size={20} color={primaryPink} />
               </div>
               <div>
@@ -449,33 +514,38 @@ export default function DesignerClientDirectory({
         </div>
 
         {/* ==================================================================== */}
-        {/* 3. SEARCH + FILTER TOOLBAR (Height 58px)                             */}
+        {/* 3. SEARCH + FILTER TOOLBAR                                           */}
         {/* ==================================================================== */}
         <div style={{
           background: cardBg,
           border: `1px solid ${borderColor}`,
           borderRadius: '12px',
-          padding: '8px 16px',
+          padding: '10px 16px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justify: 'space-between',
           flexWrap: 'wrap',
           gap: '12px',
-          height: '58px'
+          minHeight: '58px'
         }}>
           
-          {/* Left — Search Field (360px width, 40px height) */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '0 14px',
-            height: '40px',
-            borderRadius: '9px',
-            border: `1px solid ${borderColor}`,
-            background: inputBg,
-            width: '360px'
-          }}>
+          {/* Left — Search Field */}
+          <div 
+            className="client-dir-search-wrapper"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '0 14px',
+              height: '40px',
+              borderRadius: '9px',
+              border: `1px solid ${borderColor}`,
+              background: inputBg,
+              flex: '1 1 240px',
+              minWidth: '180px',
+              maxWidth: '100%'
+            }}
+          >
             <Search size={16} color={mutedTextColor} />
             <input 
               type="text" 
@@ -487,11 +557,11 @@ export default function DesignerClientDirectory({
           </div>
 
           {/* Center — Filter Dropdowns */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', flex: '1 1 auto', maxWidth: '100%' }}>
             <select 
               value={customerFilter}
               onChange={e => setCustomerFilter(e.target.value)}
-              style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}
+              style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 500, cursor: 'pointer', flex: '1 1 auto', minWidth: '130px' }}
             >
               <option value="All Customers">All Customers</option>
               <option value="VIP Customers">VIP Customers</option>
@@ -501,7 +571,7 @@ export default function DesignerClientDirectory({
             <select 
               value={designerFilter}
               onChange={e => setDesignerFilter(e.target.value)}
-              style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}
+              style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 500, cursor: 'pointer', flex: '1 1 auto', minWidth: '130px' }}
             >
               <option value="All Designers">All Designers</option>
               <option value="Current Designer">Current Designer (Ananya)</option>
@@ -510,7 +580,7 @@ export default function DesignerClientDirectory({
             <select 
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
-              style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}
+              style={{ height: '40px', padding: '0 12px', borderRadius: '9px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 500, cursor: 'pointer', flex: '1 1 auto', minWidth: '110px' }}
             >
               <option value="All Status">All Status</option>
               <option value="Active">Active</option>
@@ -542,25 +612,14 @@ export default function DesignerClientDirectory({
         </div>
 
         {/* ==================================================================== */}
-        {/* 4. MAIN WORKSPACE (LEFT 3-COLUMN GRID / RIGHT CUSTOMER DRAWER)       */}
+        {/* 4. MAIN WORKSPACE (LEFT COLUMN / RIGHT CUSTOMER DRAWER)              */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 430px',
-          gap: '20px',
-          width: '100%',
-          alignItems: 'flex-start'
-        }}>
+        <div className="client-dir-main-grid">
           
-          {/* LEFT COLUMN — CUSTOMER GRID (3 COLUMNS) */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* LEFT COLUMN — CUSTOMER GRID */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0 }}>
             
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '16px',
-              width: '100%'
-            }}>
+            <div className="client-dir-cards-grid">
               {filteredCustomers.map(cust => {
                 const isSelected = selectedCustomerId === cust.id;
                 return (
