@@ -12231,12 +12231,24 @@ body.light-theme .premium-footer h5 {
   .auth-hero-image-card {
     width: 100% !important;
     max-width: 100% !important;
-    height: 240px !important;
-    min-height: 240px !important;
+    height: 380px !important;
+    min-height: 380px !important;
     margin: 8px 0 !important;
-    border-radius: 16px !important;
+    border-radius: 20px !important;
     position: relative !important;
     overflow: hidden !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .auth-hero-image-card img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
   }
 
   .auth-features-grid {
@@ -12294,9 +12306,9 @@ body.light-theme .premium-footer h5 {
   }
 
   .auth-hero-image-card {
-    height: 200px !important;
-    min-height: 200px !important;
-    border-radius: 14px !important;
+    height: 260px !important;
+    min-height: 260px !important;
+    border-radius: 16px !important;
   }
 
   .auth-features-grid {
