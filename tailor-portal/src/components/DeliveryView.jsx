@@ -905,11 +905,11 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
       <header 
         className="top-nav rider-top-nav" 
         style={{ 
-          position: 'sticky', 
+          position: 'fixed', 
           top: 0, 
           left: 0, 
-          right: 0, 
-          zIndex: 1000, 
+          width: '100%', 
+          zIndex: 9999, 
           background: isDark ? 'rgba(18, 15, 38, 0.95)' : 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',

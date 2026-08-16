@@ -159,6 +159,7 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
   return (
     <div style={{
       minHeight: '100vh',
+      paddingTop: '64px',
       background: theme === 'dark' ? '#0F0C1B' : '#F7F8FA',
       color: theme === 'dark' ? '#ffffff' : '#172033',
       fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif"
@@ -168,12 +169,16 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
       {/* 1. RECOMMENDED DESIGNER TOP HEADER NAVIGATION BAR                     */}
       {/* ==================================================================== */}
       <header style={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
-        zIndex: 1000,
+        left: 0,
+        width: '100%',
+        boxSizing: 'border-box',
+        zIndex: 9999,
         height: '64px',
         background: theme === 'dark' ? 'rgba(15,12,27,0.95)' : 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
         padding: '0 24px',
         display: 'flex',
