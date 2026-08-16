@@ -230,16 +230,76 @@ export default function DesignerMeasurementVault({
   });
 
   return (
-    <div style={{
-      fontFamily: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
-      backgroundColor: pageBg,
-      color: textColor,
-      width: '100%',
-      minHeight: 'calc(100vh - 64px)',
-      boxSizing: 'border-box',
-      padding: '24px 32px'
-    }}>
-      
+    <div 
+      className="vault-workspace-padding"
+      style={{
+        fontFamily: "'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif",
+        backgroundColor: pageBg,
+        color: textColor,
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        boxSizing: 'border-box',
+        padding: '24px 32px'
+      }}
+    >
+      <style>{`
+        .vault-kpi-5col-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        .vault-main-grid {
+          display: grid;
+          grid-template-columns: 68% 32%;
+          gap: 20px;
+          width: 100%;
+          align-items: flex-start;
+        }
+
+        @media (max-width: 1280px) {
+          .vault-kpi-5col-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+          .vault-main-grid {
+            grid-template-columns: 60% 40%;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .vault-workspace-padding {
+            padding: 16px !important;
+          }
+          .vault-kpi-5col-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .vault-main-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .vault-workspace-padding {
+            padding: 12px !important;
+          }
+          .vault-kpi-5col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .vault-search-wrapper {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+          }
+          .vault-header-buttons {
+            width: 100% !important;
+          }
+          .vault-header-buttons button {
+            flex: 1 !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
+
       {/* Container (100% Full Width Edge-to-Edge) */}
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '32px' }}>
         
@@ -256,7 +316,7 @@ export default function DesignerMeasurementVault({
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div className="vault-header-buttons" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             
             {/* Secondary Button — View AI 3D Body Scans */}
             <button 
@@ -354,12 +414,7 @@ export default function DesignerMeasurementVault({
         {/* ==================================================================== */}
         {/* 3. KPI ANALYTICS SECTION (5 EQUAL DESKTOP CARDS WITH SPARKLINES)    */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '16px',
-          width: '100%'
-        }}>
+        <div className="vault-kpi-5col-grid">
           
           {/* KPI 1 — Total Profiles */}
           <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '12px' }}>
@@ -471,13 +526,7 @@ export default function DesignerMeasurementVault({
         {/* ==================================================================== */}
         {/* 4. MAIN WORKSPACE (70% LEFT COLUMN / 30% RIGHT PROFILE PANEL)        */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '70% 30%',
-          gap: '20px',
-          width: '100%',
-          alignItems: 'flex-start'
-        }}>
+        <div className="vault-main-grid">
           
           {/* LEFT 70% COLUMN (DATABASE TABLE + MEASUREMENT ANALYTICS UNDERNEATH) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: 0 }}>
@@ -497,18 +546,23 @@ export default function DesignerMeasurementVault({
               {/* Search + Filter Toolbar */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                 
-                {/* Search Field (320px width, 40px height) */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '0 14px',
-                  height: '40px',
-                  borderRadius: '9px',
-                  border: `1px solid ${borderColor}`,
-                  background: inputBg,
-                  width: '320px'
-                }}>
+                {/* Search Field */}
+                <div 
+                  className="vault-search-wrapper"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '0 14px',
+                    height: '40px',
+                    borderRadius: '9px',
+                    border: `1px solid ${borderColor}`,
+                    background: inputBg,
+                    flex: '1 1 240px',
+                    minWidth: '180px',
+                    maxWidth: '100%'
+                  }}
+                >
                   <Search size={16} color={mutedTextColor} />
                   <input 
                     type="text" 
