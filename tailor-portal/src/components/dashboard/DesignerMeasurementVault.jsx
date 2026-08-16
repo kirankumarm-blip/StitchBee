@@ -39,6 +39,7 @@ export default function DesignerMeasurementVault({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addMode, setAddMode] = useState('manual'); // 'manual' | '3d' | 'import'
   const [lastSyncedSec, setLastSyncedSec] = useState(12);
+  const [hoveredPieIndex, setHoveredPieIndex] = useState(null);
 
   // Simulated Seconds Counter for Live Strip
   useEffect(() => {
@@ -817,36 +818,106 @@ export default function DesignerMeasurementVault({
               <div className="vault-analytics-3col-grid">
                 
                 {/* Card 1 — Measurement Types Donut Chart */}
-                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '18px 20px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
-                  <h4 style={{ margin: '0 0 14px 0', fontSize: '15px', fontWeight: 700, color: textColor }}>Measurement Types</h4>
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px 22px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
+                  <h4 style={{ margin: '0 0 16px 0', fontSize: '15px', fontWeight: 700, color: textColor }}>Measurement Types</h4>
                   
                   <div className="vault-donut-card-content">
-                    <div style={{ position: 'relative', width: '120px', height: '120px', flexShrink: 0, margin: '0 auto' }}>
+                    {/* Enlarged 180px x 180px Donut Ring */}
+                    <div style={{ position: 'relative', width: '180px', height: '180px', flexShrink: 0, margin: '0 auto' }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-                          <Pie data={donutTypesData} cx="50%" cy="50%" innerRadius={35} outerRadius={50} paddingAngle={3} dataKey="value">
-                            {donutTypesData.map((entry, idx) => (
-                              <Cell key={`c-${idx}`} fill={entry.color} />
-                            ))}
+                          <Tooltip 
+                            contentStyle={{
+                              background: isDark ? '#1F1B2E' : '#172033',
+                              border: 'none',
+                              borderRadius: '8px',
+                              color: '#FFFFFF',
+                              fontSize: '12px',
+                              boxShadow: '0 4px 14px rgba(0,0,0,0.2)'
+                            }}
+                            formatter={(val, name, item) => [`${val} profiles (${item.payload.percentage})`, item.payload.name]}
+                          />
+                          <Pie 
+                            data={donutTypesData} 
+                            cx="50%" 
+                            cy="50%" 
+                            innerRadius={54} 
+                            outerRadius={76} 
+                            paddingAngle={4} 
+                            dataKey="value"
+                            isAnimationActive={true}
+                            animationDuration={800}
+                            animationEasing="ease-out"
+                          >
+                            {donutTypesData.map((entry, idx) => {
+                              const isHovered = hoveredPieIndex === idx;
+                              return (
+                                <Cell 
+                                  key={`c-${idx}`} 
+                                  fill={entry.color} 
+                                  style={{
+                                    filter: isHovered ? `drop-shadow(0 6px 12px ${entry.color}80)` : 'none',
+                                    transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+                                    transformOrigin: 'center center',
+                                    transition: 'all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                    cursor: 'pointer',
+                                    opacity: hoveredPieIndex !== null && !isHovered ? 0.55 : 1
+                                  }}
+                                  onMouseEnter={() => setHoveredPieIndex(idx)}
+                                  onMouseLeave={() => setHoveredPieIndex(null)}
+                                />
+                              );
+                            })}
                           </Pie>
                         </PieChart>
                       </ResponsiveContainer>
-                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-                        <strong style={{ fontSize: '16px', fontWeight: 700, color: textColor, display: 'block', lineHeight: 1 }}>128</strong>
-                        <span style={{ fontSize: '9px', color: secTextColor }}>Profiles</span>
+
+                      {/* Center Badge inside 180px Donut Ring */}
+                      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', pointerEvents: 'none' }}>
+                        <strong style={{ fontSize: '24px', fontWeight: 800, color: textColor, display: 'block', lineHeight: 1 }}>128</strong>
+                        <span style={{ fontSize: '11px', color: secTextColor, fontWeight: 500, marginTop: '2px', display: 'block' }}>Profiles</span>
                       </div>
                     </div>
 
+                    {/* Interactive Legend List */}
                     <div className="vault-donut-legend-list">
-                      {donutTypesData.map(item => (
-                        <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color, flexShrink: 0 }} />
-                            <span style={{ color: textColor, fontWeight: 500 }}>{item.name}</span>
+                      {donutTypesData.map((item, idx) => {
+                        const isHovered = hoveredPieIndex === idx;
+                        return (
+                          <div 
+                            key={item.name} 
+                            onMouseEnter={() => setHoveredPieIndex(idx)}
+                            onMouseLeave={() => setHoveredPieIndex(null)}
+                            style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justify: 'space-between', 
+                              fontSize: '11px',
+                              padding: '5px 8px',
+                              borderRadius: '7px',
+                              background: isHovered ? (isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9') : 'transparent',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <span style={{ 
+                                width: isHovered ? '10px' : '8px', 
+                                height: isHovered ? '10px' : '8px', 
+                                borderRadius: '50%', 
+                                background: item.color, 
+                                flexShrink: 0,
+                                transition: 'all 0.15s ease',
+                                boxShadow: isHovered ? `0 0 8px ${item.color}` : 'none'
+                              }} />
+                              <span style={{ color: textColor, fontWeight: isHovered ? 700 : 500 }}>{item.name}</span>
+                            </div>
+                            <span style={{ color: isHovered ? item.color : secTextColor, fontWeight: 700 }}>
+                              {item.count} <span style={{ color: mutedTextColor, fontWeight: 400 }}>({item.percentage})</span>
+                            </span>
                           </div>
-                          <span style={{ color: secTextColor, fontWeight: 600 }}>{item.count} <span style={{ color: mutedTextColor }}>({item.percentage})</span></span>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
