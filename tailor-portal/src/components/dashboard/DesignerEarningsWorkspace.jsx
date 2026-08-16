@@ -109,6 +109,53 @@ export default function DesignerEarningsWorkspace({
           align-items: stretch;
         }
 
+        .earnings-category-grid {
+          display: grid;
+          grid-template-columns: 210px 1fr;
+          gap: 16px;
+          align-items: center;
+          margin: 8px 0;
+        }
+
+        .earnings-secondary-3col-grid {
+          display: grid;
+          grid-template-columns: 32% 36% 32%;
+          gap: 16px;
+          width: 100%;
+          max-width: 100%;
+          align-items: stretch;
+          box-sizing: border-box;
+        }
+
+        .earnings-secondary-3col-grid > div {
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        .earnings-bottom-summary-grid {
+          display: grid;
+          grid-template-columns: 68% 32%;
+          gap: 16px;
+          width: 100%;
+          max-width: 100%;
+          align-items: center;
+          box-sizing: border-box;
+        }
+
+        .earnings-bottom-summary-grid > div {
+          width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        .earnings-perf-4col-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 12px;
+          width: 100%;
+        }
+
         @media (max-width: 1280px) {
           .earnings-kpi-4col-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -116,11 +163,20 @@ export default function DesignerEarningsWorkspace({
           .earnings-main-grid {
             grid-template-columns: 1fr !important;
           }
+          .earnings-secondary-3col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .earnings-bottom-summary-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
 
         @media (max-width: 1024px) {
           .earnings-workspace-padding {
             padding: 16px !important;
+          }
+          .earnings-perf-4col-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
           }
         }
 
@@ -130,6 +186,15 @@ export default function DesignerEarningsWorkspace({
           }
           .earnings-kpi-4col-grid {
             grid-template-columns: 1fr !important;
+          }
+          .earnings-perf-4col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .earnings-category-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .earnings-category-donut-wrapper {
+            margin: 0 auto !important;
           }
           .earnings-header-buttons {
             width: 100% !important;
@@ -893,14 +958,14 @@ export default function DesignerEarningsWorkspace({
           </div>
 
           {/* COLUMN 2: RECENT PAYOUTS COMPACT TABLE */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor }}>Recent Payouts</h3>
               <button onClick={() => alert("Viewing all recent payouts...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View All</button>
             </div>
 
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+            <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <table style={{ width: '100%', minWidth: '420px', borderCollapse: 'collapse', fontSize: '11px' }}>
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${softBorderColor}`, textAlign: 'left', color: secTextColor }}>
                     <th style={{ padding: '8px 4px', fontWeight: 600 }}>Payout ID</th>
@@ -936,14 +1001,14 @@ export default function DesignerEarningsWorkspace({
           </div>
 
           {/* COLUMN 3: PENDING PAYOUTS TABLE & NEXT PAYOUT HIGHLIGHT CARD */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textColor }}>Pending Payouts</h3>
               <button onClick={() => alert("Viewing all pending payouts...")} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View All</button>
             </div>
 
-            <div style={{ overflowX: 'auto', marginBottom: '10px' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '11px' }}>
+            <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch', marginBottom: '10px' }}>
+              <table style={{ width: '100%', minWidth: '340px', borderCollapse: 'collapse', fontSize: '11px' }}>
                 <thead>
                   <tr style={{ borderBottom: `1px solid ${softBorderColor}`, textAlign: 'left', color: secTextColor }}>
                     <th style={{ padding: '8px 4px', fontWeight: 600 }}>Payout ID</th>
@@ -980,11 +1045,13 @@ export default function DesignerEarningsWorkspace({
               padding: '12px 16px', 
               display: 'flex', 
               alignItems: 'center', 
-              justifyContent: 'space-between', 
+              justify: 'space-between', 
               height: '82px', 
               position: 'relative',
               boxSizing: 'border-box',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              width: '100%',
+              maxWidth: '100%'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', zIndex: 2 }}>
                 <div style={{ width: '38px', height: '38px', borderRadius: '50%', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
