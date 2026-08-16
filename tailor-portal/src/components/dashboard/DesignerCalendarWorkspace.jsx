@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Calendar as CalendarIcon, Clock, Users, Truck, AlertCircle, Plus, ChevronLeft, 
-  ChevronRight, Filter, RefreshCw, CheckCircle2, ChevronDown, Info, Search, X
+  ChevronRight, Filter, RefreshCw, CheckCircle, CheckCircle2, ChevronDown, Info, Search, X
 } from 'lucide-react';
 import '../../styles/dashboard.css';
 
