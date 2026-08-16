@@ -271,15 +271,67 @@ export default function DesignerCalendarWorkspace({
   };
 
   return (
-    <div style={{
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-      backgroundColor: pageBg,
-      color: textColor,
-      width: '100%',
-      minHeight: 'calc(100vh - 64px)',
-      boxSizing: 'border-box',
-      padding: '24px 28px'
-    }}>
+    <div 
+      className="calendar-workspace-padding"
+      style={{
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+        backgroundColor: pageBg,
+        color: textColor,
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        boxSizing: 'border-box',
+        padding: '24px 28px'
+      }}
+    >
+      <style>{`
+        .calendar-kpi-5col-grid {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        .calendar-main-grid {
+          display: grid;
+          grid-template-columns: 260px 1fr 320px;
+          gap: 16px;
+          width: 100%;
+          align-items: flex-start;
+        }
+
+        @media (max-width: 1280px) {
+          .calendar-kpi-5col-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+          .calendar-main-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .calendar-workspace-padding {
+            padding: 16px !important;
+          }
+          .calendar-kpi-5col-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .calendar-workspace-padding {
+            padding: 12px !important;
+          }
+          .calendar-kpi-5col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .calendar-header-buttons {
+            width: 100% !important;
+          }
+          .calendar-header-buttons button, .calendar-header-buttons select {
+            flex: 1 !important;
+          }
+        }
+      `}</style>
       
       {/* 100% Dynamic Screen Width Container (No side gaps) */}
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -297,7 +349,7 @@ export default function DesignerCalendarWorkspace({
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="calendar-header-buttons" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             
             {/* Today Button */}
             <button 
@@ -399,17 +451,12 @@ export default function DesignerCalendarWorkspace({
         {/* ==================================================================== */}
         {/* 3. KPI SUMMARY (5 Equal Cards in 1 Horizontal Row)                  */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '16px',
-          width: '100%'
-        }}>
+        <div className="calendar-kpi-5col-grid">
           
           {/* Card 1 — Today's Schedule */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '118px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '118px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(236,22,127,0.2)' : '#FFF0F7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <CalendarIcon size={18} color={primaryPink} />
               </div>
               <div>
@@ -424,9 +471,9 @@ export default function DesignerCalendarWorkspace({
           </div>
 
           {/* Card 2 — Client Appointments */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '118px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '118px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(124,58,237,0.2)' : '#F4EEFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(124,58,237,0.2)' : '#F4EEFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Users size={18} color="#7C3AED" />
               </div>
               <div>
@@ -441,31 +488,31 @@ export default function DesignerCalendarWorkspace({
           </div>
 
           {/* Card 3 — Trials / Measurements */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '118px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '118px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(59,130,246,0.2)' : '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Clock size={18} color="#3B82F6" />
               </div>
               <div>
                 <span style={{ fontSize: '12px', fontWeight: 500, color: secTextColor, display: 'block' }}>Trials / Measurements</span>
-                <strong style={{ fontSize: '26px', fontWeight: 700, color: textColor, lineHeight: 1.1, marginTop: '2px', display: 'block' }}>7</strong>
+                <strong style={{ fontSize: '26px', fontWeight: 700, color: textColor, lineHeight: 1.1, marginTop: '2px', display: 'block' }}>12</strong>
               </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-              <span style={{ color: secTextColor }}>Upcoming</span>
+              <span style={{ color: secTextColor }}>Scheduled</span>
               <button onClick={() => setEventTypeFilter('Trial/Measurement')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>View all →</button>
             </div>
           </div>
 
-          {/* Card 4 — Deliveries Due */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '118px' }}>
+          {/* Card 4 — Client Deliveries */}
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '118px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(22,163,106,0.2)' : '#ECFDF3', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Truck size={18} color="#16A36A" />
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(22,163,106,0.2)' : '#ECFDF3', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <CheckCircle size={18} color="#16A36A" />
               </div>
               <div>
-                <span style={{ fontSize: '12px', fontWeight: 500, color: secTextColor, display: 'block' }}>Deliveries Due</span>
-                <strong style={{ fontSize: '26px', fontWeight: 700, color: textColor, lineHeight: 1.1, marginTop: '2px', display: 'block' }}>6</strong>
+                <span style={{ fontSize: '12px', fontWeight: 500, color: secTextColor, display: 'block' }}>Client Deliveries</span>
+                <strong style={{ fontSize: '26px', fontWeight: 700, color: textColor, lineHeight: 1.1, marginTop: '2px', display: 'block' }}>4</strong>
               </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
@@ -475,9 +522,9 @@ export default function DesignerCalendarWorkspace({
           </div>
 
           {/* Card 5 — Overdue */}
-          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '118px' }}>
+          <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '118px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(245,158,11,0.2)' : '#FFF7E6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: isDark ? 'rgba(245,158,11,0.2)' : '#FFF7E6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <AlertCircle size={18} color="#F59E0B" />
               </div>
               <div>
@@ -496,13 +543,7 @@ export default function DesignerCalendarWorkspace({
         {/* ==================================================================== */}
         {/* 4. MAIN CONTENT GRID (Left Filter Panel | Calendar | Upcoming)      */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '260px 1fr 320px',
-          gap: '16px',
-          width: '100%',
-          alignItems: 'flex-start'
-        }}>
+        <div className="calendar-main-grid">
           
           {/* ================================================================== */}
           {/* COLUMN 1: LEFT SIDEBAR (Filter Events & Designer List)             */}

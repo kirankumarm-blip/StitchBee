@@ -81,15 +81,64 @@ export default function DesignerEarningsWorkspace({
   };
 
   return (
-    <div style={{
-      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-      backgroundColor: pageBg,
-      color: textColor,
-      width: '100%',
-      minHeight: 'calc(100vh - 64px)',
-      boxSizing: 'border-box',
-      padding: '24px 28px'
-    }}>
+    <div 
+      className="earnings-workspace-padding"
+      style={{
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+        backgroundColor: pageBg,
+        color: textColor,
+        width: '100%',
+        minHeight: 'calc(100vh - 64px)',
+        boxSizing: 'border-box',
+        padding: '24px 28px'
+      }}
+    >
+      <style>{`
+        .earnings-kpi-4col-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
+        .earnings-main-grid {
+          display: grid;
+          grid-template-columns: 60% 40%;
+          gap: 16px;
+          width: 100%;
+          align-items: stretch;
+        }
+
+        @media (max-width: 1280px) {
+          .earnings-kpi-4col-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .earnings-main-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .earnings-workspace-padding {
+            padding: 16px !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .earnings-workspace-padding {
+            padding: 12px !important;
+          }
+          .earnings-kpi-4col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .earnings-header-buttons {
+            width: 100% !important;
+          }
+          .earnings-header-buttons button, .earnings-header-buttons select {
+            flex: 1 !important;
+          }
+        }
+      `}</style>
       
       {/* 100% Dynamic Screen Width Container (No side gaps) */}
       <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -107,7 +156,7 @@ export default function DesignerEarningsWorkspace({
             </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="earnings-header-buttons" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
             
             {/* Date Selector */}
             <select 
@@ -161,12 +210,7 @@ export default function DesignerEarningsWorkspace({
         {/* ==================================================================== */}
         {/* 2. 4 LARGE KPI CARDS (25% | 25% | 25% | 25% EQUAL GRID)              */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '16px',
-          width: '100%'
-        }}>
+        <div className="earnings-kpi-4col-grid">
           
           {/* KPI Card 1 — Total Earnings */}
           <div style={{
@@ -425,13 +469,7 @@ export default function DesignerEarningsWorkspace({
         {/* ==================================================================== */}
         {/* 3. MAIN ANALYTICS ROW (60% REVENUE PERFORMANCE / 40% CATEGORY)      */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '60% 40%',
-          gap: '16px',
-          width: '100%',
-          alignItems: 'stretch'
-        }}>
+        <div className="earnings-main-grid">
           
           {/* LEFT 60% — REVENUE PERFORMANCE MULTI-LINE SPLINE CHART WITH DATA BADGES */}
           <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>

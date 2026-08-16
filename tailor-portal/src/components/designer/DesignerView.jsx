@@ -464,35 +464,57 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
 
             {/* Settings Form */}
             <div style={{ background: theme === 'dark' ? '#141126' : '#ffffff', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB', borderRadius: '16px', padding: '24px' }}>
+              <style>{`
+                .studio-profile-form {
+                  display: grid;
+                  grid-template-columns: repeat(2, 1fr);
+                  gap: 16px;
+                  width: 100%;
+                }
+                .studio-profile-form .full-col {
+                  grid-column: span 2;
+                }
+                @media (max-width: 640px) {
+                  .studio-profile-form {
+                    grid-template-columns: 1fr !important;
+                  }
+                  .studio-profile-form .full-col {
+                    grid-column: span 1 !important;
+                  }
+                }
+              `}</style>
               <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', fontWeight: 700 }}>Studio Details & Pricing</h3>
 
-              <form onSubmit={e => { e.preventDefault(); alert("Designer Profile settings saved successfully!"); }} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
+              <form 
+                className="studio-profile-form"
+                onSubmit={e => { e.preventDefault(); alert("Designer Profile settings saved successfully!"); }}
+              >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <label style={{ fontSize: '12px', fontWeight: 600 }}>Designer Name</label>
-                  <input type="text" defaultValue="Ananya Roy" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                  <input type="text" defaultValue="Ananya Roy" style={{ width: '100%', boxSizing: 'border-box', padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <label style={{ fontSize: '12px', fontWeight: 600 }}>Studio Name</label>
-                  <input type="text" defaultValue="Ananya Roy Couture Studio" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                  <input type="text" defaultValue="Ananya Roy Couture Studio" style={{ width: '100%', boxSizing: 'border-box', padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <label style={{ fontSize: '12px', fontWeight: 600 }}>Specialization</label>
-                  <input type="text" defaultValue="Bridal Lehenga, Anarkali & Indo-Western" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                  <input type="text" defaultValue="Bridal Lehenga, Anarkali & Indo-Western" style={{ width: '100%', boxSizing: 'border-box', padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <label style={{ fontSize: '12px', fontWeight: 600 }}>Sketch & Design Consultation Fee (₹)</label>
-                  <input type="number" defaultValue="1500" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                  <input type="number" defaultValue="1500" style={{ width: '100%', boxSizing: 'border-box', padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', gridColumn: 'span 2' }}>
+                <div className="full-col" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <label style={{ fontSize: '12px', fontWeight: 600 }}>Studio Address & Location</label>
-                  <input type="text" defaultValue="104, 100 Feet Road, Indiranagar, Bengaluru - 560038" style={{ padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
+                  <input type="text" defaultValue="104, 100 Feet Road, Indiranagar, Bengaluru - 560038" style={{ width: '100%', boxSizing: 'border-box', padding: '10px 14px', borderRadius: '8px', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid #E5E7EB', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ffffff', color: theme === 'dark' ? '#ffffff' : '#172033', outline: 'none' }} />
                 </div>
 
-                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '12px', marginTop: '12px' }}>
+                <div className="full-col" style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
                   <button type="submit" className="btn-text-white-force" style={{ padding: '10px 24px', fontSize: '13px', fontWeight: 600, borderRadius: '8px', background: 'linear-gradient(135deg, #F72585, #8B12C9)', color: '#ffffff', border: 'none', cursor: 'pointer' }}>
                     Save Profile Changes
                   </button>
