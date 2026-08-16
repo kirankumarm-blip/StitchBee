@@ -265,6 +265,22 @@ export default function DesignerMeasurementVault({
           width: 100%;
         }
 
+        .vault-donut-card-content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          width: 100%;
+        }
+
+        .vault-donut-legend-list {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          flex: 1;
+          width: 100%;
+        }
+
         @media (max-width: 1280px) {
           .vault-kpi-5col-grid {
             grid-template-columns: repeat(3, 1fr);
@@ -309,6 +325,18 @@ export default function DesignerMeasurementVault({
           .vault-header-buttons button {
             flex: 1 !important;
             justify-content: center !important;
+          }
+        }
+
+        @media (max-width: 540px) {
+          .vault-donut-card-content {
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 16px !important;
+          }
+          .vault-donut-legend-list {
+            width: 100% !important;
           }
         }
       `}</style>
@@ -790,12 +818,12 @@ export default function DesignerMeasurementVault({
                 
                 {/* Card 1 — Measurement Types Donut Chart */}
                 <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '18px 20px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
-                  <h4 style={{ margin: '0 0 12px 0', fontSize: '15px', fontWeight: 700, color: textColor }}>Measurement Types</h4>
+                  <h4 style={{ margin: '0 0 14px 0', fontSize: '15px', fontWeight: 700, color: textColor }}>Measurement Types</h4>
                   
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexWrap: 'wrap', gap: '14px' }}>
+                  <div className="vault-donut-card-content">
                     <div style={{ position: 'relative', width: '120px', height: '120px', flexShrink: 0, margin: '0 auto' }}>
                       <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
+                        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                           <Pie data={donutTypesData} cx="50%" cy="50%" innerRadius={35} outerRadius={50} paddingAngle={3} dataKey="value">
                             {donutTypesData.map((entry, idx) => (
                               <Cell key={`c-${idx}`} fill={entry.color} />
@@ -809,11 +837,11 @@ export default function DesignerMeasurementVault({
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: '1 1 140px', width: '100%' }}>
+                    <div className="vault-donut-legend-list">
                       {donutTypesData.map(item => (
                         <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color }} />
+                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: item.color, flexShrink: 0 }} />
                             <span style={{ color: textColor, fontWeight: 500 }}>{item.name}</span>
                           </div>
                           <span style={{ color: secTextColor, fontWeight: 600 }}>{item.count} <span style={{ color: mutedTextColor }}>({item.percentage})</span></span>
