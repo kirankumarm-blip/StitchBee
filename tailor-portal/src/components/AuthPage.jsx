@@ -378,18 +378,18 @@ export default function AuthPage({
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         width: '100%',
         height: '100%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
         zIndex: 9999,
         background: bgPageGrad,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
         fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
         overflowY: 'auto',
         overflowX: 'hidden',
+        WebkitOverflowScrolling: 'touch',
         boxSizing: 'border-box'
       }}
     >
@@ -476,9 +476,9 @@ export default function AuthPage({
           width: '100%',
           maxWidth: '1440px',
           margin: '0 auto',
-          padding: '0 40px',
+          padding: '20px 40px 40px 40px',
           boxSizing: 'border-box',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           gap: '40px',
           zIndex: 20,
           position: 'relative'
@@ -492,7 +492,7 @@ export default function AuthPage({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             gap: '24px',
             position: 'relative'
           }}
