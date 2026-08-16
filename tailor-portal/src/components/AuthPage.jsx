@@ -378,18 +378,15 @@ export default function AuthPage({
         position: 'fixed',
         top: 0,
         left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%',
-        height: '100%',
+        width: '100vw',
+        height: '100vh',
         zIndex: 9999,
         background: bgPageGrad,
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
         fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
         overflowY: 'auto',
-        overflowX: 'hidden',
-        WebkitOverflowScrolling: 'touch',
         boxSizing: 'border-box'
       }}
     >
@@ -401,24 +398,23 @@ export default function AuthPage({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '16px 24px',
+          padding: '20px 40px',
           zIndex: 50,
           position: 'relative',
           width: '100%',
-          maxWidth: '100%',
           boxSizing: 'border-box'
         }}
       >
         {/* Left: StitchBee logo */}
         <div 
           onClick={onClose} 
-          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', maxWidth: '200px' }}
+          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           title="Return to Landing Page"
         >
           <img 
             src="/logo.png" 
             alt="StitchBee" 
-            style={{ height: '48px', width: 'auto', maxWidth: '180px', objectFit: 'contain', display: 'block' }} 
+            style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} 
           />
         </div>
 
@@ -476,9 +472,9 @@ export default function AuthPage({
           width: '100%',
           maxWidth: '1440px',
           margin: '0 auto',
-          padding: '20px 40px 40px 40px',
+          padding: '0 40px',
           boxSizing: 'border-box',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           gap: '40px',
           zIndex: 20,
           position: 'relative'
@@ -490,11 +486,13 @@ export default function AuthPage({
         {/* ------------------------------------------------------------------ */}
         <div
           style={{
+            width: '45%',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-start',
-            gap: '24px',
-            position: 'relative'
+            justifyContent: 'center',
+            gap: '28px',
+            position: 'relative',
+            paddingBottom: '20px'
           }}
           className="auth-left-column"
         >
@@ -691,6 +689,7 @@ export default function AuthPage({
         {/* ------------------------------------------------------------------ */}
         <div
           style={{
+            width: '55%',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
