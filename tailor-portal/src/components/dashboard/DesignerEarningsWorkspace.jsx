@@ -806,13 +806,7 @@ export default function DesignerEarningsWorkspace({
         {/* ==================================================================== */}
         {/* 4. SECONDARY SECTION (32% SUMMARY | 36% RECENT PAYOUTS | 32% PENDING) */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '32% 36% 32%',
-          gap: '16px',
-          width: '100%',
-          alignItems: 'stretch'
-        }}>
+        <div className="earnings-secondary-3col-grid">
           
           {/* COLUMN 1: EARNINGS SUMMARY (4 METRIC SUB-CARDS + LIFETIME EARNINGS CARD) */}
           <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 8px rgba(16,24,40,0.03)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -1026,13 +1020,7 @@ export default function DesignerEarningsWorkspace({
         {/* ==================================================================== */}
         {/* 5. PERFORMANCE AT A GLANCE & MAY EARNINGS GOAL                       */}
         {/* ==================================================================== */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '68% 32%',
-          gap: '16px',
-          width: '100%',
-          alignItems: 'center'
-        }}>
+        <div className="earnings-bottom-summary-grid">
           
           {/* LEFT 68% — PERFORMANCE AT A GLANCE */}
           <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '12px', padding: '18px', boxShadow: '0 1px 3px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1040,7 +1028,7 @@ export default function DesignerEarningsWorkspace({
               Performance at a Glance <Info size={14} color={secTextColor} />
             </h3>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+            <div className="earnings-perf-4col-grid">
               {/* Sub-block 1 — Best Day */}
               <div style={{ background: itemBg, border: `1px solid ${borderColor}`, borderRadius: '9px', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
