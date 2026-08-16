@@ -674,45 +674,48 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
         </>
       )}
 
-      {/* MOBILE BOTTOM FLOATING ANIMATED NAVIGATION BAR */}
+      {/* MOBILE BOTTOM FLOATING 3D ANIMATED NAV DOCK */}
       <footer 
         className="mobile-bottom-nav"
         style={{
           position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          bottom: '12px',
+          left: '12px',
+          right: '12px',
+          maxWidth: '480px',
+          margin: '0 auto',
           height: '66px',
           zIndex: 99999,
-          background: theme === 'dark' ? 'rgba(15,12,27,0.92)' : 'rgba(255,255,255,0.92)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderTop: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
-          boxShadow: theme === 'dark' ? '0 -4px 25px rgba(0,0,0,0.5)' : '0 -4px 20px rgba(0,0,0,0.08)',
-          padding: '0 12px',
+          background: theme === 'dark' ? 'rgba(17, 13, 33, 0.88)' : 'rgba(255, 255, 255, 0.92)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderRadius: '26px',
+          border: theme === 'dark' ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(236, 22, 127, 0.18)',
+          boxShadow: theme === 'dark' 
+            ? '0 16px 40px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 0 25px rgba(236, 22, 127, 0.18)' 
+            : '0 12px 35px rgba(236, 22, 127, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.95), 0 4px 15px rgba(0, 0, 0, 0.05)',
+          padding: '0 8px',
           boxSizing: 'border-box',
+          display: 'flex',
           alignItems: 'center',
-          justify: 'space-around'
+          justifyContent: 'space-around',
+          perspective: '1000px'
         }}
       >
         {[
-          { id: 'dashboard', label: 'Home', icon: <Home size={18} /> },
-          { id: 'studio', label: 'Studio', icon: <Palette size={18} /> },
-          { id: 'orders', label: 'Orders', icon: <ShoppingBag size={18} /> },
-          { id: 'earnings', label: 'Earnings', icon: <DollarSign size={18} /> },
-          { id: 'menu', label: 'Menu', icon: <Menu size={18} />, isMenu: true }
+          { id: 'dashboard', label: 'Home', icon: <Home size={19} /> },
+          { id: 'studio', label: 'Studio', icon: <Palette size={19} /> },
+          { id: 'orders', label: 'Orders', icon: <ShoppingBag size={19} /> },
+          { id: 'measurements', label: 'Measurements', icon: <Ruler size={19} /> },
+          { id: 'earnings', label: 'Earnings', icon: <DollarSign size={19} /> }
         ].map(item => {
-          const isActive = item.isMenu ? sidebarOpen : activeTab === item.id;
+          const isActive = activeTab === item.id;
           return (
             <button
               key={item.id}
               onClick={() => {
-                if (item.isMenu) {
-                  setSidebarOpen(!sidebarOpen);
-                } else {
-                  setActiveTab(item.id);
-                  setSidebarOpen(false);
-                }
+                setActiveTab(item.id);
+                setSidebarOpen(false);
               }}
               style={{
                 background: 'transparent',
@@ -720,55 +723,102 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justify: 'center',
+                justifyContent: 'center',
                 position: 'relative',
                 cursor: 'pointer',
                 flex: 1,
                 height: '100%',
-                padding: 0
+                padding: 0,
+                outline: 'none',
+                WebkitTapHighlightColor: 'transparent'
               }}
             >
-              {/* Floating Animated Circle Bubble containing Icon */}
+              {/* Glowing 3D Orb Sphere with Elevating Perspective */}
               <div
                 style={{
-                  width: '40px',
-                  height: '40px',
+                  width: '44px',
+                  height: '44px',
                   borderRadius: '50%',
                   background: isActive 
-                    ? 'linear-gradient(135deg, #EC167F 0%, #7C3AED 100%)' 
+                    ? 'linear-gradient(135deg, #FF2E93 0%, #EC167F 45%, #7C3AED 100%)' 
                     : 'transparent',
                   display: 'flex',
                   alignItems: 'center',
-                  justify: 'center',
-                  color: isActive ? '#FFFFFF' : (theme === 'dark' ? '#98A2B3' : '#667085'),
+                  justifyContent: 'center',
+                  color: isActive ? '#FFFFFF' : (theme === 'dark' ? '#98A2B3' : '#64748B'),
                   transform: isActive 
-                    ? 'translateY(-16px) scale(1.15) rotateY(10deg)' 
-                    : 'translateY(0) scale(1) rotateY(0)',
+                    ? 'translateY(-18px) scale(1.18) rotateX(12deg) rotateY(-6deg)' 
+                    : 'translateY(0) scale(1) rotateX(0deg)',
                   boxShadow: isActive 
-                    ? '0 8px 22px rgba(236, 22, 127, 0.45), inset 0 2px 4px rgba(255,255,255,0.3)' 
+                    ? '0 12px 26px rgba(236, 22, 127, 0.55), inset 0 3px 6px rgba(255, 255, 255, 0.45), 0 0 16px rgba(124, 58, 237, 0.4)' 
                     : 'none',
-                  transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  zIndex: 2
+                  transition: 'all 0.38s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  zIndex: 2,
+                  position: 'relative'
                 }}
               >
+                {/* 3D Glass Light Reflection Curve on top of active orb */}
+                {isActive && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '3px',
+                    left: '8px',
+                    width: '18px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: 'rgba(255, 255, 255, 0.45)',
+                    filter: 'blur(0.8px)',
+                    pointerEvents: 'none'
+                  }} />
+                )}
+
                 {item.icon}
               </div>
 
-              {/* Animated Text Label under Bubble */}
+              {/* Glowing 3D Base Ring Aura underneath Active Orb */}
+              {isActive && (
+                <span style={{
+                  position: 'absolute',
+                  top: '12px',
+                  width: '28px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: 'rgba(236, 22, 127, 0.4)',
+                  filter: 'blur(4px)',
+                  zIndex: 1,
+                  transform: 'scale(1.2)',
+                  transition: 'all 0.3s ease'
+                }} />
+              )}
+
+              {/* Animated Text Label + Active Dot Indicator */}
               <span
                 style={{
-                  fontSize: '0.62rem',
-                  fontWeight: 700,
-                  color: isActive ? '#EC167F' : (theme === 'dark' ? '#98A2B3' : '#667085'),
+                  fontSize: '0.64rem',
+                  fontWeight: isActive ? 800 : 600,
+                  color: isActive ? '#EC167F' : (theme === 'dark' ? '#94A3B8' : '#64748B'),
                   opacity: isActive ? 1 : 0.75,
-                  transform: isActive ? 'scale(1.05) translateY(-2px)' : 'scale(1) translateY(0)',
+                  transform: isActive ? 'translateY(-2px) scale(1.05)' : 'translateY(0) scale(1)',
                   transition: 'all 0.25s ease',
                   position: 'absolute',
                   bottom: '6px',
                   zIndex: 1,
-                  letterSpacing: '0.01em'
+                  letterSpacing: '0.01em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '3px'
                 }}
               >
+                {isActive && (
+                  <span style={{
+                    width: '4px',
+                    height: '4px',
+                    borderRadius: '50%',
+                    background: '#EC167F',
+                    boxShadow: '0 0 6px #EC167F',
+                    display: 'inline-block'
+                  }} />
+                )}
                 {item.label}
               </span>
             </button>
