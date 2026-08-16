@@ -258,6 +258,13 @@ export default function DesignerMeasurementVault({
           align-items: flex-start;
         }
 
+        .vault-analytics-3col-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          width: 100%;
+        }
+
         @media (max-width: 1280px) {
           .vault-kpi-5col-grid {
             grid-template-columns: repeat(3, 1fr);
@@ -277,6 +284,9 @@ export default function DesignerMeasurementVault({
           .vault-main-grid {
             grid-template-columns: 1fr !important;
           }
+          .vault-analytics-3col-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
 
         @media (max-width: 640px) {
@@ -284,6 +294,9 @@ export default function DesignerMeasurementVault({
             padding: 12px !important;
           }
           .vault-kpi-5col-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .vault-analytics-3col-grid {
             grid-template-columns: 1fr !important;
           }
           .vault-search-wrapper {
@@ -773,12 +786,7 @@ export default function DesignerMeasurementVault({
                 </select>
               </div>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: '16px',
-                width: '100%'
-              }}>
+              <div className="vault-analytics-3col-grid">
                 
                 {/* Card 1 — Measurement Types Donut Chart */}
                 <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
