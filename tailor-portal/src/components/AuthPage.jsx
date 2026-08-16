@@ -378,8 +378,10 @@ export default function AuthPage({
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        height: '100%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
         zIndex: 9999,
         background: bgPageGrad,
         display: 'flex',
@@ -387,6 +389,7 @@ export default function AuthPage({
         justifyContent: 'space-between',
         fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
         overflowY: 'auto',
+        overflowX: 'hidden',
         boxSizing: 'border-box'
       }}
     >
@@ -398,23 +401,24 @@ export default function AuthPage({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '20px 40px',
+          padding: '16px 24px',
           zIndex: 50,
           position: 'relative',
           width: '100%',
+          maxWidth: '100%',
           boxSizing: 'border-box'
         }}
       >
         {/* Left: StitchBee logo */}
         <div 
           onClick={onClose} 
-          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', maxWidth: '200px' }}
           title="Return to Landing Page"
         >
           <img 
             src="/logo.png" 
             alt="StitchBee" 
-            style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} 
+            style={{ height: '48px', width: 'auto', maxWidth: '180px', objectFit: 'contain', display: 'block' }} 
           />
         </div>
 
