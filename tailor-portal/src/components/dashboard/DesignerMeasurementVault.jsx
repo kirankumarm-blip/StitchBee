@@ -789,11 +789,11 @@ export default function DesignerMeasurementVault({
               <div className="vault-analytics-3col-grid">
                 
                 {/* Card 1 — Measurement Types Donut Chart */}
-                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
                   <h4 style={{ margin: '0 0 10px 0', fontSize: '14px', fontWeight: 600, color: textColor }}>Measurement Types</h4>
                   
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
-                    <div style={{ position: 'relative', width: '110px', height: '110px', flexShrink: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexWrap: 'wrap', gap: '14px' }}>
+                    <div style={{ position: 'relative', width: '110px', height: '110px', flexShrink: 0, margin: '0 auto' }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie data={donutTypesData} cx="50%" cy="50%" innerRadius={35} outerRadius={50} paddingAngle={3} dataKey="value">
@@ -809,7 +809,7 @@ export default function DesignerMeasurementVault({
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: '1 1 140px', width: '100%' }}>
                       {donutTypesData.map(item => (
                         <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '10px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -824,15 +824,15 @@ export default function DesignerMeasurementVault({
                 </div>
 
                 {/* Card 2 — Measurements Over Time Line Chart */}
-                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: textColor }}>Measurements Over Time</h4>
                     <span style={{ fontSize: '10px', color: secTextColor }}>Number of profiles created</span>
                   </div>
 
-                  <div style={{ width: '100%', height: '130px', marginTop: '8px' }}>
+                  <div style={{ width: '100%', height: '160px', marginTop: '8px', overflow: 'hidden' }}>
                     <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={overTimeData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                      <AreaChart data={overTimeData} margin={{ top: 10, right: 15, left: 0, bottom: 10 }}>
                         <defs>
                           <linearGradient id="colorProfiles" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor={primaryPink} stopOpacity={0.3}/>
@@ -841,7 +841,7 @@ export default function DesignerMeasurementVault({
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
                         <XAxis dataKey="date" stroke={mutedTextColor} fontSize={9} tickLine={false} />
-                        <YAxis stroke={mutedTextColor} fontSize={9} tickLine={false} />
+                        <YAxis stroke={mutedTextColor} fontSize={9} tickLine={false} width={30} />
                         <Tooltip contentStyle={{ background: isDark ? '#1F1B2E' : '#172033', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px' }} />
                         <Area type="monotone" dataKey="profiles" stroke={primaryPink} strokeWidth={2.5} fillOpacity={1} fill="url(#colorProfiles)" />
                       </AreaChart>
@@ -850,7 +850,7 @@ export default function DesignerMeasurementVault({
                 </div>
 
                 {/* Card 3 — Accuracy Trend Line Chart */}
-                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '16px', boxShadow: '0 4px 18px rgba(16,24,40,0.04)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: textColor }}>Accuracy Trend</h4>
                     <span style={{ fontSize: '10px', color: '#12B76A', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
@@ -858,9 +858,9 @@ export default function DesignerMeasurementVault({
                     </span>
                   </div>
 
-                  <div style={{ width: '100%', height: '130px', marginTop: '8px' }}>
+                  <div style={{ width: '100%', height: '160px', marginTop: '8px', overflow: 'hidden' }}>
                     <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={accuracyTrendData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                      <AreaChart data={accuracyTrendData} margin={{ top: 10, right: 15, left: 0, bottom: 10 }}>
                         <defs>
                           <linearGradient id="colorAcc" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor={secondaryPurple} stopOpacity={0.3}/>
@@ -869,7 +869,7 @@ export default function DesignerMeasurementVault({
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.06)' : '#EEF0F4'} vertical={false} />
                         <XAxis dataKey="date" stroke={mutedTextColor} fontSize={9} tickLine={false} />
-                        <YAxis domain={[90, 100]} stroke={mutedTextColor} fontSize={9} tickLine={false} tickFormatter={(v) => `${v}%`} />
+                        <YAxis domain={[90, 100]} stroke={mutedTextColor} fontSize={9} tickLine={false} tickFormatter={(v) => `${v}%`} width={35} />
                         <Tooltip contentStyle={{ background: isDark ? '#1F1B2E' : '#172033', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '11px' }} formatter={(val) => [`${val}%`, 'Accuracy']} />
                         <Area type="monotone" dataKey="accuracy" stroke={secondaryPurple} strokeWidth={2.5} fillOpacity={1} fill="url(#colorAcc)" />
                       </AreaChart>
