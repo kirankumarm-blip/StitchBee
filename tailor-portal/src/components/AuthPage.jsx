@@ -490,13 +490,11 @@ export default function AuthPage({
         {/* ------------------------------------------------------------------ */}
         <div
           style={{
-            width: '45%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '28px',
-            position: 'relative',
-            paddingBottom: '20px'
+            gap: '24px',
+            position: 'relative'
           }}
           className="auth-left-column"
         >
@@ -693,7 +691,6 @@ export default function AuthPage({
         {/* ------------------------------------------------------------------ */}
         <div
           style={{
-            width: '55%',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
