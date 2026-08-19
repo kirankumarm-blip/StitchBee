@@ -2118,7 +2118,15 @@ export default function App() {
                   <h5 className="footer-heading-v4">Scan to Download App</h5>
                 </div>
                 <div className="footer-qr-card-v4">
-                  <img src="/qr_code_user.png" alt="Scan to Download App" className="footer-qr-img-v4" />
+                  <img 
+                    src="/qr_code_user.png" 
+                    alt="Scan to Download App" 
+                    className="footer-qr-img-v4"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://stitchbee.com/download&color=172033&bgcolor=ffffff";
+                    }}
+                  />
                 </div>
                 <span className="footer-qr-caption-v4">Scan with your phone</span>
               </div>
