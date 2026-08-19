@@ -277,6 +277,41 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   const [is3DAutoRotate, setIs3DAutoRotate] = useState(false);
   const [rotateSpeedMode, setRotateSpeedMode] = useState('Medium'); // 'Slow' | 'Medium' | 'Fast'
 
+  const rebuild3DGarmentMesh = () => {
+    if (!garmentMeshGroupRef.current) return;
+    const gGroup = garmentMeshGroupRef.current;
+    gGroup.clear();
+
+    const selectedF = fabricsList.find(f => f.name === selectedFabric) || fabricsList[0];
+    const mat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(primaryColor),
+      roughness: selectedF.roughness,
+      metalness: selectedF.metalness,
+      side: THREE.DoubleSide
+    });
+
+    const isLongForm = selectedGarment === 'dress' || selectedGarment === 'gown';
+    const hemY = selectedGarment === 'gown' ? 0.03 : 0.78;
+
+    const pts = [];
+    pts.push(new THREE.Vector2(isLongForm ? 0.36 : 0.30, hemY));
+    if (isLongForm) {
+      pts.push(new THREE.Vector2(0.30, 0.65));
+      pts.push(new THREE.Vector2(0.255, 0.92));
+    }
+    pts.push(new THREE.Vector2(0.265, 1.00));
+    pts.push(new THREE.Vector2(0.30, 1.20));
+    pts.push(new THREE.Vector2(0.335, 1.34));
+    pts.push(new THREE.Vector2(0.30, 1.46));
+    pts.push(new THREE.Vector2(0.09, 1.545));
+
+    const torsoGeo = new THREE.LatheGeometry(pts, 40);
+    const torso = new THREE.Mesh(torsoGeo, mat);
+    torso.castShadow = true;
+    torso.receiveShadow = true;
+    gGroup.add(torso);
+  };
+
   useEffect(() => {
     if (!glCanvasRef.current) return;
     const canvas = glCanvasRef.current;
@@ -347,41 +382,6 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       renderer.dispose();
     };
   }, [theme, isDark]);
-
-  const rebuild3DGarmentMesh = () => {
-    if (!garmentMeshGroupRef.current) return;
-    const gGroup = garmentMeshGroupRef.current;
-    gGroup.clear();
-
-    const selectedF = fabricsList.find(f => f.name === selectedFabric) || fabricsList[0];
-    const mat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(primaryColor),
-      roughness: selectedF.roughness,
-      metalness: selectedF.metalness,
-      side: THREE.DoubleSide
-    });
-
-    const isLongForm = selectedGarment === 'dress' || selectedGarment === 'gown';
-    const hemY = selectedGarment === 'gown' ? 0.03 : 0.78;
-
-    const pts = [];
-    pts.push(new THREE.Vector2(isLongForm ? 0.36 : 0.30, hemY));
-    if (isLongForm) {
-      pts.push(new THREE.Vector2(0.30, 0.65));
-      pts.push(new THREE.Vector2(0.255, 0.92));
-    }
-    pts.push(new THREE.Vector2(0.265, 1.00));
-    pts.push(new THREE.Vector2(0.30, 1.20));
-    pts.push(new THREE.Vector2(0.335, 1.34));
-    pts.push(new THREE.Vector2(0.30, 1.46));
-    pts.push(new THREE.Vector2(0.09, 1.545));
-
-    const torsoGeo = new THREE.LatheGeometry(pts, 40);
-    const torso = new THREE.Mesh(torsoGeo, mat);
-    torso.castShadow = true;
-    torso.receiveShadow = true;
-    gGroup.add(torso);
-  };
 
   useEffect(() => {
     rebuild3DGarmentMesh();
