@@ -15,13 +15,13 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   const isDark = theme === 'dark';
 
   // --------------------------------------------------------------------------
-  // STITCHBEE BRAND COLOR TOKENS (EXACT PROMPT SPECIFICATION)
+  // STITCHBEE BRAND THEME TOKENS
   // --------------------------------------------------------------------------
   const primaryPink = '#E50087';
   const darkPink = '#B8006B';
   const aiAccent = '#8B5CF6';
   const premiumGold = '#C9A227';
-  
+
   const mainBg = isDark ? '#0D0A1A' : '#F7F7F9';
   const canvasBg = isDark ? '#121018' : '#F5F3EF';
   const cardBg = isDark ? '#191528' : '#FFFFFF';
@@ -39,45 +39,45 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   const purpleTint = isDark ? 'rgba(139,92,246,0.15)' : '#F5F3FF';
 
   // --------------------------------------------------------------------------
-  // STATE MANAGEMENT (PERFECT PRESERVATION OF EXISTING FUNCTIONALITY)
+  // STATE MANAGEMENT
   // --------------------------------------------------------------------------
   const [designTitle, setDesignTitle] = useState('Untitled Suit Design');
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [saveStatus, setSaveStatus] = useState('Auto-saved');
 
   // Left Tool Rail Selection
-  const [activeToolRail, setActiveToolRail] = useState('generator'); // 'sketch' | 'generator' | 'variations' | 'layers' | 'materials' | 'details' | 'settings'
+  const [activeToolRail, setActiveToolRail] = useState('generator'); // 'generator' | 'sketch' | 'variations' | 'layers' | 'materials' | 'details' | 'settings'
 
   // Canvas View Mode
-  const [canvasViewMode, setCanvasViewMode] = useState('3d'); // 'sketch' | '3d'
+  const [canvasViewMode, setCanvasViewMode] = useState('3d'); // '3d' | 'sketch'
   const [activeCanvasTool, setActiveCanvasTool] = useState('rotate'); // 'rotate' | 'pan' | 'zoom-in' | 'zoom-out' | 'light'
 
-  // Sketch Upload State
+  // Upload State
   const [uploadedSketch, setUploadedSketch] = useState('/br_b1.jpg');
   const [sketchFileName, setSketchFileName] = useState('royal-suit-sketch.png');
   const [sketchFileSize, setSketchFileSize] = useState('2.4 MB');
   const [uploadError, setUploadError] = useState('');
   const fileInputRef = useRef(null);
 
-  // AI Generator Pipeline State
+  // AI Conversion Workflow State (Completed 100% View)
   const [isGenerating, setIsGenerating] = useState(false);
-  const [genProgress, setGenProgress] = useState(86);
-  const [genStatusMsg, setGenStatusMsg] = useState('Generating final 3D model');
+  const [genProgress, setGenProgress] = useState(100);
+  const [genStatusMsg, setGenStatusMsg] = useState('Final rendering completed');
   const [aiSteps, setAiSteps] = useState([
     { label: 'Sketch analyzed', done: true },
     { label: 'Structure understood', done: true },
     { label: 'Pattern created', done: true },
     { label: 'Fabric applied', done: true },
-    { label: 'Final rendering', done: false, active: true }
+    { label: 'Final rendering', done: true }
   ]);
 
   const [generatedImageUrl, setGeneratedImageUrl] = useState('/br_b1.jpg');
-  const [selectedGarment, setSelectedGarment] = useState('gown'); // 'shirt' | 'jacket' | 'dress' | 'gown'
+  const [selectedGarment, setSelectedGarment] = useState('gown');
 
-  // Right Property Panel Tab
+  // Right Property Panel
   const [propertyTab, setPropertyTab] = useState('Appearance'); // 'Appearance' | 'Fabric' | 'Pattern' | 'Details'
 
-  // Colors State
+  // Color State
   const [colorRole, setColorRole] = useState('Primary'); // 'Primary' | 'Secondary' | 'Accent'
   const [colors, setColors] = useState({
     Primary: '#171717',
@@ -161,7 +161,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   const [toastMsg, setToastMsg] = useState('');
 
   // --------------------------------------------------------------------------
-  // HELPER FUNCTIONS (PRE-DECLARED BEFORE USE)
+  // HELPER FUNCTIONS
   // --------------------------------------------------------------------------
   const showToast = (msg) => {
     setToastMsg(msg);
@@ -176,7 +176,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   };
 
   // --------------------------------------------------------------------------
-  // UPLOAD & AI HANDLERS
+  // UPLOAD & AI CONVERSION HANDLERS
   // --------------------------------------------------------------------------
   const handleSketchUpload = (file) => {
     setUploadError('');
@@ -200,14 +200,21 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
 
   const triggerAIGeneration = () => {
     setIsGenerating(true);
-    setGenProgress(15);
+    setGenProgress(20);
     setGenStatusMsg('Analyzing sketch structure...');
+    setAiSteps([
+      { label: 'Sketch analyzed', done: true },
+      { label: 'Structure understood', done: false, active: true },
+      { label: 'Pattern created', done: false },
+      { label: 'Fabric applied', done: false },
+      { label: 'Final rendering', done: false }
+    ]);
 
     const pipelineSteps = [
-      { p: 35, msg: 'Understanding garment silhouette...' },
-      { p: 60, msg: 'Creating pattern & applying fabric...' },
-      { p: 86, msg: 'Generating final 3D model...' },
-      { p: 100, msg: 'Rendering completed!' }
+      { p: 40, msg: 'Understanding garment silhouette...', stepIdx: 1 },
+      { p: 65, msg: 'Creating pattern & applying fabric...', stepIdx: 2 },
+      { p: 85, msg: 'Applying 3D materials...', stepIdx: 3 },
+      { p: 100, msg: 'Final rendering completed!', stepIdx: 4 }
     ];
 
     const prompt = `Photorealistic fashion design, ${designTitle}, ${colors.Primary} primary color, ${selectedFabric} fabric, high detailed haute couture photography, studio lighting, clean background, 8k resolution`;
@@ -221,7 +228,16 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       isHandled = true;
       setGeneratedImageUrl(targetImg);
       setIsGenerating(false);
-      showToast('✓ Garment generated successfully!');
+      setGenProgress(100);
+      setGenStatusMsg('Final rendering completed');
+      setAiSteps([
+        { label: 'Sketch analyzed', done: true },
+        { label: 'Structure understood', done: true },
+        { label: 'Pattern created', done: true },
+        { label: 'Fabric applied', done: true },
+        { label: 'Final rendering', done: true }
+      ]);
+      showToast('✓ 3D Garment generated successfully!');
       addVersionRecord('AI Generation');
     };
 
@@ -235,6 +251,11 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       setTimeout(() => {
         setGenProgress(s.p);
         setGenStatusMsg(s.msg);
+        setAiSteps(prev => prev.map((step, i) => ({
+          ...step,
+          done: i <= s.stepIdx,
+          active: i === s.stepIdx
+        })));
       }, (idx + 1) * 600);
     });
   };
@@ -270,7 +291,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   };
 
   // --------------------------------------------------------------------------
-  // THREE.JS 3D CANVAS & LATHE GARMENT ENGINE (PRE-DECLARED BEFORE USEEFFECT)
+  // THREE.JS 3D CANVAS & HIGH-DEFINITION SUIT MODEL ENGINE
   // --------------------------------------------------------------------------
   const glCanvasRef = useRef(null);
   const rendererRef = useRef(null);
@@ -296,8 +317,14 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
 
     const trimMat = new THREE.MeshStandardMaterial({
       color: new THREE.Color(colors.Secondary),
-      roughness: 0.4,
-      metalness: 0.2
+      roughness: 0.35,
+      metalness: 0.15
+    });
+
+    const buttonMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(colors.Accent),
+      roughness: 0.2,
+      metalness: 0.8
     });
 
     const isLongForm = selectedGarment === 'dress' || selectedGarment === 'gown';
@@ -321,19 +348,25 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     torso.receiveShadow = true;
     gGroup.add(torso);
 
-    // Sleeves
+    // Sleeves with cuffs
     const sleeveLen = details.sleeves === 'Slim' ? 0.48 : 0.56;
     [-1, 1].forEach(side => {
-      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.088, 0.068, sleeveLen, 18), mat);
+      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.088, 0.068, sleeveLen, 20), mat);
       sleeve.position.set(side * 0.335, 1.34, 0);
       sleeve.rotation.z = side * (Math.PI / 2 - 0.32);
       sleeve.position.x = side * (0.335 + Math.cos(0.32) * sleeveLen / 2 * 0.9);
       sleeve.position.y = 1.34 - Math.sin(0.32) * sleeveLen / 2 * 0.9;
       sleeve.castShadow = true;
       gGroup.add(sleeve);
+
+      // Cuffs
+      const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.04, 20), trimMat);
+      cuff.position.set(side * (0.335 + Math.cos(0.32) * sleeveLen * 0.9), 1.34 - Math.sin(0.32) * sleeveLen * 0.9, 0);
+      cuff.rotation.z = side * (Math.PI / 2 - 0.32);
+      gGroup.add(cuff);
     });
 
-    // Collar
+    // Lapel & Collar
     if (details.collar === 'Mandarin') {
       const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.098, 0.09, 0.055, 28, 1, true), trimMat);
       collar.position.set(0, 1.585, 0);
@@ -345,13 +378,22 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       collar.rotation.z = Math.PI * 0.25;
       gGroup.add(collar);
     }
+
+    // Suit Buttons
+    [1.15, 1.25, 1.35].forEach(btnY => {
+      const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.008, 16), buttonMat);
+      btn.position.set(0.01, btnY, 0.305);
+      btn.rotation.x = Math.PI / 2;
+      gGroup.add(btn);
+    });
   };
 
   useEffect(() => {
     if (!glCanvasRef.current) return;
     const canvas = glCanvasRef.current;
-    const width = canvas.parentElement?.clientWidth || 600;
-    const height = canvas.parentElement?.clientHeight || 540;
+    const parent = canvas.parentElement;
+    const width = parent?.clientWidth || 600;
+    const height = parent?.clientHeight || 540;
 
     const scene = new THREE.Scene();
     sceneRef.current = scene;
@@ -367,18 +409,19 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     renderer.shadowMap.enabled = true;
     rendererRef.current = renderer;
 
-    const hemi = new THREE.HemisphereLight(0xF8F0DD, 0x151310, 0.65);
+    const hemi = new THREE.HemisphereLight(0xF8F0DD, 0x151310, 0.75);
     scene.add(hemi);
 
-    const dirKey = new THREE.DirectionalLight(0xffffff, 1.25);
+    const dirKey = new THREE.DirectionalLight(0xffffff, 1.35);
     dirKey.position.set(2.4, 4, 2.2);
     dirKey.castShadow = true;
     scene.add(dirKey);
 
-    const pinkRim = new THREE.DirectionalLight(0xE50087, 0.35);
+    const pinkRim = new THREE.DirectionalLight(0xE50087, 0.4);
     pinkRim.position.set(-3, 2, -2);
     scene.add(pinkRim);
 
+    // Floor Base
     const floorGeo = new THREE.CircleGeometry(3.2, 64);
     const floorMat = new THREE.MeshStandardMaterial({ color: isDark ? 0x141210 : 0xEFEAE1, roughness: 0.9 });
     const floor = new THREE.Mesh(floorGeo, floorMat);
@@ -386,6 +429,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     floor.receiveShadow = true;
     scene.add(floor);
 
+    // Mannequin Head & Stand
     const mannequinGroup = new THREE.Group();
     const manMat = new THREE.MeshStandardMaterial({ color: 0xCAC4B8, roughness: 0.55 });
     
@@ -421,7 +465,18 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     };
     animate();
 
+    const handleResize = () => {
+      if (!canvas.parentElement || !rendererRef.current || !cameraRef.current) return;
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
+      cameraRef.current.aspect = w / h;
+      cameraRef.current.updateProjectionMatrix();
+      rendererRef.current.setSize(w, h);
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animId);
       renderer.dispose();
     };
@@ -434,7 +489,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   return (
     <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: mainBg, color: textPrimary, minHeight: '100vh', paddingBottom: '60px' }}>
       
-      {/* Feedback Toast */}
+      {/* Toast Alert */}
       {toastMsg && (
         <div style={{
           position: 'fixed',
@@ -459,7 +514,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       )}
 
       {/* -------------------------------------------------------------------- */}
-      {/* 1. DESIGN WORKSPACE HEADER (58px HEIGHT)                              */}
+      {/* 1. TOP DESIGN HEADER BAR (58px HEIGHT)                               */}
       {/* -------------------------------------------------------------------- */}
       <div style={{
         height: '58px',
@@ -473,7 +528,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
         top: 0,
         zIndex: 50
       }}>
-        {/* Left: Back Link & Title */}
+        {/* Left: Navigation Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <button style={{ border: 'none', background: 'transparent', color: textSecondary, fontSize: '13px', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <ArrowLeft size={15} />
@@ -536,190 +591,134 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       </div>
 
       {/* -------------------------------------------------------------------- */}
-      {/* 2. MAIN 3-COLUMN WORKSPACE                                           */}
+      {/* 2. MAIN WORKSPACE GRID                                               */}
       {/* -------------------------------------------------------------------- */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '21% 57% 22%',
+        gridTemplateColumns: '22% 56% 22%',
         gap: '16px',
         padding: '20px 24px 16px 24px',
         alignItems: 'start'
       }}>
 
         {/* ================================================================== */}
-        {/* LEFT PANEL: TOOL RAIL + AI GARMENT GENERATOR PANEL                 */}
+        {/* LEFT CONFIGURATION PANEL: AI GARMENT GENERATOR WORKFLOW             */}
         {/* ================================================================== */}
-        <div style={{ display: 'flex', gap: '12px' }}>
-          
-          {/* Vertical Tool Rail */}
-          <div style={{
-            background: cardBg,
-            border: `1px solid ${borderDefault}`,
-            borderRadius: '14px',
-            padding: '12px 6px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            alignItems: 'center',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
-          }}>
-            {[
-              { id: 'generator', label: 'AI Generate', icon: Sparkles },
-              { id: 'sketch', label: 'Sketch', icon: Upload },
-              { id: 'variations', label: 'Variations', icon: Grid },
-              { id: 'layers', label: 'Layers', icon: Layers },
-              { id: 'materials', label: 'Materials', icon: Box },
-              { id: 'details', label: 'Details', icon: Scissors },
-              { id: 'settings', label: 'Settings', icon: Settings }
-            ].map(t => {
-              const IconComp = t.icon;
-              const isActive = activeToolRail === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveToolRail(t.id)}
-                  title={t.label}
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '10px',
-                    border: 'none',
-                    background: isActive ? pinkTint : 'transparent',
-                    color: isActive ? primaryPink : textSecondary,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  <IconComp size={18} />
-                </button>
-              );
-            })}
+        <div style={{
+          background: cardBg,
+          border: `1px solid ${borderDefault}`,
+          borderRadius: '14px',
+          padding: '18px',
+          boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px'
+        }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={16} color={aiAccent} />
+              <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textPrimary }}>AI Garment Generator</h3>
+            </div>
+            <p style={{ margin: '3px 0 0 0', fontSize: '12px', color: textSecondary, lineHeight: '17px' }}>
+              Transforming your sketch into a 3D model.
+            </p>
           </div>
 
-          {/* AI Garment Generator Panel */}
-          <div style={{
-            flex: 1,
-            background: cardBg,
-            border: `1px solid ${borderDefault}`,
-            borderRadius: '14px',
-            padding: '18px',
-            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Sparkles size={16} color={aiAccent} />
-                <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textPrimary }}>AI Garment Generator</h3>
+          {/* Uploaded Sketch Preview Container */}
+          {uploadedSketch ? (
+            <div style={{ border: `1px solid ${borderDefault}`, borderRadius: '12px', padding: '10px', background: secondaryBg, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ height: '160px', borderRadius: '8px', overflow: 'hidden', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${borderDefault}` }}>
+                <img src={uploadedSketch} alt="Uploaded Sketch" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
               </div>
-              <p style={{ margin: '3px 0 0 0', fontSize: '12px', color: textSecondary, lineHeight: '17px' }}>
-                Transform your sketch into a production-ready fashion concept.
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
+                <span style={{ fontWeight: 600, color: textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '130px' }}>{sketchFileName}</span>
+                <span style={{ color: textMuted }}>{sketchFileSize}</span>
+              </div>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button onClick={() => fileInputRef.current && fileInputRef.current.click()} style={{ flex: 1, height: '32px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Replace</button>
+                <button onClick={() => setUploadedSketch(null)} style={{ flex: 1, height: '32px', borderRadius: '8px', border: '1px solid #FCA5A5', background: '#FEF2F2', color: '#EF4444', fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Remove</button>
+              </div>
+              <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && handleSketchUpload(e.target.files[0])} accept="image/*" style={{ display: 'none' }} />
+            </div>
+          ) : (
+            <div 
+              onClick={() => fileInputRef.current && fileInputRef.current.click()}
+              style={{
+                height: '160px',
+                border: `1.5px dashed ${primaryPink}`,
+                background: pinkTint,
+                borderRadius: '12px',
+                padding: '16px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                cursor: 'pointer'
+              }}
+            >
+              <Plus size={24} color={primaryPink} />
+              <strong style={{ fontSize: '13px', color: textPrimary }}>Upload Sketch</strong>
+              <span style={{ fontSize: '11px', color: textMuted }}>PNG / JPG / WEBP · Max 10MB</span>
+              <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && handleSketchUpload(e.target.files[0])} accept="image/*" style={{ display: 'none' }} />
+            </div>
+          )}
+
+          {/* AI Conversion Workflow Checklist */}
+          <div style={{ borderTop: `1px solid ${borderDefault}`, paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: textPrimary }}>{genStatusMsg}</span>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: primaryPink }}>{genProgress}%</span>
             </div>
 
-            {/* Upload Area */}
-            {!uploadedSketch ? (
-              <div 
-                onClick={() => fileInputRef.current && fileInputRef.current.click()}
-                style={{
-                  height: '180px',
-                  border: `1.5px dashed ${primaryPink}`,
-                  background: pinkTint,
-                  borderRadius: '12px',
-                  padding: '16px',
-                  textAlign: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  cursor: 'pointer'
-                }}
-              >
-                <Plus size={24} color={primaryPink} />
-                <strong style={{ fontSize: '13px', color: textPrimary }}>Upload Sketch</strong>
-                <span style={{ fontSize: '11px', color: textMuted }}>PNG / JPG / WEBP · Max 10MB</span>
-                <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && handleSketchUpload(e.target.files[0])} accept="image/*" style={{ display: 'none' }} />
-              </div>
-            ) : (
-              <div style={{ border: `1px solid ${borderDefault}`, borderRadius: '12px', padding: '10px', background: secondaryBg, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div style={{ height: '170px', borderRadius: '8px', overflow: 'hidden', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${borderDefault}` }}>
-                  <img src={uploadedSketch} alt="Uploaded Sketch" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-                  <span style={{ fontWeight: 600, color: textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '120px' }}>{sketchFileName}</span>
-                  <span style={{ color: textMuted }}>{sketchFileSize}</span>
-                </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button onClick={() => fileInputRef.current && fileInputRef.current.click()} style={{ flex: 1, height: '32px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Replace</button>
-                  <button onClick={() => setUploadedSketch(null)} style={{ flex: 1, height: '32px', borderRadius: '8px', border: '1px solid #FCA5A5', background: '#FEF2F2', color: '#EF4444', fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Remove</button>
-                </div>
-                <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && handleSketchUpload(e.target.files[0])} accept="image/*" style={{ display: 'none' }} />
-              </div>
-            )}
-
-            {/* AI Progress Box */}
-            <div style={{ borderTop: `1px solid ${borderDefault}`, paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: textPrimary }}>{isGenerating ? genStatusMsg : 'Transforming your sketch'}</span>
-                <span style={{ fontSize: '12px', fontWeight: 700, color: primaryPink }}>{genProgress}%</span>
-              </div>
-
-              <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: '#E5E7EB', overflow: 'hidden' }}>
-                <div style={{ width: `${genProgress}%`, height: '100%', background: primaryPink, transition: 'width 0.4s ease' }} />
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px' }}>
-                {aiSteps.map(step => (
-                  <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
-                    {step.done ? (
-                      <Check size={14} color="#16A34A" strokeWidth={2.5} />
-                    ) : (
-                      <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: step.active ? primaryPink : textMuted, marginLeft: '4px', marginRight: '4px' }} />
-                    )}
-                    <span style={{ color: step.done || step.active ? textPrimary : textMuted, fontWeight: step.done || step.active ? 500 : 400 }}>
-                      {step.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <button 
-                onClick={triggerAIGeneration}
-                disabled={isGenerating}
-                style={{
-                  width: '100%',
-                  height: '38px',
-                  marginTop: '6px',
-                  borderRadius: '10px',
-                  border: 'none',
-                  background: primaryPink,
-                  color: '#FFFFFF',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  boxShadow: '0 2px 8px rgba(229,0,135,0.22)'
-                }}
-              >
-                <span>[ Open 3D Studio → ]</span>
-              </button>
+            <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: '#E5E7EB', overflow: 'hidden' }}>
+              <div style={{ width: `${genProgress}%`, height: '100%', background: primaryPink, transition: 'width 0.4s ease' }} />
             </div>
 
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
+              {aiSteps.map(step => (
+                <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px' }}>
+                  {step.done ? (
+                    <Check size={14} color="#16A34A" strokeWidth={2.5} />
+                  ) : (
+                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: step.active ? primaryPink : textMuted, marginLeft: '4px', marginRight: '4px' }} />
+                  )}
+                  <span style={{ color: step.done || step.active ? textPrimary : textMuted, fontWeight: step.done || step.active ? 500 : 400 }}>
+                    {step.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <button 
+              onClick={triggerAIGeneration}
+              disabled={isGenerating}
+              style={{
+                width: '100%',
+                height: '38px',
+                marginTop: '6px',
+                borderRadius: '10px',
+                border: 'none',
+                background: primaryPink,
+                color: '#FFFFFF',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                boxShadow: '0 2px 8px rgba(229,0,135,0.22)'
+              }}
+            >
+              <span>[ Open 3D Studio → ]</span>
+            </button>
           </div>
-
         </div>
 
         {/* ================================================================== */}
-        {/* CENTER PANEL: MAIN GARMENT CANVAS (VISUAL HERO)                     */}
+        {/* CENTER CANVAS & VIEWPORT (PROMINENT 3D SUIT HERO)                   */}
         {/* ================================================================== */}
         <div style={{
           background: cardBg,
@@ -731,7 +730,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
           flexDirection: 'column',
           position: 'relative'
         }}>
-          {/* Top Canvas Toolbar */}
+          {/* Top Canvas View Mode Switcher */}
           <div style={{ position: 'absolute', top: '24px', left: '24px', zIndex: 20, display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ display: 'flex', background: secondaryBg, padding: '3px', borderRadius: '8px', border: `1px solid ${borderDefault}`, gap: '4px' }}>
               <button onClick={() => setCanvasViewMode('sketch')} style={{ border: 'none', background: canvasViewMode === 'sketch' ? primaryPink : 'transparent', color: canvasViewMode === 'sketch' ? '#FFFFFF' : textSecondary, fontSize: '13px', fontWeight: 500, padding: '4px 12px', borderRadius: '6px', cursor: 'pointer' }}>[ Sketch ]</button>
@@ -743,8 +742,8 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
             <Maximize2 size={15} color={textPrimary} />
           </button>
 
-          {/* Large Hero Canvas Stage */}
-          <div style={{ position: 'relative', height: '540px', borderRadius: '12px', overflow: 'hidden', background: canvasBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {/* Central Stage Canvas */}
+          <div style={{ position: 'relative', width: '100%', height: '540px', borderRadius: '12px', overflow: 'hidden', background: canvasBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {canvasViewMode === 'sketch' ? (
               <img src={uploadedSketch} alt="Garment Sketch" style={{ maxWidth: '90%', maxHeight: '90%', objectFit: 'contain' }} />
             ) : (
@@ -835,7 +834,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
         </div>
 
         {/* ================================================================== */}
-        {/* RIGHT PANEL: FASHION PROPERTY EDITOR                              */}
+        {/* RIGHT CUSTOMIZATION PANEL: APPEARANCE & MATERIALS                  */}
         {/* ================================================================== */}
         <div style={{
           background: cardBg,
@@ -1022,14 +1021,14 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       </div>
 
       {/* -------------------------------------------------------------------- */}
-      {/* 3. AI ASSISTANT / AI COMMAND BAR                                     */}
+      {/* 3. BOTTOM SECTION: AI DESIGN ASSISTANT BAR                           */}
       {/* -------------------------------------------------------------------- */}
       <div style={{ margin: '0 24px 16px 24px', background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
           <Sparkles size={16} color={aiAccent} />
           <strong style={{ fontSize: '14px', color: textPrimary }}>AI Design Assistant</strong>
         </div>
-        <span style={{ fontSize: '12px', color: textSecondary, display: 'block', marginBottom: '10px' }}>Describe what you want to change.</span>
+        <span style={{ fontSize: '12px', color: textSecondary, display: 'block', marginBottom: '10px' }}>Describe what you want to change on your garment design.</span>
 
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
           {[
@@ -1079,13 +1078,13 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
       </div>
 
       {/* -------------------------------------------------------------------- */}
-      {/* 4. AI VARIATIONS / VERSIONS / EXPORT ROW                             */}
+      {/* 4. BOTTOM HORIZONTAL CARDS: VARIATIONS / VERSION HISTORY / EXPORT    */}
       {/* -------------------------------------------------------------------- */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 240px 240px',
+        gridTemplateColumns: '1fr 260px 260px',
         gap: '16px',
-        padding: '0 24px 16px 24px',
+        padding: '0 24px',
         alignItems: 'start'
       }}>
         {/* AI Variations Carousel */}
@@ -1147,50 +1146,17 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
         {/* Export Design Card */}
         <div style={{ background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
           <strong style={{ fontSize: '14px', color: textPrimary, display: 'block', marginBottom: '10px' }}>EXPORT DESIGN</strong>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <button onClick={() => showToast('Exporting 3D Model (GLB)...')} style={{ padding: '8px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: secondaryBg, textAlign: 'left', cursor: 'pointer' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <button onClick={() => showToast('Exporting 3D Model (GLB)...')} style={{ padding: '8px 10px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: secondaryBg, textAlign: 'left', cursor: 'pointer' }}>
               <strong style={{ fontSize: '12px', color: textPrimary, display: 'block' }}>Export 3D Model</strong>
               <span style={{ fontSize: '10px', color: textMuted }}>GLB / GLTF / OBJ</span>
             </button>
-            <button onClick={() => showToast('Exporting PNG Images...')} style={{ padding: '8px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: secondaryBg, textAlign: 'left', cursor: 'pointer' }}>
+            <button onClick={() => showToast('Exporting PNG Images...')} style={{ padding: '8px 10px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: secondaryBg, textAlign: 'left', cursor: 'pointer' }}>
               <strong style={{ fontSize: '12px', color: textPrimary, display: 'block' }}>Export Images</strong>
               <span style={{ fontSize: '10px', color: textMuted }}>PNG / JPG</span>
             </button>
           </div>
         </div>
-      </div>
-
-      {/* -------------------------------------------------------------------- */}
-      {/* 5. DESIGN INSIGHTS BAR                                               */}
-      {/* -------------------------------------------------------------------- */}
-      <div style={{ margin: '0 24px', background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '14px 20px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Sparkles size={16} color={primaryPink} />
-          <strong style={{ fontSize: '13.5px', color: textPrimary }}>Design Insights</strong>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '32px', fontSize: '12.5px' }}>
-          <div>
-            <span style={{ color: textMuted, display: 'block', fontSize: '11px' }}>Fabric Required</span>
-            <strong style={{ color: textPrimary }}>2.4 meters</strong>
-          </div>
-          <div>
-            <span style={{ color: textMuted, display: 'block', fontSize: '11px' }}>Estimated Time</span>
-            <strong style={{ color: textPrimary }}>4–5 hours</strong>
-          </div>
-          <div>
-            <span style={{ color: textMuted, display: 'block', fontSize: '11px' }}>Complexity</span>
-            <strong style={{ color: textPrimary }}>78%</strong>
-          </div>
-          <div>
-            <span style={{ color: textMuted, display: 'block', fontSize: '11px' }}>AI Confidence</span>
-            <strong style={{ color: primaryPink }}>92%</strong>
-          </div>
-        </div>
-
-        <button onClick={() => showToast('Full atelier report generated.')} style={{ border: 'none', background: 'transparent', color: primaryPink, fontSize: '12.5px', fontWeight: 600, cursor: 'pointer' }}>
-          View Full Report →
-        </button>
       </div>
 
       {/* SAVE MODAL */}
