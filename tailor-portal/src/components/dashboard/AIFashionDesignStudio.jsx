@@ -224,7 +224,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     ];
 
     const selectedF = selectedFabric;
-    const prompt = `Photorealistic fashion design, ${designTitle}, ${primaryColor} primary color, ${selectedF} fabric, high detailed haute couture photography, studio lighting, clean background, 8k resolution`;
+    const prompt = `Photorealistic fashion design, ${designName}, ${primaryColor} primary color, ${selectedF} fabric, high detailed haute couture photography, studio lighting, clean background, 8k resolution`;
 
     const seed = Math.floor(Math.random() * 1000000);
     const aiApiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=1024&seed=${seed}&model=flux&nologo=true`;
@@ -252,7 +252,7 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     };
     testImg.onerror = () => {
       clearTimeout(timer);
-      finalizeImage(fallbackImg);
+      finishGeneration(fallbackImg);
     };
     testImg.src = aiApiUrl;
 
