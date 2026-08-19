@@ -1965,39 +1965,7 @@ export default function App() {
 
 
 
-          {/* Fold 12: Mobile App Download Banner */}
-          <div className="landing-container reveal">
-            <section id="download-app-banner" className="app-download-banner" style={{ margin: '40px 0' }}>
-            <div className="app-download-text">
-              <span className="badge badge-secondary" style={{ width: 'fit-content', marginBottom: '8px' }}>STITCHBEE MOBILE</span>
-              <h2 style={{ fontSize: '2rem', lineHeight: '1.2' }}>StitchBee is always in your pocket.</h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', maxWidth: '500px' }}>
-                Consult designers, track your stitching process in real-time, get fit notifications, and execute instant touchless AI body scans.
-              </p>
-            </div>
-            <div className="app-badge-group">
-              <div className="app-badge-btn" onClick={() => alert('App Store download link')}>
-                <svg width="20" height="24" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#fff' }}>
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.11.09 2.24-.58 2.94-1.39" />
-                </svg>
-                <div className="app-badge-text">
-                  <span className="app-badge-sub">Download on the</span>
-                  <span className="app-badge-main">App Store</span>
-                </div>
-              </div>
-              
-              <div className="app-badge-btn" onClick={() => alert('Google Play download link')}>
-                <svg width="20" height="24" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#fff' }}>
-                  <path d="M5 3.00003C4.9 3.00003 4.79998 3.02003 4.69998 3.07003L14.85 13.22L18.42 9.65003L5.86 2.53003C5.56 2.36003 5.23 2.53003 5 3.00003ZM3.24 4.29003C3.08 4.60003 3 4.96003 3 5.37003V18.63C3 19.04 3.08 19.4 3.24 19.71L13.43 11.8L3.24 4.29003ZM14.85 14.78L4.69998 20.93C4.79998 20.98 4.9 21 5 21C5.23 21 5.56 21.17 5.86 21.0003L18.42 13.88L14.85 14.78ZM16.27 11.8L20.53 9.42003C21.15 9.07003 21.15 8.49003 20.53 8.14003L16.27 11.8Z" />
-                </svg>
-                <div className="app-badge-text">
-                  <span className="app-badge-sub">GET IT ON</span>
-                  <span className="app-badge-main">Google Play</span>
-                </div>
-              </div>
-            </div>
-            </section>
-          </div>
+
 
 
         </div>
