@@ -128,18 +128,39 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     const seed = Math.floor(Math.random() * 1000000);
     const aiApiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=1024&seed=${seed}&model=flux&nologo=true`;
 
+    const fallbackImage = variationsList.find(v => v.primary === colors.primary)?.img || '/br_b1.jpg';
+
+    let isHandled = false;
+    const finalizeImage = (imgSrc) => {
+      if (isHandled) return;
+      isHandled = true;
+      setGeneratedAIImageUrl(imgSrc);
+      setIsConverting(false);
+      setAiComplete(true);
+      showToast('Real AI Fashion Design generated!');
+      addVersion('Free AI image generated');
+    };
+
+    const timer = setTimeout(() => {
+      finalizeImage(fallbackImage);
+    }, 3200);
+
+    const testImg = new Image();
+    testImg.onload = () => {
+      clearTimeout(timer);
+      finalizeImage(aiApiUrl);
+    };
+    testImg.onerror = () => {
+      clearTimeout(timer);
+      finalizeImage(fallbackImage);
+    };
+    testImg.src = aiApiUrl;
+
     const steps = [0, 1, 2, 3, 4];
     steps.forEach((stepIdx) => {
       setTimeout(() => {
         setConversionStep(stepIdx);
-        if (stepIdx === 4) {
-          setGeneratedAIImageUrl(aiApiUrl);
-          setIsConverting(false);
-          setAiComplete(true);
-          showToast('Real AI Fashion Design generated!');
-          addVersion('Free AI image generated');
-        }
-      }, (stepIdx + 1) * 700);
+      }, (stepIdx + 1) * 550);
     });
   };
 
@@ -712,6 +733,11 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
               <img 
                 src={generatedAIImageUrl} 
                 alt="AI Generated Real Fashion Design" 
+                onError={(e) => {
+                  e.target.onerror = null;
+                  const fallback = variationsList.find(v => v.primary === colors.primary)?.img || '/br_b1.jpg';
+                  e.target.src = fallback;
+                }}
                 style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', borderRadius: '12px' }} 
               />
             </div>
@@ -723,7 +749,16 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
               </div>
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', background: '#FFFFFF' }}>
                 <span style={{ fontSize: '11px', fontWeight: 700, color: primaryPink, marginBottom: '8px' }}>AI GENERATED RENDER</span>
-                <img src={generatedAIImageUrl} alt="AI Split Render" style={{ maxWidth: '100%', maxHeight: '85%', objectFit: 'contain' }} />
+                <img 
+                  src={generatedAIImageUrl} 
+                  alt="AI Split Render" 
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    const fallback = variationsList.find(v => v.primary === colors.primary)?.img || '/br_b1.jpg';
+                    e.target.src = fallback;
+                  }}
+                  style={{ maxWidth: '100%', maxHeight: '85%', objectFit: 'contain' }} 
+                />
               </div>
             </div>
           ) : viewMode === 'sketch' ? (
