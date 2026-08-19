@@ -5,7 +5,7 @@ import {
   Layers, Sun, Moon, Info, HelpCircle, ArrowLeft, ArrowRight, ShieldCheck,
   FileText, Box, Video, Plus, Trash2, Heart, MessageSquare, Send, Copy, 
   Minimize2, Undo, Redo, CheckCircle2, SlidersHorizontal, Image as ImageIcon,
-  Camera, ChevronLeft, Settings, Sliders as SlidersIcon
+  Camera, ChevronLeft, ChevronRight, Settings, Sliders as SlidersIcon
 } from 'lucide-react';
 import * as THREE from 'three';
 
