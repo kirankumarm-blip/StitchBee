@@ -5,6 +5,7 @@ import {
   Check, Circle, Edit, Upload, Share2, Maximize2 
 } from 'lucide-react';
 import ProgressBar from './ProgressBar';
+import AIFashionDesignStudio from './AIFashionDesignStudio';
 import '../../styles/dashboard.css';
 
 export default function DesignerStudioWorkspace({ 
@@ -447,8 +448,14 @@ export default function DesignerStudioWorkspace({
         </aside>
 
         {/* ==================================================================== */}
-        {/* 2. CENTER CONTENT (MY DESIGNS WORKSPACE - SPANNING 100% WIDTH)       */}
+        {/* 2. CENTER CONTENT (AI DESIGN STUDIO OR MY DESIGNS LIST)             */}
         {/* ==================================================================== */}
+        {studioSubTab === 'create' ? (
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <AIFashionDesignStudio theme={theme} onNavigateTab={onNavigateTab} />
+          </div>
+        ) : (
+          <>
         <main style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0, paddingTop: '20px', paddingBottom: '20px' }}>
           
           {/* Header Row: Title & Subtitle on left, Search/Filter/New Design on right */}
@@ -993,6 +1000,8 @@ export default function DesignerStudioWorkspace({
           </div>
 
         </aside>
+          </>
+        )}
 
       </div>
     </div>
