@@ -4,10 +4,7 @@ import {
   Check, X, Eye, Download, Share2, Play, Sliders, ChevronDown, 
   Layers, Sun, Moon, Info, HelpCircle, ArrowLeft, ArrowRight, ShieldCheck,
   FileText, Box, Video, Plus, Trash2, Heart, MessageSquare, Send, Copy, 
-  Minimize2, Undo, Redo, CheckCircle2, SlidersHorizontal, Image as ImageIcon,
-  Camera, ChevronLeft, ChevronRight, Settings, Sliders as SlidersIcon,
-  Circle, HelpCircle as HelpIcon, Edit3, CornerUpLeft, CornerUpRight,
-  Hand, Sun as SunLight, Share, Folder, Grid, Scissors, Palette, Wrench
+  Minimize2, Undo, Redo, CheckCircle2, SlidersHorizontal, Image as ImageIcon
 } from 'lucide-react';
 import * as THREE from 'three';
 
@@ -15,332 +12,285 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
   const isDark = theme === 'dark';
 
   // --------------------------------------------------------------------------
-  // STITCHBEE BRAND THEME TOKENS
+  // STITCHBEE BRAND DESIGN TOKENS (Hot Pink & Purple Accent Theme)
   // --------------------------------------------------------------------------
-  const primaryPink = '#E50087';
-  const darkPink = '#B8006B';
-  const aiAccent = '#8B5CF6';
-  const premiumGold = '#C9A227';
-
-  const mainBg = isDark ? '#0D0A1A' : '#F7F7F9';
-  const canvasBg = isDark ? '#121018' : '#F5F3EF';
+  const primaryPink = '#E9008C';
+  const pinkHover = '#D0007D';
+  const purpleAccent = '#9B1DDB';
+  const brassAccent = '#E9008C'; // Pink accent replacing brass for StitchBee branding
+  
+  const pageBg = isDark ? '#0D0A1A' : '#F7F8FC';
   const cardBg = isDark ? '#191528' : '#FFFFFF';
-  const secondaryBg = isDark ? '#141124' : '#F9FAFB';
-  const inputBg = isDark ? '#231D34' : '#FFFFFF';
-
-  const textPrimary = isDark ? '#F9FAFB' : '#171717';
-  const textSecondary = isDark ? '#9CA3AF' : '#6B7280';
-  const textMuted = isDark ? '#6B7280' : '#9CA3AF';
-
-  const borderDefault = isDark ? 'rgba(255, 255, 255, 0.12)' : '#E5E7EB';
-  const borderLight = isDark ? 'rgba(255, 255, 255, 0.08)' : '#F3F4F6';
-
-  const pinkTint = isDark ? 'rgba(229,0,135,0.15)' : '#FFF0F7';
-  const purpleTint = isDark ? 'rgba(139,92,246,0.15)' : '#F5F3FF';
+  const inputBg = isDark ? '#231D34' : '#F8FAFC';
+  const borderColor = isDark ? 'rgba(255, 255, 255, 0.12)' : '#E5E7EB';
+  const textColor = isDark ? '#F9FAFB' : '#182033';
+  const secTextColor = isDark ? '#A0AEC0' : '#667085';
 
   // --------------------------------------------------------------------------
-  // STATE MANAGEMENT
+  // GLOBAL DESIGN STATE
   // --------------------------------------------------------------------------
-  const [designTitle, setDesignTitle] = useState('Untitled Suit Design');
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [saveStatus, setSaveStatus] = useState('Auto-saved');
+  const [currentStep, setCurrentStep] = useState(3); // 1: Upload, 2: AI Generate, 3: Customize, 4: 3D Preview, 5: Download
+  const [viewMode, setViewMode] = useState('3d'); // 'sketch' | '3d' | 'split'
+  const [designTitle, setDesignTitle] = useState('Midnight Silk Outfit');
+  const [autosaveText, setAutosaveText] = useState('All changes saved');
 
-  // Left Tool Rail Selection
-  const [activeToolRail, setActiveToolRail] = useState('generator'); // 'generator' | 'sketch' | 'variations' | 'layers' | 'materials' | 'details' | 'settings'
-
-  // Canvas View Mode
-  const [canvasViewMode, setCanvasViewMode] = useState('3d'); // '3d' | 'sketch'
-  const [activeCanvasTool, setActiveCanvasTool] = useState('rotate'); // 'rotate' | 'pan' | 'zoom-in' | 'zoom-out' | 'light'
-
-  // Upload State
-  const [uploadedSketch, setUploadedSketch] = useState('/br_b1.jpg');
-  const [sketchFileName, setSketchFileName] = useState('royal-suit-sketch.png');
-  const [sketchFileSize, setSketchFileSize] = useState('2.4 MB');
+  // Step 1 & Sketch State
+  const [hasSketch, setHasSketch] = useState(false);
+  const [sketchDataUrl, setSketchDataUrl] = useState(null);
   const [uploadError, setUploadError] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
 
-  // AI Conversion Workflow State (Completed 100% View)
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [genProgress, setGenProgress] = useState(100);
-  const [genStatusMsg, setGenStatusMsg] = useState('Final rendering completed');
-  const [aiSteps, setAiSteps] = useState([
-    { label: 'Sketch analyzed', done: true },
-    { label: 'Structure understood', done: true },
-    { label: 'Pattern created', done: true },
-    { label: 'Fabric applied', done: true },
-    { label: 'Final rendering', done: true }
-  ]);
+  // AI Conversion Progress State
+  const [isConverting, setIsConverting] = useState(false);
+  const [conversionStep, setConversionStep] = useState(0); // 0 to 4
+  const [aiComplete, setAiComplete] = useState(false);
 
-  const [generatedImageUrl, setGeneratedImageUrl] = useState('/br_b1.jpg');
-  const [selectedGarment, setSelectedGarment] = useState('gown');
+  // Garment Classification State
+  const [garmentType, setGarmentType] = useState('shirt'); // 'shirt' | 'jacket' | 'dress' | 'gown'
+  const [garmentMatch, setGarmentMatch] = useState(null);
+  const [garmentNote, setGarmentNote] = useState('Select or auto-detect silhouette from sketch.');
 
-  // Right Property Panel
-  const [propertyTab, setPropertyTab] = useState('Appearance'); // 'Appearance' | 'Fabric' | 'Pattern' | 'Details'
-
-  // Color State
-  const [colorRole, setColorRole] = useState('Primary'); // 'Primary' | 'Secondary' | 'Accent'
+  // Customization State (Color, Fabric, Pattern, Details)
+  const [activeRightTab, setActiveRightTab] = useState('color'); // 'color' | 'fabric' | 'pattern' | 'details'
+  const [colorRole, setColorRole] = useState('primary'); // 'primary' | 'secondary' | 'accent'
   const [colors, setColors] = useState({
-    Primary: '#171717',
-    Secondary: '#F5F3EE',
-    Accent: '#C9A227'
+    primary: '#E9008C',
+    secondary: '#F5F3EE',
+    accent: '#9B1DDB'
   });
-
-  const colorPresets = [
-    { name: 'Classic Black', hex: '#171717' },
-    { name: 'Ivory', hex: '#F5F3EE' },
-    { name: 'Navy', hex: '#1B2A41' },
-    { name: 'Burgundy', hex: '#7A1C27' },
-    { name: 'Forest', hex: '#114B32' },
-    { name: 'Champagne', hex: '#C9A227' },
-    { name: 'StitchBee Pink', hex: '#E50087' },
-    { name: 'AI Purple', hex: '#8B5CF6' }
-  ];
-
-  const recentColors = ['#171717', '#F5F3EE', '#C9A227', '#1B2A41', '#E50087', '#8B5CF6'];
-
-  // Fabric State
-  const [selectedFabric, setSelectedFabric] = useState('Silk');
-  const fabricsList = [
-    { name: 'Cotton', desc: 'Matte · breathable', roughness: 0.88, metalness: 0.02, img: '/fab3.jpg' },
-    { name: 'Linen', desc: 'Textured · natural', roughness: 0.92, metalness: 0.0, img: '/fab4.jpg' },
-    { name: 'Silk', desc: 'Lustrous · fluid', roughness: 0.18, metalness: 0.05, img: '/fab1.jpg' },
-    { name: 'Denim', desc: 'Rugged · woven', roughness: 0.8, metalness: 0.0, img: '/fab5.jpg' },
-    { name: 'Wool', desc: 'Warm · tailored', roughness: 0.95, metalness: 0.0, img: '/fab2.jpg' },
-    { name: 'Velvet', desc: 'Deep pile · rich', roughness: 0.97, metalness: 0.0, img: '/fab2.jpg' },
-    { name: 'Linen Blend', desc: 'Crisp · relaxed', roughness: 0.85, metalness: 0.0, img: '/fab4.jpg' },
-    { name: 'Satin', desc: 'Glossy · smooth', roughness: 0.14, metalness: 0.08, img: '/fab5.jpg' }
-  ];
-
-  // Pattern State
-  const [selectedPattern, setSelectedPattern] = useState('Solid');
-  const patternsList = ['Solid', 'Stripes', 'Checks', 'Floral', 'Geometric', 'Herringbone', 'Paisley'];
-
-  // Details State
+  const [recentColors, setRecentColors] = useState(['#E9008C', '#9B1DDB', '#182033', '#10B981']);
+  
+  const [selectedFabric, setSelectedFabric] = useState('silk');
+  const [selectedPattern, setSelectedPattern] = useState('solid');
+  
   const [details, setDetails] = useState({
-    collar: 'Notch',
-    sleeves: 'Regular',
-    cuffs: 'Button',
-    buttons: 'Classic',
-    pockets: 'Straight'
+    collar: 'classic', // 'classic' | 'mandarin' | 'none'
+    sleeve: 'long',    // 'short' | 'long'
+    length: 'regular', // 'crop' | 'regular' | 'long'
+    fit: 'regular',    // 'slim' | 'regular' | 'relaxed'
+    neckline: 'crew',  // 'crew' | 'v' | 'open'
+    hem: 'straight',   // 'straight' | 'curved'
+    cuffs: true,
+    buttons: true,
+    pockets: false,
+    stitching: false
   });
 
-  const detailCategories = {
-    collar: ['Notch', 'Peak', 'Shawl', 'Mandarin'],
-    sleeves: ['Regular', 'Slim', 'Wide', 'Rolled'],
-    cuffs: ['Button', 'French', 'Rounded'],
-    buttons: ['Classic', 'Metal', 'Wooden', 'Premium'],
-    pockets: ['Straight', 'Flap', 'Welt', 'Patch']
-  };
+  // History & Version Control State
+  const [versions, setVersions] = useState([
+    { label: 'Design created', time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+  ]);
 
-  // AI Assistant Chat State
-  const [assistantInput, setAssistantInput] = useState('');
+  // AI Assistant Drawer State
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const [assistantInputText, setAssistantInputText] = useState('');
   const [chatMessages, setChatMessages] = useState([
-    { role: 'ai', text: 'Describe what you want to change on your garment design.' }
+    { role: 'ai', text: 'Welcome to StitchBee Studio AI! What would you like to design today?' }
   ]);
 
-  // Variations State
-  const [selectedVariation, setSelectedVariation] = useState('original');
-  const variationsList = [
-    { id: 'original', name: 'Original', color: '#171717', img: '/br_b1.jpg' },
-    { id: 'modern', name: 'Modern', color: '#475467', img: '/b5.jpg' },
-    { id: 'luxury', name: 'Luxury', color: '#8B5CF6', img: '/b7.jpg' },
-    { id: 'minimal', name: 'Minimal', color: '#F5F3EE', img: '/b3.jpg' }
-  ];
-
-  // Version History State
-  const [versionList, setVersionList] = useState([
-    { id: 'v8', name: 'Design v8', time: 'Current', isCurrent: true },
-    { id: 'v7', name: 'Design v7', time: '2 hrs ago', isCurrent: false },
-    { id: 'v6', name: 'Design v6', time: 'Yesterday', isCurrent: false },
-    { id: 'v5', name: 'Design v5', time: '2 days ago', isCurrent: false }
-  ]);
-
-  // Modals & Feedback Toasts
+  // Modals & Toast State
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
 
-  // --------------------------------------------------------------------------
-  // HELPER FUNCTIONS
-  // --------------------------------------------------------------------------
   const showToast = (msg) => {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(''), 3000);
   };
 
-  const addVersionRecord = (name) => {
-    setVersionList(prev => [
-      { id: `v${prev.length + 1}`, name: `Design v${prev.length + 1} (${name})`, time: 'Just now', isCurrent: true },
-      ...prev.map(v => ({ ...v, isCurrent: false }))
-    ]);
+  const flashAutosave = () => {
+    setAutosaveText('Saving…');
+    setTimeout(() => setAutosaveText('All changes saved'), 600);
+  };
+
+  const addVersion = (label) => {
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setVersions(prev => [{ label, time: timeStr }, ...prev.slice(0, 10)]);
+    flashAutosave();
   };
 
   // --------------------------------------------------------------------------
-  // UPLOAD & AI CONVERSION HANDLERS
+  // GARMENT TYPES & FABRICS DATA
   // --------------------------------------------------------------------------
-  const handleSketchUpload = (file) => {
-    setUploadError('');
-    if (!file) return;
+  const garmentTypesList = [
+    { id: 'shirt', name: 'Shirt / Kurti', icon: '👔' },
+    { id: 'jacket', name: 'Jacket / Blazer', icon: '🧥' },
+    { id: 'dress', name: 'Anarkali / Dress', icon: '👗' },
+    { id: 'gown', name: 'Lehenga Gown', icon: '✨' }
+  ];
 
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      setUploadError('Please upload a valid PNG, JPG, or WEBP sketch file.');
-      return;
-    }
+  const fabricsList = [
+    { id: 'cotton', name: 'Cotton', desc: 'Matte · breathable', roughness: 0.88, metalness: 0.02 },
+    { id: 'linen', name: 'Linen', desc: 'Textured · natural', roughness: 0.92, metalness: 0.0 },
+    { id: 'silk', name: 'Raw Silk', desc: 'Lustrous · fluid', roughness: 0.18, metalness: 0.05 },
+    { id: 'velvet', name: 'Royal Velvet', desc: 'Deep pile · rich', roughness: 0.97, metalness: 0.0 },
+    { id: 'denim', name: 'Denim', desc: 'Rugged · woven', roughness: 0.8, metalness: 0.0 },
+    { id: 'wool', name: 'Wool', desc: 'Soft · warm', roughness: 0.9, metalness: 0.0 },
+    { id: 'satin', name: 'Zari Satin', desc: 'Glossy · smooth', roughness: 0.14, metalness: 0.08 },
+    { id: 'leather', name: 'Leather', desc: 'Structured · sheen', roughness: 0.4, metalness: 0.06 }
+  ];
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setUploadedSketch(e.target.result);
-      setSketchFileName(file.name);
-      setSketchFileSize(`${(file.size / (1024 * 1024)).toFixed(1)} MB`);
-      showToast(`Uploaded sketch "${file.name}"`);
-      triggerAIGeneration();
-    };
-    reader.readAsDataURL(file);
-  };
+  const colorPresets = [
+    { name: 'StitchBee Pink', hex: '#E9008C' },
+    { name: 'Purple Accent', hex: '#9B1DDB' },
+    { name: 'Royal Red', hex: '#8C1F28' },
+    { name: 'Navy Blue', hex: '#1B2A41' },
+    { name: 'Emerald', hex: '#10B981' },
+    { name: 'Metallic Gold', hex: '#EAB308' },
+    { name: 'Rosewood', hex: '#7A3B3F' },
+    { name: 'Ivory White', hex: '#EFEAE1' },
+    { name: 'Charcoal Black', hex: '#15130F' },
+    { name: 'Olive Green', hex: '#5B5A3D' },
+    { name: 'Beige Silk', hex: '#CBB994' },
+    { name: 'Pastel Blue', hex: '#DFE3E8' }
+  ];
 
-  const triggerAIGeneration = () => {
-    setIsGenerating(true);
-    setGenProgress(20);
-    setGenStatusMsg('Analyzing sketch structure...');
-    setAiSteps([
-      { label: 'Sketch analyzed', done: true },
-      { label: 'Structure understood', done: false, active: true },
-      { label: 'Pattern created', done: false },
-      { label: 'Fabric applied', done: false },
-      { label: 'Final rendering', done: false }
-    ]);
-
-    const pipelineSteps = [
-      { p: 40, msg: 'Understanding garment silhouette...', stepIdx: 1 },
-      { p: 65, msg: 'Creating pattern & applying fabric...', stepIdx: 2 },
-      { p: 85, msg: 'Applying 3D materials...', stepIdx: 3 },
-      { p: 100, msg: 'Final rendering completed!', stepIdx: 4 }
-    ];
-
-    const prompt = `Photorealistic fashion design, ${designTitle}, ${colors.Primary} primary color, ${selectedFabric} fabric, high detailed haute couture photography, studio lighting, clean background, 8k resolution`;
-    const seed = Math.floor(Math.random() * 1000000);
-    const aiApiUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=1024&seed=${seed}&model=flux&nologo=true`;
-    const fallbackImg = variationsList.find(v => v.id === selectedVariation)?.img || '/br_b1.jpg';
-
-    let isHandled = false;
-    const finishGen = (targetImg) => {
-      if (isHandled) return;
-      isHandled = true;
-      setGeneratedImageUrl(targetImg);
-      setIsGenerating(false);
-      setGenProgress(100);
-      setGenStatusMsg('Final rendering completed');
-      setAiSteps([
-        { label: 'Sketch analyzed', done: true },
-        { label: 'Structure understood', done: true },
-        { label: 'Pattern created', done: true },
-        { label: 'Fabric applied', done: true },
-        { label: 'Final rendering', done: true }
-      ]);
-      showToast('✓ 3D Garment generated successfully!');
-      addVersionRecord('AI Generation');
-    };
-
-    const timer = setTimeout(() => finishGen(fallbackImg), 3200);
-    const testImg = new Image();
-    testImg.onload = () => { clearTimeout(timer); finishGen(aiApiUrl); };
-    testImg.onerror = () => { clearTimeout(timer); finishGen(fallbackImg); };
-    testImg.src = aiApiUrl;
-
-    pipelineSteps.forEach((s, idx) => {
-      setTimeout(() => {
-        setGenProgress(s.p);
-        setGenStatusMsg(s.msg);
-        setAiSteps(prev => prev.map((step, i) => ({
-          ...step,
-          done: i <= s.stepIdx,
-          active: i === s.stepIdx
-        })));
-      }, (idx + 1) * 600);
-    });
-  };
-
-  const handleAssistantSubmit = (cmdText) => {
-    if (!cmdText.trim()) return;
-    const lower = cmdText.toLowerCase();
-    const newMsgs = [...chatMessages, { role: 'user', text: cmdText }];
-    let reply = "Updated design configuration!";
-
-    if (lower.includes('navy') || lower.includes('blue')) {
-      setColors(prev => ({ ...prev, Primary: '#1B2A41' }));
-      reply = "Changed primary color to Navy Blue.";
-    } else if (lower.includes('velvet')) {
-      setSelectedFabric('Velvet');
-      reply = "Applied Velvet material texture.";
-    } else if (lower.includes('mandarin')) {
-      setDetails(prev => ({ ...prev, collar: 'Mandarin' }));
-      reply = "Applied Mandarin Band Collar.";
-    } else if (lower.includes('slim')) {
-      setDetails(prev => ({ ...prev, sleeves: 'Slim' }));
-      reply = "Adjusted sleeves to Slim fit.";
-    } else if (lower.includes('pink')) {
-      setColors(prev => ({ ...prev, Primary: '#E50087' }));
-      reply = "Changed primary color to StitchBee Pink.";
-    }
-
-    newMsgs.push({ role: 'ai', text: reply });
-    setChatMessages(newMsgs);
-    setAssistantInput('');
-    showToast(reply);
-    addVersionRecord('AI Assistant Edit');
-  };
+  const variationsList = [
+    { id: 'original', name: 'Original', tag: 'v1', primary: '#E9008C', fabric: 'silk', pattern: 'solid' },
+    { id: 'modern', name: 'Modern Pink', tag: 'ai', primary: '#FF2AA6', fabric: 'satin', pattern: 'geometric' },
+    { id: 'luxury', name: 'Royal Gold', tag: 'ai', primary: '#EAB308', fabric: 'silk', pattern: 'solid' },
+    { id: 'minimal', name: 'Minimal Ivory', tag: 'ai', primary: '#EFEAE1', fabric: 'cotton', pattern: 'solid' },
+    { id: 'streetwear', name: 'Deep Purple', tag: 'ai', primary: '#9B1DDB', fabric: 'velvet', pattern: 'stripes' },
+    { id: 'classic', name: 'Classic Navy', tag: 'ai', primary: '#1B2A41', fabric: 'wool', pattern: 'checks' }
+  ];
 
   // --------------------------------------------------------------------------
-  // THREE.JS 3D CANVAS & HIGH-DEFINITION SUIT MODEL ENGINE
+  // THREE.JS 3D CANVAS & ENGINE (PROCEDURAL 3D GARMENT LATHE & TEXTURES)
   // --------------------------------------------------------------------------
   const glCanvasRef = useRef(null);
   const rendererRef = useRef(null);
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
-  const garmentMeshGroupRef = useRef(null);
+  const garmentGroupRef = useRef(null);
+  const mannequinGroupRef = useRef(null);
   const autoRotateRef = useRef(false);
-  const [is3DAutoRotate, setIs3DAutoRotate] = useState(false);
-  const [zoomScale, setZoomScale] = useState(100);
+  
+  const [zoomDist, setZoomDist] = useState(3.4);
+  const [activeAnglePreset, setActiveAnglePreset] = useState(null);
 
-  const rebuild3DGarmentMesh = () => {
-    if (!garmentMeshGroupRef.current) return;
-    const gGroup = garmentMeshGroupRef.current;
+  // Generate Procedural Texture Canvas for Fabric & Patterns
+  const createFabricTexture = () => {
+    const size = 256;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+
+    const primary = colors.primary || '#E9008C';
+    const secondary = colors.secondary || '#F5F3EE';
+    ctx.fillStyle = primary;
+    ctx.fillRect(0, 0, size, size);
+
+    if (selectedPattern === 'stripes') {
+      ctx.fillStyle = secondary;
+      const w = size / 8;
+      for (let i = 0; i < 8; i += 2) ctx.fillRect(i * w, 0, w, size);
+    } else if (selectedPattern === 'checks') {
+      ctx.strokeStyle = secondary;
+      ctx.lineWidth = 6;
+      ctx.globalAlpha = 0.85;
+      const step = size / 8;
+      for (let i = 0; i <= size; i += step) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, size); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(size, i); ctx.stroke();
+      }
+      ctx.globalAlpha = 1.0;
+    } else if (selectedPattern === 'floral') {
+      ctx.fillStyle = secondary;
+      for (let y = 16; y < size; y += 42) {
+        for (let x = 16; x < size; x += 42) {
+          const ox = (Math.floor(y / 42) % 2 === 0) ? 0 : 21;
+          for (let p = 0; p < 5; p++) {
+            const ang = (p / 5) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.ellipse(x + ox + Math.cos(ang) * 7, y + Math.sin(ang) * 7, 6, 4, ang, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.beginPath(); ctx.arc(x + ox, y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = colors.accent; ctx.fill();
+          ctx.fillStyle = secondary;
+        }
+      }
+    } else if (selectedPattern === 'geometric') {
+      ctx.fillStyle = secondary;
+      const step = 32;
+      for (let y = 0; y < size; y += step) {
+        for (let x = 0; x < size; x += step) {
+          if (((x / step) + (y / step)) % 2 === 0) {
+            ctx.beginPath();
+            ctx.moveTo(x + step / 2, y); ctx.lineTo(x + step, y + step / 2);
+            ctx.lineTo(x + step / 2, y + step); ctx.lineTo(x, y + step / 2);
+            ctx.closePath(); ctx.fill();
+          }
+        }
+      }
+    }
+
+    // Weave Noise
+    const imgData = ctx.getImageData(0, 0, size, size);
+    for (let i = 0; i < imgData.data.length; i += 4) {
+      const n = (Math.random() - 0.5) * 10;
+      imgData.data[i] += n;
+      imgData.data[i + 1] += n;
+      imgData.data[i + 2] += n;
+    }
+    ctx.putImageData(imgData, 0, 0);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(selectedPattern === 'solid' ? 1 : 3, selectedPattern === 'solid' ? 1 : 3);
+    return texture;
+  };
+
+  // Rebuild Three.js Procedural 3D Model Scene
+  const rebuild3DScene = () => {
+    if (!garmentGroupRef.current) return;
+    const gGroup = garmentGroupRef.current;
     gGroup.clear();
 
-    const selectedF = fabricsList.find(f => f.name === selectedFabric) || fabricsList[0];
+    const selectedF = fabricsList.find(f => f.id === selectedFabric) || fabricsList[0];
     const mat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(colors.Primary),
+      map: createFabricTexture(),
       roughness: selectedF.roughness,
       metalness: selectedF.metalness,
       side: THREE.DoubleSide
     });
 
     const trimMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(colors.Secondary),
+      color: new THREE.Color(colors.secondary),
+      roughness: selectedF.roughness * 0.9,
+      metalness: selectedF.metalness,
+      side: THREE.DoubleSide
+    });
+
+    const accentMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(colors.accent),
       roughness: 0.35,
-      metalness: 0.15
+      metalness: 0.55
     });
 
-    const buttonMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(colors.Accent),
-      roughness: 0.2,
-      metalness: 0.8
-    });
+    const isLongForm = garmentType === 'dress' || garmentType === 'gown';
+    const fitScale = (details.fit === 'slim' ? 0.9 : details.fit === 'relaxed' ? 1.14 : 1.0) * (garmentType === 'jacket' ? 1.08 : 1.0);
+    const baseHemY = details.length === 'crop' ? 1.02 : details.length === 'long' ? 0.55 : 0.78;
+    const hemY = garmentType === 'gown' ? 0.03 : garmentType === 'dress' ? 0.30 : baseHemY;
+    const neckR = details.neckline === 'open' ? 0.14 : details.neckline === 'v' ? 0.1 : 0.085;
 
-    const isLongForm = selectedGarment === 'dress' || selectedGarment === 'gown';
-    const hemY = selectedGarment === 'gown' ? 0.03 : 0.78;
-
+    // 1. Torso Mesh via Lathe Geometry
     const pts = [];
-    pts.push(new THREE.Vector2(isLongForm ? 0.36 : 0.30, hemY));
+    pts.push(new THREE.Vector2((isLongForm ? 0.36 : 0.30) * fitScale, hemY));
     if (isLongForm) {
-      pts.push(new THREE.Vector2(0.30, 0.65));
-      pts.push(new THREE.Vector2(0.255, 0.92));
+      pts.push(new THREE.Vector2(0.30 * fitScale, 0.65));
+      pts.push(new THREE.Vector2(0.255 * fitScale, 0.92));
+    } else {
+      pts.push(new THREE.Vector2(0.29 * fitScale, hemY + 0.05));
     }
-    pts.push(new THREE.Vector2(0.265, 1.00));
-    pts.push(new THREE.Vector2(0.30, 1.20));
-    pts.push(new THREE.Vector2(0.335, 1.34));
-    pts.push(new THREE.Vector2(0.30, 1.46));
-    pts.push(new THREE.Vector2(0.09, 1.545));
+    pts.push(new THREE.Vector2(0.265 * fitScale, 1.00));
+    pts.push(new THREE.Vector2(0.30 * fitScale, 1.20));
+    pts.push(new THREE.Vector2(0.335 * fitScale, 1.34));
+    pts.push(new THREE.Vector2(0.30 * fitScale, 1.46));
+    pts.push(new THREE.Vector2(neckR, 1.545));
+    pts.push(new THREE.Vector2(neckR * 0.9, 1.555));
 
     const torsoGeo = new THREE.LatheGeometry(pts, 40);
     const torso = new THREE.Mesh(torsoGeo, mat);
@@ -348,58 +298,99 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     torso.receiveShadow = true;
     gGroup.add(torso);
 
-    // Sleeves with cuffs
-    const sleeveLen = details.sleeves === 'Slim' ? 0.48 : 0.56;
+    // 2. Gown Flared Train
+    if (garmentType === 'gown') {
+      const trainGeo = new THREE.PlaneGeometry(0.5, 0.55, 12, 12);
+      const pos = trainGeo.attributes.position;
+      for (let i = 0; i < pos.count; i++) {
+        const y = pos.getY(i);
+        pos.setZ(i, Math.pow((y + 0.275) / 0.55, 1.6) * -0.32);
+      }
+      trainGeo.computeVertexNormals();
+      const train = new THREE.Mesh(trainGeo, mat);
+      train.position.set(0, 0.30, -0.22);
+      train.rotation.x = -0.25;
+      train.castShadow = true;
+      gGroup.add(train);
+    }
+
+    // 3. Sleeves & Cuffs
+    const sleeveLen = details.sleeve === 'short' ? 0.22 : 0.56;
     [-1, 1].forEach(side => {
-      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.088, 0.068, sleeveLen, 20), mat);
-      sleeve.position.set(side * 0.335, 1.34, 0);
+      const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.092 * fitScale, 0.072 * fitScale, sleeveLen, 18), mat);
+      sleeve.position.set(side * 0.335 * fitScale, 1.34, 0);
       sleeve.rotation.z = side * (Math.PI / 2 - 0.32);
-      sleeve.position.x = side * (0.335 + Math.cos(0.32) * sleeveLen / 2 * 0.9);
+      sleeve.position.x = side * (0.335 * fitScale + Math.cos(0.32) * sleeveLen / 2 * 0.9);
       sleeve.position.y = 1.34 - Math.sin(0.32) * sleeveLen / 2 * 0.9;
       sleeve.castShadow = true;
       gGroup.add(sleeve);
 
-      // Cuffs
-      const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.04, 20), trimMat);
-      cuff.position.set(side * (0.335 + Math.cos(0.32) * sleeveLen * 0.9), 1.34 - Math.sin(0.32) * sleeveLen * 0.9, 0);
-      cuff.rotation.z = side * (Math.PI / 2 - 0.32);
-      gGroup.add(cuff);
+      if (details.cuffs && details.sleeve === 'long') {
+        const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.075 * fitScale, 0.075 * fitScale, 0.035, 18), trimMat);
+        const dx = side * Math.cos(0.32) * sleeveLen / 2 * 0.98;
+        const dy = -Math.sin(0.32) * sleeveLen / 2 * 0.98;
+        cuff.position.set(side * 0.335 * fitScale + dx, 1.34 + dy, 0);
+        cuff.rotation.z = side * (Math.PI / 2 - 0.32);
+        cuff.castShadow = true;
+        gGroup.add(cuff);
+      }
     });
 
-    // Lapel & Collar
-    if (details.collar === 'Mandarin') {
-      const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.098, 0.09, 0.055, 28, 1, true), trimMat);
-      collar.position.set(0, 1.585, 0);
-      gGroup.add(collar);
-    } else {
+    // 4. Collars
+    if (details.collar === 'classic') {
       const collar = new THREE.Mesh(new THREE.TorusGeometry(0.105, 0.02, 10, 28, Math.PI * 1.5), trimMat);
       collar.position.set(0, 1.55, 0.01);
       collar.rotation.x = Math.PI / 2 + 0.25;
       collar.rotation.z = Math.PI * 0.25;
       gGroup.add(collar);
+    } else if (details.collar === 'mandarin') {
+      const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.098, 0.09, 0.055, 28, 1, true), trimMat);
+      collar.position.set(0, 1.585, 0);
+      gGroup.add(collar);
     }
 
-    // Suit Buttons
-    [1.15, 1.25, 1.35].forEach(btnY => {
-      const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.008, 16), buttonMat);
-      btn.position.set(0.01, btnY, 0.305);
-      btn.rotation.x = Math.PI / 2;
-      gGroup.add(btn);
-    });
+    // 5. Buttons
+    if (details.buttons) {
+      const count = 6;
+      for (let i = 0; i < count; i++) {
+        const t = i / (count - 1);
+        const y = 1.50 - t * (1.50 - hemY - 0.04);
+        const btn = new THREE.Mesh(new THREE.SphereGeometry(0.013, 10, 10), accentMat);
+        btn.position.set(0, y, 0.27 * fitScale + 0.02);
+        gGroup.add(btn);
+      }
+    }
+
+    // 6. Pockets
+    if (details.pockets) {
+      [-1, 1].forEach(side => {
+        const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.1, 0.012), trimMat);
+        pocket.position.set(side * 0.14, 1.16, 0.27 * fitScale);
+        gGroup.add(pocket);
+      });
+    }
+
+    // 7. Stitching Accent Ring
+    if (details.stitching) {
+      const stitch = new THREE.Mesh(new THREE.TorusGeometry(0.30 * fitScale, 0.006, 6, 40), accentMat);
+      stitch.rotation.x = Math.PI / 2;
+      stitch.position.set(0, hemY + 0.01, 0);
+      gGroup.add(stitch);
+    }
   };
 
   useEffect(() => {
     if (!glCanvasRef.current) return;
     const canvas = glCanvasRef.current;
-    const parent = canvas.parentElement;
-    const width = parent?.clientWidth || 600;
-    const height = parent?.clientHeight || 540;
+    const width = canvas.parentElement.clientWidth || 600;
+    const height = canvas.parentElement.clientHeight || 500;
 
+    // Scene & Camera Init
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
-    camera.position.set(0, 1.32, 3.4);
+    camera.position.set(0, 1.32, zoomDist);
     camera.lookAt(0, 1.15, 0);
     cameraRef.current = camera;
 
@@ -409,15 +400,16 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     renderer.shadowMap.enabled = true;
     rendererRef.current = renderer;
 
-    const hemi = new THREE.HemisphereLight(0xF8F0DD, 0x151310, 0.75);
+    // Lighting
+    const hemi = new THREE.HemisphereLight(0xF8F0DD, 0x151310, 0.6);
     scene.add(hemi);
 
-    const dirKey = new THREE.DirectionalLight(0xffffff, 1.35);
+    const dirKey = new THREE.DirectionalLight(0xffffff, 1.2);
     dirKey.position.set(2.4, 4, 2.2);
     dirKey.castShadow = true;
     scene.add(dirKey);
 
-    const pinkRim = new THREE.DirectionalLight(0xE50087, 0.4);
+    const pinkRim = new THREE.DirectionalLight(0xE9008C, 0.4);
     pinkRim.position.set(-3, 2, -2);
     scene.add(pinkRim);
 
@@ -429,8 +421,17 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
     floor.receiveShadow = true;
     scene.add(floor);
 
-    // Mannequin Head & Stand
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(0.86, 0.88, 64),
+      new THREE.MeshBasicMaterial({ color: 0xE9008C, transparent: true, opacity: 0.3, side: THREE.DoubleSide })
+    );
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.001;
+    scene.add(ring);
+
+    // Mannequin Head & Neck Group
     const mannequinGroup = new THREE.Group();
+    mannequinGroupRef.current = mannequinGroup;
     const manMat = new THREE.MeshStandardMaterial({ color: 0xCAC4B8, roughness: 0.55 });
     
     const head = new THREE.Mesh(new THREE.SphereGeometry(0.115, 24, 24), manMat);
@@ -444,423 +445,641 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
 
     scene.add(mannequinGroup);
 
-    const gGroup = new THREE.Group();
-    garmentMeshGroupRef.current = gGroup;
-    scene.add(gGroup);
+    // Garment Group
+    const garmentGroup = new THREE.Group();
+    garmentGroupRef.current = garmentGroup;
+    scene.add(garmentGroup);
 
-    rebuild3DGarmentMesh();
+    rebuild3DScene();
 
+    // Render Animation Loop
     let animId;
     let targetRotY = 0.35;
+    let targetRotX = -0.05;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
       if (autoRotateRef.current) {
         targetRotY += 0.006;
       }
-      gGroup.rotation.y += (targetRotY - gGroup.rotation.y) * 0.1;
-      mannequinGroup.rotation.y = gGroup.rotation.y;
+      garmentGroup.rotation.y += (targetRotY - garmentGroup.rotation.y) * 0.1;
+      garmentGroup.rotation.x += (targetRotX - garmentGroup.rotation.x) * 0.1;
+      mannequinGroup.rotation.y = garmentGroup.rotation.y;
+      mannequinGroup.rotation.x = garmentGroup.rotation.x;
 
+      if (cameraRef.current) {
+        cameraRef.current.position.z += (zoomDist - cameraRef.current.position.z) * 0.15;
+      }
       renderer.render(scene, camera);
     };
     animate();
 
-    const handleResize = () => {
-      if (!canvas.parentElement || !rendererRef.current || !cameraRef.current) return;
-      const w = canvas.parentElement.clientWidth;
-      const h = canvas.parentElement.clientHeight;
-      cameraRef.current.aspect = w / h;
-      cameraRef.current.updateProjectionMatrix();
-      rendererRef.current.setSize(w, h);
-    };
-    window.addEventListener('resize', handleResize);
-
     return () => {
-      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animId);
       renderer.dispose();
     };
   }, [theme, isDark]);
 
   useEffect(() => {
-    rebuild3DGarmentMesh();
-  }, [colors, selectedFabric, selectedGarment, details]);
+    rebuild3DScene();
+  }, [colors, selectedFabric, selectedPattern, garmentType, details]);
+
+  // Handle Drag & Drop Sketch Upload
+  const processSketchFile = (file) => {
+    setUploadError('');
+    if (!file) return;
+
+    if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'].includes(file.type)) {
+      setUploadError('Please upload a valid image (PNG, JPG, WEBP, or PDF).');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setSketchDataUrl(e.target.result);
+      setHasSketch(true);
+      showToast(`Uploaded "${file.name}"`);
+      runAIConversionPipeline();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const useDemoSketch = () => {
+    const demoUrl = '/br_b1.jpg';
+    setSketchDataUrl(demoUrl);
+    setHasSketch(true);
+    showToast('Loaded demo fashion sketch.');
+    runAIConversionPipeline();
+  };
+
+  const runAIConversionPipeline = () => {
+    setIsConverting(true);
+    setAiComplete(false);
+    setConversionStep(0);
+
+    const steps = [0, 1, 2, 3, 4];
+    steps.forEach((stepIdx) => {
+      setTimeout(() => {
+        setConversionStep(stepIdx);
+        if (stepIdx === 4) {
+          setTimeout(() => {
+            setIsConverting(false);
+            setAiComplete(true);
+            showToast('3D Garment successfully generated!');
+            addVersion('AI 3D generation completed');
+          }, 600);
+        }
+      }, (stepIdx + 1) * 600);
+    });
+  };
+
+  // AI Assistant Command Interpreter
+  const handleAssistantCommand = (cmd) => {
+    const lower = cmd.toLowerCase();
+    const newMessages = [...chatMessages, { role: 'user', text: cmd }];
+
+    let responseText = "I've updated your design!";
+    let changes = [];
+
+    // Parse Colors
+    if (lower.includes('navy') || lower.includes('blue')) {
+      setColors(prev => ({ ...prev, primary: '#1B2A41' }));
+      changes.push('primary color to Navy Blue');
+    } else if (lower.includes('pink') || lower.includes('magenta')) {
+      setColors(prev => ({ ...prev, primary: '#E9008C' }));
+      changes.push('primary color to StitchBee Pink');
+    } else if (lower.includes('gold') || lower.includes('yellow')) {
+      setColors(prev => ({ ...prev, primary: '#EAB308' }));
+      changes.push('primary color to Metallic Gold');
+    } else if (lower.includes('red')) {
+      setColors(prev => ({ ...prev, primary: '#8C1F28' }));
+      changes.push('primary color to Royal Red');
+    }
+
+    // Parse Fabric
+    if (lower.includes('silk')) {
+      setSelectedFabric('silk');
+      changes.push('fabric to Raw Silk');
+    } else if (lower.includes('velvet')) {
+      setSelectedFabric('velvet');
+      changes.push('fabric to Royal Velvet');
+    } else if (lower.includes('cotton')) {
+      setSelectedFabric('cotton');
+      changes.push('fabric to Cotton');
+    }
+
+    // Parse Details
+    if (lower.includes('mandarin')) {
+      setDetails(prev => ({ ...prev, collar: 'mandarin' }));
+      changes.push('collar to Mandarin style');
+    } else if (lower.includes('short') && lower.includes('sleeve')) {
+      setDetails(prev => ({ ...prev, sleeve: 'short' }));
+      changes.push('sleeves to Short');
+    } else if (lower.includes('long') && lower.includes('sleeve')) {
+      setDetails(prev => ({ ...prev, sleeve: 'long' }));
+      changes.push('sleeves to Long');
+    }
+
+    // Parse Pattern
+    if (lower.includes('floral')) {
+      setSelectedPattern('floral');
+      changes.push('pattern to Floral');
+    } else if (lower.includes('stripe')) {
+      setSelectedPattern('stripes');
+      changes.push('pattern to Stripes');
+    } else if (lower.includes('check')) {
+      setSelectedPattern('checks');
+      changes.push('pattern to Checks');
+    }
+
+    if (changes.length > 0) {
+      responseText = `Done! Updated ${changes.join(' and ')}.`;
+      addVersion(`AI Assistant: ${cmd}`);
+    } else {
+      responseText = `I'm ready! Try asking to "make it navy blue", "change fabric to velvet", or "add a mandarin collar".`;
+    }
+
+    newMessages.push({ role: 'ai', text: responseText });
+    setChatMessages(newMessages);
+    setAssistantInputText('');
+  };
 
   return (
-    <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", background: mainBg, color: textPrimary, minHeight: '100vh', paddingBottom: '60px' }}>
+    <div style={{ fontFamily: "'Inter', sans-serif", background: pageBg, color: textColor, minHeight: '100vh', paddingBottom: '60px' }}>
       
-      {/* Toast Alert */}
+      {/* Toast Alert Notice */}
       {toastMsg && (
         <div style={{
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          background: '#171717',
+          background: 'linear-gradient(135deg, #182033, #0D0A1A)',
           color: '#FFFFFF',
           padding: '12px 20px',
-          borderRadius: '8px',
+          borderRadius: '12px',
           fontSize: '13px',
           fontWeight: 600,
-          boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
           zIndex: 99999,
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
           border: `1px solid ${primaryPink}`
         }}>
-          <CheckCircle2 size={16} color={primaryPink} />
+          <Sparkles size={16} color={primaryPink} />
           <span>{toastMsg}</span>
         </div>
       )}
 
       {/* -------------------------------------------------------------------- */}
-      {/* 1. TOP DESIGN HEADER BAR (58px HEIGHT)                               */}
+      {/* 1. TOP HEADER & STEPPER BAR (STITCHBEE THEME)                        */}
       {/* -------------------------------------------------------------------- */}
       <div style={{
-        height: '58px',
-        padding: '0 24px',
-        borderBottom: `1px solid ${borderDefault}`,
+        padding: '24px 32px 18px 32px',
+        borderBottom: `1px solid ${borderColor}`,
         background: cardBg,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50
+        flexDirection: 'column',
+        gap: '16px'
       }}>
-        {/* Left: Navigation Title */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <button style={{ border: 'none', background: 'transparent', color: textSecondary, fontSize: '13px', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <ArrowLeft size={15} />
-            <span>My Designs</span>
-          </button>
-
-          <span style={{ color: textMuted }}>/</span>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {isEditingTitle ? (
-              <input 
-                type="text" 
-                value={designTitle}
-                onChange={(e) => setDesignTitle(e.target.value)}
-                onBlur={() => setIsEditingTitle(false)}
-                onKeyDown={(e) => e.key === 'Enter' && setIsEditingTitle(false)}
-                autoFocus
-                style={{ fontSize: '15px', fontWeight: 600, color: textPrimary, border: `1px solid ${primaryPink}`, padding: '2px 8px', borderRadius: '4px', outline: 'none' }}
-              />
-            ) : (
-              <strong onClick={() => setIsEditingTitle(true)} style={{ fontSize: '15px', fontWeight: 600, color: textPrimary, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span>{designTitle}</span>
-                <Edit3 size={13} color={textMuted} />
-              </strong>
-            )}
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#16A34A', marginLeft: '6px' }}>
-              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#16A34A' }} />
-              <span>{saveStatus}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button 
-            onClick={() => setCanvasViewMode(m => m === '3d' ? 'sketch' : '3d')}
-            style={{ height: '36px', padding: '0 14px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '13px', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-          >
-            <Eye size={15} color={textSecondary} />
-            <span>Preview</span>
-          </button>
-
-          <button 
-            onClick={() => setIsSaveModalOpen(true)}
-            style={{ height: '36px', padding: '0 14px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '13px', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-          >
-            <FileText size={15} color={textSecondary} />
-            <span>Save</span>
-          </button>
-
-          <button 
-            onClick={() => setIsExportModalOpen(true)}
-            style={{ height: '36px', padding: '0 16px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '13px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 8px rgba(229,0,135,0.25)' }}
-          >
-            <Download size={15} color="#FFFFFF" />
-            <span>Export ▼</span>
-          </button>
-        </div>
-      </div>
-
-      {/* -------------------------------------------------------------------- */}
-      {/* 2. MAIN WORKSPACE GRID                                               */}
-      {/* -------------------------------------------------------------------- */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '22% 56% 22%',
-        gap: '16px',
-        padding: '20px 24px 16px 24px',
-        alignItems: 'start'
-      }}>
-
-        {/* ================================================================== */}
-        {/* LEFT CONFIGURATION PANEL: AI GARMENT GENERATOR WORKFLOW             */}
-        {/* ================================================================== */}
-        <div style={{
-          background: cardBg,
-          border: `1px solid ${borderDefault}`,
-          borderRadius: '14px',
-          padding: '18px',
-          boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px'
-        }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Sparkles size={16} color={aiAccent} />
-              <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: textPrimary }}>AI Garment Generator</h3>
-            </div>
-            <p style={{ margin: '3px 0 0 0', fontSize: '12px', color: textSecondary, lineHeight: '17px' }}>
-              Transforming your sketch into a 3D model.
+            <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 800, color: textColor, letterSpacing: '-0.5px' }}>
+              Convert Sketch to Realistic Design
+            </h1>
+            <p style={{ margin: '4px 0 0 0', fontSize: '13.5px', color: secTextColor }}>
+              Upload your hand-drawn sketch and let StitchBee AI bring your fashion imagination to life.
             </p>
           </div>
 
-          {/* Uploaded Sketch Preview Container */}
-          {uploadedSketch ? (
-            <div style={{ border: `1px solid ${borderDefault}`, borderRadius: '12px', padding: '10px', background: secondaryBg, display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ height: '160px', borderRadius: '8px', overflow: 'hidden', background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${borderDefault}` }}>
-                <img src={uploadedSketch} alt="Uploaded Sketch" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
-                <span style={{ fontWeight: 600, color: textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '130px' }}>{sketchFileName}</span>
-                <span style={{ color: textMuted }}>{sketchFileSize}</span>
-              </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button onClick={() => fileInputRef.current && fileInputRef.current.click()} style={{ flex: 1, height: '32px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Replace</button>
-                <button onClick={() => setUploadedSketch(null)} style={{ flex: 1, height: '32px', borderRadius: '8px', border: '1px solid #FCA5A5', background: '#FEF2F2', color: '#EF4444', fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Remove</button>
-              </div>
-              <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && handleSketchUpload(e.target.files[0])} accept="image/*" style={{ display: 'none' }} />
-            </div>
-          ) : (
-            <div 
-              onClick={() => fileInputRef.current && fileInputRef.current.click()}
-              style={{
-                height: '160px',
-                border: `1.5px dashed ${primaryPink}`,
-                background: pinkTint,
-                borderRadius: '12px',
-                padding: '16px',
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                cursor: 'pointer'
-              }}
-            >
-              <Plus size={24} color={primaryPink} />
-              <strong style={{ fontSize: '13px', color: textPrimary }}>Upload Sketch</strong>
-              <span style={{ fontSize: '11px', color: textMuted }}>PNG / JPG / WEBP · Max 10MB</span>
-              <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && handleSketchUpload(e.target.files[0])} accept="image/*" style={{ display: 'none' }} />
-            </div>
-          )}
-
-          {/* AI Conversion Workflow Checklist */}
-          <div style={{ borderTop: `1px solid ${borderDefault}`, paddingTop: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: textPrimary }}>{genStatusMsg}</span>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: primaryPink }}>{genProgress}%</span>
-            </div>
-
-            <div style={{ width: '100%', height: '6px', borderRadius: '3px', background: '#E5E7EB', overflow: 'hidden' }}>
-              <div style={{ width: `${genProgress}%`, height: '100%', background: primaryPink, transition: 'width 0.4s ease' }} />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
-              {aiSteps.map(step => (
-                <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px' }}>
-                  {step.done ? (
-                    <Check size={14} color="#16A34A" strokeWidth={2.5} />
-                  ) : (
-                    <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: step.active ? primaryPink : textMuted, marginLeft: '4px', marginRight: '4px' }} />
-                  )}
-                  <span style={{ color: step.done || step.active ? textPrimary : textMuted, fontWeight: step.done || step.active ? 500 : 400 }}>
-                    {step.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button 
-              onClick={triggerAIGeneration}
-              disabled={isGenerating}
+              onClick={() => setIsSaveModalOpen(true)}
               style={{
-                width: '100%',
-                height: '38px',
-                marginTop: '6px',
+                padding: '9px 18px',
                 borderRadius: '10px',
-                border: 'none',
-                background: primaryPink,
-                color: '#FFFFFF',
+                border: `1px solid ${borderColor}`,
+                background: inputBg,
+                color: textColor,
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                boxShadow: '0 2px 8px rgba(229,0,135,0.22)'
+                gap: '6px'
               }}
             >
-              <span>[ Open 3D Studio → ]</span>
+              <FileText size={15} color={secTextColor} />
+              <span>Save Draft</span>
+            </button>
+
+            <button 
+              onClick={() => setIsExportModalOpen(true)}
+              style={{
+                padding: '9px 18px',
+                borderRadius: '10px',
+                border: 'none',
+                background: `linear-gradient(135deg, ${primaryPink}, ${purpleAccent})`,
+                color: '#FFFFFF',
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                boxShadow: `0 4px 14px ${primaryPink}35`
+              }}
+            >
+              <Download size={15} color="#FFFFFF" />
+              <span>Export Design</span>
             </button>
           </div>
         </div>
 
+        {/* 5-Step Stepper Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: '840px', margin: '4px 0 0 0' }}>
+          {[
+            { step: 1, label: 'Upload Sketch' },
+            { step: 2, label: 'AI Generate' },
+            { step: 3, label: 'Customize' },
+            { step: 4, label: '3D Preview' },
+            { step: 5, label: 'Download' }
+          ].map((s, idx) => {
+            const isActive = currentStep === s.step;
+            const isCompleted = currentStep > s.step;
+
+            return (
+              <div 
+                key={s.step} 
+                onClick={() => setCurrentStep(s.step)}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+              >
+                <div style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  background: isActive ? primaryPink : isCompleted ? '#12B76A' : (isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9'),
+                  color: isActive || isCompleted ? '#FFFFFF' : secTextColor,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 700,
+                  fontSize: '12px'
+                }}>
+                  {isCompleted ? <Check size={14} color="#FFFFFF" strokeWidth={3} /> : s.step}
+                </div>
+                <span style={{ fontSize: '12.5px', fontWeight: isActive ? 700 : 500, color: isActive ? primaryPink : isCompleted ? textColor : secTextColor }}>
+                  {s.label}
+                </span>
+
+                {idx < 4 && (
+                  <div style={{ width: '50px', height: '2px', background: currentStep > s.step ? '#12B76A' : (isDark ? 'rgba(255,255,255,0.1)' : '#E2E8F0'), margin: '0 8px' }} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* -------------------------------------------------------------------- */}
+      {/* 2. THREE-PANEL STUDIO WORKSPACE                                      */}
+      {/* -------------------------------------------------------------------- */}
+      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr 340px', gap: '20px', padding: '24px 32px', alignItems: 'start' }}>
+
         {/* ================================================================== */}
-        {/* CENTER CANVAS & VIEWPORT (PROMINENT 3D SUIT HERO)                   */}
+        {/* LEFT PANEL: SKETCH & AI CONVERSION SOURCE                          */}
         {/* ================================================================== */}
-        <div style={{
-          background: cardBg,
-          border: `1px solid ${borderDefault}`,
-          borderRadius: '16px',
-          padding: '16px',
-          boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative'
-        }}>
-          {/* Top Canvas View Mode Switcher */}
-          <div style={{ position: 'absolute', top: '24px', left: '24px', zIndex: 20, display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ display: 'flex', background: secondaryBg, padding: '3px', borderRadius: '8px', border: `1px solid ${borderDefault}`, gap: '4px' }}>
-              <button onClick={() => setCanvasViewMode('sketch')} style={{ border: 'none', background: canvasViewMode === 'sketch' ? primaryPink : 'transparent', color: canvasViewMode === 'sketch' ? '#FFFFFF' : textSecondary, fontSize: '13px', fontWeight: 500, padding: '4px 12px', borderRadius: '6px', cursor: 'pointer' }}>[ Sketch ]</button>
-              <button onClick={() => setCanvasViewMode('3d')} style={{ border: 'none', background: canvasViewMode === '3d' ? primaryPink : 'transparent', color: canvasViewMode === '3d' ? '#FFFFFF' : textSecondary, fontSize: '13px', fontWeight: 500, padding: '4px 12px', borderRadius: '6px', cursor: 'pointer' }}>[ 3D View ]</button>
-            </div>
+        <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          
+          <div>
+            <span style={{ fontSize: '10px', fontWeight: 700, color: secTextColor, textTransform: 'uppercase', letterSpacing: '0.08em' }}>DESIGN SOURCE</span>
+            <h3 style={{ margin: '2px 0 0 0', fontSize: '17px', fontWeight: 700, color: textColor }}>Sketch & AI</h3>
           </div>
 
-          <button title="Fullscreen" style={{ position: 'absolute', top: '24px', right: '24px', zIndex: 20, width: '34px', height: '34px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-            <Maximize2 size={15} color={textPrimary} />
-          </button>
+          {/* Upload Dropzone */}
+          {!hasSketch ? (
+            <div 
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files[0]) processSketchFile(e.dataTransfer.files[0]); }}
+              style={{
+                border: `2px dashed ${isDragging ? primaryPink : borderColor}`,
+                background: isDragging ? `${primaryPink}08` : inputBg,
+                borderRadius: '14px',
+                padding: '24px 16px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '10px'
+              }}
+            >
+              <input type="file" ref={fileInputRef} onChange={(e) => e.target.files[0] && processSketchFile(e.target.files[0])} accept="image/*,application/pdf" style={{ display: 'none' }} />
+              
+              <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: `${primaryPink}12`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Upload size={20} color={primaryPink} />
+              </div>
+              <strong style={{ fontSize: '13px', color: textColor }}>Upload your fashion sketch</strong>
+              <span style={{ fontSize: '11px', color: secTextColor }}>Drag & drop or browse files</span>
+              <span style={{ fontSize: '10px', color: secTextColor }}>PNG · JPG · PDF — up to 20MB</span>
 
-          {/* Central Stage Canvas */}
-          <div style={{ position: 'relative', width: '100%', height: '540px', borderRadius: '12px', overflow: 'hidden', background: canvasBg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {canvasViewMode === 'sketch' ? (
-              <img src={uploadedSketch} alt="Garment Sketch" style={{ maxWidth: '90%', maxHeight: '90%', objectFit: 'contain' }} />
-            ) : (
-              <canvas ref={glCanvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
-            )}
+              <button onClick={() => fileInputRef.current && fileInputRef.current.click()} style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '12px', fontWeight: 700, cursor: 'pointer', marginTop: '6px' }}>
+                Upload Sketch
+              </button>
 
-            {/* Right Floating Canvas Toolbar */}
-            <div style={{
-              position: 'absolute',
-              right: '16px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              background: '#FFFFFF',
-              border: `1px solid ${borderDefault}`,
-              borderRadius: '24px',
-              padding: '8px 6px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
-              zIndex: 20
-            }}>
-              <button onClick={() => setActiveCanvasTool('rotate')} title="Rotate" style={{ border: 'none', background: activeCanvasTool === 'rotate' ? pinkTint : 'transparent', color: activeCanvasTool === 'rotate' ? primaryPink : textSecondary, width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                <RotateCw size={16} />
-              </button>
-              <button onClick={() => setActiveCanvasTool('pan')} title="Pan" style={{ border: 'none', background: activeCanvasTool === 'pan' ? pinkTint : 'transparent', color: activeCanvasTool === 'pan' ? primaryPink : textSecondary, width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                <Hand size={16} />
-              </button>
-              <button onClick={() => setActiveCanvasTool('zoom-in')} title="Zoom In" style={{ border: 'none', background: activeCanvasTool === 'zoom-in' ? pinkTint : 'transparent', color: activeCanvasTool === 'zoom-in' ? primaryPink : textSecondary, width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                <ZoomIn size={16} />
-              </button>
-              <button onClick={() => setActiveCanvasTool('zoom-out')} title="Zoom Out" style={{ border: 'none', background: activeCanvasTool === 'zoom-out' ? pinkTint : 'transparent', color: activeCanvasTool === 'zoom-out' ? primaryPink : textSecondary, width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                <ZoomOut size={16} />
-              </button>
-              <button onClick={() => setActiveCanvasTool('light')} title="Lighting" style={{ border: 'none', background: activeCanvasTool === 'light' ? pinkTint : 'transparent', color: activeCanvasTool === 'light' ? primaryPink : textSecondary, width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                <SunLight size={16} />
+              <button onClick={useDemoSketch} style={{ padding: '6px 12px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: 'transparent', color: textColor, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                Use Demo Sketch
               </button>
             </div>
-
-            {/* Bottom View Controls Dock */}
-            <div style={{
-              position: 'absolute',
-              bottom: '18px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              zIndex: 20,
-              background: '#FFFFFF',
-              border: `1px solid ${borderDefault}`,
-              padding: '6px 18px',
-              borderRadius: '24px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '14px',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.06)'
-            }}>
-              {['Front', 'Back', 'Side'].map(pos => (
-                <button 
-                  key={pos}
-                  onClick={() => { garmentMeshGroupRef.current && (garmentMeshGroupRef.current.rotation.y = pos === 'Front' ? 0 : pos === 'Back' ? Math.PI : Math.PI / 2); }}
-                  style={{ border: 'none', background: 'transparent', color: textPrimary, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}
-                >
-                  {pos}
-                </button>
-              ))}
-
-              <div style={{ width: '1px', height: '14px', background: borderDefault }} />
-
-              <button 
-                onClick={() => { autoRotateRef.current = !autoRotateRef.current; setIs3DAutoRotate(autoRotateRef.current); showToast(`360° Auto-Rotate ${autoRotateRef.current ? 'ON' : 'OFF'}`); }}
-                style={{ border: 'none', background: is3DAutoRotate ? primaryPink : 'transparent', color: is3DAutoRotate ? '#FFFFFF' : textPrimary, fontSize: '13px', fontWeight: 500, padding: '3px 10px', borderRadius: '12px', cursor: 'pointer' }}
-              >
-                360°
-              </button>
-
-              <div style={{ width: '1px', height: '14px', background: borderDefault }} />
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: textPrimary }}>
-                <button onClick={() => setZoomScale(z => Math.max(z - 10, 50))} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>−</button>
-                <span>{zoomScale}%</span>
-                <button onClick={() => setZoomScale(z => Math.min(z + 10, 200))} style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>+</button>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: `1px solid ${borderColor}`, background: '#FFFFFF', height: '220px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ position: 'absolute', top: '8px', left: '8px', background: 'rgba(0,0,0,0.6)', color: '#FFFFFF', fontSize: '9px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px' }}>SKETCH · 01</span>
+                <img src={sketchDataUrl} alt="Fashion Sketch" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
               </div>
 
-              <button onClick={() => { garmentMeshGroupRef.current && (garmentMeshGroupRef.current.rotation.y = 0.35); setZoomScale(100); }} style={{ border: 'none', background: 'transparent', color: textPrimary, fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
-                Reset
-              </button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button onClick={() => fileInputRef.current && fileInputRef.current.click()} style={{ flex: 1, padding: '8px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                  Replace
+                </button>
+                <button onClick={() => { setHasSketch(false); setSketchDataUrl(null); setAiComplete(false); }} style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid #FCA5A5', background: '#FEF2F2', color: '#EF4444', fontSize: '11px', fontWeight: 600, cursor: 'pointer' }}>
+                  Remove
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* AI Fashion Conversion Progress */}
+          {hasSketch && (
+            <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
+              <strong style={{ fontSize: '12.5px', fontWeight: 700, color: textColor, display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+                <Sparkles size={14} color={primaryPink} />
+                <span>AI Fashion Conversion</span>
+              </strong>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {['Analyzing sketch', 'Understanding garment structure', 'Creating 3D garment', 'Applying materials', 'Generating final model'].map((stepLabel, idx) => {
+                  const isDone = conversionStep > idx;
+                  const isCurrent = conversionStep === idx && isConverting;
+
+                  return (
+                    <div key={stepLabel} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: isDone || isCurrent ? textColor : secTextColor }}>
+                      <div style={{
+                        width: '18px',
+                        height: '18px',
+                        borderRadius: '50%',
+                        background: isDone ? '#12B76A' : isCurrent ? primaryPink : inputBg,
+                        border: `1px solid ${isDone ? '#12B76A' : isCurrent ? primaryPink : borderColor}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0
+                      }}>
+                        {isDone ? <Check size={11} color="#FFFFFF" strokeWidth={3} /> : <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: isCurrent ? '#FFFFFF' : secTextColor }} />}
+                      </div>
+                      <span style={{ fontWeight: isCurrent || isDone ? 600 : 400 }}>{stepLabel}</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {aiComplete && (
+                <div style={{ marginTop: '14px', padding: '12px', borderRadius: '12px', background: `linear-gradient(135deg, ${primaryPink}15, ${purpleAccent}15)`, border: `1px solid ${primaryPink}30`, textAlign: 'center' }}>
+                  <strong style={{ fontSize: '13px', color: textColor, display: 'block' }}>3D Model Generated</strong>
+                  <span style={{ fontSize: '11px', color: secTextColor, display: 'block', marginBottom: '8px' }}>Your garment is ready to customize</span>
+                  <button onClick={() => { setViewMode('3d'); showToast('3D Garment loaded into Studio.'); }} style={{ width: '100%', padding: '8px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>
+                    Open in Studio
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Garment Type Selection */}
+          <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '16px' }}>
+            <strong style={{ fontSize: '12.5px', fontWeight: 700, color: textColor, display: 'block', marginBottom: '4px' }}>Garment Type</strong>
+            <span style={{ fontSize: '11px', color: secTextColor, display: 'block', marginBottom: '10px' }}>{garmentNote}</span>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              {garmentTypesList.map(gt => {
+                const isSelected = garmentType === gt.id;
+                return (
+                  <div 
+                    key={gt.id} 
+                    onClick={() => { setGarmentType(gt.id); showToast(`Selected garment type: ${gt.name}`); }}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '10px',
+                      border: isSelected ? `2px solid ${primaryPink}` : `1px solid ${borderColor}`,
+                      background: isSelected ? `${primaryPink}08` : inputBg,
+                      cursor: 'pointer',
+                      textAlign: 'center'
+                    }}
+                  >
+                    <div style={{ fontSize: '20px', marginBottom: '4px' }}>{gt.icon}</div>
+                    <span style={{ fontSize: '11px', fontWeight: 600, color: textColor, display: 'block' }}>{gt.name}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
+
         </div>
 
         {/* ================================================================== */}
-        {/* RIGHT CUSTOMIZATION PANEL: APPEARANCE & MATERIALS                  */}
+        {/* CENTER STAGE: THREE.JS 3D VIEWPORT & CAMERA CONTROLS               */}
         {/* ================================================================== */}
-        <div style={{
-          background: cardBg,
-          border: `1px solid ${borderDefault}`,
-          borderRadius: '14px',
-          padding: '18px',
-          boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px'
-        }}>
-          {/* Property Tabs */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px', borderBottom: `1px solid ${borderDefault}`, paddingBottom: '8px' }}>
-            {['Appearance', 'Fabric', 'Pattern', 'Details'].map(tab => (
+        <div style={{ position: 'relative', background: isDark ? '#141126' : '#FAFAFC', border: `1px solid ${borderColor}`, borderRadius: '16px', height: '620px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+          
+          {/* Top Mode Toggle Bar */}
+          <div style={{ position: 'absolute', top: '16px', left: '16px', right: '16px', zIndex: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', background: 'rgba(24,32,51,0.7)', backdropFilter: 'blur(12px)', padding: '4px', borderRadius: '12px', gap: '4px' }}>
+              {['sketch', '3d', 'split'].map(m => (
+                <button
+                  key={m}
+                  onClick={() => setViewMode(m)}
+                  style={{
+                    border: 'none',
+                    background: viewMode === m ? primaryPink : 'transparent',
+                    color: '#FFFFFF',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    textTransform: 'capitalize'
+                  }}
+                >
+                  {m === 'split' ? 'Split View' : m.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ background: 'rgba(24,32,51,0.7)', backdropFilter: 'blur(12px)', color: '#FFFFFF', fontSize: '11px', fontWeight: 600, padding: '6px 12px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                Fabric: {fabricsList.find(f => f.id === selectedFabric)?.name}
+              </span>
+            </div>
+          </div>
+
+          {/* View Modes Rendering */}
+          {viewMode === 'split' ? (
+            <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+              <div style={{ flex: 1, borderRight: `1px solid ${borderColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', background: '#FFFFFF' }}>
+                {hasSketch ? <img src={sketchDataUrl} alt="Sketch Split" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} /> : <span style={{ fontSize: '12px', color: secTextColor }}>No sketch uploaded</span>}
+              </div>
+              <div style={{ flex: 1, position: 'relative' }}>
+                <canvas ref={glCanvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+              </div>
+            </div>
+          ) : viewMode === 'sketch' ? (
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px', background: '#FFFFFF' }}>
+              {hasSketch ? <img src={sketchDataUrl} alt="Full Sketch" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} /> : <span style={{ fontSize: '13px', color: secTextColor }}>No sketch uploaded yet. Upload a sketch on the left panel.</span>}
+            </div>
+          ) : (
+            <canvas ref={glCanvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+          )}
+
+          {/* Bottom Floating View Controls Toolbar */}
+          <div style={{ position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)', zIndex: 20, background: 'rgba(24,32,51,0.75)', backdropFilter: 'blur(16px)', padding: '6px 12px', borderRadius: '14px', display: 'flex', alignItems: 'center', gap: '8px', border: '1px solid rgba(255,255,255,0.12)' }}>
+            <button onClick={() => { cameraRef.current?.position.set(0, 1.32, zoomDist); garmentGroupRef.current && (garmentGroupRef.current.rotation.y = 0); }} style={{ border: 'none', background: 'transparent', color: '#FFFFFF', fontSize: '11.5px', fontWeight: 600, cursor: 'pointer', padding: '4px 8px' }}>
+              Front
+            </button>
+            <button onClick={() => { garmentGroupRef.current && (garmentGroupRef.current.rotation.y = Math.PI); }} style={{ border: 'none', background: 'transparent', color: '#FFFFFF', fontSize: '11.5px', fontWeight: 600, cursor: 'pointer', padding: '4px 8px' }}>
+              Back
+            </button>
+            <button onClick={() => { garmentGroupRef.current && (garmentGroupRef.current.rotation.y = Math.PI / 2); }} style={{ border: 'none', background: 'transparent', color: '#FFFFFF', fontSize: '11.5px', fontWeight: 600, cursor: 'pointer', padding: '4px 8px' }}>
+              Side
+            </button>
+            <button onClick={() => { autoRotateRef.current = !autoRotateRef.current; showToast(`360° Auto-Rotate ${autoRotateRef.current ? 'ON' : 'OFF'}`); }} style={{ border: 'none', background: autoRotateRef.current ? primaryPink : 'transparent', color: '#FFFFFF', fontSize: '11.5px', fontWeight: 600, cursor: 'pointer', padding: '4px 10px', borderRadius: '8px' }}>
+              360°
+            </button>
+
+            <div style={{ width: '1px', height: '18px', background: 'rgba(255,255,255,0.2)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ZoomOut size={14} color="#FFFFFF" style={{ cursor: 'pointer' }} onClick={() => setZoomDist(z => Math.min(z + 0.5, 6))} />
+              <input type="range" min="1.6" max="6" step="0.1" value={zoomDist} onChange={(e) => setZoomDist(parseFloat(e.target.value))} style={{ width: '70px', accentColor: primaryPink }} />
+              <ZoomIn size={14} color="#FFFFFF" style={{ cursor: 'pointer' }} onClick={() => setZoomDist(z => Math.max(z - 0.5, 1.6))} />
+            </div>
+          </div>
+
+          {/* AI Design Assistant Floating Action Button */}
+          <button 
+            onClick={() => setIsAssistantOpen(!isAssistantOpen)}
+            style={{
+              position: 'absolute',
+              right: '20px',
+              bottom: '20px',
+              zIndex: 30,
+              padding: '10px 18px',
+              borderRadius: '30px',
+              border: 'none',
+              background: `linear-gradient(135deg, ${primaryPink}, ${purpleAccent})`,
+              color: '#FFFFFF',
+              fontSize: '12.5px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: '0 6px 20px rgba(233,0,140,0.4)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            <Sparkles size={16} color="#FFFFFF" />
+            <span>AI Assistant</span>
+          </button>
+
+          {/* AI Design Assistant Drawer Panel */}
+          {isAssistantOpen && (
+            <div style={{
+              position: 'absolute',
+              right: '20px',
+              bottom: '70px',
+              width: '320px',
+              height: '420px',
+              background: cardBg,
+              border: `1px solid ${borderColor}`,
+              borderRadius: '16px',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+              zIndex: 40,
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden'
+            }}>
+              <div style={{ padding: '12px 16px', borderBottom: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '13.5px', fontWeight: 700, color: textColor, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={15} color={primaryPink} />
+                  <span>StitchBee Studio AI</span>
+                </strong>
+                <X size={16} color={secTextColor} style={{ cursor: 'pointer' }} onClick={() => setIsAssistantOpen(false)} />
+              </div>
+
+              <div style={{ flex: 1, padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {chatMessages.map((msg, idx) => (
+                  <div key={idx} style={{
+                    alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                    background: msg.role === 'user' ? primaryPink : inputBg,
+                    color: msg.role === 'user' ? '#FFFFFF' : textColor,
+                    padding: '8px 12px',
+                    borderRadius: '12px',
+                    fontSize: '12px',
+                    maxWidth: '85%',
+                    lineHeight: 1.4
+                  }}>
+                    {msg.text}
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ padding: '10px 14px', borderTop: `1px solid ${borderColor}`, display: 'flex', gap: '8px' }}>
+                <input 
+                  type="text" 
+                  value={assistantInputText}
+                  onChange={(e) => setAssistantInputText(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && assistantInputText.trim() && handleAssistantCommand(assistantInputText.trim())}
+                  placeholder="e.g. Make it navy blue..."
+                  style={{ flex: 1, height: '34px', padding: '0 10px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', outline: 'none' }}
+                />
+                <button 
+                  onClick={() => assistantInputText.trim() && handleAssistantCommand(assistantInputText.trim())}
+                  style={{ width: '34px', height: '34px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  <Send size={14} color="#FFFFFF" />
+                </button>
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* ================================================================== */}
+        {/* RIGHT PANEL: CUSTOMIZE DESIGN (TABS FOR COLOR, FABRIC, PATTERN)     */}
+        {/* ================================================================== */}
+        <div style={{ background: cardBg, border: `1px solid ${borderColor}`, borderRadius: '16px', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.03)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
+          <div>
+            <span style={{ fontSize: '10px', fontWeight: 700, color: secTextColor, textTransform: 'uppercase', letterSpacing: '0.08em' }}>LIVE PREVIEW</span>
+            <h3 style={{ margin: '2px 0 0 0', fontSize: '17px', fontWeight: 700, color: textColor }}>Customize Design</h3>
+          </div>
+
+          {/* Tabs Navigation */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px', background: inputBg, padding: '4px', borderRadius: '10px' }}>
+            {['color', 'fabric', 'pattern', 'details'].map(tab => (
               <button
                 key={tab}
-                onClick={() => setPropertyTab(tab)}
+                onClick={() => setActiveRightTab(tab)}
                 style={{
                   border: 'none',
-                  background: 'transparent',
-                  color: propertyTab === tab ? primaryPink : textSecondary,
-                  fontSize: '12.5px',
-                  fontWeight: propertyTab === tab ? 600 : 500,
-                  padding: '4px 0',
+                  background: activeRightTab === tab ? cardBg : 'transparent',
+                  color: activeRightTab === tab ? primaryPink : secTextColor,
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  padding: '6px 0',
+                  borderRadius: '7px',
                   cursor: 'pointer',
-                  borderBottom: propertyTab === tab ? `2px solid ${primaryPink}` : '2px solid transparent'
+                  textTransform: 'capitalize',
+                  boxShadow: activeRightTab === tab ? '0 2px 6px rgba(0,0,0,0.06)' : 'none'
                 }}
               >
                 {tab}
@@ -868,345 +1087,289 @@ export default function AIFashionDesignStudio({ theme = 'light', onNavigateTab }
             ))}
           </div>
 
-          {/* 1. APPEARANCE TAB */}
-          {propertyTab === 'Appearance' && (
+          {/* TAB 1: COLOR CUSTOMIZATION */}
+          {activeRightTab === 'color' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: textMuted, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '8px' }}>COLOR</span>
-                
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  {['Primary', 'Secondary', 'Accent'].map(r => (
-                    <div
-                      key={r}
-                      onClick={() => setColorRole(r)}
-                      style={{
-                        flex: 1,
-                        padding: '6px',
-                        borderRadius: '8px',
-                        border: colorRole === r ? `2px solid ${primaryPink}` : `1px solid ${borderDefault}`,
-                        background: colorRole === r ? pinkTint : secondaryBg,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <span style={{ fontSize: '10px', color: textMuted, display: 'block' }}>{r}</span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: colors[r], border: '1px solid rgba(0,0,0,0.15)' }} />
-                        <span style={{ fontSize: '10px', fontFamily: 'monospace', fontWeight: 600, color: textPrimary }}>{colors[r]}</span>
-                      </div>
-                    </div>
-                  ))}
+              
+              {/* Color Role Chips */}
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {['primary', 'secondary', 'accent'].map(r => (
+                  <button
+                    key={r}
+                    onClick={() => setColorRole(r)}
+                    style={{
+                      flex: 1,
+                      padding: '6px',
+                      borderRadius: '8px',
+                      border: colorRole === r ? `2px solid ${primaryPink}` : `1px solid ${borderColor}`,
+                      background: colorRole === r ? `${primaryPink}08` : inputBg,
+                      fontSize: '10.5px',
+                      fontWeight: 600,
+                      color: textColor,
+                      cursor: 'pointer',
+                      textTransform: 'capitalize',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: colors[r] }} />
+                    <span>{r}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Color Picker & Hex Input */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <input 
+                  type="color" 
+                  value={colors[colorRole]} 
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setColors(prev => ({ ...prev, [colorRole]: val }));
+                    if (!recentColors.includes(val)) setRecentColors([val, ...recentColors.slice(0, 7)]);
+                    addVersion(`Updated ${colorRole} color`);
+                  }} 
+                  style={{ width: '40px', height: '40px', border: 'none', background: 'transparent', cursor: 'pointer' }} 
+                />
+                <div style={{ flex: 1 }}>
+                  <label style={{ fontSize: '11px', color: secTextColor, display: 'block', textTransform: 'capitalize' }}>{colorRole} Color</label>
+                  <input 
+                    type="text" 
+                    value={colors[colorRole].toUpperCase()} 
+                    onChange={(e) => setColors(prev => ({ ...prev, [colorRole]: e.target.value }))}
+                    style={{ width: '100%', height: '32px', padding: '0 8px', borderRadius: '6px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontFamily: 'monospace' }} 
+                  />
                 </div>
               </div>
 
+              {/* Fashion Color Presets */}
               <div>
-                <span style={{ fontSize: '11px', fontWeight: 600, color: textPrimary, display: 'block', marginBottom: '6px' }}>Recent Colors</span>
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  {recentColors.map(hex => (
+                <strong style={{ fontSize: '11.5px', fontWeight: 600, color: textColor, display: 'block', marginBottom: '8px' }}>Fashion Presets</strong>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '6px' }}>
+                  {colorPresets.map(cp => (
                     <div 
-                      key={hex}
-                      onClick={() => setColors(prev => ({ ...prev, [colorRole]: hex }))}
-                      style={{ width: '24px', height: '24px', borderRadius: '50%', background: hex, border: colors[colorRole] === hex ? `2px solid ${primaryPink}` : '1px solid rgba(0,0,0,0.15)', cursor: 'pointer' }}
+                      key={cp.name}
+                      onClick={() => {
+                        setColors(prev => ({ ...prev, [colorRole]: cp.hex }));
+                        showToast(`Applied color: ${cp.name}`);
+                        addVersion(`Applied ${cp.name}`);
+                      }}
+                      title={cp.name}
+                      style={{
+                        height: '32px',
+                        borderRadius: '8px',
+                        background: cp.hex,
+                        border: colors[colorRole] === cp.hex ? `2.5px solid ${primaryPink}` : '1px solid rgba(0,0,0,0.1)',
+                        cursor: 'pointer'
+                      }}
                     />
                   ))}
                 </div>
               </div>
 
-              <div>
-                <span style={{ fontSize: '11px', fontWeight: 600, color: textPrimary, display: 'block', marginBottom: '6px' }}>Color Presets</span>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
-                  {colorPresets.map(preset => (
-                    <div
-                      key={preset.name}
-                      onClick={() => { setColors(prev => ({ ...prev, [colorRole]: preset.hex })); showToast(`Set ${colorRole}: ${preset.name}`); }}
-                      style={{
-                        padding: '6px',
-                        borderRadius: '8px',
-                        border: colors[colorRole] === preset.hex ? `1.5px solid ${primaryPink}` : `1px solid ${borderDefault}`,
-                        background: secondaryBg,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <div style={{ width: '14px', height: '14px', borderRadius: '50%', background: preset.hex, border: '1px solid rgba(0,0,0,0.15)' }} />
-                      <span style={{ fontSize: '11.5px', fontWeight: 500, color: textPrimary }}>{preset.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
 
-          {/* 2. FABRIC TAB */}
-          {propertyTab === 'Fabric' && (
+          {/* TAB 2: FABRIC SELECTION */}
+          {activeRightTab === 'fabric' && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
               {fabricsList.map(f => {
-                const isSelected = selectedFabric === f.name;
+                const isSelected = selectedFabric === f.id;
                 return (
                   <div
-                    key={f.name}
-                    onClick={() => { setSelectedFabric(f.name); showToast(`Selected fabric: ${f.name}`); }}
+                    key={f.id}
+                    onClick={() => {
+                      setSelectedFabric(f.id);
+                      showToast(`Selected fabric: ${f.name}`);
+                      addVersion(`Changed fabric to ${f.name}`);
+                    }}
                     style={{
+                      border: isSelected ? `2px solid ${primaryPink}` : `1px solid ${borderColor}`,
                       borderRadius: '10px',
-                      overflow: 'hidden',
-                      border: isSelected ? `2px solid ${primaryPink}` : `1px solid ${borderDefault}`,
-                      background: isSelected ? pinkTint : secondaryBg,
-                      padding: '6px',
+                      padding: '10px',
                       cursor: 'pointer',
-                      position: 'relative'
+                      background: isSelected ? `${primaryPink}08` : inputBg
                     }}
                   >
-                    <img src={f.img} alt={f.name} style={{ width: '100%', height: '48px', objectFit: 'cover', borderRadius: '6px' }} />
-                    <strong style={{ fontSize: '12px', color: textPrimary, marginTop: '4px', display: 'block' }}>{f.name}</strong>
-                    <span style={{ fontSize: '10px', color: textMuted }}>{f.desc}</span>
-                    {isSelected && (
-                      <div style={{ position: 'absolute', top: '4px', right: '4px', width: '14px', height: '14px', borderRadius: '50%', background: primaryPink, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Check size={9} color="#FFFFFF" strokeWidth={3} />
-                      </div>
-                    )}
+                    <strong style={{ fontSize: '12px', color: textColor, display: 'block' }}>{f.name}</strong>
+                    <span style={{ fontSize: '10px', color: secTextColor }}>{f.desc}</span>
                   </div>
                 );
               })}
             </div>
           )}
 
-          {/* 3. PATTERN TAB */}
-          {propertyTab === 'Pattern' && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-              {patternsList.map(p => {
+          {/* TAB 3: PATTERN SELECTION */}
+          {activeRightTab === 'pattern' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+              {['solid', 'stripes', 'checks', 'floral', 'geometric'].map(p => {
                 const isSelected = selectedPattern === p;
                 return (
-                  <button
+                  <div
                     key={p}
-                    onClick={() => { setSelectedPattern(p); showToast(`Selected pattern: ${p}`); }}
+                    onClick={() => {
+                      setSelectedPattern(p);
+                      showToast(`Applied pattern: ${p}`);
+                      addVersion(`Applied ${p} pattern`);
+                    }}
                     style={{
-                      padding: '10px',
+                      padding: '10px 4px',
                       borderRadius: '8px',
-                      border: isSelected ? `2px solid ${primaryPink}` : `1px solid ${borderDefault}`,
-                      background: isSelected ? pinkTint : secondaryBg,
-                      color: isSelected ? primaryPink : textPrimary,
-                      fontSize: '12px',
+                      border: isSelected ? `2px solid ${primaryPink}` : `1px solid ${borderColor}`,
+                      background: isSelected ? `${primaryPink}08` : inputBg,
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      fontSize: '11px',
                       fontWeight: 600,
-                      cursor: 'pointer'
+                      color: textColor,
+                      textTransform: 'capitalize'
                     }}
                   >
                     {p}
-                  </button>
+                  </div>
                 );
               })}
             </div>
           )}
 
-          {/* 4. DETAILS TAB */}
-          {propertyTab === 'Details' && (
+          {/* TAB 4: DETAILS CUSTOMIZATION */}
+          {activeRightTab === 'details' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {Object.keys(detailCategories).map(catKey => (
-                <div key={catKey}>
-                  <label style={{ fontSize: '11px', color: textMuted, display: 'block', textTransform: 'capitalize', marginBottom: '3px' }}>{catKey}</label>
-                  <select 
-                    value={details[catKey]} 
-                    onChange={(e) => setDetails(prev => ({ ...prev, [catKey]: e.target.value }))}
-                    style={{ width: '100%', height: '32px', padding: '0 8px', borderRadius: '6px', border: `1px solid ${borderDefault}`, background: inputBg, color: textPrimary, fontSize: '12px' }}
-                  >
-                    {detailCategories[catKey].map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                  </select>
-                </div>
-              ))}
+              <div>
+                <label style={{ fontSize: '11px', color: secTextColor, display: 'block', marginBottom: '3px' }}>Collar Style</label>
+                <select value={details.collar} onChange={(e) => setDetails(prev => ({ ...prev, collar: e.target.value }))} style={{ width: '100%', height: '34px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', padding: '0 8px' }}>
+                  <option value="classic">Classic Collar</option>
+                  <option value="mandarin">Mandarin Collar</option>
+                  <option value="none">No Collar</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', color: secTextColor, display: 'block', marginBottom: '3px' }}>Sleeves</label>
+                <select value={details.sleeve} onChange={(e) => setDetails(prev => ({ ...prev, sleeve: e.target.value }))} style={{ width: '100%', height: '34px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', padding: '0 8px' }}>
+                  <option value="long">Long Sleeves</option>
+                  <option value="short">Short Sleeves</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11px', color: secTextColor, display: 'block', marginBottom: '3px' }}>Fit Profile</label>
+                <select value={details.fit} onChange={(e) => setDetails(prev => ({ ...prev, fit: e.target.value }))} style={{ width: '100%', height: '34px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', padding: '0 8px' }}>
+                  <option value="regular">Regular Fit</option>
+                  <option value="slim">Slim Fit</option>
+                  <option value="relaxed">Relaxed Fit</option>
+                </select>
+              </div>
             </div>
           )}
 
-        </div>
-
-      </div>
-
-      {/* -------------------------------------------------------------------- */}
-      {/* 3. BOTTOM SECTION: AI DESIGN ASSISTANT BAR                           */}
-      {/* -------------------------------------------------------------------- */}
-      <div style={{ margin: '0 24px 16px 24px', background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Sparkles size={16} color={aiAccent} />
-          <strong style={{ fontSize: '14px', color: textPrimary }}>AI Design Assistant</strong>
-        </div>
-        <span style={{ fontSize: '12px', color: textSecondary, display: 'block', marginBottom: '10px' }}>Describe what you want to change on your garment design.</span>
-
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
-          {[
-            'Make it more premium',
-            'Change fabric to velvet',
-            'Add a Mandarin collar',
-            'Make sleeves slimmer',
-            'Try a luxury version',
-            'Make the lapel navy blue'
-          ].map(actionPill => (
-            <button
-              key={actionPill}
-              onClick={() => handleAssistantSubmit(actionPill)}
-              style={{
-                padding: '6px 12px',
-                borderRadius: '20px',
-                border: `1px solid ${borderDefault}`,
-                background: secondaryBg,
-                color: textPrimary,
-                fontSize: '12px',
-                fontWeight: 500,
-                cursor: 'pointer'
-              }}
-            >
-              {actionPill}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input 
-            type="text"
-            value={assistantInput}
-            onChange={(e) => setAssistantInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleAssistantSubmit(assistantInput)}
-            placeholder="What would you like to change?"
-            style={{ flex: 1, height: '40px', padding: '0 14px', borderRadius: '10px', border: `1px solid ${borderDefault}`, background: inputBg, color: textPrimary, fontSize: '13px', outline: 'none' }}
-          />
-          <button 
-            onClick={() => handleAssistantSubmit(assistantInput)}
-            style={{ padding: '0 20px', height: '40px', borderRadius: '10px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '13px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-          >
-            <Sparkles size={15} color="#FFFFFF" />
-            <span>Generate</span>
-          </button>
-        </div>
-      </div>
-
-      {/* -------------------------------------------------------------------- */}
-      {/* 4. BOTTOM HORIZONTAL CARDS: VARIATIONS / VERSION HISTORY / EXPORT    */}
-      {/* -------------------------------------------------------------------- */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 260px 260px',
-        gap: '16px',
-        padding: '0 24px',
-        alignItems: 'start'
-      }}>
-        {/* AI Variations Carousel */}
-        <div style={{ background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <strong style={{ fontSize: '14px', color: textPrimary }}>AI Variations</strong>
-            <span style={{ fontSize: '12px', color: primaryPink, fontWeight: 500, cursor: 'pointer' }}>View all →</span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
-            {variationsList.map(v => {
-              const isSelected = selectedVariation === v.id;
-              return (
-                <div
+          {/* AI Variations Section */}
+          <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '14px' }}>
+            <strong style={{ fontSize: '12px', color: textColor, display: 'block', marginBottom: '8px' }}>AI Variations</strong>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+              {variationsList.map(v => (
+                <button
                   key={v.id}
                   onClick={() => {
-                    setSelectedVariation(v.id);
-                    setColors(prev => ({ ...prev, Primary: v.color }));
-                    showToast(`Selected ${v.name} variation`);
+                    setColors(prev => ({ ...prev, primary: v.primary }));
+                    setSelectedFabric(v.fabric);
+                    setSelectedPattern(v.pattern);
+                    showToast(`Applied variation: ${v.name}`);
+                    addVersion(`Loaded ${v.name} variation`);
                   }}
                   style={{
-                    borderRadius: '10px',
-                    overflow: 'hidden',
-                    border: isSelected ? `2px solid ${primaryPink}` : `1px solid ${borderDefault}`,
-                    cursor: 'pointer',
-                    background: secondaryBg,
-                    position: 'relative'
+                    padding: '8px 4px',
+                    borderRadius: '8px',
+                    border: `1px solid ${borderColor}`,
+                    background: inputBg,
+                    color: textColor,
+                    fontSize: '10.5px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
                   }}
                 >
-                  <img src={v.img} alt={v.name} style={{ width: '100%', height: '110px', objectFit: 'cover' }} />
-                  <span style={{ display: 'block', fontSize: '11.5px', fontWeight: 600, color: textPrimary, padding: '6px', textAlign: 'center' }}>{v.name}</span>
-                  {isSelected && (
-                    <div style={{ position: 'absolute', top: '6px', right: '6px', width: '16px', height: '16px', borderRadius: '50%', background: primaryPink, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Check size={10} color="#FFFFFF" strokeWidth={3} />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                  {v.name}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Version History List */}
+          <div style={{ borderTop: `1px solid ${borderColor}`, paddingTop: '14px' }}>
+            <strong style={{ fontSize: '12px', color: textColor, display: 'block', marginBottom: '8px' }}>Version History</strong>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '120px', overflowY: 'auto' }}>
+              {versions.map((ver, idx) => (
+                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px' }}>
+                  <span style={{ color: idx === 0 ? primaryPink : textColor, fontWeight: idx === 0 ? 700 : 400 }}>{ver.label}</span>
+                  <span style={{ color: secTextColor, fontSize: '9.5px', fontFamily: 'monospace' }}>{ver.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
-        {/* Version History */}
-        <div style={{ background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
-          <strong style={{ fontSize: '14px', color: textPrimary, display: 'block', marginBottom: '10px' }}>VERSION HISTORY</strong>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {versionList.map(v => (
-              <div key={v.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 8px', borderRadius: '6px', background: v.isCurrent ? pinkTint : secondaryBg }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: v.isCurrent ? primaryPink : textMuted }} />
-                  <span style={{ fontSize: '12px', fontWeight: v.isCurrent ? 600 : 400, color: v.isCurrent ? primaryPink : textPrimary }}>{v.name}</span>
-                </div>
-                <span style={{ fontSize: '10.5px', color: textMuted }}>{v.time}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Export Design Card */}
-        <div style={{ background: cardBg, border: `1px solid ${borderDefault}`, borderRadius: '14px', padding: '16px', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
-          <strong style={{ fontSize: '14px', color: textPrimary, display: 'block', marginBottom: '10px' }}>EXPORT DESIGN</strong>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button onClick={() => showToast('Exporting 3D Model (GLB)...')} style={{ padding: '8px 10px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: secondaryBg, textAlign: 'left', cursor: 'pointer' }}>
-              <strong style={{ fontSize: '12px', color: textPrimary, display: 'block' }}>Export 3D Model</strong>
-              <span style={{ fontSize: '10px', color: textMuted }}>GLB / GLTF / OBJ</span>
-            </button>
-            <button onClick={() => showToast('Exporting PNG Images...')} style={{ padding: '8px 10px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: secondaryBg, textAlign: 'left', cursor: 'pointer' }}>
-              <strong style={{ fontSize: '12px', color: textPrimary, display: 'block' }}>Export Images</strong>
-              <span style={{ fontSize: '10px', color: textMuted }}>PNG / JPG</span>
-            </button>
-          </div>
-        </div>
       </div>
 
-      {/* SAVE MODAL */}
+      {/* -------------------------------------------------------------------- */}
+      {/* SAVE MODAL                                                           */}
+      {/* -------------------------------------------------------------------- */}
       {isSaveModalOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: '400px', background: cardBg, borderRadius: '14px', padding: '20px', border: `1px solid ${borderDefault}`, boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
-            <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600, color: textPrimary }}>Save Design</h3>
-            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: textSecondary }}>Save design to StitchBee Atelier Vault.</p>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '420px', background: cardBg, borderRadius: '16px', padding: '24px', border: `1px solid ${borderColor}`, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
+            <h3 style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 700, color: textColor }}>Save Design</h3>
+            <p style={{ margin: '0 0 16px 0', fontSize: '12px', color: secTextColor }}>Add details so your atelier team can review this design.</p>
 
-            <div>
-              <label style={{ fontSize: '11px', color: textMuted, display: 'block', marginBottom: '3px' }}>Design Title</label>
-              <input type="text" value={designTitle} onChange={(e) => setDesignTitle(e.target.value)} style={{ width: '100%', height: '36px', padding: '0 10px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: inputBg, color: textPrimary, fontSize: '13px' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div>
+                <label style={{ fontSize: '11px', color: secTextColor, display: 'block', marginBottom: '3px' }}>Design Title</label>
+                <input type="text" value={designTitle} onChange={(e) => setDesignTitle(e.target.value)} style={{ width: '100%', height: '36px', padding: '0 10px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px' }} />
+              </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '18px' }}>
-              <button onClick={() => setIsSaveModalOpen(false)} style={{ height: '34px', padding: '0 14px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Cancel</button>
-              <button onClick={() => { setIsSaveModalOpen(false); showToast(`Saved "${designTitle}" to Vault.`); }} style={{ height: '34px', padding: '0 16px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>Save Design</button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '20px' }}>
+              <button onClick={() => setIsSaveModalOpen(false)} style={{ padding: '8px 16px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
+              <button onClick={() => { setIsSaveModalOpen(false); showToast(`Saved "${designTitle}" to StitchBee Vault.`); }} style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', background: primaryPink, color: '#FFFFFF', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>Save Design</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* EXPORT MODAL */}
+      {/* -------------------------------------------------------------------- */}
+      {/* EXPORT MODAL                                                         */}
+      {/* -------------------------------------------------------------------- */}
       {isExportModalOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: '440px', background: cardBg, borderRadius: '14px', padding: '20px', border: `1px solid ${borderDefault}`, boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}>
-            <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600, color: textPrimary }}>Export Package</h3>
-            <p style={{ margin: '0 0 14px 0', fontSize: '12px', color: textSecondary }}>Export options for "{designTitle}".</p>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '440px', background: cardBg, borderRadius: '16px', padding: '24px', border: `1px solid ${borderColor}`, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
+            <h3 style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: 700, color: textColor }}>Export Design Package</h3>
+            <p style={{ margin: '0 0 16px 0', fontSize: '12px', color: secTextColor }}>Choose how you would like to export "{designTitle}".</p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {[
-                { title: 'Export 3D Model', desc: 'GLB / GLTF / OBJ', fmt: 'GLB' },
-                { title: 'Export Images', desc: 'High-res PNG / JPG', fmt: 'PNG' },
-                { title: 'Sketch + 3D', desc: 'Complete ZIP Archive', fmt: 'ZIP' },
-                { title: 'Share Design', desc: 'Invite & Share link', fmt: 'LINK' }
-              ].map(opt => (
-                <div key={opt.title} style={{ padding: '10px', borderRadius: '8px', border: `1px solid ${borderDefault}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: secondaryBg }}>
-                  <div>
-                    <strong style={{ fontSize: '12px', color: textPrimary, display: 'block' }}>{opt.title}</strong>
-                    <span style={{ fontSize: '10.5px', color: textMuted }}>{opt.desc}</span>
-                  </div>
-                  <button onClick={() => { setIsExportModalOpen(false); showToast(`Exporting ${opt.fmt}...`); }} style={{ height: '30px', padding: '0 12px', borderRadius: '6px', border: `1px solid ${primaryPink}`, background: pinkTint, color: primaryPink, fontSize: '11.5px', fontWeight: 600, cursor: 'pointer' }}>
-                    {opt.fmt}
-                  </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ padding: '12px', borderRadius: '10px', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: inputBg }}>
+                <div>
+                  <strong style={{ fontSize: '12.5px', color: textColor, display: 'block' }}>3D Garment Mesh</strong>
+                  <span style={{ fontSize: '10px', color: secTextColor }}>Full geometry with textures</span>
                 </div>
-              ))}
+                <button onClick={() => { setIsExportModalOpen(false); showToast('3D GLB model downloaded.'); }} style={{ padding: '6px 12px', borderRadius: '6px', border: `1px solid ${primaryPink}`, background: `${primaryPink}12`, color: primaryPink, fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}>
+                  GLB
+                </button>
+              </div>
+
+              <div style={{ padding: '12px', borderRadius: '10px', border: `1px solid ${borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: inputBg }}>
+                <div>
+                  <strong style={{ fontSize: '12.5px', color: textColor, display: 'block' }}>HD Studio Render</strong>
+                  <span style={{ fontSize: '10px', color: secTextColor }}>High resolution image</span>
+                </div>
+                <button onClick={() => { setIsExportModalOpen(false); showToast('HD PNG render downloaded.'); }} style={{ padding: '6px 12px', borderRadius: '6px', border: `1px solid ${primaryPink}`, background: `${primaryPink}12`, color: primaryPink, fontSize: '11px', fontWeight: 700, cursor: 'pointer' }}>
+                  PNG
+                </button>
+              </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-              <button onClick={() => setIsExportModalOpen(false)} style={{ height: '34px', padding: '0 14px', borderRadius: '8px', border: `1px solid ${borderDefault}`, background: '#FFFFFF', color: textPrimary, fontSize: '12px', fontWeight: 500, cursor: 'pointer' }}>Close</button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+              <button onClick={() => setIsExportModalOpen(false)} style={{ padding: '8px 16px', borderRadius: '8px', border: `1px solid ${borderColor}`, background: inputBg, color: textColor, fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}>Close</button>
             </div>
           </div>
         </div>

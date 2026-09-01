@@ -376,35 +376,33 @@ export default function AuthPage({
     <div 
       style={{ 
         position: 'fixed',
-        inset: 0,
-        width: '100%',
-        height: '100%',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
         zIndex: 9999,
         background: bgPageGrad,
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
         fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
         overflowY: 'auto',
-        overflowX: 'hidden',
         boxSizing: 'border-box'
       }}
-      className="auth-page-root"
     >
       {/* -------------------------------------------------------------------- */}
       {/* 1. TOP NAVIGATION HEADER                                             */}
       {/* -------------------------------------------------------------------- */}
       <header
-        className="auth-header"
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '16px 32px',
+          padding: '20px 40px',
           zIndex: 50,
           position: 'relative',
           width: '100%',
-          boxSizing: 'border-box',
-          flexShrink: 0
+          boxSizing: 'border-box'
         }}
       >
         {/* Left: StitchBee logo */}
@@ -416,19 +414,18 @@ export default function AuthPage({
           <img 
             src="/logo.png" 
             alt="StitchBee" 
-            className="auth-header-logo"
-            style={{ height: '54px', width: 'auto', maxWidth: '220px', objectFit: 'contain', display: 'block' }} 
+            style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} 
           />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           {tab === 'signup' && currentStep > 1 && (
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '6px 12px',
+                padding: '6px 14px',
                 borderRadius: '20px',
                 background: 'linear-gradient(135deg, rgba(247,37,133,0.12) 0%, rgba(114,9,183,0.12) 100%)',
                 border: '1px solid rgba(247,37,133,0.25)',
@@ -475,7 +472,7 @@ export default function AuthPage({
           width: '100%',
           maxWidth: '1440px',
           margin: '0 auto',
-          padding: '20px 32px 40px 32px',
+          padding: '0 40px',
           boxSizing: 'border-box',
           alignItems: 'center',
           gap: '40px',
