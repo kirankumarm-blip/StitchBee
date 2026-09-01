@@ -601,16 +601,21 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                       background: isActive 
                         ? (theme === 'dark' ? 'rgba(236,22,127,0.15)' : '#FFF0F6') 
                         : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent'),
-                      borderRadius: '10px',
-                      padding: '10px 12px',
+                      borderRadius: '12px',
+                      padding: '10px 14px',
                       display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
                       alignItems: 'center',
-                      justify: 'space-between',
+                      justifyContent: 'space-between',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.2s ease',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      gap: '8px'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                       <div 
                         style={{ 
                           width: '32px', 
@@ -624,20 +629,30 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                             : (theme === 'dark' ? '#E2E8F0' : '#475467'),
                           display: 'flex',
                           alignItems: 'center',
-                          justify: 'center'
+                          justifyContent: 'center',
+                          flexShrink: 0
                         }}
                       >
                         {tab.icon}
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                         <span style={{ 
                           fontSize: '0.88rem', 
                           fontWeight: 700, 
-                          color: isActive ? '#EC167F' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                          color: isActive ? '#EC167F' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
                         }}>
                           {tab.label}
                         </span>
-                        <span style={{ fontSize: '0.70rem', color: isActive ? '#EC167F' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280') }}>
+                        <span style={{ 
+                          fontSize: '0.70rem', 
+                          color: isActive ? '#EC167F' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}>
                           {tab.subtitle}
                         </span>
                       </div>
@@ -645,7 +660,9 @@ export default function DesignerView({ theme, setTheme, currentUser, onLogout, o
                     <ChevronRight 
                       size={16} 
                       style={{ 
-                        color: isActive ? '#EC167F' : (theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#9CA3AF')
+                        color: isActive ? '#EC167F' : (theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#9CA3AF'),
+                        flexShrink: 0,
+                        marginLeft: 'auto'
                       }} 
                     />
                   </div>

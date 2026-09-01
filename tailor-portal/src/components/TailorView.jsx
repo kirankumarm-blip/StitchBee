@@ -3660,17 +3660,22 @@ export default function TailorView({
                       background: isActive 
                         ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6') 
                         : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent'),
-                      borderRadius: '10px',
-                      padding: '10px 12px',
+                      borderRadius: '12px',
+                      padding: '10px 14px',
                       display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      transition: 'all 0.2s ease',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      gap: '8px'
                     }}
                   >
                     {isActive && <div className="drawer-nav-indicator" style={{ background: 'var(--primary)' }} />}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                       <div 
                         className="drawer-nav-icon-box" 
                         style={{ 
@@ -3679,20 +3684,30 @@ export default function TailorView({
                             : (theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F1F5F9'),
                           color: isActive 
                             ? '#F72585' 
-                            : (theme === 'dark' ? '#E2E8F0' : '#475467') 
+                            : (theme === 'dark' ? '#E2E8F0' : '#475467'),
+                          flexShrink: 0
                         }}
                       >
                         {tab.icon}
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                         <span style={{ 
                           fontSize: '0.9rem', 
                           fontWeight: 700, 
-                          color: isActive ? 'var(--primary)' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                          color: isActive ? 'var(--primary)' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
                         }}>
                           {tab.label}
                         </span>
-                        <span style={{ fontSize: '0.72rem', color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280') }}>
+                        <span style={{ 
+                          fontSize: '0.72rem', 
+                          color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}>
                           {tab.subtitle}
                         </span>
                       </div>
@@ -3701,7 +3716,9 @@ export default function TailorView({
                       size={18} 
                       style={{ 
                         color: isActive ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#9CA3AF'),
-                        transition: 'transform 0.2s ease'
+                        transition: 'transform 0.2s ease',
+                        flexShrink: 0,
+                        marginLeft: 'auto'
                       }} 
                     />
                   </div>

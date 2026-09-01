@@ -1109,21 +1109,44 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       setActiveTab(tab.id);
                       setMobileMenuOpen(false);
                     }}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '10px 14px',
+                      borderRadius: '12px',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      gap: '8px',
+                      cursor: 'pointer'
+                    }}
                   >
                     {isActive && <div className="drawer-nav-indicator" />}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                      <div className="drawer-nav-icon-box">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                      <div className="drawer-nav-icon-box" style={{ flexShrink: 0 }}>
                         {tab.icon}
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0, overflow: 'hidden' }}>
                         <span style={{ 
                           fontSize: '0.95rem', 
                           fontWeight: 700, 
-                          color: isActive ? '#FF2E93' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F') 
+                          color: isActive ? '#FF2E93' : (theme === 'dark' ? '#FFFFFF' : '#1B1B2F'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
                         }}>
                           {tab.label}
                         </span>
-                        <span style={{ fontSize: '0.73rem', color: isActive ? '#FF2E93' : '#6B7280', opacity: isActive ? 0.85 : 1 }}>
+                        <span style={{ 
+                          fontSize: '0.73rem', 
+                          color: isActive ? '#FF2E93' : '#6B7280', 
+                          opacity: isActive ? 0.85 : 1,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}>
                           {tab.subtitle}
                         </span>
                       </div>
@@ -1132,7 +1155,9 @@ export default function DeliveryView({ theme, setTheme, currentUser, onLogout, s
                       size={18} 
                       style={{ 
                         color: isActive ? '#FF2E93' : '#9CA3AF',
-                        transition: 'transform 0.2s ease'
+                        transition: 'transform 0.2s ease',
+                        flexShrink: 0,
+                        marginLeft: 'auto'
                       }} 
                     />
                   </div>
