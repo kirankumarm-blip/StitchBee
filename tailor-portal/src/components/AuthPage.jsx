@@ -376,33 +376,35 @@ export default function AuthPage({
     <div 
       style={{ 
         position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
+        inset: 0,
+        width: '100%',
+        height: '100%',
         zIndex: 9999,
         background: bgPageGrad,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
         fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
         overflowY: 'auto',
+        overflowX: 'hidden',
         boxSizing: 'border-box'
       }}
+      className="auth-page-root"
     >
       {/* -------------------------------------------------------------------- */}
       {/* 1. TOP NAVIGATION HEADER                                             */}
       {/* -------------------------------------------------------------------- */}
       <header
+        className="auth-header"
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '20px 40px',
+          padding: '16px 36px',
           zIndex: 50,
           position: 'relative',
           width: '100%',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          flexShrink: 0
         }}
       >
         {/* Left: StitchBee logo */}
@@ -414,7 +416,8 @@ export default function AuthPage({
           <img 
             src="/logo.png" 
             alt="StitchBee" 
-            style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} 
+            className="auth-header-logo"
+            style={{ height: '60px', width: 'auto', maxWidth: '220px', objectFit: 'contain', display: 'block' }} 
           />
         </div>
 
@@ -472,7 +475,7 @@ export default function AuthPage({
           width: '100%',
           maxWidth: '1440px',
           margin: '0 auto',
-          padding: '0 40px',
+          padding: '20px 36px 40px 36px',
           boxSizing: 'border-box',
           alignItems: 'center',
           gap: '40px',
