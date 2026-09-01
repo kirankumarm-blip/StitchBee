@@ -12473,6 +12473,20 @@ body.light-theme .premium-footer h5 {
   .recharts-responsive-container {
     min-height: 200px !important;
   }
+
+  /* Tailor Calendar Full Width Responsive Design */
+  .tailor-calendar-main-col,
+  .tailor-calendar-side-col {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .tailor-calendar-card {
+    padding: 12px 10px !important;
+    border-radius: 14px !important;
+    width: 100% !important;
+  }
 }
 
 

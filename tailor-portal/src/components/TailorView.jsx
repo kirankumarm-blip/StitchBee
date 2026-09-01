@@ -2432,23 +2432,28 @@ export default function TailorView({
               </div>
 
               {/* 70 / 30 SPLIT MAIN WORKSPACE LAYOUT */}
-              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'stretch' }}>
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'stretch', width: '100%' }}>
                 
-                {/* LEFT WORKSPACE (70% width) */}
-                <div style={{ flex: '7', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* LEFT WORKSPACE (70% width on desktop, 100% on mobile) */}
+                <div style={{ flex: '7', minWidth: '100%', width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }} className="tailor-calendar-main-col">
                   
                   {/* Premium White Rounded Calendar Card */}
-                  <div style={{ 
-                    padding: '24px', 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    gap: '20px', 
-                    flex: 1,
-                    background: theme === 'dark' ? '#141126' : '#ffffff',
-                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
-                    borderRadius: '16px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
-                  }}>
+                  <div 
+                    className="tailor-calendar-card"
+                    style={{ 
+                      padding: '24px', 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      gap: '20px', 
+                      flex: 1,
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      background: theme === 'dark' ? '#141126' : '#ffffff',
+                      border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC',
+                      borderRadius: '16px',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
+                    }}
+                  >
                     
                     {/* Integrated View Controls Header */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
@@ -2495,141 +2500,152 @@ export default function TailorView({
 
                     {/* MONTH VIEW CALENDAR GRID */}
                     {calendarViewMode === 'month' && (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E4E7EC', borderRadius: '12px', overflow: 'hidden', border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' }}>
-                        
-                        {/* Weekday Labels Header */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? '#18142e' : '#F8FAFC' }}>
-                          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                            <div key={day} style={{ padding: '10px', textAlign: 'center', fontSize: '10px', fontWeight: 700, lineHeight: '14px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#64748B', letterSpacing: '0.02em', textTransform: 'uppercase' }}>{day}</div>
-                          ))}
-                        </div>
+                      <div 
+                        className="tailor-calendar-grid-scroll"
+                        style={{ 
+                          width: '100%', 
+                          overflowX: 'auto', 
+                          WebkitOverflowScrolling: 'touch',
+                          borderRadius: '12px', 
+                          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC' 
+                        }}
+                      >
+                        <div style={{ minWidth: '650px', display: 'flex', flexDirection: 'column', gap: '1px', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E4E7EC' }}>
+                          
+                          {/* Weekday Labels Header */}
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? '#18142e' : '#F8FAFC' }}>
+                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+                              <div key={day} style={{ padding: '10px', textAlign: 'center', fontSize: '10px', fontWeight: 700, lineHeight: '14px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#64748B', letterSpacing: '0.02em', textTransform: 'uppercase' }}>{day}</div>
+                            ))}
+                          </div>
 
-                        {/* Cells Grid */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E4E7EC', gap: '1px' }}>
-                          {cells.map((cell, idx) => {
-                            const isTodayDate = cell.date.getFullYear() === 2026 && cell.date.getMonth() === 5 && cell.date.getDate() === 20;
-                            const isSelected = selectedCalendarDate && 
-                              selectedCalendarDate.getFullYear() === cell.date.getFullYear() && 
-                              selectedCalendarDate.getMonth() === cell.date.getMonth() && 
-                              selectedCalendarDate.getDate() === cell.date.getDate();
-                            
-                            const cellEvents = calendarEvents.filter(e => 
-                              e.date.getFullYear() === cell.date.getFullYear() &&
-                              e.date.getMonth() === cell.date.getMonth() &&
-                              e.date.getDate() === cell.date.getDate() &&
-                              calendarFilters.includes(e.type)
-                            );
+                          {/* Cells Grid */}
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#E4E7EC', gap: '1px' }}>
+                            {cells.map((cell, idx) => {
+                              const isTodayDate = cell.date.getFullYear() === 2026 && cell.date.getMonth() === 5 && cell.date.getDate() === 20;
+                              const isSelected = selectedCalendarDate && 
+                                selectedCalendarDate.getFullYear() === cell.date.getFullYear() && 
+                                selectedCalendarDate.getMonth() === cell.date.getMonth() && 
+                                selectedCalendarDate.getDate() === cell.date.getDate();
+                              
+                              const cellEvents = calendarEvents.filter(e => 
+                                e.date.getFullYear() === cell.date.getFullYear() &&
+                                e.date.getMonth() === cell.date.getMonth() &&
+                                e.date.getDate() === cell.date.getDate() &&
+                                calendarFilters.includes(e.type)
+                              );
 
-                            const isBlocked = cellEvents.some(e => e.type === 'Blocked Date');
+                              const isBlocked = cellEvents.some(e => e.type === 'Blocked Date');
 
-                            return (
-                              <div
-                                key={idx}
-                                onClick={() => setSelectedCalendarDate(cell.date)}
-                                style={{
-                                  minHeight: '105px',
-                                  padding: '8px',
-                                  background: isTodayDate 
-                                    ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6')
-                                    : (isBlocked 
-                                      ? (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8FAFC')
-                                      : (isSelected 
-                                        ? (theme === 'dark' ? '#1c152a' : '#FAF5FF') 
-                                        : (theme === 'dark' ? '#141126' : '#ffffff'))),
-                                  border: isTodayDate 
-                                    ? '1px solid rgba(247,37,133,0.4)' 
-                                    : (isSelected ? '1px solid #7209B7' : 'none'),
-                                  position: 'relative',
-                                  cursor: 'pointer',
-                                  opacity: cell.isCurrentMonth ? 1 : 0.4,
-                                  transition: 'all 0.15s ease',
-                                  display: 'flex',
-                                  flexDirection: 'column'
-                                }}
-                              >
-                                {/* Date Number Row */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                                  <span style={{ 
-                                    fontSize: '11px', 
-                                    fontWeight: isTodayDate || isSelected ? 700 : 500, 
-                                    lineHeight: '16px',
-                                    color: isTodayDate ? '#ffffff' : (isSelected ? '#7209B7' : (theme === 'dark' ? '#ffffff' : '#344054')),
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    borderRadius: '50%',
-                                    width: '22px',
-                                    height: '22px',
-                                    background: isTodayDate ? '#F72585' : (isSelected ? 'rgba(114,9,183,0.12)' : 'transparent'),
-                                    boxShadow: isTodayDate ? '0 2px 6px rgba(247,37,133,0.3)' : 'none'
-                                  }}>
-                                    {cell.day}
-                                  </span>
+                              return (
+                                <div
+                                  key={idx}
+                                  onClick={() => setSelectedCalendarDate(cell.date)}
+                                  style={{
+                                    minHeight: '105px',
+                                    padding: '8px',
+                                    background: isTodayDate 
+                                      ? (theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6')
+                                      : (isBlocked 
+                                        ? (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#F8FAFC')
+                                        : (isSelected 
+                                          ? (theme === 'dark' ? '#1c152a' : '#FAF5FF') 
+                                          : (theme === 'dark' ? '#141126' : '#ffffff'))),
+                                    border: isTodayDate 
+                                      ? '1px solid rgba(247,37,133,0.4)' 
+                                      : (isSelected ? '1px solid #7209B7' : 'none'),
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                    opacity: cell.isCurrentMonth ? 1 : 0.4,
+                                    transition: 'all 0.15s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column'
+                                  }}
+                                >
+                                  {/* Date Number Row */}
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                                    <span style={{ 
+                                      fontSize: '11px', 
+                                      fontWeight: isTodayDate || isSelected ? 700 : 500, 
+                                      lineHeight: '16px',
+                                      color: isTodayDate ? '#ffffff' : (isSelected ? '#7209B7' : (theme === 'dark' ? '#ffffff' : '#344054')),
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      borderRadius: '50%',
+                                      width: '22px',
+                                      height: '22px',
+                                      background: isTodayDate ? '#F72585' : (isSelected ? 'rgba(114,9,183,0.12)' : 'transparent'),
+                                      boxShadow: isTodayDate ? '0 2px 6px rgba(247,37,133,0.3)' : 'none'
+                                    }}>
+                                      {cell.day}
+                                    </span>
 
-                                  {isTodayDate && (
-                                    <span style={{ fontSize: '9px', fontWeight: 700, color: '#F72585', textTransform: 'uppercase', letterSpacing: '0.02em' }}>Today</span>
-                                  )}
-                                </div>
+                                    {isTodayDate && (
+                                      <span style={{ fontSize: '9px', fontWeight: 700, color: '#F72585', textTransform: 'uppercase', letterSpacing: '0.02em' }}>Today</span>
+                                    )}
+                                  </div>
 
-                                {/* Rich Event Cards Container */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
-                                  {cellEvents.slice(0, 2).map(evt => {
-                                    const cfg = getEventConfig(evt.type);
-                                    return (
+                                  {/* Rich Event Cards Container */}
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1 }}>
+                                    {cellEvents.slice(0, 2).map(evt => {
+                                      const cfg = getEventConfig(evt.type);
+                                      return (
+                                        <div 
+                                          key={evt.id} 
+                                          style={{
+                                            padding: '4px 6px',
+                                            borderRadius: '6px',
+                                            background: cfg.bg,
+                                            borderLeft: `3px solid ${cfg.accent}`,
+                                            borderTop: `1px solid ${cfg.border}`,
+                                            borderRight: `1px solid ${cfg.border}`,
+                                            borderBottom: `1px solid ${cfg.border}`,
+                                            color: theme === 'dark' ? '#ffffff' : '#1D2939',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: '1px'
+                                          }}
+                                          title={`${evt.type}: ${evt.customer} - ${evt.time}`}
+                                        >
+                                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
+                                            <strong style={{ fontSize: '10px', fontWeight: 600, lineHeight: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                              {evt.type === 'Blocked Date' ? 'Blocked' : evt.customer}
+                                            </strong>
+                                          </div>
+                                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8.5px', color: cfg.text, fontWeight: 600 }}>
+                                            <span style={{ letterSpacing: '0.02em', textTransform: 'uppercase' }}>{evt.type === 'Stitching Deadline' ? 'Deadline' : (evt.type === 'Pick up & Delivery' ? 'Delivery' : evt.type)}</span>
+                                            <span>{evt.time}</span>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+
+                                    {/* +N More Indicator */}
+                                    {cellEvents.length > 2 && (
                                       <div 
-                                        key={evt.id} 
                                         style={{
-                                          padding: '4px 6px',
-                                          borderRadius: '6px',
-                                          background: cfg.bg,
-                                          borderLeft: `3px solid ${cfg.accent}`,
-                                          borderTop: `1px solid ${cfg.border}`,
-                                          borderRight: `1px solid ${cfg.border}`,
-                                          borderBottom: `1px solid ${cfg.border}`,
-                                          color: theme === 'dark' ? '#ffffff' : '#1D2939',
-                                          display: 'flex',
-                                          flexDirection: 'column',
-                                          gap: '1px'
+                                          fontSize: '9px',
+                                          fontWeight: 600,
+                                          color: '#F72585',
+                                          background: theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6',
+                                          borderRadius: '4px',
+                                          padding: '2px 5px',
+                                          textAlign: 'center',
+                                          marginTop: 'auto'
                                         }}
-                                        title={`${evt.type}: ${evt.customer} - ${evt.time}`}
                                       >
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                          <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
-                                          <strong style={{ fontSize: '10px', fontWeight: 600, lineHeight: '13px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                            {evt.type === 'Blocked Date' ? 'Blocked' : evt.customer}
-                                          </strong>
-                                        </div>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8.5px', color: cfg.text, fontWeight: 600 }}>
-                                          <span style={{ letterSpacing: '0.02em', textTransform: 'uppercase' }}>{evt.type === 'Stitching Deadline' ? 'Deadline' : (evt.type === 'Pick up & Delivery' ? 'Delivery' : evt.type)}</span>
-                                          <span>{evt.time}</span>
-                                        </div>
+                                        +{cellEvents.length - 2} more
                                       </div>
-                                    );
-                                  })}
-
-                                  {/* +N More Indicator */}
-                                  {cellEvents.length > 2 && (
-                                    <div 
-                                      style={{
-                                        fontSize: '9px',
-                                        fontWeight: 600,
-                                        color: '#F72585',
-                                        background: theme === 'dark' ? 'rgba(247,37,133,0.15)' : '#FFF0F6',
-                                        borderRadius: '4px',
-                                        padding: '2px 5px',
-                                        textAlign: 'center',
-                                        marginTop: 'auto'
-                                      }}
-                                    >
-                                      +{cellEvents.length - 2} more
-                                    </div>
-                                  )}
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
+                              );
+                            })}
+                          </div>
 
+                        </div>
                       </div>
                     )}
 
@@ -2648,73 +2664,75 @@ export default function TailorView({
                       }
 
                       return (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '10px' }}>
-                          {weekDays.map((wDate, idx) => {
-                            const isSelected = selectedCalendarDate && selectedCalendarDate.getDate() === wDate.getDate();
-                            const wEvents = calendarEvents.filter(e => 
-                              e.date.getDate() === wDate.getDate() &&
-                              e.date.getMonth() === wDate.getMonth() &&
-                              calendarFilters.includes(e.type)
-                            );
-                            return (
-                              <div 
-                                key={idx} 
-                                onClick={() => setSelectedCalendarDate(wDate)}
-                                style={{
-                                  padding: '10px',
-                                  borderRadius: '12px',
-                                  border: isSelected ? '1px solid #F72585' : (theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'),
-                                  background: isSelected ? (theme === 'dark' ? 'rgba(247,37,133,0.12)' : '#FFF0F6') : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff'),
-                                  cursor: 'pointer',
-                                  minHeight: '230px',
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  gap: '8px'
-                                }}
-                              >
-                                <div style={{ textAlign: 'center', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', paddingBottom: '6px' }}>
-                                  <span style={{ fontSize: '10px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block', fontWeight: 600, lineHeight: '14px' }}>
-                                    {wDate.toLocaleString('default', { weekday: 'short' })}
-                                  </span>
-                                  <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: isSelected ? '#F72585' : (theme === 'dark' ? '#ffffff' : '#1D2939') }}>
-                                    {wDate.getDate()}
-                                  </strong>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', overflowY: 'auto' }}>
-                                  {wEvents.map(evt => {
-                                    const cfg = getEventConfig(evt.type);
-                                    return (
-                                      <div 
-                                        key={evt.id} 
-                                        style={{
-                                          padding: '6px 8px',
-                                          borderRadius: '8px',
-                                          background: cfg.bg,
-                                          borderLeft: `3px solid ${cfg.accent}`,
-                                          borderTop: `1px solid ${cfg.border}`,
-                                          borderRight: `1px solid ${cfg.border}`,
-                                          borderBottom: `1px solid ${cfg.border}`,
-                                          color: theme === 'dark' ? '#ffffff' : '#1D2939',
-                                          fontSize: '10px',
-                                          fontWeight: 600,
-                                          lineHeight: '14px'
-                                        }}
-                                      >
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                          <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
-                                          <span>{evt.customer}</span>
+                        <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch', borderRadius: '12px' }}>
+                          <div style={{ minWidth: '650px', display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '10px' }}>
+                            {weekDays.map((wDate, idx) => {
+                              const isSelected = selectedCalendarDate && selectedCalendarDate.getDate() === wDate.getDate();
+                              const wEvents = calendarEvents.filter(e => 
+                                e.date.getDate() === wDate.getDate() &&
+                                e.date.getMonth() === wDate.getMonth() &&
+                                calendarFilters.includes(e.type)
+                              );
+                              return (
+                                <div 
+                                  key={idx} 
+                                  onClick={() => setSelectedCalendarDate(wDate)}
+                                  style={{
+                                    padding: '10px',
+                                    borderRadius: '12px',
+                                    border: isSelected ? '1px solid #F72585' : (theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC'),
+                                    background: isSelected ? (theme === 'dark' ? 'rgba(247,37,133,0.12)' : '#FFF0F6') : (theme === 'dark' ? 'rgba(255,255,255,0.02)' : '#ffffff'),
+                                    cursor: 'pointer',
+                                    minHeight: '230px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '8px'
+                                  }}
+                                >
+                                  <div style={{ textAlign: 'center', borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E4E7EC', paddingBottom: '6px' }}>
+                                    <span style={{ fontSize: '10px', color: theme === 'dark' ? 'rgba(255,255,255,0.6)' : '#667085', display: 'block', fontWeight: 600, lineHeight: '14px' }}>
+                                      {wDate.toLocaleString('default', { weekday: 'short' })}
+                                    </span>
+                                    <strong style={{ fontSize: '13px', fontWeight: 700, lineHeight: '18px', color: isSelected ? '#F72585' : (theme === 'dark' ? '#ffffff' : '#1D2939') }}>
+                                      {wDate.getDate()}
+                                    </strong>
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', overflowY: 'auto' }}>
+                                    {wEvents.map(evt => {
+                                      const cfg = getEventConfig(evt.type);
+                                      return (
+                                        <div 
+                                          key={evt.id} 
+                                          style={{
+                                            padding: '6px 8px',
+                                            borderRadius: '8px',
+                                            background: cfg.bg,
+                                            borderLeft: `3px solid ${cfg.accent}`,
+                                            borderTop: `1px solid ${cfg.border}`,
+                                            borderRight: `1px solid ${cfg.border}`,
+                                            borderBottom: `1px solid ${cfg.border}`,
+                                            color: theme === 'dark' ? '#ffffff' : '#1D2939',
+                                            fontSize: '10px',
+                                            fontWeight: 600,
+                                            lineHeight: '14px'
+                                          }}
+                                        >
+                                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <span style={{ color: cfg.accent, display: 'flex' }}>{cfg.icon}</span>
+                                            <span>{evt.customer}</span>
+                                          </div>
+                                          <span style={{ display: 'block', fontSize: '9px', fontWeight: 500, color: cfg.text, marginTop: '2px' }}>{evt.time}</span>
                                         </div>
-                                        <span style={{ display: 'block', fontSize: '9px', fontWeight: 500, color: cfg.text, marginTop: '2px' }}>{evt.time}</span>
-                                      </div>
-                                    );
-                                  })}
-                                  {wEvents.length === 0 && (
-                                    <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#98A2B3', textAlign: 'center', marginTop: '16px' }}>No events</span>
-                                  )}
+                                      );
+                                    })}
+                                    {wEvents.length === 0 && (
+                                      <span style={{ fontSize: '10px', fontWeight: 500, lineHeight: '14px', color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#98A2B3', textAlign: 'center', marginTop: '16px' }}>No events</span>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
+                              );
+                            })}
+                          </div>
                         </div>
                       );
                     })()}
