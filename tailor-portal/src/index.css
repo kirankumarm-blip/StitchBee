@@ -7458,7 +7458,7 @@ svg * {
 
 
 /* Responsive adjustments for brand logo image and rider badge */
-.logo img, img[alt="StitchBee"] {
+.logo img, img[alt="StitchBee"]:not(.auth-header-logo) {
   height: 100px !important;
   width: 300px !important;
   object-fit: contain !important;
@@ -7470,7 +7470,7 @@ svg * {
 }
 
 @media (max-width: 768px) {
-  .logo img, img[alt="StitchBee"] {
+  .logo img, img[alt="StitchBee"]:not(.auth-header-logo) {
     height: 70px !important;
     width: 220px !important;
     margin-left: -65px !important;
@@ -12166,8 +12166,7 @@ body.light-theme .premium-footer h5 {
   width: auto !important;
   max-width: 220px !important;
   object-fit: contain !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+  margin: 0 !important;
   display: block !important;
 }
 
@@ -12181,8 +12180,7 @@ body.light-theme .premium-footer h5 {
     height: 44px !important;
     width: auto !important;
     max-width: 180px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    margin: 0 !important;
     object-fit: contain !important;
     display: block !important;
   }
@@ -12190,7 +12188,7 @@ body.light-theme .premium-footer h5 {
   .auth-main-wrapper {
     flex-direction: column !important;
     padding: 10px 16px 36px 16px !important;
-    gap: 24px !important;
+    gap: 28px !important;
     align-items: center !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -12217,7 +12215,7 @@ body.light-theme .premium-footer h5 {
     order: 2 !important;
     width: 100% !important;
     max-width: 500px !important;
-    margin: 0 auto !important;
+    margin: 16px auto 0 auto !important;
     text-align: center !important;
     align-items: center !important;
     gap: 16px !important;
@@ -12241,11 +12239,15 @@ body.light-theme .premium-footer h5 {
     gap: 6px !important;
   }
 
+  .auth-hero-divider {
+    margin: 14px auto !important;
+  }
+
   .auth-left-column p {
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 440px !important;
     text-align: center !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     font-size: 13.5px !important;
   }
 
@@ -12255,7 +12257,7 @@ body.light-theme .premium-footer h5 {
     max-width: 100% !important;
     height: 280px !important;
     border-radius: 20px !important;
-    margin: 14px auto !important;
+    margin: 16px auto !important;
     position: relative !important;
     overflow: hidden !important;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
@@ -12292,15 +12294,14 @@ body.light-theme .premium-footer h5 {
     height: 38px !important;
     width: auto !important;
     max-width: 160px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+    margin: 0 !important;
     object-fit: contain !important;
     display: block !important;
   }
 
   .auth-main-wrapper {
     padding: 8px 12px 28px 12px !important;
-    gap: 20px !important;
+    gap: 24px !important;
     width: 100% !important;
   }
 
@@ -12321,6 +12322,7 @@ body.light-theme .premium-footer h5 {
     order: 2 !important;
     width: 100% !important;
     max-width: 100% !important;
+    margin: 16px auto 0 auto !important;
     text-align: center !important;
     align-items: center !important;
   }
@@ -12340,11 +12342,15 @@ body.light-theme .premium-footer h5 {
     gap: 4px !important;
   }
 
+  .auth-hero-divider {
+    margin: 12px auto !important;
+  }
+
   .auth-left-column p {
     width: 100% !important;
     max-width: 100% !important;
     text-align: center !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     font-size: 13px !important;
   }
 
@@ -12354,7 +12360,7 @@ body.light-theme .premium-footer h5 {
     max-width: 100% !important;
     height: 220px !important;
     border-radius: 16px !important;
-    margin: 10px auto !important;
+    margin: 12px auto !important;
     position: relative !important;
     overflow: hidden !important;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;

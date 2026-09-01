@@ -539,6 +539,7 @@ export default function AuthPage({
               </div>
             </h1>
             <div
+              className="auth-hero-divider"
               style={{
                 width: '80px',
                 height: '4px',
