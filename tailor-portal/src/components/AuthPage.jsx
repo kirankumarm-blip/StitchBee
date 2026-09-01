@@ -416,8 +416,7 @@ export default function AuthPage({
           <img 
             src="/logo.png" 
             alt="StitchBee" 
-            className="auth-header-logo"
-            style={{ height: '70px', width: 'auto', maxWidth: '260px', objectFit: 'contain', display: 'block' }} 
+            style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} 
           />
         </div>
 

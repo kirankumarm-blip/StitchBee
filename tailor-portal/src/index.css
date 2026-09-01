@@ -7458,7 +7458,7 @@ svg * {
 
 
 /* Responsive adjustments for brand logo image and rider badge */
-.logo img, img[alt="StitchBee"]:not(.auth-header-logo) {
+.logo img, img[alt="StitchBee"] {
   height: 100px !important;
   width: 300px !important;
   object-fit: contain !important;
@@ -7470,7 +7470,7 @@ svg * {
 }
 
 @media (max-width: 768px) {
-  .logo img, img[alt="StitchBee"]:not(.auth-header-logo) {
+  .logo img, img[alt="StitchBee"] {
     height: 70px !important;
     width: 220px !important;
     margin-left: -65px !important;
@@ -12161,28 +12161,10 @@ body.light-theme .premium-footer h5 {
   align-items: flex-start;
 }
 
-.auth-header-logo {
-  height: 70px !important;
-  width: auto !important;
-  max-width: 260px !important;
-  object-fit: contain !important;
-  margin: 0 !important;
-  display: block !important;
-}
-
 @media (max-width: 1024px) {
   .auth-page-root header,
   .auth-header {
     padding: 14px 20px !important;
-  }
-
-  .auth-header-logo {
-    height: 60px !important;
-    width: auto !important;
-    max-width: 240px !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-    display: block !important;
   }
 
   .auth-main-wrapper {
@@ -12288,15 +12270,6 @@ body.light-theme .premium-footer h5 {
   .auth-page-root header,
   .auth-header {
     padding: 12px 14px !important;
-  }
-
-  .auth-header-logo {
-    height: 52px !important;
-    width: auto !important;
-    max-width: 210px !important;
-    margin: 0 !important;
-    object-fit: contain !important;
-    display: block !important;
   }
 
   .auth-main-wrapper {
