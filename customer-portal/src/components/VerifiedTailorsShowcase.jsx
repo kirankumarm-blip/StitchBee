@@ -288,15 +288,50 @@ export default function VerifiedTailorsShowcase({
     );
   };
 
-  // Construct Google Maps Embed URL
-  const googleMapEmbedUrl = activeTailor
-    ? `https://maps.google.com/maps?q=${activeTailor.lat},${activeTailor.lng}&hl=en&z=15&t=${mapType === 'satellite' ? 'k' : 'm'}&output=embed`
-    : `https://maps.google.com/maps?q=12.9716,77.5946&hl=en&z=13&t=${mapType === 'satellite' ? 'k' : 'm'}&output=embed`;
+  // Dynamic Map Target Determination:
+  // 1. If user typed a search query, show that search location on Google Maps (e.g. "Bannerghatta, Bengaluru")
+  // 2. Else if user clicked a tailor card (activeTailor), show that tailor's location
+  // 3. Else if userLocation is active, show userLocation
+  // 4. Default to Bangalore
+  const getMapEmbedUrl = () => {
+    const tParam = mapType === 'satellite' ? 'k' : 'm';
+    if (searchQuery && searchQuery.trim().length > 1) {
+      return `https://maps.google.com/maps?q=${encodeURIComponent(searchQuery.trim() + ', Bengaluru')}&hl=en&z=14&t=${tParam}&output=embed`;
+    }
+    if (activeTailor) {
+      return `https://maps.google.com/maps?q=${activeTailor.lat},${activeTailor.lng}&hl=en&z=15&t=${tParam}&output=embed`;
+    }
+    if (userLocation) {
+      return `https://maps.google.com/maps?q=${userLocation.lat},${userLocation.lng}&hl=en&z=15&t=${tParam}&output=embed`;
+    }
+    return `https://maps.google.com/maps?q=12.9716,77.5946&hl=en&z=13&t=${tParam}&output=embed`;
+  };
 
-  // Construct Google Maps Direct App Directions Link
-  const googleMapsDirectionsUrl = activeTailor
-    ? `https://www.google.com/maps/dir/?api=1&destination=${activeTailor.lat},${activeTailor.lng}`
-    : `https://www.google.com/maps/search/?api=1&query=Tailors+Bengaluru`;
+  const getMapDirectionsUrl = () => {
+    if (searchQuery && searchQuery.trim().length > 1) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery.trim() + ' Bengaluru')}`;
+    }
+    if (activeTailor) {
+      return `https://www.google.com/maps/dir/?api=1&destination=${activeTailor.lat},${activeTailor.lng}`;
+    }
+    if (userLocation) {
+      return `https://www.google.com/maps/search/?api=1&query=${userLocation.lat},${userLocation.lng}`;
+    }
+    return `https://www.google.com/maps/search/?api=1&query=Tailors+Bengaluru`;
+  };
+
+  const getMapHeaderText = () => {
+    if (searchQuery && searchQuery.trim().length > 1) {
+      return `Google Maps • Locating "${searchQuery.trim()}"`;
+    }
+    if (activeTailor) {
+      return `Google Maps • ${activeTailor.neighborhood} Studio`;
+    }
+    if (userLocation) {
+      return `Google Maps • Live GPS Location`;
+    }
+    return `Google Maps • Bengaluru Studio Locator`;
+  };
 
   // Dynamic Theme Palette Values (Clean premium theming without harsh solid black buttons)
   const colors = {
@@ -571,7 +606,7 @@ export default function VerifiedTailorsShowcase({
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#10B981', display: 'inline-block', boxShadow: '0 0 10px #10B981' }}></span>
                 <strong style={{ fontSize: '12.5px', color: colors.mapHeaderText, letterSpacing: '0.02em' }}>
-                  Google Maps • {activeTailor?.neighborhood || 'Bengaluru'} Studio
+                  {getMapHeaderText()}
                 </strong>
               </div>
 
@@ -600,7 +635,7 @@ export default function VerifiedTailorsShowcase({
 
                 {/* Direct Open in Google Maps */}
                 <a
-                  href={googleMapsDirectionsUrl}
+                  href={getMapDirectionsUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -626,7 +661,7 @@ export default function VerifiedTailorsShowcase({
             <div style={{ width: '100%', flex: 1, minHeight: '440px', position: 'relative' }}>
               <iframe
                 title="Google Maps Studio Locator"
-                src={googleMapEmbedUrl}
+                src={getMapEmbedUrl()}
                 width="100%"
                 height="100%"
                 style={{
