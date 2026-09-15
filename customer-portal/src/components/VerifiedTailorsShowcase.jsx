@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   MapPin, Star, ShieldCheck, CheckCircle2, Scissors, 
-  Sparkles, Clock, Phone, ChevronRight, Search, 
-  Navigation, RefreshCw, Eye, Award, Sliders, X, 
-  Layers, ExternalLink, Calendar, Heart
+  Clock, Search, Navigation, RefreshCw, Eye, Award, 
+  X, Layers, ExternalLink, Heart, Compass
 } from 'lucide-react';
 
 const CURATED_TAILORS = [
@@ -28,6 +27,7 @@ const CURATED_TAILORS = [
     tags: ["Bridal Lehenga", "Heavy Zardozi", "Silk Blouse", "Designer Gown"],
     lat: 12.9345,
     lng: 77.6267,
+    mapQuery: "Koramangala 4th Block Bengaluru",
     portfolio: [
       { img: "/bridal 5.jpg", title: "Velvet Bridal Lehenga", price: "₹14,500" },
       { img: "/bridal2.jpg", title: "Raw Silk Embroidered Blouse", price: "₹3,200" },
@@ -55,6 +55,7 @@ const CURATED_TAILORS = [
     tags: ["3-Piece Suit", "Bandhgala", "Tuxedo", "Italian Fit"],
     lat: 12.9719,
     lng: 77.6412,
+    mapQuery: "100 Feet Road Indiranagar Bengaluru",
     portfolio: [
       { img: "/men1.jpg", title: "Bespoke Royal Bandhgala", price: "₹12,000" },
       { img: "/men2.jpg", title: "Italian Cut Tuxedo", price: "₹16,500" },
@@ -82,6 +83,7 @@ const CURATED_TAILORS = [
     tags: ["Maggam Work", "Aari Embroidery", "Kanjeevaram Blouse", "Princess Cut"],
     lat: 12.9298,
     lng: 77.5833,
+    mapQuery: "Jayanagar 4th Block Bengaluru",
     portfolio: [
       { img: "/bridal 5.jpg", title: "Bridal Maggam Blouse", price: "₹4,500" },
       { img: "/bridal2.jpg", title: "Zari Border Pattu Blouse", price: "₹2,800" },
@@ -109,6 +111,7 @@ const CURATED_TAILORS = [
     tags: ["24h Alterations", "Waist Resizing", "Dress Tapering", "Suit Restyling"],
     lat: 12.9141,
     lng: 77.6329,
+    mapQuery: "HSR Layout Sector 1 Bengaluru",
     portfolio: [
       { img: "/alterations_fit.jpg", title: "Designer Lehenga Waist & Flare Taper", price: "₹850" },
       { img: "/alt_al1.jpg", title: "Blazer Shoulder Restyling", price: "₹1,200" },
@@ -136,6 +139,7 @@ const CURATED_TAILORS = [
     tags: ["Indo-Western", "Sharara Suit", "Draped Sarees", "Embroidered Kurta"],
     lat: 12.9698,
     lng: 77.7499,
+    mapQuery: "Whitefield ITPL Main Road Bengaluru",
     portfolio: [
       { img: "/bridal 5.jpg", title: "Georgette Draped Sharara", price: "₹6,800" },
       { img: "/men1.jpg", title: "Asymmetric Silk Kurta", price: "₹4,200" },
@@ -176,10 +180,7 @@ export default function VerifiedTailorsShowcase({
   const [userLocation, setUserLocation] = useState(null);
   const [locationName, setLocationName] = useState("Bengaluru Central");
   const [savedTailors, setSavedTailors] = useState([]);
-
-  const mapContainerRef = useRef(null);
-  const mapInstanceRef = useRef(null);
-  const markersRef = useRef([]);
+  const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
 
   // Calculate Distance in KM
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -213,6 +214,13 @@ export default function VerifiedTailorsShowcase({
     return { ...t, calculatedDist: `${dist} km` };
   });
 
+  // Keep activeTailor synced with filtered results
+  useEffect(() => {
+    if (filteredTailors.length > 0 && (!activeTailor || !filteredTailors.some(t => t.id === activeTailor.id))) {
+      setActiveTailor(filteredTailors[0]);
+    }
+  }, [selectedNeighborhood, selectedCategory, searchQuery]);
+
   // Handle GPS location request
   const handleGetLiveLocation = () => {
     if (!navigator.geolocation) {
@@ -224,18 +232,8 @@ export default function VerifiedTailorsShowcase({
       (pos) => {
         const { latitude, longitude } = pos.coords;
         setUserLocation({ lat: latitude, lng: longitude });
-        setLocationName("Your Current GPS Location");
+        setLocationName("Your Current Location");
         setIsLocating(false);
-
-        if (mapInstanceRef.current && window.L) {
-          mapInstanceRef.current.setView([latitude, longitude], 13);
-          window.L.circle([latitude, longitude], {
-            color: '#F72585',
-            fillColor: '#F72585',
-            fillOpacity: 0.15,
-            radius: 2000
-          }).addTo(mapInstanceRef.current);
-        }
       },
       (err) => {
         console.warn("GPS error:", err);
@@ -244,168 +242,6 @@ export default function VerifiedTailorsShowcase({
       },
       { timeout: 8000 }
     );
-  };
-
-  // Initialize and update Leaflet Map
-  useEffect(() => {
-    if (!mapContainerRef.current) return;
-
-    const loadMap = () => {
-      if (!window.L) {
-        // Retry after Leaflet script load if not yet ready
-        setTimeout(loadMap, 300);
-        return;
-      }
-
-      if (mapInstanceRef.current) {
-        try {
-          mapInstanceRef.current.remove();
-        } catch (e) {
-          console.error("Map cleanup error:", e);
-        }
-        mapInstanceRef.current = null;
-      }
-
-      const container = mapContainerRef.current;
-      if (container && container._leaflet_id) {
-        delete container._leaflet_id;
-      }
-
-      const centerLat = userLocation ? userLocation.lat : 12.9500;
-      const centerLng = userLocation ? userLocation.lng : 77.6300;
-
-      const map = window.L.map(container, {
-        center: [centerLat, centerLng],
-        zoom: 12,
-        zoomControl: true,
-        scrollWheelZoom: false
-      });
-
-      window.L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-        maxZoom: 19
-      }).addTo(map);
-
-      // Custom User Marker if GPS available
-      if (userLocation) {
-        const userSvgIcon = window.L.divIcon({
-          html: `<div style="background: #4CC9F0; width: 18px; height: 18px; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 16px #4CC9F0; animation: pulse-glow 1.5s infinite;"></div>`,
-          className: 'user-radar-pin',
-          iconSize: [18, 18],
-          iconAnchor: [9, 9]
-        });
-        window.L.marker([userLocation.lat, userLocation.lng], { icon: userSvgIcon })
-          .addTo(map)
-          .bindPopup(`<div style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; color: #111;">📍 Your Live Location</div>`);
-      }
-
-      // Tailor Atelier Markers
-      markersRef.current = [];
-      filteredTailors.forEach(tailor => {
-        const isSelected = activeTailor && activeTailor.id === tailor.id;
-        const tailorIcon = window.L.divIcon({
-          html: `
-            <div style="
-              position: relative; 
-              cursor: pointer;
-              transform: scale(${isSelected ? 1.25 : 1});
-              transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            ">
-              <div style="
-                background: linear-gradient(135deg, #F72585 0%, #7209B7 100%);
-                width: 38px;
-                height: 38px;
-                border-radius: 50% 50% 50% 0;
-                transform: rotate(-45deg);
-                box-shadow: 0 6px 16px rgba(247, 37, 133, 0.45);
-                border: 2.5px solid #ffffff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              ">
-                <div style="
-                  transform: rotate(45deg);
-                  color: #ffffff;
-                  font-size: 14px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                ">
-                  ✂️
-                </div>
-              </div>
-              <div style="
-                position: absolute;
-                bottom: -18px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #111827;
-                color: #ffffff;
-                font-size: 10px;
-                font-weight: 700;
-                padding: 2px 6px;
-                border-radius: 4px;
-                white-space: nowrap;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-              ">
-                ★ ${tailor.rating}
-              </div>
-            </div>
-          `,
-          className: 'custom-atelier-marker',
-          iconSize: [38, 38],
-          iconAnchor: [19, 38]
-        });
-
-        const marker = window.L.marker([tailor.lat, tailor.lng], { icon: tailorIcon })
-          .addTo(map)
-          .bindPopup(`
-            <div style="font-family: 'Inter', sans-serif; color: #111; padding: 4px; max-width: 220px; text-align: left;">
-              <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
-                <span style="color: #F72585; font-size: 10px; font-weight: 800; text-transform: uppercase;">VERIFIED ATELIER</span>
-              </div>
-              <strong style="font-size: 13px; color: #111; display: block; line-height: 1.2;">${tailor.name}</strong>
-              <span style="font-size: 11px; color: #6B7280; display: block; margin: 4px 0;">${tailor.specialty}</span>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 11px; border-top: 1px solid #E5E7EB; padding-top: 6px;">
-                <span style="font-weight: 700; color: #F72585;">★ ${tailor.rating} (${tailor.reviewsCount})</span>
-                <span style="color: #10B981; font-weight: 600;">${tailor.calculatedDist}</span>
-              </div>
-            </div>
-          `);
-
-        marker.on('click', () => {
-          setActiveTailor(tailor);
-        });
-
-        markersRef.current.push({ id: tailor.id, marker, lat: tailor.lat, lng: tailor.lng });
-      });
-
-      mapInstanceRef.current = map;
-    };
-
-    loadMap();
-
-    return () => {
-      if (mapInstanceRef.current) {
-        try {
-          mapInstanceRef.current.remove();
-        } catch (e) {
-          console.error("Cleanup error:", e);
-        }
-        mapInstanceRef.current = null;
-      }
-    };
-  }, [userLocation, selectedNeighborhood, selectedCategory, searchQuery]);
-
-  const handleSelectTailor = (tailor) => {
-    setActiveTailor(tailor);
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.setView([tailor.lat, tailor.lng], 14, { animate: true });
-      const targetMarker = markersRef.current.find(m => m.id === tailor.id);
-      if (targetMarker) {
-        targetMarker.marker.openPopup();
-      }
-    }
   };
 
   const handleBookTailor = (tailor) => {
@@ -425,24 +261,34 @@ export default function VerifiedTailorsShowcase({
     );
   };
 
+  // Construct Google Maps Embed URL
+  const googleMapEmbedUrl = activeTailor
+    ? `https://maps.google.com/maps?q=${activeTailor.lat},${activeTailor.lng}&hl=en&z=15&t=${mapType === 'satellite' ? 'k' : 'm'}&output=embed`
+    : `https://maps.google.com/maps?q=12.9716,77.5946&hl=en&z=13&t=${mapType === 'satellite' ? 'k' : 'm'}&output=embed`;
+
+  // Construct Google Maps Direct App Directions Link
+  const googleMapsDirectionsUrl = activeTailor
+    ? `https://www.google.com/maps/dir/?api=1&destination=${activeTailor.lat},${activeTailor.lng}`
+    : `https://www.google.com/maps/search/?api=1&query=Tailors+Bengaluru`;
+
   return (
     <section id="tailors-near-you" style={{ padding: '5rem 0 4rem 0', position: 'relative' }}>
       <div className="landing-container">
         
-        {/* SECTION HEADER WITH LUXURY PILLS */}
-        <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 2.8rem auto' }}>
+        {/* SECTION HEADER */}
+        <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 2.5rem auto' }}>
           <div style={{ 
             display: 'inline-flex', 
             alignItems: 'center', 
             gap: '8px', 
-            background: 'rgba(247, 37, 133, 0.1)', 
-            border: '1px solid rgba(247, 37, 133, 0.25)', 
-            padding: '6px 16px', 
+            background: 'rgba(247, 37, 133, 0.12)', 
+            border: '1px solid rgba(247, 37, 133, 0.35)', 
+            padding: '7px 18px', 
             borderRadius: '30px', 
             marginBottom: '14px' 
           }}>
             <ShieldCheck size={16} style={{ color: '#F72585' }} />
-            <span style={{ fontSize: '12px', fontWeight: 700, color: '#F72585', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#ffffff', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
               100% Vetted & Verified Boutique Network
             </span>
           </div>
@@ -451,49 +297,49 @@ export default function VerifiedTailorsShowcase({
             fontSize: 'clamp(2rem, 4vw, 2.8rem)', 
             fontWeight: 800, 
             letterSpacing: '-0.02em', 
-            color: 'var(--text-primary)', 
+            color: '#ffffff', 
             lineHeight: 1.15, 
             margin: '0 0 12px 0' 
           }}>
             Verified Tailors & Master Ateliers Near You
           </h2>
 
-          <p style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: '15px', color: '#ffffff', opacity: 0.9, lineHeight: 1.6, margin: 0 }}>
             Connect with certified master craftsmen, luxury bridal ateliers, and bespoke suit makers offering 
-            <strong> doorstep measurement trials</strong> and <strong>100% perfect fit guarantees</strong>.
+            <strong style={{ color: '#F72585' }}> doorstep measurement trials</strong> and <strong style={{ color: '#10B981' }}>100% perfect fit guarantees</strong>.
           </p>
         </div>
 
-        {/* SEARCH & LOCALITY FILTER BAR */}
+        {/* SEARCH & LOCALITY FILTER BAR (ALL FILTER TEXT WHITE BY DEFAULT) */}
         <div style={{
-          background: 'var(--card-bg, rgba(255, 255, 255, 0.05))',
+          background: 'rgba(20, 17, 38, 0.85)',
           backdropFilter: 'blur(16px)',
-          border: '1px solid var(--border-color)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           borderRadius: '18px',
-          padding: '16px 20px',
-          boxShadow: '0 10px 35px rgba(0,0,0,0.06)',
+          padding: '18px 22px',
+          boxShadow: '0 12px 35px rgba(0,0,0,0.25)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '14px',
+          gap: '16px',
           marginBottom: '2rem'
         }}>
           {/* Top Row: Search Input + GPS Button */}
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
             <div style={{ position: 'relative', flex: '1 1 280px' }}>
-              <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#ffffff', opacity: 0.7 }} />
               <input 
                 type="text"
-                placeholder="Search tailor by name, outfit type (e.g. Bridal, Suit, Blouse), or landmark..."
+                placeholder="Search by tailor name, outfit (e.g. Bridal, Suit, Blouse), or neighborhood..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '12px 14px 12px 42px',
+                  padding: '13px 14px 13px 42px',
                   borderRadius: '12px',
-                  border: '1px solid var(--border-color)',
-                  background: 'var(--bg-secondary, rgba(255,255,255,0.03))',
-                  color: 'var(--text-primary)',
-                  fontSize: '13px',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  color: '#ffffff',
+                  fontSize: '13.5px',
                   outline: 'none',
                   boxSizing: 'border-box'
                 }}
@@ -501,7 +347,7 @@ export default function VerifiedTailorsShowcase({
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery('')}
-                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#ffffff', cursor: 'pointer' }}
                 >
                   <X size={16} />
                 </button>
@@ -516,92 +362,103 @@ export default function VerifiedTailorsShowcase({
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '12px 20px',
+                padding: '13px 22px',
                 borderRadius: '12px',
-                background: userLocation ? 'rgba(16, 185, 129, 0.12)' : 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)',
+                background: userLocation ? 'rgba(16, 185, 129, 0.2)' : 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)',
                 border: userLocation ? '1px solid #10B981' : 'none',
-                color: userLocation ? '#10B981' : '#ffffff',
+                color: '#ffffff',
                 fontWeight: 700,
-                fontSize: '12.5px',
+                fontSize: '13px',
                 cursor: 'pointer',
-                boxShadow: userLocation ? 'none' : '0 4px 14px rgba(247, 37, 133, 0.35)',
+                boxShadow: userLocation ? 'none' : '0 4px 16px rgba(247, 37, 133, 0.4)',
                 transition: 'all 0.2s ease',
                 flexShrink: 0
               }}
             >
               {isLocating ? (
                 <>
-                  <RefreshCw size={15} className="animate-spin" /> Detecting Location...
+                  <RefreshCw size={16} className="animate-spin" /> Detecting Location...
                 </>
               ) : userLocation ? (
                 <>
-                  <CheckCircle2 size={15} /> GPS Active ({locationName})
+                  <CheckCircle2 size={16} style={{ color: '#10B981' }} /> GPS Active ({locationName})
                 </>
               ) : (
                 <>
-                  <Navigation size={15} /> Use My Live GPS Location
+                  <Navigation size={16} /> Use My Live GPS Location
                 </>
               )}
             </button>
           </div>
 
-          {/* Bottom Row: Neighborhood Pills & Specialty Categories */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+          {/* Bottom Row: Neighborhood Pills & Specialty Categories (PURE WHITE TEXT) */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '14px' }}>
             
-            {/* Neighborhood Pills */}
-            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', marginRight: '4px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Area:
+            {/* Neighborhood Filter Pills */}
+            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%', WebkitOverflowScrolling: 'touch', alignItems: 'center' }}>
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', marginRight: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                📍 Locality:
               </span>
-              {NEIGHBORHOODS.map(hood => (
-                <button
-                  key={hood}
-                  onClick={() => setSelectedNeighborhood(hood)}
-                  style={{
-                    padding: '6px 14px',
-                    borderRadius: '20px',
-                    fontSize: '11.5px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    border: selectedNeighborhood === hood ? '1px solid #F72585' : '1px solid var(--border-color)',
-                    background: selectedNeighborhood === hood ? '#F72585' : 'transparent',
-                    color: selectedNeighborhood === hood ? '#ffffff' : 'var(--text-secondary)',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  {hood}
-                </button>
-              ))}
+              {NEIGHBORHOODS.map(hood => {
+                const isSelected = selectedNeighborhood === hood;
+                return (
+                  <button
+                    key={hood}
+                    onClick={() => setSelectedNeighborhood(hood)}
+                    style={{
+                      padding: '7px 16px',
+                      borderRadius: '24px',
+                      fontSize: '12px',
+                      fontWeight: isSelected ? 800 : 600,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      border: isSelected ? '1px solid #F72585' : '1px solid rgba(255, 255, 255, 0.22)',
+                      background: isSelected ? '#F72585' : 'rgba(255, 255, 255, 0.08)',
+                      color: '#ffffff',
+                      boxShadow: isSelected ? '0 4px 14px rgba(247, 37, 133, 0.4)' : 'none',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {hood}
+                  </button>
+                );
+              })}
             </div>
 
-            {/* Specialty Filters */}
-            <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px' }}>
-              {SPECIALTY_CATEGORIES.map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '8px',
-                    fontSize: '11.5px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    border: selectedCategory === cat.id ? '1px solid #7209B7' : '1px solid var(--border-color)',
-                    background: selectedCategory === cat.id ? 'rgba(114, 9, 183, 0.15)' : 'transparent',
-                    color: selectedCategory === cat.id ? '#F72585' : 'var(--text-muted)',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  {cat.label}
-                </button>
-              ))}
+            {/* Specialty Category Pills */}
+            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', alignItems: 'center' }}>
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', marginRight: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                ✂️ Category:
+              </span>
+              {SPECIALTY_CATEGORIES.map(cat => {
+                const isSelected = selectedCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    style={{
+                      padding: '7px 14px',
+                      borderRadius: '10px',
+                      fontSize: '12px',
+                      fontWeight: isSelected ? 800 : 600,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      border: isSelected ? 'none' : '1px solid rgba(255, 255, 255, 0.22)',
+                      background: isSelected ? 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)' : 'rgba(255, 255, 255, 0.08)',
+                      color: '#ffffff',
+                      boxShadow: isSelected ? '0 4px 14px rgba(114, 9, 183, 0.4)' : 'none',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {cat.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* MAIN SHOWCASE: INTERACTIVE RADAR MAP (LEFT) + PREMIUM ATELIER CARDS (RIGHT) */}
+        {/* MAIN SHOWCASE: GOOGLE MAPS LIVE ATELIER LOCATOR (LEFT) + PREMIUM BOUTIQUE CARDS (RIGHT) */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
@@ -609,114 +466,130 @@ export default function VerifiedTailorsShowcase({
           alignItems: 'stretch'
         }}>
           
-          {/* LEFT: INTERACTIVE LEAFLET STUDIO MAP */}
+          {/* LEFT: LIVE GOOGLE MAPS INTERACTIVE VIEWER */}
           <div style={{
             position: 'relative',
             borderRadius: '20px',
             overflow: 'hidden',
-            border: '1px solid var(--border-color)',
-            boxShadow: '0 16px 40px rgba(0,0,0,0.12)',
-            minHeight: '560px',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 16px 40px rgba(0,0,0,0.3)',
+            minHeight: '580px',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
             background: '#141126'
           }}>
-            {/* Real Map Canvas */}
-            <div ref={mapContainerRef} style={{ width: '100%', height: '100%', minHeight: '560px' }} />
-
-            {/* Floating Top Radar Status Bar */}
+            
+            {/* Top Google Maps Control Header Bar */}
             <div style={{
-              position: 'absolute',
-              top: '16px',
-              left: '16px',
-              right: '16px',
-              zIndex: 1000,
+              padding: '12px 16px',
+              background: '#111827',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              pointerEvents: 'none',
-              gap: '10px'
+              flexWrap: 'wrap',
+              gap: '10px',
+              zIndex: 10
             }}>
-              <div style={{
-                background: 'rgba(17, 24, 39, 0.88)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#ffffff',
-                padding: '8px 16px',
-                borderRadius: '30px',
-                fontSize: '11.5px',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-                pointerEvents: 'auto'
-              }}>
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10B981', display: 'inline-block', boxShadow: '0 0 8px #10B981' }}></span>
-                <span>{filteredTailors.length} Verified Boutiques Active Near You</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#10B981', display: 'inline-block', boxShadow: '0 0 10px #10B981' }}></span>
+                <strong style={{ fontSize: '12.5px', color: '#ffffff', letterSpacing: '0.02em' }}>
+                  Google Maps • {activeTailor?.neighborhood || 'Bengaluru'} Studio
+                </strong>
               </div>
 
-              <button
-                onClick={() => {
-                  if (mapInstanceRef.current) {
-                    mapInstanceRef.current.setView([12.9500, 77.6300], 12);
-                  }
-                }}
-                style={{
-                  background: 'rgba(17, 24, 39, 0.88)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  padding: '8px 12px',
-                  borderRadius: '10px',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  pointerEvents: 'auto',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}
-              >
-                <Layers size={13} /> Reset View
-              </button>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {/* Satellite / Standard Toggle */}
+                <button
+                  onClick={() => setMapType(mapType === 'roadmap' ? 'satellite' : 'roadmap')}
+                  style={{
+                    padding: '5px 10px',
+                    borderRadius: '8px',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    color: '#ffffff',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                  title="Toggle Satellite View"
+                >
+                  <Layers size={12} /> {mapType === 'roadmap' ? 'Satellite' : 'Roadmap'}
+                </button>
+
+                {/* Direct Open in Google Maps */}
+                <a
+                  href={googleMapsDirectionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '5px 12px',
+                    borderRadius: '8px',
+                    background: 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)',
+                    color: '#ffffff',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}
+                >
+                  <Compass size={12} /> Get Directions
+                </a>
+              </div>
             </div>
 
-            {/* Floating Bottom Quick Selected Tailor Preview */}
+            {/* Embedded Live Google Maps Iframe */}
+            <div style={{ width: '100%', flex: 1, minHeight: '440px', position: 'relative' }}>
+              <iframe
+                title="Google Maps Studio Locator"
+                src={googleMapEmbedUrl}
+                width="100%"
+                height="100%"
+                style={{
+                  border: 0,
+                  width: '100%',
+                  height: '100%',
+                  minHeight: '440px',
+                  display: 'block'
+                }}
+                loading="lazy"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Bottom Floating Active Tailor Overlay Banner */}
             {activeTailor && (
               <div style={{
-                position: 'absolute',
-                bottom: '16px',
-                left: '16px',
-                right: '16px',
-                zIndex: 1000,
-                background: 'rgba(17, 24, 39, 0.92)',
-                backdropFilter: 'blur(14px)',
-                border: '1px solid rgba(247, 37, 133, 0.35)',
-                borderRadius: '16px',
+                background: '#111827',
+                borderTop: '1px solid rgba(247, 37, 133, 0.35)',
                 padding: '14px 18px',
-                boxShadow: '0 12px 32px rgba(0,0,0,0.5)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: '14px'
+                gap: '14px',
+                zIndex: 10
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
                   <img 
                     src={activeTailor.image} 
                     alt={activeTailor.name}
-                    style={{ width: '46px', height: '46px', borderRadius: '10px', objectFit: 'cover', border: '1.5px solid #F72585' }} 
+                    style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: '2px solid #F72585' }} 
                   />
                   <div style={{ minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <strong style={{ fontSize: '13px', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <strong style={{ fontSize: '13.5px', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {activeTailor.name}
                       </strong>
-                      <span style={{ fontSize: '10px', color: '#F72585', fontWeight: 700 }}>★ {activeTailor.rating}</span>
+                      <span style={{ fontSize: '11px', color: '#F72585', fontWeight: 800 }}>★ {activeTailor.rating}</span>
                     </div>
-                    <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)', display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {activeTailor.masterTailor} • {activeTailor.calculatedDist}
+                    <span style={{ fontSize: '11.5px', color: '#ffffff', opacity: 0.85, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: '2px' }}>
+                      📍 {activeTailor.address} ({activeTailor.calculatedDist})
                     </span>
                   </div>
                 </div>
@@ -724,7 +597,7 @@ export default function VerifiedTailorsShowcase({
                 <button
                   onClick={() => handleBookTailor(activeTailor)}
                   style={{
-                    padding: '8px 16px',
+                    padding: '9px 18px',
                     borderRadius: '10px',
                     background: 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)',
                     border: 'none',
@@ -733,7 +606,8 @@ export default function VerifiedTailorsShowcase({
                     fontWeight: 700,
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
-                    flexShrink: 0
+                    flexShrink: 0,
+                    boxShadow: '0 4px 14px rgba(247, 37, 133, 0.4)'
                   }}
                 >
                   Book Doorstep Trial
@@ -742,7 +616,7 @@ export default function VerifiedTailorsShowcase({
             )}
           </div>
 
-          {/* RIGHT: SCROLLABLE CURATED ATELIER CARDS */}
+          {/* RIGHT: CURATED ATELIER CARDS LIST */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -755,16 +629,16 @@ export default function VerifiedTailorsShowcase({
               <div style={{
                 padding: '48px 24px',
                 textAlign: 'center',
-                background: 'var(--card-bg, rgba(255,255,255,0.04))',
+                background: 'rgba(255,255,255,0.04)',
                 borderRadius: '18px',
-                border: '1px dashed var(--border-color)'
+                border: '1px dashed rgba(255,255,255,0.2)'
               }}>
-                <Scissors size={36} style={{ color: '#F72585', margin: '0 auto 12px auto', opacity: 0.6 }} />
-                <h4 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px 0' }}>No Tailor Studios Found</h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 16px 0' }}>Try switching neighborhoods or searching for general categories like "Bridal", "Suits", or "Blouses".</p>
+                <Scissors size={36} style={{ color: '#F72585', margin: '0 auto 12px auto', opacity: 0.7 }} />
+                <h4 style={{ fontSize: '16px', fontWeight: 700, color: '#ffffff', margin: '0 0 6px 0' }}>No Tailor Studios Found</h4>
+                <p style={{ fontSize: '13px', color: '#ffffff', opacity: 0.8, margin: '0 0 16px 0' }}>Try clearing your search query or selecting "All Localities".</p>
                 <button
                   onClick={() => { setSelectedNeighborhood("All Localities"); setSelectedCategory("all"); setSearchQuery(""); }}
-                  style={{ padding: '8px 18px', borderRadius: '10px', background: '#F72585', color: '#fff', border: 'none', fontWeight: 600, fontSize: '12px', cursor: 'pointer' }}
+                  style={{ padding: '8px 18px', borderRadius: '10px', background: '#F72585', color: '#ffffff', border: 'none', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}
                 >
                   Clear All Filters
                 </button>
@@ -777,21 +651,21 @@ export default function VerifiedTailorsShowcase({
                 return (
                   <div
                     key={tailor.id}
-                    onClick={() => handleSelectTailor(tailor)}
+                    onClick={() => setActiveTailor(tailor)}
                     style={{
                       background: isSelected 
-                        ? 'var(--selected-card-bg, rgba(247, 37, 133, 0.06))' 
-                        : 'var(--card-bg, rgba(255, 255, 255, 0.04))',
+                        ? 'rgba(247, 37, 133, 0.12)' 
+                        : 'rgba(20, 17, 38, 0.85)',
                       border: isSelected 
-                        ? '1.5px solid #F72585' 
-                        : '1px solid var(--border-color)',
+                        ? '2px solid #F72585' 
+                        : '1px solid rgba(255, 255, 255, 0.15)',
                       borderRadius: '18px',
                       padding: '18px',
                       cursor: 'pointer',
                       transition: 'all 0.25s ease',
                       boxShadow: isSelected 
-                        ? '0 10px 30px rgba(247, 37, 133, 0.15)' 
-                        : '0 4px 16px rgba(0,0,0,0.03)',
+                        ? '0 12px 32px rgba(247, 37, 133, 0.25)' 
+                        : '0 4px 16px rgba(0,0,0,0.2)',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '14px',
@@ -809,7 +683,7 @@ export default function VerifiedTailorsShowcase({
                             height: '84px',
                             borderRadius: '14px',
                             objectFit: 'cover',
-                            border: '1px solid var(--border-color)'
+                            border: '1.5px solid rgba(255, 255, 255, 0.2)'
                           }} 
                         />
                         <span style={{
@@ -824,7 +698,7 @@ export default function VerifiedTailorsShowcase({
                           padding: '2px 6px',
                           borderRadius: '10px',
                           whiteSpace: 'nowrap',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.3)'
                         }}>
                           VERIFIED
                         </span>
@@ -834,15 +708,15 @@ export default function VerifiedTailorsShowcase({
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
                           <div>
                             <h3 style={{ 
-                              fontSize: '15px', 
+                              fontSize: '15.5px', 
                               fontWeight: 800, 
-                              color: 'var(--text-primary)', 
+                              color: '#ffffff', 
                               margin: '0 0 2px 0',
                               lineHeight: 1.3
                             }}>
                               {tailor.name}
                             </h3>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#F72585', fontWeight: 600 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#F72585', fontWeight: 700 }}>
                               <Award size={13} />
                               <span>{tailor.masterTailor} • {tailor.experience}</span>
                             </div>
@@ -854,19 +728,21 @@ export default function VerifiedTailorsShowcase({
                             style={{
                               background: 'transparent',
                               border: 'none',
-                              color: isSaved ? '#F72585' : 'var(--text-muted)',
+                              color: isSaved ? '#F72585' : '#ffffff',
+                              opacity: isSaved ? 1 : 0.6,
                               cursor: 'pointer',
                               padding: '2px'
                             }}
-                            title="Save tailor"
+                            title="Save atelier"
                           >
                             <Heart size={18} fill={isSaved ? '#F72585' : 'none'} />
                           </button>
                         </div>
 
                         <p style={{ 
-                          fontSize: '12px', 
-                          color: 'var(--text-secondary)', 
+                          fontSize: '12.5px', 
+                          color: '#ffffff', 
+                          opacity: 0.85, 
                           margin: '6px 0 0 0',
                           lineHeight: 1.4
                         }}>
@@ -880,33 +756,33 @@ export default function VerifiedTailorsShowcase({
                       display: 'grid', 
                       gridTemplateColumns: 'repeat(3, 1fr)', 
                       gap: '8px', 
-                      background: 'var(--bg-secondary, rgba(255, 255, 255, 0.02))', 
+                      background: 'rgba(255, 255, 255, 0.05)', 
                       padding: '10px 12px', 
                       borderRadius: '12px', 
-                      border: '1px solid var(--border-color)',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
                       fontSize: '11px',
                       textAlign: 'center'
                     }}>
                       <div>
-                        <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: '9.5px', textTransform: 'uppercase', fontWeight: 600 }}>Distance</span>
-                        <strong style={{ color: '#F72585', fontSize: '12px' }}>📍 {tailor.calculatedDist}</strong>
+                        <span style={{ display: 'block', color: '#ffffff', opacity: 0.7, fontSize: '9.5px', textTransform: 'uppercase', fontWeight: 700 }}>Distance</span>
+                        <strong style={{ color: '#F72585', fontSize: '12.5px' }}>📍 {tailor.calculatedDist}</strong>
                       </div>
-                      <div style={{ borderLeft: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)' }}>
-                        <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: '9.5px', textTransform: 'uppercase', fontWeight: 600 }}>Rating</span>
-                        <strong style={{ color: '#F59E0B', fontSize: '12px' }}>★ {tailor.rating} ({tailor.reviewsCount})</strong>
+                      <div style={{ borderLeft: '1px solid rgba(255, 255, 255, 0.12)', borderRight: '1px solid rgba(255, 255, 255, 0.12)' }}>
+                        <span style={{ display: 'block', color: '#ffffff', opacity: 0.7, fontSize: '9.5px', textTransform: 'uppercase', fontWeight: 700 }}>Rating</span>
+                        <strong style={{ color: '#F59E0B', fontSize: '12.5px' }}>★ {tailor.rating} ({tailor.reviewsCount})</strong>
                       </div>
                       <div>
-                        <span style={{ display: 'block', color: 'var(--text-muted)', fontSize: '9.5px', textTransform: 'uppercase', fontWeight: 600 }}>Completed</span>
-                        <strong style={{ color: '#10B981', fontSize: '12px' }}>{tailor.orders}+ orders</strong>
+                        <span style={{ display: 'block', color: '#ffffff', opacity: 0.7, fontSize: '9.5px', textTransform: 'uppercase', fontWeight: 700 }}>Completed</span>
+                        <strong style={{ color: '#10B981', fontSize: '12.5px' }}>{tailor.orders}+ orders</strong>
                       </div>
                     </div>
 
                     {/* Turnaround & Availability Pill */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', flexWrap: 'wrap', gap: '6px' }}>
-                      <span style={{ color: '#10B981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11.5px', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{ color: '#10B981', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {tailor.availability}
                       </span>
-                      <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>
+                      <span style={{ color: '#ffffff', opacity: 0.85, fontWeight: 600 }}>
                         {tailor.turnaround}
                       </span>
                     </div>
@@ -917,13 +793,13 @@ export default function VerifiedTailorsShowcase({
                         <span 
                           key={tIdx} 
                           style={{
-                            fontSize: '10px',
+                            fontSize: '10.5px',
                             fontWeight: 600,
                             padding: '3px 8px',
                             borderRadius: '6px',
-                            background: 'var(--tag-bg, rgba(255, 255, 255, 0.05))',
-                            color: 'var(--text-secondary)',
-                            border: '1px solid var(--border-color)'
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            color: '#ffffff',
+                            border: '1px solid rgba(255, 255, 255, 0.14)'
                           }}
                         >
                           #{tag}
@@ -932,7 +808,7 @@ export default function VerifiedTailorsShowcase({
                     </div>
 
                     {/* Action CTA Buttons */}
-                    <div style={{ display: 'flex', gap: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+                    <div style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.12)', paddingTop: '12px' }}>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -942,11 +818,11 @@ export default function VerifiedTailorsShowcase({
                           flex: 1,
                           padding: '9px 12px',
                           borderRadius: '10px',
-                          background: 'transparent',
-                          border: '1px solid var(--border-color)',
-                          color: 'var(--text-primary)',
+                          background: 'rgba(255, 255, 255, 0.08)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: '#ffffff',
                           fontSize: '11.5px',
-                          fontWeight: 600,
+                          fontWeight: 700,
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
@@ -971,13 +847,13 @@ export default function VerifiedTailorsShowcase({
                           border: 'none',
                           color: '#ffffff',
                           fontSize: '11.5px',
-                          fontWeight: 700,
+                          fontWeight: 800,
                           cursor: 'pointer',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           gap: '6px',
-                          boxShadow: '0 4px 12px rgba(247, 37, 133, 0.25)'
+                          boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)'
                         }}
                       >
                         <Scissors size={13} /> Book Doorstep Trial
@@ -996,38 +872,38 @@ export default function VerifiedTailorsShowcase({
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
           gap: '20px',
-          background: 'var(--card-bg, rgba(255, 255, 255, 0.03))',
-          border: '1px solid var(--border-color)',
+          background: 'rgba(20, 17, 38, 0.85)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           borderRadius: '18px',
           padding: '24px 28px'
         }}>
           <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(247, 37, 133, 0.1)', color: '#F72585', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(247, 37, 133, 0.15)', color: '#F72585', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <ShieldCheck size={22} />
             </div>
             <div>
-              <strong style={{ fontSize: '13.5px', color: 'var(--text-primary)', display: 'block' }}>Doorstep Measurement Trials</strong>
-              <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Master fashion consultants visit your home</span>
+              <strong style={{ fontSize: '13.5px', color: '#ffffff', display: 'block' }}>Doorstep Measurement Trials</strong>
+              <span style={{ fontSize: '11.5px', color: '#ffffff', opacity: 0.8 }}>Master fashion consultants visit your home</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(114, 9, 183, 0.1)', color: '#7209B7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(114, 9, 183, 0.15)', color: '#7209B7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Scissors size={22} />
             </div>
             <div>
-              <strong style={{ fontSize: '13.5px', color: 'var(--text-primary)', display: 'block' }}>100% Perfect Fit Guarantee</strong>
-              <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Free unlimited adjustments until it fits like a glove</span>
+              <strong style={{ fontSize: '13.5px', color: '#ffffff', display: 'block' }}>100% Perfect Fit Guarantee</strong>
+              <span style={{ fontSize: '11.5px', color: '#ffffff', opacity: 0.8 }}>Free unlimited adjustments until it fits like a glove</span>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.1)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.15)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Clock size={22} />
             </div>
             <div>
-              <strong style={{ fontSize: '13.5px', color: 'var(--text-primary)', display: 'block' }}>Fast Turnaround & Insured</strong>
-              <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>Express 24h & 48h delivery in garment bags</span>
+              <strong style={{ fontSize: '13.5px', color: '#ffffff', display: 'block' }}>Fast Turnaround & Insured</strong>
+              <span style={{ fontSize: '11.5px', color: '#ffffff', opacity: 0.8 }}>Express 24h & 48h delivery in garment bags</span>
             </div>
           </div>
         </div>
@@ -1051,17 +927,17 @@ export default function VerifiedTailorsShowcase({
           padding: '20px'
         }}>
           <div style={{
-            background: 'var(--modal-bg, #141126)',
-            border: '1px solid var(--border-color)',
+            background: '#141126',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
             borderRadius: '24px',
             maxWidth: '640px',
             width: '100%',
             overflow: 'hidden',
-            boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+            boxShadow: '0 25px 60px rgba(0,0,0,0.7)',
             animation: 'fadeIn 0.25s ease'
           }}>
             {/* Modal Header */}
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <span style={{ fontSize: '10.5px', color: '#F72585', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Atelier Creations & Portfolio
@@ -1082,7 +958,7 @@ export default function VerifiedTailorsShowcase({
             <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px', maxHeight: '65vh', overflowY: 'auto' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '14px' }}>
                 {previewPortfolioTailor.portfolio.map((item, pIdx) => (
-                  <div key={pIdx} style={{ borderRadius: '14px', overflow: 'hidden', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.02)' }}>
+                  <div key={pIdx} style={{ borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255, 255, 255, 0.15)', background: 'rgba(255,255,255,0.02)' }}>
                     <img 
                       src={item.img} 
                       alt={item.title} 
@@ -1096,10 +972,10 @@ export default function VerifiedTailorsShowcase({
                 ))}
               </div>
 
-              <div style={{ background: 'rgba(247, 37, 133, 0.08)', padding: '14px', borderRadius: '12px', border: '1px solid rgba(247, 37, 133, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ background: 'rgba(247, 37, 133, 0.12)', padding: '14px 16px', borderRadius: '12px', border: '1px solid rgba(247, 37, 133, 0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
                 <div>
-                  <strong style={{ fontSize: '12px', color: '#fff', display: 'block' }}>Ready to customize your design?</strong>
-                  <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.7)' }}>Book a home visit or studio trial with {previewPortfolioTailor.masterTailor}</span>
+                  <strong style={{ fontSize: '12.5px', color: '#ffffff', display: 'block' }}>Ready to customize your design?</strong>
+                  <span style={{ fontSize: '11px', color: '#ffffff', opacity: 0.8 }}>Book a home visit or studio trial with {previewPortfolioTailor.masterTailor}</span>
                 </div>
                 <button
                   onClick={() => {
@@ -1108,11 +984,11 @@ export default function VerifiedTailorsShowcase({
                     handleBookTailor(t);
                   }}
                   style={{
-                    padding: '8px 16px',
+                    padding: '9px 18px',
                     borderRadius: '8px',
                     background: '#F72585',
                     border: 'none',
-                    color: '#fff',
+                    color: '#ffffff',
                     fontSize: '12px',
                     fontWeight: 700,
                     cursor: 'pointer',
