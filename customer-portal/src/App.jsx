@@ -1666,6 +1666,7 @@ export default function App() {
               currentUser={currentUser}
               setRole={setRole}
               setCustomerHub={setCustomerHub}
+              theme={theme}
             />
           </div>
 
