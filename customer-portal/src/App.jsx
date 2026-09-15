@@ -8,6 +8,7 @@ import AboutView from './components/AboutView';
 import BlogsView from './components/BlogsView';
 import DressCustomizer360 from './components/DressCustomizer360';
 import FabricMarketplace from './components/FabricMarketplace';
+import VerifiedTailorsShowcase from './components/VerifiedTailorsShowcase';
 
 export default function App() {
   const [role, setRole] = useState('landing'); // 'landing' | 'customer' | 'tailor' | 'student' | 'admin'
@@ -1658,131 +1659,15 @@ export default function App() {
             />
           </div>
 
-          {/* Fold 6: Tailors Near You */}
-          <section id="tailors-near-you" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Verified Tailors Near You</h2>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Locate verified boutique partners offering doorstep measurement trials</p>
-              </div>
-
-              {locationStatus === 'prompt' && (
-                <div className="glass-card-no-hover" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px', padding: '40px', alignItems: 'center' }}>
-                  <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '12px', height: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px dashed var(--border-color)', gap: '16px', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', width: '100%', height: '100%', opacity: 0.15, background: 'radial-gradient(circle, rgba(247,37,133,0.5) 10%, transparent 10.5%), radial-gradient(circle, rgba(255,255,255,0.2) 20%, transparent 20.5%)', backgroundSize: '20px 20px' }}></div>
-                    <MapPin size={56} style={{ color: 'var(--primary)', zIndex: 1, animation: 'pulse-glow 1.5s infinite' }} />
-                    <div style={{ zIndex: 1, color: '#fff', fontSize: '0.8rem', opacity: 0.6 }}>Map Preview Overlay</div>
-                  </div>
-                  <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <span className="badge badge-primary" style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>GPS GEOLOCATION SEARCH</span>
-                    <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#fff' }}>Find Boutiques in Your Neighborhood</h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                      StitchBee requests browser GPS location access to find and rank local sewing partners. Allowing access enables real-time geodesic calculations (in KM) and maps precise doorstep pickup route trials.
-                    </p>
-                    <button 
-                      onClick={handleFindTailors} 
-                      className="btn btn-primary" 
-                      style={{ padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '8px', width: 'fit-content' }}
-                    >
-                      <MapPin size={16} /> Allow Location Access & Search
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {locationStatus === 'fetching' && (
-                <div className="glass-card-no-hover" style={{ padding: '60px 40px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '20px' }}>
-                  <RefreshCw size={40} className="animate-spin" style={{ color: 'var(--primary)' }} />
-                  <div>
-                    <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff' }}>Querying GPS Coordinates...</h4>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '6px' }}>Please allow browser location permissions if prompted. Fetching nearest tailoring studios...</p>
-                  </div>
-                </div>
-              )}
-
-              {(locationStatus === 'success' || locationStatus === 'denied') && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', alignItems: 'start' }}>
-                  
-                  {/* Left Column: Map Preview */}
-                  <div className="reveal-left" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', boxShadow: '0 8px 30px rgba(0,0,0,0.5)', height: '420px' }}>
-                    <div 
-                      ref={mapContainerRef} 
-                      style={{ width: '100%', height: '100%' }} 
-                    />
-                    
-                    {/* Custom Map Top Status Banner */}
-                    <div style={{ position: 'absolute', top: '10px', left: '10px', right: '10px', zIndex: 1000, pointerEvents: 'none' }}>
-                      {locationStatus === 'success' ? (
-                        <div style={{ background: 'rgba(16,185,129,0.95)', color: '#fff', fontSize: '0.75rem', fontWeight: 'bold', padding: '6px 12px', borderRadius: '6px', backdropFilter: 'blur(4px)', display: 'inline-flex', alignItems: 'center', gap: '6px', pointerEvents: 'auto' }}>
-                          <Check size={12} /> Map showing tailors near your GPS coordinates
-                        </div>
-                      ) : (
-                        <div style={{ background: 'rgba(239,68,68,0.95)', color: '#fff', fontSize: '0.75rem', fontWeight: 'bold', padding: '6px 12px', borderRadius: '6px', backdropFilter: 'blur(4px)', display: 'inline-flex', alignItems: 'center', gap: '6px', pointerEvents: 'auto' }}>
-                          ⚠️ GPS Denied. Showing default partners in Bengaluru
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Right Column: Tailors List */}
-                  <div className="reveal-right" style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '6px' }}>
-                    <div style={{ textAlign: 'left', marginBottom: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>
-                        📍 {locationStatus === 'success' ? 'Your Neighborhood' : 'Bengaluru Area'}
-                      </span>
-                      <span className="badge" style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,0.06)' }}>
-                        {nearbyTailors.length} Studios Found
-                      </span>
-                    </div>
-
-                    {nearbyTailors.map((tailor) => (
-                      <div 
-                        key={tailor.id} 
-                        className="glass-card-no-hover" 
-                        style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left', border: '1px solid rgba(255,255,255,0.06)', transition: 'border 0.3s' }}
-                      >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
-                          <div>
-                            <h4 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#fff' }}>{tailor.name}</h4>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{tailor.specialty}</span>
-                          </div>
-                          <span style={{ background: 'rgba(251,191,36,0.12)', color: '#fbbf24', fontSize: '0.72rem', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-                            <Star size={10} fill="#fbbf24" /> {tailor.rating}
-                          </span>
-                        </div>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', fontSize: '0.75rem', color: 'var(--text-secondary)', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '10px' }}>
-                          <div>Distance: <strong style={{ color: 'var(--accent)' }}>{tailor.dist}</strong></div>
-                          <div>•</div>
-                          <div>Avail: <strong style={{ color: tailor.availability.includes('🟢') ? '#10b981' : '#f59e0b' }}>{tailor.availability.replace('🟢 ', '').replace('🟡 ', '')}</strong></div>
-                          <div>•</div>
-                          <div>Orders: <strong>{tailor.orders}</strong></div>
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
-                          <button 
-                            className="btn btn-secondary" 
-                            style={{ flexGrow: 1, padding: '6px 12px', fontSize: '0.75rem', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)' }}
-                            onClick={() => handleViewOnMap(tailor)}
-                          >
-                            View on Map
-                          </button>
-                          <button 
-                            className="btn btn-primary" 
-                            style={{ flexGrow: 1, padding: '6px 12px', fontSize: '0.75rem' }}
-                            onClick={() => handleBookTailor(tailor.name)}
-                          >
-                            Book Now
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                </div>
-              )}
-            </div>
-          </section>
+          {/* Fold 6: Verified Tailors Showcase */}
+          <div className="reveal">
+            <VerifiedTailorsShowcase 
+              openAuthModal={openAuthModal}
+              currentUser={currentUser}
+              setRole={setRole}
+              setCustomerHub={setCustomerHub}
+            />
+          </div>
 
           {/* Fold 7: Why Choose StitchBee */}
           <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
