@@ -198,70 +198,46 @@ export default function VerifiedTailorsShowcase({
     return (R * c).toFixed(1);
   };
 
-  // Handle GPS / IP live location detection with multi-tier fallback
-  const handleGetLiveLocation = async () => {
-    setIsLocating(true);
-    
-    const applyLocation = (lat, lng, name) => {
-      const loc = { lat, lng };
-      setUserLocation(loc);
-      setLocationName(name || "Bengaluru Area");
-      setIsLocating(false);
-
-      // Auto sort curated studios by proximity
-      const sorted = [...CURATED_TAILORS].map(t => {
-        const d = calculateDistance(lat, lng, t.lat, t.lng);
-        return { ...t, calculatedDist: `${d} km`, distVal: parseFloat(d) };
-      }).sort((a, b) => a.distVal - b.distVal);
-
-      if (sorted.length > 0) {
-        setActiveTailor(sorted[0]);
-      }
-    };
-
-    const tryIpGeolocation = async () => {
-      try {
-        const res = await fetch('https://ipwho.is/');
-        const data = await res.json();
-        if (data && data.success && data.latitude && data.longitude) {
-          applyLocation(data.latitude, data.longitude, data.city || data.region || "Bengaluru");
-          return true;
-        }
-      } catch (err) {
-        console.warn("IP geo error 1:", err);
-      }
-
-      try {
-        const res2 = await fetch('https://ipapi.co/json/');
-        const data2 = await res2.json();
-        if (data2 && data2.latitude && data2.longitude) {
-          applyLocation(data2.latitude, data2.longitude, data2.city || data2.region || "Bengaluru");
-          return true;
-        }
-      } catch (err2) {
-        console.warn("IP geo error 2:", err2);
-      }
-
-      // Default fallback coordinates (Koramangala/Bangalore Central)
-      applyLocation(12.9352, 77.6245, "Bengaluru (Koramangala)");
-      return false;
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          applyLocation(latitude, longitude, "Live GPS Position");
-        },
-        async (err) => {
-          console.warn("Browser GPS unavailable, switching to IP Geolocation:", err.message);
-          await tryIpGeolocation();
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 10000 }
-      );
-    } else {
-      await tryIpGeolocation();
+  // Handle GPS location request (triggers browser native permission prompt)
+  const handleGetLiveLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
     }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setUserLocation({ lat, lng });
+        setLocationName("Your Current Location");
+        setIsLocating(false);
+
+        // Sort tailors based on real distance to user's live coordinates
+        const sorted = [...CURATED_TAILORS].map(t => {
+          const d = calculateDistance(lat, lng, t.lat, t.lng);
+          return { ...t, calculatedDist: `${d} km`, distVal: parseFloat(d) };
+        }).sort((a, b) => a.distVal - b.distVal);
+
+        if (sorted.length > 0) {
+          setActiveTailor(sorted[0]);
+        }
+      },
+      (error) => {
+        console.warn("GPS error:", error);
+        setIsLocating(false);
+        if (error.code === 1) {
+          alert("📍 Location permission was denied. Please allow location access in your browser settings to detect nearby tailors.");
+        } else if (error.code === 2) {
+          alert("📍 Location position is unavailable. Showing top curated studios in Bengaluru.");
+        } else if (error.code === 3) {
+          alert("📍 Location request timed out. Please try again.");
+        } else {
+          alert("📍 Unable to detect location. Showing curated studios in Bengaluru.");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
   };
 
   // Filter tailors based on search, neighborhood, category
@@ -322,7 +298,7 @@ export default function VerifiedTailorsShowcase({
     ? `https://www.google.com/maps/dir/?api=1&destination=${activeTailor.lat},${activeTailor.lng}`
     : `https://www.google.com/maps/search/?api=1&query=Tailors+Bengaluru`;
 
-  // Dynamic Theme Palette Values
+  // Dynamic Theme Palette Values (Clean premium theming without harsh solid black buttons)
   const colors = {
     sectionTitle: isLight ? '#0f172a' : '#ffffff',
     sectionSubtitle: isLight ? '#475569' : 'rgba(255, 255, 255, 0.85)',
@@ -334,9 +310,9 @@ export default function VerifiedTailorsShowcase({
     searchText: isLight ? '#0f172a' : '#ffffff',
     searchPlaceholder: isLight ? '#64748b' : 'rgba(255, 255, 255, 0.6)',
     filterLabel: isLight ? '#0f172a' : '#ffffff',
-    pillUnselectedBg: '#1e293b',
-    pillUnselectedBorder: '#334155',
-    pillUnselectedText: '#ffffff',
+    pillUnselectedBg: isLight ? '#f1f5f9' : 'rgba(255, 255, 255, 0.08)',
+    pillUnselectedBorder: isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.2)',
+    pillUnselectedText: isLight ? '#334155' : '#ffffff',
     tailorCardBg: isLight ? '#ffffff' : 'rgba(20, 17, 38, 0.92)',
     tailorCardSelectedBg: isLight ? '#fff5f8' : 'rgba(247, 37, 133, 0.12)',
     tailorCardBorder: isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.15)',
@@ -350,15 +326,15 @@ export default function VerifiedTailorsShowcase({
     tagBg: isLight ? '#f1f5f9' : 'rgba(255, 255, 255, 0.08)',
     tagBorder: isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.14)',
     tagText: isLight ? '#475569' : '#ffffff',
-    secondaryBtnBg: '#1e293b',
-    secondaryBtnBorder: '#334155',
-    secondaryBtnText: '#ffffff',
+    secondaryBtnBg: isLight ? '#ffffff' : 'rgba(255, 255, 255, 0.08)',
+    secondaryBtnBorder: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.2)',
+    secondaryBtnText: isLight ? '#1e293b' : '#ffffff',
     mapHeaderBg: isLight ? '#ffffff' : '#111827',
     mapHeaderBorder: isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.1)',
     mapHeaderText: isLight ? '#0f172a' : '#ffffff',
-    mapToggleBg: '#1e293b',
-    mapToggleBorder: '#334155',
-    mapToggleText: '#ffffff',
+    mapToggleBg: isLight ? '#f1f5f9' : 'rgba(255, 255, 255, 0.1)',
+    mapToggleBorder: isLight ? '#cbd5e1' : 'rgba(255, 255, 255, 0.2)',
+    mapToggleText: isLight ? '#334155' : '#ffffff',
     mapBottomBannerBg: isLight ? '#ffffff' : '#111827',
     trustCardBg: isLight ? '#ffffff' : 'rgba(20, 17, 38, 0.85)',
     trustCardBorder: isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.15)',
@@ -514,12 +490,12 @@ export default function VerifiedTailorsShowcase({
                       whiteSpace: 'nowrap',
                       border: isSelected ? '1px solid #F72585' : `1px solid ${colors.pillUnselectedBorder}`,
                       background: isSelected ? 'linear-gradient(135deg, #F72585 0%, #D81159 100%)' : colors.pillUnselectedBg,
-                      color: '#ffffff',
+                      color: isSelected ? '#ffffff' : colors.pillUnselectedText,
                       boxShadow: isSelected ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    <span style={{ color: '#ffffff' }}>{hood}</span>
+                    <span style={{ color: isSelected ? '#ffffff' : colors.pillUnselectedText }}>{hood}</span>
                   </button>
                 );
               })}
@@ -545,12 +521,12 @@ export default function VerifiedTailorsShowcase({
                       whiteSpace: 'nowrap',
                       border: isSelected ? 'none' : `1px solid ${colors.pillUnselectedBorder}`,
                       background: isSelected ? 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)' : colors.pillUnselectedBg,
-                      color: '#ffffff',
+                      color: isSelected ? '#ffffff' : colors.pillUnselectedText,
                       boxShadow: isSelected ? '0 4px 14px rgba(114, 9, 183, 0.35)' : 'none',
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    <span style={{ color: '#ffffff' }}>{cat.label}</span>
+                    <span style={{ color: isSelected ? '#ffffff' : colors.pillUnselectedText }}>{cat.label}</span>
                   </button>
                 );
               })}
@@ -606,9 +582,9 @@ export default function VerifiedTailorsShowcase({
                   style={{
                     padding: '6px 12px',
                     borderRadius: '8px',
-                    background: '#1e293b',
-                    border: '1px solid #334155',
-                    color: '#ffffff',
+                    background: colors.mapToggleBg,
+                    border: `1px solid ${colors.mapToggleBorder}`,
+                    color: colors.mapToggleText,
                     fontSize: '11.5px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -618,8 +594,8 @@ export default function VerifiedTailorsShowcase({
                   }}
                   title="Toggle Satellite View"
                 >
-                  <Layers size={13} style={{ color: '#ffffff' }} />
-                  <span style={{ color: '#ffffff' }}>{mapType === 'roadmap' ? 'Satellite' : 'Roadmap'}</span>
+                  <Layers size={13} style={{ color: colors.mapToggleText }} />
+                  <span style={{ color: colors.mapToggleText }}>{mapType === 'roadmap' ? 'Satellite' : 'Roadmap'}</span>
                 </button>
 
                 {/* Direct Open in Google Maps */}
@@ -918,9 +894,9 @@ export default function VerifiedTailorsShowcase({
                           flex: 1,
                           padding: '9px 12px',
                           borderRadius: '10px',
-                          background: '#1e293b',
-                          border: '1px solid #334155',
-                          color: '#ffffff',
+                          background: colors.secondaryBtnBg,
+                          border: `1px solid ${colors.secondaryBtnBorder}`,
+                          color: colors.secondaryBtnText,
                           fontSize: '11.5px',
                           fontWeight: 700,
                           cursor: 'pointer',
@@ -931,8 +907,8 @@ export default function VerifiedTailorsShowcase({
                           transition: 'all 0.2s ease'
                         }}
                       >
-                        <Eye size={13} style={{ color: '#ffffff' }} />
-                        <span style={{ color: '#ffffff' }}>View Creations</span>
+                        <Eye size={13} style={{ color: colors.secondaryBtnText }} />
+                        <span style={{ color: colors.secondaryBtnText }}>View Creations</span>
                       </button>
 
                       <button
