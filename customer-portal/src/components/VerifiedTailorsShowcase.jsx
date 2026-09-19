@@ -2,17 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { 
   MapPin, Star, ShieldCheck, CheckCircle2, Scissors, 
   Clock, Search, Navigation, RefreshCw, Eye, Award, 
-  X, Layers, ExternalLink, Heart, Compass
+  X, Layers, ExternalLink, Heart, Compass, Sparkles, ChevronRight
 } from 'lucide-react';
 
+const SPECIALTY_CATEGORIES = [
+  { id: 'all', label: 'All Specialties', icon: '✨' },
+  { id: 'mens', label: "Men's Bespoke", icon: '👔' },
+  { id: 'womens', label: "Women's Couture", icon: '👗' },
+  { id: 'bridal', label: 'Bridal & Lehengas', icon: '👑' },
+  { id: 'kids', label: 'Kids Wear', icon: '👶' },
+  { id: 'alterations', label: '24h Alterations', icon: '⚡' },
+  { id: 'uniforms', label: 'Uniforms & Bulk', icon: '🏫' },
+  { id: 'bags', label: 'Bags & Leather', icon: '👜' },
+  { id: 'shoes', label: 'Shoes & Slippers', icon: '👞' },
+  { id: 'seats', label: 'Vehicle Seats & Sofas', icon: '🚗' },
+  { id: 'designers', label: 'Custom Design', icon: '✨' },
+  { id: 'gifts', label: 'Hand Made Gifts', icon: '🎁' },
+  { id: 'pets', label: 'Pet Outfits', icon: '🐾' }
+];
+
+const NEIGHBORHOODS = [
+  "All Localities",
+  "Koramangala",
+  "Indiranagar",
+  "Jayanagar",
+  "HSR Layout",
+  "Whitefield",
+  "Malleshwaram",
+  "Commercial Street",
+  "Lavelle Road",
+  "Rajajinagar"
+];
+
 const CURATED_TAILORS = [
+  // BRIDAL
   {
-    id: 't_near_1',
-    name: "Royal Couturiers & Atelier",
+    id: 't_bridal_1',
+    name: "Royal Couturiers & Bridal Atelier",
     masterTailor: "Master Rameshwar Rao",
     experience: "18+ Yrs Master Cutter",
     specialty: "Bespoke Bridal Lehengas & Zardozi Gowns",
     category: "bridal",
+    categoryLabel: "Bridal & Lehengas",
     neighborhood: "Koramangala",
     rating: 4.96,
     reviewsCount: 248,
@@ -35,12 +66,44 @@ const CURATED_TAILORS = [
     ]
   },
   {
-    id: 't_near_2',
+    id: 't_bridal_2',
+    name: "Heritage Silks & Blouse Atelier",
+    masterTailor: "Master Meenakshi Sundaram",
+    experience: "22+ Yrs Silk Specialist",
+    specialty: "Aari Work, Maggam & Designer Silk Blouses",
+    category: "bridal",
+    categoryLabel: "Bridal & Lehengas",
+    neighborhood: "Jayanagar",
+    rating: 4.98,
+    reviewsCount: 312,
+    orders: 620,
+    availability: "🟢 Available Today (Home Visit)",
+    turnaround: "⚡ 24h Express Available",
+    phone: "+91 98451 55667",
+    address: "11th Main, 4th Block, Jayanagar, Bengaluru",
+    priceRange: "₹1,200 – ₹8,500",
+    image: "/womens_tailoring_v2.jpg",
+    avatar: "/stany.jpg",
+    tags: ["Maggam Work", "Aari Embroidery", "Kanjeevaram Blouse", "Princess Cut"],
+    lat: 12.9298,
+    lng: 77.5833,
+    mapQuery: "Jayanagar 4th Block Bengaluru",
+    portfolio: [
+      { img: "/bridal 5.jpg", title: "Bridal Maggam Blouse", price: "₹4,500" },
+      { img: "/bridal2.jpg", title: "Zari Border Pattu Blouse", price: "₹2,800" },
+      { img: "/womensCollection.jpg", title: "Corset Style Crop Top", price: "₹3,200" }
+    ]
+  },
+
+  // MEN'S BESPOKE
+  {
+    id: 't_mens_1',
     name: "Savile Row Bespoke Studio",
     masterTailor: "Master Anthony Rozario",
     experience: "14+ Yrs Bespoke Suiting",
     specialty: "Luxury 3-Piece Suits, Tuxedos & Sherwanis",
-    category: "suits",
+    category: "mens",
+    categoryLabel: "Men's Bespoke",
     neighborhood: "Indiranagar",
     rating: 4.92,
     reviewsCount: 195,
@@ -63,40 +126,135 @@ const CURATED_TAILORS = [
     ]
   },
   {
-    id: 't_near_3',
-    name: "Heritage Silks & Blouse Atelier",
-    masterTailor: "Master Meenakshi Sundaram",
-    experience: "22+ Yrs Silk Specialist",
-    specialty: "Aari Work, Maggam & Designer Silk Blouses",
-    category: "blouses",
-    neighborhood: "Jayanagar",
-    rating: 4.98,
-    reviewsCount: 312,
-    orders: 620,
-    availability: "🟢 Available Today (Home Visit)",
-    turnaround: "⚡ 24h Express Available",
-    phone: "+91 98451 55667",
-    address: "11th Main, 4th Block, Jayanagar, Bengaluru",
-    priceRange: "₹1,200 – ₹8,500",
-    image: "/womens_tailoring_v2.jpg",
-    avatar: "/stany.jpg",
-    tags: ["Maggam Work", "Aari Embroidery", "Kanjeevaram Blouse", "Princess Cut"],
-    lat: 12.9298,
-    lng: 77.5833,
-    mapQuery: "Jayanagar 4th Block Bengaluru",
+    id: 't_mens_2',
+    name: "Lord & Master Gentleman Tailors",
+    masterTailor: "Master Vikram Singhania",
+    experience: "19+ Yrs Master Pattern Cutter",
+    specialty: "Safari Suits, Nehru Jackets & Linen Kurtas",
+    category: "mens",
+    categoryLabel: "Men's Bespoke",
+    neighborhood: "Lavelle Road",
+    rating: 4.94,
+    reviewsCount: 180,
+    orders: 340,
+    availability: "🟢 Doorstep Trial Available Today",
+    turnaround: "⚡ 48h Express",
+    phone: "+91 98450 67890",
+    address: "Lavelle Road, Shanthala Nagar, Bengaluru",
+    priceRange: "₹2,200 – ₹16,000",
+    image: "/mens_tailoring.jpg",
+    avatar: "/kiran.jpg",
+    tags: ["Nehru Jacket", "Linen Kurta", "Formal Trousers", "Blazer"],
+    lat: 12.9702,
+    lng: 77.5960,
+    mapQuery: "Lavelle Road Bengaluru",
     portfolio: [
-      { img: "/bridal 5.jpg", title: "Bridal Maggam Blouse", price: "₹4,500" },
-      { img: "/bridal2.jpg", title: "Zari Border Pattu Blouse", price: "₹2,800" },
-      { img: "/womensCollection.jpg", title: "Corset Style Crop Top", price: "₹3,200" }
+      { img: "/Linen Blend Kurta.png", title: "Pure Linen Kurta Pyjama", price: "₹2,800" },
+      { img: "/Pastel Blue Suit.png", title: "Pastel Blue Summer Blazer", price: "₹6,500" },
+      { img: "/men3.jpg", title: "Tailored Silk Bandhgala", price: "₹9,800" }
+    ]
+  },
+
+  // WOMEN'S COUTURE
+  {
+    id: 't_womens_1',
+    name: "Couture Belle Atelier",
+    masterTailor: "Master Ananya Sharma",
+    experience: "12+ Yrs Couture Designer",
+    specialty: "Designer Anarkalis, Gowns & Indo-Western Sets",
+    category: "womens",
+    categoryLabel: "Women's Couture",
+    neighborhood: "Indiranagar",
+    rating: 4.95,
+    reviewsCount: 210,
+    orders: 410,
+    availability: "🟢 Home Measurement Slot Available",
+    turnaround: "⚡ 2-Day Express",
+    phone: "+91 98454 11223",
+    address: "12th Main, Indiranagar, Bengaluru",
+    priceRange: "₹1,800 – ₹15,000",
+    image: "/womensCollection.jpg",
+    avatar: "/stany.jpg",
+    tags: ["Anarkali", "Indo-Western", "Cocktail Gown", "Sharara"],
+    lat: 12.9745,
+    lng: 77.6432,
+    mapQuery: "12th Main Indiranagar Bengaluru",
+    portfolio: [
+      { img: "/bridal3.jpg", title: "Floor-Length Silk Anarkali", price: "₹6,800" },
+      { img: "/womens_tailoring_v2.jpg", title: "Peplum Top & Flared Pants", price: "₹4,200" },
+      { img: "/bridal 5.jpg", title: "Embroidered Party Gown", price: "₹9,500" }
     ]
   },
   {
-    id: 't_near_4',
+    id: 't_womens_2',
+    name: "Luxe Thread & Co.",
+    masterTailor: "Master Farooq Siddiqui",
+    experience: "16+ Yrs Indo-Western Specialist",
+    specialty: "Indo-Western Fusion, Shararas & Kurta Sets",
+    category: "womens",
+    categoryLabel: "Women's Couture",
+    neighborhood: "Whitefield",
+    rating: 4.91,
+    reviewsCount: 165,
+    orders: 290,
+    availability: "🟢 Doorstep Trial Available Today",
+    turnaround: "⚡ 3-Day Turnaround",
+    phone: "+91 98453 99001",
+    address: "ITPL Main Road, Prestige Ozone Junction, Whitefield",
+    priceRange: "₹2,200 – ₹12,500",
+    image: "/why_join_3.jpg",
+    avatar: "/manoj.jpg",
+    tags: ["Indo-Western", "Sharara Suit", "Draped Sarees", "Embroidered Kurta"],
+    lat: 12.9698,
+    lng: 77.7499,
+    mapQuery: "Whitefield ITPL Main Road Bengaluru",
+    portfolio: [
+      { img: "/bridal 5.jpg", title: "Georgette Draped Sharara", price: "₹6,800" },
+      { img: "/men1.jpg", title: "Asymmetric Silk Kurta", price: "₹4,200" },
+      { img: "/bridal2.jpg", title: "Cape Style Fusion Gown", price: "₹9,500" }
+    ]
+  },
+
+  // KIDS WEAR
+  {
+    id: 't_kids_1',
+    name: "Little Monarchs Kids Couture",
+    masterTailor: "Master Shalini Menon",
+    experience: "11+ Yrs Kids Apparel Specialist",
+    specialty: "Traditional Pattu Pavadai, Frocks & Kids Sherwanis",
+    category: "kids",
+    categoryLabel: "Kids Wear",
+    neighborhood: "HSR Layout",
+    rating: 4.93,
+    reviewsCount: 185,
+    orders: 370,
+    availability: "🟢 Gentle Doorstep Measurement Service",
+    turnaround: "⚡ 48h Express",
+    phone: "+91 98455 33445",
+    address: "19th Main, Sector 2, HSR Layout, Bengaluru",
+    priceRange: "₹900 – ₹5,500",
+    image: "/kids_wear.jpg",
+    avatar: "/kiran.jpg",
+    tags: ["Pattu Pavadai", "Kids Sherwani", "Birthday Frock", "Comfort Stitch"],
+    lat: 12.9112,
+    lng: 77.6398,
+    mapQuery: "HSR Layout Sector 2 Bengaluru",
+    portfolio: [
+      { img: "/kidsCollection.jpg", title: "Silk Pattu Pavadai Set", price: "₹1,800" },
+      { img: "/kids_wear_v2.jpg", title: "Royal Prince Velvet Sherwani", price: "₹2,900" },
+      { img: "/Kids.png", title: "Princess Layered Birthday Gown", price: "₹3,200" }
+    ]
+  },
+
+  // 24H ALTERATIONS
+  {
+    id: 't_alt_1',
     name: "StitchBee Express Studio",
     masterTailor: "Master Rajesh Kumar",
     experience: "11+ Yrs Master Tailor",
     specialty: "Same-Day Alterations, Upcycling & Perfect Fits",
     category: "alterations",
+    categoryLabel: "24h Alterations",
     neighborhood: "HSR Layout",
     rating: 4.88,
     reviewsCount: 420,
@@ -119,50 +277,251 @@ const CURATED_TAILORS = [
     ]
   },
   {
-    id: 't_near_5',
-    name: "Luxe Thread & Co.",
-    masterTailor: "Master Farooq Siddiqui",
-    experience: "16+ Yrs Indo-Western Specialist",
-    specialty: "Indo-Western Fusion, Shararas & Kurta Sets",
-    category: "fusion",
-    neighborhood: "Whitefield",
-    rating: 4.91,
-    reviewsCount: 165,
-    orders: 290,
-    availability: "🟢 Doorstep Trial Available Today",
-    turnaround: "⚡ 3-Day Turnaround",
-    phone: "+91 98453 99001",
-    address: "ITPL Main Road, Prestige Ozone Junction, Whitefield",
-    priceRange: "₹2,200 – ₹12,500",
-    image: "/why_join_3.jpg",
-    avatar: "/manoj.jpg",
-    tags: ["Indo-Western", "Sharara Suit", "Draped Sarees", "Embroidered Kurta"],
-    lat: 12.9698,
-    lng: 77.7499,
-    mapQuery: "Whitefield ITPL Main Road Bengaluru",
+    id: 't_alt_2',
+    name: "QuickFit Rapid Alterations Studio",
+    masterTailor: "Master Suresh Babu",
+    experience: "15+ Yrs Alteration Specialist",
+    specialty: "Express Jeans Tapering, Zip Repair & Resizing",
+    category: "alterations",
+    categoryLabel: "24h Alterations",
+    neighborhood: "Koramangala",
+    rating: 4.90,
+    reviewsCount: 310,
+    orders: 680,
+    availability: "🟢 Same Day Pickup & Return",
+    turnaround: "⚡ 12h Super Express",
+    phone: "+91 98456 77112",
+    address: "5th Block, Koramangala, Bengaluru",
+    priceRange: "₹200 – ₹2,800",
+    image: "/alt_12.jpg",
+    avatar: "/stany.jpg",
+    tags: ["Jeans Hemming", "Kurti Alteration", "Coat Fitting", "Invisible Mending"],
+    lat: 12.9355,
+    lng: 77.6189,
+    mapQuery: "Koramangala 5th Block Bengaluru",
     portfolio: [
-      { img: "/bridal 5.jpg", title: "Georgette Draped Sharara", price: "₹6,800" },
-      { img: "/men1.jpg", title: "Asymmetric Silk Kurta", price: "₹4,200" },
-      { img: "/bridal2.jpg", title: "Cape Style Fusion Gown", price: "₹9,500" }
+      { img: "/alt_al3.jpg", title: "Denim Waist Resizing & Hem", price: "₹350" },
+      { img: "/alt_al4.jpg", title: "Invisible Tear Restitching", price: "₹450" },
+      { img: "/alterations_fit_v2.jpg", title: "Designer Gown Length Adjustment", price: "₹650" }
+    ]
+  },
+
+  // UNIFORMS & BULK
+  {
+    id: 't_uni_1',
+    name: "Apex Uniforms & Corporate Tailors",
+    masterTailor: "Master Govind Prasad",
+    experience: "20+ Yrs Bulk Stitching Specialist",
+    specialty: "School Uniforms, Hospital Scrubs & Hotel Attire",
+    category: "uniforms",
+    categoryLabel: "Uniforms & Bulk",
+    neighborhood: "Rajajinagar",
+    rating: 4.92,
+    reviewsCount: 175,
+    orders: 520,
+    availability: "🟢 Bulk Sample Trials Available",
+    turnaround: "⚡ Fast Bulk Delivery",
+    phone: "+91 98457 88990",
+    address: "Dr. Rajkumar Road, Rajajinagar, Bengaluru",
+    priceRange: "₹600 – ₹3,800",
+    image: "/Uniform.png",
+    avatar: "/manoj.jpg",
+    tags: ["School Uniform", "Hospital Scrubs", "Chef Coats", "Corporate Blazers"],
+    lat: 12.9982,
+    lng: 77.5530,
+    mapQuery: "Dr Rajkumar Road Rajajinagar Bengaluru",
+    portfolio: [
+      { img: "/uniform_u1.jpg", title: "Custom School Blazer & Skirt Set", price: "₹1,450" },
+      { img: "/uniform_u2.jpg", title: "Anti-Microbial Medical Scrubs", price: "₹850" },
+      { img: "/uniform_u3.jpg", title: "Hospitality Executive Uniform", price: "₹1,900" }
+    ]
+  },
+
+  // BAGS & LEATHERS
+  {
+    id: 't_bag_1',
+    name: "Artisan Hide & Leather Guild",
+    masterTailor: "Master Tariq Al-Mansoor",
+    experience: "17+ Yrs Master Leather Craftsman",
+    specialty: "Custom Handcrafted Leather Bags, Wallets & Restoration",
+    category: "bags",
+    categoryLabel: "Bags & Leather",
+    neighborhood: "Commercial Street",
+    rating: 4.97,
+    reviewsCount: 230,
+    orders: 390,
+    availability: "🟢 Leather Swatch Consultation Available",
+    turnaround: "⚡ Handcrafted in 5 Days",
+    phone: "+91 98458 44556",
+    address: "Commercial Street, Tasker Town, Bengaluru",
+    priceRange: "₹1,500 – ₹14,000",
+    image: "/bags_leathers.jpg",
+    avatar: "/stany.jpg",
+    tags: ["Leather Tote", "Laptop Messenger", "Handmade Wallet", "Bag Restoration"],
+    lat: 12.9822,
+    lng: 77.6083,
+    mapQuery: "Commercial Street Bengaluru",
+    portfolio: [
+      { img: "/bag_b1.jpg", title: "Full Grain Leather Weekender Duffel", price: "₹6,800" },
+      { img: "/bag_b2.jpg", title: "Hand-Stitched Luxury Tote Bag", price: "₹4,200" },
+      { img: "/Bags And Leather.png", title: "Bespoke Laptop Messenger Case", price: "₹3,900" }
+    ]
+  },
+
+  // SHOES & SLIPPERS
+  {
+    id: 't_shoe_1',
+    name: "Cobbler & Craft Bespoke Footwear",
+    masterTailor: "Master Devendra Rao",
+    experience: "25+ Yrs Master Cordwainer",
+    specialty: "Handmade Pure Leather Mojaris, Brogues & Custom Slippers",
+    category: "shoes",
+    categoryLabel: "Shoes & Slippers",
+    neighborhood: "Commercial Street",
+    rating: 4.95,
+    reviewsCount: 190,
+    orders: 320,
+    availability: "🟢 Foot Impression & Sizing Kit Available",
+    turnaround: "⚡ Handcrafted in 4 Days",
+    phone: "+91 98459 33221",
+    address: "Brigade Road & Commercial St Cross, Bengaluru",
+    priceRange: "₹1,800 – ₹11,000",
+    image: "/Shoes And Slippers.png",
+    avatar: "/kiran.jpg",
+    tags: ["Custom Brogues", "Wedding Mojari", "Orthopedic Slippers", "Pure Leather"],
+    lat: 12.9733,
+    lng: 77.6075,
+    mapQuery: "Brigade Road Bengaluru",
+    portfolio: [
+      { img: "/shoe_c1.jpg", title: "Hand-Burnished Oxford Brogues", price: "₹5,400" },
+      { img: "/shoe_c2.jpg", title: "Zari Embroidered Wedding Mojaris", price: "₹2,800" },
+      { img: "/shoef_c2.jpg", title: "Orthopedic Memory Foam Leather Slides", price: "₹1,950" }
+    ]
+  },
+
+  // VEHICLE SEATS & SOFAS
+  {
+    id: 't_seat_1',
+    name: "AutoLuxe & Living Upholstery Atelier",
+    masterTailor: "Master Balakrishna",
+    experience: "18+ Yrs Master Upholsterer",
+    specialty: "Custom Car Seat Leather Covers, Recliner & Sofa Re-Upholstery",
+    category: "seats",
+    categoryLabel: "Vehicle Seats & Sofas",
+    neighborhood: "Koramangala",
+    rating: 4.93,
+    reviewsCount: 280,
+    orders: 540,
+    availability: "🟢 On-Site Vehicle & Living Room Inspection",
+    turnaround: "⚡ 3-Day Complete Fitting",
+    phone: "+91 98450 99887",
+    address: "Koramangala 1st Block, Near Sarjapur Main Road, Bengaluru",
+    priceRange: "₹3,500 – ₹28,000",
+    image: "/vehicle_seat_covers.jpg",
+    avatar: "/manoj.jpg",
+    tags: ["Car Seat Covers", "Nappa Leather", "Sofa Re-Cushioning", "Diamond Quilting"],
+    lat: 12.9260,
+    lng: 77.6360,
+    mapQuery: "Koramangala 1st Block Bengaluru",
+    portfolio: [
+      { img: "/Vehicle Seat Covers.png", title: "Nappa Leather Diamond Quilted Seat Covers", price: "₹12,500" },
+      { img: "/seat_s1.jpg", title: "Luxury Chesterfield Sofa Re-Upholstery", price: "₹18,000" },
+      { img: "/vehicle_seat_covers.jpg", title: "Waterproof Breathable Seat Protectors", price: "₹4,800" }
+    ]
+  },
+
+  // CUSTOM DESIGN
+  {
+    id: 't_des_1',
+    name: "Avant-Garde Design Studio by Sneha",
+    masterTailor: "Lead Designer Sneha Roy (NIFT)",
+    experience: "9+ Yrs Runway & Celebrity Fashion",
+    specialty: "Runway Fashion, Red Carpet Gowns & Concept Silhouettes",
+    category: "designers",
+    categoryLabel: "Custom Design",
+    neighborhood: "Indiranagar",
+    rating: 4.98,
+    reviewsCount: 160,
+    orders: 260,
+    availability: "🟢 1-on-1 Virtual / In-Person Sketching Session",
+    turnaround: "⚡ 5-Day Bespoke Creation",
+    phone: "+91 98451 22334",
+    address: "Defence Colony, 100ft Road, Indiranagar, Bengaluru",
+    priceRange: "₹4,500 – ₹35,000",
+    image: "/custom_design.jpg",
+    avatar: "/stany.jpg",
+    tags: ["Celebrity Gowns", "NIFT Designer", "Concept Sketching", "Haute Couture"],
+    lat: 12.9750,
+    lng: 77.6400,
+    mapQuery: "Defence Colony Indiranagar Bengaluru",
+    portfolio: [
+      { img: "/Custom Design.png", title: "Architectural Drape Evening Gown", price: "₹18,500" },
+      { img: "/bridal 5.jpg", title: "Sculptural Indo-Western Corset Set", price: "₹14,000" },
+      { img: "/custom_design.jpg", title: "Hand-Painted Silk Organza Ensemble", price: "₹16,500" }
+    ]
+  },
+
+  // HAND MADE GIFTS
+  {
+    id: 't_gift_1',
+    name: "KalaKriti Handcrafted Gift Studio",
+    masterTailor: "Master Craftswoman Revathi",
+    experience: "13+ Yrs Textile Artistry",
+    specialty: "Embroidered Keepsakes, Festive Gift Hampers & Heirloom Quilts",
+    category: "gifts",
+    categoryLabel: "Hand Made Gifts",
+    neighborhood: "Malleshwaram",
+    rating: 4.96,
+    reviewsCount: 220,
+    orders: 450,
+    availability: "🟢 Personalized Name / Monogram Embroidery",
+    turnaround: "⚡ 48h Express Gifting",
+    phone: "+91 98452 33441",
+    address: "8th Cross, Sampige Road, Malleshwaram, Bengaluru",
+    priceRange: "₹450 – ₹6,500",
+    image: "/handmade_gifts.jpg",
+    avatar: "/kiran.jpg",
+    tags: ["Personalized Gifts", "Heirloom Quilt", "Silk Potli Bags", "Monogram Towels"],
+    lat: 13.0031,
+    lng: 77.5702,
+    mapQuery: "Sampige Road Malleshwaram Bengaluru",
+    portfolio: [
+      { img: "/handmade_gifts.jpg", title: "Custom Monogrammed Silk Robe & Potli", price: "₹1,850" },
+      { img: "/handmade_gift.png", title: "Hand-Quilted Baby Keepsake Blanket", price: "₹2,400" },
+      { img: "/handmade gifts.png", title: "Embroidered Festive Table Runner Set", price: "₹1,450" }
+    ]
+  },
+
+  // PET OUTFITS
+  {
+    id: 't_pet_1',
+    name: "Paws & Pomp Canine Couture",
+    masterTailor: "Master Designer Priya Natarajan",
+    experience: "8+ Yrs Pet Apparel Specialist",
+    specialty: "Dog Wedding Tuxedos, Festive Bandanas & Raincoats",
+    category: "pets",
+    categoryLabel: "Pet Outfits",
+    neighborhood: "HSR Layout",
+    rating: 4.94,
+    reviewsCount: 140,
+    orders: 310,
+    availability: "🟢 Pet Sizing Guide & Home Fitting",
+    turnaround: "⚡ 48h Express Delivery",
+    phone: "+91 98453 66778",
+    address: "Sector 3, HSR Layout, Bengaluru",
+    priceRange: "₹650 – ₹4,200",
+    image: "/pets_wear.jpg",
+    avatar: "/manoj.jpg",
+    tags: ["Pet Tuxedo", "Dog Sherwani", "Festive Bandana", "Waterproof Coat"],
+    lat: 12.9100,
+    lng: 77.6450,
+    mapQuery: "HSR Layout Sector 3 Bengaluru",
+    portfolio: [
+      { img: "/pets_wear.jpg", title: "Royal Velvet Dog Wedding Tuxedo", price: "₹1,950" },
+      { img: "/Pets.png", title: "Bespoke Silk Dog Sherwani Set", price: "₹2,200" },
+      { img: "/pet1.jpg", title: "Reflective Winter Weather Pet Parka", price: "₹1,400" }
     ]
   }
-];
-
-const NEIGHBORHOODS = [
-  "All Localities",
-  "Koramangala",
-  "Indiranagar",
-  "Jayanagar",
-  "HSR Layout",
-  "Whitefield"
-];
-
-const SPECIALTY_CATEGORIES = [
-  { id: 'all', label: 'All Specialties' },
-  { id: 'bridal', label: '👑 Bridal & Lehengas' },
-  { id: 'suits', label: '🤵 Bespoke Suits' },
-  { id: 'blouses', label: '🥻 Designer Blouses' },
-  { id: 'alterations', label: '⚡ 24h Alterations' }
 ];
 
 export default function VerifiedTailorsShowcase({ 
@@ -249,6 +608,7 @@ export default function VerifiedTailorsShowcase({
       t.masterTailor.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.specialty.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.categoryLabel && t.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase())) ||
       t.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return matchesNeighborhood && matchesCategory && matchesSearch;
@@ -382,7 +742,7 @@ export default function VerifiedTailorsShowcase({
       <div className="landing-container">
         
         {/* SECTION HEADER */}
-        <div style={{ textAlign: 'center', maxWidth: '820px', margin: '0 auto 2.5rem auto' }}>
+        <div style={{ textAlign: 'center', maxWidth: '840px', margin: '0 auto 2.5rem auto' }}>
           <div style={{ 
             display: 'inline-flex', 
             alignItems: 'center', 
@@ -411,22 +771,22 @@ export default function VerifiedTailorsShowcase({
           </h2>
 
           <p style={{ fontSize: '15px', color: colors.sectionSubtitle, lineHeight: 1.6, margin: 0 }}>
-            Connect with certified master craftsmen, luxury bridal ateliers, and bespoke suit makers offering 
-            <strong style={{ color: '#F72585' }}> doorstep measurement trials</strong> and <strong style={{ color: '#10B981' }}>100% perfect fit guarantees</strong>.
+            Connect with verified master craftsmen across <strong>Men's, Women's, Bridal, Kids, Alterations, Uniforms, Leather Bags, Custom Footwear, Seat Covers, Gifts & Pet Outfits</strong> with 
+            <strong style={{ color: '#F72585' }}> doorstep measurement trials</strong> and <strong style={{ color: '#10B981' }}>100% perfect fit guarantee</strong>.
           </p>
         </div>
 
-        {/* SEARCH & LOCALITY FILTER BAR (CLEAN RESPONSIVE THEMING) */}
+        {/* SEARCH & LOCALITY FILTER BAR */}
         <div style={{
           background: colors.filterCardBg,
           backdropFilter: 'blur(16px)',
           border: `1px solid ${colors.filterBorder}`,
-          borderRadius: '18px',
-          padding: '18px 22px',
+          borderRadius: '20px',
+          padding: '20px 24px',
           boxShadow: colors.filterShadow,
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
+          gap: '18px',
           marginBottom: '2rem'
         }}>
           {/* Top Row: Search Input + GPS Button */}
@@ -435,12 +795,12 @@ export default function VerifiedTailorsShowcase({
               <Search size={18} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: colors.searchPlaceholder }} />
               <input 
                 type="text"
-                placeholder="Search by tailor name, outfit (e.g. Bridal, Suit, Blouse), or neighborhood..."
+                placeholder="Search tailor studio, master cutter, specialty (e.g. Bridal, Leather, Mojari, Seats), or area..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '13px 14px 13px 42px',
+                  padding: '13px 40px 13px 42px',
                   borderRadius: '12px',
                   border: `1px solid ${colors.searchBorder}`,
                   background: colors.searchBg,
@@ -451,9 +811,19 @@ export default function VerifiedTailorsShowcase({
                 }}
               />
               {searchQuery && (
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: colors.searchPlaceholder, cursor: 'pointer' }}
+                <button
+                  onClick={() => setSearchQuery("")}
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.searchPlaceholder,
+                    cursor: 'pointer',
+                    padding: '4px'
+                  }}
                 >
                   <X size={16} />
                 </button>
@@ -502,45 +872,27 @@ export default function VerifiedTailorsShowcase({
             </button>
           </div>
 
-          {/* Bottom Row: Neighborhood Pills & Specialty Categories */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', borderTop: `1px solid ${colors.filterBorder}`, paddingTop: '14px' }}>
-            
-            {/* Neighborhood Filter Pills */}
-            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%', WebkitOverflowScrolling: 'touch', alignItems: 'center' }}>
-              <span style={{ fontSize: '11.5px', fontWeight: 800, color: colors.filterLabel, display: 'flex', alignItems: 'center', marginRight: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                📍 Locality:
+          {/* Category Chips Bar: Beautiful full-width scrollable row with all 13 categories */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: colors.filterLabel, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Scissors size={13} style={{ color: '#F72585' }} />
+                Specialty Categories ({SPECIALTY_CATEGORIES.length - 1} Departments)
               </span>
-              {NEIGHBORHOODS.map(hood => {
-                const isSelected = selectedNeighborhood === hood;
-                return (
-                  <button
-                    key={hood}
-                    onClick={() => setSelectedNeighborhood(hood)}
-                    style={{
-                      padding: '7px 16px',
-                      borderRadius: '24px',
-                      fontSize: '12px',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                      border: isSelected ? '1px solid #F72585' : `1px solid ${colors.pillUnselectedBorder}`,
-                      background: isSelected ? 'linear-gradient(135deg, #F72585 0%, #D81159 100%)' : colors.pillUnselectedBg,
-                      color: isSelected ? '#ffffff' : colors.pillUnselectedText,
-                      boxShadow: isSelected ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <span style={{ color: isSelected ? '#ffffff' : colors.pillUnselectedText }}>{hood}</span>
-                  </button>
-                );
-              })}
+              <span style={{ fontSize: '11px', color: '#F72585', fontWeight: 700 }}>
+                {filteredTailors.length} Atelier{filteredTailors.length === 1 ? '' : 's'} Available
+              </span>
             </div>
 
-            {/* Specialty Category Pills */}
-            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', alignItems: 'center' }}>
-              <span style={{ fontSize: '11.5px', fontWeight: 800, color: colors.filterLabel, display: 'flex', alignItems: 'center', marginRight: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                ✂️ Category:
-              </span>
+            <div style={{ 
+              display: 'flex', 
+              gap: '8px', 
+              overflowX: 'auto', 
+              paddingBottom: '8px', 
+              alignItems: 'center',
+              scrollbarWidth: 'thin',
+              WebkitOverflowScrolling: 'touch'
+            }}>
               {SPECIALTY_CATEGORIES.map(cat => {
                 const isSelected = selectedCategory === cat.id;
                 return (
@@ -548,24 +900,63 @@ export default function VerifiedTailorsShowcase({
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
                     style={{
-                      padding: '7px 14px',
-                      borderRadius: '10px',
-                      fontSize: '12px',
+                      padding: '8px 16px',
+                      borderRadius: '12px',
+                      fontSize: '12.5px',
                       fontWeight: 700,
                       cursor: 'pointer',
                       whiteSpace: 'nowrap',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
                       border: isSelected ? 'none' : `1px solid ${colors.pillUnselectedBorder}`,
-                      background: isSelected ? 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)' : colors.pillUnselectedBg,
+                      background: isSelected 
+                        ? 'linear-gradient(135deg, #F72585 0%, #7209B7 100%)' 
+                        : colors.pillUnselectedBg,
                       color: isSelected ? '#ffffff' : colors.pillUnselectedText,
-                      boxShadow: isSelected ? '0 4px 14px rgba(114, 9, 183, 0.35)' : 'none',
-                      transition: 'all 0.2s ease'
+                      boxShadow: isSelected ? '0 4px 16px rgba(247, 37, 133, 0.35)' : 'none',
+                      transition: 'all 0.2s ease',
+                      flexShrink: 0
                     }}
                   >
+                    <span>{cat.icon}</span>
                     <span style={{ color: isSelected ? '#ffffff' : colors.pillUnselectedText }}>{cat.label}</span>
                   </button>
                 );
               })}
             </div>
+          </div>
+
+          {/* Locality Filter Pills */}
+          <div style={{ borderTop: `1px solid ${colors.filterBorder}`, paddingTop: '12px', display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', maxWidth: '100%', WebkitOverflowScrolling: 'touch', alignItems: 'center' }}>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: colors.filterLabel, display: 'flex', alignItems: 'center', marginRight: '6px', textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>
+              📍 Locality:
+            </span>
+            {NEIGHBORHOODS.map(hood => {
+              const isSelected = selectedNeighborhood === hood;
+              return (
+                <button
+                  key={hood}
+                  onClick={() => setSelectedNeighborhood(hood)}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: '20px',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    border: isSelected ? '1px solid #F72585' : `1px solid ${colors.pillUnselectedBorder}`,
+                    background: isSelected ? 'linear-gradient(135deg, #F72585 0%, #D81159 100%)' : colors.pillUnselectedBg,
+                    color: isSelected ? '#ffffff' : colors.pillUnselectedText,
+                    boxShadow: isSelected ? '0 4px 12px rgba(247, 37, 133, 0.3)' : 'none',
+                    transition: 'all 0.2s ease',
+                    flexShrink: 0
+                  }}
+                >
+                  <span style={{ color: isSelected ? '#ffffff' : colors.pillUnselectedText }}>{hood}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -691,7 +1082,7 @@ export default function VerifiedTailorsShowcase({
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
                   <img 
                     src={activeTailor.image} 
-                    alt={activeTailor.name}
+                    alt={activeTailor.name} 
                     style={{ width: '48px', height: '48px', borderRadius: '10px', objectFit: 'cover', border: '2px solid #F72585' }} 
                   />
                   <div style={{ minWidth: 0 }}>
@@ -820,6 +1211,21 @@ export default function VerifiedTailorsShowcase({
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
                           <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                              <span style={{
+                                fontSize: '10px',
+                                fontWeight: 800,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.04em',
+                                background: 'rgba(247, 37, 133, 0.12)',
+                                color: '#F72585',
+                                padding: '2px 8px',
+                                borderRadius: '6px',
+                                border: '1px solid rgba(247, 37, 133, 0.3)'
+                              }}>
+                                {tailor.categoryLabel || tailor.category}
+                              </span>
+                            </div>
                             <h3 style={{ 
                               fontSize: '15.5px', 
                               fontWeight: 800, 

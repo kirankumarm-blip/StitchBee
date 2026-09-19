@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Facebook, Instagram, Linkedin, Twitter, Play, Pause, Volume2, VolumeX, Apple } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Facebook, Instagram, Linkedin, Twitter, Play, Pause, Volume2, VolumeX, Apple, Menu, X } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import CustomerView from './components/CustomerView';
 import AuthModal from './components/AuthModal';
@@ -147,6 +147,7 @@ export default function App() {
   const [customerCategory, setCustomerCategory] = useState('all');
   const [customerHub, setCustomerHub] = useState('home');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Guest landing banner carousel states
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
@@ -772,130 +773,226 @@ export default function App() {
       
       {/* Top sticky navigation bar */}
       {!['customer', 'tailor', 'student', 'admin', 'delivery', 'login', 'signup'].includes(role) && (
-        <header className="top-nav">
-          <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
-          </div>
-          
-          <div className="role-switcher">
-  
-  
-            <div className="nav-item-relative">
+        <>
+          <header className="top-nav">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {/* Mobile menu toggle hamburger icon */}
               <button 
-                className="role-btn" 
-                onClick={(e) => { 
-                  e.stopPropagation(); 
-                  setActiveDropdown(activeDropdown === 'services' ? null : 'services'); 
-                }}
+                className="mobile-menu-toggle-btn"
+                onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
+                aria-label="Toggle menu"
+                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none' }}
               >
-                Services ▼
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
-                <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
-              </ul>
-            </div>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('how-it-works')}
-            >
-              How It Works
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('tailors-near-you')}
-            >
-              Tailors Near You
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('pricing-section')}
-            >
-              Pricing
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={handleTrackOrder}
-            >
-              Track Order
-            </button>
 
-  
-            <button 
-              className={`role-btn ${role === 'blogs' ? 'active' : ''}`}
-              onClick={() => setRole('blogs')}
-            >
-              Blogs
-            </button>
-  
-            <button 
-              className="role-btn"
-              onClick={() => navigateToSection('contact-footer')}
-            >
-              Contact
-            </button>
-          </div>
-  
-          {/* User Profile / Auth Area */}
-          <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button 
-              className="btn btn-secondary" 
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
-            </button>
-  
-            {currentUser ? (
-              <div className="user-profile-nav">
-                <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
-                  <div className="user-profile-avatar">
-                    {currentUser.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span>{currentUser.name}</span>
-                  <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
-                </div>
-                <button 
-                  className="btn btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+              <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
               </div>
-            ) : (
-              <>
+            </div>
+            
+            <div className="role-switcher desktop-nav-menu">
+              <div className="nav-item-relative">
                 <button 
-                  className="btn btn-secondary" 
-                  style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
-                  onClick={() => openAuthModal('customer', 'login')}
+                  className="role-btn" 
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    setActiveDropdown(activeDropdown === 'services' ? null : 'services'); 
+                  }}
                 >
-                  Login
+                  Services ▼
                 </button>
-                <button 
-                  className="btn btn-primary" 
-                  style={{ padding: '6px 16px', fontSize: '0.85rem', minHeight: '32px' }} 
-                  onClick={() => openAuthModal('customer', 'signup')}
+                <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'gifts' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('gifts'); setActiveDropdown(null); }}>Hand Made Gifts</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'pets' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('pets'); setActiveDropdown(null); }}>Pet Outfits</li>
+                </ul>
+              </div>
+
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('how-it-works')}
+              >
+                How It Works
+              </button>
+
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('tailors-near-you')}
+              >
+                Tailors Near You
+              </button>
+
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('pricing-section')}
+              >
+                Pricing
+              </button>
+
+              <button 
+                className="role-btn"
+                onClick={handleTrackOrder}
+              >
+                Track Order
+              </button>
+
+              <button 
+                className={`role-btn ${role === 'blogs' ? 'active' : ''}`}
+                onClick={() => setRole('blogs')}
+              >
+                Blogs
+              </button>
+
+              <button 
+                className="role-btn"
+                onClick={() => navigateToSection('contact-footer')}
+              >
+                Contact
+              </button>
+            </div>
+
+            {/* User Profile / Auth Area */}
+            <div className="top-nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <button 
+                className="btn btn-secondary" 
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)' }}
+                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {theme === 'dark' ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: 'var(--primary)' }} />}
+              </button>
+
+              {currentUser ? (
+                <div className="user-profile-nav">
+                  <div className="user-profile-chip" onClick={() => setRole(currentUser.role)} style={{ cursor: 'pointer' }}>
+                    <div className="user-profile-avatar">
+                      {currentUser.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span>{currentUser.name}</span>
+                    <span className="user-profile-role-badge">{currentUser.role === 'admin' ? 'Admin' : currentUser.role}</span>
+                  </div>
+                  <button 
+                    className="btn btn-secondary" 
+                    style={{ padding: '6px 12px', fontSize: '0.8rem', minHeight: '32px' }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <button 
+                    className="btn btn-secondary" 
+                    style={{ minHeight: '32px', padding: '6px 16px', fontSize: '0.85rem' }} 
+                    onClick={() => openAuthModal('customer', 'login')}
+                  >
+                    Login
+                  </button>
+                  <button 
+                    className="btn btn-primary" 
+                    style={{ padding: '6px 16px', fontSize: '0.85rem', minHeight: '32px' }} 
+                    onClick={() => openAuthModal('customer', 'signup')}
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
+            </div>
+          </header>
+
+          {/* Slide down / drawer Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="mobile-dropdown-menu-v3" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-menu-links-v3">
+                <div style={{ padding: '8px 12px', fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--primary)', borderBottom: '1px solid var(--border-color)' }}>
+                  Categories & Services
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', padding: '6px 4px' }}>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setMobileMenuOpen(false); }}>👔 Men</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setMobileMenuOpen(false); }}>👗 Women</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setMobileMenuOpen(false); }}>👑 Bridal</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setMobileMenuOpen(false); }}>👶 Kids</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setMobileMenuOpen(false); }}>⚡ Alterations</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setMobileMenuOpen(false); }}>🏫 Uniforms</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setMobileMenuOpen(false); }}>👜 Bags & Leather</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setMobileMenuOpen(false); }}>👞 Shoes</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setMobileMenuOpen(false); }}>🚗 Seat Covers</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setMobileMenuOpen(false); }}>✨ Custom Design</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('gifts'); setMobileMenuOpen(false); }}>🎁 Handmade Gifts</span>
+                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('pets'); setMobileMenuOpen(false); }}>🐾 Pet Outfits</span>
+                </div>
+
+                <div style={{ borderTop: '1px solid var(--border-color)', margin: '8px 0' }} />
+
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('how-it-works'); setMobileMenuOpen(false); }}
                 >
-                  Sign Up
-                </button>
-              </>
-            )}
-          </div>
-        </header>
+                  How It Works
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailors-near-you'); setMobileMenuOpen(false); }}
+                >
+                  Tailors Near You
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('pricing-section'); setMobileMenuOpen(false); }}
+                >
+                  Pricing
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); handleTrackOrder(); setMobileMenuOpen(false); }}
+                >
+                  Track Order
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); setRole('blogs'); setMobileMenuOpen(false); }}
+                >
+                  Blogs
+                </span>
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer'); setMobileMenuOpen(false); }}
+                >
+                  Contact
+                </span>
+
+                {!currentUser && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
+                    <button 
+                      className="btn btn-secondary" 
+                      style={{ width: '100%', padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }} 
+                      onClick={() => { setMobileMenuOpen(false); openAuthModal('customer', 'login'); }}
+                    >
+                      Login
+                    </button>
+                    <button 
+                      className="btn btn-primary" 
+                      style={{ width: '100%', padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }}
+                      onClick={() => { setMobileMenuOpen(false); openAuthModal('customer', 'signup'); }}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Main Content Area */}
