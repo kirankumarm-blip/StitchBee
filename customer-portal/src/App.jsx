@@ -1209,6 +1209,7 @@ export default function App() {
                     img: "./handmade_gifts.jpg",
                     desc: "Personalized stitching, fabric gifts & embroidered crafts.",
                     cat: "all",
+                    imgPos: "center 55%",
                     icon: (
                       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 12 20 22 4 22 4 12" />
@@ -1273,7 +1274,9 @@ export default function App() {
                       src={category.img} 
                       alt={category.name} 
                       style={{ 
-                        transform: hoveredCategoryIdx === idx ? 'scale(1.12)' : 'scale(1)'
+                        transform: hoveredCategoryIdx === idx ? 'scale(1.12)' : 'scale(1)',
+                        '--card-img-pos': category.imgPos || 'center center',
+                        objectPosition: category.imgPos || 'center center'
                       }} 
                     />
                     {/* Overlapping Badge Icon */}
