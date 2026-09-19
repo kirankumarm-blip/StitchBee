@@ -956,25 +956,6 @@ export default function App() {
                 >
                   Contact
                 </span>
-
-                {!currentUser && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
-                    <button 
-                      className="btn btn-secondary" 
-                      style={{ width: '100%', padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }} 
-                      onClick={() => { setMobileMenuOpen(false); openAuthModal('customer', 'login'); }}
-                    >
-                      Login
-                    </button>
-                    <button 
-                      className="btn btn-primary" 
-                      style={{ width: '100%', padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }}
-                      onClick={() => { setMobileMenuOpen(false); openAuthModal('customer', 'signup'); }}
-                    >
-                      Sign Up
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
           )}
