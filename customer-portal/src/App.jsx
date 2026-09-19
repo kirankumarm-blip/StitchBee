@@ -971,7 +971,7 @@ export default function App() {
               
               {/* Full-width Carousel Banner Card */}
               <div 
-                className="hero-carousel-container"
+                className="guest-landing-hero-banner"
                 onMouseEnter={() => setPauseLandingCarousel(true)}
                 onMouseLeave={() => setPauseLandingCarousel(false)}
                 onClick={handleLandingBannerClick}
@@ -980,7 +980,7 @@ export default function App() {
                 {guestLandingBanners.map((banner, idx) => (
                   <img 
                     key={idx}
-                    className="hero-carousel-slide-img"
+                    className="guest-landing-hero-slide"
                     src={banner} 
                     alt={`banner-${idx+1}`} 
                     style={{
@@ -991,7 +991,7 @@ export default function App() {
                 ))}
 
                 {/* Dot Indicators */}
-                <div className="hero-carousel-dots">
+                <div className="guest-landing-hero-dots">
                   {guestLandingBanners.map((_, idx) => (
                     <span 
                       key={idx}

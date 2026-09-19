@@ -12157,25 +12157,27 @@ body.light-theme .premium-footer h5 {
 }
 
 /* ===================================================
-   HERO CAROUSEL BANNER (DESKTOP & MOBILE RESPONSIVE)
+/* ===================================================
+   GUEST LANDING HERO BANNER (REVERTED FOR WEB MODE)
    =================================================== */
-.hero-carousel-container {
+.guest-landing-hero-banner {
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0;
-  width: 100%;
-  aspect-ratio: 1024 / 315;
-  height: auto;
-  border-radius: 16px;
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 1024 / 315 !important;
+  height: auto !important;
+  border-radius: 0px !important;
   cursor: pointer;
   border: none;
   background: transparent;
 }
 
-.hero-carousel-slide-img {
+.guest-landing-hero-slide {
   position: absolute;
   left: 0;
   top: 0;
@@ -12185,7 +12187,7 @@ body.light-theme .premium-footer h5 {
   transition: opacity 0.8s ease-in-out;
 }
 
-.hero-carousel-dots {
+.guest-landing-hero-dots {
   position: absolute;
   bottom: 16px;
   left: 50%;
@@ -12193,46 +12195,47 @@ body.light-theme .premium-footer h5 {
   display: flex;
   gap: 6px;
   z-index: 20;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
   padding: 5px 12px;
   border-radius: 20px;
   backdrop-filter: blur(4px);
 }
 
+/* Mobile adjustments ONLY: applied on mobile viewports */
 @media (max-width: 768px) {
-  .hero-carousel-container {
+  .guest-landing-hero-banner {
     aspect-ratio: 16 / 8.5 !important;
     height: auto !important;
     min-height: 170px !important;
     max-height: 240px !important;
     border-radius: 14px !important;
   }
-  .hero-carousel-slide-img {
+  .guest-landing-hero-slide {
     width: 100% !important;
     height: 100% !important;
     object-fit: fill !important;
     object-position: center !important;
   }
-  .hero-carousel-dots {
+  .guest-landing-hero-dots {
     bottom: 10px !important;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-carousel-container {
+  .guest-landing-hero-banner {
     aspect-ratio: 16 / 8.5 !important;
     height: auto !important;
     min-height: 165px !important;
     max-height: 220px !important;
     border-radius: 12px !important;
   }
-  .hero-carousel-slide-img {
+  .guest-landing-hero-slide {
     width: 100% !important;
     height: 100% !important;
     object-fit: fill !important;
     object-position: center !important;
   }
-  .hero-carousel-dots {
+  .guest-landing-hero-dots {
     bottom: 8px !important;
   }
 }
