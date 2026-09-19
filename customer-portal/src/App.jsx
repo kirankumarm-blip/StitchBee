@@ -971,21 +971,7 @@ export default function App() {
               
               {/* Full-width Carousel Banner Card */}
               <div 
-                style={{ 
-                  position: 'relative', 
-                  overflow: 'hidden', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'center', 
-                  padding: 0,
-                  width: '100%',
-                  aspectRatio: '1024 / 315',
-                  height: 'auto',
-                  borderRadius: '0px',
-                  cursor: 'pointer',
-                  border: 'none',
-                  background: 'transparent'
-                }}
+                className="hero-carousel-container"
                 onMouseEnter={() => setPauseLandingCarousel(true)}
                 onMouseLeave={() => setPauseLandingCarousel(false)}
                 onClick={handleLandingBannerClick}
@@ -994,35 +980,18 @@ export default function App() {
                 {guestLandingBanners.map((banner, idx) => (
                   <img 
                     key={idx}
+                    className="hero-carousel-slide-img"
                     src={banner} 
                     alt={`banner-${idx+1}`} 
                     style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'fill',
                       opacity: currentLandingSlide === idx ? 1 : 0,
-                      transition: 'opacity 0.8s ease-in-out',
                       pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
                     }}
                   />
                 ))}
 
                 {/* Dot Indicators */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '16px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  display: 'flex',
-                  gap: '6px',
-                  zIndex: 20,
-                  background: 'rgba(0,0,0,0.25)',
-                  padding: '5px 12px',
-                  borderRadius: '20px'
-                }}>
+                <div className="hero-carousel-dots">
                   {guestLandingBanners.map((_, idx) => (
                     <span 
                       key={idx}
@@ -1290,51 +1259,29 @@ export default function App() {
                   onMouseLeave={() => setHoveredCategoryIdx(null)}
                   style={{
                     background: theme === 'dark' ? '#1a1a2e' : '#ffffff',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
                     boxShadow: hoveredCategoryIdx === idx
                       ? '0 20px 35px rgba(247,37,133,0.18), 0 4px 15px rgba(0,0,0,0.1)'
                       : '0 4px 20px rgba(0,0,0,0.03)',
                     border: `1px solid ${hoveredCategoryIdx === idx ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#f1f5f9')}`,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    cursor: 'pointer',
-                    transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
-                    position: 'relative',
                     transform: hoveredCategoryIdx === idx ? 'translateY(-10px) scale(1.03)' : 'translateY(0) scale(1)'
                   }}
                 >
                   {/* Image wrapper */}
-                  <div style={{ position: 'relative', width: '100%', height: '160px', overflow: 'hidden' }}>
+                  <div className="category-card-img-wrap">
                     <img 
+                      className="category-card-img"
                       src={category.img} 
                       alt={category.name} 
                       style={{ 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover',
-                        transition: 'transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
                         transform: hoveredCategoryIdx === idx ? 'scale(1.12)' : 'scale(1)'
                       }} 
                     />
                     {/* Overlapping Badge Icon */}
                     <div 
+                      className="category-card-badge-icon"
                       style={{
-                        position: 'absolute',
-                        left: '16px',
-                        bottom: '-18px',
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '8px',
                         background: theme === 'dark' ? '#24243e' : '#ffffff',
                         border: `1px solid ${hoveredCategoryIdx === idx ? 'var(--primary)' : (theme === 'dark' ? 'rgba(255,255,255,0.1)' : '#e2e8f0')}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--primary)',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                        zIndex: 10,
-                        transition: 'all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1)',
                         transform: hoveredCategoryIdx === idx ? 'scale(1.15) rotate(10deg)' : 'scale(1) rotate(0deg)'
                       }}
                     >
@@ -1343,7 +1290,7 @@ export default function App() {
                   </div>
 
                   {/* Content */}
-                  <div style={{ padding: '24px 16px 16px 16px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div className="category-card-content">
                     <div>
                       <h3 style={{ 
                         fontSize: '1.05rem', 
@@ -1354,7 +1301,7 @@ export default function App() {
                       }}>
                         {category.name}
                       </h3>
-                      <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.4' }}>
+                      <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 16px 0', lineHeight: '1.45' }}>
                         {category.desc}
                       </p>
                     </div>

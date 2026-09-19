@@ -12012,4 +12012,175 @@ body.dark-theme .footer-bottom-links-v4 span:hover {
   }
 }
 
+/* ===================================================
+   HERO CAROUSEL BANNER (DESKTOP & MOBILE RESPONSIVE)
+   =================================================== */
+.hero-carousel-container {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+  aspect-ratio: 1024 / 315;
+  height: auto;
+  border-radius: 16px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.hero-carousel-slide-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.hero-carousel-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 768px) {
+  .hero-carousel-container {
+    aspect-ratio: auto !important;
+    height: 230px !important;
+    min-height: 230px !important;
+    border-radius: 14px !important;
+  }
+  .hero-carousel-slide-img {
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  .hero-carousel-dots {
+    bottom: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-carousel-container {
+    height: 210px !important;
+    min-height: 210px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ===================================================
+   QUICK SERVICE CATEGORIES (DESKTOP & MOBILE RESPONSIVE)
+   =================================================== */
+.categories-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.category-card-v2 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.category-card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.category-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: block;
+}
+
+.category-card-badge-icon {
+  position: absolute;
+  left: 16px;
+  bottom: -18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.category-card-content {
+  padding: 24px 16px 16px 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Mobile optimizations: increase category card height, image height, and perfect alignment */
+@media (max-width: 768px) {
+  .categories-grid-v2 {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+    gap: 18px !important;
+  }
+  .category-card-v2 {
+    min-height: 400px !important;
+  }
+  .category-card-img-wrap {
+    height: 230px !important;
+    min-height: 230px !important;
+  }
+  .category-card-img {
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 20% !important;
+  }
+  .category-card-content {
+    padding: 26px 18px 18px 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-grid-v2 {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+  .category-card-v2 {
+    min-height: 420px !important;
+  }
+  .category-card-img-wrap {
+    height: 240px !important;
+    min-height: 240px !important;
+  }
+  .category-card-img {
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 20% !important;
+  }
+}
+
+
 
