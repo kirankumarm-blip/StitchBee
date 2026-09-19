@@ -914,26 +914,12 @@ export default function App() {
           {mobileMenuOpen && (
             <div className="mobile-dropdown-menu-v3" onClick={(e) => e.stopPropagation()}>
               <div className="mobile-menu-links-v3">
-                <div style={{ padding: '8px 12px', fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--primary)', borderBottom: '1px solid var(--border-color)' }}>
-                  Categories & Services
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', padding: '6px 4px' }}>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setMobileMenuOpen(false); }}>👔 Men</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setMobileMenuOpen(false); }}>👗 Women</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setMobileMenuOpen(false); }}>👑 Bridal</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setMobileMenuOpen(false); }}>👶 Kids</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setMobileMenuOpen(false); }}>⚡ Alterations</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setMobileMenuOpen(false); }}>🏫 Uniforms</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setMobileMenuOpen(false); }}>👜 Bags & Leather</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setMobileMenuOpen(false); }}>👞 Shoes</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setMobileMenuOpen(false); }}>🚗 Seat Covers</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setMobileMenuOpen(false); }}>✨ Custom Design</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('gifts'); setMobileMenuOpen(false); }}>🎁 Handmade Gifts</span>
-                  <span className="mobile-menu-link-v3" onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('pets'); setMobileMenuOpen(false); }}>🐾 Pet Outfits</span>
-                </div>
-
-                <div style={{ borderTop: '1px solid var(--border-color)', margin: '8px 0' }} />
-
+                <span 
+                  className="mobile-menu-link-v3"
+                  onClick={(e) => { e.stopPropagation(); navigateToSection('categories-section'); setMobileMenuOpen(false); }}
+                >
+                  Categories
+                </span>
                 <span 
                   className="mobile-menu-link-v3"
                   onClick={(e) => { e.stopPropagation(); navigateToSection('how-it-works'); setMobileMenuOpen(false); }}
@@ -1129,7 +1115,7 @@ export default function App() {
           </section>
 
           {/* Fold 2: Quick Service Categories */}
-          <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
+          <section id="categories-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container reveal">
               <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                 <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick Service Categories</h2>
