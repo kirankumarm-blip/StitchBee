@@ -1069,7 +1069,7 @@ export default function App() {
                   },
                   {
                     name: "Hand Made Gifts",
-                    img: "./why_join_4.png",
+                    img: "./handmade_gifts.jpg",
                     desc: "Personalized stitching, fabric gifts & embroidered crafts.",
                     cat: "all",
                     icon: (
