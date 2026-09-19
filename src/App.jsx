@@ -1,10 +1,136 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Menu, X, Facebook, Instagram, Linkedin, Twitter, Apple, Play } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Menu, X, Facebook, Instagram, Linkedin, Twitter, Apple, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import DeliveryView from './components/DeliveryView';
 import AuthModal from './components/AuthModal';
 import AuthPage from './components/AuthPage';
 import BecomeDeliveryView from './components/BecomeDeliveryView';
+
+function TrendingReelCard({ reel, idx, currentUser, openAuthModal, setCustomerCategory, setCustomerHub, setRole }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef(null);
+
+  const togglePlay = (e) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+
+    if (videoRef.current.paused) {
+      document.querySelectorAll('video.reel-video').forEach((v) => {
+        if (v !== videoRef.current) {
+          v.pause();
+        }
+      });
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch((err) => {
+        console.warn("Video play error:", err);
+      });
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    const nextMuted = !videoRef.current.muted;
+    videoRef.current.muted = nextMuted;
+    setIsMuted(nextMuted);
+  };
+
+  return (
+    <div 
+      className={`reel-card ${isPlaying ? 'is-playing' : ''}`}
+      onClick={togglePlay}
+    >
+      {!isPlaying && (
+        <div className="reel-play-overlay">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </div>
+      )}
+
+      {isPlaying && (
+        <button
+          onClick={toggleMute}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            background: 'rgba(0, 0, 0, 0.65)',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(255, 255, 255, 0.35)',
+            borderRadius: '50%',
+            width: '32px',
+            height: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ffffff',
+            cursor: 'pointer',
+            zIndex: 12,
+            transition: 'all 0.2s ease'
+          }}
+          title={isMuted ? "Unmute sound" : "Mute sound"}
+        >
+          {isMuted ? <VolumeX size={15} style={{ color: '#ffffff' }} /> : <Volume2 size={15} style={{ color: '#ffffff' }} />}
+        </button>
+      )}
+
+      <video 
+        ref={videoRef}
+        className="reel-video" 
+        src={reel.videoUrl} 
+        muted={isMuted} 
+        loop 
+        playsInline 
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => setIsPlaying(false)}
+      />
+
+      <div className="reel-info-overlay" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+          <span className="badge" style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.65rem', margin: 0, width: 'fit-content' }}>
+            ₹{reel.price}
+          </span>
+          <button 
+            className="btn btn-primary" 
+            style={{ 
+              padding: '3px 8px', 
+              fontSize: '0.65rem', 
+              background: 'var(--primary)', 
+              border: 'none', 
+              borderRadius: '4px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }} 
+            onClick={(e) => { 
+              e.stopPropagation(); 
+              if (!currentUser) { 
+                openAuthModal('customer', 'login'); 
+              } else { 
+                setCustomerCategory(reel.cat); 
+                setCustomerHub('designers'); 
+                setRole('customer'); 
+              } 
+            }}
+          >
+            Book Now
+          </button>
+        </div>
+        <div className="reel-designer">
+          <div className="reel-designer-avatar">{reel.designer.charAt(0)}</div>
+          <span className="reel-designer-name">By {reel.designer}</span>
+        </div>
+        <span className="reel-title-text">{reel.title}</span>
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   const [role, setRole] = useState('become-delivery'); // Default to delivery homepage
@@ -1780,72 +1906,16 @@ export default function App() {
                   { title: "Satin Evening Slip Gown", designer: "Nisha Sen (Student)", price: 5200, cat: "womens", videoUrl: "./trending_video_11.mp4" },
                   { title: "Embroidered Pashmina Shawl", designer: "Harish Gupta (Expert)", price: 7000, cat: "womens", videoUrl: "./trending_video_12.mp4" }
                 ].map((reel, idx) => (
-                  <div 
-                    key={idx} 
-                    className="reel-card"
-                    onMouseEnter={(e) => {
-                      const videoEl = e.currentTarget.querySelector('video');
-                      if (videoEl) videoEl.play().catch(() => {});
-                    }}
-                    onMouseLeave={(e) => {
-                      const videoEl = e.currentTarget.querySelector('video');
-                      if (videoEl) videoEl.pause();
-                    }}
-                    onClick={(e) => {
-                      const videoEl = e.currentTarget.querySelector('video');
-                      if (videoEl) {
-                        if (videoEl.paused) {
-                          videoEl.muted = false;
-                          videoEl.play().catch(() => {});
-                        } else {
-                          videoEl.pause();
-                        }
-                      }
-                    }}
-                  >
-                    <div className="reel-play-overlay">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                    <video className="reel-video" src={reel.videoUrl} muted loop playsInline />
-                    <div className="reel-info-overlay" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                        <span className="badge" style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.65rem', margin: 0, width: 'fit-content' }}>
-                          ₹{reel.price}
-                        </span>
-                        <button 
-                          className="btn btn-primary" 
-                          style={{ 
-                            padding: '3px 8px', 
-                            fontSize: '0.65rem', 
-                            background: 'var(--primary)', 
-                            border: 'none', 
-                            borderRadius: '4px',
-                            fontWeight: 'bold',
-                            cursor: 'pointer'
-                          }} 
-                          onClick={(e) => { 
-                            e.stopPropagation(); 
-                            if (!currentUser) { 
-                              openAuthModal('customer', 'login'); 
-                            } else { 
-                              setCustomerCategory(reel.cat); 
-                              setCustomerHub('designers'); 
-                              setRole('customer'); 
-                            } 
-                          }}
-                        >
-                          Book Now
-                        </button>
-                      </div>
-                      <div className="reel-designer">
-                        <div className="reel-designer-avatar">{reel.designer.charAt(0)}</div>
-                        <span className="reel-designer-name">By {reel.designer}</span>
-                      </div>
-                      <span className="reel-title-text">{reel.title}</span>
-                    </div>
-                  </div>
+                  <TrendingReelCard 
+                    key={idx}
+                    reel={reel}
+                    idx={idx}
+                    currentUser={currentUser}
+                    openAuthModal={openAuthModal}
+                    setCustomerCategory={setCustomerCategory}
+                    setCustomerHub={setCustomerHub}
+                    setRole={setRole}
+                  />
                 ))}
               </div>
             </div>

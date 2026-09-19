@@ -2863,15 +2863,23 @@ body.light-theme .reels-nav-btn {
   align-items: center;
   justify-content: center;
   color: #fff;
-  opacity: 0;
+  opacity: 0.9;
   transition: opacity 0.3s ease, transform 0.3s ease;
   z-index: 10;
   box-shadow: var(--shadow-glow);
+  pointer-events: none;
 }
 
 .reel-card:hover .reel-play-overlay {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1.05);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.reel-card.is-playing .reel-play-overlay {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transform: translate(-50%, -50%) scale(0.8);
 }
 
 .reel-info-overlay {
