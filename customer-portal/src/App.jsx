@@ -1729,6 +1729,7 @@ export default function App() {
               currentUser={currentUser} 
               setRole={setRole}
               onCategorySelect={handleCategorySelect}
+              theme={theme}
             />
           </div>
 

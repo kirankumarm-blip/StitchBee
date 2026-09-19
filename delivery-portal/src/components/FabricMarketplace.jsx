@@ -1,84 +1,24 @@
 import React, { useState, useRef } from 'react';
-import { Award, Compass, Sparkles, Scissors, Ruler, ShieldCheck, Star, Heart, ArrowRight, ShoppingBag, Plus } from 'lucide-react';
+import { 
+  Award, Compass, Sparkles, Scissors, Ruler, ShieldCheck, 
+  Star, Heart, ArrowRight, ShoppingBag, Plus, Check, Info, 
+  X, Eye, Tag, Clock, Truck, Layers, CheckCircle2, Zap
+} from 'lucide-react';
 
-export default function FabricMarketplace({ openAuthModal, currentUser, setRole, onCategorySelect }) {
-  // 1. Swatches data for the interactive mannequin customizer
-  const swatches = [
-    {
-      id: 'black-wool',
-      name: 'Charcoal Black Wool',
-      type: 'Premium Wool',
-      price: 1999,
-      fillUrl: 'url(#pattern-black-wool)',
-      ratings: { softness: 5, breathability: 4, luxury: 5 },
-      weight: 'Medium (280g/m)',
-      stretch: 'Low (Natural Stretch)',
-      softness: 'Extra Soft (Cashmere blend)',
-      desc: 'Expertly woven herringbone wool with a soft touch, perfect for royal formal blazers and suits.'
-    },
-    {
-      id: 'navy-wool',
-      name: 'Navy Pinstripe Wool',
-      type: 'Italian Wool',
-      price: 2499,
-      fillUrl: 'url(#pattern-navy-wool)',
-      ratings: { softness: 4, breathability: 4, luxury: 5 },
-      weight: 'Medium-Heavy (310g/m)',
-      stretch: 'Low (Pure Wool)',
-      softness: 'Smooth & Structured',
-      desc: 'Classic business navy wool with white pinstripes. Holds structure perfectly for formal executive suits.'
-    },
-    {
-      id: 'beige-linen',
-      name: 'Beige Cross-Hatch Linen',
-      type: 'Belgian Linen',
-      price: 1499,
-      fillUrl: 'url(#pattern-beige-linen)',
-      ratings: { softness: 3, breathability: 5, luxury: 4 },
-      weight: 'Lightweight (180g/m)',
-      stretch: 'None',
-      softness: 'Coarse & Airy',
-      desc: 'Authentic flax linen with a visible organic weave. Maximum breathability for premium summer shirts and trousers.'
-    },
-    {
-      id: 'white-cotton',
-      name: 'Crisp White Cotton Twill',
-      type: 'Egyptian Cotton',
-      price: 799,
-      fillUrl: 'url(#pattern-white-cotton)',
-      ratings: { softness: 5, breathability: 5, luxury: 4 },
-      weight: 'Light-Medium (150g/m)',
-      stretch: 'Medium (Natural Twill)',
-      softness: 'Super Soft (100% Giza)',
-      desc: 'Fine double-ply twill weave with a subtle sheen. Best for executive collared shirts and daily summer luxury.'
-    },
-    {
-      id: 'maroon-velvet',
-      name: 'Royal Maroon Velvet',
-      type: 'Luxury Velvet',
-      price: 1899,
-      fillUrl: 'url(#grad-maroon-velvet)',
-      ratings: { softness: 5, breathability: 3, luxury: 5 },
-      weight: 'Heavyweight (380g/m)',
-      stretch: 'Low (Stretch Weft)',
-      softness: 'Ultra Plush Velvet',
-      desc: 'Deep burgundy velvet with a plush pile that shines in light. Ideal for high-end wedding blazers and gowns.'
+export default function FabricMarketplace({ openAuthModal, currentUser, setRole, onCategorySelect, theme }) {
+  const [activeComboCategory, setActiveComboCategory] = useState('all');
+  const [selectedSpecsCombo, setSelectedSpecsCombo] = useState(null);
+
+  // Ref for categories scroll buttons
+  const catScrollRef = useRef(null);
+  const scrollCategories = (dir) => {
+    if (catScrollRef.current) {
+      const scrollAmt = 280;
+      catScrollRef.current.scrollBy({ left: dir === 'left' ? -scrollAmt : scrollAmt, behavior: 'smooth' });
     }
-  ];
-
-  const [activeFabricIdx, setActiveFabricIdx] = useState(0);
-  const currentFabric = swatches[activeFabricIdx];
-  const [waveActive, setWaveActive] = useState(false);
-
-  const handleFabricSelect = (idx) => {
-    setActiveFabricIdx(idx);
-    setWaveActive(true);
-    setTimeout(() => setWaveActive(false), 800); // 800ms cloth wave distortion duration
   };
 
-
-
-  const handleBookOutfit = (fabricName, catKey = 'all') => {
+  const handleBookOutfit = (comboTitle, catKey = 'all') => {
     if (!currentUser) {
       openAuthModal('customer', 'login');
     } else {
@@ -90,14 +30,154 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
     }
   };
 
-  // Ref for categories scroll buttons
-  const catScrollRef = useRef(null);
-  const scrollCategories = (dir) => {
-    if (catScrollRef.current) {
-      const scrollAmt = 280;
-      catScrollRef.current.scrollBy({ left: dir === 'left' ? -scrollAmt : scrollAmt, behavior: 'smooth' });
+  const COMBO_PACKAGES = [
+    {
+      id: 'italian-wool-suit',
+      category: 'suits',
+      title: 'Italian Super 150s Merino Wool + Bespoke 2-Piece Suit',
+      subtitle: 'Biella Wool Mill (Italy) • 3.5m Fabric + Full-Canvas Tailoring',
+      tag: 'Bestselling Luxury Suit Pack',
+      rating: '4.95',
+      reviews: 142,
+      price: 5999,
+      originalPrice: 7999,
+      saveAmount: 2000,
+      discountPercent: '25% OFF',
+      outfitImg: './why_join_2.jpg',
+      swatchImg: './men1.jpg',
+      swatchName: 'Charcoal Herringbone 150s',
+      fabricType: 'Pure Super 150s Merino Wool',
+      deliveryDays: '4-5 Days',
+      catKey: 'luxury',
+      inclusions: [
+        '3.5m Italian Super 150s Merino Wool fabric',
+        'Handcrafted 2-piece jacket & tailored trousers',
+        'Imported breathable Bemberg lining & horn buttons',
+        'Custom lapel, pocket, and interior monogramming',
+        'Free doorstep trial & infinite fit guarantee'
+      ],
+      specs: {
+        composition: '100% Super 150s Merino Wool',
+        weight: '280 GSM (All-Season Medium Weight)',
+        origin: 'Biella, Northern Italy',
+        weave: 'Twill / Micro-Herringbone Weave',
+        feel: 'Silky smooth, drape-holding structured finish',
+        tailoring: 'Full Canvas Construction with Horsehair Interfacing',
+        washCare: 'Dry Clean Only'
+      }
+    },
+    {
+      id: 'kanjeevaram-silk-blouse',
+      category: 'bridal',
+      title: 'Kanjeevaram Pattu Silk + Maggam & Aari Handwork Blouse',
+      subtitle: 'SilkMark Certified Pure Zari Silk • 1.25m Fabric + Artisanal Embroidery',
+      tag: 'Bridal Heritage Exclusive',
+      rating: '4.98',
+      reviews: 218,
+      price: 3299,
+      originalPrice: 4500,
+      saveAmount: 1201,
+      discountPercent: '27% OFF',
+      outfitImg: './bridal 5.jpg',
+      swatchImg: './bridal2.jpg',
+      swatchName: 'Crimson Gold Zari Pattu',
+      fabricType: 'Certified Pure Kanjeevaram Silk',
+      deliveryDays: '3-4 Days',
+      catKey: 'bridal',
+      inclusions: [
+        '1.25m Certified Pure Kanjeevaram Silk with Rich Border',
+        'Custom princess-cut or katori blouse stitching',
+        'Intricate neckline Maggam / Aari pearl hand embroidery',
+        'Dual-layer sweat-resistant cotton lining & padded cups',
+        'Doorstep trial with customized latkan tassel hangings'
+      ],
+      specs: {
+        composition: '100% Pure Mulberry Silk with Gold Zari Warp',
+        weight: '210 GSM (Heavy Luxury Silk)',
+        origin: 'Kanchipuram, Tamil Nadu',
+        weave: 'Korvai Handloom Interlocking Weave',
+        feel: 'Rich, lustrous texture with stiff royal drape',
+        tailoring: 'Master Artisan Hand Embroidery & Padded Fitting',
+        washCare: 'Professional Silk Dry Clean Only'
+      }
+    },
+    {
+      id: 'belgian-linen-shirt-trouser',
+      category: 'executive',
+      title: 'Pure Belgian Flax Linen + Executive Shirt & Trousers',
+      subtitle: '100% European Organic Flax • 3.2m Fabric + Slim-Fit Tailoring',
+      tag: 'Summer Royal Casual Pack',
+      rating: '4.90',
+      reviews: 96,
+      price: 1999,
+      originalPrice: 2600,
+      saveAmount: 601,
+      discountPercent: '23% OFF',
+      outfitImg: './why_join_1.jpg',
+      swatchImg: './men2.jpg',
+      swatchName: 'Oatmeal Cross-Hatch Linen',
+      fabricType: '100% Belgian Organic Flax Linen',
+      deliveryDays: '3 Days',
+      catKey: 'men',
+      inclusions: [
+        '3.2m Natural Belgian Flax Linen fabric',
+        'Custom tailored formal/casual shirt & pleated trousers',
+        'Mother-of-pearl buttons & fused structured collar',
+        'Pre-washed and pre-shrunk to eliminate post-wash shrinkage',
+        'Free home fitting trial & alteration guarantee'
+      ],
+      specs: {
+        composition: '100% European Certified Organic Flax',
+        weight: '185 GSM (Ultra-Breathable Light-Medium)',
+        origin: 'Flanders, Belgium',
+        weave: 'Airy Cross-Hatch Slub Weave',
+        feel: 'Crisp organic feel that softens luxuriously with every wash',
+        tailoring: 'Single-needle precision edge stitching',
+        washCare: 'Gentle Machine / Hand Wash, Steam Iron while damp'
+      }
+    },
+    {
+      id: 'banarasi-georgette-anarkali',
+      category: 'ethnic',
+      title: 'Banarasi Georgette + Designer Flared Anarkali / Gown',
+      subtitle: 'Hand-dyed Viscose Georgette with Antique Zari • 5.0m Fabric + Full Flared Stitching',
+      tag: 'Festive Glamour Pack',
+      rating: '4.92',
+      reviews: 134,
+      price: 4499,
+      originalPrice: 5800,
+      saveAmount: 1301,
+      discountPercent: '22% OFF',
+      outfitImg: './womensCollection.jpg',
+      swatchImg: './bridal3.jpg',
+      swatchName: 'Royal Emerald Antique Zari',
+      fabricType: 'Banarasi Hand-Dyed Georgette',
+      deliveryDays: '4-5 Days',
+      catKey: 'women',
+      inclusions: [
+        '5.0m Flowing Banarasi Georgette fabric with gold motifs',
+        'Custom floor-length 24-kali flared Anarkali or Party Gown',
+        'Full Santoon lining with structured canvas hemline border',
+        'Custom neck cutouts, zipper back & matching dupattas border',
+        'Free doorstep size capture & trial delivery'
+      ],
+      specs: {
+        composition: 'Pure Viscose Georgette with Antique Gold Zari',
+        weight: '160 GSM (Flowy & Dramatic Fall)',
+        origin: 'Varanasi, Uttar Pradesh',
+        weave: 'Kadhiwa Jacquard Floral Motifs',
+        feel: 'Lightweight, feather-soft with dynamic fluid movement',
+        tailoring: '24-Kali Flared Architecture with reinforced hem',
+        washCare: 'Dry Clean Recommended'
+      }
     }
-  };
+  ];
+
+  const filteredCombos = activeComboCategory === 'all' 
+    ? COMBO_PACKAGES 
+    : COMBO_PACKAGES.filter(c => c.category === activeComboCategory);
+
+  const isLight = theme === 'light';
 
   return (
     <section id="fabric-marketplace" className="fabric-marketplace-section">
@@ -108,10 +188,10 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
           <span className="badge" style={{ background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '6px 12px', borderRadius: 'var(--radius-full)', fontWeight: '600', fontSize: '0.78rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Curated Material Catalog
           </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginTop: '10px', color: '#fff' }}>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginTop: '10px', color: isLight ? '#0f172a' : '#fff' }}>
             Explore Premium Fabric Marketplace
           </h2>
-          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1.02rem', maxWidth: '600px', margin: '8px auto 0' }}>
+          <p style={{ color: isLight ? '#64748b' : 'var(--text-secondary)', marginTop: '8px', fontSize: '1.02rem', maxWidth: '600px', margin: '8px auto 0' }}>
             Choose from luxury fabrics sourced for perfect custom tailoring.
           </p>
         </div>
@@ -138,7 +218,7 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
                   <div className="cat-img-overlay"></div>
                 </div>
                 <div className="cat-info">
-                  <h4>{cat.name}</h4>
+                  <h4 style={{ color: isLight ? '#0f172a' : '#fff' }}>{cat.name}</h4>
                   <span className="price-tag">From {cat.price}/meter</span>
                 </div>
               </div>
@@ -147,12 +227,34 @@ export default function FabricMarketplace({ openAuthModal, currentUser, setRole,
           <button className="slider-nav-btn slider-right" onClick={() => scrollCategories('right')}>&#8594;</button>
         </div>
 
-        {/* 2 & 3. Featured Luxury & Swatches Mannequin Widget (Combined Grid) */}
-        <div className="fabric-mannequin-grid" style={{ margin: '4rem 0' }}>
+        {/* 2. Why Our Fabrics? */}
+        <div className="why-fabrics-section" style={{ margin: '4rem 0' }}>
+          <h3 style={{ fontSize: '1.6rem', fontWeight: 'bold', marginBottom: '20px', textAlign: 'center', color: isLight ? '#0f172a' : '#fff' }}>Why Our Fabrics?</h3>
+          <div className="why-fabrics-grid">
+            {[
+              { title: 'Premium Quality Checked', desc: 'Every meter undergoes strict thread count, color bleed, and shrinkage inspection.', icon: <Award size={20} /> },
+              { title: 'Imported Fabrics', desc: 'Direct sourcing of wool from Biella, linen from Belgium, and cotton from Giza.', icon: <Compass size={20} /> },
+              { title: 'Authentic Material', desc: 'Certified pure fabrics complete with official SilkMark and Woolmark certifications.', icon: <ShieldCheck size={20} /> },
+              { title: 'Best Stitch Compatibility', desc: 'Pre-treated fabric structures optimized for hand-stitching and tailored durability.', icon: <Scissors size={20} /> },
+              { title: 'Custom Fit Ready', desc: 'Sufficient fabric sizing allowance designed specifically for bespoke suit and shirt fittings.', icon: <Ruler size={20} /> },
+              { title: 'Long-lasting Quality', desc: 'Highly resilient fibers that maintain structure, fit, and sheen through repeated dry cleaning.', icon: <Sparkles size={20} /> }
+            ].map((why, idx) => (
+              <div key={idx} className="glass-card why-fabric-card" style={{ padding: '20px', display: 'flex', gap: '15px' }}>
+                <div className="why-icon-box" style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {why.icon}
+                </div>
+                <div>
+                  <h4 style={{ fontWeight: 'bold', fontSize: '0.98rem', color: isLight ? '#0f172a' : '#fff' }}>{why.title}</h4>
+                  <p style={{ color: isLight ? '#64748b' : 'var(--text-secondary)', fontSize: '0.78rem', marginTop: '4px', lineHeight: '1.4' }}>{why.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 3. Luxury Fabric + Stitch Combo Packages */}
+        <div className="stitch-combos-section" style={{ margin: '4.5rem 0' }}>
           
-          {/* Mannequin Interactive Widget */}
-          <div className="glass-card mannequin-widget-card" style={{ padding: '30px' }}>
-            <div className="mannequin-header" style={{ marginBottom: '20px' }}>
               <span className="badge-mini" style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.65rem', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>
                 Live Mannequin Preview
               </span>
