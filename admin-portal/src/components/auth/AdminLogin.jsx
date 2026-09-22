@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   ShieldAlert,
   ShieldCheck,
-  Smartphone,
   KeyRound,
   ArrowRight,
   ArrowLeft,
@@ -113,7 +112,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
       setResendTimer(30);
       setOtp(['', '', '', '', '', '']);
       setOtpError(null);
-    }, 600);
+    }, 500);
   };
 
   // Step 2: Handle Individual OTP Box Change
@@ -174,7 +173,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
     setIsLoading(true);
 
     setTimeout(() => {
-      // Default mock OTP verification ('123456' or any 6-digit code for demo convenience)
+      // Default mock OTP verification ('123456' or '000000' for demo convenience)
       if (enteredOtp !== '123456' && enteredOtp !== '000000') {
         setIsLoading(false);
         setOtpError('Invalid verification code. Please check and try again.');
@@ -186,7 +185,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
       if (onLoginSuccess && matchedAdmin) {
         onLoginSuccess(matchedAdmin);
       }
-    }, 700);
+    }, 600);
   };
 
   return (
@@ -197,75 +196,76 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
         {/* LEFT / BRANDING SECTION (Requirement #65) */}
         {/* ========================================================================= */}
         <div className="sb-login-branding-panel">
-          {/* Subtle decorative tailoring background pattern */}
+          {/* Subtle decorative tailoring stitch background */}
           <div className="sb-login-bg-decor">
             <svg viewBox="0 0 400 400" className="sb-login-thread-svg" fill="none">
               <path
-                d="M-50,200 C80,50 180,350 320,180 C400,80 480,240 550,150"
-                stroke="var(--sb-accent)"
+                d="M-50,200 C80,60 180,340 320,180 C400,80 480,240 550,150"
+                stroke="#f59e0b"
                 strokeWidth="2"
                 strokeDasharray="6 8"
-                opacity="0.25"
+                opacity="0.3"
               />
               <path
-                d="M-20,120 C100,280 220,90 350,260 C420,350 490,180 560,220"
-                stroke="var(--sb-primary-light)"
+                d="M-20,120 C100,270 220,90 350,250 C420,340 490,170 560,210"
+                stroke="#60a5fa"
                 strokeWidth="1.5"
                 strokeDasharray="4 6"
-                opacity="0.2"
+                opacity="0.25"
               />
             </svg>
           </div>
 
           <div className="sb-login-branding-content">
-            {/* Logo & Brand Name */}
-            <div className="sb-login-logo-lockup">
-              <div className="sb-login-logo-glow">
-                <img src="/logo.png" alt="StitchBee Logo" className="sb-login-logo-img" />
-              </div>
-              <div>
-                <h1 className="sb-login-brand-title">StitchBee</h1>
+            {/* Logo & Brand Header */}
+            <div>
+              <div className="sb-login-logo-lockup">
+                <img
+                  src="/logo.png"
+                  alt="StitchBee"
+                  style={{
+                    height: '42px',
+                    maxWidth: '160px',
+                    objectFit: 'contain',
+                    display: 'block'
+                  }}
+                />
                 <span className="sb-login-badge-enterprise">Central Admin Portal</span>
               </div>
+
+              {/* Tagline & Supporting Copy */}
+              <div className="sb-login-copy-block">
+                <h2 className="sb-login-tagline">
+                  "Where Every Stitch Matters"
+                </h2>
+                <p className="sb-login-supporting-text">
+                  Manage StitchBee operations, partners, orders and business performance from one place.
+                </p>
+              </div>
             </div>
 
-            {/* Tagline & Supporting Copy */}
-            <div className="sb-login-copy-block">
-              <h2 className="sb-login-tagline">
-                "Where Every Stitch Matters"
-              </h2>
-              <p className="sb-login-supporting-text">
-                Manage StitchBee operations, partners, orders and business performance from one place.
-              </p>
-            </div>
-
-            {/* Platform Feature / Metric Highlights */}
-            <div className="sb-login-metrics-grid">
-              <div className="sb-login-metric-card">
-                <div className="sb-login-metric-icon">
-                  <Scissors size={18} />
+            {/* Subtle Tailoring Illustration & Metrics */}
+            <div className="sb-login-middle-block">
+              <div className="sb-tailoring-visual">
+                <div className="sb-tailoring-badge">
+                  <Scissors size={20} color="#fbbf24" />
+                  <span className="text-xs font-semibold text-white">Bespoke Atelier Platform</span>
                 </div>
-                <div>
+              </div>
+
+              {/* Platform Feature / Metric Highlights */}
+              <div className="sb-login-metrics-grid">
+                <div className="sb-login-metric-card">
                   <div className="sb-login-metric-val">1,248</div>
                   <div className="sb-login-metric-lbl">Master Ateliers</div>
                 </div>
-              </div>
 
-              <div className="sb-login-metric-card">
-                <div className="sb-login-metric-icon">
-                  <Layers size={18} />
-                </div>
-                <div>
+                <div className="sb-login-metric-card">
                   <div className="sb-login-metric-val">18.6K+</div>
                   <div className="sb-login-metric-lbl">Orders Fulfilled</div>
                 </div>
-              </div>
 
-              <div className="sb-login-metric-card">
-                <div className="sb-login-metric-icon">
-                  <Sparkles size={18} />
-                </div>
-                <div>
+                <div className="sb-login-metric-card">
                   <div className="sb-login-metric-val">98.2%</div>
                   <div className="sb-login-metric-lbl">First-Fit SLA</div>
                 </div>
@@ -274,8 +274,8 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
             {/* Footer Trust & Security Badge */}
             <div className="sb-login-branding-footer">
-              <div className="flex items-center gap-2 text-xs text-[var(--sb-text-muted)]">
-                <Lock size={13} color="var(--sb-accent)" />
+              <div className="flex items-center gap-2 text-[11px] text-blue-200/70">
+                <Lock size={12} color="#fbbf24" />
                 <span>Enterprise TLS 1.3 Encryption • Multi-Factor OTP Security</span>
               </div>
             </div>
@@ -294,9 +294,15 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
               onClick={toggleTheme}
               className="sb-btn sb-btn-ghost sb-btn-sm"
               title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-              style={{ borderRadius: '50%', width: '36px', height: '36px', padding: 0 }}
+              style={{
+                borderRadius: '50%',
+                width: '34px',
+                height: '34px',
+                padding: 0,
+                color: theme === 'dark' ? 'var(--sb-accent)' : 'var(--sb-text-title)'
+              }}
             >
-              {theme === 'dark' ? <Sun size={17} color="var(--sb-accent)" /> : <Moon size={17} />}
+              {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
             </button>
           </div>
 
@@ -307,9 +313,18 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
             {step === 'MOBILE' && (
               <div className="sb-login-step-view">
                 <div className="sb-login-card-header">
-                  <div className="sb-login-mobile-badge-logo">
-                    <img src="/logo.png" alt="StitchBee" className="w-8 h-8 object-contain" />
-                  </div>
+                  {/* Neat constrained logo */}
+                  <img
+                    src="/logo.png"
+                    alt="StitchBee"
+                    style={{
+                      height: '34px',
+                      maxWidth: '140px',
+                      objectFit: 'contain',
+                      margin: '0 auto 14px auto',
+                      display: 'block'
+                    }}
+                  />
                   <h3 className="sb-login-card-title">Welcome Back</h3>
                   <p className="sb-login-card-subtitle">
                     Sign in to your StitchBee Admin Portal
@@ -319,7 +334,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                 {/* Security Error Alert (Requirement #67) */}
                 {securityError && (
                   <div className="sb-admin-security-alert">
-                    <ShieldAlert size={20} className="sb-security-alert-icon" />
+                    <ShieldAlert size={18} className="sb-security-alert-icon" />
                     <div className="sb-security-alert-content">
                       <div className="sb-security-alert-title">{securityError.title}</div>
                       <div className="sb-security-alert-desc">{securityError.message}</div>
@@ -374,8 +389,8 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                 {/* Authorized Demo Administrator Quick-Fill Chips */}
                 <div className="sb-login-demo-helper">
                   <div className="sb-demo-helper-header">
-                    <Info size={13} color="var(--sb-primary)" />
-                    <span>Quick Select Authorized Admin (Demo Testing):</span>
+                    <Info size={12} color="var(--sb-primary)" />
+                    <span>Demo Authorized Admin Accounts:</span>
                   </div>
                   <div className="sb-demo-chips-grid">
                     <button
@@ -384,7 +399,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                       className={`sb-demo-chip ${phone === '9845012345' ? 'active' : ''}`}
                     >
                       <span className="font-semibold">Kiran Kumar</span>
-                      <span className="text-[10px] text-[var(--sb-text-muted)]">Super Admin</span>
+                      <span className="sb-demo-chip-sub">Super Admin</span>
                     </button>
 
                     <button
@@ -393,7 +408,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                       className={`sb-demo-chip ${phone === '9845023456' ? 'active' : ''}`}
                     >
                       <span className="font-semibold">Sunil Rao</span>
-                      <span className="text-[10px] text-[var(--sb-text-muted)]">Operations</span>
+                      <span className="sb-demo-chip-sub">Operations</span>
                     </button>
 
                     <button
@@ -401,8 +416,8 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                       onClick={() => handleQuickFill('9876543210')}
                       className={`sb-demo-chip ${phone === '9876543210' ? 'active' : ''}`}
                     >
-                      <span className="font-semibold">Demo Admin</span>
-                      <span className="text-[10px] text-[var(--sb-accent)] font-bold">98765 43210</span>
+                      <span className="font-semibold">Demo Master</span>
+                      <span className="sb-demo-chip-sub text-[var(--sb-accent)] font-bold">98765 43210</span>
                     </button>
                   </div>
                 </div>
@@ -424,7 +439,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
                 <div className="sb-login-card-header">
                   <div className="sb-login-otp-icon-wrap">
-                    <KeyRound size={24} color="var(--sb-primary)" />
+                    <KeyRound size={22} color="var(--sb-primary)" />
                   </div>
                   <h3 className="sb-login-card-title">Verify Your Mobile Number</h3>
                   <p className="sb-login-card-subtitle">
@@ -435,7 +450,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                   </p>
                   {matchedAdmin && (
                     <div className="sb-login-admin-badge-preview">
-                      Admin: <strong>{matchedAdmin.name}</strong> ({matchedAdmin.role})
+                      Admin: <strong>{matchedAdmin.name}</strong> • {matchedAdmin.role}
                     </div>
                   )}
                 </div>
@@ -468,7 +483,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
                   {/* Demo OTP Helper Notice */}
                   <div className="sb-otp-demo-hint">
-                    <span>Default test code: </span>
+                    <span>Default demo code: </span>
                     <strong className="font-mono text-[var(--sb-accent)] bg-[var(--sb-accent-light)] px-1.5 py-0.5 rounded">
                       123456
                     </strong>
@@ -524,7 +539,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
       </div>
 
-      {/* Embedded CSS for Login Flow */}
+      {/* Embedded CSS for Clean Responsive Login Flow */}
       <style>{`
         .sb-admin-login-wrapper {
           min-height: 100vh;
@@ -532,18 +547,18 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--sb-bg-body);
+          background: var(--sb-bg-app);
           padding: 24px;
           box-sizing: border-box;
         }
 
         .sb-admin-login-container {
           width: 100%;
-          max-width: 1060px;
-          min-height: 600px;
+          max-width: 980px;
+          min-height: 560px;
           background: var(--sb-bg-surface);
           border: 1px solid var(--sb-border-default);
-          border-radius: 24px;
+          border-radius: 20px;
           box-shadow: var(--sb-shadow-dropdown);
           display: grid;
           grid-template-columns: 1fr 1.15fr;
@@ -555,7 +570,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
         .sb-login-branding-panel {
           background: linear-gradient(145deg, #1e3a8a 0%, #172554 100%);
           color: #ffffff;
-          padding: 48px;
+          padding: 40px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -572,7 +587,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
         .sb-login-thread-svg {
           position: absolute;
-          top: -20px;
+          top: -30px;
           left: -40px;
           width: 140%;
           height: 140%;
@@ -585,110 +600,106 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           flex-direction: column;
           height: 100%;
           justify-content: space-between;
+          gap: 24px;
         }
 
         .sb-login-logo-lockup {
           display: flex;
           align-items: center;
-          gap: 14px;
-        }
-
-        .sb-login-logo-glow {
-          width: 48px;
-          height: 48px;
-          border-radius: 14px;
-          background: #ffffff;
-          padding: 6px;
-          box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .sb-login-logo-img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-
-        .sb-login-brand-title {
-          font-size: 1.5rem;
-          font-weight: 800;
-          color: #ffffff;
-          letter-spacing: -0.02em;
-          margin: 0;
-          line-height: 1.1;
+          gap: 12px;
         }
 
         .sb-login-badge-enterprise {
-          font-size: 0.72rem;
-          font-weight: 600;
+          display: inline-block;
+          font-size: 0.68rem;
+          font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.08em;
           color: #fcd34d;
+          background: rgba(251, 191, 36, 0.15);
+          padding: 3px 8px;
+          border-radius: 6px;
+          border: 1px solid rgba(251, 191, 36, 0.3);
+          margin-top: 4px;
         }
 
         .sb-login-copy-block {
-          margin: 36px 0 28px 0;
+          margin-top: 24px;
         }
 
         .sb-login-tagline {
-          font-size: 1.45rem;
+          font-size: 1.35rem;
           font-weight: 700;
           color: #fbbf24;
           letter-spacing: -0.01em;
           line-height: 1.3;
-          margin: 0 0 12px 0;
+          margin: 0 0 10px 0;
         }
 
         .sb-login-supporting-text {
-          font-size: 0.88rem;
-          color: #93c5fd;
-          line-height: 1.55;
+          font-size: 0.85rem;
+          color: #bfdbfe;
+          line-height: 1.5;
           margin: 0;
+        }
+
+        .sb-login-middle-block {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .sb-tailoring-visual {
+          display: flex;
+          align-items: center;
+        }
+
+        .sb-tailoring-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          padding: 8px 14px;
+          border-radius: 999px;
         }
 
         .sb-login-metrics-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
-          margin-bottom: 24px;
+          gap: 10px;
         }
 
         .sb-login-metric-card {
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          backdrop-filter: blur(8px);
-          border-radius: 12px;
-          padding: 12px;
-        }
-
-        .sb-login-metric-icon {
-          color: #fbbf24;
-          margin-bottom: 6px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(6px);
+          border-radius: 10px;
+          padding: 10px;
+          text-align: center;
         }
 
         .sb-login-metric-val {
-          font-size: 1.1rem;
+          font-size: 1.05rem;
           font-weight: 800;
           color: #ffffff;
           line-height: 1.1;
         }
 
         .sb-login-metric-lbl {
-          font-size: 0.68rem;
-          color: #bfdbfe;
-          margin-top: 2px;
+          font-size: 0.65rem;
+          color: #93c5fd;
+          margin-top: 3px;
         }
 
         .sb-login-branding-footer {
-          padding-top: 18px;
+          padding-top: 14px;
           border-top: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         /* Form Panel (Right) */
         .sb-login-form-panel {
-          padding: 40px;
+          padding: 36px 40px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -699,52 +710,41 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           display: flex;
           justify-content: flex-end;
           align-items: center;
+          margin-bottom: 8px;
         }
 
         .sb-login-card {
-          max-width: 400px;
+          max-width: 380px;
           width: 100%;
           margin: 0 auto;
         }
 
         .sb-login-card-header {
           text-align: center;
-          margin-bottom: 24px;
-        }
-
-        .sb-login-mobile-badge-logo {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 44px;
-          height: 44px;
-          background: var(--sb-bg-surface-subtle);
-          border-radius: 12px;
-          border: 1px solid var(--sb-border-default);
-          margin-bottom: 12px;
+          margin-bottom: 20px;
         }
 
         .sb-login-otp-icon-wrap {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 48px;
-          height: 48px;
-          border-radius: 14px;
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
           background: var(--sb-primary-light);
-          margin-bottom: 12px;
+          margin-bottom: 10px;
         }
 
         .sb-login-card-title {
-          font-size: 1.35rem;
+          font-size: 1.3rem;
           font-weight: 800;
           color: var(--sb-text-title);
-          margin: 0 0 6px 0;
+          margin: 0 0 4px 0;
           letter-spacing: -0.02em;
         }
 
         .sb-login-card-subtitle {
-          font-size: 0.84rem;
+          font-size: 0.82rem;
           color: var(--sb-text-muted);
           margin: 0;
           line-height: 1.4;
@@ -753,10 +753,10 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
         .sb-login-admin-badge-preview {
           display: inline-block;
           margin-top: 8px;
-          font-size: 0.76rem;
+          font-size: 0.74rem;
           color: var(--sb-primary);
           background: var(--sb-primary-light);
-          padding: 4px 10px;
+          padding: 3px 10px;
           border-radius: 999px;
           border: 1px solid var(--sb-blue-200);
         }
@@ -766,35 +766,35 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           background: var(--sb-status-failed-bg);
           border: 1px solid var(--sb-status-failed-border);
           color: var(--sb-status-failed);
-          border-radius: 12px;
-          padding: 12px 14px;
+          border-radius: 10px;
+          padding: 10px 12px;
           display: flex;
           align-items: flex-start;
           gap: 10px;
-          margin-bottom: 20px;
-          font-size: 0.8rem;
+          margin-bottom: 16px;
+          font-size: 0.78rem;
           animation: sbFadeIn 0.2s ease-out;
         }
 
         .sb-security-alert-title {
           font-weight: 700;
           color: var(--sb-status-failed);
-          margin-bottom: 2px;
+          margin-bottom: 1px;
         }
 
         .sb-security-alert-desc {
           color: var(--sb-text-body);
-          line-height: 1.35;
+          line-height: 1.3;
         }
 
         /* Phone Input Group */
         .sb-form-group {
-          margin-bottom: 18px;
+          margin-bottom: 16px;
         }
 
         .sb-input-label {
           display: block;
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           font-weight: 600;
           color: var(--sb-text-title);
           margin-bottom: 6px;
@@ -822,7 +822,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-size: 0.84rem;
+          font-size: 0.82rem;
           color: var(--sb-text-title);
           user-select: none;
         }
@@ -832,7 +832,7 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           border: none;
           outline: none;
           padding: 10px 14px;
-          font-size: 0.95rem;
+          font-size: 0.92rem;
           font-weight: 600;
           letter-spacing: 0.05em;
           color: var(--sb-text-title);
@@ -850,14 +850,14 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           display: flex;
           justify-content: space-between;
           gap: 8px;
-          margin-bottom: 14px;
+          margin-bottom: 12px;
         }
 
         .sb-otp-input-box {
-          width: 48px;
-          height: 52px;
+          width: 44px;
+          height: 48px;
           text-align: center;
-          font-size: 1.3rem;
+          font-size: 1.25rem;
           font-weight: 700;
           color: var(--sb-text-title);
           background: var(--sb-bg-surface);
@@ -880,14 +880,14 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
         .sb-otp-demo-hint {
           text-align: center;
-          font-size: 0.76rem;
+          font-size: 0.74rem;
           color: var(--sb-text-muted);
-          margin-bottom: 18px;
+          margin-bottom: 16px;
         }
 
         .sb-login-submit-btn {
-          height: 44px;
-          font-size: 0.88rem;
+          height: 42px;
+          font-size: 0.86rem;
           font-weight: 700;
           border-radius: 10px;
         }
@@ -897,21 +897,21 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           align-items: center;
           justify-content: center;
           gap: 6px;
-          font-size: 0.74rem;
+          font-size: 0.72rem;
           color: var(--sb-text-muted);
-          margin-top: 14px;
+          margin-top: 12px;
         }
 
         .sb-otp-resend-row {
           text-align: center;
-          margin-top: 16px;
+          margin-top: 14px;
         }
 
         .sb-btn-resend-active {
           background: transparent;
           border: none;
           color: var(--sb-primary);
-          font-size: 0.8rem;
+          font-size: 0.78rem;
           font-weight: 600;
           cursor: pointer;
           text-decoration: underline;
@@ -924,11 +924,11 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           background: transparent;
           border: none;
           color: var(--sb-text-muted);
-          font-size: 0.78rem;
+          font-size: 0.76rem;
           font-weight: 600;
           cursor: pointer;
           padding: 0;
-          margin-bottom: 16px;
+          margin-bottom: 14px;
           transition: color var(--sb-transition-fast);
         }
 
@@ -938,8 +938,8 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
         /* Demo Helper Box */
         .sb-login-demo-helper {
-          margin-top: 24px;
-          padding-top: 18px;
+          margin-top: 20px;
+          padding-top: 16px;
           border-top: 1px dashed var(--sb-border-default);
         }
 
@@ -947,10 +947,10 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           display: flex;
           align-items: center;
           gap: 6px;
-          font-size: 0.74rem;
+          font-size: 0.72rem;
           font-weight: 600;
           color: var(--sb-text-title);
-          margin-bottom: 10px;
+          margin-bottom: 8px;
         }
 
         .sb-demo-chips-grid {
@@ -963,15 +963,21 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 8px 6px;
+          padding: 7px 4px;
           background: var(--sb-bg-surface-subtle);
           border: 1px solid var(--sb-border-default);
           border-radius: 8px;
           cursor: pointer;
           text-align: center;
-          font-size: 0.74rem;
+          font-size: 0.72rem;
           color: var(--sb-text-title);
           transition: all var(--sb-transition-fast);
+        }
+
+        .sb-demo-chip-sub {
+          font-size: 0.65rem;
+          color: var(--sb-text-muted);
+          margin-top: 1px;
         }
 
         .sb-demo-chip:hover, .sb-demo-chip.active {
@@ -982,22 +988,22 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
 
         .sb-login-card-footernote {
           text-align: center;
-          font-size: 0.72rem;
+          font-size: 0.7rem;
           color: var(--sb-text-muted);
-          padding-top: 16px;
+          padding-top: 14px;
         }
 
         /* Responsive Breakpoints */
-        @media (max-width: 900px) {
+        @media (max-width: 860px) {
           .sb-admin-login-container {
             grid-template-columns: 1fr;
-            max-width: 480px;
+            max-width: 440px;
           }
           .sb-login-branding-panel {
             display: none;
           }
           .sb-login-form-panel {
-            padding: 32px 24px;
+            padding: 30px 20px;
           }
         }
       `}</style>
