@@ -220,16 +220,25 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
             {/* Logo & Brand Header */}
             <div>
               <div className="sb-login-logo-lockup">
-                <img
-                  src="/logo.png"
-                  alt="StitchBee"
-                  style={{
-                    height: '42px',
-                    maxWidth: '160px',
-                    objectFit: 'contain',
-                    display: 'block'
-                  }}
-                />
+                <div style={{
+                  background: '#ffffff',
+                  padding: '10px 20px',
+                  borderRadius: '14px',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.18)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '12px'
+                }}>
+                  <img
+                    src="/logo.png"
+                    alt="StitchBee"
+                    style={{
+                      height: '44px',
+                      width: 'auto',
+                      display: 'block'
+                    }}
+                  />
+                </div>
                 <span className="sb-login-badge-enterprise">Central Admin Portal</span>
               </div>
 
@@ -313,18 +322,17 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
             {step === 'MOBILE' && (
               <div className="sb-login-step-view">
                 <div className="sb-login-card-header">
-                  {/* Neat constrained logo */}
-                  <img
-                    src="/logo.png"
-                    alt="StitchBee"
-                    style={{
-                      height: '34px',
-                      maxWidth: '140px',
-                      objectFit: 'contain',
-                      margin: '0 auto 14px auto',
-                      display: 'block'
-                    }}
-                  />
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
+                    <img
+                      src="/logo.png"
+                      alt="StitchBee"
+                      style={{
+                        height: '52px',
+                        width: 'auto',
+                        display: 'block'
+                      }}
+                    />
+                  </div>
                   <h3 className="sb-login-card-title">Welcome Back</h3>
                   <p className="sb-login-card-subtitle">
                     Sign in to your StitchBee Admin Portal
@@ -438,8 +446,16 @@ export default function AdminLogin({ onLoginSuccess, theme, setTheme }) {
                 </button>
 
                 <div className="sb-login-card-header">
-                  <div className="sb-login-otp-icon-wrap">
-                    <KeyRound size={22} color="var(--sb-primary)" />
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+                    <img
+                      src="/logo.png"
+                      alt="StitchBee"
+                      style={{
+                        height: '44px',
+                        width: 'auto',
+                        display: 'block'
+                      }}
+                    />
                   </div>
                   <h3 className="sb-login-card-title">Verify Your Mobile Number</h3>
                   <p className="sb-login-card-subtitle">
