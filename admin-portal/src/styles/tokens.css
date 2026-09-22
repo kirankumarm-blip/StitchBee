@@ -1,0 +1,214 @@
+/* ==========================================================================
+   STITCHBEE ADMIN DESIGN TOKENS
+   Visual Identity: StitchBee Blue (#1e40af / #2563eb) + StitchBee Gold (#f59e0b / #d97706)
+   Typography: Inter
+   Theme: Light & Dark Modes
+   ========================================================================== */
+
+:root {
+  /* StitchBee Brand Palette */
+  --sb-blue-50: #eff6ff;
+  --sb-blue-100: #dbeafe;
+  --sb-blue-200: #bfdbfe;
+  --sb-blue-300: #93c5fd;
+  --sb-blue-400: #60a5fa;
+  --sb-blue-500: #3b82f6;
+  --sb-blue-600: #2563eb;
+  --sb-blue-700: #1d4ed8;
+  --sb-blue-800: #1e40af;
+  --sb-blue-900: #1e3a8a;
+  --sb-blue-950: #172554;
+
+  --sb-gold-50: #fffbeb;
+  --sb-gold-100: #fef3c7;
+  --sb-gold-200: #fde68a;
+  --sb-gold-300: #fcd34d;
+  --sb-gold-400: #fbbf24;
+  --sb-gold-500: #f59e0b;
+  --sb-gold-600: #d97706;
+  --sb-gold-700: #b45309;
+  --sb-gold-800: #92400e;
+  --sb-gold-900: #78350f;
+
+  /* Neutrals */
+  --sb-neutral-white: #ffffff;
+  --sb-neutral-50: #f8fafc;
+  --sb-neutral-100: #f1f5f9;
+  --sb-neutral-200: #e2e8f0;
+  --sb-neutral-300: #cbd5e1;
+  --sb-neutral-400: #94a3b8;
+  --sb-neutral-500: #64748b;
+  --sb-neutral-600: #475569;
+  --sb-neutral-700: #334155;
+  --sb-neutral-800: #1e293b;
+  --sb-neutral-900: #0f172a;
+  --sb-neutral-950: #0b0f19;
+
+  /* Status Colors */
+  --sb-status-success: #10b981;
+  --sb-status-success-bg: #ecfdf5;
+  --sb-status-success-border: #a7f3d0;
+  
+  --sb-status-pending: #f59e0b;
+  --sb-status-pending-bg: #fffbeb;
+  --sb-status-pending-border: #fde68a;
+
+  --sb-status-failed: #ef4444;
+  --sb-status-failed-bg: #fef2f2;
+  --sb-status-failed-border: #fecaca;
+
+  --sb-status-cancelled: #94a3b8;
+  --sb-status-cancelled-bg: #f1f5f9;
+  --sb-status-cancelled-border: #e2e8f0;
+
+  --sb-status-progress: #2563eb;
+  --sb-status-progress-bg: #eff6ff;
+  --sb-status-progress-border: #bfdbfe;
+
+  --sb-status-suspended: #64748b;
+  --sb-status-suspended-bg: #f8fafc;
+  --sb-status-suspended-border: #cbd5e1;
+
+  /* Typography */
+  --sb-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --sb-font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Spacing */
+  --sb-sidebar-width: 260px;
+  --sb-sidebar-collapsed-width: 72px;
+  --sb-header-height: 64px;
+
+  /* Border Radii */
+  --sb-radius-sm: 6px;
+  --sb-radius-md: 10px;
+  --sb-radius-lg: 14px;
+  --sb-radius-xl: 20px;
+  --sb-radius-full: 9999px;
+
+  /* Transitions */
+  --sb-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --sb-transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --sb-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   LIGHT MODE (Default)
+   ========================================================================== */
+:root,
+body.light-mode {
+  color-scheme: light;
+  --sb-bg-app: var(--sb-neutral-50);
+  --sb-bg-surface: var(--sb-neutral-white);
+  --sb-bg-surface-subtle: #f8fafc;
+  --sb-bg-surface-hover: var(--sb-neutral-100);
+  --sb-bg-sidebar: var(--sb-neutral-white);
+  --sb-bg-header: rgba(255, 255, 255, 0.85);
+
+  --sb-border-subtle: #f1f5f9;
+  --sb-border-default: #e2e8f0;
+  --sb-border-strong: #cbd5e1;
+
+  --sb-text-title: #0f172a;
+  --sb-text-body: #334155;
+  --sb-text-muted: #64748b;
+  --sb-text-subtle: #94a3b8;
+
+  /* Primary Brand (StitchBee Blue) */
+  --sb-primary: var(--sb-blue-600);
+  --sb-primary-hover: var(--sb-blue-700);
+  --sb-primary-light: var(--sb-blue-50);
+  --sb-primary-border: var(--sb-blue-200);
+  --sb-primary-contrast: #ffffff;
+
+  /* Secondary Brand (StitchBee Gold) */
+  --sb-accent: var(--sb-gold-500);
+  --sb-accent-hover: var(--sb-gold-600);
+  --sb-accent-light: var(--sb-gold-50);
+  --sb-accent-border: var(--sb-gold-200);
+  --sb-accent-contrast: #ffffff;
+
+  /* Elevation Shadows */
+  --sb-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --sb-shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.05);
+  --sb-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --sb-shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --sb-shadow-dropdown: 0 12px 30px -4px rgba(15, 23, 42, 0.12), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
+
+  /* Charts */
+  --sb-chart-primary: #2563eb;
+  --sb-chart-secondary: #f59e0b;
+  --sb-chart-grid: #e2e8f0;
+  --sb-chart-tooltip-bg: #ffffff;
+  --sb-chart-tooltip-border: #cbd5e1;
+  --sb-chart-tooltip-text: #0f172a;
+}
+
+/* ==========================================================================
+   DARK MODE
+   ========================================================================== */
+body.dark-mode {
+  color-scheme: dark;
+  --sb-bg-app: #0b0f19;
+  --sb-bg-surface: #131b2e;
+  --sb-bg-surface-subtle: #18233c;
+  --sb-bg-surface-hover: #1e2c4a;
+  --sb-bg-sidebar: #0f172a;
+  --sb-bg-header: rgba(15, 23, 42, 0.85);
+
+  --sb-border-subtle: #18233c;
+  --sb-border-default: #1e2c4a;
+  --sb-border-strong: #334155;
+
+  --sb-text-title: #f8fafc;
+  --sb-text-body: #cbd5e1;
+  --sb-text-muted: #94a3b8;
+  --sb-text-subtle: #64748b;
+
+  /* Primary Brand (StitchBee Blue in Dark Mode) */
+  --sb-primary: #3b82f6;
+  --sb-primary-hover: #60a5fa;
+  --sb-primary-light: rgba(59, 130, 246, 0.16);
+  --sb-primary-border: rgba(59, 130, 246, 0.35);
+  --sb-primary-contrast: #ffffff;
+
+  /* Secondary Brand (StitchBee Gold in Dark Mode) */
+  --sb-accent: #f59e0b;
+  --sb-accent-hover: #fbbf24;
+  --sb-accent-light: rgba(245, 158, 11, 0.16);
+  --sb-accent-border: rgba(245, 158, 11, 0.35);
+  --sb-accent-contrast: #ffffff;
+
+  /* Status Colors Dark Adaptations */
+  --sb-status-success-bg: rgba(16, 185, 129, 0.15);
+  --sb-status-success-border: rgba(16, 185, 129, 0.35);
+
+  --sb-status-pending-bg: rgba(245, 158, 11, 0.15);
+  --sb-status-pending-border: rgba(245, 158, 11, 0.35);
+
+  --sb-status-failed-bg: rgba(239, 68, 68, 0.15);
+  --sb-status-failed-border: rgba(239, 68, 68, 0.35);
+
+  --sb-status-cancelled-bg: rgba(148, 163, 184, 0.12);
+  --sb-status-cancelled-border: rgba(148, 163, 184, 0.25);
+
+  --sb-status-progress-bg: rgba(59, 130, 246, 0.15);
+  --sb-status-progress-border: rgba(59, 130, 246, 0.35);
+
+  --sb-status-suspended-bg: rgba(100, 116, 139, 0.15);
+  --sb-status-suspended-border: rgba(100, 116, 139, 0.3);
+
+  /* Shadows for Dark Mode */
+  --sb-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --sb-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --sb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.45), 0 2px 4px -2px rgba(0, 0, 0, 0.35);
+  --sb-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --sb-shadow-dropdown: 0 12px 30px -4px rgba(0, 0, 0, 0.65), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+
+  /* Charts Dark */
+  --sb-chart-primary: #3b82f6;
+  --sb-chart-secondary: #fbbf24;
+  --sb-chart-grid: #1e2c4a;
+  --sb-chart-tooltip-bg: #131b2e;
+  --sb-chart-tooltip-border: #334155;
+  --sb-chart-tooltip-text: #f8fafc;
+}
