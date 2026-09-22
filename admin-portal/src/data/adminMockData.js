@@ -392,6 +392,19 @@ export const MOCK_ORDERS = [
   }
 ];
 
+// Normalize MOCK_ORDERS fields for multi-view compatibility
+MOCK_ORDERS.forEach(order => {
+  if (order.value !== undefined && order.totalAmount === undefined) {
+    order.totalAmount = order.value;
+  }
+  if (order.orderStatus !== undefined && order.status === undefined) {
+    order.status = order.orderStatus;
+  }
+  if (order.expectedDate !== undefined && order.estimatedDelivery === undefined) {
+    order.estimatedDelivery = order.expectedDate;
+  }
+});
+
 // Tailors Full Dataset & Verification
 export const MOCK_TAILORS = [
   {

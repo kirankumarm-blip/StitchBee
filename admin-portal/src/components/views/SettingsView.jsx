@@ -19,12 +19,12 @@ import {
   MOCK_ADMIN_USERS,
   PERMISSION_MATRIX
 } from '../../data/adminMockData';
-import { StatusBadge } from '../common/StatusBadge';
+import StatusBadge from '../common/StatusBadge';
 
 export const SettingsView = ({ showToast }) => {
   const [activeTab, setActiveTab] = useState('platform');
-  const [settings, setSettings] = useState(PLATFORM_SETTINGS);
-  const [adminUsers, setAdminUsers] = useState(MOCK_ADMIN_USERS);
+  const [settings, setSettings] = useState(PLATFORM_SETTINGS || {});
+  const [adminUsers, setAdminUsers] = useState(MOCK_ADMIN_USERS || []);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Operations Admin' });
 
@@ -71,116 +71,107 @@ export const SettingsView = ({ showToast }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Header */}
       <div>
-        <h2 className="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
-          <Settings className="w-6 h-6 text-[var(--color-primary)]" />
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--sb-text-title)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+          <Settings style={{ width: '22px', height: '22px', color: 'var(--sb-primary)' }} />
           Settings & Access Control
         </h2>
-        <p className="text-sm text-[var(--color-text-secondary)] mt-0.5">
+        <p style={{ fontSize: '0.8rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
           Configure marketplace fees, payment gateway connections, admin team permissions, and operational limits.
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-[var(--color-border)]">
+      <div className="sb-tabs-nav">
         <button
+          type="button"
           onClick={() => setActiveTab('platform')}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-all border-b-2 flex items-center gap-2 ${
-            activeTab === 'platform'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary-light)]'
-              : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-          }`}
+          className={`sb-tab-item ${activeTab === 'platform' ? 'active' : ''}`}
         >
-          <Sliders className="w-4 h-4" />
+          <Sliders style={{ width: '16px', height: '16px' }} />
           Platform Configuration
         </button>
 
         <button
+          type="button"
           onClick={() => setActiveTab('team')}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-all border-b-2 flex items-center gap-2 ${
-            activeTab === 'team'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary-light)]'
-              : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-          }`}
+          className={`sb-tab-item ${activeTab === 'team' ? 'active' : ''}`}
         >
-          <Users className="w-4 h-4" />
+          <Users style={{ width: '16px', height: '16px' }} />
           Admin Users & Roles ({adminUsers.length})
         </button>
 
         <button
+          type="button"
           onClick={() => setActiveTab('permissions')}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-all border-b-2 flex items-center gap-2 ${
-            activeTab === 'permissions'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary-light)]'
-              : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-          }`}
+          className={`sb-tab-item ${activeTab === 'permissions' ? 'active' : ''}`}
         >
-          <ShieldCheck className="w-4 h-4" />
+          <ShieldCheck style={{ width: '16px', height: '16px' }} />
           Role Permission Matrix
         </button>
       </div>
 
       {/* Tab 1: Platform Configuration */}
       {activeTab === 'platform' && (
-        <form onSubmit={handleSavePlatformSettings} className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <form onSubmit={handleSavePlatformSettings} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
             {/* Commercial & Fees */}
-            <div className="sb-card p-5 space-y-4">
-              <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                <Percent className="w-4 h-4 text-[var(--color-primary)]" />
+            <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid var(--sb-border-default)', paddingBottom: '10px', margin: 0 }}>
+                <Percent style={{ width: '18px', height: '18px', color: 'var(--sb-primary)' }} />
                 Commission & Pricing Rules
               </h3>
 
-              <div className="space-y-3 text-xs">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.78rem' }}>
                 <div>
-                  <label className="font-semibold text-[var(--color-text)] block mb-1">
+                  <label style={{ fontWeight: 600, color: 'var(--sb-text-title)', display: 'block', marginBottom: '6px' }}>
                     Platform Commission Rate (%)
                   </label>
                   <input
                     type="number"
-                    value={settings.platformCommissionPercent}
+                    value={settings.platformCommissionPercent || 15}
                     onChange={(e) =>
                       setSettings({ ...settings, platformCommissionPercent: Number(e.target.value) })
                     }
-                    className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                    className="sb-input"
                   />
-                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1">
+                  <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
                     Standard percentage deducted from tailoring and designer GMV per completed order.
                   </p>
                 </div>
 
                 <div>
-                  <label className="font-semibold text-[var(--color-text)] block mb-1">
+                  <label style={{ fontWeight: 600, color: 'var(--sb-text-title)', display: 'block', marginBottom: '6px' }}>
                     Express 24-48h Delivery Surge (%)
                   </label>
                   <input
                     type="number"
-                    value={settings.expressDeliverySurgePercent}
+                    value={settings.expressDeliverySurgePercent || 25}
                     onChange={(e) =>
                       setSettings({ ...settings, expressDeliverySurgePercent: Number(e.target.value) })
                     }
-                    className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                    className="sb-input"
                   />
-                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1">
+                  <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
                     Additional premium added for urgent doorstep tailoring jobs.
                   </p>
                 </div>
 
                 <div>
-                  <label className="font-semibold text-[var(--color-text)] block mb-1">
+                  <label style={{ fontWeight: 600, color: 'var(--sb-text-title)', display: 'block', marginBottom: '6px' }}>
                     Free Alteration Window (Days)
                   </label>
                   <input
                     type="number"
-                    value={settings.freeAlterationDays}
+                    value={settings.freeAlterationDays || 7}
                     onChange={(e) =>
                       setSettings({ ...settings, freeAlterationDays: Number(e.target.value) })
                     }
-                    className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                    className="sb-input"
                   />
-                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1">
+                  <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
                     Days after delivery during which a customer can request 100% free fit rework.
                   </p>
                 </div>
@@ -188,57 +179,57 @@ export const SettingsView = ({ showToast }) => {
             </div>
 
             {/* Operational Radii & Automations */}
-            <div className="sb-card p-5 space-y-4">
-              <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2 border-b border-[var(--color-border)] pb-2">
-                <Truck className="w-4 h-4 text-[var(--color-accent)]" />
+            <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid var(--sb-border-default)', paddingBottom: '10px', margin: 0 }}>
+                <Truck style={{ width: '18px', height: '18px', color: 'var(--sb-accent)' }} />
                 Logistics & Automated Dispatch
               </h3>
 
-              <div className="space-y-3 text-xs">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.78rem' }}>
                 <div>
-                  <label className="font-semibold text-[var(--color-text)] block mb-1">
+                  <label style={{ fontWeight: 600, color: 'var(--sb-text-title)', display: 'block', marginBottom: '6px' }}>
                     Max Home Visit Radius for Measurements (km)
                   </label>
                   <input
                     type="number"
-                    value={settings.maxHomeVisitRadiusKm}
+                    value={settings.maxHomeVisitRadiusKm || 25}
                     onChange={(e) =>
                       setSettings({ ...settings, maxHomeVisitRadiusKm: Number(e.target.value) })
                     }
-                    className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                    className="sb-input"
                   />
-                  <p className="text-[11px] text-[var(--color-text-muted)] mt-1">
+                  <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
                     Maximum serviceable radius from central cluster hub for fashion gig partners.
                   </p>
                 </div>
 
-                <div className="pt-2">
-                  <div className="flex items-center justify-between p-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-hover)]">
+                <div style={{ paddingTop: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface-hover)' }}>
                     <div>
-                      <p className="font-semibold text-[var(--color-text)]">
+                      <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: 0 }}>
                         Auto-Assign Delivery Partner
                       </p>
-                      <p className="text-[11px] text-[var(--color-text-muted)]">
+                      <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
                         Automatically dispatch the nearest available delivery hero based on GPS.
                       </p>
                     </div>
                     <input
                       type="checkbox"
-                      checked={settings.autoAssignDelivery}
+                      checked={!!settings.autoAssignDelivery}
                       onChange={(e) =>
                         setSettings({ ...settings, autoAssignDelivery: e.target.checked })
                       }
-                      className="w-4 h-4 accent-[var(--color-primary)] rounded cursor-pointer"
+                      style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--sb-primary)' }}
                     />
                   </div>
                 </div>
               </div>
 
               {/* Payment Gateway Toggles */}
-              <h4 className="font-bold text-xs text-[var(--color-text)] uppercase tracking-wider pt-2">
+              <h4 style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--sb-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '8px 0 0 0' }}>
                 Connected Payment Gateways
               </h4>
-              <div className="space-y-2 text-xs">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.78rem' }}>
                 {[
                   { key: 'razorpayActive', name: 'Razorpay PG', desc: 'UPI, Credit/Debit Cards, NetBanking' },
                   { key: 'cashfreeActive', name: 'Cashfree Payments', desc: 'Instant UPI Intent & Payouts' },
@@ -246,17 +237,17 @@ export const SettingsView = ({ showToast }) => {
                 ].map((gw) => (
                   <div
                     key={gw.key}
-                    className="flex items-center justify-between p-2.5 rounded-lg border border-[var(--color-border)]"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)' }}
                   >
                     <div>
-                      <p className="font-semibold text-[var(--color-text)]">{gw.name}</p>
-                      <p className="text-[11px] text-[var(--color-text-muted)]">{gw.desc}</p>
+                      <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: 0 }}>{gw.name}</p>
+                      <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>{gw.desc}</p>
                     </div>
                     <input
                       type="checkbox"
-                      checked={settings[gw.key]}
+                      checked={!!settings[gw.key]}
                       onChange={(e) => setSettings({ ...settings, [gw.key]: e.target.checked })}
-                      className="w-4 h-4 accent-[var(--color-primary)] rounded cursor-pointer"
+                      style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--sb-primary)' }}
                     />
                   </div>
                 ))}
@@ -264,12 +255,13 @@ export const SettingsView = ({ showToast }) => {
             </div>
           </div>
 
-          <div className="flex justify-end">
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <button
               type="submit"
-              className="sb-btn-primary text-xs py-2.5 px-6 flex items-center gap-2 shadow-md hover:shadow-lg"
+              className="sb-btn sb-btn-primary"
+              style={{ padding: '10px 24px', fontSize: '0.82rem' }}
             >
-              <Save className="w-4 h-4" />
+              <Save style={{ width: '16px', height: '16px' }} />
               Save Platform Configuration
             </button>
           </div>
@@ -278,68 +270,68 @@ export const SettingsView = ({ showToast }) => {
 
       {/* Tab 2: Admin Users & Team */}
       {activeTab === 'team' && (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="text-xs text-[var(--color-text-secondary)]">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--sb-text-muted)', margin: 0 }}>
               Authorized operations staff and administrators with console login privileges.
             </p>
             <button
+              type="button"
               onClick={() => setShowAddUserModal(true)}
-              className="sb-btn-primary text-xs flex items-center gap-1.5"
+              className="sb-btn sb-btn-primary"
             >
-              <UserPlus className="w-3.5 h-3.5" />
+              <UserPlus style={{ width: '15px', height: '15px' }} />
               Invite Admin User
             </button>
           </div>
 
-          <div className="sb-card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left">
-                <thead className="bg-[var(--color-surface-hover)] border-b border-[var(--color-border)] text-[var(--color-text-muted)] font-semibold uppercase tracking-wider">
-                  <tr>
-                    <th className="py-3 px-4">User</th>
-                    <th className="py-3 px-4">Email</th>
-                    <th className="py-3 px-4">Role</th>
-                    <th className="py-3 px-4">Permissions Scope</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
+          <div className="sb-card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ backgroundColor: 'var(--sb-bg-surface-hover)', borderBottom: '1px solid var(--sb-border-default)', color: 'var(--sb-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    <th style={{ padding: '12px 16px' }}>User</th>
+                    <th style={{ padding: '12px 16px' }}>Email</th>
+                    <th style={{ padding: '12px 16px' }}>Role</th>
+                    <th style={{ padding: '12px 16px' }}>Permissions Scope</th>
+                    <th style={{ padding: '12px 16px' }}>Status</th>
+                    <th style={{ padding: '12px 16px', textAlign: 'right' }}>Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--color-border)]">
+                <tbody>
                   {adminUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-[var(--color-surface-hover)]">
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] font-bold flex items-center justify-center text-xs">
+                    <tr key={user.id} style={{ borderBottom: '1px solid var(--sb-border-default)' }}>
+                      <td style={{ padding: '12px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{ width: '32px', height: '32px', borderRadius: 'var(--sb-radius-full)', backgroundColor: 'var(--sb-primary-light)', color: 'var(--sb-primary)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem' }}>
                             {user.name.split(' ').map((n) => n[0]).join('')}
                           </div>
-                          <span className="font-bold text-[var(--color-text)]">{user.name}</span>
+                          <span style={{ fontWeight: 700, color: 'var(--sb-text-title)' }}>{user.name}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-mono text-[var(--color-text-secondary)]">
+                      <td style={{ padding: '12px 16px', fontFamily: 'monospace', color: 'var(--sb-text-muted)' }}>
                         {user.email}
                       </td>
-                      <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-[var(--color-primary-light)] text-[var(--color-primary)]">
+                      <td style={{ padding: '12px 16px' }}>
+                        <span style={{ padding: '3px 8px', borderRadius: 'var(--sb-radius-sm)', fontSize: '0.72rem', fontWeight: 600, backgroundColor: 'var(--sb-primary-light)', color: 'var(--sb-primary)' }}>
                           {user.role}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-[var(--color-text-muted)]">{user.access}</td>
-                      <td className="py-3 px-4">
+                      <td style={{ padding: '12px 16px', color: 'var(--sb-text-muted)' }}>{user.access}</td>
+                      <td style={{ padding: '12px 16px' }}>
                         <StatusBadge status={user.status} />
                       </td>
-                      <td className="py-3 px-4 text-right">
+                      <td style={{ padding: '12px 16px', textAlign: 'right' }}>
                         {user.role !== 'Super Admin' ? (
                           <button
+                            type="button"
                             onClick={() => handleToggleUserStatus(user.id)}
-                            className={`text-xs font-semibold hover:underline ${
-                              user.status === 'Active' ? 'text-red-600' : 'text-green-600'
-                            }`}
+                            style={{ fontSize: '0.75rem', fontWeight: 600, color: user.status === 'Active' ? 'var(--sb-status-failed)' : 'var(--sb-status-success)', cursor: 'pointer' }}
                           >
                             {user.status === 'Active' ? 'Suspend' : 'Activate'}
                           </button>
                         ) : (
-                          <span className="text-[11px] text-[var(--color-text-muted)] italic">
+                          <span style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', fontStyle: 'italic' }}>
                             Protected
                           </span>
                         )}
@@ -355,45 +347,45 @@ export const SettingsView = ({ showToast }) => {
 
       {/* Tab 3: Role Permission Matrix */}
       {activeTab === 'permissions' && (
-        <div className="sb-card overflow-hidden">
-          <div className="p-4 border-b border-[var(--color-border)]">
-            <h3 className="font-bold text-sm text-[var(--color-text)]">
+        <div className="sb-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--sb-border-default)' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
               RBAC Role Permissions Grid
             </h3>
-            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
               Strict access levels enforced across endpoints and UI components
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-[var(--color-surface-hover)] border-b border-[var(--color-border)] text-[var(--color-text-muted)] font-semibold">
-                <tr>
-                  <th className="py-3 px-4">Platform Module</th>
-                  <th className="py-3 px-4 text-center">Super Admin</th>
-                  <th className="py-3 px-4 text-center">Operations Admin</th>
-                  <th className="py-3 px-4 text-center">Finance Admin</th>
-                  <th className="py-3 px-4 text-center">Verification Admin</th>
-                  <th className="py-3 px-4 text-center">Support Admin</th>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ backgroundColor: 'var(--sb-bg-surface-hover)', borderBottom: '1px solid var(--sb-border-default)', color: 'var(--sb-text-muted)', fontWeight: 600 }}>
+                  <th style={{ padding: '12px 16px' }}>Platform Module</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center' }}>Super Admin</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center' }}>Operations Admin</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center' }}>Finance Admin</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center' }}>Verification Admin</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'center' }}>Support Admin</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[var(--color-border)]">
-                {PERMISSION_MATRIX.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-[var(--color-surface-hover)]">
-                    <td className="py-3 px-4 font-semibold text-[var(--color-text)]">
+              <tbody>
+                {(PERMISSION_MATRIX || []).map((row, idx) => (
+                  <tr key={idx} style={{ borderBottom: '1px solid var(--sb-border-default)' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: 600, color: 'var(--sb-text-title)' }}>
                       {row.module}
                     </td>
 
                     {['SuperAdmin', 'OpsAdmin', 'FinanceAdmin', 'VerificationAdmin', 'SupportAdmin'].map(
                       (roleKey) => (
-                        <td key={roleKey} className="py-3 px-4 text-center">
+                        <td key={roleKey} style={{ padding: '12px 16px', textAlign: 'center' }}>
                           {row[roleKey] ? (
-                            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300">
-                              <Check className="w-3.5 h-3.5" />
+                            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '22px', height: '22px', borderRadius: 'var(--sb-radius-full)', backgroundColor: 'var(--sb-status-success-bg)', color: 'var(--sb-status-success)' }}>
+                              <Check style={{ width: '14px', height: '14px' }} />
                             </span>
                           ) : (
-                            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
-                              <X className="w-3.5 h-3.5" />
+                            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '22px', height: '22px', borderRadius: 'var(--sb-radius-full)', backgroundColor: 'var(--sb-bg-surface-hover)', color: 'var(--sb-border-strong)' }}>
+                              <X style={{ width: '14px', height: '14px' }} />
                             </span>
                           )}
                         </td>
@@ -409,14 +401,23 @@ export const SettingsView = ({ showToast }) => {
 
       {/* Invite User Modal */}
       {showAddUserModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
-            <h3 className="font-bold text-base text-[var(--color-text)]">
-              Invite StitchBee Admin User
-            </h3>
-            <form onSubmit={handleAddUser} className="space-y-3 text-xs">
+        <div className="sb-modal-backdrop">
+          <div className="sb-modal-box" style={{ padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+                Invite StitchBee Admin User
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowAddUserModal(false)}
+                style={{ color: 'var(--sb-text-muted)' }}
+              >
+                <X style={{ width: '18px', height: '18px' }} />
+              </button>
+            </div>
+            <form onSubmit={handleAddUser} style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.78rem' }}>
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Full Name
                 </label>
                 <input
@@ -425,12 +426,12 @@ export const SettingsView = ({ showToast }) => {
                   placeholder="e.g. Ramesh Kumar"
                   value={newUser.name}
                   onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                  className="sb-input"
                 />
               </div>
 
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Corporate Email
                 </label>
                 <input
@@ -439,18 +440,19 @@ export const SettingsView = ({ showToast }) => {
                   placeholder="name@stitchbee.in"
                   value={newUser.email}
                   onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                  className="sb-input"
                 />
               </div>
 
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Designated Role
                 </label>
                 <select
                   value={newUser.role}
                   onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none"
+                  className="sb-select-control"
+                  style={{ width: '100%' }}
                 >
                   <option value="Operations Admin">Operations Admin</option>
                   <option value="Verification Admin">Verification Admin</option>
@@ -460,15 +462,15 @@ export const SettingsView = ({ showToast }) => {
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', paddingTop: '10px' }}>
                 <button
                   type="button"
                   onClick={() => setShowAddUserModal(false)}
-                  className="sb-btn-secondary text-xs"
+                  className="sb-btn sb-btn-secondary"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="sb-btn-primary text-xs">
+                <button type="submit" className="sb-btn sb-btn-primary">
                   Send Invitation
                 </button>
               </div>

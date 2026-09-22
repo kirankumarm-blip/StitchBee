@@ -14,11 +14,11 @@ import {
   ThumbsUp
 } from 'lucide-react';
 import { MOCK_REVIEWS } from '../../data/adminMockData';
-import { StatusBadge } from '../common/StatusBadge';
-import { DetailsDrawer } from '../common/DetailsDrawer';
+import StatusBadge from '../common/StatusBadge';
+import DetailsDrawer from '../common/DetailsDrawer';
 
 export const ReviewsView = ({ showToast }) => {
-  const [reviews, setReviews] = useState(MOCK_REVIEWS);
+  const [reviews, setReviews] = useState(MOCK_REVIEWS || []);
   const [searchQuery, setSearchQuery] = useState('');
   const [ratingFilter, setRatingFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -27,15 +27,15 @@ export const ReviewsView = ({ showToast }) => {
 
   // Rating distribution stats
   const totalReviews = reviews.length;
-  const avgRating = (reviews.reduce((acc, r) => acc + r.rating, 0) / (totalReviews || 1)).toFixed(1);
+  const avgRating = (reviews.reduce((acc, r) => acc + (r.rating || 0), 0) / (totalReviews || 1)).toFixed(1);
 
   // Filtered reviews
   const filteredReviews = reviews.filter((r) => {
     const matchesSearch =
-      r.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.tailor.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      r.comment.toLowerCase().includes(searchQuery.toLowerCase());
+      (r.customer || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (r.tailor || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (r.orderId || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (r.comment || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesRating = ratingFilter === 'All' || r.rating === parseInt(ratingFilter, 10);
     const matchesStatus = statusFilter === 'All' || r.status === statusFilter;
     return matchesSearch && matchesRating && matchesStatus;
@@ -64,63 +64,62 @@ export const ReviewsView = ({ showToast }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Banner & Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="sb-card p-4 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[var(--color-accent-light)] flex items-center justify-center text-[var(--color-accent)]">
-            <Star className="w-6 h-6 fill-current" />
+      <div className="sb-grid-4">
+        <div className="sb-card" style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ width: '44px', height: '44px', borderRadius: 'var(--sb-radius-md)', backgroundColor: 'var(--sb-accent-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sb-accent)', flexShrink: 0 }}>
+            <Star style={{ width: '22px', height: '22px', fill: 'currentColor' }} />
           </div>
           <div>
-            <p className="text-xs text-[var(--color-text-secondary)] font-medium">Platform Average</p>
-            <p className="text-2xl font-bold text-[var(--color-text)]">{avgRating} / 5.0</p>
-            <p className="text-[11px] text-[var(--color-success)] font-medium">96% Positive Sentiment</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Platform Average</p>
+            <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '2px 0' }}>{avgRating} / 5.0</p>
+            <p style={{ fontSize: '0.7rem', color: 'var(--sb-status-success)', fontWeight: 600, margin: 0 }}>96% Positive Sentiment</p>
           </div>
         </div>
 
-        <div className="sb-card p-4">
-          <p className="text-xs text-[var(--color-text-secondary)] font-medium">Total Reviews</p>
-          <p className="text-2xl font-bold text-[var(--color-text)] mt-1">{totalReviews}</p>
-          <p className="text-[11px] text-[var(--color-primary)] mt-1">Across tailors & designers</p>
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Total Reviews</p>
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '4px 0 2px 0' }}>{totalReviews}</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-primary)', margin: 0 }}>Across tailors & designers</p>
         </div>
 
-        <div className="sb-card p-4">
-          <p className="text-xs text-[var(--color-text-secondary)] font-medium">Published Live</p>
-          <p className="text-2xl font-bold text-[var(--color-success)] mt-1">
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Published Live</p>
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-status-success)', margin: '4px 0 2px 0' }}>
             {reviews.filter((r) => r.status === 'Published').length}
           </p>
-          <p className="text-[11px] text-[var(--color-text-muted)] mt-1">Visible to all users</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Visible to all users</p>
         </div>
 
-        <div className="sb-card p-4">
-          <p className="text-xs text-[var(--color-text-secondary)] font-medium">Needs Moderation</p>
-          <p className="text-2xl font-bold text-[var(--color-accent)] mt-1">
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Needs Moderation</p>
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-accent)', margin: '4px 0 2px 0' }}>
             {reviews.filter((r) => r.status === 'Under Review').length}
           </p>
-          <p className="text-[11px] text-[var(--color-accent)] mt-1">SLA: Review in &lt; 24h</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-accent)', margin: 0 }}>SLA: Review in &lt; 24h</p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="sb-card p-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
+      <div className="sb-card" style={{ padding: '14px 18px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <div className="sb-search-box" style={{ maxWidth: '420px', flex: 1 }}>
+            <Search style={{ width: '16px', height: '16px' }} />
             <input
               type="text"
               placeholder="Search by customer, tailor, order ID, or text..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             {/* Rating Filter */}
             <select
               value={ratingFilter}
               onChange={(e) => setRatingFilter(e.target.value)}
-              className="text-xs font-semibold px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none"
+              className="sb-select-control"
             >
               <option value="All">All Star Ratings</option>
               <option value="5">5 Stars</option>
@@ -134,7 +133,7 @@ export const ReviewsView = ({ showToast }) => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs font-semibold px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none"
+              className="sb-select-control"
             >
               <option value="All">All Moderation Statuses</option>
               <option value="Published">Published</option>
@@ -146,107 +145,123 @@ export const ReviewsView = ({ showToast }) => {
       </div>
 
       {/* Reviews Cards List */}
-      <div className="space-y-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {filteredReviews.length === 0 ? (
-          <div className="sb-card p-8 text-center text-xs text-[var(--color-text-muted)]">
+          <div className="sb-card" style={{ padding: '36px', textAlign: 'center', fontSize: '0.8rem', color: 'var(--sb-text-muted)' }}>
             No customer reviews found matching your search or filters.
           </div>
         ) : (
           filteredReviews.map((rev) => (
             <div
               key={rev.id}
-              className="sb-card p-5 hover:border-[var(--color-primary)] transition-all cursor-pointer"
+              className="sb-card"
+              style={{
+                padding: '20px',
+                cursor: 'pointer',
+                transition: 'border-color var(--sb-transition-fast), box-shadow var(--sb-transition-fast)'
+              }}
               onClick={() => setSelectedReview(rev)}
             >
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                <div className="space-y-2 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-bold text-sm text-[var(--color-text)]">{rev.customer}</span>
-                    <span className="text-xs text-[var(--color-text-muted)]">• {rev.date}</span>
-                    <span className="text-xs font-mono text-[var(--color-primary)] bg-[var(--color-primary-light)] px-2 py-0.5 rounded">
-                      Order: {rev.orderId}
-                    </span>
-                    <StatusBadge status={rev.status} />
-                  </div>
-
-                  {/* Rating Stars */}
-                  <div className="flex items-center gap-1 text-[var(--color-accent)]">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star
-                        key={s}
-                        className={`w-3.5 h-3.5 ${
-                          s <= rev.rating ? 'fill-[var(--color-accent)] text-[var(--color-accent)]' : 'text-gray-300 dark:text-gray-600'
-                        }`}
-                      />
-                    ))}
-                    <span className="text-xs font-bold text-[var(--color-text)] ml-1">
-                      {rev.rating}.0 / 5.0
-                    </span>
-                  </div>
-
-                  {/* Comment */}
-                  <p className="text-xs text-[var(--color-text)] leading-relaxed italic">
-                    "{rev.comment}"
-                  </p>
-
-                  {/* Partners Mentioned */}
-                  <div className="flex flex-wrap items-center gap-4 text-[11px] text-[var(--color-text-secondary)] pt-1">
-                    <span>
-                      Tailor: <strong className="text-[var(--color-text)]">{rev.tailor}</strong>
-                    </span>
-                    {rev.designer && rev.designer !== '-' && (
-                      <span>
-                        Designer: <strong className="text-[var(--color-text)]">{rev.designer}</strong>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                      <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--sb-text-title)' }}>{rev.customer}</span>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)' }}>• {rev.date}</span>
+                      <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', color: 'var(--sb-primary)', backgroundColor: 'var(--sb-primary-light)', padding: '2px 6px', borderRadius: 'var(--sb-radius-sm)' }}>
+                        Order: {rev.orderId}
                       </span>
-                    )}
-                    {rev.deliveryPartner && (
-                      <span>
-                        Delivery: <strong className="text-[var(--color-text)]">{rev.deliveryPartner}</strong>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Admin Reply if present */}
-                  {rev.adminReply && (
-                    <div className="mt-2 p-2.5 rounded-lg bg-[var(--color-primary-light)] border border-[var(--color-primary)] text-xs text-[var(--color-text)]">
-                      <p className="font-semibold text-[var(--color-primary)] flex items-center gap-1.5 mb-1">
-                        <CornerDownRight className="w-3.5 h-3.5" />
-                        StitchBee Official Response:
-                      </p>
-                      <p>{rev.adminReply}</p>
+                      <StatusBadge status={rev.status} />
                     </div>
-                  )}
-                </div>
 
-                {/* Quick Moderation Actions */}
-                <div
-                  className="flex flex-wrap md:flex-col items-end gap-2"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {rev.status !== 'Published' && (
-                    <button
-                      onClick={() => handleUpdateStatus(rev.id, 'Published')}
-                      className="sb-btn-primary text-xs py-1 px-2.5 flex items-center gap-1"
-                    >
-                      <CheckCircle className="w-3.5 h-3.5" />
-                      Approve & Publish
-                    </button>
-                  )}
-                  {rev.status !== 'Hidden' && (
-                    <button
-                      onClick={() => handleUpdateStatus(rev.id, 'Hidden')}
-                      className="sb-btn-secondary text-xs py-1 px-2.5 flex items-center gap-1 text-red-600 hover:text-red-700"
-                    >
-                      <EyeOff className="w-3.5 h-3.5" />
-                      Hide Review
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setSelectedReview(rev)}
-                    className="sb-btn-secondary text-xs py-1 px-2.5"
+                    {/* Rating Stars */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--sb-accent)' }}>
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <Star
+                          key={s}
+                          style={{
+                            width: '14px',
+                            height: '14px',
+                            fill: s <= rev.rating ? 'var(--sb-accent)' : 'none',
+                            color: s <= rev.rating ? 'var(--sb-accent)' : 'var(--sb-border-strong)'
+                          }}
+                        />
+                      ))}
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--sb-text-title)', marginLeft: '4px' }}>
+                        {rev.rating}.0 / 5.0
+                      </span>
+                    </div>
+
+                    {/* Comment */}
+                    <p style={{ fontSize: '0.8rem', color: 'var(--sb-text-body)', lineHeight: 1.5, fontStyle: 'italic', margin: 0 }}>
+                      "{rev.comment}"
+                    </p>
+
+                    {/* Partners Mentioned */}
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.72rem', color: 'var(--sb-text-muted)', paddingTop: '4px' }}>
+                      <span>
+                        Tailor: <strong style={{ color: 'var(--sb-text-title)' }}>{rev.tailor}</strong>
+                      </span>
+                      {rev.designer && rev.designer !== '-' && (
+                        <span>
+                          Designer: <strong style={{ color: 'var(--sb-text-title)' }}>{rev.designer}</strong>
+                        </span>
+                      )}
+                      {rev.deliveryPartner && (
+                        <span>
+                          Delivery: <strong style={{ color: 'var(--sb-text-title)' }}>{rev.deliveryPartner}</strong>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Admin Reply if present */}
+                    {rev.adminReply && (
+                      <div style={{ marginTop: '8px', padding: '10px 14px', borderRadius: 'var(--sb-radius-md)', backgroundColor: 'var(--sb-primary-light)', border: '1px solid var(--sb-primary-border)', fontSize: '0.75rem', color: 'var(--sb-text-title)' }}>
+                        <p style={{ fontWeight: 600, color: 'var(--sb-primary)', display: 'flex', alignItems: 'center', gap: '6px', margin: '0 0 4px 0' }}>
+                          <CornerDownRight style={{ width: '14px', height: '14px' }} />
+                          StitchBee Official Response:
+                        </p>
+                        <p style={{ margin: 0 }}>{rev.adminReply}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Quick Moderation Actions */}
+                  <div
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    Moderate & Reply
-                  </button>
+                    {rev.status !== 'Published' && (
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStatus(rev.id, 'Published')}
+                        className="sb-btn sb-btn-primary"
+                        style={{ padding: '4px 10px', fontSize: '0.72rem' }}
+                      >
+                        <CheckCircle style={{ width: '13px', height: '13px' }} />
+                        Approve
+                      </button>
+                    )}
+                    {rev.status !== 'Hidden' && (
+                      <button
+                        type="button"
+                        onClick={() => handleUpdateStatus(rev.id, 'Hidden')}
+                        className="sb-btn sb-btn-secondary"
+                        style={{ padding: '4px 10px', fontSize: '0.72rem', color: 'var(--sb-status-failed)' }}
+                      >
+                        <EyeOff style={{ width: '13px', height: '13px' }} />
+                        Hide
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedReview(rev)}
+                      className="sb-btn sb-btn-secondary"
+                      style={{ padding: '4px 10px', fontSize: '0.72rem' }}
+                    >
+                      Moderate & Reply
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -261,87 +276,99 @@ export const ReviewsView = ({ showToast }) => {
         title={selectedReview ? `Review Moderation: ${selectedReview.id}` : ''}
         subtitle={selectedReview ? `Customer: ${selectedReview.customer} • Order: ${selectedReview.orderId}` : ''}
         footer={
-          <div className="flex items-center justify-between w-full">
-            <div className="flex gap-2">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button
+                type="button"
                 onClick={() => handleUpdateStatus(selectedReview.id, 'Published')}
-                className="sb-btn-primary text-xs"
+                className="sb-btn sb-btn-primary"
+                style={{ fontSize: '0.78rem' }}
               >
                 Publish Live
               </button>
               <button
+                type="button"
                 onClick={() => handleUpdateStatus(selectedReview.id, 'Hidden')}
-                className="sb-btn-secondary text-xs text-red-600"
+                className="sb-btn sb-btn-secondary"
+                style={{ fontSize: '0.78rem', color: 'var(--sb-status-failed)' }}
               >
                 Hide
               </button>
             </div>
-            <button onClick={() => setSelectedReview(null)} className="sb-btn-secondary text-xs">
+            <button
+              type="button"
+              onClick={() => setSelectedReview(null)}
+              className="sb-btn sb-btn-secondary"
+              style={{ fontSize: '0.78rem', marginLeft: 'auto' }}
+            >
               Close
             </button>
           </div>
         }
       >
         {selectedReview && (
-          <div className="space-y-6">
-            <div className="p-4 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-[var(--color-text-secondary)]">Rating</span>
-                <div className="flex items-center gap-1 text-[var(--color-accent)]">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '0.78rem' }}>
+            <div style={{ padding: '16px', borderRadius: 'var(--sb-radius-lg)', backgroundColor: 'var(--sb-bg-surface-hover)', border: '1px solid var(--sb-border-default)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--sb-text-muted)' }}>Customer Rating</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--sb-accent)' }}>
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star
                       key={s}
-                      className={`w-4 h-4 ${
-                        s <= selectedReview.rating ? 'fill-current' : 'text-gray-300'
-                      }`}
+                      style={{
+                        width: '14px',
+                        height: '14px',
+                        fill: s <= selectedReview.rating ? 'currentColor' : 'none',
+                        color: s <= selectedReview.rating ? 'currentColor' : 'var(--sb-border-strong)'
+                      }}
                     />
                   ))}
-                  <span className="text-sm font-bold text-[var(--color-text)] ml-1">
+                  <span style={{ fontWeight: 700, color: 'var(--sb-text-title)', marginLeft: '4px' }}>
                     {selectedReview.rating}.0
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs text-[var(--color-text)] italic pt-2">
+              <p style={{ fontStyle: 'italic', color: 'var(--sb-text-body)', margin: '8px 0 0 0', lineHeight: 1.5 }}>
                 "{selectedReview.comment}"
               </p>
             </div>
 
             {/* Entity Associations */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <h4 style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--sb-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0 }}>
                 Associated Stakeholders
               </h4>
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]">
-                  <p className="text-[11px] text-[var(--color-text-muted)]">Tailoring Atelier</p>
-                  <p className="font-semibold text-[var(--color-text)]">{selectedReview.tailor}</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ padding: '10px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface)' }}>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Tailoring Atelier</p>
+                  <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: '2px 0 0 0' }}>{selectedReview.tailor}</p>
                 </div>
-                <div className="p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]">
-                  <p className="text-[11px] text-[var(--color-text-muted)]">Order ID</p>
-                  <p className="font-semibold text-[var(--color-primary)]">{selectedReview.orderId}</p>
+                <div style={{ padding: '10px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface)' }}>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Order ID</p>
+                  <p style={{ fontWeight: 600, color: 'var(--sb-primary)', margin: '2px 0 0 0' }}>{selectedReview.orderId}</p>
                 </div>
                 {selectedReview.designer && selectedReview.designer !== '-' && (
-                  <div className="p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]">
-                    <p className="text-[11px] text-[var(--color-text-muted)]">Fashion Designer</p>
-                    <p className="font-semibold text-[var(--color-text)]">{selectedReview.designer}</p>
+                  <div style={{ padding: '10px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface)' }}>
+                    <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Fashion Designer</p>
+                    <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: '2px 0 0 0' }}>{selectedReview.designer}</p>
                   </div>
                 )}
                 {selectedReview.deliveryPartner && (
-                  <div className="p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]">
-                    <p className="text-[11px] text-[var(--color-text-muted)]">Delivery Hero</p>
-                    <p className="font-semibold text-[var(--color-text)]">{selectedReview.deliveryPartner}</p>
+                  <div style={{ padding: '10px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface)' }}>
+                    <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Delivery Hero</p>
+                    <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: '2px 0 0 0' }}>{selectedReview.deliveryPartner}</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Official Reply Box */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <h4 style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--sb-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0 }}>
                 Public Admin Reply
               </h4>
-              <p className="text-[11px] text-[var(--color-text-secondary)]">
+              <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: 0 }}>
                 This message will be visible publicly on the tailor's profile and order review page.
               </p>
               <textarea
@@ -349,14 +376,17 @@ export const ReviewsView = ({ showToast }) => {
                 placeholder="Write an official StitchBee response (e.g., 'Thank you for your feedback! We are glad you enjoyed the fit...')"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
-                className="w-full p-3 text-xs rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                className="sb-input"
+                style={{ resize: 'vertical' }}
               />
               <button
+                type="button"
                 onClick={handleSendReply}
                 disabled={!replyText.trim()}
-                className="sb-btn-primary text-xs flex items-center gap-1.5 disabled:opacity-50"
+                className="sb-btn sb-btn-primary"
+                style={{ alignSelf: 'flex-start', fontSize: '0.75rem', marginTop: '4px' }}
               >
-                <Send className="w-3.5 h-3.5" />
+                <Send style={{ width: '13px', height: '13px' }} />
                 Post Official Reply
               </button>
             </div>

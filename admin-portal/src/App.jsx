@@ -25,6 +25,54 @@ import CatalogView from './components/views/CatalogView';
 import ReportsView from './components/views/ReportsView';
 import SettingsView from './components/views/SettingsView';
 
+// Error Boundary to prevent any single module from breaking the admin shell
+class ViewErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Module Error Boundary caught:', error, errorInfo);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeTab !== this.props.activeTab && this.state.hasError) {
+      this.setState({ hasError: false, error: null });
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="sb-card" style={{ padding: '36px', textAlign: 'center', margin: '20px 0' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--sb-status-failed-bg)', color: 'var(--sb-status-failed)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px', fontSize: '1.25rem', fontWeight: 800 }}>
+            !
+          </div>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--sb-text-title)', marginBottom: '8px' }}>
+            Unable to display {this.props.activeTab?.replace('-', ' ')}
+          </h3>
+          <p style={{ fontSize: '0.8rem', color: 'var(--sb-text-muted)', maxWidth: '420px', margin: '0 auto 20px auto' }}>
+            {this.state.error?.message || 'An unexpected rendering error occurred. You can safely retry or switch to another section.'}
+          </p>
+          <button
+            type="button"
+            className="sb-btn sb-btn-primary"
+            onClick={() => this.setState({ hasError: false, error: null })}
+          >
+            Retry Module
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [theme, setTheme] = useState(() => {
@@ -111,7 +159,7 @@ export default function App() {
       case 'analytics-partners':
       case 'analytics-locations':
       case 'analytics':
-        return <AnalyticsView onExportReport={(name) => showToast(`Exported ${name}`, 'success')} />;
+        return <AnalyticsView initialTab={activeTab} onExportReport={(name) => showToast(`Exported ${name}`, 'success')} />;
       case 'stitching-failures':
         return <StitchingFailuresView onShowToast={showToast} />;
       case 'complaints':
@@ -157,7 +205,9 @@ export default function App() {
         onLogout={handleLogout}
         user={currentUser}
       >
-        {renderActiveView()}
+        <ViewErrorBoundary activeTab={activeTab}>
+          {renderActiveView()}
+        </ViewErrorBoundary>
       </AdminLayout>
 
       {/* Global Action Toast Notification */}

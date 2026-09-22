@@ -141,6 +141,20 @@ body.light-mode {
   --sb-chart-tooltip-bg: #ffffff;
   --sb-chart-tooltip-border: #cbd5e1;
   --sb-chart-tooltip-text: #0f172a;
+
+  /* Aliases for views using --color-* variables */
+  --color-primary: var(--sb-primary);
+  --color-primary-light: var(--sb-primary-light);
+  --color-accent: var(--sb-accent);
+  --color-accent-light: var(--sb-accent-light);
+  --color-surface: var(--sb-bg-surface);
+  --color-surface-hover: var(--sb-bg-surface-hover);
+  --color-border: var(--sb-border-default);
+  --color-text: var(--sb-text-title);
+  --color-text-secondary: var(--sb-text-body);
+  --color-text-muted: var(--sb-text-muted);
+  --color-success: var(--sb-status-success);
+  --color-success-light: var(--sb-status-success-bg);
 }
 
 /* ==========================================================================
@@ -211,4 +225,18 @@ body.dark-mode {
   --sb-chart-tooltip-bg: #131b2e;
   --sb-chart-tooltip-border: #334155;
   --sb-chart-tooltip-text: #f8fafc;
+
+  /* Aliases for dark mode */
+  --color-primary: var(--sb-primary);
+  --color-primary-light: var(--sb-primary-light);
+  --color-accent: var(--sb-accent);
+  --color-accent-light: var(--sb-accent-light);
+  --color-surface: var(--sb-bg-surface);
+  --color-surface-hover: var(--sb-bg-surface-hover);
+  --color-border: var(--sb-border-default);
+  --color-text: var(--sb-text-title);
+  --color-text-secondary: var(--sb-text-body);
+  --color-text-muted: var(--sb-text-muted);
+  --color-success: var(--sb-status-success);
+  --color-success-light: var(--sb-status-success-bg);
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TrendingUp,
   BarChart3,
@@ -14,7 +14,8 @@ import {
   Clock,
   Sparkles,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  MapPin
 } from 'lucide-react';
 import {
   AreaChart,
@@ -42,10 +43,22 @@ import {
   MOCK_CUSTOMERS
 } from '../../data/adminMockData';
 
-export const AnalyticsView = ({ onExportReport }) => {
-  const [activeTab, setActiveTab] = useState('sales');
+export const AnalyticsView = ({ initialTab, onExportReport }) => {
+  const getTabFromInitial = (tabId) => {
+    if (tabId === 'analytics-partners') return 'tailors';
+    if (tabId === 'analytics-locations') return 'locations';
+    return 'sales';
+  };
+
+  const [activeTab, setActiveTab] = useState(() => getTabFromInitial(initialTab));
   const [timeRange, setTimeRange] = useState('30 Days');
   const [selectedHub, setSelectedHub] = useState('All');
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(getTabFromInitial(initialTab));
+    }
+  }, [initialTab]);
 
   // Time range data selector
   const chartData = REVENUE_SALES_TRENDS[timeRange] || REVENUE_SALES_TRENDS['30 Days'];
@@ -77,26 +90,35 @@ export const AnalyticsView = ({ onExportReport }) => {
     { zone: 'Malleshwaram Hub', capacity: 280, active: 240, utilization: '85%' }
   ];
 
+  const tabs = [
+    { id: 'sales', label: 'Sales & Revenue', icon: DollarSign },
+    { id: 'categories', label: 'Category & Styles', icon: Scissors },
+    { id: 'tailors', label: 'Tailor Capacity & Quality', icon: CheckCircle },
+    { id: 'logistics', label: 'Logistics & Doorstep SLA', icon: Truck },
+    { id: 'locations', label: 'Regional Hubs', icon: MapPin },
+    { id: 'funnel', label: 'Conversion Funnel', icon: TrendingUp }
+  ];
+
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Header & Global Filter Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h2 className="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-[var(--color-primary)]" />
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--sb-text-title)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+            <BarChart3 style={{ width: '22px', height: '22px', color: 'var(--sb-primary)' }} />
             Platform Analytics & Intelligence
           </h2>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-0.5">
+          <p style={{ fontSize: '0.8rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
             Real-time business performance, conversion rates, partner efficiency, and geographic trends.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
           {/* Hub Filter */}
           <select
             value={selectedHub}
             onChange={(e) => setSelectedHub(e.target.value)}
-            className="text-xs font-semibold px-3 py-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] shadow-sm"
+            className="sb-select-control"
           >
             <option value="All">All City Hubs</option>
             <option value="Bengaluru">Bengaluru</option>
@@ -107,7 +129,7 @@ export const AnalyticsView = ({ onExportReport }) => {
           </select>
 
           {/* Time Range Selector */}
-          <div className="flex items-center bg-[var(--color-surface-hover)] p-1 rounded-lg border border-[var(--color-border)] text-xs font-semibold">
+          <div className="sb-pill-group">
             {[
               { id: '7 Days', label: '7D' },
               { id: '30 Days', label: '30D' },
@@ -116,12 +138,9 @@ export const AnalyticsView = ({ onExportReport }) => {
             ].map((range) => (
               <button
                 key={range.id}
+                type="button"
                 onClick={() => setTimeRange(range.id)}
-                className={`px-3 py-1 rounded-md transition-all ${
-                  timeRange === range.id
-                    ? 'bg-[var(--color-primary)] text-white shadow-sm'
-                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-                }`}
+                className={`sb-pill-btn ${timeRange === range.id ? 'active' : ''}`}
               >
                 {range.label}
               </button>
@@ -129,37 +148,30 @@ export const AnalyticsView = ({ onExportReport }) => {
           </div>
 
           <button
+            type="button"
             onClick={() => onExportReport && onExportReport('Analytics-Summary')}
-            className="sb-btn-secondary text-xs flex items-center gap-1.5"
+            className="sb-btn sb-btn-secondary"
+            style={{ padding: '6px 14px', fontSize: '0.78rem' }}
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download style={{ width: '14px', height: '14px' }} />
             Export Data
           </button>
         </div>
       </div>
 
-      {/* Analytics Category Tabs */}
-      <div className="flex items-center gap-2 border-b border-[var(--color-border)] overflow-x-auto pb-1">
-        {[
-          { id: 'sales', label: 'Sales & Revenue', icon: DollarSign },
-          { id: 'categories', label: 'Category & Styles', icon: Scissors },
-          { id: 'tailors', label: 'Tailor Capacity & Quality', icon: CheckCircle },
-          { id: 'logistics', label: 'Logistics & Doorstep SLA', icon: Truck },
-          { id: 'funnel', label: 'Conversion Funnel', icon: TrendingUp }
-        ].map((tab) => {
+      {/* Analytics Category Tabs Bar */}
+      <div className="sb-tabs-nav">
+        {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-all border-b-2 whitespace-nowrap ${
-                isActive
-                  ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary-light)]'
-                  : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)]'
-              }`}
+              className={`sb-tab-item ${isActive ? 'active' : ''}`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon style={{ width: '16px', height: '16px' }} />
               {tab.label}
             </button>
           );
@@ -168,8 +180,9 @@ export const AnalyticsView = ({ onExportReport }) => {
 
       {/* Tab 1: Sales & Revenue */}
       {activeTab === 'sales' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* 4-Column Stat Cards Grid */}
+          <div className="sb-grid-4">
             <StatCard
               title="Gross Merchandise Value"
               value="₹48,60,000"
@@ -209,56 +222,52 @@ export const AnalyticsView = ({ onExportReport }) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
             {/* Revenue Trend Area Chart */}
-            <div className="lg:col-span-2 sb-card p-5">
-              <div className="flex items-center justify-between mb-4">
+            <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px', minHeight: '400px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
-                  <h3 className="text-base font-bold text-[var(--color-text)]">
+                  <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
                     Revenue & Order Growth Trend
                   </h3>
-                  <p className="text-xs text-[var(--color-text-secondary)]">
+                  <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
                     Aggregated daily inflow across all payment channels
                   </p>
                 </div>
-                <span className="text-xs font-medium text-[var(--color-primary)] bg-[var(--color-primary-light)] px-2.5 py-1 rounded-full">
+                <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--sb-primary)', backgroundColor: 'var(--sb-primary-light)', padding: '4px 10px', borderRadius: 'var(--sb-radius-full)' }}>
                   Growth: +18.4% YoY
                 </span>
               </div>
 
-              <div className="h-[320px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <div style={{ flex: 1, minHeight: '300px', width: '100%' }}>
+                <ResponsiveContainer width="100%" height={320}>
+                  <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                     <defs>
                       <linearGradient id="analyticsRevGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.4} />
-                        <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0.0} />
-                      </linearGradient>
-                      <linearGradient id="analyticsOrdersGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--color-accent)" stopOpacity={0.35} />
-                        <stop offset="95%" stopColor="var(--color-accent)" stopOpacity={0.0} />
+                        <stop offset="5%" stopColor="#2563eb" stopOpacity={0.35} />
+                        <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.6} />
-                    <XAxis dataKey="period" stroke="var(--color-text-muted)" fontSize={11} />
-                    <YAxis stroke="var(--color-text-muted)" fontSize={11} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--sb-border-default)" opacity={0.6} />
+                    <XAxis dataKey="period" stroke="var(--sb-text-muted)" fontSize={11} />
+                    <YAxis stroke="var(--sb-text-muted)" fontSize={11} tickFormatter={(v) => `₹${(v/1000)}k`} />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: 'var(--color-surface)',
-                        borderColor: 'var(--color-border)',
+                        backgroundColor: 'var(--sb-bg-surface)',
+                        borderColor: 'var(--sb-border-default)',
                         borderRadius: '8px',
-                        color: 'var(--color-text)',
+                        color: 'var(--sb-text-title)',
                         fontSize: '12px',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        boxShadow: 'var(--sb-shadow-dropdown)'
                       }}
-                      formatter={(val) => `₹${val.toLocaleString('en-IN')}`}
+                      formatter={(val) => [`₹${Number(val).toLocaleString('en-IN')}`, 'Revenue']}
                     />
                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                     <Area
                       type="monotone"
                       dataKey="revenue"
                       name="Revenue (₹)"
-                      stroke="var(--color-primary)"
+                      stroke="#2563eb"
                       strokeWidth={2.5}
                       fillOpacity={1}
                       fill="url(#analyticsRevGrad)"
@@ -269,30 +278,37 @@ export const AnalyticsView = ({ onExportReport }) => {
             </div>
 
             {/* Regional Hub Breakdown */}
-            <div className="sb-card p-5">
-              <h3 className="text-base font-bold text-[var(--color-text)] mb-1">
-                Regional Hub Distribution
-              </h3>
-              <p className="text-xs text-[var(--color-text-secondary)] mb-4">
-                Active operations and GMV contribution
-              </p>
+            <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+                  Regional Hub Distribution
+                </h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
+                  Active operations and GMV contribution
+                </p>
+              </div>
 
-              <div className="space-y-4">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {LOCATION_ANALYTICS.map((loc, idx) => (
-                  <div key={idx} className="space-y-1.5">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-semibold text-[var(--color-text)]">{loc.city}</span>
-                      <span className="font-bold text-[var(--color-primary)]">
-                        ₹{(loc.revenue / 100000).toFixed(1)}L ({loc.share})
+                  <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.78rem' }}>
+                      <span style={{ fontWeight: 600, color: 'var(--sb-text-title)' }}>{loc.city}</span>
+                      <span style={{ fontWeight: 700, color: 'var(--sb-primary)' }}>
+                        ₹{(loc.revenue / 100000).toFixed(1)}L ({loc.growth})
                       </span>
                     </div>
-                    <div className="w-full h-2 bg-[var(--color-surface-hover)] rounded-full overflow-hidden">
+                    <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--sb-bg-surface-hover)', borderRadius: 'var(--sb-radius-full)', overflow: 'hidden' }}>
                       <div
-                        className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500"
-                        style={{ width: loc.share }}
+                        style={{
+                          height: '100%',
+                          backgroundColor: 'var(--sb-primary)',
+                          borderRadius: 'var(--sb-radius-full)',
+                          width: `${Math.min(100, (loc.orders / 8420) * 100)}%`,
+                          transition: 'width 0.5s ease-out'
+                        }}
                       />
                     </div>
-                    <div className="flex justify-between text-[10px] text-[var(--color-text-muted)]">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', color: 'var(--sb-text-muted)' }}>
                       <span>{loc.orders.toLocaleString()} orders</span>
                       <span>{loc.tailors} verified tailors</span>
                     </div>
@@ -306,74 +322,86 @@ export const AnalyticsView = ({ onExportReport }) => {
 
       {/* Tab 2: Category & Styles */}
       {activeTab === 'categories' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 sb-card p-5">
-              <h3 className="text-base font-bold text-[var(--color-text)] mb-1">
-                Orders by Tailoring Category
-              </h3>
-              <p className="text-xs text-[var(--color-text-secondary)] mb-4">
-                Comparison of total volume and average ticket size
-              </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+            <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+                  Orders by Tailoring Category
+                </h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
+                  Comparison of total volume and average ticket size
+                </p>
+              </div>
 
-              <div className="h-[340px] w-full">
+              <div style={{ height: '340px', width: '100%' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={CATEGORY_PERFORMANCE}
-                    margin={{ top: 10, right: 10, left: -20, bottom: 25 }}
+                    margin={{ top: 10, right: 10, left: -10, bottom: 25 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" opacity={0.6} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--sb-border-default)" opacity={0.6} />
                     <XAxis
                       dataKey="name"
-                      stroke="var(--color-text-muted)"
+                      stroke="var(--sb-text-muted)"
                       fontSize={10}
                       interval={0}
                       angle={-20}
                       textAnchor="end"
                     />
-                    <YAxis stroke="var(--color-text-muted)" fontSize={11} />
+                    <YAxis stroke="var(--sb-text-muted)" fontSize={11} />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: 'var(--color-surface)',
-                        borderColor: 'var(--color-border)',
+                        backgroundColor: 'var(--sb-bg-surface)',
+                        borderColor: 'var(--sb-border-default)',
                         borderRadius: '8px',
-                        color: 'var(--color-text)',
+                        color: 'var(--sb-text-title)',
                         fontSize: '12px'
                       }}
                     />
                     <Legend wrapperStyle={{ fontSize: '12px' }} />
-                    <Bar dataKey="orders" name="Order Volume" fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="orders" name="Order Volume" fill="var(--sb-primary)" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
             {/* Category Performance Details */}
-            <div className="sb-card p-5">
-              <h3 className="text-base font-bold text-[var(--color-text)] mb-1">
-                Category Highlights
-              </h3>
-              <p className="text-xs text-[var(--color-text-secondary)] mb-4">
-                High-margin vs High-volume segments
-              </p>
+            <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+                  Category Highlights
+                </h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
+                  High-margin vs High-volume segments
+                </p>
+              </div>
 
-              <div className="space-y-3">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {CATEGORY_PERFORMANCE.slice(0, 5).map((cat, idx) => (
                   <div
                     key={idx}
-                    className="p-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-hover)] flex items-center justify-between"
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: 'var(--sb-radius-md)',
+                      border: '1px solid var(--sb-border-default)',
+                      backgroundColor: 'var(--sb-bg-surface-subtle)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
                   >
                     <div>
-                      <p className="text-xs font-bold text-[var(--color-text)]">{cat.name}</p>
-                      <p className="text-[11px] text-[var(--color-text-muted)]">
-                        {cat.orders.toLocaleString()} orders • {cat.growth}
+                      <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>{cat.name}</p>
+                      <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
+                        {cat.orders.toLocaleString()} orders • {cat.group}
                       </p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs font-bold text-[var(--color-accent)]">
+                    <div style={{ textAlign: 'right' }}>
+                      <p style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--sb-accent)', margin: 0 }}>
                         ₹{(cat.revenue / 100000).toFixed(1)}L
                       </p>
-                      <span className="text-[10px] text-[var(--color-success)] font-medium">
+                      <span style={{ fontSize: '0.7rem', color: 'var(--sb-status-success)', fontWeight: 600 }}>
                         Healthy Demand
                       </span>
                     </div>
@@ -387,82 +415,81 @@ export const AnalyticsView = ({ onExportReport }) => {
 
       {/* Tab 3: Tailor Capacity & Quality */}
       {activeTab === 'tailors' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="sb-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-primary-light)] flex items-center justify-center text-[var(--color-primary)]">
-                  <Scissors className="w-5 h-5" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div className="sb-grid-3">
+            <div className="sb-card" style={{ padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: 'var(--sb-radius-md)', backgroundColor: 'var(--sb-primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sb-primary)' }}>
+                  <Scissors style={{ width: '20px', height: '20px' }} />
                 </div>
                 <div>
-                  <p className="text-xs text-[var(--color-text-secondary)]">Active Tailors</p>
-                  <p className="text-xl font-bold text-[var(--color-text)]">1,248</p>
-                  <p className="text-[11px] text-[var(--color-success)]">+42 onboarding</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: 0 }}>Active Tailors</p>
+                  <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '2px 0' }}>1,248</p>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--sb-status-success)', margin: 0 }}>+42 onboarding</p>
                 </div>
               </div>
             </div>
 
-            <div className="sb-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[var(--color-accent-light)] flex items-center justify-center text-[var(--color-accent)]">
-                  <CheckCircle className="w-5 h-5" />
+            <div className="sb-card" style={{ padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: 'var(--sb-radius-md)', backgroundColor: 'var(--sb-accent-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sb-accent)' }}>
+                  <CheckCircle style={{ width: '20px', height: '20px' }} />
                 </div>
                 <div>
-                  <p className="text-xs text-[var(--color-text-secondary)]">First-Time Fit Rate</p>
-                  <p className="text-xl font-bold text-[var(--color-text)]">98.2%</p>
-                  <p className="text-[11px] text-[var(--color-success)]">Industry high</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: 0 }}>First-Time Fit Rate</p>
+                  <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '2px 0' }}>98.2%</p>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--sb-status-success)', margin: 0 }}>Industry high</p>
                 </div>
               </div>
             </div>
 
-            <div className="sb-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-950/30 flex items-center justify-center text-red-600">
-                  <Clock className="w-5 h-5" />
+            <div className="sb-card" style={{ padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: 'var(--sb-radius-md)', backgroundColor: 'var(--sb-status-failed-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sb-status-failed)' }}>
+                  <Clock style={{ width: '20px', height: '20px' }} />
                 </div>
                 <div>
-                  <p className="text-xs text-[var(--color-text-secondary)]">Avg Stitching Turnaround</p>
-                  <p className="text-xl font-bold text-[var(--color-text)]">4.2 Days</p>
-                  <p className="text-[11px] text-[var(--color-primary)]">SLA target: 5 days</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: 0 }}>Avg Stitching Turnaround</p>
+                  <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '2px 0' }}>4.2 Days</p>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--sb-primary)', margin: 0 }}>SLA target: 5 days</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="sb-card p-5">
-            <h3 className="text-base font-bold text-[var(--color-text)] mb-3">
+          <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
               Hub Capacity Utilization
             </h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
+            <div style={{ overflowX: 'auto', border: '1px solid var(--sb-border-default)', borderRadius: 'var(--sb-radius-md)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
                 <thead>
-                  <tr className="border-b border-[var(--color-border)] text-[var(--color-text-muted)] text-left">
-                    <th className="py-2.5 px-3">Cluster / Hub</th>
-                    <th className="py-2.5 px-3">Total Daily Capacity</th>
-                    <th className="py-2.5 px-3">Currently Active Orders</th>
-                    <th className="py-2.5 px-3">Utilization %</th>
-                    <th className="py-2.5 px-3">Status</th>
+                  <tr style={{ backgroundColor: 'var(--sb-bg-surface-hover)', borderBottom: '1px solid var(--sb-border-default)', color: 'var(--sb-text-muted)', fontWeight: 600 }}>
+                    <th style={{ padding: '10px 14px' }}>Cluster / Hub</th>
+                    <th style={{ padding: '10px 14px' }}>Daily Capacity</th>
+                    <th style={{ padding: '10px 14px' }}>Active Orders</th>
+                    <th style={{ padding: '10px 14px' }}>Utilization %</th>
+                    <th style={{ padding: '10px 14px' }}>Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--color-border)]">
+                <tbody>
                   {tailorUtilization.map((hub, idx) => (
-                    <tr key={idx} className="hover:bg-[var(--color-surface-hover)]">
-                      <td className="py-3 px-3 font-semibold text-[var(--color-text)]">{hub.zone}</td>
-                      <td className="py-3 px-3">{hub.capacity} garments/day</td>
-                      <td className="py-3 px-3 font-medium text-[var(--color-primary)]">{hub.active} garments</td>
-                      <td className="py-3 px-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-24 h-2 bg-[var(--color-surface-hover)] rounded-full overflow-hidden border border-[var(--color-border)]">
+                    <tr key={idx} style={{ borderBottom: '1px solid var(--sb-border-default)' }}>
+                      <td style={{ padding: '12px 14px', fontWeight: 600, color: 'var(--sb-text-title)' }}>{hub.zone}</td>
+                      <td style={{ padding: '12px 14px' }}>{hub.capacity} garments/day</td>
+                      <td style={{ padding: '12px 14px', fontWeight: 600, color: 'var(--sb-primary)' }}>{hub.active} garments</td>
+                      <td style={{ padding: '12px 14px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <div style={{ width: '90px', height: '8px', backgroundColor: 'var(--sb-bg-surface-hover)', borderRadius: 'var(--sb-radius-full)', overflow: 'hidden', border: '1px solid var(--sb-border-default)' }}>
                             <div
-                              className="h-full bg-[var(--color-primary)] rounded-full"
-                              style={{ width: hub.utilization }}
+                              style={{ height: '100%', backgroundColor: 'var(--sb-primary)', borderRadius: 'var(--sb-radius-full)', width: hub.utilization }}
                             />
                           </div>
-                          <span className="font-bold">{hub.utilization}</span>
+                          <span style={{ fontWeight: 700 }}>{hub.utilization}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800 dark:bg-green-950/40 dark:text-green-300">
+                      <td style={{ padding: '12px 14px' }}>
+                        <span style={{ padding: '3px 8px', borderRadius: 'var(--sb-radius-sm)', fontSize: '0.7rem', fontWeight: 700, backgroundColor: 'var(--sb-status-success-bg)', color: 'var(--sb-status-success)' }}>
                           Optimal Load
                         </span>
                       </td>
@@ -477,87 +504,160 @@ export const AnalyticsView = ({ onExportReport }) => {
 
       {/* Tab 4: Logistics & Doorstep SLA */}
       {activeTab === 'logistics' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="sb-card p-5">
-              <h3 className="text-base font-bold text-[var(--color-text)] mb-1">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+          <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
                 Doorstep Logistics SLAs
               </h3>
-              <p className="text-xs text-[var(--color-text-secondary)] mb-4">
+              <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
                 Strict quality timelines for measurement gig and delivery partners
               </p>
-
-              <div className="space-y-4">
-                {deliverySlaData.map((sla, idx) => (
-                  <div key={idx} className="space-y-1.5">
-                    <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-[var(--color-text)]">{sla.name}</span>
-                      <span className="font-bold text-[var(--color-primary)]">
-                        {sla.value}% (Target: &gt;{sla.target}%)
-                      </span>
-                    </div>
-                    <div className="w-full h-2.5 bg-[var(--color-surface-hover)] rounded-full overflow-hidden border border-[var(--color-border)]">
-                      <div
-                        className="h-full bg-[var(--color-primary)] rounded-full transition-all duration-500"
-                        style={{ width: `${sla.value}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            <div className="sb-card p-5">
-              <h3 className="text-base font-bold text-[var(--color-text)] mb-1">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {deliverySlaData.map((sla, idx) => (
+                <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--sb-text-title)' }}>{sla.name}</span>
+                    <span style={{ fontWeight: 700, color: 'var(--sb-primary)' }}>
+                      {sla.value}% (Target: &gt;{sla.target}%)
+                    </span>
+                  </div>
+                  <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--sb-bg-surface-hover)', borderRadius: 'var(--sb-radius-full)', overflow: 'hidden', border: '1px solid var(--sb-border-default)' }}>
+                    <div
+                      style={{
+                        height: '100%',
+                        backgroundColor: 'var(--sb-primary)',
+                        borderRadius: 'var(--sb-radius-full)',
+                        width: `${sla.value}%`
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px', textAlign: 'center', gap: '12px' }}>
+            <div>
+              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
                 Doorstep Fitting Satisfaction
               </h3>
-              <p className="text-xs text-[var(--color-text-secondary)] mb-4">
+              <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
                 Ratings collected after delivery partner home trial
               </p>
+            </div>
 
-              <div className="p-4 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-center my-auto space-y-2">
-                <p className="text-4xl font-extrabold text-[var(--color-accent)]">4.88 / 5.0</p>
-                <div className="flex justify-center gap-1 text-[var(--color-accent)]">
-                  {'★★★★★'}
-                </div>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  Based on 14,280 verified doorstep delivery trials
-                </p>
+            <div style={{ padding: '24px', borderRadius: 'var(--sb-radius-xl)', backgroundColor: 'var(--sb-bg-surface-subtle)', border: '1px solid var(--sb-border-default)', width: '100%', maxWidth: '320px' }}>
+              <p style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--sb-accent)', margin: 0 }}>4.88 / 5.0</p>
+              <div style={{ color: 'var(--sb-accent)', fontSize: '1.25rem', margin: '4px 0 8px 0' }}>
+                ★★★★★
               </div>
+              <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: 0 }}>
+                Based on 14,280 verified doorstep delivery trials
+              </p>
             </div>
           </div>
         </div>
       )}
 
-      {/* Tab 5: Conversion Funnel */}
+      {/* Tab 5: Regional Hubs */}
+      {activeTab === 'locations' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="sb-grid-4">
+            {LOCATION_ANALYTICS.map((loc, idx) => (
+              <div key={idx} className="sb-card" style={{ padding: '18px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--sb-text-title)' }}>{loc.city}</span>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--sb-status-success)' }}>{loc.growth}</span>
+                </div>
+                <p style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--sb-primary)', margin: 0 }}>
+                  ₹{(loc.revenue / 100000).toFixed(1)} Lakhs
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--sb-text-muted)', paddingTop: '4px', borderTop: '1px solid var(--sb-border-default)' }}>
+                  <span>{loc.orders.toLocaleString()} orders</span>
+                  <span>{loc.tailors} tailors</span>
+                  <span>{loc.deliveryPartners} riders</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+              City Operations Breakdown
+            </h3>
+            <div style={{ overflowX: 'auto', border: '1px solid var(--sb-border-default)', borderRadius: 'var(--sb-radius-md)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+                <thead>
+                  <tr style={{ backgroundColor: 'var(--sb-bg-surface-hover)', borderBottom: '1px solid var(--sb-border-default)', color: 'var(--sb-text-muted)', fontWeight: 600 }}>
+                    <th style={{ padding: '10px 14px' }}>City Hub</th>
+                    <th style={{ padding: '10px 14px' }}>Total Orders</th>
+                    <th style={{ padding: '10px 14px' }}>Gross Revenue</th>
+                    <th style={{ padding: '10px 14px' }}>Verified Tailors</th>
+                    <th style={{ padding: '10px 14px' }}>Riders & Gigs</th>
+                    <th style={{ padding: '10px 14px' }}>YoY Growth</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {LOCATION_ANALYTICS.map((loc, idx) => (
+                    <tr key={idx} style={{ borderBottom: '1px solid var(--sb-border-default)' }}>
+                      <td style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--sb-text-title)' }}>{loc.city}</td>
+                      <td style={{ padding: '12px 14px' }}>{loc.orders.toLocaleString()}</td>
+                      <td style={{ padding: '12px 14px', fontWeight: 600, color: 'var(--sb-primary)' }}>₹{loc.revenue.toLocaleString('en-IN')}</td>
+                      <td style={{ padding: '12px 14px' }}>{loc.tailors}</td>
+                      <td style={{ padding: '12px 14px' }}>{loc.deliveryPartners}</td>
+                      <td style={{ padding: '12px 14px', color: 'var(--sb-status-success)', fontWeight: 700 }}>{loc.growth}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 6: Conversion Funnel */}
       {activeTab === 'funnel' && (
-        <div className="sb-card p-5 space-y-4">
+        <div className="sb-card" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
           <div>
-            <h3 className="text-base font-bold text-[var(--color-text)]">
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
               End-to-End Customer Journey Funnel
             </h3>
-            <p className="text-xs text-[var(--color-text-secondary)]">
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
               Conversion from discovery to measurement booking, order completion, and repeat orders
             </p>
           </div>
 
-          <div className="space-y-3 pt-2">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {funnelData.map((stage, idx) => (
-              <div key={idx} className="p-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] font-bold text-xs flex items-center justify-center">
+              <div
+                key={idx}
+                style={{
+                  padding: '12px 16px',
+                  borderRadius: 'var(--sb-radius-md)',
+                  border: '1px solid var(--sb-border-default)',
+                  backgroundColor: 'var(--sb-bg-surface)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ width: '26px', height: '26px', borderRadius: 'var(--sb-radius-full)', backgroundColor: 'var(--sb-primary-light)', color: 'var(--sb-primary)', fontWeight: 700, fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {idx + 1}
                   </span>
                   <div>
-                    <p className="text-xs font-bold text-[var(--color-text)]">{stage.stage}</p>
-                    <p className="text-[11px] text-[var(--color-text-muted)]">
+                    <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>{stage.stage}</p>
+                    <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>
                       {stage.count.toLocaleString()} Users
                     </p>
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <span className="text-xs font-semibold text-[var(--color-primary)]">
+                <div style={{ textAlign: 'right' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: stage.drop === '0%' ? 'var(--sb-status-success)' : 'var(--sb-primary)' }}>
                     {stage.drop === '0%' ? 'Top of Funnel' : `Drop-off: ${stage.drop}`}
                   </span>
                 </div>

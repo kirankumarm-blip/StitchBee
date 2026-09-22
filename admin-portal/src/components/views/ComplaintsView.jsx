@@ -13,9 +13,9 @@ import {
   Scissors
 } from 'lucide-react';
 import { MOCK_COMPLAINTS } from '../../data/adminMockData';
-import { StatusBadge } from '../common/StatusBadge';
-import { ConfirmationModal } from '../common/ConfirmationModal';
-import { DetailsDrawer } from '../common/DetailsDrawer';
+import StatusBadge from '../common/StatusBadge';
+import ConfirmationModal from '../common/ConfirmationModal';
+import DetailsDrawer from '../common/DetailsDrawer';
 
 export const ComplaintsView = ({ showToast }) => {
   const [complaints, setComplaints] = useState(MOCK_COMPLAINTS);
@@ -25,12 +25,12 @@ export const ComplaintsView = ({ showToast }) => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [resolveModal, setResolveModal] = useState({ isOpen: false, ticket: null, actionType: '' });
 
-  const filteredTickets = complaints.filter((t) => {
+  const filteredTickets = (complaints || []).filter((t) => {
     const matchesSearch =
-      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.orderId.toLowerCase().includes(searchQuery.toLowerCase());
+      (t.id || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.customer || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.subject || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (t.orderId || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'All' || t.status === statusFilter;
     const matchesPriority = priorityFilter === 'All' || t.priority === priorityFilter;
     return matchesSearch && matchesStatus && matchesPriority;
@@ -62,67 +62,66 @@ export const ComplaintsView = ({ showToast }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Banner KPI strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="sb-card p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-[var(--color-text-secondary)] font-medium">Active Tickets</p>
-            <AlertTriangle className="w-4 h-4 text-[var(--color-accent)]" />
+      <div className="sb-grid-4">
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Active Tickets</p>
+            <AlertTriangle style={{ width: '18px', height: '18px', color: 'var(--sb-accent)' }} />
           </div>
-          <p className="text-2xl font-bold text-[var(--color-text)] mt-1">
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '4px 0 2px 0' }}>
             {complaints.filter((c) => c.status !== 'Resolved').length}
           </p>
-          <p className="text-[11px] text-[var(--color-accent)] mt-1">1 High Priority SLA</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-accent)', margin: 0 }}>1 High Priority SLA</p>
         </div>
 
-        <div className="sb-card p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-[var(--color-text-secondary)] font-medium">Avg Resolution Time</p>
-            <Clock className="w-4 h-4 text-[var(--color-primary)]" />
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Avg Resolution Time</p>
+            <Clock style={{ width: '18px', height: '18px', color: 'var(--sb-primary)' }} />
           </div>
-          <p className="text-2xl font-bold text-[var(--color-text)] mt-1">4.6 Hours</p>
-          <p className="text-[11px] text-[var(--color-success)] mt-1">Well within 24h SLA target</p>
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '4px 0 2px 0' }}>4.6 Hours</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-status-success)', margin: 0 }}>Well within 24h SLA target</p>
         </div>
 
-        <div className="sb-card p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-[var(--color-text-secondary)] font-medium">SLA Compliance</p>
-            <CheckCircle2 className="w-4 h-4 text-[var(--color-success)]" />
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>SLA Compliance</p>
+            <CheckCircle2 style={{ width: '18px', height: '18px', color: 'var(--sb-status-success)' }} />
           </div>
-          <p className="text-2xl font-bold text-[var(--color-success)] mt-1">97.8%</p>
-          <p className="text-[11px] text-[var(--color-text-muted)] mt-1">Target: &gt; 95%</p>
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-status-success)', margin: '4px 0 2px 0' }}>97.8%</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Target: &gt; 95%</p>
         </div>
 
-        <div className="sb-card p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-xs text-[var(--color-text-secondary)] font-medium">Total Resolved (Month)</p>
-            <ShieldAlert className="w-4 h-4 text-[var(--color-primary)]" />
+        <div className="sb-card" style={{ padding: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', fontWeight: 600, margin: 0 }}>Total Resolved (Month)</p>
+            <ShieldAlert style={{ width: '18px', height: '18px', color: 'var(--sb-primary)' }} />
           </div>
-          <p className="text-2xl font-bold text-[var(--color-text)] mt-1">142</p>
-          <p className="text-[11px] text-[var(--color-text-muted)] mt-1">Customer satisfaction: 94%</p>
+          <p style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sb-text-title)', margin: '4px 0 2px 0' }}>142</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: 0 }}>Customer satisfaction: 94%</p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="sb-card p-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
+      <div className="sb-card" style={{ padding: '14px 18px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <div className="sb-search-box" style={{ maxWidth: '420px', flex: 1 }}>
+            <Search style={{ width: '16px', height: '16px' }} />
             <input
               type="text"
               placeholder="Search by ticket ID, customer, order ID, or topic..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-xs font-semibold px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none"
+              className="sb-select-control"
             >
               <option value="All">All Statuses</option>
               <option value="In Progress">In Progress</option>
@@ -132,7 +131,7 @@ export const ComplaintsView = ({ showToast }) => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="text-xs font-semibold px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none"
+              className="sb-select-control"
             >
               <option value="All">All Priorities</option>
               <option value="High">High Priority</option>
@@ -144,24 +143,24 @@ export const ComplaintsView = ({ showToast }) => {
       </div>
 
       {/* Complaints Table */}
-      <div className="sb-card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left">
-            <thead className="bg-[var(--color-surface-hover)] border-b border-[var(--color-border)] text-[var(--color-text-muted)] font-semibold uppercase tracking-wider">
-              <tr>
-                <th className="py-3 px-4">Ticket</th>
-                <th className="py-3 px-4">Customer & Order</th>
-                <th className="py-3 px-4">Category & Subject</th>
-                <th className="py-3 px-4">Tailor / Partner</th>
-                <th className="py-3 px-4">Priority & SLA</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-right">Action</th>
+      <div className="sb-card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'var(--sb-bg-surface-hover)', borderBottom: '1px solid var(--sb-border-default)', color: 'var(--sb-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <th style={{ padding: '12px 16px' }}>Ticket</th>
+                <th style={{ padding: '12px 16px' }}>Customer & Order</th>
+                <th style={{ padding: '12px 16px' }}>Category & Subject</th>
+                <th style={{ padding: '12px 16px' }}>Tailor / Partner</th>
+                <th style={{ padding: '12px 16px' }}>Priority & SLA</th>
+                <th style={{ padding: '12px 16px' }}>Status</th>
+                <th style={{ padding: '12px 16px', textAlign: 'right' }}>Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-border)]">
+            <tbody>
               {filteredTickets.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-[var(--color-text-muted)]">
+                  <td colSpan={7} style={{ padding: '32px', textAlign: 'center', color: 'var(--sb-text-muted)' }}>
                     No tickets found matching current filters.
                   </td>
                 </tr>
@@ -169,86 +168,69 @@ export const ComplaintsView = ({ showToast }) => {
                 filteredTickets.map((ticket) => (
                   <tr
                     key={ticket.id}
-                    className="hover:bg-[var(--color-surface-hover)] transition-colors cursor-pointer"
+                    style={{ borderBottom: '1px solid var(--sb-border-default)', cursor: 'pointer', transition: 'background-color var(--sb-transition-fast)' }}
                     onClick={() => setSelectedTicket(ticket)}
                   >
-                    <td className="py-3 px-4 font-mono font-bold text-[var(--color-primary)]">
+                    <td style={{ padding: '12px 16px', fontFamily: 'monospace', fontWeight: 700, color: 'var(--sb-primary)' }}>
                       {ticket.id}
                     </td>
 
-                    <td className="py-3 px-4">
-                      <p className="font-semibold text-[var(--color-text)]">{ticket.customer}</p>
-                      <p className="text-[11px] font-mono text-[var(--color-text-muted)]">{ticket.orderId}</p>
+                    <td style={{ padding: '12px 16px' }}>
+                      <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: 0 }}>{ticket.customer}</p>
+                      <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>Order #{ticket.orderId}</p>
                     </td>
 
-                    <td className="py-3 px-4 max-w-xs">
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-secondary)]">
-                        {ticket.category}
-                      </span>
-                      <p className="font-medium text-[var(--color-text)] mt-1 truncate">
-                        {ticket.subject}
-                      </p>
+                    <td style={{ padding: '12px 16px' }}>
+                      <p style={{ fontWeight: 600, color: 'var(--sb-text-title)', margin: 0 }}>{ticket.subject}</p>
+                      <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: '2px 0 0 0' }}>{ticket.category}</p>
                     </td>
 
-                    <td className="py-3 px-4 text-[var(--color-text-secondary)] font-medium">
+                    <td style={{ padding: '12px 16px', color: 'var(--sb-text-body)' }}>
                       {ticket.tailor}
                     </td>
 
-                    <td className="py-3 px-4">
+                    <td style={{ padding: '12px 16px' }}>
                       <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          ticket.priority === 'High'
-                            ? 'bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300'
-                            : ticket.priority === 'Medium'
-                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300'
-                            : 'bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300'
-                        }`}
+                        style={{
+                          display: 'inline-block',
+                          padding: '2px 8px',
+                          borderRadius: 'var(--sb-radius-sm)',
+                          fontSize: '0.7rem',
+                          fontWeight: 700,
+                          backgroundColor:
+                            ticket.priority === 'High'
+                              ? 'var(--sb-status-failed-bg)'
+                              : ticket.priority === 'Medium'
+                              ? 'var(--sb-status-pending-bg)'
+                              : 'var(--sb-bg-surface-hover)',
+                          color:
+                            ticket.priority === 'High'
+                              ? 'var(--sb-status-failed)'
+                              : ticket.priority === 'Medium'
+                              ? 'var(--sb-status-pending)'
+                              : 'var(--sb-text-muted)'
+                        }}
                       >
-                        {ticket.priority}
+                        {ticket.priority} Priority
                       </span>
-                      <p className="text-[10px] text-[var(--color-text-muted)] mt-1 flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {ticket.slaDeadline}
-                      </p>
                     </td>
 
-                    <td className="py-3 px-4">
+                    <td style={{ padding: '12px 16px' }}>
                       <StatusBadge status={ticket.status} />
                     </td>
 
-                    <td className="py-3 px-4 text-right" onClick={(e) => e.stopPropagation()}>
-                      {ticket.status !== 'Resolved' ? (
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() =>
-                              setResolveModal({
-                                isOpen: true,
-                                ticket,
-                                actionType: 'Rework Authorized'
-                              })
-                            }
-                            className="sb-btn-primary text-xs py-1 px-2"
-                          >
-                            Rework
-                          </button>
-                          <button
-                            onClick={() =>
-                              setResolveModal({
-                                isOpen: true,
-                                ticket,
-                                actionType: 'Full Refund Issued'
-                              })
-                            }
-                            className="sb-btn-secondary text-xs py-1 px-2 text-red-600"
-                          >
-                            Refund
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-[11px] text-[var(--color-success)] font-medium">
-                          ✓ Resolved
-                        </span>
-                      )}
+                    <td style={{ padding: '12px 16px', textAlign: 'right' }}>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedTicket(ticket);
+                        }}
+                        className="sb-btn sb-btn-secondary"
+                        style={{ padding: '4px 10px', fontSize: '0.72rem' }}
+                      >
+                        View & Resolve
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -265,10 +247,11 @@ export const ComplaintsView = ({ showToast }) => {
         title={selectedTicket ? `Support Ticket: ${selectedTicket.id}` : ''}
         subtitle={selectedTicket ? `Customer: ${selectedTicket.customer}` : ''}
         footer={
-          <div className="flex items-center justify-between w-full">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
             {selectedTicket && selectedTicket.status !== 'Resolved' && (
-              <div className="flex gap-2">
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <button
+                  type="button"
                   onClick={() =>
                     setResolveModal({
                       isOpen: true,
@@ -276,11 +259,13 @@ export const ComplaintsView = ({ showToast }) => {
                       actionType: 'Rework Authorized'
                     })
                   }
-                  className="sb-btn-primary text-xs"
+                  className="sb-btn sb-btn-primary"
+                  style={{ fontSize: '0.78rem' }}
                 >
                   Authorize Free Rework
                 </button>
                 <button
+                  type="button"
                   onClick={() =>
                     setResolveModal({
                       isOpen: true,
@@ -288,52 +273,58 @@ export const ComplaintsView = ({ showToast }) => {
                       actionType: 'Full Refund'
                     })
                   }
-                  className="sb-btn-secondary text-xs text-red-600"
+                  className="sb-btn sb-btn-danger"
+                  style={{ fontSize: '0.78rem' }}
                 >
                   Issue Refund
                 </button>
               </div>
             )}
-            <button onClick={() => setSelectedTicket(null)} className="sb-btn-secondary text-xs">
+            <button
+              type="button"
+              onClick={() => setSelectedTicket(null)}
+              className="sb-btn sb-btn-secondary"
+              style={{ fontSize: '0.78rem', marginLeft: 'auto' }}
+            >
               Close
             </button>
           </div>
         }
       >
         {selectedTicket && (
-          <div className="space-y-6 text-xs">
-            <div className="p-4 rounded-xl bg-[var(--color-surface-hover)] border border-[var(--color-border)] space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="font-bold text-sm text-[var(--color-text)]">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '0.78rem' }}>
+            <div style={{ padding: '16px', borderRadius: 'var(--sb-radius-lg)', backgroundColor: 'var(--sb-bg-surface-hover)', border: '1px solid var(--sb-border-default)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--sb-text-title)' }}>
                   {selectedTicket.subject}
                 </span>
                 <StatusBadge status={selectedTicket.status} />
               </div>
-              <p className="text-[11px] text-[var(--color-text-muted)]">
+              <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: 0 }}>
                 Opened on {selectedTicket.createdAt} • Assigned to {selectedTicket.assignedTo}
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]">
-                <p className="text-[11px] text-[var(--color-text-muted)]">Related Order</p>
-                <p className="font-mono font-bold text-[var(--color-primary)] mt-0.5">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div style={{ padding: '12px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface)' }}>
+                <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: 0 }}>Related Order</p>
+                <p style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--sb-primary)', margin: '4px 0 0 0' }}>
                   {selectedTicket.orderId}
                 </p>
               </div>
-              <div className="p-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]">
-                <p className="text-[11px] text-[var(--color-text-muted)]">Tailor Atelier</p>
-                <p className="font-bold text-[var(--color-text)] mt-0.5">{selectedTicket.tailor}</p>
+              <div style={{ padding: '12px', borderRadius: 'var(--sb-radius-md)', border: '1px solid var(--sb-border-default)', backgroundColor: 'var(--sb-bg-surface)' }}>
+                <p style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', margin: 0 }}>Tailor Atelier</p>
+                <p style={{ fontWeight: 700, color: 'var(--sb-text-title)', margin: '4px 0 0 0' }}>{selectedTicket.tailor}</p>
               </div>
             </div>
 
             {selectedTicket.resolutionNotes && (
-              <div className="p-3 rounded-lg bg-[var(--color-success-light)] border border-green-300 dark:border-green-800">
-                <p className="font-bold text-green-900 dark:text-green-200">Resolution Details:</p>
-                <p className="text-green-800 dark:text-green-300 mt-1">
+              <div style={{ padding: '14px', borderRadius: 'var(--sb-radius-md)', backgroundColor: 'var(--sb-status-success-bg)', border: '1px solid var(--sb-status-success-border)' }}>
+                <p style={{ fontWeight: 700, color: 'var(--sb-status-success)', margin: 0 }}>Resolution Details:</p>
+                <p style={{ color: 'var(--sb-text-body)', margin: '6px 0 0 0' }}>
                   {selectedTicket.resolutionNotes}
                 </p>
-                <p className="text-[10px] text-green-700 dark:text-green-400 mt-1">
+                <p style={{ fontSize: '0.7rem', color: 'var(--sb-text-muted)', margin: '6px 0 0 0' }}>
                   Type: {selectedTicket.resolutionType}
                 </p>
               </div>

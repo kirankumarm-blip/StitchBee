@@ -11,10 +11,11 @@ import {
   Tag,
   ToggleLeft,
   ToggleRight,
-  Sparkles
+  Sparkles,
+  X
 } from 'lucide-react';
 import { INITIAL_CATEGORIES, INITIAL_SERVICES } from '../../data/adminMockData';
-import { StatusBadge } from '../common/StatusBadge';
+import StatusBadge from '../common/StatusBadge';
 
 export const CatalogView = ({ showToast }) => {
   const [activeTab, setActiveTab] = useState('categories');
@@ -136,23 +137,34 @@ export const CatalogView = ({ showToast }) => {
     });
   };
 
+  const filteredCategories = categories.filter((c) =>
+    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.subcategories.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  const filteredServices = services.filter((s) =>
+    s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h2 className="text-xl font-bold text-[var(--color-text)] flex items-center gap-2">
-            <Layers className="w-6 h-6 text-[var(--color-primary)]" />
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--sb-text-title)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+            <Layers style={{ width: '22px', height: '22px', color: 'var(--sb-primary)' }} />
             Catalog: Categories & Services
           </h2>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-0.5">
+          <p style={{ fontSize: '0.8rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
             Configure tailor disciplines, consumer styling categories, and standardized base pricing.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div>
           {activeTab === 'categories' ? (
             <button
+              type="button"
               onClick={() =>
                 setCategoryModal({
                   isOpen: true,
@@ -160,13 +172,14 @@ export const CatalogView = ({ showToast }) => {
                   data: { id: '', name: '', basePrice: '', subcategories: '' }
                 })
               }
-              className="sb-btn-primary text-xs flex items-center gap-1.5"
+              className="sb-btn sb-btn-primary"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus style={{ width: '15px', height: '15px' }} />
               Add New Category
             </button>
           ) : (
             <button
+              type="button"
               onClick={() =>
                 setServiceModal({
                   isOpen: true,
@@ -174,9 +187,9 @@ export const CatalogView = ({ showToast }) => {
                   data: { id: '', category: "Men's Tailoring", name: '', price: '', estDays: '' }
                 })
               }
-              className="sb-btn-primary text-xs flex items-center gap-1.5"
+              className="sb-btn sb-btn-primary"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus style={{ width: '15px', height: '15px' }} />
               Add Tailoring Service
             </button>
           )}
@@ -184,33 +197,27 @@ export const CatalogView = ({ showToast }) => {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-[var(--color-border)]">
+      <div className="sb-tabs-nav">
         <button
+          type="button"
           onClick={() => setActiveTab('categories')}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-all border-b-2 ${
-            activeTab === 'categories'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary-light)]'
-              : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-          }`}
+          className={`sb-tab-item ${activeTab === 'categories' ? 'active' : ''}`}
         >
           Categories ({categories.length})
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab('services')}
-          className={`px-4 py-2.5 text-xs font-semibold rounded-t-lg transition-all border-b-2 ${
-            activeTab === 'services'
-              ? 'border-[var(--color-primary)] text-[var(--color-primary)] bg-[var(--color-primary-light)]'
-              : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text)]'
-          }`}
+          className={`sb-tab-item ${activeTab === 'services' ? 'active' : ''}`}
         >
           Services & Pricing ({services.length})
         </button>
       </div>
 
       {/* Search Input */}
-      <div className="sb-card p-3">
-        <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
+      <div className="sb-card" style={{ padding: '12px 16px' }}>
+        <div className="sb-search-box" style={{ maxWidth: '420px' }}>
+          <Search style={{ width: '16px', height: '16px' }} />
           <input
             type="text"
             placeholder={
@@ -220,151 +227,163 @@ export const CatalogView = ({ showToast }) => {
             }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
           />
         </div>
       </div>
 
       {/* Categories Tab Content */}
       {activeTab === 'categories' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {categories
-            .filter((c) =>
-              c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              c.subcategories.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()))
-            )
-            .map((cat) => (
-              <div
-                key={cat.id}
-                className="sb-card p-5 flex flex-col justify-between space-y-4 hover:border-[var(--color-primary)] transition-all"
-              >
-                <div>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2">
-                        {cat.name}
-                        {cat.status === 'Active' ? (
-                          <span className="w-2 h-2 rounded-full bg-[var(--color-success)]" />
-                        ) : (
-                          <span className="w-2 h-2 rounded-full bg-gray-400" />
-                        )}
-                      </h3>
-                      <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
-                        Base starting price: <strong className="text-[var(--color-primary)]">₹{cat.basePrice}</strong> • {cat.ordersCount.toLocaleString()} lifetime orders
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={() => handleToggleCategory(cat.id)}
-                      className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"
-                      title={cat.status === 'Active' ? 'Disable Category' : 'Enable Category'}
-                    >
-                      {cat.status === 'Active' ? (
-                        <ToggleRight className="w-6 h-6 text-[var(--color-success)]" />
-                      ) : (
-                        <ToggleLeft className="w-6 h-6 text-gray-400" />
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Subcategories list */}
-                  <div className="mt-3">
-                    <p className="text-[11px] font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5">
-                      Subcategories / Garment Types
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+          {filteredCategories.map((cat) => (
+            <div
+              key={cat.id}
+              className="sb-card"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: '16px',
+                padding: '20px',
+                transition: 'border-color var(--sb-transition-fast)'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                  <div>
+                    <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--sb-text-title)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+                      {cat.name}
+                      <span
+                        style={{
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          backgroundColor: cat.status === 'Active' ? 'var(--sb-status-success)' : 'var(--sb-text-muted)'
+                        }}
+                      />
+                    </h3>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)', margin: '4px 0 0 0' }}>
+                      Base starting price: <strong style={{ color: 'var(--sb-primary)' }}>₹{cat.basePrice}</strong> • {cat.ordersCount?.toLocaleString?.() || 0} orders
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {cat.subcategories.map((sub, idx) => (
-                        <span
-                          key={idx}
-                          className="px-2 py-0.5 rounded-md text-[11px] bg-[var(--color-surface-hover)] border border-[var(--color-border)] text-[var(--color-text-secondary)]"
-                        >
-                          {sub}
-                        </span>
-                      ))}
-                    </div>
                   </div>
-                </div>
 
-                <div className="pt-2 border-t border-[var(--color-border)] flex items-center justify-between">
-                  <span className="text-[11px] text-[var(--color-text-muted)]">
-                    ID: {cat.id}
-                  </span>
                   <button
-                    onClick={() =>
-                      setCategoryModal({
-                        isOpen: true,
-                        isEdit: true,
-                        data: {
-                          id: cat.id,
-                          name: cat.name,
-                          basePrice: cat.basePrice,
-                          subcategories: cat.subcategories.join(', ')
-                        }
-                      })
-                    }
-                    className="sb-btn-secondary text-xs py-1 px-2.5 flex items-center gap-1"
+                    type="button"
+                    onClick={() => handleToggleCategory(cat.id)}
+                    style={{ color: 'var(--sb-text-muted)', cursor: 'pointer' }}
+                    title={cat.status === 'Active' ? 'Disable Category' : 'Enable Category'}
                   >
-                    <Edit2 className="w-3 h-3" />
-                    Edit
+                    {cat.status === 'Active' ? (
+                      <ToggleRight style={{ width: '26px', height: '26px', color: 'var(--sb-status-success)' }} />
+                    ) : (
+                      <ToggleLeft style={{ width: '26px', height: '26px', color: 'var(--sb-text-muted)' }} />
+                    )}
                   </button>
                 </div>
+
+                {/* Subcategories list */}
+                <div style={{ marginTop: '12px' }}>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--sb-text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '0 0 6px 0' }}>
+                    Subcategories / Garment Types
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {(cat.subcategories || []).map((sub, idx) => (
+                      <span
+                        key={idx}
+                        style={{
+                          padding: '3px 8px',
+                          borderRadius: 'var(--sb-radius-sm)',
+                          fontSize: '0.72rem',
+                          backgroundColor: 'var(--sb-bg-surface-hover)',
+                          border: '1px solid var(--sb-border-default)',
+                          color: 'var(--sb-text-body)'
+                        }}
+                      >
+                        {sub}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
+
+              <div style={{ paddingTop: '12px', borderTop: '1px solid var(--sb-border-default)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)' }}>
+                  ID: {cat.id}
+                </span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCategoryModal({
+                      isOpen: true,
+                      isEdit: true,
+                      data: {
+                        id: cat.id,
+                        name: cat.name,
+                        basePrice: cat.basePrice,
+                        subcategories: Array.isArray(cat.subcategories) ? cat.subcategories.join(', ') : ''
+                      }
+                    })
+                  }
+                  className="sb-btn sb-btn-secondary"
+                  style={{ padding: '4px 10px', fontSize: '0.75rem' }}
+                >
+                  <Edit2 style={{ width: '12px', height: '12px' }} />
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
       {/* Services Tab Content */}
       {activeTab === 'services' && (
-        <div className="sb-card overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-[var(--color-surface-hover)] border-b border-[var(--color-border)] text-[var(--color-text-muted)] font-semibold uppercase tracking-wider">
-                <tr>
-                  <th className="py-3 px-4">Service Name</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4">Standard Price</th>
-                  <th className="py-3 px-4">Est. SLA Turnaround</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+        <div className="sb-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.78rem', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ backgroundColor: 'var(--sb-bg-surface-hover)', borderBottom: '1px solid var(--sb-border-default)', color: 'var(--sb-text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  <th style={{ padding: '12px 16px' }}>Service Name</th>
+                  <th style={{ padding: '12px 16px' }}>Category</th>
+                  <th style={{ padding: '12px 16px' }}>Standard Price</th>
+                  <th style={{ padding: '12px 16px' }}>Est. SLA Turnaround</th>
+                  <th style={{ padding: '12px 16px' }}>Status</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[var(--color-border)]">
-                {services
-                  .filter(
-                    (s) =>
-                      s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                      s.category.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((srv) => (
-                    <tr key={srv.id} className="hover:bg-[var(--color-surface-hover)]">
-                      <td className="py-3 px-4 font-bold text-[var(--color-text)]">
-                        {srv.name}
-                      </td>
-                      <td className="py-3 px-4 text-[var(--color-text-secondary)]">
-                        {srv.category}
-                      </td>
-                      <td className="py-3 px-4 font-semibold text-[var(--color-primary)]">
-                        ₹{srv.price.toLocaleString()}
-                      </td>
-                      <td className="py-3 px-4 text-[var(--color-text-muted)]">
-                        {srv.estDays} Working Days
-                      </td>
-                      <td className="py-3 px-4">
-                        <StatusBadge status={srv.status} />
-                      </td>
-                      <td className="py-3 px-4 text-right space-x-2">
+              <tbody>
+                {filteredServices.map((srv) => (
+                  <tr key={srv.id} style={{ borderBottom: '1px solid var(--sb-border-default)' }}>
+                    <td style={{ padding: '12px 16px', fontWeight: 700, color: 'var(--sb-text-title)' }}>
+                      {srv.name}
+                    </td>
+                    <td style={{ padding: '12px 16px', color: 'var(--sb-text-body)' }}>
+                      {srv.category}
+                    </td>
+                    <td style={{ padding: '12px 16px', fontWeight: 600, color: 'var(--sb-primary)' }}>
+                      ₹{srv.price.toLocaleString()}
+                    </td>
+                    <td style={{ padding: '12px 16px', color: 'var(--sb-text-muted)' }}>
+                      {srv.estDays} Working Days
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <StatusBadge status={srv.status} />
+                    </td>
+                    <td style={{ padding: '12px 16px', textAlign: 'right' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                         <button
+                          type="button"
                           onClick={() => handleToggleService(srv.id)}
-                          className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] inline-block align-middle"
+                          style={{ color: 'var(--sb-text-muted)', cursor: 'pointer' }}
                           title="Toggle Status"
                         >
                           {srv.status === 'Active' ? (
-                            <ToggleRight className="w-5 h-5 text-[var(--color-success)]" />
+                            <ToggleRight style={{ width: '22px', height: '22px', color: 'var(--sb-status-success)' }} />
                           ) : (
-                            <ToggleLeft className="w-5 h-5 text-gray-400" />
+                            <ToggleLeft style={{ width: '22px', height: '22px', color: 'var(--sb-text-muted)' }} />
                           )}
                         </button>
                         <button
+                          type="button"
                           onClick={() =>
                             setServiceModal({
                               isOpen: true,
@@ -378,13 +397,15 @@ export const CatalogView = ({ showToast }) => {
                               }
                             })
                           }
-                          className="sb-btn-secondary text-xs py-1 px-2 inline-block align-middle"
+                          className="sb-btn sb-btn-secondary"
+                          style={{ padding: '4px 10px', fontSize: '0.72rem' }}
                         >
                           Edit
                         </button>
-                      </td>
-                    </tr>
-                  ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -393,14 +414,23 @@ export const CatalogView = ({ showToast }) => {
 
       {/* Category Modal */}
       {categoryModal.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
-            <h3 className="font-bold text-base text-[var(--color-text)]">
-              {categoryModal.isEdit ? 'Edit Category' : 'Add New Tailoring Category'}
-            </h3>
-            <form onSubmit={handleSaveCategory} className="space-y-3 text-xs">
+        <div className="sb-modal-backdrop">
+          <div className="sb-modal-box" style={{ padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+                {categoryModal.isEdit ? 'Edit Category' : 'Add New Tailoring Category'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setCategoryModal({ isOpen: false, isEdit: false, data: { id: '', name: '', basePrice: '', subcategories: '' } })}
+                style={{ color: 'var(--sb-text-muted)' }}
+              >
+                <X style={{ width: '18px', height: '18px' }} />
+              </button>
+            </div>
+            <form onSubmit={handleSaveCategory} style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.78rem' }}>
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Category Name
                 </label>
                 <input
@@ -414,12 +444,12 @@ export const CatalogView = ({ showToast }) => {
                       data: { ...prev.data, name: e.target.value }
                     }))
                   }
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                  className="sb-input"
                 />
               </div>
 
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Starting Base Price (₹)
                 </label>
                 <input
@@ -433,12 +463,12 @@ export const CatalogView = ({ showToast }) => {
                       data: { ...prev.data, basePrice: e.target.value }
                     }))
                   }
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                  className="sb-input"
                 />
               </div>
 
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Subcategories (comma-separated)
                 </label>
                 <input
@@ -451,11 +481,11 @@ export const CatalogView = ({ showToast }) => {
                       data: { ...prev.data, subcategories: e.target.value }
                     }))
                   }
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                  className="sb-input"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 pt-3">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', paddingTop: '10px' }}>
                 <button
                   type="button"
                   onClick={() =>
@@ -465,11 +495,11 @@ export const CatalogView = ({ showToast }) => {
                       data: { id: '', name: '', basePrice: '', subcategories: '' }
                     })
                   }
-                  className="sb-btn-secondary text-xs"
+                  className="sb-btn sb-btn-secondary"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="sb-btn-primary text-xs">
+                <button type="submit" className="sb-btn sb-btn-primary">
                   {categoryModal.isEdit ? 'Save Changes' : 'Create Category'}
                 </button>
               </div>
@@ -480,14 +510,23 @@ export const CatalogView = ({ showToast }) => {
 
       {/* Service Modal */}
       {serviceModal.isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
-            <h3 className="font-bold text-base text-[var(--color-text)]">
-              {serviceModal.isEdit ? 'Edit Service' : 'Add Tailoring Service'}
-            </h3>
-            <form onSubmit={handleSaveService} className="space-y-3 text-xs">
+        <div className="sb-modal-backdrop">
+          <div className="sb-modal-box" style={{ padding: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--sb-text-title)', margin: 0 }}>
+                {serviceModal.isEdit ? 'Edit Service' : 'Add Tailoring Service'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setServiceModal({ isOpen: false, isEdit: false, data: { id: '', category: "Men's Tailoring", name: '', price: '', estDays: '' } })}
+                style={{ color: 'var(--sb-text-muted)' }}
+              >
+                <X style={{ width: '18px', height: '18px' }} />
+              </button>
+            </div>
+            <form onSubmit={handleSaveService} style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.78rem' }}>
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Parent Category
                 </label>
                 <select
@@ -498,7 +537,8 @@ export const CatalogView = ({ showToast }) => {
                       data: { ...prev.data, category: e.target.value }
                     }))
                   }
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none"
+                  className="sb-select-control"
+                  style={{ width: '100%' }}
                 >
                   {categories.map((c) => (
                     <option key={c.id} value={c.name}>
@@ -509,7 +549,7 @@ export const CatalogView = ({ showToast }) => {
               </div>
 
               <div>
-                <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
+                <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
                   Service Name
                 </label>
                 <input
@@ -523,19 +563,19 @@ export const CatalogView = ({ showToast }) => {
                       data: { ...prev.data, name: e.target.value }
                     }))
                   }
-                  className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                  className="sb-input"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
-                  <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
-                    Base Price (₹)
+                  <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
+                    Standard Price (₹)
                   </label>
                   <input
                     type="number"
                     required
-                    placeholder="1200"
+                    placeholder="750"
                     value={serviceModal.data.price}
                     onChange={(e) =>
                       setServiceModal((prev) => ({
@@ -543,18 +583,18 @@ export const CatalogView = ({ showToast }) => {
                         data: { ...prev.data, price: e.target.value }
                       }))
                     }
-                    className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                    className="sb-input"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[var(--color-text-secondary)] font-semibold mb-1">
-                    Est. Days
+                  <label style={{ display: 'block', color: 'var(--sb-text-body)', fontWeight: 600, marginBottom: '6px' }}>
+                    Turnaround (Days)
                   </label>
                   <input
                     type="number"
                     required
-                    placeholder="5"
+                    placeholder="3"
                     value={serviceModal.data.estDays}
                     onChange={(e) =>
                       setServiceModal((prev) => ({
@@ -562,12 +602,12 @@ export const CatalogView = ({ showToast }) => {
                         data: { ...prev.data, estDays: e.target.value }
                       }))
                     }
-                    className="w-full p-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                    className="sb-input"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', paddingTop: '10px' }}>
                 <button
                   type="button"
                   onClick={() =>
@@ -577,11 +617,11 @@ export const CatalogView = ({ showToast }) => {
                       data: { id: '', category: "Men's Tailoring", name: '', price: '', estDays: '' }
                     })
                   }
-                  className="sb-btn-secondary text-xs"
+                  className="sb-btn sb-btn-secondary"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="sb-btn-primary text-xs">
+                <button type="submit" className="sb-btn sb-btn-primary">
                   {serviceModal.isEdit ? 'Save Changes' : 'Create Service'}
                 </button>
               </div>
