@@ -4,7 +4,7 @@ import {
   Users, UserCheck, ShieldCheck, Sparkles, AlertTriangle, AlertCircle,
   IndianRupee, CreditCard, BarChart3, TrendingUp, Star, MessageSquare,
   Bookmark, FolderTree, Settings, FileText, ChevronDown, ChevronRight,
-  Shield, X
+  Shield, X, ArrowLeftToLine, ArrowRightToLine
 } from 'lucide-react';
 
 export default function StitchBeeSidebar({
@@ -167,6 +167,21 @@ export default function StitchBeeSidebar({
         }}
         className={`sb-sidebar ${mobileOpen ? 'mobile-open' : ''}`}
       >
+        {/* Border-mounted Expand/Collapse Toggle Button matching user mockup */}
+        <button
+          type="button"
+          onClick={() => setCollapsed(!collapsed)}
+          className="sb-sidebar-edge-toggle"
+          title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          aria-label={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+        >
+          {collapsed ? (
+            <ArrowRightToLine size={14} strokeWidth={2.2} />
+          ) : (
+            <ArrowLeftToLine size={14} strokeWidth={2.2} />
+          )}
+        </button>
+
         {/* Brand Header */}
         <div style={{
           height: 'var(--sb-header-height)',

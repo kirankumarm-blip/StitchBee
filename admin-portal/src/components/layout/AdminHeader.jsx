@@ -86,16 +86,6 @@ export default function AdminHeader({
           <Menu size={20} />
         </button>
 
-        {/* Desktop Collapse Trigger */}
-        <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="sb-btn sb-btn-ghost sb-desktop-collapse-btn"
-          style={{ padding: '6px', borderRadius: 'var(--sb-radius-md)', color: 'var(--sb-text-muted)' }}
-          title={sidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-        >
-          <Menu size={18} />
-        </button>
-
         {/* Breadcrumb Navigation */}
         <div style={{ minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--sb-text-muted)' }}>
