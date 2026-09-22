@@ -12,7 +12,9 @@ export default function AdminHeader({
   sidebarCollapsed,
   setSidebarCollapsed,
   mobileSidebarOpen,
-  setMobileSidebarOpen
+  setMobileSidebarOpen,
+  onLogout,
+  user
 }) {
   // Map active tab to human readable breadcrumb
   const pageTitles = {
@@ -165,7 +167,7 @@ export default function AdminHeader({
         <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--sb-border-default)' }} />
 
         {/* Admin User Profile Dropdown */}
-        <ProfileDropdown onNavigateTab={onNavigateTab} />
+        <ProfileDropdown onNavigateTab={onNavigateTab} onLogout={onLogout} user={user} />
       </div>
 
       <style>{`

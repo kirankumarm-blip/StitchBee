@@ -7,6 +7,7 @@ export const ADMIN_USER = {
   id: 'adm-01',
   name: 'Kiran Kumar',
   email: 'kiran.m@stitchbee.in',
+  phone: '9845012345',
   role: 'Super Admin',
   avatar: 'KK',
   department: 'Executive Operations',
@@ -1030,12 +1031,22 @@ export const INITIAL_SERVICES = [
 
 // Admin Users & Permissions Matrix
 export const MOCK_ADMIN_USERS = [
-  { id: 'u-1', name: 'Kiran Kumar', email: 'kiran.m@stitchbee.in', role: 'Super Admin', status: 'Active', access: 'All Modules' },
-  { id: 'u-2', name: 'Sunil Rao', email: 'sunil.r@stitchbee.in', role: 'Operations Admin', status: 'Active', access: 'Orders, Stitching, Deliveries' },
-  { id: 'u-3', name: 'Deepa Krishnan', email: 'deepa.k@stitchbee.in', role: 'Verification Admin', status: 'Active', access: 'Tailors, Delivery, Designers' },
-  { id: 'u-4', name: 'Venkatesh Iyer', email: 'venkat.i@stitchbee.in', role: 'Finance Admin', status: 'Active', access: 'Payments, Refunds, Payouts' },
-  { id: 'u-5', name: 'Pooja Hegde', email: 'pooja.h@stitchbee.in', role: 'Support Admin', status: 'Active', access: 'Complaints, Reviews, Tickets' }
+  { id: 'u-1', name: 'Kiran Kumar', email: 'kiran.m@stitchbee.in', phone: '9845012345', role: 'Super Admin', status: 'Active', access: 'All Modules' },
+  { id: 'u-2', name: 'Sunil Rao', email: 'sunil.r@stitchbee.in', phone: '9845023456', role: 'Operations Admin', status: 'Active', access: 'Orders, Stitching, Deliveries' },
+  { id: 'u-3', name: 'Deepa Krishnan', email: 'deepa.k@stitchbee.in', phone: '9845034567', role: 'Verification Admin', status: 'Active', access: 'Tailors, Delivery, Designers' },
+  { id: 'u-4', name: 'Venkatesh Iyer', email: 'venkat.i@stitchbee.in', phone: '9845045678', role: 'Finance Admin', status: 'Active', access: 'Payments, Refunds, Payouts' },
+  { id: 'u-5', name: 'Pooja Hegde', email: 'pooja.h@stitchbee.in', phone: '9845056789', role: 'Support Admin', status: 'Active', access: 'Complaints, Reviews, Tickets' }
 ];
+
+// Authorized Administrator Phone Registry (Requirement #67)
+export const AUTHORIZED_ADMIN_USERS = {
+  '9845012345': { ...ADMIN_USER },
+  '9845023456': { id: 'u-2', name: 'Sunil Rao', email: 'sunil.r@stitchbee.in', phone: '9845023456', role: 'Operations Admin', avatar: 'SR', department: 'Operations Management' },
+  '9845034567': { id: 'u-3', name: 'Deepa Krishnan', email: 'deepa.k@stitchbee.in', phone: '9845034567', role: 'Verification Admin', avatar: 'DK', department: 'Partner KYC & Auditing' },
+  '9845045678': { id: 'u-4', name: 'Venkatesh Iyer', email: 'venkat.i@stitchbee.in', phone: '9845045678', role: 'Finance Admin', avatar: 'VI', department: 'Finance & Payouts' },
+  '9845056789': { id: 'u-5', name: 'Pooja Hegde', email: 'pooja.h@stitchbee.in', phone: '9845056789', role: 'Support Admin', avatar: 'PH', department: 'Grievance Resolution' },
+  '9876543210': { id: 'adm-demo', name: 'Super Admin', email: 'admin@stitchbee.in', phone: '9876543210', role: 'Super Admin', avatar: 'SA', department: 'Platform Operations' }
+};
 
 export const PERMISSION_MATRIX = [
   { module: 'Dashboard & Metrics', SuperAdmin: true, OpsAdmin: true, FinanceAdmin: true, VerificationAdmin: true, SupportAdmin: true },

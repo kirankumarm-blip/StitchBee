@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { User, Shield, LogOut, Settings, CheckCircle2, ChevronDown } from 'lucide-react';
 import { ADMIN_USER } from '../../data/adminMockData';
 
-export default function ProfileDropdown({ onNavigateTab }) {
+export default function ProfileDropdown({ onNavigateTab, onLogout, user }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const currentUser = user || ADMIN_USER;
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -44,15 +45,15 @@ export default function ProfileDropdown({ onNavigateTab }) {
           justifyContent: 'center',
           boxShadow: 'var(--sb-shadow-xs)'
         }}>
-          {ADMIN_USER.avatar}
+          {currentUser.avatar || 'SB'}
         </div>
 
         <div style={{ textAlign: 'left', display: 'none' }} className="admin-profile-desktop-info">
           <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--sb-text-title)', lineHeight: 1.2 }}>
-            {ADMIN_USER.name}
+            {currentUser.name}
           </div>
           <div style={{ fontSize: '0.72rem', color: 'var(--sb-text-muted)', lineHeight: 1.1 }}>
-            {ADMIN_USER.role}
+            {currentUser.role}
           </div>
         </div>
 
@@ -76,14 +77,14 @@ export default function ProfileDropdown({ onNavigateTab }) {
           {/* User Details */}
           <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--sb-border-subtle)', marginBottom: '6px' }}>
             <div style={{ fontSize: '0.86rem', fontWeight: 600, color: 'var(--sb-text-title)' }}>
-              {ADMIN_USER.name}
+              {currentUser.name}
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--sb-text-muted)' }}>
-              {ADMIN_USER.email}
+              {currentUser.email}
             </div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '6px', fontSize: '0.72rem', fontWeight: 600, color: 'var(--sb-primary)', background: 'var(--sb-primary-light)', padding: '2px 8px', borderRadius: 'var(--sb-radius-full)' }}>
               <Shield size={12} />
-              <span>{ADMIN_USER.role}</span>
+              <span>{currentUser.role}</span>
             </div>
           </div>
 
@@ -108,7 +109,10 @@ export default function ProfileDropdown({ onNavigateTab }) {
           </div>
 
           <div
-            onClick={() => { alert('Logged out from StitchBee Admin Session.'); setIsOpen(false); }}
+            onClick={() => {
+              setIsOpen(false);
+              if (onLogout) onLogout();
+            }}
             style={{
               padding: '8px 12px',
               display: 'flex',

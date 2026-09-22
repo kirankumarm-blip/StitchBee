@@ -9,7 +9,9 @@ export default function AdminLayout({
   theme,
   setTheme,
   children,
-  onSelectSearchResult
+  onSelectSearchResult,
+  onLogout,
+  user
 }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -40,6 +42,8 @@ export default function AdminLayout({
           setSidebarCollapsed={setSidebarCollapsed}
           mobileSidebarOpen={mobileSidebarOpen}
           setMobileSidebarOpen={setMobileSidebarOpen}
+          onLogout={onLogout}
+          user={user}
         />
 
         {/* Dynamic View Content */}

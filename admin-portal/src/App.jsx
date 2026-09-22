@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './components/layout/AdminLayout';
 import ToastNotification from './components/common/ToastNotification';
+import AdminLogin from './components/auth/AdminLogin';
 
 // Import All 20 Platform Views
 import DashboardView from './components/views/DashboardView';
@@ -29,6 +30,14 @@ export default function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('stitchbee_admin_theme') || 'light';
   });
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('stitchbee_admin_session');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
   const [toast, setToast] = useState(null);
 
   // Apply theme to document body and sync with localStorage
@@ -51,6 +60,18 @@ export default function App() {
       type,
       title: title || (type === 'success' ? 'Success' : type === 'error' ? 'Action Failed' : 'Notice')
     });
+  };
+
+  const handleLoginSuccess = (adminUser) => {
+    setCurrentUser(adminUser);
+    localStorage.setItem('stitchbee_admin_session', JSON.stringify(adminUser));
+    showToast(`Welcome back, ${adminUser.name}! Signed in as ${adminUser.role}.`, 'success', 'Session Authenticated');
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('stitchbee_admin_session');
+    showToast('You have been securely signed out of your admin session.', 'info', 'Signed Out');
   };
 
   // Render view based on active sidebar tab
@@ -109,6 +130,19 @@ export default function App() {
     }
   };
 
+  if (!currentUser) {
+    return (
+      <>
+        <AdminLogin
+          onLoginSuccess={handleLoginSuccess}
+          theme={theme}
+          setTheme={setTheme}
+        />
+        <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
+      </>
+    );
+  }
+
   return (
     <>
       <AdminLayout
@@ -120,6 +154,8 @@ export default function App() {
           setActiveTab(tab);
           showToast(`Navigated to ${tab.replace('-', ' ')}`, 'info');
         }}
+        onLogout={handleLogout}
+        user={currentUser}
       >
         {renderActiveView()}
       </AdminLayout>
