@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ShoppingBag, ShieldCheck, Truck, Sparkles, Star, ChevronRight, 
-  ShoppingCart, Package, ArrowRight, X, Trash2, CheckCircle2, 
+  ShoppingCart, Package, ArrowRight, ArrowLeft, X, Trash2, CheckCircle2, 
   ExternalLink, Layers, Heart, Plus, Minus, Clock, Scissors, MapPin
 } from 'lucide-react';
 
