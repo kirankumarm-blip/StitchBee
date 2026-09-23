@@ -173,22 +173,27 @@ export default function FlipkartCheckoutModal({
   };
 
   return (
-    <div className="modal-overlay" style={{ zIndex: 999999, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose}>
+    <div 
+      className="flipkart-checkout-page animate-fade-in"
+      style={{
+        width: '100%',
+        maxWidth: checkoutStep === 4 ? '680px' : '1120px',
+        margin: '0 auto',
+        position: 'relative'
+      }}
+    >
       <div 
-        className="modal-content animate-fade-in"
+        className="glass-card-no-hover"
         style={{
-          width: '95%',
-          maxWidth: checkoutStep === 4 ? '560px' : '1080px',
-          maxHeight: '94vh',
-          overflowY: 'auto',
+          width: '100%',
           background: 'var(--bg-card)',
           borderRadius: '16px',
           border: '1px solid var(--border-color)',
-          boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
           padding: 0,
-          position: 'relative'
+          position: 'relative',
+          overflow: 'hidden'
         }}
-        onClick={e => e.stopPropagation()}
       >
         
         {/* Top Flipkart Stepper Navigation Bar (Images 3, 4, 5 Reference) */}

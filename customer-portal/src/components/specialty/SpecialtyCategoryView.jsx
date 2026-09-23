@@ -105,6 +105,7 @@ export default function SpecialtyCategoryView({
     };
     setCheckoutItems([item]);
     setCheckoutModalOpen(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleProceedCartCheckout = () => {
@@ -112,6 +113,7 @@ export default function SpecialtyCategoryView({
     setCheckoutItems([...cartItems]);
     setCartDrawerOpen(false);
     setCheckoutModalOpen(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleRemoveFromCart = (itemId) => {
@@ -147,7 +149,7 @@ export default function SpecialtyCategoryView({
     <div className="specialty-category-wrapper" style={{ minHeight: '100vh' }}>
       
       {/* Floating Cart Button (shows when items in cart) */}
-      {cartItems.length > 0 && (
+      {!checkoutModalOpen && cartItems.length > 0 && (
         <button
           onClick={() => setCartDrawerOpen(true)}
           className="floating-cart-badge animate-bounce-subtle"
@@ -227,83 +229,135 @@ export default function SpecialtyCategoryView({
 
 
       {/* ============================================================== */}
-      {/* 3. ACTIVE SPECIALTY CATEGORY EXPERIENCE VIEW                   */}
+      {/* 3. ACTIVE SPECIALTY CATEGORY EXPERIENCE VIEW OR IN-PAGE CHECKOUT */}
       {/* ============================================================== */}
       <main style={{ minHeight: 'calc(100vh - 65px)' }}>
-        {activeCategory === 'bags' && (
-          <BagsLeatherExperience
-            tailors={tailors}
-            currentUser={currentUser}
-            onLoginRequired={onLoginRequired}
-            onAddToCart={handleAddToCart}
-            onDirectCheckout={handleDirectCheckout}
-            serviceMode={serviceMode}
-            onSelectServiceMode={setServiceMode}
-            onOpenTracking={(orderId) => {
-              setTrackingData({ orderId, serviceType: 'alteration', partnerName: 'Ravi Leather Crafts' });
-              setTrackingModalOpen(true);
-            }}
-          />
-        )}
+        {checkoutModalOpen ? (
+          <div className="inpage-checkout-section animate-fade-in" style={{ padding: '20px 16px 80px 16px' }}>
+            <div style={{ maxWidth: '1120px', margin: '0 auto 16px auto', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setCheckoutModalOpen(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="btn"
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--primary)',
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  cursor: 'pointer',
+                  padding: '4px 8px'
+                }}
+              >
+                <ArrowLeft size={16} /> Back to Products
+              </button>
+              <span style={{ color: 'var(--text-muted)' }}>/</span>
+              <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Express Checkout</span>
+            </div>
 
-        {activeCategory === 'shoes' && (
-          <ShoesSlippersExperience
-            tailors={tailors}
-            currentUser={currentUser}
-            onLoginRequired={onLoginRequired}
-            onAddToCart={handleAddToCart}
-            onDirectCheckout={handleDirectCheckout}
-            serviceMode={serviceMode}
-            onSelectServiceMode={setServiceMode}
-          />
-        )}
+            <FlipkartCheckoutModal
+              isOpen={true}
+              onClose={() => {
+                setCheckoutModalOpen(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              items={checkoutItems}
+              currentUser={currentUser}
+              onOrderSuccess={handleOrderSuccess}
+              onOpenTracking={(orderId) => {
+                setCheckoutModalOpen(false);
+                setTrackingData({
+                  orderId,
+                  serviceType: 'stitching',
+                  partnerName: 'StitchBee Master Craftsman'
+                });
+                setTrackingModalOpen(true);
+              }}
+            />
+          </div>
+        ) : (
+          <>
+            {activeCategory === 'bags' && (
+              <BagsLeatherExperience
+                tailors={tailors}
+                currentUser={currentUser}
+                onLoginRequired={onLoginRequired}
+                onAddToCart={handleAddToCart}
+                onDirectCheckout={handleDirectCheckout}
+                serviceMode={serviceMode}
+                onSelectServiceMode={setServiceMode}
+                onOpenTracking={(orderId) => {
+                  setTrackingData({ orderId, serviceType: 'alteration', partnerName: 'Ravi Leather Crafts' });
+                  setTrackingModalOpen(true);
+                }}
+              />
+            )}
 
-        {activeCategory === 'seats' && (
-          <VehicleSeatExperience
-            tailors={tailors}
-            currentUser={currentUser}
-            onLoginRequired={onLoginRequired}
-            onAddToCart={handleAddToCart}
-            onDirectCheckout={handleDirectCheckout}
-            serviceMode={serviceMode}
-            onSelectServiceMode={setServiceMode}
-          />
-        )}
+            {activeCategory === 'shoes' && (
+              <ShoesSlippersExperience
+                tailors={tailors}
+                currentUser={currentUser}
+                onLoginRequired={onLoginRequired}
+                onAddToCart={handleAddToCart}
+                onDirectCheckout={handleDirectCheckout}
+                serviceMode={serviceMode}
+                onSelectServiceMode={setServiceMode}
+              />
+            )}
 
-        {activeCategory === 'gifts' && (
-          <HandmadeGiftsExperience
-            tailors={tailors}
-            currentUser={currentUser}
-            onLoginRequired={onLoginRequired}
-            onAddToCart={handleAddToCart}
-            onDirectCheckout={handleDirectCheckout}
-            serviceMode={serviceMode}
-            onSelectServiceMode={setServiceMode}
-          />
-        )}
+            {activeCategory === 'seats' && (
+              <VehicleSeatExperience
+                tailors={tailors}
+                currentUser={currentUser}
+                onLoginRequired={onLoginRequired}
+                onAddToCart={handleAddToCart}
+                onDirectCheckout={handleDirectCheckout}
+                serviceMode={serviceMode}
+                onSelectServiceMode={setServiceMode}
+              />
+            )}
 
-        {activeCategory === 'pets' && (
-          <PetOutfitsExperience
-            tailors={tailors}
-            currentUser={currentUser}
-            onLoginRequired={onLoginRequired}
-            onAddToCart={handleAddToCart}
-            onDirectCheckout={handleDirectCheckout}
-            serviceMode={serviceMode}
-            onSelectServiceMode={setServiceMode}
-          />
-        )}
+            {activeCategory === 'gifts' && (
+              <HandmadeGiftsExperience
+                tailors={tailors}
+                currentUser={currentUser}
+                onLoginRequired={onLoginRequired}
+                onAddToCart={handleAddToCart}
+                onDirectCheckout={handleDirectCheckout}
+                serviceMode={serviceMode}
+                onSelectServiceMode={setServiceMode}
+              />
+            )}
 
-        {activeCategory === 'sofas' && (
-          <SofasExperience
-            tailors={tailors}
-            currentUser={currentUser}
-            onLoginRequired={onLoginRequired}
-            onAddToCart={handleAddToCart}
-            onDirectCheckout={handleDirectCheckout}
-            serviceMode={serviceMode}
-            onSelectServiceMode={setServiceMode}
-          />
+            {activeCategory === 'pets' && (
+              <PetOutfitsExperience
+                tailors={tailors}
+                currentUser={currentUser}
+                onLoginRequired={onLoginRequired}
+                onAddToCart={handleAddToCart}
+                onDirectCheckout={handleDirectCheckout}
+                serviceMode={serviceMode}
+                onSelectServiceMode={setServiceMode}
+              />
+            )}
+
+            {activeCategory === 'sofas' && (
+              <SofasExperience
+                tailors={tailors}
+                currentUser={currentUser}
+                onLoginRequired={onLoginRequired}
+                onAddToCart={handleAddToCart}
+                onDirectCheckout={handleDirectCheckout}
+                serviceMode={serviceMode}
+                onSelectServiceMode={setServiceMode}
+              />
+            )}
+          </>
         )}
       </main>
 
@@ -478,25 +532,6 @@ export default function SpecialtyCategoryView({
         </div>
       )}
 
-      {/* ============================================================== */}
-      {/* 5. FLIPKART/AMAZON 3-STEP GPS CHECKOUT MODAL                   */}
-      {/* ============================================================== */}
-      <FlipkartCheckoutModal
-        isOpen={checkoutModalOpen}
-        onClose={() => setCheckoutModalOpen(false)}
-        items={checkoutItems}
-        currentUser={currentUser}
-        onOrderSuccess={handleOrderSuccess}
-        onOpenTracking={(orderId) => {
-          setCheckoutModalOpen(false);
-          setTrackingData({
-            orderId,
-            serviceType: 'stitching',
-            partnerName: 'StitchBee Master Craftsman'
-          });
-          setTrackingModalOpen(true);
-        }}
-      />
 
       {/* ============================================================== */}
       {/* 6. ORDER TRACKING MODAL                                        */}
