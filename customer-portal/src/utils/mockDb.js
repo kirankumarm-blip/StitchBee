@@ -149,6 +149,90 @@ export const INITIAL_TAILORS = [
     portfolio: [
       { title: 'Hand-sewn Tan Oxford Shoes', image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80' }
     ]
+  },
+  {
+    id: 't6',
+    name: 'Artisan Threads & Handmade Crafts',
+    owner: 'Meera Venkat',
+    rating: 4.9,
+    reviews: 112,
+    distance: 1.8,
+    specialty: 'Handmade Potlis, Embroidered Keepsakes & Custom Gifts',
+    categories: ['gifts', 'alterations'],
+    address: 'Jayanagar 4th Block, Bengaluru',
+    coordinates: { x: 55, y: 35 },
+    image: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&w=400&q=80',
+    status: 'approved',
+    credits: 180,
+    documents: { aadhaar: '8877-6655-4433', pan: 'MVIND8877K', license: 'LIC-GFT-9912', gst: '29MVIND8877K1ZZ' },
+    inventory: { threads: 600, fabrics: 110, materials: 240 },
+    services: [
+      { id: 'gfs1', name: 'Monogrammed Potlis (Set of 5)', price: 1499, days: 3 },
+      { id: 'gfs2', name: 'Embroidered Velvet Keepsake Cushions', price: 999, days: 2 },
+      { id: 'gfs3', name: 'Custom Personalized Kitchen Apron', price: 699, days: 1 }
+    ],
+    reviewsList: [
+      { name: 'Sowmya K.', rating: 5, comment: 'Ordered wedding return gift potlis. The gold zari monogram was gorgeous!', date: '2026-06-10' }
+    ],
+    portfolio: [
+      { title: 'Personalized Bridal Potli', image: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&w=300&q=80' }
+    ]
+  },
+  {
+    id: 't7',
+    name: 'Paws & Paws Couture',
+    owner: 'Dr. Neha Kapoor & Team',
+    rating: 4.9,
+    reviews: 84,
+    distance: 2.5,
+    specialty: 'Custom Pet Sherwanis, Raincoats & Ergonomic Harnesses',
+    categories: ['pets'],
+    address: 'Whitefield Main Road, Bengaluru',
+    coordinates: { x: 90, y: 45 },
+    image: './Pets.png',
+    status: 'approved',
+    credits: 140,
+    documents: { aadhaar: '2233-4455-6677', pan: 'NKIND2233P', license: 'LIC-PET-5501', gst: '29NKIND2233P1ZR' },
+    inventory: { threads: 240, fabrics: 50, materials: 130 },
+    services: [
+      { id: 'pts1', name: 'Royal Festive Pet Sherwani', price: 799, days: 4 },
+      { id: 'pts2', name: 'Custom Padded Dog Harness', price: 1199, days: 3 },
+      { id: 'pts3', name: 'Waterproof Pet Raincoat', price: 649, days: 2 }
+    ],
+    reviewsList: [
+      { name: 'Karthik Rao', rating: 5, comment: 'Custom sherwani for our Golden Retriever was the highlight of Diwali!', date: '2026-06-08' }
+    ],
+    portfolio: [
+      { title: 'Golden Retriever Festive Wear', image: './Pets.png' }
+    ]
+  },
+  {
+    id: 't8',
+    name: 'The Royal Upholstery & Sofa Works',
+    owner: 'Master Farooq Ahmed',
+    rating: 4.8,
+    reviews: 139,
+    distance: 3.1,
+    specialty: 'Bespoke Sofa Covers, Cushion Re-padding & Foam Restoration',
+    categories: ['sofas'],
+    address: 'Shivajinagar Auto Upholstery Lane, Bengaluru',
+    coordinates: { x: 40, y: 25 },
+    image: './Vehicle Seat Covers.png',
+    status: 'approved',
+    credits: 220,
+    documents: { aadhaar: '6677-8899-0011', pan: 'FAIND6677Q', license: 'LIC-SOF-7721', gst: '29FAIND6677Q1ZM' },
+    inventory: { threads: 500, fabrics: 160, materials: 350 },
+    services: [
+      { id: 'sfs1', name: '3-Seater Custom Sofa Slipcover', price: 4499, days: 5 },
+      { id: 'sfs2', name: 'High-Density Foam Cushion Restoration', price: 2999, days: 3 },
+      { id: 'sfs3', name: 'At-Home Fabric Swatch Visit', price: 199, days: 1 }
+    ],
+    reviewsList: [
+      { name: 'Anand Murthy', rating: 5, comment: 'Farooq restored our 10-year old teak sofa with scratch-resistant velvet. Looks brand new!', date: '2026-06-12' }
+    ],
+    portfolio: [
+      { title: 'Velvet Sofa Restoration', image: './Vehicle Seat Covers.png' }
+    ]
   }
 ];
 

@@ -815,6 +815,7 @@ export default function App() {
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'gifts' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('gifts'); setActiveDropdown(null); }}>Hand Made Gifts</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'pets' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('pets'); setActiveDropdown(null); }}>Pet Outfits</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'sofas' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('sofas'); setActiveDropdown(null); }}>Sofas</li>
                 </ul>
               </div>
 

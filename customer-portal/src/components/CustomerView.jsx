@@ -811,7 +811,8 @@ export default function CustomerView({
     { id: 'seats', label: "Vehicle Seat Covers", desc: "Custom Car & Bike Seat Covers", img: "./Vehicle Seat Covers.png" },
     { id: 'designers', label: "Custom Design", desc: "Consult Certified Designers", img: "./Custom Design.png" },
     { id: 'gifts', label: "Hand Made Gifts", desc: "Custom Fabric Crafts & Gift Sets", img: "./handmade_gifts.jpg" },
-    { id: 'pets', label: "Pet Outfits", desc: "Custom Costumes & Pet Harnesses", img: "./Pets.png" }
+    { id: 'pets', label: "Pet Outfits", desc: "Custom Costumes & Pet Harnesses", img: "./Pets.png" },
+    { id: 'sofas', label: "Sofas", desc: "Custom Sofa Covers & Cushion Repair", img: "./Vehicle Seat Covers.png" }
   ];
 
   // Mock Fashion Designer arrivals
@@ -5663,6 +5664,10 @@ export default function CustomerView({
             setActiveHub('tailors');
           }}
           tailors={tailors}
+          onSelectCategory={(catId) => {
+            setSelectedCategory(catId);
+            if (setCustomerCategory) setCustomerCategory(catId);
+          }}
         />
       )}
 

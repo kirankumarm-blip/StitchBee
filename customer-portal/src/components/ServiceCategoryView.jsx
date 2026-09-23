@@ -3,6 +3,7 @@ import {
   Sparkles, Scissors, Layers, Star, Info, FileText, ChevronRight, X, Heart, 
   ShoppingCart, Lock, ArrowRight, User, Award, ShieldCheck, MapPin, Phone, Check, Gift 
 } from 'lucide-react';
+import SpecialtyCategoryView from './specialty/SpecialtyCategoryView';
 
 const categoryTemplates = {
   mens: {
@@ -432,9 +433,26 @@ const categoryTemplates = {
   }
 };
 
+const SPECIALTY_KEYS = ['bags', 'shoes', 'seats', 'gifts', 'pets', 'sofas'];
+
 export default function ServiceCategoryView({ 
-  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [] 
+  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory 
 }) {
+  if (SPECIALTY_KEYS.includes(categoryKey)) {
+    return (
+      <SpecialtyCategoryView
+        categoryKey={categoryKey}
+        currentUser={currentUser}
+        onLoginRequired={onLoginRequired}
+        onExploreDesigns={onExploreDesigns}
+        onViewFabrics={onViewFabrics}
+        onBookStitching={onBookStitching}
+        tailors={tailors}
+        onSelectCategory={onSelectCategory}
+      />
+    );
+  }
+
   const [pricingOpen, setPricingOpen] = useState(false);
   const data = categoryTemplates[categoryKey] || categoryTemplates.mens;
 
