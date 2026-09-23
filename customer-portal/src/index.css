@@ -12426,5 +12426,58 @@ body.dark-theme .footer-bottom-links-v4 span:hover {
   }
 }
 
+/* ============================================================== */
+/* FLIPKART & AMAZON SHOPPING CATALOG, PDP, & CHECKOUT STYLES    */
+/* ============================================================== */
 
+.flipkart-catalog-container {
+  width: 100%;
+  animation: fadeIn 0.3s ease-in-out;
+}
 
+@media (max-width: 880px) {
+  .catalog-mobile-bar {
+    display: flex !important;
+  }
+  .catalog-main-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .catalog-filter-sidebar {
+    display: none !important;
+  }
+  .catalog-filter-sidebar.mobile-open {
+    display: block !important;
+    margin-bottom: 20px;
+    position: static !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .flipkart-pdp-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .flipkart-gallery-card {
+    position: static !important;
+  }
+}
+
+.flipkart-catalog-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Light theme overrides for Flipkart components */
+body.light-theme .flipkart-catalog-container aside,
+body.light-theme .flipkart-catalog-card,
+body.light-theme .flipkart-pdp-layout > div,
+body.light-theme .catalog-mobile-bar {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .flipkart-checkout-modal-content {
+  background: #f8fafc !important;
+  color: #1e293b !important;
+}

@@ -11,7 +11,7 @@ import VehicleSeatExperience from './VehicleSeatExperience';
 import HandmadeGiftsExperience from './HandmadeGiftsExperience';
 import PetOutfitsExperience from './PetOutfitsExperience';
 import SofasExperience from './SofasExperience';
-import CashfreeCheckoutModal from './CashfreeCheckoutModal';
+import FlipkartCheckoutModal from './FlipkartCheckoutModal';
 import OrderTrackingModal from './OrderTrackingModal';
 
 const SPECIALTY_TABS = [
@@ -96,14 +96,17 @@ export default function SpecialtyCategoryView({
 
   const handleDirectCheckout = (productOrConfig) => {
     const item = {
-      id: 'direct-' + Date.now(),
+      ...productOrConfig,
+      id: productOrConfig.id || ('direct-' + Date.now()),
       title: productOrConfig.title || productOrConfig.name || 'Custom Specialty Order',
       name: productOrConfig.title || productOrConfig.name || 'Custom Specialty Order',
       category: productOrConfig.category || activeCategory,
-      price: Number(productOrConfig.price) || 2499,
-      quantity: 1,
+      price: Number(productOrConfig.effectivePrice || productOrConfig.price) || 2499,
+      effectivePrice: Number(productOrConfig.effectivePrice || productOrConfig.price) || 2499,
+      originalPrice: Number(productOrConfig.originalPrice) || Math.round((Number(productOrConfig.price) || 2499) * 1.4),
+      quantity: productOrConfig.quantity || 1,
       image: productOrConfig.image || productOrConfig.img || './bagf_fb1.jpg',
-      specs: productOrConfig.specs || productOrConfig.desc || 'Direct Specialty Checkout',
+      specs: productOrConfig.specs || productOrConfig.details || productOrConfig.description || 'Direct Specialty Checkout',
       requiresMeasurement: !!productOrConfig.requiresMeasurement
     };
     setCheckoutItems([item]);
@@ -482,13 +485,13 @@ export default function SpecialtyCategoryView({
                     boxShadow: '0 4px 20px rgba(247,37,133,0.4)'
                   }}
                 >
-                  <span>Proceed to Cashfree Checkout</span>
+                  <span>Proceed to 3-Step Express Checkout</span>
                   <ArrowRight size={18} />
                 </button>
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '12px', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
                   <ShieldCheck size={14} style={{ color: '#4ade80' }} />
-                  <span>100% Fit Guarantee & Secure Cashfree Encryption</span>
+                  <span>100% Fit Guarantee & Secure GPS-Enabled Checkout</span>
                 </div>
               </div>
             )}
@@ -497,9 +500,9 @@ export default function SpecialtyCategoryView({
       )}
 
       {/* ============================================================== */}
-      {/* 5. CASHFREE CHECKOUT MODAL                                     */}
+      {/* 5. FLIPKART/AMAZON 3-STEP GPS CHECKOUT MODAL                   */}
       {/* ============================================================== */}
-      <CashfreeCheckoutModal
+      <FlipkartCheckoutModal
         isOpen={checkoutModalOpen}
         onClose={() => setCheckoutModalOpen(false)}
         items={checkoutItems}

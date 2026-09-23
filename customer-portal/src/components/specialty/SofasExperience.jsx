@@ -6,6 +6,8 @@ import {
 import BeforeAfterSlider from './BeforeAfterSlider';
 import MaterialShowcase from './MaterialShowcase';
 import SpecialistMapDiscovery from './SpecialistMapDiscovery';
+import FlipkartCatalogView from './FlipkartCatalogView';
+import FlipkartProductDetailView from './FlipkartProductDetailView';
 
 export default function SofasExperience({
   tailors = [],
@@ -16,6 +18,8 @@ export default function SofasExperience({
   serviceMode = 'buying',
   onSelectServiceMode
 }) {
+  const [selectedPdpProduct, setSelectedPdpProduct] = useState(null);
+
   // Sofa Configurator States
   const [sofaType, setSofaType] = useState('3 Seater');
   const [sofaLength, setSofaLength] = useState('78 in (198 cm)');
@@ -64,6 +68,145 @@ export default function SofasExperience({
       waterResistance: 'Medium (Dry Clean)',
       bestFor: 'Formal Drawing Rooms & Accent Recliners',
       description: 'Opulent color depth with anti-pile treatment. Retains rich sheen under ambient warm lighting.'
+    }
+  ];
+
+  const sofaProducts = [
+    {
+      id: 'sofa-3seater',
+      name: 'Tailored 3-Seater Velvet Sofa Slipcover Set with Piping',
+      categoryLabel: 'Sofa Covers',
+      subcategory: 'Sofa Covers',
+      brand: 'LivingCraft',
+      price: 4999,
+      originalPrice: 7999,
+      rating: 4.9,
+      reviewsCount: 86,
+      isAssured: true,
+      image: './Vehicle Seat Covers.png',
+      gallery: ['./Vehicle Seat Covers.png', './fab4.jpg', './fab3.jpg'],
+      colors: ['Royal Sapphire', 'Emerald Green', 'Charcoal Grey', 'Champagne Beige'],
+      sizes: ['Standard 3-Seater (78 in)', 'Compact 3-Seater (72 in)', 'Grand 3-Seater (84 in)'],
+      description: 'Custom-tailored heavyweight micro-velvet slipcovers with tailored seat cushion envelopes, corded piping trims, and non-slip bottom anchors.'
+    },
+    {
+      id: 'sofa-sectional',
+      name: 'L-Shape Sectional Waterproof Stretch Sofa Cover',
+      categoryLabel: 'Sectional Covers',
+      subcategory: 'Sectional Covers',
+      brand: 'LivingCraft',
+      price: 7499,
+      originalPrice: 11999,
+      rating: 4.8,
+      reviewsCount: 64,
+      isAssured: true,
+      image: './Vehicle Seat Covers.png',
+      gallery: ['./Vehicle Seat Covers.png', './fab2.jpg', './fab1.jpg'],
+      colors: ['Slate Charcoal', 'Sand Beige', 'Midnight Navy'],
+      sizes: ['Left Chaise (96x60 in)', 'Right Chaise (96x60 in)', 'U-Shape Sectional'],
+      description: 'Dual-piece tailored sectional slipcovers made with hydro-repellent 4-way stretch waffle jacquard fabric. Resists coffee spills and pet dampness.'
+    },
+    {
+      id: 'sofa-pet-protector',
+      name: 'Pet-Friendly Anti-Scratch Microfiber Couch Protector',
+      categoryLabel: 'Pet Protectors',
+      subcategory: 'Pet Protectors',
+      brand: 'PawArmor',
+      price: 3299,
+      originalPrice: 4999,
+      rating: 4.9,
+      reviewsCount: 112,
+      isAssured: true,
+      image: './fab3.jpg',
+      gallery: ['./fab3.jpg', './Vehicle Seat Covers.png', './pets_wear.jpg'],
+      colors: ['Chocolate Brown', 'Dove Grey', 'Olive Moss'],
+      sizes: ['2-Seater (54 in)', '3-Seater (70 in)', 'XL-Couch (78 in)'],
+      description: 'Ultra-dense woven microfiber that claws cannot puncture or snag. Machine washable with rubberized non-skid dot backing and tuck-in foam rollers.'
+    },
+    {
+      id: 'sofa-foam-renewal',
+      name: 'High-Density Orthopedic Foam Cushion Renewal Set (Pack of 3)',
+      categoryLabel: 'Cushions & Foam',
+      subcategory: 'Cushions & Foam',
+      brand: 'StitchBee Living',
+      price: 3999,
+      originalPrice: 5999,
+      rating: 4.8,
+      reviewsCount: 49,
+      isAssured: true,
+      image: './fab1.jpg',
+      gallery: ['./fab1.jpg', './Vehicle Seat Covers.png'],
+      colors: ['40-Density Firm Foam', '45-Density High Resilient Lux'],
+      sizes: ['22x24x4 in', '24x24x5 in', 'Custom Cut Dimensions'],
+      description: 'Revitalize sagging living room couches with 10-year warranty high-resilience foam cores wrapped in dacron batting and protective stocking knit.'
+    },
+    {
+      id: 'sofa-recliner',
+      name: 'Tailored Recliner Armchair Stretch Slipcover with Side Pocket',
+      categoryLabel: 'Recliner Covers',
+      subcategory: 'Recliner Covers',
+      brand: 'LivingCraft',
+      price: 2499,
+      originalPrice: 3899,
+      rating: 4.7,
+      reviewsCount: 58,
+      isAssured: true,
+      image: './Vehicle Seat Covers.png',
+      gallery: ['./Vehicle Seat Covers.png', './fab4.jpg'],
+      colors: ['Sand Beige', 'Charcoal Grey', 'Warm Rust'],
+      sizes: ['Single Recliner (One-Size Stretch)'],
+      description: '4-piece form-fitting design covering arms, back, and footrest independently. Features dedicated side magazine and remote control pocket.'
+    },
+    {
+      id: 'sofa-cushion-set',
+      name: 'Artisan Jacquard Woven Cushion Covers Set of 5 (16x16 in)',
+      categoryLabel: 'Cushions & Foam',
+      subcategory: 'Cushions & Foam',
+      brand: 'Heritage Weave',
+      price: 999,
+      originalPrice: 1799,
+      rating: 4.9,
+      reviewsCount: 230,
+      isAssured: true,
+      image: './fab4.jpg',
+      gallery: ['./fab4.jpg', './br_bridal3.jpg'],
+      colors: ['Boho Geometric Multi', 'Royal Floral Gold', 'Moroccan Indigo'],
+      sizes: ['16x16 in (Set of 5)', '18x18 in (Set of 5)', '20x20 in (Set of 5)'],
+      description: 'Loom-woven heavy chenille and jacquard designer cushion covers with hidden YKK zippers and reinforced double-lock stitching.'
+    },
+    {
+      id: 'sofa-spill-shield',
+      name: 'Quilted Spill-Proof Reversible Sofa Seat Shield',
+      categoryLabel: 'Pet Protectors',
+      subcategory: 'Pet Protectors',
+      brand: 'PawArmor',
+      price: 1899,
+      originalPrice: 2899,
+      rating: 4.8,
+      reviewsCount: 77,
+      isAssured: true,
+      image: './fab2.jpg',
+      gallery: ['./fab2.jpg', './Vehicle Seat Covers.png'],
+      colors: ['Double-Sided Grey/Beige', 'Navy/Tan Brown'],
+      sizes: ['Loveseat (46 in)', 'Sofa (68 in)'],
+      description: 'Diamond-quilted water-resistant throw protector with elastic back anchor straps to stop shifting while sitting.'
+    },
+    {
+      id: 'sofa-jute-throw',
+      name: 'Heavy Belgian Jute Linen Living Room Throw Blanket & Runner',
+      categoryLabel: 'Cushions & Foam',
+      subcategory: 'Cushions & Foam',
+      brand: 'StitchBee Living',
+      price: 1499,
+      originalPrice: 2499,
+      rating: 4.9,
+      reviewsCount: 92,
+      isAssured: true,
+      image: './fab5.jpg',
+      gallery: ['./fab5.jpg', './Vehicle Seat Covers.png'],
+      colors: ['Natural Oatmeal', 'Sage Green', 'Terracotta Earth'],
+      sizes: ['Large (70x90 in)', 'Extra Large (90x108 in)'],
+      description: 'Woven from 100% natural breathable jute linen with knotted fringe tassels. Elegant casual cover for summer sofas.'
     }
   ];
 
@@ -217,8 +360,44 @@ export default function SofasExperience({
       {/* ============================================================== */}
       {serviceMode === 'buying' && (
         <>
-          {/* 4. SOFA CONFIGURATOR SECTION */}
-          <section id="sofa-customizer-section" style={{ margin: '4.5rem 0' }}>
+          {selectedPdpProduct ? (
+            <div id="pdp-scroll-anchor" style={{ margin: '1.5rem 0 3rem 0' }}>
+              <FlipkartProductDetailView
+                product={selectedPdpProduct}
+                categoryTitle="Sofas & Cushions"
+                onBack={() => {
+                  setSelectedPdpProduct(null);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onAddToCart={onAddToCart}
+                onBuyNow={(prod) => {
+                  if (onDirectCheckout) onDirectCheckout(prod);
+                }}
+                currentUser={currentUser}
+              />
+            </div>
+          ) : (
+            <>
+              {/* 1. FLIPKART STYLE CATALOG BROWSING & FILTERS (Image 1 Reference) */}
+              <section id="flipkart-sofa-catalog-section" style={{ margin: '2rem 0 4rem 0' }}>
+                <FlipkartCatalogView
+                  categoryKey="sofas"
+                  categoryTitle="Sofas, Cushions & Living Upholstery"
+                  breadcrumbs={['Home', 'Living & Furniture', 'Sofa Covers & Cushions']}
+                  products={sofaProducts}
+                  onSelectProduct={(prod) => {
+                    setSelectedPdpProduct(prod);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onQuickBuy={(prod) => {
+                    if (onDirectCheckout) onDirectCheckout(prod);
+                  }}
+                  onAddToCart={onAddToCart}
+                />
+              </section>
+
+              {/* 4. SOFA CONFIGURATOR SECTION */}
+              <section id="sofa-customizer-section" style={{ margin: '4.5rem 0' }}>
         <div
           className="glass-card-no-hover"
           style={{
@@ -368,6 +547,8 @@ export default function SofasExperience({
         title="Living Room Upholstery Fabric Anatomy"
         subtitle="Tested against claws, coffee spills, and heavy everyday lounging."
       />
+            </>
+          )}
         </>
       )}
 

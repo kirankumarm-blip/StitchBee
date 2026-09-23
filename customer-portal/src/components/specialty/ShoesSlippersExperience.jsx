@@ -8,6 +8,8 @@ import MaterialShowcase from './MaterialShowcase';
 import SpecialistMapDiscovery from './SpecialistMapDiscovery';
 import AIMeasurementModal from './AIMeasurementModal';
 import UniversalProductModal from './UniversalProductModal';
+import FlipkartCatalogView from './FlipkartCatalogView';
+import FlipkartProductDetailView from './FlipkartProductDetailView';
 
 export default function ShoesSlippersExperience({
   tailors = [],
@@ -20,6 +22,7 @@ export default function ShoesSlippersExperience({
 }) {
   const [measurementModalOpen, setMeasurementModalOpen] = useState(false);
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
+  const [selectedPdpProduct, setSelectedPdpProduct] = useState(null);
 
   // Shoe Repair Wizard
   const [selectedShoeType, setSelectedShoeType] = useState('Formal Oxford');
@@ -78,59 +81,139 @@ export default function ShoesSlippersExperience({
   const shoeProducts = [
     {
       id: 'sh-oxford',
-      name: 'The Artisan Wholecut Oxford',
-      categoryLabel: 'FORMAL COUTURE',
+      name: 'The Artisan Wholecut Oxford Formal Leather Shoe',
+      categoryLabel: 'Formal Shoes',
+      subcategory: 'Formal Shoes',
+      brand: 'StitchBee Cobbler',
       price: 3499,
       originalPrice: 4999,
       rating: 4.9,
-      reviewsCount: 56,
+      reviewsCount: 142,
+      isAssured: true,
       image: './shoe_c1.jpg',
-      gallery: ['./shoe_c1.jpg', './shoe_c2.jpg'],
-      colors: ['Polished Tan', 'Onyx Black', 'Deep Oxblood'],
+      gallery: ['./shoe_c1.jpg', './shoef_c2.jpg', './shoe_c2.jpg', './shoe_c4.jpg'],
+      colors: ['Polished Tan', 'Onyx Jet Black', 'Deep Oxblood'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
-      description: 'Cut from a single flawless hide of calfskin. Seamless silhouette with closed-channel Goodyear welted leather soles.'
+      description: 'Cut from a single flawless hide of Italian calfskin. Seamless closed silhouette with closed-channel Goodyear welted oak-bark leather soles.'
     },
     {
       id: 'sh-loafer',
-      name: 'Hand-Sewn Penny Loafer',
-      categoryLabel: 'CASUAL LUXURY',
+      name: 'Hand-Sewn Penny Loafer Snuff Suede Dress Shoe',
+      categoryLabel: 'Loafers & Casuals',
+      subcategory: 'Loafers & Casuals',
+      brand: 'StepCraft',
       price: 2799,
       originalPrice: 3899,
       rating: 4.8,
-      reviewsCount: 39,
+      reviewsCount: 89,
+      isAssured: true,
       image: './shoe_c2.jpg',
-      gallery: ['./shoe_c2.jpg', './shoe_c4.jpg'],
+      gallery: ['./shoe_c2.jpg', './shoef_c3.jpg', './shoe_c4.jpg'],
       colors: ['Snuff Brown Suede', 'Navy Blue Suede', 'Caramel Calf'],
       sizes: ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10'],
-      description: 'Unlined glove-soft suede loafer with padded memory foam insole. Exceptional comfort without socks.'
+      description: 'Unlined glove-soft suede loafer with padded memory foam insole and hand-stitched beefroll apron. Exceptional sockless comfort.'
     },
     {
       id: 'sh-mojari',
-      name: 'Royal Zari Embroidered Wedding Mojari',
-      categoryLabel: 'ETHNIC BRIDAL',
+      name: 'Royal Zari Embroidered Wedding Mojari Jutti',
+      categoryLabel: 'Ethnic & Bridal',
+      subcategory: 'Ethnic & Bridal',
+      brand: 'Heritage Jutti',
       price: 1599,
       originalPrice: 2299,
       rating: 4.9,
-      reviewsCount: 88,
+      reviewsCount: 218,
+      isAssured: true,
       image: './shoe_c3.jpg',
-      gallery: ['./shoe_c3.jpg'],
+      gallery: ['./shoe_c3.jpg', './shoe_c1.jpg', './shoef_c2.jpg'],
       colors: ['Ivory Gold', 'Ruby Velvet', 'Royal Navy'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10'],
-      description: 'Handcrafted wedding footwear with genuine zari embroidery matching groom sherwanis. Cushioned arch support.'
+      description: 'Handcrafted wedding footwear with authentic zari zardozi embroidery matching groom sherwanis. Padded cushion arch support.'
     },
     {
       id: 'sh-slipper',
-      name: 'Hand-Molded Orthopedic Leather Slide',
-      categoryLabel: 'DAILY COMFORT',
+      name: 'Hand-Molded Orthopedic Cork Leather Slide',
+      categoryLabel: 'Comfort Slippers',
+      subcategory: 'Comfort Slippers',
+      brand: 'OrthoWalk',
       price: 899,
-      originalPrice: 1299,
+      originalPrice: 1499,
       rating: 4.8,
-      reviewsCount: 94,
+      reviewsCount: 310,
+      isAssured: true,
       image: './shoe_c6.jpg',
-      gallery: ['./shoe_c6.jpg'],
-      colors: ['Tan', 'Black'],
+      gallery: ['./shoe_c6.jpg', './shoe_c7.jpg'],
+      colors: ['Tan Cork', 'Matte Black', 'Dark Walnut'],
       sizes: ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
-      description: 'Ergonomic cork-latex footbed wrapped in supple cowhide lining with anti-skid ribbed outsoles.'
+      description: 'Ergonomic anatomically contoured cork-latex footbed wrapped in supple cowhide lining with anti-skid ribbed EVA outsoles.'
+    },
+    {
+      id: 'sh-chelsea',
+      name: 'Goodyear-Welted Chelsea Leather Boot',
+      categoryLabel: 'Boots',
+      subcategory: 'Boots',
+      brand: 'StitchBee Cobbler',
+      price: 4299,
+      originalPrice: 6499,
+      rating: 4.9,
+      reviewsCount: 94,
+      isAssured: true,
+      image: './shoe_c4.jpg',
+      gallery: ['./shoe_c4.jpg', './shoe_c1.jpg', './shoef_c4.jpg'],
+      colors: ['Burnished Tan', 'Midnight Black', 'Vintage Olive'],
+      sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
+      description: 'Classic pull-on Chelsea boots crafted with heavy pull-up leather, reinforced elastic gussets, and Dainite studded rubber soles.'
+    },
+    {
+      id: 'sh-kolhapuri',
+      name: 'Artisanal Pure Leather Kolhapuri Chappals',
+      categoryLabel: 'Comfort Slippers',
+      subcategory: 'Comfort Slippers',
+      brand: 'Kolhapur Heritage',
+      price: 749,
+      originalPrice: 1299,
+      rating: 4.7,
+      reviewsCount: 412,
+      isAssured: true,
+      image: './shoe_c7.jpg',
+      gallery: ['./shoe_c7.jpg', './shoe_c6.jpg'],
+      colors: ['Natural Oiled Tan', 'Dark Mahogany', 'Dual Tone Gold'],
+      sizes: ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10'],
+      description: 'Authentic Kolhapuri handcrafted chappals conditioned with vegetable oils, intricate hand-plaited braiding, and heavy leather sole.'
+    },
+    {
+      id: 'sh-espadrille',
+      name: 'Hand-Stitched Canvas Espadrille Slip-On',
+      categoryLabel: 'Loafers & Casuals',
+      subcategory: 'Loafers & Casuals',
+      brand: 'StepCraft',
+      price: 1199,
+      originalPrice: 1999,
+      rating: 4.6,
+      reviewsCount: 67,
+      isAssured: false,
+      image: './shoe_c8.jpg',
+      gallery: ['./shoe_c8.jpg', './shoe_c2.jpg'],
+      colors: ['Cream Canvas', 'Navy Blue', 'Olive Green'],
+      sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10'],
+      description: 'Breathable dual-layer duck canvas upper stitched to a natural braided jute sole vulcanized with a flexible rubber base.'
+    },
+    {
+      id: 'sh-driving-mocs',
+      name: 'Italian Calfskin Driving Moccasins',
+      categoryLabel: 'Loafers & Casuals',
+      subcategory: 'Loafers & Casuals',
+      brand: 'StitchBee Cobbler',
+      price: 2299,
+      originalPrice: 3499,
+      rating: 4.8,
+      reviewsCount: 153,
+      isAssured: true,
+      image: './shoef_c5.jpg',
+      gallery: ['./shoef_c5.jpg', './shoe_c2.jpg', './shoef_c2.jpg'],
+      colors: ['Tobacco Brown', 'Suede Navy', 'Racing Black'],
+      sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
+      description: 'Featherlight glove-soft calfskin with pebbled rubber grip studs extending up the heel. Perfect for long drives and city walking.'
     }
   ];
 
@@ -381,8 +464,44 @@ export default function ShoesSlippersExperience({
       {/* ============================================================== */}
       {serviceMode === 'buying' && (
         <>
-          {/* 4. BESPOKE CUSTOM SHOES STUDIO */}
-          <section id="custom-shoes-section" style={{ margin: '4.5rem 0' }}>
+          {selectedPdpProduct ? (
+            <div id="pdp-scroll-anchor" style={{ margin: '1.5rem 0 3rem 0' }}>
+              <FlipkartProductDetailView
+                product={selectedPdpProduct}
+                categoryTitle="Shoes & Footwear"
+                onBack={() => {
+                  setSelectedPdpProduct(null);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onAddToCart={onAddToCart}
+                onBuyNow={(prod) => {
+                  if (onDirectCheckout) onDirectCheckout(prod);
+                }}
+                currentUser={currentUser}
+              />
+            </div>
+          ) : (
+            <>
+              {/* 1. FLIPKART STYLE CATALOG BROWSING & FILTERS (Image 1 Reference) */}
+              <section id="flipkart-shoe-catalog-section" style={{ margin: '2rem 0 4rem 0' }}>
+                <FlipkartCatalogView
+                  categoryKey="shoes"
+                  categoryTitle="Handmade Shoes & Footwear"
+                  breadcrumbs={['Home', 'Footwear', 'Handmade Shoes & Slippers']}
+                  products={shoeProducts}
+                  onSelectProduct={(prod) => {
+                    setSelectedPdpProduct(prod);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onQuickBuy={(prod) => {
+                    if (onDirectCheckout) onDirectCheckout(prod);
+                  }}
+                  onAddToCart={onAddToCart}
+                />
+              </section>
+
+              {/* 4. BESPOKE CUSTOM SHOES STUDIO */}
+              <section id="custom-shoes-section" style={{ margin: '4.5rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Master Cobbler Atelier
@@ -531,45 +650,14 @@ export default function ShoesSlippersExperience({
         </div>
       </section>
 
-      {/* 5. EDITORIAL PRODUCTS SHOWCASE */}
-      <section style={{ margin: '4.5rem 0' }}>
-        <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 1.5rem 0', color: 'var(--text-primary)' }}>
-          Curated Footwear Collection
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '24px' }}>
-          {shoeProducts.map(p => (
-            <div
-              key={p.id}
-              className="glass-card"
-              style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid var(--border-color)', cursor: 'pointer' }}
-              onClick={() => setSelectedProductForModal(p)}
-            >
-              <div style={{ height: '220px', overflow: 'hidden' }}>
-                <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div style={{ padding: '18px' }}>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase' }}>
-                  {p.categoryLabel}
-                </span>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 800, margin: '4px 0 6px 0', color: 'var(--text-primary)' }}>
-                  {p.name}
-                </h4>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <strong style={{ fontSize: '1.05rem', color: 'var(--primary)' }}>₹{p.price.toLocaleString()}</strong>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--accent)' }}>Inspect & Fit →</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* 6. MATERIAL SHOWCASE */}
       <MaterialShowcase
         materials={shoeMaterials}
         title="Footwear Upper & Sole Anatomy"
         subtitle="Slow pit-tanned sole leathers and velvety snuffs built for lasting arch support."
       />
+            </>
+          )}
         </>
       )}
 

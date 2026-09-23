@@ -9,6 +9,8 @@ import SpecialistMapDiscovery from './SpecialistMapDiscovery';
 import TrolleyWarrantyModal from './TrolleyWarrantyModal';
 import AIMeasurementModal from './AIMeasurementModal';
 import UniversalProductModal from './UniversalProductModal';
+import FlipkartCatalogView from './FlipkartCatalogView';
+import FlipkartProductDetailView from './FlipkartProductDetailView';
 
 export default function BagsLeatherExperience({
   tailors = [],
@@ -24,6 +26,8 @@ export default function BagsLeatherExperience({
   const [warrantyModalOpen, setWarrantyModalOpen] = useState(false);
   const [aiMeasurementOpen, setAiMeasurementOpen] = useState(false);
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
+  const [selectedPdpProduct, setSelectedPdpProduct] = useState(null);
+  const [buyingViewMode, setBuyingViewMode] = useState('catalog'); // 'catalog' | 'jacket'
 
   // Bag Repair Interactive Wizard State
   const [selectedBagType, setSelectedBagType] = useState('Handbag');
@@ -93,12 +97,48 @@ export default function BagsLeatherExperience({
     }
   ];
 
-  // Editorial Products for "The Leather Edit"
+  // Editorial Products for "The Leather Edit" (Flipkart Catalog Integration)
   const leatherProducts = [
+    {
+      id: 'lp-navaa-tote',
+      name: 'Navaa Red Women Tote Jungle Muse Printed Cotton Quilted Tote Bags',
+      categoryLabel: 'Handbags & Clutches',
+      subcategory: 'Handbags & Clutches',
+      brand: 'Navaa',
+      price: 395,
+      originalPrice: 1799,
+      rating: 4.6,
+      reviewsCount: 254,
+      image: './bag_b5.jpg',
+      gallery: ['./bag_b5.jpg', './bag_b1.jpg', './bag_b4.jpg', './bag_b2.jpg'],
+      colors: ['Red Jungle Muse', 'Indigo Floral', 'Olive Botanical'],
+      sizes: ['Standard Shoulder Tote'],
+      isAssured: true,
+      description: 'Navaa Red Women Tote Jungle Muse Printed Cotton Quilted Tote Bags with padded shoulder handles, reinforced bottom, and inner zipper pocket.'
+    },
+    {
+      id: 'lp-velmora-sling',
+      name: 'Velmora Fashion White Women Sling Bag Handmade Macrame Fringe',
+      categoryLabel: 'Sling Bags',
+      subcategory: 'Sling Bags',
+      brand: 'Velmora Fashion',
+      price: 220,
+      originalPrice: 999,
+      rating: 4.5,
+      reviewsCount: 168,
+      image: './bag_b6.jpg',
+      gallery: ['./bag_b6.jpg', './bag_b1.jpg', './bag_b3.jpg'],
+      colors: ['Boho Cream White', 'Earth Tan', 'Mustard Gold'],
+      sizes: ['Compact Sling (20x18 cm)'],
+      isAssured: true,
+      description: 'Artisanal hand-knotted cotton macrame fringe sling bag with wooden bead trims, bohemian tassel edges, and magnetic snap closure.'
+    },
     {
       id: 'lp-duffel',
       name: 'The Sovereign Leather Weekender Duffel',
-      categoryLabel: 'SIGNATURE DUFFEL',
+      categoryLabel: 'Duffels & Travel',
+      subcategory: 'Travel Duffels',
+      brand: 'StitchBee Atelier',
       price: 3499,
       originalPrice: 4999,
       rating: 4.9,
@@ -107,12 +147,15 @@ export default function BagsLeatherExperience({
       gallery: ['./bag_b4.jpg', './bag_b1.jpg', './bag_b2.jpg'],
       colors: ['Vintage Cognac', 'Midnight Black', 'Espresso Brown'],
       sizes: ['Standard 45L', 'Extended 55L'],
+      isAssured: true,
       description: 'Full-grain vegetable-tanned leather duffel with antique solid brass hardware, shoe compartment, and padded shoulder strap.'
     },
     {
       id: 'lp-tote',
-      name: 'Bespoke Structured Work Tote',
-      categoryLabel: 'DAILY CARRY',
+      name: 'Bespoke Structured Work Tote Laptop Bag',
+      categoryLabel: 'Handbags & Clutches',
+      subcategory: 'Handbags & Clutches',
+      brand: 'StitchBee Atelier',
       price: 2499,
       originalPrice: 3299,
       rating: 4.8,
@@ -121,12 +164,15 @@ export default function BagsLeatherExperience({
       gallery: ['./bag_b1.jpg', './bag_b5.jpg'],
       colors: ['Caramel Tan', 'Burgundy', 'Jet Black'],
       sizes: ['Fits 14" Laptop', 'Fits 16" Laptop'],
+      isAssured: true,
       description: 'Reinforced dual leather handles, magnetic closure, and microfiber-lined laptop sleeve designed for elegant modern commuters.'
     },
     {
       id: 'lp-messenger',
-      name: 'Waxed Canvas & Leather Messenger',
-      categoryLabel: 'URBAN FIELD',
+      name: 'Waxed Canvas & Leather Commuter Messenger',
+      categoryLabel: 'Messenger Bags',
+      subcategory: 'Messenger Bags',
+      brand: 'Field Craft',
       price: 1899,
       originalPrice: 2499,
       rating: 4.9,
@@ -135,12 +181,15 @@ export default function BagsLeatherExperience({
       gallery: ['./bag_b2.jpg', './bag_b6.jpg'],
       colors: ['Olive Green & Tan', 'Charcoal & Black'],
       sizes: ['One Size (15L)'],
+      isAssured: true,
       description: '18oz paraffin-waxed canvas bonded with pull-up leather straps. Weatherproof everyday bag built for heavy rain and long commutes.'
     },
     {
       id: 'lp-wallet',
-      name: 'Minimalist Bifold Card Wallet',
-      categoryLabel: 'LEATHER GOODS',
+      name: 'Minimalist Bifold Card Wallet Genuine Leather',
+      categoryLabel: 'Wallets & Goods',
+      subcategory: 'Wallets & Cardholders',
+      brand: 'StitchBee Atelier',
       price: 599,
       originalPrice: 899,
       rating: 4.9,
@@ -149,7 +198,42 @@ export default function BagsLeatherExperience({
       gallery: ['./bag_b3.jpg'],
       colors: ['Tan', 'Black', 'Olive'],
       sizes: ['Slim 6-Card'],
+      isAssured: true,
       description: 'Beveled and burnished by hand. Full-grain pocket wallet with RFID-blocking core and hidden banknote sleeve.'
+    },
+    {
+      id: 'lp-laddu-gopal',
+      name: 'Trendy by Handy Devotional Small Carry Bag',
+      categoryLabel: 'Sling Bags',
+      subcategory: 'Sling Bags',
+      brand: 'Handy Artisan',
+      price: 914,
+      originalPrice: 1600,
+      rating: 4.7,
+      reviewsCount: 84,
+      image: './bag_b1.jpg',
+      gallery: ['./bag_b1.jpg', './bag_b2.jpg'],
+      colors: ['Yellow Festive Print', 'Royal Blue', 'Red Brocade'],
+      sizes: ['Small (10x8 in)'],
+      isAssured: true,
+      description: 'Traditional cotton printed carry sling bag with durable buckle strap, secure zip compartment, and devotional artwork.'
+    },
+    {
+      id: 'lp-rudra-crochet',
+      name: 'Rudra Home Blue Girls Sling Bag Cotton Rope Crochet Flower',
+      categoryLabel: 'Sling Bags',
+      subcategory: 'Sling Bags',
+      brand: 'RUDRA HOME',
+      price: 360,
+      originalPrice: 599,
+      rating: 4.8,
+      reviewsCount: 92,
+      image: './bag_b2.jpg',
+      gallery: ['./bag_b2.jpg', './bag_b3.jpg'],
+      colors: ['Sky Blue & Cream', 'Coral Pink', 'Mint Sage'],
+      sizes: ['Crossbody Small'],
+      isAssured: true,
+      description: 'Handcrafted cotton rope braided sling bag featuring daisy flower flap, comfortable shoulder strap, and metallic push-lock.'
     }
   ];
 
@@ -547,8 +631,44 @@ export default function BagsLeatherExperience({
       {/* ============================================================== */}
       {serviceMode === 'buying' && (
         <>
-          {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO */}
-          <section id="custom-jacket-section" style={{ margin: '4.5rem 0' }}>
+          {selectedPdpProduct ? (
+            <div id="pdp-scroll-anchor" style={{ margin: '1.5rem 0 3rem 0' }}>
+              <FlipkartProductDetailView
+                product={selectedPdpProduct}
+                categoryTitle="Handmade Bags & Leather"
+                onBack={() => {
+                  setSelectedPdpProduct(null);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onAddToCart={onAddToCart}
+                onBuyNow={(prod) => {
+                  if (onDirectCheckout) onDirectCheckout(prod);
+                }}
+                currentUser={currentUser}
+              />
+            </div>
+          ) : (
+            <>
+              {/* 1. FLIPKART STYLE CATALOG BROWSING & FILTERS (Image 1 Reference) */}
+              <section id="flipkart-catalog-section" style={{ margin: '2rem 0 4rem 0' }}>
+                <FlipkartCatalogView
+                  categoryKey="bags"
+                  categoryTitle="Handmade Bags & Leather"
+                  breadcrumbs={['Home', 'Bags, Wallets & Belts', 'Handbags & Clutches']}
+                  products={leatherProducts}
+                  onSelectProduct={(prod) => {
+                    setSelectedPdpProduct(prod);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onQuickBuy={(prod) => {
+                    if (onDirectCheckout) onDirectCheckout(prod);
+                  }}
+                  onAddToCart={onAddToCart}
+                />
+              </section>
+
+              {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO */}
+              <section id="custom-jacket-section" style={{ margin: '4.5rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Atelier Bespoke Tailoring
@@ -784,113 +904,6 @@ export default function BagsLeatherExperience({
         subtitle="Explore high-resolution textures, tensile strength, and water-resistance metrics."
       />
 
-      {/* 7. "THE LEATHER EDIT" EDITORIAL PRODUCT COLLECTION */}
-      <section style={{ margin: '4.5rem 0' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-              Artisan Crafted Goods
-            </span>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 900, margin: '2px 0 0 0', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-              THE LEATHER EDIT
-            </h2>
-          </div>
-          <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-            Finished, ready-to-dispatch leather goods with complimentary custom monogramming.
-          </span>
-        </div>
-
-        {/* Asymmetrical Editorial Collection Layout */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '28px', alignItems: 'stretch' }} className="specialist-grid-responsive">
-          {/* Main Featured Showpiece */}
-          {leatherProducts[0] && (
-            <div
-              className="glass-card"
-              style={{
-                borderRadius: '24px',
-                overflow: 'hidden',
-                border: '1px solid var(--border-color)',
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative'
-              }}
-              onClick={() => setSelectedProductForModal(leatherProducts[0])}
-            >
-              <div style={{ width: '100%', height: '360px', position: 'relative', overflow: 'hidden', background: '#0a0914' }}>
-                <img
-                  src={leatherProducts[0].image}
-                  alt={leatherProducts[0].name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-                />
-                <div style={{ position: 'absolute', top: '16px', left: '16px', background: 'var(--grad-primary)', color: '#fff', fontSize: '0.72rem', fontWeight: 800, padding: '4px 10px', borderRadius: '8px' }}>
-                  FEATURED EDIT
-                </div>
-              </div>
-              <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                      {leatherProducts[0].name}
-                    </h3>
-                    <strong style={{ fontSize: '1.3rem', color: 'var(--primary)' }}>
-                      ₹{leatherProducts[0].price.toLocaleString()}
-                    </strong>
-                  </div>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', lineHeight: '1.5', margin: '0 0 16px 0' }}>
-                    {leatherProducts[0].description}
-                  </p>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: 600 }}>
-                    ★ 4.9 • Free Monogram Included
-                  </span>
-                  <button className="btn btn-primary" style={{ padding: '8px 18px', fontSize: '0.8rem' }}>
-                    Inspect & Customize
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Supporting Product Stack */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {leatherProducts.slice(1).map(prod => (
-              <div
-                key={prod.id}
-                className="glass-card"
-                style={{
-                  padding: '16px',
-                  borderRadius: '16px',
-                  border: '1px solid var(--border-color)',
-                  display: 'flex',
-                  gap: '16px',
-                  cursor: 'pointer',
-                  alignItems: 'center'
-                }}
-                onClick={() => setSelectedProductForModal(prod)}
-              >
-                <div style={{ width: '90px', height: '90px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
-                  <img src={prod.image} alt={prod.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase' }}>
-                    {prod.categoryLabel}
-                  </span>
-                  <h4 style={{ fontSize: '0.92rem', fontWeight: 800, margin: '2px 0 4px 0', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {prod.name}
-                  </h4>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '0.95rem', color: 'var(--primary)' }}>₹{prod.price.toLocaleString()}</strong>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--accent)' }}>View Specs →</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 8. CRAFTSMANSHIP SECTION: "MADE BY SKILLED HANDS" */}
       <section style={{ margin: '4.5rem 0', background: 'rgba(255,255,255,0.02)', padding: '40px 32px', borderRadius: '24px', border: '1px solid var(--border-color)' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -920,6 +933,8 @@ export default function BagsLeatherExperience({
           ))}
         </div>
       </section>
+            </>
+          )}
         </>
       )}
 

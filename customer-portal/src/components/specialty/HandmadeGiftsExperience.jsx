@@ -6,6 +6,8 @@ import {
 import MaterialShowcase from './MaterialShowcase';
 import SpecialistMapDiscovery from './SpecialistMapDiscovery';
 import UniversalProductModal from './UniversalProductModal';
+import FlipkartCatalogView from './FlipkartCatalogView';
+import FlipkartProductDetailView from './FlipkartProductDetailView';
 
 export default function HandmadeGiftsExperience({
   tailors = [],
@@ -17,6 +19,7 @@ export default function HandmadeGiftsExperience({
   onSelectServiceMode
 }) {
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
+  const [selectedPdpProduct, setSelectedPdpProduct] = useState(null);
 
   // Live Personalization Studio
   const [recipientName, setRecipientName] = useState('Ananya & Rohan');
@@ -80,59 +83,139 @@ export default function HandmadeGiftsExperience({
   const giftProducts = [
     {
       id: 'gp-potli',
-      name: 'Handcrafted Golden Zari Potli Bag',
-      categoryLabel: 'RETURN GIFTS',
+      name: 'Handcrafted Golden Zari Potli Bag with Pearl Latkans',
+      categoryLabel: 'Wedding & Return Gifts',
+      subcategory: 'Wedding & Return Gifts',
+      brand: 'Artisan Zardozi',
       price: 499,
       originalPrice: 799,
       rating: 5.0,
       reviewsCount: 124,
+      isAssured: true,
       image: './handmade_gifts.jpg',
-      gallery: ['./handmade_gifts.jpg'],
+      gallery: ['./handmade_gifts.jpg', './br_bridal3.jpg', './wf_fab1.jpg'],
       colors: ['Ivory Gold', 'Blush Pink', 'Emerald Green', 'Royal Navy'],
       sizes: ['Standard (8x6 in)'],
-      description: 'Intricately embroidered with gold zari thread and lustrous pearl drawstrings. Ideal for weddings and pooja celebrations.'
+      description: 'Intricately embroidered with genuine gold zari thread and lustrous pearl drawstrings. Ideal for weddings and return celebrations.'
     },
     {
       id: 'gp-quilt',
-      name: 'Patchwork Keepsake Baby Quilt',
-      categoryLabel: 'BABY GIFTS',
+      name: 'Patchwork Keepsake Baby Quilt with Custom Hand Embroidery',
+      categoryLabel: 'Baby Keepsakes',
+      subcategory: 'Baby Keepsakes',
+      brand: 'StitchBee Atelier',
       price: 1499,
       originalPrice: 1999,
       rating: 4.9,
       reviewsCount: 48,
-      image: './handmade_gifts.jpg',
-      gallery: ['./handmade_gifts.jpg'],
+      isAssured: true,
+      image: './k_k4.jpg',
+      gallery: ['./k_k4.jpg', './handmade_gifts.jpg', './kf_fab2.jpg'],
       colors: ['Pastel Multi-Color', 'Soft Sky Blue', 'Blush Peach'],
       sizes: ['Crib Size (40x30 in)'],
       description: '100% organic cotton patchwork throw quilt featuring custom hand-embroidered baby name and birth milestones.'
     },
     {
       id: 'gp-apron',
-      name: 'Bespoke Monogrammed Chef Apron',
-      categoryLabel: 'CUSTOM KEEPSAKES',
+      name: 'Bespoke Monogrammed Heavy Canvas Chef Apron',
+      categoryLabel: 'Custom Keepsakes',
+      subcategory: 'Custom Keepsakes',
+      brand: 'CraftKnot',
       price: 699,
       originalPrice: 999,
       rating: 4.8,
       reviewsCount: 62,
-      image: './handmade_gifts.jpg',
-      gallery: ['./handmade_gifts.jpg'],
+      isAssured: true,
+      image: './uni_uni3.jpg',
+      gallery: ['./uni_uni3.jpg', './handmade_gifts.jpg', './unif_fab3.jpg'],
       colors: ['Oatmeal Linen', 'Charcoal Denim', 'Sage Green'],
       sizes: ['Adjustable Fit'],
-      description: 'Heavy 14oz canvas kitchen apron with cross-back leather straps and prominent chest monogram.'
+      description: 'Heavy 14oz canvas kitchen apron with cross-back leather straps and prominent hand-embroidered chest monogram.'
     },
     {
       id: 'gp-cushion',
-      name: 'Embroidered Couple Velvet Cushion Pair',
-      categoryLabel: 'HOME DECOR',
+      name: 'Embroidered Couple Velvet Cushion Pair with Wedding Date',
+      categoryLabel: 'Home Keepsakes',
+      subcategory: 'Home Keepsakes',
+      brand: 'StitchBee Atelier',
       price: 999,
       originalPrice: 1499,
       rating: 4.9,
       reviewsCount: 75,
-      image: './handmade_gifts.jpg',
-      gallery: ['./handmade_gifts.jpg'],
+      isAssured: true,
+      image: './fab4.jpg',
+      gallery: ['./fab4.jpg', './handmade_gifts.jpg'],
       colors: ['Deep Wine & Gold', 'Dusty Rose & Silver', 'Teal & Gold'],
       sizes: ['16x16 in (Set of 2)'],
       description: 'Custom anniversary cushions featuring intertwined initials and wedding date embroidered with metallic thread.'
+    },
+    {
+      id: 'gp-terracotta',
+      name: 'Handcrafted Festive Dry Fruit & Shagun Potli Hamper',
+      categoryLabel: 'Festive Hampers',
+      subcategory: 'Festive Hampers',
+      brand: 'Mitti Kala',
+      price: 599,
+      originalPrice: 899,
+      rating: 4.7,
+      reviewsCount: 92,
+      isAssured: true,
+      image: './br_bridal4.jpg',
+      gallery: ['./br_bridal4.jpg', './handmade_gifts.jpg'],
+      colors: ['Festive Gold', 'Royal Indigo', 'Marigold Yellow'],
+      sizes: ['Gift Boxed (Set of 4)'],
+      description: 'Handmade raw silk embellished shagun pouch set in an eco-friendly gift box with custom calligraphy message card.'
+    },
+    {
+      id: 'gp-brass',
+      name: 'Antique Engraved Keepsake & Jewelry Gift Box',
+      categoryLabel: 'Custom Keepsakes',
+      subcategory: 'Custom Keepsakes',
+      brand: 'Moradabad Heritage',
+      price: 1299,
+      originalPrice: 1899,
+      rating: 4.9,
+      reviewsCount: 56,
+      isAssured: true,
+      image: './bagf_fb1.jpg',
+      gallery: ['./bagf_fb1.jpg', './handmade_gifts.jpg'],
+      colors: ['Antique Brass Gold', 'Oxidized Silver'],
+      sizes: ['Medium (6x4x3 in)'],
+      description: 'Solid brass trinket box lined with velvet and personalized with hand-etched initials on the hinged lid.'
+    },
+    {
+      id: 'gp-passport',
+      name: 'Handcrafted Pure Leather Couple Passport Wallet Duo',
+      categoryLabel: 'Custom Keepsakes',
+      subcategory: 'Custom Keepsakes',
+      brand: 'StitchBee Atelier',
+      price: 849,
+      originalPrice: 1399,
+      rating: 4.8,
+      reviewsCount: 114,
+      isAssured: true,
+      image: './bag_b2.jpg',
+      gallery: ['./bag_b2.jpg', './handmade_gifts.jpg'],
+      colors: ['Tan & Blush', 'Black & Burgundy', 'Olive & Chestnut'],
+      sizes: ['Standard Travel Fit'],
+      description: 'Full-grain leather passport cases featuring foil-stamped names and wedding wanderlust emblems.'
+    },
+    {
+      id: 'gp-thali',
+      name: 'Hand-Etched Silver-Plated Festive Pooja Thali Set',
+      categoryLabel: 'Wedding & Return Gifts',
+      subcategory: 'Wedding & Return Gifts',
+      brand: 'Heritage Silversmith',
+      price: 1199,
+      originalPrice: 1799,
+      rating: 4.8,
+      reviewsCount: 83,
+      isAssured: true,
+      image: './br_bridal7.jpg',
+      gallery: ['./br_bridal7.jpg', './handmade_gifts.jpg'],
+      colors: ['Pure Silver Finish', 'Antique Gold Accent'],
+      sizes: ['9.5 inch Diameter'],
+      description: 'Traditional etched pooja thali with matching diya, chandan wati, and agarbatti stand in royal red velvet presentation casing.'
     }
   ];
 
@@ -419,8 +502,44 @@ export default function HandmadeGiftsExperience({
       {/* ============================================================== */}
       {serviceMode === 'buying' && (
         <>
-          {/* 2. 10 GIFTING OCCASION CATEGORIES */}
-          <section style={{ margin: '3.5rem 0' }}>
+          {selectedPdpProduct ? (
+            <div id="pdp-scroll-anchor" style={{ margin: '1.5rem 0 3rem 0' }}>
+              <FlipkartProductDetailView
+                product={selectedPdpProduct}
+                categoryTitle="Handmade Gifts & Keepsakes"
+                onBack={() => {
+                  setSelectedPdpProduct(null);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onAddToCart={onAddToCart}
+                onBuyNow={(prod) => {
+                  if (onDirectCheckout) onDirectCheckout(prod);
+                }}
+                currentUser={currentUser}
+              />
+            </div>
+          ) : (
+            <>
+              {/* 1. FLIPKART STYLE CATALOG BROWSING & FILTERS (Image 1 Reference) */}
+              <section id="flipkart-gift-catalog-section" style={{ margin: '2rem 0 4rem 0' }}>
+                <FlipkartCatalogView
+                  categoryKey="gifts"
+                  categoryTitle="Artisan Handcrafted Gifts & Keepsakes"
+                  breadcrumbs={['Home', 'Gifts & Crafts', 'Handmade & Personalized Gifts']}
+                  products={giftProducts}
+                  onSelectProduct={(prod) => {
+                    setSelectedPdpProduct(prod);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onQuickBuy={(prod) => {
+                    if (onDirectCheckout) onDirectCheckout(prod);
+                  }}
+                  onAddToCart={onAddToCart}
+                />
+              </section>
+
+              {/* 2. 10 GIFTING OCCASION CATEGORIES */}
+              <section style={{ margin: '3.5rem 0' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '14px', textAlign: 'center' }}>
           Gifts for Every Meaningful Celebration
         </h3>
@@ -579,45 +698,14 @@ export default function HandmadeGiftsExperience({
         </div>
       </section>
 
-      {/* 4. EDITORIAL CURATED GIFT COLLECTIONS */}
-      <section id="gift-collections-section" style={{ margin: '4.5rem 0' }}>
-        <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 1.5rem 0', color: 'var(--text-primary)' }}>
-          Artisan Handcrafted Gifting Collection
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '24px' }}>
-          {giftProducts.map(p => (
-            <div
-              key={p.id}
-              className="glass-card"
-              style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid var(--border-color)', cursor: 'pointer' }}
-              onClick={() => setSelectedProductForModal(p)}
-            >
-              <div style={{ height: '220px', overflow: 'hidden' }}>
-                <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              <div style={{ padding: '18px' }}>
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase' }}>
-                  {p.categoryLabel}
-                </span>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 800, margin: '4px 0 6px 0', color: 'var(--text-primary)' }}>
-                  {p.name}
-                </h4>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <strong style={{ fontSize: '1.05rem', color: 'var(--primary)' }}>₹{p.price.toLocaleString()}</strong>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--accent)' }}>Personalize & Buy →</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* 5. TACTILE MATERIAL SHOWCASE */}
       <MaterialShowcase
         materials={giftMaterials}
         title="Artisan Fabric & Zari Anatomy"
         subtitle="Organic handspun khadi, mulberry silk, and untarnishable metallic zardozi threads."
       />
+            </>
+          )}
         </>
       )}
 
