@@ -233,21 +233,19 @@ export default function SpecialtyCategoryView({
       {/* ============================================================== */}
       {/* 2.5 SERVICE MODE SWITCHER (Buying vs Alteration vs Select Partner) */}
       {/* ============================================================== */}
-      {!['bags', 'shoes', 'gifts', 'sofas'].includes(activeCategory) && (
-        <div className="service-mode-tabs-container">
-          {SERVICE_MODES.map(mode => (
-            <button
-              key={mode.id}
-              type="button"
-              className={`service-mode-pill ${serviceMode === mode.id ? 'active' : ''}`}
-              onClick={() => setServiceMode(mode.id)}
-            >
-              {mode.icon}
-              <span>{mode.label}</span>
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="service-mode-tabs-container">
+        {SERVICE_MODES.map(mode => (
+          <button
+            key={mode.id}
+            type="button"
+            className={`service-mode-pill ${serviceMode === mode.id ? 'active' : ''}`}
+            onClick={() => setServiceMode(mode.id)}
+          >
+            {mode.icon}
+            <span>{mode.label}</span>
+          </button>
+        ))}
+      </div>
 
       {/* ============================================================== */}
       {/* 3. ACTIVE SPECIALTY CATEGORY EXPERIENCE VIEW                   */}

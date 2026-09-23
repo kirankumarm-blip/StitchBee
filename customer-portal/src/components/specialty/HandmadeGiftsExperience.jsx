@@ -241,7 +241,6 @@ export default function HandmadeGiftsExperience({
     <div className="gifts-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO */}
-      {serviceMode !== 'buying' && (
       <section className="specialty-hero specialty-hero-responsive">
         <div
           className="specialty-hero-bg"
@@ -312,7 +311,6 @@ export default function HandmadeGiftsExperience({
           </div>
         </div>
       </section>
-      )}
 
       {/* ============================================================== */}
       {/* ALTERATION & KEEPSAKE RESTORATION MODE CONTENT                 */}
@@ -540,9 +538,7 @@ export default function HandmadeGiftsExperience({
                 />
               </section>
 
-              {/* 2. 10 GIFTING OCCASION CATEGORIES (Hidden in Buying mode) */}
-              {false && (
-              <>
+              {/* 2. 10 GIFTING OCCASION CATEGORIES */}
               <section style={{ margin: '3.5rem 0' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '14px', textAlign: 'center' }}>
           Gifts for Every Meaningful Celebration
@@ -708,8 +704,6 @@ export default function HandmadeGiftsExperience({
         title="Artisan Fabric & Zari Anatomy"
         subtitle="Organic handspun khadi, mulberry silk, and untarnishable metallic zardozi threads."
       />
-              </>
-              )}
             </>
           )}
         </>

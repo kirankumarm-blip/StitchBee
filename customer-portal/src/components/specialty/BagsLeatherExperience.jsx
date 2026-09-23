@@ -290,7 +290,6 @@ export default function BagsLeatherExperience({
     <div className="bags-leather-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. EDITORIAL HERO SECTION */}
-      {serviceMode !== 'buying' && (
       <section className="specialty-hero specialty-hero-responsive">
         {/* Subtle Ambient Background Visual */}
         <div
@@ -376,7 +375,6 @@ export default function BagsLeatherExperience({
           </div>
         </div>
       </section>
-      )}
 
       {/* ============================================================== */}
       {/* ALTERATION & REPAIR MODE CONTENT                                */}
@@ -669,9 +667,7 @@ export default function BagsLeatherExperience({
                 />
               </section>
 
-              {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO (Hidden in Buying mode) */}
-              {false && (
-              <>
+              {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO */}
               <section id="custom-jacket-section" style={{ margin: '4.5rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
@@ -937,8 +933,6 @@ export default function BagsLeatherExperience({
           ))}
         </div>
       </section>
-              </>
-              )}
             </>
           )}
         </>

@@ -238,7 +238,6 @@ export default function ShoesSlippersExperience({
     <div className="shoes-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO SECTION */}
-      {serviceMode !== 'buying' && (
       <section className="specialty-hero specialty-hero-responsive">
         <div
           className="specialty-hero-bg"
@@ -307,7 +306,6 @@ export default function ShoesSlippersExperience({
           </div>
         </div>
       </section>
-      )}
 
       {/* ============================================================== */}
       {/* ALTERATION & REPAIR MODE CONTENT                                */}
@@ -502,9 +500,7 @@ export default function ShoesSlippersExperience({
                 />
               </section>
 
-              {/* 4. BESPOKE CUSTOM SHOES STUDIO (Hidden in Buying mode) */}
-              {false && (
-              <>
+              {/* 4. BESPOKE CUSTOM SHOES STUDIO */}
               <section id="custom-shoes-section" style={{ margin: '4.5rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
@@ -660,8 +656,6 @@ export default function ShoesSlippersExperience({
         title="Footwear Upper & Sole Anatomy"
         subtitle="Slow pit-tanned sole leathers and velvety snuffs built for lasting arch support."
       />
-              </>
-              )}
             </>
           )}
         </>
