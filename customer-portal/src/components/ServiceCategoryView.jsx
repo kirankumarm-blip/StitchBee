@@ -436,7 +436,7 @@ const categoryTemplates = {
 const SPECIALTY_KEYS = ['bags', 'shoes', 'seats', 'gifts', 'pets', 'sofas'];
 
 export default function ServiceCategoryView({ 
-  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory 
+  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart 
 }) {
   if (SPECIALTY_KEYS.includes(categoryKey)) {
     return (
@@ -449,6 +449,7 @@ export default function ServiceCategoryView({
         onBookStitching={onBookStitching}
         tailors={tailors}
         onSelectCategory={onSelectCategory}
+        onAddToCart={onAddToCart}
       />
     );
   }

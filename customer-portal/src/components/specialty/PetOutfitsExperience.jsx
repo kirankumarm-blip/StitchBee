@@ -148,32 +148,14 @@ export default function PetOutfitsExperience({
     <div className="pets-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '540px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '60px 48px',
-          marginBottom: '3rem',
-          background: 'linear-gradient(135deg, rgba(20,13,29,0.92) 0%, rgba(30,16,38,0.88) 100%)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
-        }}
-        className="specialty-hero-responsive"
-      >
+      <section className="specialty-hero specialty-hero-responsive">
         <div
+          className="specialty-hero-bg"
           style={{
-            position: 'absolute',
-            inset: 0,
             backgroundImage: 'url("./Pets.png")',
             backgroundSize: 'contain',
             backgroundPosition: 'center right',
             backgroundRepeat: 'no-repeat',
-            opacity: 0.25,
-            pointerEvents: 'none'
           }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
@@ -186,14 +168,14 @@ export default function PetOutfitsExperience({
             </span>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
             Made for Their<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Little Moments.
             </span>
           </h1>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
+          <p className="specialty-hero-subtext" style={{ fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
             Bespoke festive sherwanis for wedding celebrations, zero-choke ergonomic leather harnesses, and breathable cotton playwear customized to your pet's exact chest and neck dimensions.
           </p>
 
@@ -201,22 +183,22 @@ export default function PetOutfitsExperience({
             <a href="#pet-customizer-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
               Tailor a Custom Pet Outfit
             </a>
-            <a href="#pet-collection-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}>
+            <a href="#pet-collection-section" className="btn btn-secondary specialty-secondary-btn" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
               Explore Pet Outfits
             </a>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Heart size={18} style={{ color: 'var(--primary)', fill: 'var(--primary)' }} /> 100%
               </strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Comfort & Skin Safe</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem' }}>Comfort & Skin Safe</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#10b981' }}>Easy Wear</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>10-Second Velcro Closure</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', color: '#10b981' }}>Easy Wear</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>10-Second Velcro Closure</span>
             </div>
           </div>
         </div>
@@ -240,7 +222,7 @@ export default function PetOutfitsExperience({
                 Interactive Pet Tailoring
               </span>
             </div>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: '#fff' }}>
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
               Configure a Tailored Fit for Your Pet
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
@@ -272,8 +254,8 @@ export default function PetOutfitsExperience({
                         fontSize: '0.8rem',
                         borderRadius: '8px',
                         border: petSpecies === sp ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: petSpecies === sp ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: petSpecies === sp ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                        color: petSpecies === sp ? 'var(--primary)' : 'var(--text-primary)',
                         fontWeight: petSpecies === sp ? 700 : 500
                       }}
                     >
@@ -291,7 +273,7 @@ export default function PetOutfitsExperience({
                 <select
                   value={petBreed}
                   onChange={e => setPetBreed(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}
                 >
                   {(petSpecies === 'Cat' ? catBreeds : dogBreeds).map(br => (
                     <option key={br} value={br}>{br}</option>
@@ -319,8 +301,8 @@ export default function PetOutfitsExperience({
                         fontSize: '0.78rem',
                         borderRadius: '8px',
                         border: petDesign === des ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: petDesign === des ? 'rgba(247,37,133,0.12)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: petDesign === des ? 'rgba(247,37,133,0.12)' : 'var(--bg-card)',
+                        color: petDesign === des ? 'var(--primary)' : 'var(--text-primary)',
                         textAlign: 'left'
                       }}
                     >
@@ -331,9 +313,9 @@ export default function PetOutfitsExperience({
               </div>
 
               {/* Measurements Selector */}
-              <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ padding: '14px', borderRadius: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <strong style={{ fontSize: '0.85rem', color: '#fff', display: 'block' }}>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)', display: 'block' }}>
                     Pet Dimensions: {petMeasurements ? '✓ Custom Verified' : petSize}
                   </strong>
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -343,7 +325,7 @@ export default function PetOutfitsExperience({
                 <button
                   type="button"
                   onClick={() => setPetMeasurementModalOpen(true)}
-                  className="btn btn-secondary"
+                  className="btn btn-secondary specialty-secondary-btn"
                   style={{ fontSize: '0.78rem', padding: '8px 14px' }}
                 >
                   {petMeasurements ? 'Edit Dimensions' : 'Enter Measurements'}
@@ -352,11 +334,11 @@ export default function PetOutfitsExperience({
             </div>
 
             {/* Live Pet Preview Card */}
-            <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)' }}>
-              <div style={{ height: '240px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px', background: '#0a0914' }}>
+            <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
+              <div style={{ height: '240px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src="./Pets.png" alt="Pet preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </div>
-              <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: '#fff' }}>
+              <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                 {petBreed} • {petDesign}
               </h4>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0' }}>
@@ -393,7 +375,7 @@ export default function PetOutfitsExperience({
               style={{ borderRadius: '18px', overflow: 'hidden', border: '1px solid var(--border-color)', cursor: 'pointer' }}
               onClick={() => setSelectedProductForModal(p)}
             >
-              <div style={{ height: '220px', overflow: 'hidden', background: '#0a0914' }}>
+              <div style={{ height: '220px', overflow: 'hidden', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img src={p.image} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '10px' }} />
               </div>
               <div style={{ padding: '18px' }}>

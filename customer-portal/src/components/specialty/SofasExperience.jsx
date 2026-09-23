@@ -87,32 +87,11 @@ export default function SofasExperience({
     <div className="sofas-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '540px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '60px 48px',
-          marginBottom: '3rem',
-          background: 'linear-gradient(135deg, rgba(20,15,30,0.92) 0%, rgba(28,20,38,0.88) 100%)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
-        }}
-        className="specialty-hero-responsive"
-      >
+      <section className="specialty-hero specialty-hero-responsive">
         <div
+          className="specialty-hero-bg"
           style={{
-            position: 'absolute',
-            inset: 0,
             backgroundImage: 'url("https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.22,
-            mixBlendMode: 'luminosity',
-            pointerEvents: 'none'
           }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
@@ -125,14 +104,14 @@ export default function SofasExperience({
             </span>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
             Give Your Space<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               A New Look.
             </span>
           </h1>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
+          <p className="specialty-hero-subtext" style={{ fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
             Tailored sofa slipcovers, foam cushion renewal, claw-resistant fabrics, and luxury leather sofa re-upholstery. Our master upholsterers visit your living room with fabric swatches.
           </p>
 
@@ -140,22 +119,22 @@ export default function SofasExperience({
             <a href="#sofa-customizer-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
               Customize Sofa Covers
             </a>
-            <a href="#sofa-services-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}>
+            <a href="#sofa-services-section" className="btn btn-secondary specialty-secondary-btn" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
               Explore Sofa Services
             </a>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Star size={18} style={{ color: '#fbbf24', fill: '#fbbf24' }} /> 4.9 ★
               </strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Living & Upholstery Rating</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem' }}>Living & Upholstery Rating</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#10b981' }}>Home Visit</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Fabric Swatch Swapping</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', color: '#10b981' }}>Home Visit</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Fabric Swatch Swapping</span>
             </div>
           </div>
         </div>
@@ -194,7 +173,7 @@ export default function SofasExperience({
           ].map((ser, i) => (
             <div key={i} className="glass-card" style={{ padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 6px 0', color: '#fff' }}>{ser.title}</h4>
+                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>{ser.title}</h4>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: 0 }}>{ser.desc}</p>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '10px', marginTop: '12px' }}>
@@ -218,7 +197,7 @@ export default function SofasExperience({
           }}
         >
           <div style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: '#fff' }}>
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
               Configure Custom Sofa Covers
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
@@ -245,8 +224,8 @@ export default function SofasExperience({
                         fontSize: '0.78rem',
                         borderRadius: '8px',
                         border: sofaType === st ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: sofaType === st ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: sofaType === st ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                        color: sofaType === st ? 'var(--primary)' : 'var(--text-primary)',
                         fontWeight: sofaType === st ? 700 : 500
                       }}
                     >
@@ -267,21 +246,21 @@ export default function SofasExperience({
                     placeholder="Length (e.g. 78 in)"
                     value={sofaLength}
                     onChange={e => setSofaLength(e.target.value)}
-                    style={{ padding: '8px 10px', borderRadius: '8px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '0.8rem' }}
+                    style={{ padding: '8px 10px', borderRadius: '8px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.8rem' }}
                   />
                   <input
                     type="text"
                     placeholder="Depth (e.g. 34 in)"
                     value={sofaDepth}
                     onChange={e => setSofaDepth(e.target.value)}
-                    style={{ padding: '8px 10px', borderRadius: '8px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '0.8rem' }}
+                    style={{ padding: '8px 10px', borderRadius: '8px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.8rem' }}
                   />
                   <input
                     type="text"
                     placeholder="Height (e.g. 32 in)"
                     value={sofaHeight}
                     onChange={e => setSofaHeight(e.target.value)}
-                    style={{ padding: '8px 10px', borderRadius: '8px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '0.8rem' }}
+                    style={{ padding: '8px 10px', borderRadius: '8px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.8rem' }}
                   />
                 </div>
               </div>
@@ -295,7 +274,7 @@ export default function SofasExperience({
                   <select
                     value={sofaFabric}
                     onChange={e => setSofaFabric(e.target.value)}
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
                   >
                     <option value="Pet-Friendly Scratch-Resistant Microfiber">Pet-Friendly Scratch Microfiber</option>
                     <option value="Belgian Textured Jute Linen">Belgian Textured Jute Linen</option>
@@ -311,7 +290,7 @@ export default function SofasExperience({
                   <select
                     value={sofaColor}
                     onChange={e => setSofaColor(e.target.value)}
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
                   >
                     <option value="Sand Beige">Sand Beige</option>
                     <option value="Slate Charcoal">Slate Charcoal</option>
@@ -323,11 +302,11 @@ export default function SofasExperience({
             </div>
 
             {/* Live Sofa Summary Card */}
-            <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)' }}>
+            <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
               <div style={{ height: '220px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px' }}>
                 <img src="./Vehicle Seat Covers.png" alt="Sofa cover preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: '#fff' }}>
+              <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                 {sofaType} Sofa Cover Set
               </h4>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0' }}>

@@ -28,24 +28,13 @@ export default function SpecialtyCategoryView({
   currentUser,
   onLoginRequired,
   tailors = [],
-  onSelectCategory,
+  onAddToCart: parentAddToCart,
   onBookStitching,
   onExploreDesigns,
   onViewFabrics
 }) {
   const [activeCategory, setActiveCategory] = useState(categoryKey);
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 'init-sample-1',
-      title: 'Full-Grain Italian Leather Tote',
-      category: 'Bags & Leather',
-      price: 4499,
-      quantity: 1,
-      image: './bagf_fb1.jpg',
-      specs: 'Vintage Cognac / Antique Brass / Monogram: RS',
-      requiresMeasurement: false
-    }
-  ]);
+  const [cartItems, setCartItems] = useState([]);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [checkoutItems, setCheckoutItems] = useState([]);
@@ -82,6 +71,7 @@ export default function SpecialtyCategoryView({
     const newItem = {
       id: 'cart-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       title: productOrConfig.title || productOrConfig.name || 'Custom Specialty Item',
+      name: productOrConfig.title || productOrConfig.name || 'Custom Specialty Item',
       category: productOrConfig.category || activeCategory,
       price: Number(productOrConfig.price) || 2499,
       quantity: productOrConfig.quantity || 1,
@@ -91,6 +81,9 @@ export default function SpecialtyCategoryView({
     };
 
     setCartItems(prev => [newItem, ...prev]);
+    if (parentAddToCart) {
+      parentAddToCart(newItem);
+    }
     showToast(`Added to Atelier Cart: ${newItem.title}`);
   };
 
@@ -98,6 +91,7 @@ export default function SpecialtyCategoryView({
     const item = {
       id: 'direct-' + Date.now(),
       title: productOrConfig.title || productOrConfig.name || 'Custom Specialty Order',
+      name: productOrConfig.title || productOrConfig.name || 'Custom Specialty Order',
       category: productOrConfig.category || activeCategory,
       price: Number(productOrConfig.price) || 2499,
       quantity: 1,
@@ -146,153 +140,37 @@ export default function SpecialtyCategoryView({
   const totalCartCount = cartItems.reduce((acc, it) => acc + (it.quantity || 1), 0);
 
   return (
-    <div className="specialty-category-wrapper" style={{ minHeight: '100vh', background: 'var(--bg-main)' }}>
+    <div className="specialty-category-wrapper" style={{ minHeight: '100vh' }}>
       
-      {/* ============================================================== */}
-      {/* 1. STICKY SPECIALTY TOP ATELIER NAVBAR                        */}
-      {/* ============================================================== */}
-      <div 
-        style={{
-          position: 'sticky',
-          top: '0px',
-          zIndex: 80,
-          background: 'rgba(18, 18, 31, 0.92)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(247, 37, 133, 0.25)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-          padding: '10px 24px'
-        }}
-      >
-        <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-          
-          {/* Atelier Brand Badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ 
-              padding: '4px 10px', 
-              background: 'linear-gradient(135deg, #f72585, #7209b7)', 
-              borderRadius: '20px', 
-              fontSize: '0.72rem', 
-              fontWeight: '800', 
-              letterSpacing: '1px', 
-              color: '#fff',
-              textTransform: 'uppercase'
-            }}>
-              StitchBee Atelier
-            </span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'none', md: 'inline' }}>
-              Specialty Tailoring & Restoration Labs
-            </span>
-          </div>
-
-          {/* Specialty Category Selector Tabs */}
-          <div style={{ 
-            display: 'flex', 
-            gap: '8px', 
-            overflowX: 'auto', 
-            padding: '4px 0',
-            scrollbarWidth: 'none'
-          }}>
-            {SPECIALTY_TABS.map(tab => {
-              const isActive = activeCategory === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabClick(tab.id)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '8px 14px',
-                    borderRadius: '24px',
-                    border: isActive ? '1px solid #f72585' : '1px solid rgba(255,255,255,0.08)',
-                    background: isActive ? 'rgba(247, 37, 133, 0.16)' : 'rgba(255,255,255,0.03)',
-                    color: isActive ? '#fff' : 'var(--text-secondary)',
-                    fontWeight: isActive ? '700' : '500',
-                    fontSize: '0.84rem',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.2s ease',
-                    boxShadow: isActive ? '0 0 12px rgba(247,37,133,0.35)' : 'none'
-                  }}
-                >
-                  <span style={{ fontSize: '1rem' }}>{tab.icon}</span>
-                  <span>{tab.label}</span>
-                  {tab.badge && (
-                    <span style={{ 
-                      fontSize: '0.65rem', 
-                      padding: '1px 5px', 
-                      borderRadius: '4px', 
-                      background: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.06)',
-                      color: isActive ? '#fff' : 'var(--text-muted)'
-                    }}>
-                      {tab.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Right Action Icons: Track Order & Universal Cart */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button
-              onClick={() => setTrackingModalOpen(true)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '7px 12px',
-                borderRadius: '8px',
-                border: '1px solid rgba(255,255,255,0.12)',
-                background: 'rgba(255,255,255,0.04)',
-                color: '#fff',
-                fontSize: '0.82rem',
-                cursor: 'pointer',
-                fontWeight: '600'
-              }}
-              title="Track Active Specialty Orders"
-            >
-              <Package size={15} style={{ color: '#4cc9f0' }} />
-              <span>Track Order</span>
-            </button>
-
-            <button
-              onClick={() => setCartDrawerOpen(true)}
-              style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '7px 14px',
-                borderRadius: '8px',
-                border: '1px solid #f72585',
-                background: 'linear-gradient(135deg, rgba(247, 37, 133, 0.25), rgba(114, 9, 183, 0.25))',
-                color: '#fff',
-                fontSize: '0.82rem',
-                cursor: 'pointer',
-                fontWeight: '700',
-                boxShadow: totalCartCount > 0 ? '0 0 14px rgba(247, 37, 133, 0.35)' : 'none'
-              }}
-            >
-              <ShoppingCart size={16} style={{ color: '#f72585' }} />
-              <span>Cart</span>
-              {totalCartCount > 0 && (
-                <span style={{
-                  padding: '2px 7px',
-                  borderRadius: '12px',
-                  background: '#f72585',
-                  color: '#fff',
-                  fontSize: '0.72rem',
-                  fontWeight: '800'
-                }}>
-                  {totalCartCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-        </div>
-      </div>
+      {/* Floating Cart Button (shows when items in cart) */}
+      {cartItems.length > 0 && (
+        <button
+          onClick={() => setCartDrawerOpen(true)}
+          className="floating-cart-badge animate-bounce-subtle"
+          style={{
+            position: 'fixed',
+            bottom: '28px',
+            right: '28px',
+            zIndex: 900,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '12px 20px',
+            borderRadius: '30px',
+            background: 'linear-gradient(135deg, #f72585, #7209b7)',
+            color: '#fff',
+            border: 'none',
+            boxShadow: '0 8px 24px rgba(247, 37, 133, 0.45)',
+            cursor: 'pointer',
+            fontWeight: '700',
+            fontSize: '0.9rem'
+          }}
+        >
+          <ShoppingCart size={18} />
+          <span>Atelier Cart ({totalCartCount})</span>
+          <span style={{ fontSize: '0.85rem', opacity: 0.9 }}>• ₹{cartSubtotal.toLocaleString()}</span>
+        </button>
+      )}
 
       {/* ============================================================== */}
       {/* 2. TOAST NOTIFICATION                                         */}

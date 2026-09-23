@@ -75,7 +75,7 @@ export default function UniversalProductModal({
           maxHeight: '90vh',
           overflowY: 'auto',
           padding: '32px',
-          background: 'var(--bg-dark)',
+          background: 'var(--bg-card)',
           borderRadius: '24px',
           border: '1px solid var(--border-color)',
           boxShadow: '0 24px 60px rgba(0,0,0,0.8)'
@@ -83,7 +83,7 @@ export default function UniversalProductModal({
         onClick={e => e.stopPropagation()}
       >
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
-          <button onClick={onClose} className="btn btn-ghost" style={{ padding: '6px', color: '#fff' }}>
+          <button onClick={onClose} className="btn btn-ghost" style={{ padding: '6px', color: 'var(--text-primary)' }}>
             <X size={20} />
           </button>
         </div>
@@ -91,7 +91,7 @@ export default function UniversalProductModal({
         <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: '36px', alignItems: 'start' }} className="product-modal-grid-responsive">
           {/* LEFT: Editorial Multi-Angle Gallery */}
           <div>
-            <div style={{ position: 'relative', width: '100%', height: '420px', borderRadius: '18px', overflow: 'hidden', background: '#090812', marginBottom: '14px', border: '1px solid var(--border-color)' }}>
+            <div style={{ position: 'relative', width: '100%', height: '420px', borderRadius: '18px', overflow: 'hidden', background: 'var(--bg-secondary)', marginBottom: '14px', border: '1px solid var(--border-color)' }}>
               <img
                 src={images[activeImageIndex] || product.image}
                 alt={product.name}
@@ -187,8 +187,8 @@ export default function UniversalProductModal({
                         fontSize: '0.78rem',
                         borderRadius: '20px',
                         border: selectedColor === col ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedColor === col ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: selectedColor === col ? '#fff' : 'var(--text-secondary)'
+                        background: selectedColor === col ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                        color: selectedColor === col ? 'var(--primary)' : 'var(--text-primary)'
                       }}
                     >
                       {col}
@@ -215,8 +215,8 @@ export default function UniversalProductModal({
                         fontSize: '0.78rem',
                         borderRadius: '8px',
                         border: selectedSize === sz ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedSize === sz ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff'
+                        background: selectedSize === sz ? 'var(--primary)' : 'var(--bg-card)',
+                        color: selectedSize === sz ? '#fff' : 'var(--text-primary)'
                       }}
                     >
                       {sz}
@@ -227,10 +227,10 @@ export default function UniversalProductModal({
             )}
 
             {/* BESPOKE MONOGRAM / PERSONALIZATION */}
-            <div style={{ marginBottom: '18px', padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)' }}>
+            <div style={{ marginBottom: '18px', padding: '14px', borderRadius: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                 <Sparkles size={14} style={{ color: 'var(--primary)' }} />
-                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#fff' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                   Complimentary Hot-Stamp Monogramming
                 </span>
               </div>
@@ -240,7 +240,7 @@ export default function UniversalProductModal({
                 placeholder="e.g. R.V. or EMILY (up to 12 chars)"
                 value={monogramText}
                 onChange={e => setMonogramText(e.target.value.toUpperCase())}
-                style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '0.82rem', letterSpacing: '0.08em' }}
+                style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.82rem', letterSpacing: '0.08em' }}
               />
             </div>
 
@@ -261,8 +261,8 @@ export default function UniversalProductModal({
             {/* CTA BUTTONS */}
             <div style={{ display: 'flex', gap: '12px' }}>
               <button
-                className="btn btn-secondary"
-                style={{ flex: 1, padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}
+                className="btn btn-secondary specialty-secondary-btn"
+                style={{ flex: 1, padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                 onClick={handleAdd}
               >
                 {addedAnimation ? (

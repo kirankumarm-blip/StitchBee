@@ -65,7 +65,7 @@ export default function AIMeasurementModal({
           maxHeight: '90vh',
           overflowY: 'auto',
           padding: '28px',
-          background: 'var(--bg-dark)',
+          background: 'var(--bg-card)',
           borderRadius: '20px',
           border: '1px solid var(--border-color)',
           boxShadow: '0 20px 50px rgba(0,0,0,0.7)'
@@ -74,20 +74,20 @@ export default function AIMeasurementModal({
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: '#fff' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
               Precision Fit & Measurements
             </h3>
             <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
               Choose AI Touchless Body Scan, Manual Input, or Book a Fitting Specialist
             </span>
           </div>
-          <button onClick={onClose} className="btn btn-ghost" style={{ padding: '6px', color: '#fff' }}>
+          <button onClick={onClose} className="btn btn-ghost" style={{ padding: '6px', color: 'var(--text-primary)' }}>
             <X size={18} />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255,255,255,0.04)', padding: '4px', borderRadius: '12px', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', gap: '6px', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '12px', marginBottom: '20px' }}>
           {[
             { id: 'ai', label: 'AI Touchless Scan', icon: <Camera size={14} /> },
             { id: 'manual', label: 'Enter Manually', icon: <Ruler size={14} /> },
@@ -140,7 +140,7 @@ export default function AIMeasurementModal({
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Front & Side</span>
                 </div>
 
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', marginBottom: '6px' }}>
+                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
                   Touchless 3D Vision Measurement
                 </h4>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', maxWidth: '380px', margin: '0 auto 20px auto', lineHeight: '1.4' }}>
@@ -177,13 +177,13 @@ export default function AIMeasurementModal({
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
                   {Object.entries(measurements).map(([key, val]) => (
-                    <div key={key} style={{ background: 'rgba(255,255,255,0.03)', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div key={key} style={{ background: 'var(--bg-secondary)', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{key}</span>
                       <input
                         type="text"
                         value={val}
                         onChange={e => setMeasurements({ ...measurements, [key]: e.target.value })}
-                        style={{ width: '70px', padding: '4px', textAlign: 'right', background: 'transparent', border: 'none', color: '#fff', fontWeight: 700, fontSize: '0.85rem' }}
+                        style={{ width: '70px', padding: '4px', textAlign: 'right', background: 'transparent', border: 'none', color: 'var(--text-primary)', fontWeight: 700, fontSize: '0.85rem' }}
                       />
                     </div>
                   ))}
@@ -196,7 +196,7 @@ export default function AIMeasurementModal({
         {/* TAB 2: MANUAL MEASUREMENT */}
         {activeTab === 'manual' && (
           <div>
-            <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '10px', marginBottom: '16px', display: 'flex', gap: '8px' }}>
+            <div style={{ background: 'var(--bg-secondary)', padding: '12px', borderRadius: '10px', marginBottom: '16px', display: 'flex', gap: '8px' }}>
               <Info size={16} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: '2px' }} />
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
                 Use a flexible measuring tape. Keep tape snug against the body without pulling tight.
@@ -205,13 +205,13 @@ export default function AIMeasurementModal({
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
               {Object.entries(measurements).map(([key, val]) => (
-                <div key={key} style={{ background: 'rgba(255,255,255,0.03)', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={key} style={{ background: 'var(--bg-secondary)', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{key}</span>
                   <input
                     type="text"
                     value={val}
                     onChange={e => setMeasurements({ ...measurements, [key]: e.target.value })}
-                    style={{ width: '70px', padding: '4px', textAlign: 'right', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px', color: '#fff', fontWeight: 700, fontSize: '0.85rem' }}
+                    style={{ width: '70px', padding: '4px', textAlign: 'right', background: 'transparent', border: '1px solid var(--border-color)', borderRadius: '4px', color: 'var(--text-primary)', fontWeight: 700, fontSize: '0.85rem' }}
                   />
                 </div>
               ))}
@@ -240,8 +240,8 @@ export default function AIMeasurementModal({
                   padding: '12px',
                   borderRadius: '10px',
                   border: appointmentType === 'home' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                  background: appointmentType === 'home' ? 'rgba(247,37,133,0.08)' : 'rgba(255,255,255,0.02)',
-                  color: '#fff',
+                  background: appointmentType === 'home' ? 'rgba(247,37,133,0.08)' : 'var(--bg-secondary)',
+                  color: appointmentType === 'home' ? 'var(--primary)' : 'var(--text-primary)',
                   fontSize: '0.82rem',
                   fontWeight: 600
                 }}
@@ -257,8 +257,8 @@ export default function AIMeasurementModal({
                   padding: '12px',
                   borderRadius: '10px',
                   border: appointmentType === 'shop' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                  background: appointmentType === 'shop' ? 'rgba(247,37,133,0.08)' : 'rgba(255,255,255,0.02)',
-                  color: '#fff',
+                  background: appointmentType === 'shop' ? 'rgba(247,37,133,0.08)' : 'var(--bg-secondary)',
+                  color: appointmentType === 'shop' ? 'var(--primary)' : 'var(--text-primary)',
                   fontSize: '0.82rem',
                   fontWeight: 600
                 }}
@@ -275,7 +275,7 @@ export default function AIMeasurementModal({
                   className="form-control"
                   value={preferredDate}
                   onChange={e => setPreferredDate(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid var(--border-color)' }}
+                  style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)' }}
                 />
               </div>
               <div>
@@ -284,7 +284,7 @@ export default function AIMeasurementModal({
                   className="form-control"
                   value={preferredSlot}
                   onChange={e => setPreferredSlot(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)' }}
+                  style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-color)' }}
                 >
                   <option value="09:00 AM - 11:00 AM">09:00 AM - 11:00 AM</option>
                   <option value="11:00 AM - 01:00 PM">11:00 AM - 01:00 PM</option>

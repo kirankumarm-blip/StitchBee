@@ -75,13 +75,14 @@ export default function SpecialistMapDiscovery({
             <button
               key={f.id}
               onClick={() => setActiveFilter(f.id)}
-              className={`btn ${activeFilter === f.id ? 'btn-primary' : 'btn-secondary'}`}
+              className={`btn ${activeFilter === f.id ? 'btn-primary' : 'btn-secondary specialty-secondary-btn'}`}
               style={{
                 padding: '6px 14px',
                 fontSize: '0.8rem',
                 borderRadius: '20px',
-                background: activeFilter === f.id ? 'var(--grad-primary)' : 'rgba(255,255,255,0.04)',
-                border: '1px solid var(--border-color)'
+                background: activeFilter === f.id ? 'var(--grad-primary)' : 'var(--bg-card)',
+                border: '1px solid var(--border-color)',
+                color: activeFilter === f.id ? '#fff' : 'var(--text-primary)'
               }}
             >
               {f.label}
@@ -271,8 +272,8 @@ export default function SpecialistMapDiscovery({
 
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button
-                    className="btn btn-secondary"
-                    style={{ flex: 1, padding: '7px 12px', fontSize: '0.78rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}
+                    className="btn btn-secondary specialty-secondary-btn"
+                    style={{ flex: 1, padding: '7px 12px', fontSize: '0.78rem', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}
                     onClick={(e) => {
                       e.stopPropagation();
                       setProfileModalTailor(t);
@@ -302,7 +303,7 @@ export default function SpecialistMapDiscovery({
         <div className="modal-overlay" style={{ zIndex: 99999 }} onClick={() => setProfileModalTailor(null)}>
           <div
             className="modal-content animate-fade-in"
-            style={{ maxWidth: '600px', width: '92%', maxHeight: '85vh', overflowY: 'auto', padding: '28px', background: 'var(--bg-dark)' }}
+            style={{ maxWidth: '600px', width: '92%', maxHeight: '85vh', overflowY: 'auto', padding: '28px', background: 'var(--bg-card)' }}
             onClick={e => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -312,7 +313,7 @@ export default function SpecialistMapDiscovery({
                   StitchBee Certified Specialist
                 </span>
               </div>
-              <button onClick={() => setProfileModalTailor(null)} className="btn btn-ghost" style={{ padding: '4px 8px', color: '#fff' }}>
+              <button onClick={() => setProfileModalTailor(null)} className="btn btn-ghost" style={{ padding: '4px 8px', color: 'var(--text-primary)' }}>
                 ✕
               </button>
             </div>
@@ -324,7 +325,7 @@ export default function SpecialistMapDiscovery({
                 style={{ width: '80px', height: '80px', borderRadius: '18px', objectFit: 'cover', border: '2px solid var(--primary)' }}
               />
               <div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 4px 0', color: '#fff' }}>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                   {profileModalTailor.name}
                 </h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.84rem', margin: 0 }}>
@@ -340,14 +341,14 @@ export default function SpecialistMapDiscovery({
 
             {/* Specialties & Capabilities */}
             <div style={{ marginBottom: '20px' }}>
-              <h5 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>Available Specializations</h5>
+              <h5 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>Available Specializations</h5>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {(profileModalTailor.services || [
                   { name: 'Custom Stitching', price: 1499 },
                   { name: 'Structural Restoration', price: 499 },
                   { name: 'Doorstep Measurement', price: 199 }
                 ]).map((s, i) => (
-                  <span key={i} style={{ fontSize: '0.75rem', background: 'rgba(255,255,255,0.06)', padding: '5px 10px', borderRadius: '8px', color: 'var(--text-secondary)' }}>
+                  <span key={i} style={{ fontSize: '0.75rem', background: 'var(--bg-secondary)', padding: '5px 10px', borderRadius: '8px', color: 'var(--text-secondary)' }}>
                     {s.name} (from ₹{s.price})
                   </span>
                 ))}
@@ -355,8 +356,8 @@ export default function SpecialistMapDiscovery({
             </div>
 
             {/* Workshop Address & Doorstep Availability */}
-            <div style={{ padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', marginBottom: '24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#fff', marginBottom: '4px' }}>
+            <div style={{ padding: '14px', borderRadius: '12px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--text-primary)', marginBottom: '4px' }}>
                 <MapPin size={16} style={{ color: 'var(--accent)' }} />
                 <span>{profileModalTailor.address || 'HSR Layout, Sector 2, Bengaluru'}</span>
               </div>

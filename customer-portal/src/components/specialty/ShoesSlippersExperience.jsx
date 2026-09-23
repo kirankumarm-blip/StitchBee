@@ -153,52 +153,29 @@ export default function ShoesSlippersExperience({
     <div className="shoes-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO SECTION */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '560px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '60px 48px',
-          marginBottom: '3rem',
-          background: 'linear-gradient(135deg, rgba(16,13,29,0.92) 0%, rgba(20,18,36,0.88) 100%)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
-        }}
-        className="specialty-hero-responsive"
-      >
+      <section className="specialty-hero specialty-hero-responsive">
         <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: 'url("./Shoes And Slippers.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center right',
-            opacity: 0.22,
-            mixBlendMode: 'luminosity',
-            pointerEvents: 'none'
-          }}
+          className="specialty-hero-bg"
+          style={{ backgroundImage: 'url("./Shoes And Slippers.png")' }}
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
 
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '640px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', background: 'rgba(247,37,133,0.12)', border: '1px solid rgba(247,37,133,0.3)', marginBottom: '18px' }}>
+          <div className="specialty-hero-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', marginBottom: '18px' }}>
             <Sparkles size={15} style={{ color: 'var(--primary)' }} />
-            <span style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.76rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               StitchBee Master Cobblers & Footwear
             </span>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
+          <h1>
             Walk Further.<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Wear Better.
             </span>
           </h1>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
+          <p className="specialty-hero-subtext">
             From high-grade Vibram resoling, sneaker rejuvenation, and orthopedic heel repairs to bespoke Goodyear-welted dress shoes, experience true master cobbler craftsmanship.
           </p>
 
@@ -206,22 +183,22 @@ export default function ShoesSlippersExperience({
             <a href="#shoe-repair-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
               Book Shoe Repair / Resoling
             </a>
-            <a href="#custom-shoes-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}>
+            <a href="#custom-shoes-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
               Design Custom Footwear
             </a>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Star size={18} style={{ color: '#fbbf24', fill: '#fbbf24' }} /> 4.9 ★
               </strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Cobbler Excellence Rating</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem' }}>Cobbler Excellence Rating</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: 'var(--primary)' }}>2,100+</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Shoes Resoled & Repaired</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', color: 'var(--primary)' }}>2,100+</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Shoes Resoled & Repaired</span>
             </div>
           </div>
         </div>
@@ -314,8 +291,8 @@ export default function ShoesSlippersExperience({
                         fontSize: '0.8rem',
                         borderRadius: '10px',
                         border: selectedShoeType === sh ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedShoeType === sh ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: selectedShoeType === sh ? 'var(--primary)' : 'var(--bg-card)',
+                        color: selectedShoeType === sh ? '#fff' : 'var(--text-primary)',
                         fontWeight: selectedShoeType === sh ? 700 : 500
                       }}
                     >
@@ -343,8 +320,8 @@ export default function ShoesSlippersExperience({
                         borderRadius: '10px',
                         cursor: 'pointer',
                         border: selectedShoeIssue === iss ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedShoeIssue === iss ? 'rgba(247,37,133,0.08)' : 'rgba(255,255,255,0.02)',
-                        color: '#fff',
+                        background: selectedShoeIssue === iss ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                        color: selectedShoeIssue === iss ? 'var(--primary)' : 'var(--text-primary)',
                         fontSize: '0.82rem',
                         display: 'flex',
                         alignItems: 'center',
@@ -424,8 +401,8 @@ export default function ShoesSlippersExperience({
                       fontSize: '0.78rem',
                       borderRadius: '8px',
                       border: customStyle === st ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                      background: customStyle === st ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                      color: '#fff'
+                      background: customStyle === st ? 'var(--primary)' : 'var(--bg-card)',
+                      color: customStyle === st ? '#fff' : 'var(--text-primary)'
                     }}
                   >
                     {st}
@@ -442,7 +419,7 @@ export default function ShoesSlippersExperience({
                 <select
                   value={customColor}
                   onChange={e => setCustomColor(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Polished Tan">Polished Tan</option>
                   <option value="Onyx Jet Black">Onyx Jet Black</option>
@@ -458,7 +435,7 @@ export default function ShoesSlippersExperience({
                 <select
                   value={customSole}
                   onChange={e => setCustomSole(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Oak-Bark Leather Sole">Oak-Bark Leather Sole</option>
                   <option value="Dainite Studded Rubber">Dainite Studded Rubber</option>
@@ -485,8 +462,8 @@ export default function ShoesSlippersExperience({
                         fontSize: '0.75rem',
                         borderRadius: '6px',
                         border: customSize === sz ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: customSize === sz ? 'var(--primary)' : 'transparent',
-                        color: '#fff'
+                        background: customSize === sz ? 'var(--primary)' : 'var(--bg-card)',
+                        color: customSize === sz ? '#fff' : 'var(--text-primary)'
                       }}
                     >
                       {sz}
@@ -502,7 +479,7 @@ export default function ShoesSlippersExperience({
                 <select
                   value={customWidth}
                   onChange={e => setCustomWidth(e.target.value)}
-                  style={{ width: '100%', padding: '8px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '8px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Standard (D)">Standard (D)</option>
                   <option value="Wide (E)">Wide (E)</option>

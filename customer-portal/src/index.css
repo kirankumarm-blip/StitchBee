@@ -4855,6 +4855,176 @@ body.light-theme .dropdown-item.active {
   font-weight: 700;
 }
 
+/* ==========================================================================
+   Specialty Atelier Experience Styling & Light Theme Contrast Fixes
+   ========================================================================== */
+
+.specialty-hero {
+  position: relative;
+  min-height: 520px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 50px 48px;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, rgba(20, 16, 38, 0.95) 0%, rgba(32, 18, 52, 0.92) 100%);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.specialty-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center right;
+  opacity: 0.22;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+}
+
+.specialty-hero h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.1;
+  margin: 0 0 16px 0;
+}
+
+.specialty-hero p,
+.specialty-hero .specialty-hero-subtext {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.specialty-hero .metric-value {
+  color: #ffffff;
+}
+
+.specialty-hero .metric-label {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.specialty-hero .btn-secondary {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.specialty-hero-badge {
+  background: rgba(247, 37, 133, 0.12);
+  border: 1px solid rgba(247, 37, 133, 0.3);
+  color: var(--primary);
+}
+
+/* Light Theme Overrides for Specialty Atelier Views */
+body.light-theme .specialty-hero {
+  background: linear-gradient(135deg, #ffffff 0%, #fff1f6 50%, #f0f7ff 100%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 12px 36px rgba(247, 37, 133, 0.08) !important;
+}
+
+body.light-theme .specialty-hero-bg {
+  opacity: 0.14 !important;
+  mix-blend-mode: multiply !important;
+  filter: saturate(1.2);
+}
+
+body.light-theme .specialty-hero h1 {
+  color: #0f172a !important;
+}
+
+body.light-theme .specialty-hero p,
+body.light-theme .specialty-hero .specialty-hero-subtext {
+  color: #475569 !important;
+}
+
+body.light-theme .specialty-hero .metric-value {
+  color: #0f172a !important;
+}
+
+body.light-theme .specialty-hero .metric-label {
+  color: #64748b !important;
+}
+
+body.light-theme .specialty-hero .btn-secondary {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.16) !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .specialty-hero .btn-secondary:hover {
+  background: #f8fafc !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+body.light-theme .specialty-hero-badge {
+  background: rgba(247, 37, 133, 0.08) !important;
+  border: 1px solid rgba(247, 37, 133, 0.25) !important;
+  color: #f72585 !important;
+}
+
+body.light-theme .specialty-category-wrapper {
+  background: #ffffff !important;
+  color: #0f172a;
+}
+
+body.light-theme .specialty-category-wrapper .glass-card,
+body.light-theme .specialty-category-wrapper .glass-card-no-hover {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .specialty-category-wrapper .glass-card h3,
+body.light-theme .specialty-category-wrapper .glass-card h4,
+body.light-theme .specialty-category-wrapper .glass-card-no-hover h3,
+body.light-theme .specialty-category-wrapper .glass-card-no-hover h4 {
+  color: #0f172a !important;
+}
+
+body.light-theme .specialty-category-wrapper input,
+body.light-theme .specialty-category-wrapper select,
+body.light-theme .specialty-category-wrapper textarea {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+body.light-theme .specialty-category-wrapper input::placeholder,
+body.light-theme .specialty-category-wrapper textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+body.light-theme .specialty-secondary-btn {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .specialty-secondary-btn:hover {
+  background: #f8fafc !important;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+body.light-theme .modal-content {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .modal-content h2,
+body.light-theme .modal-content h3,
+body.light-theme .modal-content h4,
+body.light-theme .modal-content h5 {
+  color: #0f172a !important;
+}
+
 /* Mobile Dropdown Card Layout to escape parent scroll clipping */
 @media (max-width: 991px) {
   .nav-dropdown-menu.show {

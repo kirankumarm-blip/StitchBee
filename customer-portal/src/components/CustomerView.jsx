@@ -5664,6 +5664,7 @@ export default function CustomerView({
             setActiveHub('tailors');
           }}
           tailors={tailors}
+          onAddToCart={handleAddToCart}
           onSelectCategory={(catId) => {
             setSelectedCategory(catId);
             if (setCustomerCategory) setCustomerCategory(catId);

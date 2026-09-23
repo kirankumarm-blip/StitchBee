@@ -204,46 +204,23 @@ export default function BagsLeatherExperience({
     <div className="bags-leather-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. EDITORIAL HERO SECTION */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '580px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '60px 48px',
-          marginBottom: '3rem',
-          background: 'linear-gradient(135deg, rgba(16,13,29,0.92) 0%, rgba(26,16,40,0.88) 100%)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
-        }}
-        className="specialty-hero-responsive"
-      >
+      <section className="specialty-hero specialty-hero-responsive">
         {/* Subtle Ambient Background Visual */}
         <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: 'url("./Bags And Leather.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center right',
-            opacity: 0.22,
-            mixBlendMode: 'luminosity',
-            pointerEvents: 'none'
-          }}
+          className="specialty-hero-bg"
+          style={{ backgroundImage: 'url("./Bags And Leather.png")' }}
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
 
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '640px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', background: 'rgba(247,37,133,0.12)', border: '1px solid rgba(247,37,133,0.3)', marginBottom: '18px' }}>
+          <div className="specialty-hero-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', marginBottom: '18px' }}>
             <Sparkles size={15} style={{ color: 'var(--primary)' }} />
-            <span style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.76rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               StitchBee Leather & Bag Studio
             </span>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
+          <h1>
             Crafted with care.<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Restored with precision.
@@ -251,7 +228,7 @@ export default function BagsLeatherExperience({
             Made for you.
           </h1>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
+          <p className="specialty-hero-subtext">
             From heirloom travel bags and burst luggage zippers to bespoke custom leather jackets, StitchBee connects you with master leathercraft artisans who repair, customize, and create.
           </p>
 
@@ -260,7 +237,7 @@ export default function BagsLeatherExperience({
             <a href="#bag-repair-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
               Repair My Bag / Luggage
             </a>
-            <a href="#custom-jacket-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}>
+            <a href="#custom-jacket-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
               Custom Leather Jacket
             </a>
             <button
@@ -276,20 +253,20 @@ export default function BagsLeatherExperience({
           {/* Trust Metric Badges */}
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Star size={18} style={{ color: '#fbbf24', fill: '#fbbf24' }} /> 4.9 ★
               </strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Verified Craft Rating</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem' }}>Verified Craft Rating</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: 'var(--primary)' }}>1,400+</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Bags & Jackets Restored</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'block', color: 'var(--primary)' }}>1,400+</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Bags & Jackets Restored</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#10b981' }}>100%</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Guaranteed Stitch Fit</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'block', color: '#10b981' }}>100%</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Guaranteed Stitch Fit</span>
             </div>
           </div>
         </div>
@@ -444,8 +421,8 @@ export default function BagsLeatherExperience({
                         fontSize: '0.8rem',
                         borderRadius: '10px',
                         border: selectedBagType === b ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedBagType === b ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: selectedBagType === b ? 'var(--primary)' : 'var(--bg-card)',
+                        color: selectedBagType === b ? '#fff' : 'var(--text-primary)',
                         fontWeight: selectedBagType === b ? 700 : 500
                       }}
                     >
@@ -473,8 +450,8 @@ export default function BagsLeatherExperience({
                         borderRadius: '10px',
                         cursor: 'pointer',
                         border: selectedIssue === iss ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedIssue === iss ? 'rgba(247,37,133,0.08)' : 'rgba(255,255,255,0.02)',
-                        color: '#fff',
+                        background: selectedIssue === iss ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                        color: selectedIssue === iss ? 'var(--primary)' : 'var(--text-primary)',
                         fontSize: '0.82rem',
                         display: 'flex',
                         alignItems: 'center',
@@ -626,8 +603,8 @@ export default function BagsLeatherExperience({
                       fontSize: '0.8rem',
                       borderRadius: '8px',
                       border: jacketGender === g ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                      background: jacketGender === g ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                      color: '#fff',
+                      background: jacketGender === g ? 'var(--primary)' : 'var(--bg-card)',
+                      color: jacketGender === g ? '#fff' : 'var(--text-primary)',
                       fontWeight: jacketGender === g ? 700 : 500
                     }}
                   >
@@ -657,8 +634,8 @@ export default function BagsLeatherExperience({
                       fontSize: '0.75rem',
                       borderRadius: '8px',
                       border: jacketStyle === st ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                      background: jacketStyle === st ? 'rgba(247,37,133,0.12)' : 'rgba(255,255,255,0.03)',
-                      color: '#fff',
+                      background: jacketStyle === st ? 'var(--primary)' : 'var(--bg-card)',
+                      color: jacketStyle === st ? '#fff' : 'var(--text-primary)',
                       fontWeight: jacketStyle === st ? 700 : 500
                     }}
                   >
@@ -677,7 +654,7 @@ export default function BagsLeatherExperience({
                 <select
                   value={jacketLeather}
                   onChange={e => setJacketLeather(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Full-Grain Italian Calfskin">Full-Grain Italian Calfskin</option>
                   <option value="Soft Vegetable-Tanned Nappa">Soft Vegetable-Tanned Nappa</option>
@@ -693,7 +670,7 @@ export default function BagsLeatherExperience({
                 <select
                   value={jacketColor}
                   onChange={e => setJacketColor(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Vintage Cognac">Vintage Cognac (Tan)</option>
                   <option value="Jet Midnight Black">Jet Midnight Black</option>
@@ -712,7 +689,7 @@ export default function BagsLeatherExperience({
                 <select
                   value={jacketHardware}
                   onChange={e => setJacketHardware(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Antique Brass">Antique Brass</option>
                   <option value="Gunmetal Matte Silver">Gunmetal Matte Silver</option>
@@ -727,7 +704,7 @@ export default function BagsLeatherExperience({
                 <select
                   value={jacketLining}
                   onChange={e => setJacketLining(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
                 >
                   <option value="Quilted Bemberg Silk">Quilted Bemberg Silk</option>
                   <option value="Heavy Cotton Tartan">Heavy Cotton Tartan</option>
@@ -737,9 +714,9 @@ export default function BagsLeatherExperience({
             </div>
 
             {/* Measurements Trigger */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '14px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-color)' }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '14px', borderRadius: '12px', background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
               <div style={{ flex: 1 }}>
-                <strong style={{ fontSize: '0.84rem', color: '#fff', display: 'block' }}>
+                <strong style={{ fontSize: '0.84rem', color: 'var(--text-primary)', display: 'block' }}>
                   Body Measurement: {jacketMeasurements ? '✓ Verified' : 'AI Scan or Home Visit'}
                 </strong>
                 <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>

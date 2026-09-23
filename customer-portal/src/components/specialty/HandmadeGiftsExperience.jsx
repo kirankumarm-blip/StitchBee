@@ -143,32 +143,11 @@ export default function HandmadeGiftsExperience({
     <div className="gifts-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '540px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '60px 48px',
-          marginBottom: '3rem',
-          background: 'linear-gradient(135deg, rgba(20,13,29,0.92) 0%, rgba(32,16,40,0.88) 100%)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
-        }}
-        className="specialty-hero-responsive"
-      >
+      <section className="specialty-hero specialty-hero-responsive">
         <div
+          className="specialty-hero-bg"
           style={{
-            position: 'absolute',
-            inset: 0,
             backgroundImage: 'url("./handmade_gifts.jpg")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            opacity: 0.2,
-            mixBlendMode: 'luminosity',
-            pointerEvents: 'none'
           }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
@@ -181,14 +160,14 @@ export default function HandmadeGiftsExperience({
             </span>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
+          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
             Made by Hand.<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Chosen by Heart.
             </span>
           </h1>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
+          <p className="specialty-hero-subtext" style={{ fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
             Personalized hand-stitched keepsakes, golden zari wedding potlis, monogrammed kitchen linens, and festive fabric gift sets crafted with genuine emotional connection.
           </p>
 
@@ -196,22 +175,22 @@ export default function HandmadeGiftsExperience({
             <a href="#personalizer-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
               Live Gift Personalizer
             </a>
-            <a href="#gift-collections-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}>
+            <a href="#gift-collections-section" className="btn btn-secondary specialty-secondary-btn" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
               Explore Gift Collections
             </a>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Heart size={18} style={{ color: 'var(--primary)', fill: 'var(--primary)' }} /> 100%
               </strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Handmade by Rural Artisans</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem' }}>Handmade by Rural Artisans</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#10b981' }}>48 Hours</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Express Dispatch</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', color: '#10b981' }}>48 Hours</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Express Dispatch</span>
             </div>
           </div>
         </div>
@@ -219,7 +198,7 @@ export default function HandmadeGiftsExperience({
 
       {/* 2. 10 GIFTING OCCASION CATEGORIES */}
       <section style={{ margin: '3.5rem 0' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', marginBottom: '14px', textAlign: 'center' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '14px', textAlign: 'center' }}>
           Gifts for Every Meaningful Celebration
         </h3>
         <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -233,7 +212,7 @@ export default function HandmadeGiftsExperience({
                 fontSize: '0.78rem',
                 padding: '8px 16px',
                 borderRadius: '20px',
-                background: 'rgba(255,255,255,0.03)',
+                background: 'var(--bg-card)',
                 border: '1px solid var(--border-color)',
                 color: 'var(--text-secondary)'
               }}
@@ -262,7 +241,7 @@ export default function HandmadeGiftsExperience({
                 Bespoke Personalization Studio
               </span>
             </div>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: '#fff' }}>
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
               Personalize Your Gift in Real Time
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
@@ -283,7 +262,7 @@ export default function HandmadeGiftsExperience({
                   onChange={e => setRecipientName(e.target.value)}
                   placeholder="e.g. Ananya & Rohan"
                   maxLength={30}
-                  style={{ width: '100%', padding: '12px', borderRadius: '10px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '0.9rem' }}
+                  style={{ width: '100%', padding: '12px', borderRadius: '10px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.9rem' }}
                 />
               </div>
 
@@ -304,8 +283,8 @@ export default function HandmadeGiftsExperience({
                         fontSize: '0.75rem',
                         borderRadius: '8px',
                         border: threadColor === th ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: threadColor === th ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff'
+                        background: threadColor === th ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                        color: threadColor === th ? 'var(--primary)' : 'var(--text-primary)'
                       }}
                     >
                       {th}
@@ -323,11 +302,11 @@ export default function HandmadeGiftsExperience({
                   value={giftCardMessage}
                   onChange={e => setGiftCardMessage(e.target.value)}
                   placeholder="Write your personal greetings here..."
-                  style={{ width: '100%', padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '0.82rem' }}
+                  style={{ width: '100%', padding: '12px', borderRadius: '10px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', fontSize: '0.82rem' }}
                 />
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', borderRadius: '10px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}>
                 <input
                   type="checkbox"
                   id="giftWrapStudio"
@@ -335,19 +314,19 @@ export default function HandmadeGiftsExperience({
                   onChange={e => setGiftWrapping(e.target.checked)}
                   style={{ accentColor: 'var(--primary)', cursor: 'pointer' }}
                 />
-                <label htmlFor="giftWrapStudio" style={{ fontSize: '0.82rem', color: '#fff', cursor: 'pointer' }}>
+                <label htmlFor="giftWrapStudio" style={{ fontSize: '0.82rem', color: 'var(--text-primary)', cursor: 'pointer' }}>
                   Include Artisan Eco Festive Box with Satin Ribbon (+₹99)
                 </label>
               </div>
             </div>
 
             {/* Live Gift Preview Card */}
-            <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)', background: 'linear-gradient(135deg, rgba(20,13,29,0.7) 0%, rgba(26,16,36,0.6) 100%)' }}>
+            <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
               <div style={{ height: '200px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px', position: 'relative' }}>
                 <img src="./handmade_gifts.jpg" alt="Gift item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 {/* Live Floating Monogram Badge */}
                 <div style={{ position: 'absolute', bottom: '12px', left: '12px', right: '12px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', padding: '10px', borderRadius: '10px', textAlign: 'center', border: '1px dashed var(--primary)' }}>
-                  <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block' }}>
+                  <span style={{ fontSize: '0.65rem', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block' }}>
                     Embroidered Thread Preview ({threadColor})
                   </span>
                   <strong style={{ fontSize: '1.05rem', color: '#fbbf24', letterSpacing: '0.06em', fontFamily: 'serif' }}>

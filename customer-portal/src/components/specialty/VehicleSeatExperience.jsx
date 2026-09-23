@@ -131,45 +131,22 @@ export default function VehicleSeatExperience({
     <div className="vehicle-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO */}
-      <section
-        style={{
-          position: 'relative',
-          minHeight: '560px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '60px 48px',
-          marginBottom: '3rem',
-          background: 'linear-gradient(135deg, rgba(16,13,29,0.92) 0%, rgba(18,22,38,0.88) 100%)',
-          border: '1px solid var(--border-color)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)'
-        }}
-        className="specialty-hero-responsive"
-      >
+      <section className="specialty-hero specialty-hero-responsive">
         <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: 'url("./Vehicle Seat Covers.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center right',
-            opacity: 0.22,
-            mixBlendMode: 'luminosity',
-            pointerEvents: 'none'
-          }}
+          className="specialty-hero-bg"
+          style={{ backgroundImage: 'url("./Vehicle Seat Covers.png")' }}
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
 
         <div style={{ position: 'relative', zIndex: 2, maxWidth: '640px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', background: 'rgba(247,37,133,0.12)', border: '1px solid rgba(247,37,133,0.3)', marginBottom: '18px' }}>
+          <div className="specialty-hero-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', marginBottom: '18px' }}>
             <Sparkles size={15} style={{ color: 'var(--primary)' }} />
-            <span style={{ fontSize: '0.76rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.76rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               StitchBee Automotive & Motorcycle Interiors
             </span>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: '1.08', margin: '0 0 16px 0', letterSpacing: '-0.03em' }}>
+          <h1>
             Your Vehicle.<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Your Interior.
@@ -177,7 +154,7 @@ export default function VehicleSeatExperience({
             Your Style.
           </h1>
 
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', marginBottom: '28px' }}>
+          <p className="specialty-hero-subtext">
             Transform uncomfortable factory seats into luxury bucket contours. Custom quilted car seat cover sets and orthopedic gel motorcycle saddles fitted at your doorstep.
           </p>
 
@@ -192,7 +169,7 @@ export default function VehicleSeatExperience({
             <button
               onClick={() => { setVehicleType('car'); document.getElementById('configurator-section')?.scrollIntoView({ behavior: 'smooth' }); }}
               className="btn btn-secondary"
-              style={{ padding: '12px 20px', fontSize: '0.9rem', background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border-color)' }}
+              style={{ padding: '12px 20px', fontSize: '0.9rem' }}
             >
               Configure Car / SUV Interior
             </button>
@@ -200,15 +177,15 @@ export default function VehicleSeatExperience({
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Star size={18} style={{ color: '#fbbf24', fill: '#fbbf24' }} /> 4.9 ★
               </strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Automotive Interior Rating</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem' }}>Automotive Interior Rating</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
-              <strong style={{ fontSize: '1.25rem', color: '#10b981' }}>Doorstep</strong>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Installation at Your Garage</span>
+              <strong className="metric-value" style={{ fontSize: '1.25rem', color: '#10b981' }}>Doorstep</strong>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Installation at Your Garage</span>
             </div>
           </div>
         </div>
@@ -294,8 +271,8 @@ export default function VehicleSeatExperience({
                           fontSize: '0.78rem',
                           borderRadius: '8px',
                           border: bikeBrand === b ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                          background: bikeBrand === b ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
-                          color: '#fff'
+                          background: bikeBrand === b ? 'var(--primary)' : 'var(--bg-card)',
+                          color: bikeBrand === b ? '#fff' : 'var(--text-primary)'
                         }}
                       >
                         {b}
@@ -312,7 +289,7 @@ export default function VehicleSeatExperience({
                   <select
                     value={bikeModel}
                     onChange={e => setBikeModel(e.target.value)}
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}
                   >
                     {(bikeModelsMap[bikeBrand] || []).map(m => (
                       <option key={m} value={m}>{m}</option>
@@ -329,7 +306,7 @@ export default function VehicleSeatExperience({
                     <select
                       value={bikePattern}
                       onChange={e => setBikePattern(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
+                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
                     >
                       <option value="Diamond Quilted Padding">Diamond Quilted Padding</option>
                       <option value="Classic Tuck & Roll Ribs">Classic Tuck & Roll Ribs</option>
@@ -344,7 +321,7 @@ export default function VehicleSeatExperience({
                     <select
                       value={bikeSeatType}
                       onChange={e => setBikeSeatType(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
+                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
                     >
                       <option value="Split Rider + Pillion">Split Rider + Pillion</option>
                       <option value="Single Touring Bench">Single Touring Bench</option>
@@ -353,7 +330,7 @@ export default function VehicleSeatExperience({
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', borderRadius: '10px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border-color)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', borderRadius: '10px', background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
                   <input
                     type="checkbox"
                     id="gelCheck"
@@ -361,7 +338,7 @@ export default function VehicleSeatExperience({
                     onChange={e => setBikeGelAdded(e.target.checked)}
                     style={{ accentColor: 'var(--primary)', cursor: 'pointer' }}
                   />
-                  <label htmlFor="gelCheck" style={{ fontSize: '0.82rem', color: '#fff', cursor: 'pointer' }}>
+                  <label htmlFor="gelCheck" style={{ fontSize: '0.82rem', color: 'var(--text-primary)', cursor: 'pointer' }}>
                     Add Integrated Orthopedic Gel-Pad for zero tailbone fatigue (+₹500)
                   </label>
                 </div>
@@ -372,7 +349,7 @@ export default function VehicleSeatExperience({
                 <div style={{ height: '220px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px' }}>
                   <img src="./car_c4.jpg" alt="Bike Seat" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: '#fff' }}>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                   {bikeBrand} {bikeModel}
                 </h4>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0' }}>
@@ -416,8 +393,8 @@ export default function VehicleSeatExperience({
                           fontSize: '0.78rem',
                           borderRadius: '8px',
                           border: carMake === c ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                          background: carMake === c ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
-                          color: '#fff'
+                          background: carMake === c ? 'var(--primary)' : 'var(--bg-card)',
+                          color: carMake === c ? '#fff' : 'var(--text-primary)'
                         }}
                       >
                         {c}
@@ -433,7 +410,7 @@ export default function VehicleSeatExperience({
                   <select
                     value={carModel}
                     onChange={e => setCarModel(e.target.value)}
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}
                   >
                     {(carModelsMap[carMake] || []).map(m => (
                       <option key={m} value={m}>{m}</option>
@@ -449,7 +426,7 @@ export default function VehicleSeatExperience({
                     <select
                       value={carConfig}
                       onChange={e => setCarConfig(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
+                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
                     >
                       <option value="4/5 Seater (2 Rows)">4/5 Seater (2 Rows)</option>
                       <option value="7/8 Seater (3 Rows)">7/8 Seater (3 Rows)</option>
@@ -464,7 +441,7 @@ export default function VehicleSeatExperience({
                     <select
                       value={carColor}
                       onChange={e => setCarColor(e.target.value)}
-                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#111', color: '#fff', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
+                      style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.82rem' }}
                     >
                       <option value="Cognac Tan">Cognac Tan</option>
                       <option value="Charcoal Jet Black">Charcoal Jet Black</option>
@@ -487,8 +464,8 @@ export default function VehicleSeatExperience({
                         padding: '10px',
                         borderRadius: '8px',
                         border: installationPlace === 'home' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: installationPlace === 'home' ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: installationPlace === 'home' ? 'var(--primary)' : 'var(--bg-card)',
+                        color: installationPlace === 'home' ? '#fff' : 'var(--text-primary)',
                         fontSize: '0.78rem'
                       }}
                     >
@@ -502,8 +479,8 @@ export default function VehicleSeatExperience({
                         padding: '10px',
                         borderRadius: '8px',
                         border: installationPlace === 'garage' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: installationPlace === 'garage' ? 'rgba(247,37,133,0.1)' : 'rgba(255,255,255,0.03)',
-                        color: '#fff',
+                        background: installationPlace === 'garage' ? 'var(--primary)' : 'var(--bg-card)',
+                        color: installationPlace === 'garage' ? '#fff' : 'var(--text-primary)',
                         fontSize: '0.78rem'
                       }}
                     >
@@ -518,7 +495,7 @@ export default function VehicleSeatExperience({
                 <div style={{ height: '220px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px' }}>
                   <img src="./car_c1.jpg" alt="Car Seat" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: '#fff' }}>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                   {carMake} {carModel}
                 </h4>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: '0 0 16px 0' }}>

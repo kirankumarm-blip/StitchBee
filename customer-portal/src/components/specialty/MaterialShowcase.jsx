@@ -110,7 +110,7 @@ export default function MaterialShowcase({
             </p>
 
             {/* Spec Meters */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px', background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px', background: 'var(--bg-secondary)', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
               <div>
                 <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block' }}>Durability</span>
                 <strong style={{ fontSize: '0.85rem', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -225,14 +225,14 @@ export default function MaterialShowcase({
         <div className="modal-overlay" style={{ zIndex: 99999 }} onClick={() => setZoomOpen(false)}>
           <div
             className="modal-content animate-fade-in"
-            style={{ maxWidth: '640px', width: '90%', padding: '24px', background: 'var(--bg-dark)' }}
+            style={{ maxWidth: '640px', width: '90%', padding: '24px', background: 'var(--bg-card)' }}
             onClick={e => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: '#fff' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
                 Macro Texture Close-Up: {current.name}
               </h3>
-              <button onClick={() => setZoomOpen(false)} className="btn btn-ghost" style={{ padding: '6px', color: '#fff' }}>
+              <button onClick={() => setZoomOpen(false)} className="btn btn-ghost" style={{ padding: '6px', color: 'var(--text-primary)' }}>
                 ✕
               </button>
             </div>
