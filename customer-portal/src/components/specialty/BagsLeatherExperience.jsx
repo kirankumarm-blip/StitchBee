@@ -16,7 +16,9 @@ export default function BagsLeatherExperience({
   onLoginRequired,
   onAddToCart,
   onDirectCheckout,
-  onOpenTracking
+  onOpenTracking,
+  serviceMode = 'buying',
+  onSelectServiceMode
 }) {
   // Modal states
   const [warrantyModalOpen, setWarrantyModalOpen] = useState(false);
@@ -234,12 +236,30 @@ export default function BagsLeatherExperience({
 
           {/* Action Pills */}
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <a href="#bag-repair-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
-              Repair My Bag / Luggage
-            </a>
-            <a href="#custom-jacket-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
-              Custom Leather Jacket
-            </a>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              🛍️ Custom Jackets & Goods
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              ✂️ Bag & Luggage Repairs
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
+              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              📍 Find Specialist Partners
+            </button>
             <button
               onClick={() => setWarrantyModalOpen(true)}
               className="btn"
@@ -272,8 +292,13 @@ export default function BagsLeatherExperience({
         </div>
       </section>
 
-      {/* 2. INTERACTIVE BEFORE / AFTER TRANSFORMATION SLIDER */}
-      <BeforeAfterSlider
+      {/* ============================================================== */}
+      {/* ALTERATION & REPAIR MODE CONTENT                                */}
+      {/* ============================================================== */}
+      {serviceMode === 'alteration' && (
+        <>
+          {/* 2. INTERACTIVE BEFORE / AFTER TRANSFORMATION SLIDER */}
+          <BeforeAfterSlider
         beforeImage="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80"
         afterImage="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1200&q=80"
         beforeLabel="Worn, Torn & Scuffed Leather Bag"
@@ -514,9 +539,16 @@ export default function BagsLeatherExperience({
           )}
         </div>
       </section>
+        </>
+      )}
 
-      {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO */}
-      <section id="custom-jacket-section" style={{ margin: '4.5rem 0' }}>
+      {/* ============================================================== */}
+      {/* BUYING & BESPOKE CUSTOM GOODS MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'buying' && (
+        <>
+          {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO */}
+          <section id="custom-jacket-section" style={{ margin: '4.5rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Atelier Bespoke Tailoring
@@ -888,27 +920,33 @@ export default function BagsLeatherExperience({
           ))}
         </div>
       </section>
+        </>
+      )}
 
-      {/* 9. LOCAL LEATHER SPECIALIST MAP DISCOVERY */}
-      <SpecialistMapDiscovery
-        specialtyCategory="bags"
-        categoryTitle="Bags & Leather"
-        tailors={tailors}
-        currentUser={currentUser}
-        onLoginRequired={onLoginRequired}
-        onSelectTailorForBooking={(tailor) => {
-          if (onAddToCart) {
-            onAddToCart({
-              id: `booking-${tailor.id}-${Date.now()}`,
-              name: `Specialist Consultation with ${tailor.name}`,
-              price: tailor.services?.[0]?.price || 249,
-              image: tailor.image,
-              specialist: tailor.name,
-              itemType: 'alteration'
-            });
-          }
-        }}
-      />
+      {/* ============================================================== */}
+      {/* SPECIALIST PARTNER SELECTION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'partner' && (
+        <SpecialistMapDiscovery
+          specialtyCategory="bags"
+          categoryTitle="Bags & Leather"
+          tailors={tailors}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onSelectTailorForBooking={(tailor) => {
+            if (onAddToCart) {
+              onAddToCart({
+                id: `booking-${tailor.id}-${Date.now()}`,
+                name: `Specialist Consultation with ${tailor.name}`,
+                price: tailor.services?.[0]?.price || 249,
+                image: tailor.image,
+                specialist: tailor.name,
+                itemType: 'alteration'
+              });
+            }
+          }}
+        />
+      )}
 
       {/* 10. EDITORIAL CUSTOMER STORY */}
       <section style={{ margin: '4rem 0', padding: '36px', borderRadius: '20px', background: 'linear-gradient(135deg, rgba(247,37,133,0.06) 0%, rgba(76,201,240,0.06) 100%)', border: '1px solid var(--border-color)' }}>
@@ -936,15 +974,42 @@ export default function BagsLeatherExperience({
           Your Favorite Things Deserve Another Life.
         </h2>
         <p style={{ fontSize: '1rem', maxWidth: '580px', margin: '0 auto 28px auto', opacity: 0.9 }}>
-          Repair it with master artisans. Customize it to your exact physique. Or commission a bespoke piece from scratch.
+          Repair it with master artisans. Customize it to your exact physique. Or select a local verified specialist.
         </p>
         <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="#bag-repair-section" className="btn btn-secondary" style={{ background: '#fff', color: 'var(--primary)', fontWeight: 800, padding: '12px 28px' }}>
-            Start a Bag Repair
-          </a>
-          <a href="#custom-jacket-section" className="btn btn-secondary" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.4)', color: '#fff', padding: '12px 24px' }}>
-            Commission Custom Leather
-          </a>
+          <button
+            type="button"
+            onClick={() => {
+              if (onSelectServiceMode) onSelectServiceMode('alteration');
+              window.scrollTo({ top: 400, behavior: 'smooth' });
+            }}
+            className="btn btn-secondary"
+            style={{ background: '#fff', color: 'var(--primary)', fontWeight: 800, padding: '12px 28px' }}
+          >
+            ✂️ Start a Bag Repair
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (onSelectServiceMode) onSelectServiceMode('buying');
+              window.scrollTo({ top: 400, behavior: 'smooth' });
+            }}
+            className="btn btn-secondary"
+            style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.4)', color: '#fff', padding: '12px 24px', fontWeight: 700 }}
+          >
+            🛍️ Commission Custom Leather
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (onSelectServiceMode) onSelectServiceMode('partner');
+              window.scrollTo({ top: 400, behavior: 'smooth' });
+            }}
+            className="btn btn-secondary"
+            style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.4)', color: '#fff', padding: '12px 24px', fontWeight: 700 }}
+          >
+            📍 Find Local Specialists
+          </button>
         </div>
       </section>
 

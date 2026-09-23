@@ -2379,7 +2379,7 @@ export default function CustomerView({
 
 
       {/* Hub Tabs selector */}
-      {activeHub !== 'home' && activeHub !== 'tailors' && (
+      {activeHub !== 'home' && activeHub !== 'tailors' && activeHub !== 'category-landing' && (
         <div style={{ display: 'flex', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
           <button className={`btn ${activeHub === 'fabrics' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}>
             <Layers size={16} /> Fabric Marketplace

@@ -12,7 +12,9 @@ export default function HandmadeGiftsExperience({
   currentUser,
   onLoginRequired,
   onAddToCart,
-  onDirectCheckout
+  onDirectCheckout,
+  serviceMode = 'buying',
+  onSelectServiceMode
 }) {
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
 
@@ -22,6 +24,19 @@ export default function HandmadeGiftsExperience({
   const [giftCardMessage, setGiftCardMessage] = useState('Wishing you a lifetime of love and joy on your new beginning!');
   const [giftWrapping, setGiftWrapping] = useState(true);
   const [selectedGiftType, setSelectedGiftType] = useState('Wedding Potlis & Keepsakes');
+
+  // Keepsake Restoration / Alteration State
+  const [restorationItemType, setRestorationItemType] = useState('Heirloom Saree / Zari Dupatta');
+  const [restorationDamageType, setRestorationDamageType] = useState('Loose Zari & Metallic Thread Snags');
+  const [restorationSubmitted, setRestorationSubmitted] = useState(false);
+
+  const giftRestorationServices = [
+    { title: 'Heirloom Saree & Zari Thread Restoration', price: '₹599', desc: 'Hand-weaving frayed gold/silver zari threads on vintage sarees and dupattas.', icon: '🪡' },
+    { title: 'Vintage Quilt & Kantha Restitching', price: '₹499', desc: 'Reinforcing torn hand-embroidered patches and replacing unraveled running stitches.', icon: '🧵' },
+    { title: 'Delicate Embroidered Cushion Restoration', price: '₹399', desc: 'Restoring beadwork, sequins, and metallic zardozi on keepsake cushions.', icon: '✨' },
+    { title: 'Name & Milestone Monogram Re-Stitching', price: '₹299', desc: 'Precision hand-embroidery to add new baby dates or family initials.', icon: '✍️' },
+    { title: 'Lace, Potli Drawstrings & Pearl Tassels', price: '₹249', desc: 'Replacement of broken latkans, pearls, and pure silk drawstring cords.', icon: '🎀' }
+  ];
 
   const giftMaterials = [
     {
@@ -172,12 +187,30 @@ export default function HandmadeGiftsExperience({
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <a href="#personalizer-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
-              Live Gift Personalizer
-            </a>
-            <a href="#gift-collections-section" className="btn btn-secondary specialty-secondary-btn" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
-              Explore Gift Collections
-            </a>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              🛍️ Gift Studio & Catalog
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              ✂️ Keepsake Restoration & Mending
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
+              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              📍 Find Embroidery Artisans
+            </button>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
@@ -196,8 +229,198 @@ export default function HandmadeGiftsExperience({
         </div>
       </section>
 
-      {/* 2. 10 GIFTING OCCASION CATEGORIES */}
-      <section style={{ margin: '3.5rem 0' }}>
+      {/* ============================================================== */}
+      {/* ALTERATION & KEEPSAKE RESTORATION MODE CONTENT                 */}
+      {/* ============================================================== */}
+      {serviceMode === 'alteration' && (
+        <>
+          {/* Keepsake Restoration Catalog */}
+          <section style={{ margin: '4rem 0' }}>
+            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Heritage Fabric & Zari Restoration
+              </span>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '4px 0 8px 0', color: 'var(--text-primary)' }}>
+                Keepsake Repair & Delicate Embroidery Care
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '620px', margin: '0 auto' }}>
+                Trust delicate family heirlooms, wedding sarees, and handmade quilts to master embroidery specialists who treat memories with reverence.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+              {giftRestorationServices.map((ser, i) => (
+                <div
+                  key={i}
+                  className="glass-card"
+                  style={{
+                    padding: '20px',
+                    borderRadius: '16px',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '14px'
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{ser.icon}</div>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>
+                      {ser.title}
+                    </h4>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: 0 }}>
+                      {ser.desc}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Starting from</span>
+                    <strong style={{ fontSize: '1.05rem', color: 'var(--primary)' }}>{ser.price}</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Guided Keepsake Restoration Booking Wizard */}
+          <section style={{ margin: '4.5rem 0' }}>
+            <div
+              className="glass-card-no-hover"
+              style={{
+                padding: '36px',
+                borderRadius: '24px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-card)'
+              }}
+            >
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                  Request Keepsake Restoration Consultation
+                </h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
+                  Provide details about your keepsake piece. Our certified embroidery master will inspect and provide an exact repair estimate.
+                </p>
+              </div>
+
+              {restorationSubmitted ? (
+                <div style={{ textAlign: 'center', padding: '36px 20px', background: 'rgba(16,185,129,0.06)', borderRadius: '16px', border: '1px solid #10b981' }}>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px auto' }}>
+                    <Check size={32} />
+                  </div>
+                  <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                    Restoration Request Received!
+                  </h4>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', maxWidth: '420px', margin: '0 auto 20px auto' }}>
+                    Artisan consultation scheduled for {restorationItemType}: {restorationDamageType}.
+                  </p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (onDirectCheckout) {
+                        onDirectCheckout({
+                          id: `restore-gift-${Date.now()}`,
+                          name: `Keepsake Restoration: ${restorationItemType}`,
+                          price: 499,
+                          image: './handmade_gifts.jpg',
+                          itemType: 'alteration'
+                        });
+                      }
+                    }}
+                  >
+                    Proceed to Checkout (₹499)
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={e => { e.preventDefault(); setRestorationSubmitted(true); }}>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+                      1. Keepsake Item Type
+                    </label>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      {[
+                        'Heirloom Saree / Zari Dupatta',
+                        'Vintage Quilt / Kantha Throw',
+                        'Wedding Potli / Bridal Keepsake',
+                        'Embroidered Cushion / Tapestry'
+                      ].map(it => (
+                        <button
+                          key={it}
+                          type="button"
+                          onClick={() => setRestorationItemType(it)}
+                          className="btn"
+                          style={{
+                            padding: '9px 14px',
+                            fontSize: '0.8rem',
+                            borderRadius: '10px',
+                            border: restorationItemType === it ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                            background: restorationItemType === it ? 'var(--primary)' : 'var(--bg-card)',
+                            color: restorationItemType === it ? '#fff' : 'var(--text-primary)',
+                            fontWeight: restorationItemType === it ? 700 : 500
+                          }}
+                        >
+                          {it}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+                      2. Restoration / Repair Needed
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
+                      {[
+                        'Loose Zari & Metallic Thread Snags',
+                        'Torn Fabric / Frayed Edge Re-weaving',
+                        'Beadwork, Sequin & Pearl Re-stringing',
+                        'Add Personalized Name or Date Monogram',
+                        'Gentle Organic Stain Neutralization'
+                      ].map(iss => (
+                        <div
+                          key={iss}
+                          onClick={() => setRestorationDamageType(iss)}
+                          style={{
+                            padding: '12px',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            border: restorationDamageType === iss ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                            background: restorationDamageType === iss ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                            color: restorationDamageType === iss ? 'var(--primary)' : 'var(--text-primary)',
+                            fontSize: '0.82rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: restorationDamageType === iss ? '5px solid var(--primary)' : '1.5px solid var(--border-color)', flexShrink: 0 }} />
+                          <span>{iss}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '18px', flexWrap: 'wrap', gap: '12px' }}>
+                    <div>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Evaluation & Restitch Starting Rate</span>
+                      <strong style={{ fontSize: '1.25rem', color: 'var(--primary)', display: 'block' }}>₹499</strong>
+                    </div>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 24px', fontWeight: 700 }}>
+                      Book Artisan Evaluation <ArrowRight size={16} style={{ display: 'inline', marginLeft: '6px' }} />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* ============================================================== */}
+      {/* BUYING & GIFT PERSONALIZATION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'buying' && (
+        <>
+          {/* 2. 10 GIFTING OCCASION CATEGORIES */}
+          <section style={{ margin: '3.5rem 0' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '14px', textAlign: 'center' }}>
           Gifts for Every Meaningful Celebration
         </h3>
@@ -395,26 +618,32 @@ export default function HandmadeGiftsExperience({
         title="Artisan Fabric & Zari Anatomy"
         subtitle="Organic handspun khadi, mulberry silk, and untarnishable metallic zardozi threads."
       />
+        </>
+      )}
 
-      {/* 6. SPECIALIST DISCOVERY */}
-      <SpecialistMapDiscovery
-        specialtyCategory="gifts"
-        categoryTitle="Handmade Gifts & Embroidery"
-        tailors={tailors}
-        currentUser={currentUser}
-        onLoginRequired={onLoginRequired}
-        onSelectTailorForBooking={(tailor) => {
-          if (onAddToCart) {
-            onAddToCart({
-              id: `booking-${tailor.id}-${Date.now()}`,
-              name: `Artisan Embroidery Consultation with ${tailor.name}`,
-              price: 199,
-              image: tailor.image,
-              itemType: 'alteration'
-            });
-          }
-        }}
-      />
+      {/* ============================================================== */}
+      {/* SPECIALIST PARTNER SELECTION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'partner' && (
+        <SpecialistMapDiscovery
+          specialtyCategory="gifts"
+          categoryTitle="Handmade Gifts & Embroidery"
+          tailors={tailors}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onSelectTailorForBooking={(tailor) => {
+            if (onAddToCart) {
+              onAddToCart({
+                id: `booking-${tailor.id}-${Date.now()}`,
+                name: `Artisan Embroidery Consultation with ${tailor.name}`,
+                price: 199,
+                image: tailor.image,
+                itemType: 'alteration'
+              });
+            }
+          }}
+        />
+      )}
 
       <UniversalProductModal
         product={selectedProductForModal}

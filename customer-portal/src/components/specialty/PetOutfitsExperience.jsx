@@ -13,7 +13,9 @@ export default function PetOutfitsExperience({
   currentUser,
   onLoginRequired,
   onAddToCart,
-  onDirectCheckout
+  onDirectCheckout,
+  serviceMode = 'buying',
+  onSelectServiceMode
 }) {
   const [petMeasurementModalOpen, setPetMeasurementModalOpen] = useState(false);
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
@@ -25,6 +27,19 @@ export default function PetOutfitsExperience({
   const [petDesign, setPetDesign] = useState('Royal Festive Sherwani');
   const [petFabric, setPetFabric] = useState('Royal Micro-Velvet (Festive)');
   const [petMeasurements, setPetMeasurements] = useState(null);
+
+  // Pet Outfit Alteration / Resizing State
+  const [petAlterationType, setPetAlterationType] = useState('Festive Sherwani / Tuxedo');
+  const [petAlterationIssue, setPetAlterationIssue] = useState('Resize Chest / Neck for Growing Pet');
+  const [petAlterationSubmitted, setPetAlterationSubmitted] = useState(false);
+
+  const petAlterationServices = [
+    { title: 'Pet Outfit Resizing (Chest / Neck)', price: '₹249', desc: 'Expand or take-in seams as your pet grows so favorite outfits still fit comfortably.', icon: '📏' },
+    { title: 'Heavy-Duty Velcro & Snap Button Replacement', price: '₹149', desc: 'Replace weak or fur-clogged velcro with ultra-grip pet closure tape.', icon: '✨' },
+    { title: 'Leash Anchor Ring & Harness Reinforcement', price: '₹199', desc: 'Restitch pulled D-ring attachment points with tensile-bonded nylon thread.', icon: '🔗' },
+    { title: 'Raincoat & Fleece Seam Waterproofing', price: '₹249', desc: 'Heat-seal torn seams and reapply hydrophobic waterproof film.', icon: '🌧️' },
+    { title: 'Anti-Chafing Soft Neoprene Lining Addition', price: '₹199', desc: 'Add ultra-soft padded underlay to stiff collars or harnesses that cause friction.', icon: '🐾' }
+  ];
 
   const dogBreeds = ['Golden Retriever', 'Beagle', 'Pug', 'Labrador', 'Shih Tzu', 'Indie', 'German Shepherd'];
   const catBreeds = ['Persian Cat', 'Indie Short-Hair', 'Siamese', 'British Shorthair', 'Maine Coon'];
@@ -180,12 +195,30 @@ export default function PetOutfitsExperience({
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <a href="#pet-customizer-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
-              Tailor a Custom Pet Outfit
-            </a>
-            <a href="#pet-collection-section" className="btn btn-secondary specialty-secondary-btn" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
-              Explore Pet Outfits
-            </a>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              🛍️ Pet Couture & Catalog
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              ✂️ Pet Outfit Resizing & Alteration
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
+              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              📍 Find Pet Tailors
+            </button>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
@@ -204,8 +237,198 @@ export default function PetOutfitsExperience({
         </div>
       </section>
 
-      {/* 2. PET CUSTOMIZER STUDIO */}
-      <section id="pet-customizer-section" style={{ margin: '4.5rem 0' }}>
+      {/* ============================================================== */}
+      {/* ALTERATION & RESIZING MODE CONTENT                             */}
+      {/* ============================================================== */}
+      {serviceMode === 'alteration' && (
+        <>
+          {/* Pet Alteration Services Catalog */}
+          <section style={{ margin: '4rem 0' }}>
+            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Pet Garment Alterations & Repairs
+              </span>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '4px 0 8px 0', color: 'var(--text-primary)' }}>
+                Pet Outfit Resizing & Care
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '620px', margin: '0 auto' }}>
+                Keep your pet comfortable in their cherished festive outfits as they grow. Doorstep pickup and alteration fitting.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+              {petAlterationServices.map((ser, i) => (
+                <div
+                  key={i}
+                  className="glass-card"
+                  style={{
+                    padding: '20px',
+                    borderRadius: '16px',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '14px'
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{ser.icon}</div>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>
+                      {ser.title}
+                    </h4>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: 0 }}>
+                      {ser.desc}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Starting from</span>
+                    <strong style={{ fontSize: '1.05rem', color: 'var(--primary)' }}>{ser.price}</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Guided Pet Resizing Booking Wizard */}
+          <section style={{ margin: '4.5rem 0' }}>
+            <div
+              className="glass-card-no-hover"
+              style={{
+                padding: '36px',
+                borderRadius: '24px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-card)'
+              }}
+            >
+              <div style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                  Schedule Pet Outfit Resizing & Fit Check
+                </h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
+                  Select the item type and what adjustments are needed for your pet.
+                </p>
+              </div>
+
+              {petAlterationSubmitted ? (
+                <div style={{ textAlign: 'center', padding: '36px 20px', background: 'rgba(16,185,129,0.06)', borderRadius: '16px', border: '1px solid #10b981' }}>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px auto' }}>
+                    <Check size={32} />
+                  </div>
+                  <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                    Pet Alteration Request Saved!
+                  </h4>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', maxWidth: '420px', margin: '0 auto 20px auto' }}>
+                    Service booked for {petAlterationType}: {petAlterationIssue}.
+                  </p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (onDirectCheckout) {
+                        onDirectCheckout({
+                          id: `pet-alter-${Date.now()}`,
+                          name: `Pet Alteration: ${petAlterationType}`,
+                          price: 249,
+                          image: './Pets.png',
+                          itemType: 'alteration'
+                        });
+                      }
+                    }}
+                  >
+                    Proceed to Checkout (₹249)
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={e => { e.preventDefault(); setPetAlterationSubmitted(true); }}>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+                      1. Pet Outfit Type
+                    </label>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      {[
+                        'Festive Sherwani / Tuxedo',
+                        'Monsoon Raincoat',
+                        'Winter Sweater / Fleece Vest',
+                        'Walking Harness / Collar'
+                      ].map(ot => (
+                        <button
+                          key={ot}
+                          type="button"
+                          onClick={() => setPetAlterationType(ot)}
+                          className="btn"
+                          style={{
+                            padding: '9px 14px',
+                            fontSize: '0.8rem',
+                            borderRadius: '10px',
+                            border: petAlterationType === ot ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                            background: petAlterationType === ot ? 'var(--primary)' : 'var(--bg-card)',
+                            color: petAlterationType === ot ? '#fff' : 'var(--text-primary)',
+                            fontWeight: petAlterationType === ot ? 700 : 500
+                          }}
+                        >
+                          {ot}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+                      2. Adjustment / Repair Needed
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
+                      {[
+                        'Resize Chest / Neck for Growing Pet',
+                        'Replace Worn Velcro / Button Fastener',
+                        'Shorten Back Length to Prevent Dirtying',
+                        'Add Soft Anti-Chafing Neoprene Padding',
+                        'Restitch Broken Leash Attachment Ring'
+                      ].map(iss => (
+                        <div
+                          key={iss}
+                          onClick={() => setPetAlterationIssue(iss)}
+                          style={{
+                            padding: '12px',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            border: petAlterationIssue === iss ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                            background: petAlterationIssue === iss ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                            color: petAlterationIssue === iss ? 'var(--primary)' : 'var(--text-primary)',
+                            fontSize: '0.82rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: petAlterationIssue === iss ? '5px solid var(--primary)' : '1.5px solid var(--border-color)', flexShrink: 0 }} />
+                          <span>{iss}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '18px', flexWrap: 'wrap', gap: '12px' }}>
+                    <div>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Starting Alteration Rate</span>
+                      <strong style={{ fontSize: '1.25rem', color: 'var(--primary)', display: 'block' }}>₹249</strong>
+                    </div>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 24px', fontWeight: 700 }}>
+                      Book Pet Alteration Service <ArrowRight size={16} style={{ display: 'inline', marginLeft: '6px' }} />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* ============================================================== */}
+      {/* BUYING & PET COUTURE MODE CONTENT                              */}
+      {/* ============================================================== */}
+      {serviceMode === 'buying' && (
+        <>
+          {/* 2. PET CUSTOMIZER STUDIO */}
+          <section id="pet-customizer-section" style={{ margin: '4.5rem 0' }}>
         <div
           className="glass-card-no-hover"
           style={{
@@ -401,26 +624,32 @@ export default function PetOutfitsExperience({
         title="Skin-Safe Pet Fabric Anatomy"
         subtitle="Tested non-irritant against sensitive underbellies with breathable, wash-proof durability."
       />
+        </>
+      )}
 
-      {/* 5. SPECIALIST DISCOVERY */}
-      <SpecialistMapDiscovery
-        specialtyCategory="pets"
-        categoryTitle="Pet Outfits & Tailoring"
-        tailors={tailors}
-        currentUser={currentUser}
-        onLoginRequired={onLoginRequired}
-        onSelectTailorForBooking={(tailor) => {
-          if (onAddToCart) {
-            onAddToCart({
-              id: `booking-${tailor.id}-${Date.now()}`,
-              name: `Pet Fitting Session with ${tailor.name}`,
-              price: 199,
-              image: tailor.image,
-              itemType: 'alteration'
-            });
-          }
-        }}
-      />
+      {/* ============================================================== */}
+      {/* SPECIALIST PARTNER SELECTION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'partner' && (
+        <SpecialistMapDiscovery
+          specialtyCategory="pets"
+          categoryTitle="Pet Outfits & Tailoring"
+          tailors={tailors}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onSelectTailorForBooking={(tailor) => {
+            if (onAddToCart) {
+              onAddToCart({
+                id: `booking-${tailor.id}-${Date.now()}`,
+                name: `Pet Fitting Session with ${tailor.name}`,
+                price: 199,
+                image: tailor.image,
+                itemType: 'alteration'
+              });
+            }
+          }}
+        />
+      )}
 
       <AIMeasurementModal
         isOpen={petMeasurementModalOpen}

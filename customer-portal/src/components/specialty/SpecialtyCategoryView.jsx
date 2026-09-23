@@ -23,6 +23,12 @@ const SPECIALTY_TABS = [
   { id: 'sofas', label: 'Sofas & Cushions', icon: '🛋️', badge: 'Restoration' }
 ];
 
+const SERVICE_MODES = [
+  { id: 'buying', label: 'Buying & Custom Made', icon: <ShoppingBag size={18} /> },
+  { id: 'alteration', label: 'Repair & Alteration', icon: <Scissors size={18} /> },
+  { id: 'partner', label: 'Select Partner', icon: <MapPin size={18} /> }
+];
+
 export default function SpecialtyCategoryView({
   categoryKey = 'bags',
   currentUser,
@@ -34,6 +40,7 @@ export default function SpecialtyCategoryView({
   onViewFabrics
 }) {
   const [activeCategory, setActiveCategory] = useState(categoryKey);
+  const [serviceMode, setServiceMode] = useState('buying'); // 'buying' | 'alteration' | 'partner'
   const [cartItems, setCartItems] = useState([]);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
@@ -221,6 +228,23 @@ export default function SpecialtyCategoryView({
       )}
 
       {/* ============================================================== */}
+      {/* 2.5 SERVICE MODE SWITCHER (Buying vs Alteration vs Select Partner) */}
+      {/* ============================================================== */}
+      <div className="service-mode-tabs-container">
+        {SERVICE_MODES.map(mode => (
+          <button
+            key={mode.id}
+            type="button"
+            className={`service-mode-pill ${serviceMode === mode.id ? 'active' : ''}`}
+            onClick={() => setServiceMode(mode.id)}
+          >
+            {mode.icon}
+            <span>{mode.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* ============================================================== */}
       {/* 3. ACTIVE SPECIALTY CATEGORY EXPERIENCE VIEW                   */}
       {/* ============================================================== */}
       <main style={{ minHeight: 'calc(100vh - 65px)' }}>
@@ -231,6 +255,8 @@ export default function SpecialtyCategoryView({
             onLoginRequired={onLoginRequired}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
+            serviceMode={serviceMode}
+            onSelectServiceMode={setServiceMode}
             onOpenTracking={(orderId) => {
               setTrackingData({ orderId, serviceType: 'alteration', partnerName: 'Ravi Leather Crafts' });
               setTrackingModalOpen(true);
@@ -245,6 +271,8 @@ export default function SpecialtyCategoryView({
             onLoginRequired={onLoginRequired}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
+            serviceMode={serviceMode}
+            onSelectServiceMode={setServiceMode}
           />
         )}
 
@@ -255,6 +283,8 @@ export default function SpecialtyCategoryView({
             onLoginRequired={onLoginRequired}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
+            serviceMode={serviceMode}
+            onSelectServiceMode={setServiceMode}
           />
         )}
 
@@ -265,6 +295,8 @@ export default function SpecialtyCategoryView({
             onLoginRequired={onLoginRequired}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
+            serviceMode={serviceMode}
+            onSelectServiceMode={setServiceMode}
           />
         )}
 
@@ -275,6 +307,8 @@ export default function SpecialtyCategoryView({
             onLoginRequired={onLoginRequired}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
+            serviceMode={serviceMode}
+            onSelectServiceMode={setServiceMode}
           />
         )}
 
@@ -285,6 +319,8 @@ export default function SpecialtyCategoryView({
             onLoginRequired={onLoginRequired}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
+            serviceMode={serviceMode}
+            onSelectServiceMode={setServiceMode}
           />
         )}
       </main>

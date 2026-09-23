@@ -12,7 +12,9 @@ export default function VehicleSeatExperience({
   currentUser,
   onLoginRequired,
   onAddToCart,
-  onDirectCheckout
+  onDirectCheckout,
+  serviceMode = 'buying',
+  onSelectServiceMode
 }) {
   const [vehicleType, setVehicleType] = useState('bike'); // 'bike' | 'car'
 
@@ -32,6 +34,20 @@ export default function VehicleSeatExperience({
   const [carColor, setCarColor] = useState('Cognac Tan');
   const [carPerforation, setCarPerforation] = useState(true);
   const [installationPlace, setInstallationPlace] = useState('home'); // 'home' | 'garage'
+
+  // Seat Repair & Alteration States
+  const [repairVehicleType, setRepairVehicleType] = useState('Motorcycle');
+  const [selectedSeatIssue, setSelectedSeatIssue] = useState('Foam Sagging & Hard Seat Discomfort');
+  const [seatRepairSubmitted, setSeatRepairSubmitted] = useState(false);
+
+  const seatRepairServices = [
+    { title: 'Orthopedic Gel Insert & Foam Shaping', price: '₹699', desc: 'Eliminates tailbone pressure points for touring motorbikes and car driver seats.', icon: '🏍️' },
+    { title: 'Sagging Driver Seat Foam Rejuvenation', price: '₹899', desc: 'High-density 50-density cold cure foam rebuild for worn out bucket cushions.', icon: '🚗' },
+    { title: 'Split Seam Restitching & Reinforcement', price: '₹399', desc: 'Bonded nylon thread restitching along high-stress bolsters and seams.', icon: '🧵' },
+    { title: 'Seat Height Shaving / Lowering', price: '₹599', desc: 'Precision contour shaving allowing short riders to comfortably flat-foot ground.', icon: '📐' },
+    { title: 'Cigarette Burn & Tear Patching', price: '₹499', desc: 'Color-matched resin grain welding for leatherette and vinyl covers.', icon: '🛡️' },
+    { title: 'Waterproof Rain Membrane Re-Lining', price: '₹349', desc: 'Under-skin hydrophobic film replacement preventing sponge water soaking.', icon: '🌧️' }
+  ];
 
   // Dynamic Models Map
   const bikeModelsMap = {
@@ -160,18 +176,28 @@ export default function VehicleSeatExperience({
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
             <button
-              onClick={() => { setVehicleType('bike'); document.getElementById('configurator-section')?.scrollIntoView({ behavior: 'smooth' }); }}
-              className="btn btn-primary"
-              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
             >
-              Configure Bike / Scooter Seat
+              🛍️ Custom Seat Covers & Interior
             </button>
             <button
-              onClick={() => { setVehicleType('car'); document.getElementById('configurator-section')?.scrollIntoView({ behavior: 'smooth' }); }}
-              className="btn btn-secondary"
-              style={{ padding: '12px 20px', fontSize: '0.9rem' }}
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
             >
-              Configure Car / SUV Interior
+              ✂️ Seat Repair & Re-Foaming
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
+              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              📍 Find Upholsterers
             </button>
           </div>
 
@@ -191,19 +217,211 @@ export default function VehicleSeatExperience({
         </div>
       </section>
 
-      {/* 2. INTERACTIVE BEFORE / AFTER SLIDER */}
-      <BeforeAfterSlider
-        beforeImage="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
-        afterImage="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=80"
-        beforeLabel="Faded Factory Fabric Upholstery"
-        afterLabel="Diamond-Quilted Cognac Leather Interior"
-        title="Automotive Cabin Before & After Overhaul"
-        subtitle="Compare standard factory seats against custom high-density padded Nappa leather covers with bespoke stitching."
-        aspectRatio="21/9"
-      />
+      {/* ============================================================== */}
+      {/* ALTERATION & REPAIR MODE CONTENT                                */}
+      {/* ============================================================== */}
+      {serviceMode === 'alteration' && (
+        <>
+          {/* 2. INTERACTIVE BEFORE / AFTER SLIDER */}
+          <BeforeAfterSlider
+            beforeImage="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+            afterImage="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=80"
+            beforeLabel="Faded Factory Fabric Upholstery"
+            afterLabel="Diamond-Quilted Cognac Leather Interior"
+            title="Automotive Cabin Before & After Overhaul"
+            subtitle="Compare standard factory seats against custom high-density padded Nappa leather covers with bespoke stitching."
+            aspectRatio="21/9"
+          />
 
-      {/* 3. DYNAMIC VEHICLE CONFIGURATOR SECTION */}
-      <section id="configurator-section" style={{ margin: '4.5rem 0' }}>
+          {/* Seat Repair Services Catalog */}
+          <section style={{ margin: '4rem 0' }}>
+            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Vehicle Interior Alteration & Restoration
+              </span>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '4px 0 8px 0', color: 'var(--text-primary)' }}>
+                Seat Repair & Foam Rejuvenation
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '620px', margin: '0 auto' }}>
+                Restore uncomfortable, torn, or sunken seats with certified automotive upholsterers. Doorstep pickup and installation available.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+              {seatRepairServices.map((ser, i) => (
+                <div
+                  key={i}
+                  className="glass-card"
+                  style={{
+                    padding: '20px',
+                    borderRadius: '16px',
+                    border: '1px solid var(--border-color)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '14px'
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{ser.icon}</div>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>
+                      {ser.title}
+                    </h4>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: 0 }}>
+                      {ser.desc}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Starting from</span>
+                    <strong style={{ fontSize: '1.05rem', color: 'var(--primary)' }}>{ser.price}</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Guided Seat Repair Booking Wizard */}
+          <section style={{ margin: '4.5rem 0' }}>
+            <div
+              className="glass-card-no-hover"
+              style={{
+                padding: '36px',
+                borderRadius: '24px',
+                border: '1px solid var(--border-color)',
+                background: 'var(--bg-card)'
+              }}
+            >
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', marginBottom: '4px' }}>
+                  <Wrench size={16} />
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    Seat Repair Booking Wizard
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                  Schedule Doorstep Seat Repair & Re-Foaming
+                </h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
+                  Pick your vehicle type, describe the issue, and a specialist will inspect or replace the seat foam.
+                </p>
+              </div>
+
+              {seatRepairSubmitted ? (
+                <div style={{ textAlign: 'center', padding: '36px 20px', background: 'rgba(16,185,129,0.06)', borderRadius: '16px', border: '1px solid #10b981' }}>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#10b981', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px auto' }}>
+                    <Check size={32} />
+                  </div>
+                  <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                    Seat Repair Request Received!
+                  </h4>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem', maxWidth: '420px', margin: '0 auto 20px auto' }}>
+                    Booking confirmed for {repairVehicleType}: {selectedSeatIssue}. Our partner garage technician will contact you.
+                  </p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (onDirectCheckout) {
+                        onDirectCheckout({
+                          id: `repair-seat-${Date.now()}`,
+                          name: `${repairVehicleType} Seat Repair: ${selectedSeatIssue}`,
+                          price: 699,
+                          image: './Vehicle Seat Covers.png',
+                          itemType: 'alteration'
+                        });
+                      }
+                    }}
+                  >
+                    Proceed to Checkout (₹699)
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={e => { e.preventDefault(); setSeatRepairSubmitted(true); }}>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+                      1. Vehicle Type
+                    </label>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      {['Motorcycle / Scooter', 'Car / SUV', 'Commercial Vehicle'].map(v => (
+                        <button
+                          key={v}
+                          type="button"
+                          onClick={() => setRepairVehicleType(v)}
+                          className="btn"
+                          style={{
+                            flex: 1,
+                            padding: '10px',
+                            borderRadius: '10px',
+                            border: repairVehicleType === v ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                            background: repairVehicleType === v ? 'var(--primary)' : 'var(--bg-card)',
+                            color: repairVehicleType === v ? '#fff' : 'var(--text-primary)',
+                            fontWeight: repairVehicleType === v ? 700 : 500
+                          }}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+                      2. Common Seat Issues
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px' }}>
+                      {[
+                        'Foam Sagging & Hard Seat Discomfort',
+                        'Split Bolster Seam & Torn Cover',
+                        'Need Orthopedic Gel Pad Insert',
+                        'Seat Height Lowering / Shaving',
+                        'Water Leakage into Seat Sponge',
+                        'Cigarette Burn / Pet Claw Scratches'
+                      ].map(iss => (
+                        <div
+                          key={iss}
+                          onClick={() => setSelectedSeatIssue(iss)}
+                          style={{
+                            padding: '12px',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            border: selectedSeatIssue === iss ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                            background: selectedSeatIssue === iss ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
+                            color: selectedSeatIssue === iss ? 'var(--primary)' : 'var(--text-primary)',
+                            fontSize: '0.82rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                          }}
+                        >
+                          <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: selectedSeatIssue === iss ? '5px solid var(--primary)' : '1.5px solid var(--border-color)', flexShrink: 0 }} />
+                          <span>{iss}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '18px', flexWrap: 'wrap', gap: '12px' }}>
+                    <div>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Estimated Base Rate</span>
+                      <strong style={{ fontSize: '1.25rem', color: 'var(--primary)', display: 'block' }}>₹699</strong>
+                    </div>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 24px', fontWeight: 700 }}>
+                      Book Seat Repair Inspection <ArrowRight size={16} style={{ display: 'inline', marginLeft: '6px' }} />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* ============================================================== */}
+      {/* BUYING & VEHICLE CONFIGURATOR MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'buying' && (
+        <>
+          {/* 3. DYNAMIC VEHICLE CONFIGURATOR SECTION */}
+          <section id="configurator-section" style={{ margin: '4.5rem 0' }}>
         <div
           className="glass-card-no-hover"
           style={{
@@ -526,26 +744,32 @@ export default function VehicleSeatExperience({
         title="Automotive Upholstery Grade Anatomy"
         subtitle="Heat-reflective coatings, UV stabilization, and high-density memory foam."
       />
+        </>
+      )}
 
-      {/* 5. SPECIALIST DISCOVERY */}
-      <SpecialistMapDiscovery
-        specialtyCategory="seats"
-        categoryTitle="Vehicle Seat & Upholstery"
-        tailors={tailors}
-        currentUser={currentUser}
-        onLoginRequired={onLoginRequired}
-        onSelectTailorForBooking={(tailor) => {
-          if (onAddToCart) {
-            onAddToCart({
-              id: `booking-${tailor.id}-${Date.now()}`,
-              name: `Vehicle Seat Consultation with ${tailor.name}`,
-              price: 499,
-              image: tailor.image,
-              itemType: 'alteration'
-            });
-          }
-        }}
-      />
+      {/* ============================================================== */}
+      {/* SPECIALIST PARTNER SELECTION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'partner' && (
+        <SpecialistMapDiscovery
+          specialtyCategory="seats"
+          categoryTitle="Vehicle Seat & Upholstery"
+          tailors={tailors}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onSelectTailorForBooking={(tailor) => {
+            if (onAddToCart) {
+              onAddToCart({
+                id: `booking-${tailor.id}-${Date.now()}`,
+                name: `Vehicle Seat Consultation with ${tailor.name}`,
+                price: 499,
+                image: tailor.image,
+                itemType: 'alteration'
+              });
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

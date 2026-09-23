@@ -12,7 +12,9 @@ export default function SofasExperience({
   currentUser,
   onLoginRequired,
   onAddToCart,
-  onDirectCheckout
+  onDirectCheckout,
+  serviceMode = 'buying',
+  onSelectServiceMode
 }) {
   // Sofa Configurator States
   const [sofaType, setSofaType] = useState('3 Seater');
@@ -116,12 +118,30 @@ export default function SofasExperience({
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <a href="#sofa-customizer-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
-              Customize Sofa Covers
-            </a>
-            <a href="#sofa-services-section" className="btn btn-secondary specialty-secondary-btn" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
-              Explore Sofa Services
-            </a>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              🛍️ Customize Sofa Covers
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              ✂️ Sofa Services & Foam Renewal
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
+              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              📍 Find Upholsterers
+            </button>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
@@ -140,8 +160,13 @@ export default function SofasExperience({
         </div>
       </section>
 
-      {/* 2. INTERACTIVE BEFORE / AFTER SLIDER */}
-      <BeforeAfterSlider
+      {/* ============================================================== */}
+      {/* ALTERATION & SOFA SERVICES MODE CONTENT                        */}
+      {/* ============================================================== */}
+      {serviceMode === 'alteration' && (
+        <>
+          {/* 2. INTERACTIVE BEFORE / AFTER SLIDER */}
+          <BeforeAfterSlider
         beforeImage="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
         afterImage="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80"
         beforeLabel="Stained & Sagging Fabric Couch"
@@ -184,9 +209,16 @@ export default function SofasExperience({
           ))}
         </div>
       </section>
+        </>
+      )}
 
-      {/* 4. SOFA CONFIGURATOR SECTION */}
-      <section id="sofa-customizer-section" style={{ margin: '4.5rem 0' }}>
+      {/* ============================================================== */}
+      {/* BUYING & SOFA CONFIGURATOR MODE CONTENT                        */}
+      {/* ============================================================== */}
+      {serviceMode === 'buying' && (
+        <>
+          {/* 4. SOFA CONFIGURATOR SECTION */}
+          <section id="sofa-customizer-section" style={{ margin: '4.5rem 0' }}>
         <div
           className="glass-card-no-hover"
           style={{
@@ -336,26 +368,32 @@ export default function SofasExperience({
         title="Living Room Upholstery Fabric Anatomy"
         subtitle="Tested against claws, coffee spills, and heavy everyday lounging."
       />
+        </>
+      )}
 
-      {/* 6. SPECIALIST DISCOVERY */}
-      <SpecialistMapDiscovery
-        specialtyCategory="sofas"
-        categoryTitle="Sofa & Furniture Upholstery"
-        tailors={tailors}
-        currentUser={currentUser}
-        onLoginRequired={onLoginRequired}
-        onSelectTailorForBooking={(tailor) => {
-          if (onAddToCart) {
-            onAddToCart({
-              id: `booking-${tailor.id}-${Date.now()}`,
-              name: `Sofa Swatch Visit by ${tailor.name}`,
-              price: 299,
-              image: tailor.image,
-              itemType: 'alteration'
-            });
-          }
-        }}
-      />
+      {/* ============================================================== */}
+      {/* SPECIALIST PARTNER SELECTION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'partner' && (
+        <SpecialistMapDiscovery
+          specialtyCategory="sofas"
+          categoryTitle="Sofa & Furniture Upholstery"
+          tailors={tailors}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onSelectTailorForBooking={(tailor) => {
+            if (onAddToCart) {
+              onAddToCart({
+                id: `booking-${tailor.id}-${Date.now()}`,
+                name: `Sofa Swatch Visit by ${tailor.name}`,
+                price: 299,
+                image: tailor.image,
+                itemType: 'alteration'
+              });
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -14,7 +14,9 @@ export default function ShoesSlippersExperience({
   currentUser,
   onLoginRequired,
   onAddToCart,
-  onDirectCheckout
+  onDirectCheckout,
+  serviceMode = 'buying',
+  onSelectServiceMode
 }) {
   const [measurementModalOpen, setMeasurementModalOpen] = useState(false);
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
@@ -180,12 +182,30 @@ export default function ShoesSlippersExperience({
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <a href="#shoe-repair-section" className="btn btn-primary" style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}>
-              Book Shoe Repair / Resoling
-            </a>
-            <a href="#custom-shoes-section" className="btn btn-secondary" style={{ padding: '12px 20px', fontSize: '0.9rem' }}>
-              Design Custom Footwear
-            </a>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              🛍️ Bespoke Shoes & Catalog
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              ✂️ Shoe Repair & Resoling
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
+              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+            >
+              📍 Find Cobbler Specialists
+            </button>
           </div>
 
           <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
@@ -204,8 +224,13 @@ export default function ShoesSlippersExperience({
         </div>
       </section>
 
-      {/* 2. INTERACTIVE BEFORE / AFTER SLIDER */}
-      <BeforeAfterSlider
+      {/* ============================================================== */}
+      {/* ALTERATION & REPAIR MODE CONTENT                                */}
+      {/* ============================================================== */}
+      {serviceMode === 'alteration' && (
+        <>
+          {/* 2. INTERACTIVE BEFORE / AFTER SLIDER */}
+          <BeforeAfterSlider
         beforeImage="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=1200&q=80"
         afterImage="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1200&q=80"
         beforeLabel="Split Outsole & Scuffed Leather"
@@ -348,9 +373,16 @@ export default function ShoesSlippersExperience({
           )}
         </div>
       </section>
+        </>
+      )}
 
-      {/* 4. BESPOKE CUSTOM SHOES STUDIO */}
-      <section id="custom-shoes-section" style={{ margin: '4.5rem 0' }}>
+      {/* ============================================================== */}
+      {/* BUYING & BESPOKE FOOTWEAR MODE CONTENT                         */}
+      {/* ============================================================== */}
+      {serviceMode === 'buying' && (
+        <>
+          {/* 4. BESPOKE CUSTOM SHOES STUDIO */}
+          <section id="custom-shoes-section" style={{ margin: '4.5rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Master Cobbler Atelier
@@ -538,26 +570,32 @@ export default function ShoesSlippersExperience({
         title="Footwear Upper & Sole Anatomy"
         subtitle="Slow pit-tanned sole leathers and velvety snuffs built for lasting arch support."
       />
+        </>
+      )}
 
-      {/* 7. SPECIALIST DISCOVERY */}
-      <SpecialistMapDiscovery
-        specialtyCategory="shoes"
-        categoryTitle="Shoes & Footwear"
-        tailors={tailors}
-        currentUser={currentUser}
-        onLoginRequired={onLoginRequired}
-        onSelectTailorForBooking={(tailor) => {
-          if (onAddToCart) {
-            onAddToCart({
-              id: `booking-${tailor.id}-${Date.now()}`,
-              name: `Cobbler Evaluation with ${tailor.name}`,
-              price: 199,
-              image: tailor.image,
-              itemType: 'alteration'
-            });
-          }
-        }}
-      />
+      {/* ============================================================== */}
+      {/* SPECIALIST PARTNER SELECTION MODE CONTENT                     */}
+      {/* ============================================================== */}
+      {serviceMode === 'partner' && (
+        <SpecialistMapDiscovery
+          specialtyCategory="shoes"
+          categoryTitle="Shoes & Footwear"
+          tailors={tailors}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onSelectTailorForBooking={(tailor) => {
+            if (onAddToCart) {
+              onAddToCart({
+                id: `booking-${tailor.id}-${Date.now()}`,
+                name: `Cobbler Evaluation with ${tailor.name}`,
+                price: 199,
+                image: tailor.image,
+                itemType: 'alteration'
+              });
+            }
+          }}
+        />
+      )}
 
       <UniversalProductModal
         product={selectedProductForModal}
