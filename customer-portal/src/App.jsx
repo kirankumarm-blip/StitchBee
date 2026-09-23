@@ -1194,7 +1194,7 @@ export default function App() {
                     name: "Pets",
                     img: "./Pets.png",
                     desc: "Custom stitched dresses & outfits for your furry friends.",
-                    cat: "all",
+                    cat: "pets",
                     icon: (
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                         <circle cx="7.5" cy="8.5" r="2.5" />
@@ -1208,7 +1208,7 @@ export default function App() {
                     name: "Hand Made Gifts",
                     img: "./handmade_gifts.jpg",
                     desc: "Personalized stitching, fabric gifts & embroidered crafts.",
-                    cat: "all",
+                    cat: "gifts",
                     imgPos: "center 55%",
                     icon: (
                       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

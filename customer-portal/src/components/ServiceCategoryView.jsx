@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Sparkles, Scissors, Layers, Star, Info, FileText, ChevronRight, X, Heart, 
-  ShoppingCart, Lock, ArrowRight, User, Award, ShieldCheck, MapPin, Phone, Check 
+  ShoppingCart, Lock, ArrowRight, User, Award, ShieldCheck, MapPin, Phone, Check, Gift 
 } from 'lucide-react';
 
 const categoryTemplates = {
@@ -350,6 +350,84 @@ const categoryTemplates = {
     reviews: [
       { author: "Karthik R.", text: "Stitched quilted seat covers for my Thar. Excellent fitting and the red border stitching matches my car exterior perfectly.", rating: 5, initial: "K" },
       { author: "Suresh Gowda", text: "Got custom gel seat stitching for my Royal Enfield. Long rides are so much more comfortable now. Highly recommended.", rating: 5, initial: "S" }
+    ]
+  },
+  gifts: {
+    badge: "BESPOKE HANDMADE GIFTS & CRAFTS",
+    title: "Hand Made Gifts & Fabric Crafts",
+    subtext: "Personalized stitched gifts, embroidered keepsakes, custom fabric craft sets, and festive hampers. Crafted with heartfelt precision by specialized artisans.",
+    services: [
+      { name: "Custom Fabric Hampers", desc: "Personalized fabric gift sets, packaging & embroidered wraps.", icon: <Sparkles size={20} /> },
+      { name: "Monogrammed Keepsakes", desc: "Custom name embroidered handkerchiefs, towels, and aprons.", icon: <Scissors size={20} /> },
+      { name: "Handmade Quilts & Blankets", desc: "Patchwork baby blankets, story quilts, and keepsake throws.", icon: <Layers size={20} /> },
+      { name: "Festive & Return Gifts", desc: "Bulk handcrafted potlis, cloth bags, and festive tokens.", icon: <Award size={20} /> },
+      { name: "Custom Fabric Wall Art", desc: "Embroidered hoops, fabric tapestry, and decorative banners.", icon: <Star size={20} /> }
+    ],
+    designs: [
+      { id: "g-potli", name: "Hand-Embroidered Zari Potli", img: "./handmade_gifts.jpg", desc: "Intricate golden thread embellished potli pouch with pearls.", price: "₹499" },
+      { id: "g-quilt", name: "Patchwork Keepsake Baby Quilt", img: "./handmade_gifts.jpg", desc: "Soft organic cotton patchwork baby blanket with name patch.", price: "₹1,499" },
+      { id: "g-apron", name: "Custom Monogrammed Chef Apron", img: "./handmade_gifts.jpg", desc: "Heavy canvas kitchen apron with embroidered custom name.", price: "₹699" },
+      { id: "g-tote", name: "Handmade Fabric Tote & Pouch", img: "./handmade_gifts.jpg", desc: "Eco-friendly handloom cotton matching tote and vanity bag.", price: "₹799" },
+      { id: "g-cushion", name: "Embroidered Couple Cushion Set", img: "./handmade_gifts.jpg", desc: "Pair of plush velvet cushion covers with wedding anniversary initials.", price: "₹999" },
+      { id: "g-wallart", name: "Bespoke Hoop Art Embroidery", img: "./handmade_gifts.jpg", desc: "Hand-stitched botanical or family portrait hoop art.", price: "₹899" }
+    ],
+    fabrics: [
+      { id: "f-khadi", name: "Organic Handspun Khadi", type: "Handspun Cotton", price: 450, rating: "4.9", img: "./fab2.jpg" },
+      { id: "f-raw-silk", name: "Banarasi Raw Silk", type: "Raw Silk", price: 950, rating: "5.0", img: "./fab1.jpg" },
+      { id: "f-linen-craft", name: "Pure Flax Craft Linen", type: "Pure Linen", price: 750, rating: "4.8", img: "./fab3.jpg" },
+      { id: "f-velvet-craft", name: "Micro-Velvet Plush", type: "Plush Velvet", price: 850, rating: "4.9", img: "./fab4.jpg" },
+      { id: "f-canvas-craft", name: "Organic Cotton Duck", type: "Cotton Canvas", price: 550, rating: "4.8", img: "./fab5.jpg" },
+      { id: "f-chanderi", name: "Chanderi Silk Cotton", type: "Chanderi Silk", price: 890, rating: "4.9", img: "./fab6.jpg" }
+    ],
+    pricing: [
+      { item: "Monogrammed Handkerchief Set (3 pcs)", price: "₹349" },
+      { item: "Handcrafted Zari Potli Bag", price: "₹499" },
+      { item: "Personalized Custom Apron", price: "₹699" },
+      { item: "Embroidered Velvet Cushion Pair", price: "₹999" },
+      { item: "Patchwork Keepsake Quilt", price: "₹1,499" }
+    ],
+    reviews: [
+      { author: "Ananya Sharma", text: "Ordered custom monogrammed potlis for my sister's wedding return gifts. The guests loved them! Beautiful detailing.", rating: 5, initial: "A" },
+      { author: "Pooja Hegde", text: "Got a customized baby quilt with my newborn's birth details hand-embroidered. Exceptionally soft and lovely keepsake.", rating: 5, initial: "P" }
+    ]
+  },
+  pets: {
+    badge: "TAILORED PET COUTURE",
+    title: "Pet Outfits & Accessories",
+    subtext: "Custom-fit costumes, festive ethnic wear, weather-proof jackets, and padded harnesses for your dogs and cats. Tailored with skin-friendly, breathable fabrics.",
+    services: [
+      { name: "Festive Ethnic Wear", desc: "Pet sherwanis, kurtas, and lehengas for weddings & festivals.", icon: <Sparkles size={20} /> },
+      { name: "Winter Jackets & Sweaters", desc: "Warm fleece-lined vests and waterproof raincoats.", icon: <Layers size={20} /> },
+      { name: "Custom Padded Harnesses", desc: "Ergonomic, no-choke custom harnesses tailored to chest size.", icon: <Scissors size={20} /> },
+      { name: "Pet Tuxedos & Bowties", desc: "Formal black-tie outfits and custom collar bowties.", icon: <Award size={20} /> },
+      { name: "Orthopedic Pet Beds", desc: "Washable, memory-foam custom bed covers with pet name embroidery.", icon: <ShieldCheck size={20} /> }
+    ],
+    designs: [
+      { id: "pet-sherwani", name: "Royal Festive Pet Sherwani", img: "./Pets.png", desc: "Velvet sherwani with golden zari trims and velcro belly strap.", price: "₹799" },
+      { id: "pet-tux", name: "Gentleman's Pet Tuxedo", img: "./Pets.png", desc: "Smart bowtie collar and satin lapel tuxedo vest for formal events.", price: "₹899" },
+      { id: "pet-raincoat", name: "Waterproof Hooded Raincoat", img: "./Pets.png", desc: "Reflective strip all-weather pet raincoat with leash opening.", price: "₹649" },
+      { id: "pet-fleece", name: "Cozy Fleece Winter Vest", img: "./Pets.png", desc: "Warm, ultra-soft stretch fleece pullover for chilly days.", price: "₹549" },
+      { id: "pet-harness", name: "Custom Padded Leather Harness", img: "./Pets.png", desc: "Bespoke leather dog harness with brass buckle and engraved tag.", price: "₹1,199" },
+      { id: "pet-dress", name: "Floral Pet Tutu Dress", img: "./Pets.png", desc: "Lightweight summer cotton ruffle dress with floral skirt.", price: "₹699" }
+    ],
+    fabrics: [
+      { id: "f-pet-cotton", name: "Breathable Organic Cotton", type: "Organic Cotton", price: 400, rating: "5.0", img: "./fab2.jpg" },
+      { id: "f-pet-fleece", name: "Thermal Polar Fleece", type: "Polar Fleece", price: 500, rating: "4.9", img: "./fab4.jpg" },
+      { id: "f-pet-ripstop", name: "Waterproof Ripstop Nylon", type: "Ripstop Nylon", price: 650, rating: "4.8", img: "./fab5.jpg" },
+      { id: "f-pet-velvet", name: "Royal Micro-Velvet", type: "Soft Velvet", price: 800, rating: "4.9", img: "./fab1.jpg" },
+      { id: "f-pet-mesh", name: "Breathable Air Mesh", type: "Air Mesh", price: 450, rating: "4.8", img: "./fab3.jpg" },
+      { id: "f-pet-canvas", name: "Tough Oxford Fabric", type: "Oxford Fabric", price: 600, rating: "4.7", img: "./fab6.jpg" }
+    ],
+    pricing: [
+      { item: "Custom Bandana / Bowtie", price: "₹249" },
+      { item: "Cozy Fleece Pet Sweater", price: "₹549" },
+      { item: "Waterproof Pet Raincoat", price: "₹649" },
+      { item: "Royal Festive Sherwani / Lehenga", price: "₹799" },
+      { item: "Ergonomic Custom Padded Harness", price: "₹1,199" }
+    ],
+    reviews: [
+      { author: "Divya Nambiar", text: "Got a custom sherwani for my Golden Retriever for my wedding. The fit was spot on and he stole the show! Very comfortable fabric.", rating: 5, initial: "D" },
+      { author: "Arjun Nair", text: "The custom harness fits my Beagle perfectly without choking his neck. High quality stitching and sturdy buckles.", rating: 5, initial: "A" }
     ]
   }
 };

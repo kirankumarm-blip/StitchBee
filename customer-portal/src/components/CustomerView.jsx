@@ -3,7 +3,7 @@ import {
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
   CreditCard, ChevronLeft, ChevronRight, ChevronDown, X, ShoppingCart, Plus, Minus, Check, Camera, RefreshCw, Upload, 
   Video, Layers, Activity, FileText, Shield, Sliders, Bell, Heart, HelpCircle, Menu, Sun, Moon, Phone,
-  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt
+  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
 import ServiceCategoryView from './ServiceCategoryView';
@@ -800,14 +800,18 @@ export default function CustomerView({
 
   // Categories list with background images
   const categoryCards = [
-    { id: 'mens', label: "Men's Wear", desc: "Custom Suits, Shirts, Blazers", img: "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=300&q=80" },
-    { id: 'womens', label: "Women's Wear", desc: "Ethnic Wear, Anarkalis, Salwars", img: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=300&q=80" },
-    { id: 'kids', label: "Kids Wear", desc: "Children Dresses, Frocks, Uniforms", img: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=300&q=80" },
-    { id: 'bridal', label: "Bridal Studio", desc: "Royal Lehengas, Heavy Embroidery", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=300&q=80" },
-    { id: 'alterations', label: "Alterations & Fit", desc: "Resize, Repair & Hemming", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
-    { id: 'bags', label: "Bags & Leather", desc: "Bespoke Totes, Laptop Bags", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=300&q=80" },
-    { id: 'shoes', label: "Shoes & Slippers", desc: "Handcrafted Footwear & Slides", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=300&q=80" },
-    { id: 'seats', label: "Vehicle Seat Covers", desc: "Custom Car & Bike Seat Covers", img: "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=300&q=80" }
+    { id: 'mens', label: "Men", desc: "Custom Suits, Shirts, Blazers", img: "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=300&q=80" },
+    { id: 'womens', label: "Women", desc: "Ethnic Wear, Anarkalis, Salwars", img: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=300&q=80" },
+    { id: 'bridal', label: "Bridal", desc: "Royal Lehengas, Heavy Embroidery", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=300&q=80" },
+    { id: 'kids', label: "Kids", desc: "Children Dresses, Frocks, Uniforms", img: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=300&q=80" },
+    { id: 'alterations', label: "Alterations", desc: "Resize, Repair & Hemming", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
+    { id: 'uniforms', label: "Uniforms", desc: "Corporate & School Uniforms", img: "./Uniform.png" },
+    { id: 'bags', label: "Bags And Leathers", desc: "Bespoke Totes, Laptop Bags", img: "./Bags And Leather.png" },
+    { id: 'shoes', label: "Shoes And Slippers", desc: "Handcrafted Footwear & Slides", img: "./Shoes And Slippers.png" },
+    { id: 'seats', label: "Vehicle Seat Covers", desc: "Custom Car & Bike Seat Covers", img: "./Vehicle Seat Covers.png" },
+    { id: 'designers', label: "Custom Design", desc: "Consult Certified Designers", img: "./Custom Design.png" },
+    { id: 'gifts', label: "Hand Made Gifts", desc: "Custom Fabric Crafts & Gift Sets", img: "./handmade_gifts.jpg" },
+    { id: 'pets', label: "Pet Outfits", desc: "Custom Costumes & Pet Harnesses", img: "./Pets.png" }
   ];
 
   // Mock Fashion Designer arrivals
@@ -2091,23 +2095,34 @@ export default function CustomerView({
               Services ▼
             </button>
             
-            <ul className={`nav-dropdown-menu services-dropdown-menu ${servicesDropdownOpen ? 'show' : ''}`} style={{ minWidth: '200px' }}>
-              {categoryCards.map(cat => (
-                <li 
-                  key={cat.id}
-                  className="dropdown-item"
-                  onClick={() => {
-                    setActiveHub('category-landing');
-                    setSelectedCategory(cat.id);
-                    setWizardOpen(false);
-                    setServicesDropdownOpen(false);
-                    if (setCustomerCategory) setCustomerCategory(cat.id);
-                    if (setCustomerHub) setCustomerHub('category-landing');
-                  }}
-                >
-                  {cat.label}
-                </li>
-              ))}
+            <ul className={`nav-dropdown-menu services-dropdown-menu ${servicesDropdownOpen ? 'show' : ''}`} style={{ minWidth: '220px' }}>
+              {categoryCards.map(cat => {
+                const isActive = cat.id === 'designers'
+                  ? activeHub === 'designers'
+                  : (activeHub === 'category-landing' && selectedCategory === cat.id);
+                return (
+                  <li 
+                    key={cat.id}
+                    className={`dropdown-item ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      if (cat.id === 'designers') {
+                        setActiveHub('designers');
+                        if (setCustomerHub) setCustomerHub('designers');
+                        if (setCustomerCategory) setCustomerCategory('all');
+                      } else {
+                        setActiveHub('category-landing');
+                        setSelectedCategory(cat.id);
+                        if (setCustomerCategory) setCustomerCategory(cat.id);
+                        if (setCustomerHub) setCustomerHub('category-landing');
+                      }
+                      setWizardOpen(false);
+                      setServicesDropdownOpen(false);
+                    }}
+                  >
+                    {cat.label}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -4416,17 +4431,25 @@ export default function CustomerView({
                 { name: "Bridal Wear", img: "./Bridal.png", price: "1,999", cat: "bridal", sub: "Lehenga, Saree, Gown & more", icon: <Sparkles size={16} /> },
                 { name: "Kids Wear", img: "./Kids.png", price: "349", cat: "kids", sub: "Ethnic, Western, Party & more", icon: <Star size={16} /> },
                 { name: "Alterations", img: "./Alteration.png", price: "149", cat: "alterations", sub: "Perfect Fit, Repairs & more", icon: <Scissors size={16} /> },
+                { name: "Uniforms", img: "./Uniform.png", price: "349", cat: "uniforms", sub: "School, Corporate & Industrial", icon: <Layers size={16} /> },
                 { name: "Bags & Leather", img: "./Bags And Leather.png", price: "699", cat: "bags", sub: "Custom Bags, Wallets & more", icon: <Shield size={16} /> },
                 { name: "Shoes & Slippers", img: "./Shoes And Slippers.png", price: "499", cat: "shoes", sub: "Custom Shoes, Sandals & more", icon: <Sliders size={16} /> },
-                { name: "Vehicle Seat Covers", img: "./Vehicle Seat Covers.png", price: "799", cat: "vehicle", sub: "Premium leather & fabric covers", icon: <Truck size={16} /> },
-                { name: "Custom Design", img: "./Custom Design.png", price: "999", cat: "custom", sub: "Bespoke tailoring design layouts", icon: <Upload size={16} /> },
-                { name: "Pets", img: "./Pets.png", price: "299", cat: "pets", sub: "Cute custom outfits & accessories", icon: <Sparkles size={16} /> },
-                { name: "Uniforms", img: "./Uniform.png", price: "349", cat: "uniforms", sub: "School, Corporate & Industrial", icon: <Layers size={16} /> }
-              ].slice(0, categoriesExpanded ? undefined : 7).map((category, idx) => (
+                { name: "Vehicle Seat Covers", img: "./Vehicle Seat Covers.png", price: "799", cat: "seats", sub: "Premium leather & fabric covers", icon: <Truck size={16} /> },
+                { name: "Custom Design", img: "./Custom Design.png", price: "999", cat: "designers", sub: "Bespoke tailoring design layouts", icon: <Upload size={16} /> },
+                { name: "Hand Made Gifts", img: "./handmade_gifts.jpg", price: "349", cat: "gifts", sub: "Personalized crafts & keepsakes", icon: <Gift size={16} /> },
+                { name: "Pet Outfits", img: "./Pets.png", price: "299", cat: "pets", sub: "Cute custom outfits & accessories", icon: <Sparkles size={16} /> }
+              ].slice(0, categoriesExpanded ? undefined : 8).map((category, idx) => (
                 <div key={idx} className="category-card-split" onClick={() => {
-                  setSelectedCategory(category.cat);
-                  setActiveHub('category-landing');
-                  if (setCustomerCategory) setCustomerCategory(category.cat);
+                  if (category.cat === 'designers') {
+                    setActiveHub('designers');
+                    if (setCustomerHub) setCustomerHub('designers');
+                    if (setCustomerCategory) setCustomerCategory('all');
+                  } else {
+                    setSelectedCategory(category.cat);
+                    setActiveHub('category-landing');
+                    if (setCustomerCategory) setCustomerCategory(category.cat);
+                    if (setCustomerHub) setCustomerHub('category-landing');
+                  }
                 }}>
                   <div className="category-card-split-icon-box">
                     {category.icon}
