@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Check, X, MapPin, ShieldCheck, ChevronRight, Lock, 
   CreditCard, Smartphone, DollarSign, Gift, QrCode, AlertCircle, 
-  CheckCircle2, ArrowRight, ArrowLeft, RefreshCw, ShoppingBag
+  CheckCircle2, ArrowRight, ArrowLeft, RefreshCw, ShoppingBag, Star
 } from 'lucide-react';
 import { saveToStorage, loadFromStorage } from '../../utils/mockDb';
 
