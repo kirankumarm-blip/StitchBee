@@ -117,7 +117,7 @@ export default function FlipkartProductDetailView({
           <button
             onClick={onBack}
             className="btn btn-ghost"
-            style={{ padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#2874f0', fontWeight: 700, fontSize: '0.82rem' }}
+            style={{ padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontWeight: 700, fontSize: '0.82rem' }}
           >
             <ArrowLeft size={16} /> Back to Catalog
           </button>
@@ -219,7 +219,7 @@ export default function FlipkartProductDetailView({
                   height: '68px',
                   borderRadius: '8px',
                   overflow: 'hidden',
-                  border: activeImageIndex === i ? '2px solid #2874f0' : '1px solid var(--border-color)',
+                  border: activeImageIndex === i ? '2px solid var(--primary)' : '1px solid var(--border-color)',
                   background: '#0a0914',
                   padding: 0,
                   cursor: 'pointer',
@@ -264,7 +264,7 @@ export default function FlipkartProductDetailView({
                 fontSize: '0.95rem',
                 fontWeight: 800,
                 borderRadius: '8px',
-                background: '#fb641b',
+                background: 'var(--grad-primary)',
                 color: '#fff',
                 border: 'none',
                 display: 'flex',
@@ -272,7 +272,7 @@ export default function FlipkartProductDetailView({
                 justifyContent: 'center',
                 gap: '8px',
                 cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(251, 100, 27, 0.35)'
+                boxShadow: '0 4px 16px rgba(247, 37, 133, 0.4)'
               }}
             >
               <Zap size={18} /> Buy at ₹{effectivePrice.toLocaleString()}
@@ -310,7 +310,7 @@ export default function FlipkartProductDetailView({
                     gap: '4px',
                     padding: '4px',
                     borderRadius: '8px',
-                    border: selectedColor === c ? '2px solid #2874f0' : '1px solid var(--border-color)',
+                    border: selectedColor === c ? '2px solid var(--primary)' : '1px solid var(--border-color)',
                     background: 'transparent',
                     cursor: 'pointer'
                   }}
@@ -320,7 +320,7 @@ export default function FlipkartProductDetailView({
                     alt={c}
                     style={{ width: '48px', height: '48px', borderRadius: '6px', objectFit: 'cover' }}
                   />
-                  <span style={{ fontSize: '0.68rem', color: selectedColor === c ? '#2874f0' : 'var(--text-secondary)', fontWeight: 600 }}>
+                  <span style={{ fontSize: '0.68rem', color: selectedColor === c ? 'var(--primary)' : 'var(--text-secondary)', fontWeight: 600 }}>
                     {c}
                   </span>
                 </button>
@@ -341,8 +341,8 @@ export default function FlipkartProductDetailView({
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
               {product.reviewsCount || 254} ratings & 82 reviews
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#f0f9ff', color: '#0369a1', padding: '2px 8px', borderRadius: '4px', fontSize: '0.72rem', fontWeight: 800 }}>
-              <ShieldCheck size={13} style={{ color: '#0284c7' }} /> StitchBee Assured
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: 'rgba(76,201,240,0.12)', color: 'var(--accent)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.72rem', fontWeight: 800 }}>
+              <ShieldCheck size={13} style={{ color: 'var(--accent)' }} /> StitchBee Assured
             </span>
           </div>
 
@@ -363,8 +363,8 @@ export default function FlipkartProductDetailView({
           <div 
             className="flipkart-bank-offers-card"
             style={{
-              background: 'linear-gradient(135deg, rgba(40,116,240,0.06), rgba(247,37,133,0.06))',
-              border: '1px solid rgba(40,116,240,0.3)',
+              background: 'linear-gradient(135deg, rgba(247,37,133,0.08), rgba(114,9,183,0.08))',
+              border: '1px solid rgba(247,37,133,0.3)',
               borderRadius: '12px',
               padding: '16px',
               marginBottom: '22px'
@@ -372,7 +372,7 @@ export default function FlipkartProductDetailView({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ background: '#2874f0', color: '#fff', fontSize: '0.68rem', fontWeight: 900, padding: '2px 6px', borderRadius: '3px' }}>
+                <span style={{ background: 'var(--grad-primary)', color: '#fff', fontSize: '0.68rem', fontWeight: 900, padding: '2px 6px', borderRadius: '3px' }}>
                   WOW Deal
                 </span>
                 <strong style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
@@ -390,7 +390,7 @@ export default function FlipkartProductDetailView({
                 onClick={() => setAppliedBankOffer(appliedBankOffer === 'axis' ? 'none' : 'axis')}
                 style={{
                   background: 'var(--bg-card)',
-                  border: appliedBankOffer === 'axis' ? '1.5px solid #2874f0' : '1px solid var(--border-color)',
+                  border: appliedBankOffer === 'axis' ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
                   borderRadius: '8px',
                   padding: '10px',
                   cursor: 'pointer'
@@ -400,7 +400,7 @@ export default function FlipkartProductDetailView({
                   <span style={{ fontSize: '0.72rem', background: '#fef3c7', color: '#92400e', fontWeight: 700, padding: '1px 6px', borderRadius: '3px' }}>
                     Best value for you
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: '#2874f0', fontWeight: 800 }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 800 }}>
                     {appliedBankOffer === 'axis' ? 'Applied ✓' : 'Apply'}
                   </span>
                 </div>
@@ -417,7 +417,7 @@ export default function FlipkartProductDetailView({
                 onClick={() => setAppliedBankOffer(appliedBankOffer === 'sbi' ? 'none' : 'sbi')}
                 style={{
                   background: 'var(--bg-card)',
-                  border: appliedBankOffer === 'sbi' ? '1.5px solid #2874f0' : '1px solid var(--border-color)',
+                  border: appliedBankOffer === 'sbi' ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
                   borderRadius: '8px',
                   padding: '10px',
                   cursor: 'pointer'
@@ -427,7 +427,7 @@ export default function FlipkartProductDetailView({
                   <span style={{ fontSize: '0.72rem', background: '#ecfdf5', color: '#065f46', fontWeight: 700, padding: '1px 6px', borderRadius: '3px' }}>
                     Instant UPI
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: '#2874f0', fontWeight: 800 }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 800 }}>
                     {appliedBankOffer === 'sbi' ? 'Applied ✓' : 'Apply'}
                   </span>
                 </div>
@@ -448,7 +448,7 @@ export default function FlipkartProductDetailView({
             </span>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px' }}>
               <div style={{ position: 'relative', flex: 1 }}>
-                <MapPin size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: '#2874f0' }} />
+                <MapPin size={16} style={{ position: 'absolute', left: '12px', top: '12px', color: 'var(--primary)' }} />
                 <input
                   type="text"
                   value={userPincode}
@@ -482,9 +482,9 @@ export default function FlipkartProductDetailView({
                   padding: '10px 14px',
                   fontSize: '0.82rem',
                   fontWeight: 700,
-                  background: 'rgba(40,116,240,0.1)',
-                  color: '#2874f0',
-                  border: '1px solid rgba(40,116,240,0.3)',
+                  background: 'rgba(247,37,133,0.1)',
+                  color: 'var(--primary)',
+                  border: '1px solid rgba(247,37,133,0.3)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px'
@@ -518,9 +518,9 @@ export default function FlipkartProductDetailView({
                     style={{
                       padding: '8px 16px',
                       borderRadius: '8px',
-                      border: selectedSize === s ? '2px solid #2874f0' : '1px solid var(--border-color)',
-                      background: selectedSize === s ? 'rgba(40,116,240,0.08)' : 'transparent',
-                      color: selectedSize === s ? '#2874f0' : 'var(--text-primary)',
+                      border: selectedSize === s ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                      background: selectedSize === s ? 'rgba(247,37,133,0.1)' : 'transparent',
+                      color: selectedSize === s ? 'var(--primary)' : 'var(--text-primary)',
                       fontWeight: 700,
                       fontSize: '0.82rem',
                       cursor: 'pointer'
@@ -565,7 +565,7 @@ export default function FlipkartProductDetailView({
                 type="checkbox"
                 checked={giftWrapping}
                 onChange={e => setGiftWrapping(e.target.checked)}
-                style={{ accentColor: '#2874f0' }}
+                style={{ accentColor: 'var(--primary)' }}
               />
               <span>Add Luxury Gift Packaging with Wax Seal (+₹49)</span>
             </label>

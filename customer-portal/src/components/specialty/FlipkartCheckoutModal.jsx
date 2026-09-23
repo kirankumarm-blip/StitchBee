@@ -195,7 +195,7 @@ export default function FlipkartCheckoutModal({
         {checkoutStep !== 4 && (
           <header 
             style={{ 
-              background: '#2874f0', 
+              background: 'var(--grad-primary)', 
               color: '#ffffff', 
               padding: '16px 24px', 
               borderTopLeftRadius: '16px', 
@@ -245,7 +245,7 @@ export default function FlipkartCheckoutModal({
                     height: '22px', 
                     borderRadius: '50%', 
                     background: checkoutStep > 1 ? '#10b981' : (checkoutStep === 1 ? '#fff' : 'rgba(255,255,255,0.3)'), 
-                    color: checkoutStep > 1 ? '#fff' : (checkoutStep === 1 ? '#2874f0' : '#fff'), 
+                    color: checkoutStep > 1 ? '#fff' : (checkoutStep === 1 ? 'var(--primary)' : '#fff'), 
                     fontSize: '0.75rem', 
                     fontWeight: 800,
                     display: 'flex',
@@ -279,7 +279,7 @@ export default function FlipkartCheckoutModal({
                     height: '22px', 
                     borderRadius: '50%', 
                     background: checkoutStep > 2 ? '#10b981' : (checkoutStep === 2 ? '#fff' : 'rgba(255,255,255,0.3)'), 
-                    color: checkoutStep > 2 ? '#fff' : (checkoutStep === 2 ? '#2874f0' : '#fff'), 
+                    color: checkoutStep > 2 ? '#fff' : (checkoutStep === 2 ? 'var(--primary)' : '#fff'), 
                     fontSize: '0.75rem', 
                     fontWeight: 800,
                     display: 'flex',
@@ -311,7 +311,7 @@ export default function FlipkartCheckoutModal({
                     height: '22px', 
                     borderRadius: '50%', 
                     background: checkoutStep === 3 ? '#fff' : 'rgba(255,255,255,0.3)', 
-                    color: checkoutStep === 3 ? '#2874f0' : '#fff', 
+                    color: checkoutStep === 3 ? 'var(--primary)' : '#fff', 
                     fontSize: '0.75rem', 
                     fontWeight: 800,
                     display: 'flex',
@@ -393,7 +393,7 @@ export default function FlipkartCheckoutModal({
                     <button
                       type="button"
                       onClick={() => setShowAltPhone(true)}
-                      style={{ background: 'transparent', border: 'none', color: '#2874f0', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer', padding: 0 }}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer', padding: 0 }}
                     >
                       + Add Alternate Phone Number
                     </button>
@@ -438,7 +438,7 @@ export default function FlipkartCheckoutModal({
                       style={{
                         width: '100%',
                         padding: '12px 18px',
-                        background: '#2874f0',
+                        background: 'var(--grad-primary)',
                         color: '#fff',
                         borderRadius: '8px',
                         fontWeight: 700,
@@ -448,7 +448,8 @@ export default function FlipkartCheckoutModal({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        gap: '8px'
+                        gap: '8px',
+                        boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)'
                       }}
                     >
                       <MapPin size={18} />
@@ -535,7 +536,7 @@ export default function FlipkartCheckoutModal({
                           name="landmark-radio"
                           checked={selectedLandmark === lm}
                           onChange={() => setSelectedLandmark(lm)}
-                          style={{ accentColor: '#2874f0' }}
+                          style={{ accentColor: 'var(--primary)' }}
                         />
                         <span>{lm}</span>
                       </label>
@@ -565,9 +566,9 @@ export default function FlipkartCheckoutModal({
                       style={{
                         padding: '8px 18px',
                         borderRadius: '20px',
-                        border: addressType === 'home' ? '2px solid #2874f0' : '1px solid var(--border-color)',
-                        background: addressType === 'home' ? 'rgba(40,116,240,0.1)' : 'transparent',
-                        color: addressType === 'home' ? '#2874f0' : 'var(--text-secondary)',
+                        border: addressType === 'home' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                        background: addressType === 'home' ? 'rgba(247,37,133,0.1)' : 'transparent',
+                        color: addressType === 'home' ? 'var(--primary)' : 'var(--text-secondary)',
                         fontWeight: 700,
                         fontSize: '0.82rem',
                         cursor: 'pointer',
@@ -585,9 +586,9 @@ export default function FlipkartCheckoutModal({
                       style={{
                         padding: '8px 18px',
                         borderRadius: '20px',
-                        border: addressType === 'work' ? '2px solid #2874f0' : '1px solid var(--border-color)',
-                        background: addressType === 'work' ? 'rgba(40,116,240,0.1)' : 'transparent',
-                        color: addressType === 'work' ? '#2874f0' : 'var(--text-secondary)',
+                        border: addressType === 'work' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                        background: addressType === 'work' ? 'rgba(247,37,133,0.1)' : 'transparent',
+                        color: addressType === 'work' ? 'var(--primary)' : 'var(--text-secondary)',
                         fontWeight: 700,
                         fontSize: '0.82rem',
                         cursor: 'pointer',
@@ -609,13 +610,13 @@ export default function FlipkartCheckoutModal({
                     width: '100%',
                     padding: '16px',
                     borderRadius: '8px',
-                    background: '#fb641b',
+                    background: 'var(--grad-primary)',
                     color: '#fff',
                     fontSize: '1.05rem',
                     fontWeight: 800,
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(251, 100, 27, 0.35)'
+                    boxShadow: '0 4px 16px rgba(247, 37, 133, 0.4)'
                   }}
                 >
                   Save Address & Proceed to Order Summary
@@ -664,7 +665,7 @@ export default function FlipkartCheckoutModal({
                     type="button"
                     onClick={() => setCheckoutStep(1)}
                     className="btn btn-secondary"
-                    style={{ padding: '6px 14px', fontSize: '0.8rem', fontWeight: 700, color: '#2874f0' }}
+                    style={{ padding: '6px 14px', fontSize: '0.8rem', fontWeight: 700, color: 'var(--primary)' }}
                   >
                     Change
                   </button>
@@ -707,8 +708,8 @@ export default function FlipkartCheckoutModal({
                             <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                               ({prod.reviewsCount || 254})
                             </span>
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', background: '#f0f9ff', color: '#0369a1', padding: '1px 4px', borderRadius: '3px', fontSize: '0.65rem', fontWeight: 800 }}>
-                              <ShieldCheck size={10} style={{ color: '#0284c7' }} /> Assured
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', background: 'rgba(76,201,240,0.12)', color: 'var(--accent)', padding: '1px 4px', borderRadius: '3px', fontSize: '0.65rem', fontWeight: 800 }}>
+                              <ShieldCheck size={10} style={{ color: 'var(--accent)' }} /> Assured
                             </span>
                           </div>
 
@@ -781,9 +782,9 @@ export default function FlipkartCheckoutModal({
                         style={{
                           padding: '6px 14px',
                           borderRadius: '20px',
-                          border: donationAmount === amt ? '1.5px solid #2874f0' : '1px solid var(--border-color)',
-                          background: donationAmount === amt ? 'rgba(40,116,240,0.1)' : 'transparent',
-                          color: donationAmount === amt ? '#2874f0' : 'var(--text-secondary)',
+                          border: donationAmount === amt ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                          background: donationAmount === amt ? 'rgba(247,37,133,0.1)' : 'transparent',
+                          color: donationAmount === amt ? 'var(--primary)' : 'var(--text-secondary)',
                           fontSize: '0.8rem',
                           fontWeight: 700,
                           cursor: 'pointer'
@@ -845,7 +846,7 @@ export default function FlipkartCheckoutModal({
                 {/* Total Amount */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', fontSize: '1.15rem', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '14px' }}>
                   <span>Total Amount</span>
-                  <span style={{ color: '#2874f0' }}>₹{grandTotal.toLocaleString()}</span>
+                  <span style={{ color: 'var(--primary)' }}>₹{grandTotal.toLocaleString()}</span>
                 </div>
 
                 {/* Savings Banner (Image 4 Green Pill) */}
@@ -862,13 +863,13 @@ export default function FlipkartCheckoutModal({
                     width: '100%',
                     padding: '14px',
                     borderRadius: '8px',
-                    background: '#fb641b',
+                    background: 'var(--grad-primary)',
                     color: '#fff',
                     fontWeight: 800,
                     fontSize: '1rem',
                     border: 'none',
                     cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(251, 100, 27, 0.35)',
+                    boxShadow: '0 4px 16px rgba(247, 37, 133, 0.4)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -915,7 +916,7 @@ export default function FlipkartCheckoutModal({
                       padding: '14px 16px',
                       background: paymentTab === tab.id ? 'var(--bg-card)' : 'transparent',
                       border: 'none',
-                      borderLeft: paymentTab === tab.id ? '4px solid #2874f0' : '4px solid transparent',
+                      borderLeft: paymentTab === tab.id ? '4px solid var(--primary)' : '4px solid transparent',
                       borderBottom: '1px solid var(--border-color)',
                       cursor: tab.disabled ? 'not-allowed' : 'pointer',
                       opacity: tab.disabled ? 0.45 : 1,
@@ -923,10 +924,10 @@ export default function FlipkartCheckoutModal({
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                      <span style={{ color: paymentTab === tab.id ? '#2874f0' : 'var(--text-secondary)' }}>
+                      <span style={{ color: paymentTab === tab.id ? 'var(--primary)' : 'var(--text-secondary)' }}>
                         {tab.icon}
                       </span>
-                      <strong style={{ fontSize: '0.84rem', color: paymentTab === tab.id ? '#2874f0' : 'var(--text-primary)' }}>
+                      <strong style={{ fontSize: '0.84rem', color: paymentTab === tab.id ? 'var(--primary)' : 'var(--text-primary)' }}>
                         {tab.label}
                       </strong>
                     </div>
@@ -1006,7 +1007,7 @@ export default function FlipkartCheckoutModal({
                           <rect x="8" y="38" width="6" height="6" fill="#0f172a" />
                           <rect x="20" y="44" width="6" height="6" fill="#0f172a" />
                           <rect x="32" y="38" width="6" height="6" fill="#0f172a" />
-                          <rect x="44" y="42" width="12" height="12" fill="#2874f0" rx="3" />
+                          <rect x="44" y="42" width="12" height="12" fill="#f72585" rx="3" />
                           <rect x="60" y="38" width="6" height="6" fill="#0f172a" />
                           <rect x="72" y="44" width="6" height="6" fill="#0f172a" />
                           <rect x="84" y="38" width="6" height="6" fill="#0f172a" />
@@ -1058,7 +1059,7 @@ export default function FlipkartCheckoutModal({
                           onClick={handleCompletePayment}
                           disabled={processingPayment}
                           className="btn"
-                          style={{ padding: '8px 16px', background: '#2874f0', color: '#fff', fontSize: '0.82rem', fontWeight: 700, borderRadius: '6px' }}
+                          style={{ padding: '8px 16px', background: 'var(--grad-primary)', color: '#fff', fontSize: '0.82rem', fontWeight: 700, borderRadius: '6px' }}
                         >
                           Verify & Pay
                         </button>
@@ -1134,7 +1135,7 @@ export default function FlipkartCheckoutModal({
                         type="checkbox"
                         checked={saveCardRbi}
                         onChange={e => setSaveCardRbi(e.target.checked)}
-                        style={{ accentColor: '#2874f0' }}
+                        style={{ accentColor: 'var(--primary)' }}
                       />
                       <span>Securely save this card as per RBI guidelines</span>
                     </label>
@@ -1200,13 +1201,13 @@ export default function FlipkartCheckoutModal({
                     width: '100%',
                     padding: '16px',
                     borderRadius: '8px',
-                    background: '#fb641b',
+                    background: 'var(--grad-primary)',
                     color: '#fff',
                     fontWeight: 800,
                     fontSize: '1.05rem',
                     border: 'none',
                     cursor: processingPayment ? 'wait' : 'pointer',
-                    boxShadow: '0 4px 16px rgba(251, 100, 27, 0.35)',
+                    boxShadow: '0 4px 16px rgba(247, 37, 133, 0.4)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -1262,7 +1263,7 @@ export default function FlipkartCheckoutModal({
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', fontSize: '1.05rem', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '14px' }}>
                   <span>Total Amount</span>
-                  <span style={{ color: '#2874f0' }}>₹{grandTotal.toLocaleString()}</span>
+                  <span style={{ color: 'var(--primary)' }}>₹{grandTotal.toLocaleString()}</span>
                 </div>
 
                 {/* 5% Cashback Banner (Image 5 Reference) */}
@@ -1289,7 +1290,7 @@ export default function FlipkartCheckoutModal({
                   color: '#fff', 
                   display: 'flex', 
                   alignItems: 'center', 
-                  justifyContent: 'center',
+                  justifyContent: 'center', 
                   margin: '0 auto 16px auto',
                   boxShadow: '0 8px 24px rgba(16,185,129,0.35)'
                 }}
@@ -1310,7 +1311,7 @@ export default function FlipkartCheckoutModal({
               <div style={{ background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border-color)', padding: '16px', maxWidth: '440px', margin: '0 auto 24px auto', textAlign: 'left' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Order ID:</span>
-                  <strong style={{ fontSize: '0.85rem', color: '#2874f0' }}>{confirmedOrder.id}</strong>
+                  <strong style={{ fontSize: '0.85rem', color: 'var(--primary)' }}>{confirmedOrder.id}</strong>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Amount Paid:</span>

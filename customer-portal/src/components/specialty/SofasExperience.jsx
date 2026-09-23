@@ -232,6 +232,7 @@ export default function SofasExperience({
     <div className="sofas-experience animate-fade-in" style={{ paddingBottom: '6rem' }}>
       
       {/* 1. HERO */}
+      {serviceMode !== 'buying' && (
       <section className="specialty-hero specialty-hero-responsive">
         <div
           className="specialty-hero-bg"
@@ -302,6 +303,7 @@ export default function SofasExperience({
           </div>
         </div>
       </section>
+      )}
 
       {/* ============================================================== */}
       {/* ALTERATION & SOFA SERVICES MODE CONTENT                        */}
@@ -396,7 +398,9 @@ export default function SofasExperience({
                 />
               </section>
 
-              {/* 4. SOFA CONFIGURATOR SECTION */}
+              {/* 4. SOFA CONFIGURATOR SECTION (Hidden in Buying mode) */}
+              {false && (
+              <>
               <section id="sofa-customizer-section" style={{ margin: '4.5rem 0' }}>
         <div
           className="glass-card-no-hover"
@@ -547,6 +551,8 @@ export default function SofasExperience({
         title="Living Room Upholstery Fabric Anatomy"
         subtitle="Tested against claws, coffee spills, and heavy everyday lounging."
       />
+              </>
+              )}
             </>
           )}
         </>

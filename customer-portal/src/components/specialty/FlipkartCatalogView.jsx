@@ -158,7 +158,7 @@ export default function FlipkartCatalogView({
             {(selectedColors.length > 0 || assuredOnly || selectedSubcategory !== 'all' || priceRange < 15000 || minRating > 0) && (
               <button 
                 onClick={clearAllFilters}
-                style={{ background: 'transparent', border: 'none', color: '#2874f0', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', textTransform: 'uppercase' }}
+                style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', textTransform: 'uppercase' }}
               >
                 Clear All
               </button>
@@ -175,8 +175,8 @@ export default function FlipkartCatalogView({
                 onClick={() => setSelectedSubcategory('all')}
                 style={{
                   textAlign: 'left',
-                  background: selectedSubcategory === 'all' ? 'rgba(40,116,240,0.08)' : 'transparent',
-                  color: selectedSubcategory === 'all' ? '#2874f0' : 'var(--text-primary)',
+                  background: selectedSubcategory === 'all' ? 'rgba(247,37,133,0.1)' : 'transparent',
+                  color: selectedSubcategory === 'all' ? 'var(--primary)' : 'var(--text-primary)',
                   fontWeight: selectedSubcategory === 'all' ? 700 : 500,
                   border: 'none',
                   padding: '6px 10px',
@@ -193,8 +193,8 @@ export default function FlipkartCatalogView({
                   onClick={() => setSelectedSubcategory(sub)}
                   style={{
                     textAlign: 'left',
-                    background: selectedSubcategory === sub ? 'rgba(40,116,240,0.08)' : 'transparent',
-                    color: selectedSubcategory === sub ? '#2874f0' : 'var(--text-primary)',
+                    background: selectedSubcategory === sub ? 'rgba(247,37,133,0.1)' : 'transparent',
+                    color: selectedSubcategory === sub ? 'var(--primary)' : 'var(--text-primary)',
                     fontWeight: selectedSubcategory === sub ? 700 : 500,
                     border: 'none',
                     padding: '6px 10px',
@@ -216,10 +216,10 @@ export default function FlipkartCatalogView({
                 type="checkbox"
                 checked={assuredOnly}
                 onChange={e => setAssuredOnly(e.target.checked)}
-                style={{ width: '16px', height: '16px', accentColor: '#2874f0', cursor: 'pointer' }}
+                style={{ width: '16px', height: '16px', accentColor: 'var(--primary)', cursor: 'pointer' }}
               />
-              <span className="assured-badge-flipkart" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#e0f2fe', color: '#0369a1', padding: '3px 8px', borderRadius: '4px', fontSize: '0.78rem', fontWeight: 800 }}>
-                <ShieldCheck size={14} style={{ color: '#0284c7' }} /> StitchBee <span style={{ color: '#f59e0b' }}>Assured</span>
+              <span className="assured-badge-flipkart" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(247,37,133,0.12)', color: 'var(--primary)', padding: '3px 8px', borderRadius: '4px', fontSize: '0.78rem', fontWeight: 800 }}>
+                <ShieldCheck size={14} style={{ color: 'var(--primary)' }} /> StitchBee <span style={{ color: 'var(--accent)' }}>Assured</span>
               </span>
             </label>
           </div>
@@ -230,7 +230,7 @@ export default function FlipkartCatalogView({
               <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Price Range
               </span>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#2874f0' }}>
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary)' }}>
                 Up to ₹{priceRange.toLocaleString()}
               </span>
             </div>
@@ -241,7 +241,7 @@ export default function FlipkartCatalogView({
               step="200"
               value={priceRange}
               onChange={e => setPriceRange(Number(e.target.value))}
-              style={{ width: '100%', accentColor: '#2874f0', cursor: 'pointer' }}
+              style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>
               <span>₹400</span>
@@ -263,9 +263,9 @@ export default function FlipkartCatalogView({
                     padding: '4px 8px',
                     fontSize: '0.72rem',
                     borderRadius: '4px',
-                    border: priceRange === b.val ? '1px solid #2874f0' : '1px solid var(--border-color)',
-                    background: priceRange === b.val ? 'rgba(40,116,240,0.1)' : 'transparent',
-                    color: priceRange === b.val ? '#2874f0' : 'var(--text-secondary)',
+                    border: priceRange === b.val ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                    background: priceRange === b.val ? 'rgba(247,37,133,0.12)' : 'transparent',
+                    color: priceRange === b.val ? 'var(--primary)' : 'var(--text-secondary)',
                     fontWeight: 600,
                     cursor: 'pointer'
                   }}
@@ -296,8 +296,8 @@ export default function FlipkartCatalogView({
                       gap: '4px',
                       padding: '6px 4px',
                       borderRadius: '6px',
-                      border: isSelected ? '1.5px solid #2874f0' : '1px solid var(--border-color)',
-                      background: isSelected ? 'rgba(40,116,240,0.08)' : 'transparent',
+                      border: isSelected ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
+                      background: isSelected ? 'rgba(247,37,133,0.1)' : 'transparent',
                       cursor: 'pointer'
                     }}
                   >
@@ -316,7 +316,7 @@ export default function FlipkartCatalogView({
                     >
                       {isSelected && <Check size={11} strokeWidth={3} />}
                     </span>
-                    <span style={{ fontSize: '0.65rem', color: isSelected ? '#2874f0' : 'var(--text-secondary)', fontWeight: isSelected ? 700 : 500, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '48px' }}>
+                    <span style={{ fontSize: '0.65rem', color: isSelected ? 'var(--primary)' : 'var(--text-secondary)', fontWeight: isSelected ? 700 : 500, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '48px' }}>
                       {c.name}
                     </span>
                   </button>
@@ -342,7 +342,7 @@ export default function FlipkartCatalogView({
                     name="rating-filter"
                     checked={minRating === r.val}
                     onChange={() => setMinRating(r.val)}
-                    style={{ accentColor: '#2874f0' }}
+                    style={{ accentColor: 'var(--primary)' }}
                   />
                   <span>{r.label}</span>
                 </label>
@@ -361,7 +361,7 @@ export default function FlipkartCatalogView({
                   type="checkbox"
                   checked={selectedOffer === 'special'}
                   onChange={e => setSelectedOffer(e.target.checked ? 'special' : 'all')}
-                  style={{ accentColor: '#2874f0' }}
+                  style={{ accentColor: 'var(--primary)' }}
                 />
                 <span>Special Price (30%+ Off)</span>
               </label>
@@ -430,9 +430,10 @@ export default function FlipkartCatalogView({
                     fontWeight: sortBy === s.id ? 700 : 500,
                     borderRadius: '20px',
                     border: 'none',
-                    background: sortBy === s.id ? '#2874f0' : 'transparent',
+                    background: sortBy === s.id ? 'var(--grad-primary)' : 'transparent',
                     color: sortBy === s.id ? '#ffffff' : 'var(--text-secondary)',
                     cursor: 'pointer',
+                    boxShadow: sortBy === s.id ? '0 2px 10px rgba(247,37,133,0.3)' : 'none',
                     transition: 'all 0.15s ease'
                   }}
                 >
@@ -492,10 +493,18 @@ export default function FlipkartCatalogView({
                       display: 'flex',
                       flexDirection: 'column',
                       position: 'relative',
-                      transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'var(--primary)';
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'var(--border-color)';
+                      e.currentTarget.style.transform = 'none';
                     }}
                   >
-                    {/* Top Image Box with Wishlist */}
+                    {/* Top Image Box with Dots & Wishlist */}
                     <div style={{ position: 'relative', width: '100%', height: '240px', background: '#0a0914', overflow: 'hidden' }}>
                       <img
                         src={prod.image}
@@ -509,7 +518,14 @@ export default function FlipkartCatalogView({
                         className="catalog-product-img"
                       />
 
-                      {/* Wishlist Heart Button */}
+                      {/* Image Carousel Dots (Matching Image 2 Reference) */}
+                      <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '3px', zIndex: 2, background: 'rgba(0,0,0,0.3)', padding: '3px 6px', borderRadius: '10px' }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#fff' }}></span>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.4)' }}></span>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.4)' }}></span>
+                      </div>
+
+                      {/* Wishlist Heart Button (Matching Image 2 Reference) */}
                       <button
                         type="button"
                         onClick={(e) => toggleWishlist(e, prod.id)}
@@ -530,6 +546,7 @@ export default function FlipkartCatalogView({
                           boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
                           zIndex: 3
                         }}
+                        title="Save to wishlist"
                       >
                         <Heart
                           size={16}
@@ -539,26 +556,31 @@ export default function FlipkartCatalogView({
                           }}
                         />
                       </button>
-
-                      {/* Sponsored / Brand Tag */}
-                      <div style={{ position: 'absolute', bottom: '8px', left: '8px', background: 'rgba(0,0,0,0.6)', color: '#fff', fontSize: '0.65rem', padding: '2px 6px', borderRadius: '4px', backdropFilter: 'blur(4px)' }}>
-                        {prod.brand || prod.categoryLabel || 'Atelier Direct'}
-                      </div>
                     </div>
 
-                    {/* Card Content Details */}
+                    {/* Card Content Details (Matching Image 2 Anatomy) */}
                     <div style={{ padding: '14px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                       <div>
+                        {/* Sponsored label */}
+                        <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginBottom: '2px' }}>
+                          Sponsored
+                        </div>
+
+                        {/* Brand Name */}
+                        <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                          {prod.brand || 'StitchBee Atelier'}
+                        </div>
+
                         {/* Title */}
                         <h4 
                           style={{ 
-                            fontSize: '0.9rem', 
-                            fontWeight: 600, 
-                            color: 'var(--text-primary)', 
+                            fontSize: '0.85rem', 
+                            fontWeight: 500, 
+                            color: 'var(--text-secondary)', 
                             margin: '0 0 6px 0',
                             lineHeight: 1.35,
                             display: '-webkit-box',
-                            WebkitLineClamp: 2,
+                            WebkitLineClamp: 1,
                             WebkitBoxOrient: 'vertical',
                             overflow: 'hidden'
                           }}
@@ -567,16 +589,13 @@ export default function FlipkartCatalogView({
                           {prod.name}
                         </h4>
 
-                        {/* Rating & Assured Badge */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#388e3c', color: '#fff', padding: '2px 6px', borderRadius: '4px', fontSize: '0.72rem', fontWeight: 700 }}>
-                            {prod.rating || 4.6} <Star size={10} style={{ fill: '#fff' }} />
+                        {/* Assured & Rating Badge */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', background: 'rgba(247,37,133,0.12)', color: 'var(--primary)', padding: '1px 6px', borderRadius: '3px', fontSize: '0.68rem', fontWeight: 800 }}>
+                            <ShieldCheck size={11} style={{ color: 'var(--primary)' }} /> Assured
                           </span>
-                          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                            ({prod.reviewsCount || 128})
-                          </span>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', background: '#f0f9ff', color: '#0369a1', padding: '1px 5px', borderRadius: '3px', fontSize: '0.65rem', fontWeight: 800 }}>
-                            <ShieldCheck size={11} style={{ color: '#0284c7' }} /> Assured
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#388e3c', color: '#fff', padding: '1px 5px', borderRadius: '3px', fontSize: '0.68rem', fontWeight: 700 }}>
+                            {prod.rating || 4.6} <Star size={9} style={{ fill: '#fff' }} />
                           </span>
                         </div>
 
@@ -585,68 +604,19 @@ export default function FlipkartCatalogView({
                           <strong style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                             ₹{prod.price.toLocaleString()}
                           </strong>
-                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>
                             ₹{original.toLocaleString()}
                           </span>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#388e3c' }}>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#388e3c' }}>
                             {discountPercent}% off
                           </span>
                         </div>
 
-                        {/* Delivery Notice */}
-                        <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-                          Free delivery by <strong style={{ color: 'var(--text-primary)' }}>Tomorrow</strong>
+                        {/* Status (e.g. Only few left) */}
+                        <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--primary)', marginTop: '4px' }}>
+                          Only few left
                         </div>
                       </div>
-
-                      {/* Quick Action Buttons */}
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (onQuickBuy) onQuickBuy(prod);
-                            else if (onSelectProduct) onSelectProduct(prod);
-                          }}
-                          className="btn"
-                          style={{
-                            flex: 1,
-                            padding: '8px 10px',
-                            fontSize: '0.78rem',
-                            fontWeight: 700,
-                            borderRadius: '6px',
-                            background: '#fb641b',
-                            color: '#fff',
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '4px'
-                          }}
-                        >
-                          <Zap size={13} /> Buy Now
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (onAddToCart) onAddToCart(prod);
-                          }}
-                          className="btn btn-secondary"
-                          style={{
-                            padding: '8px 12px',
-                            fontSize: '0.78rem',
-                            borderRadius: '6px',
-                            cursor: 'pointer'
-                          }}
-                          title="Add to cart"
-                        >
-                          <ShoppingCart size={14} />
-                        </button>
-                      </div>
-
                     </div>
                   </div>
                 );
