@@ -4,7 +4,7 @@ import {
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
   CreditCard, ChevronLeft, ChevronRight, ChevronDown, X, ShoppingCart, Plus, Minus, Check, Camera, RefreshCw, Upload, 
   Video, Layers, Activity, FileText, Shield, Sliders, Bell, Heart, HelpCircle, Menu, Sun, Moon, Phone,
-  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut
+  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut, ShoppingBag, Wrench, ArrowRight
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
 import ServiceCategoryView from './ServiceCategoryView';
@@ -2485,44 +2485,87 @@ export default function CustomerView({
 
                       {/* Submenu on hover & select */}
                       <div className={`nav-submenu ${bagsSubmenuHovered ? 'show' : ''}`}>
-                        <div 
-                          className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'active' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setBagsStudioMode('shop');
-                            setSelectedCategory('bags');
-                            setActiveHub('category-landing');
-                            if (setCustomerCategory) setCustomerCategory('bags');
-                            if (setCustomerHub) setCustomerHub('category-landing');
-                            setWizardOpen(false);
-                            setServicesDropdownOpen(false);
-                            setBagsSubmenuHovered(false);
-                          }}
-                        >
-                          <div className="nav-submenu-title">
-                            <span>✨ Shop & Create</span>
+                        <div className="nav-submenu-header">
+                          <div className="nav-submenu-eyebrow">
+                            <Sparkles size={11} className="nav-submenu-sparkle" />
+                            <span>STITCHBEE ATELIER</span>
                           </div>
-                          <div className="nav-submenu-desc">Ready-made bags & custom bespoke designs</div>
+                          <div className="nav-submenu-header-sub">Bespoke Creation & Expert Restoration</div>
                         </div>
 
-                        <div 
-                          className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'active' : ''}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setBagsStudioMode('restore');
-                            setSelectedCategory('bags');
-                            setActiveHub('category-landing');
-                            if (setCustomerCategory) setCustomerCategory('bags');
-                            if (setCustomerHub) setCustomerHub('category-landing');
-                            setWizardOpen(false);
-                            setServicesDropdownOpen(false);
-                            setBagsSubmenuHovered(false);
-                          }}
-                        >
-                          <div className="nav-submenu-title">
-                            <span>🛠️ Repair & Restore</span>
+                        <div className="nav-submenu-body">
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setBagsStudioMode('shop');
+                              setSelectedCategory('bags');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('bags');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setBagsSubmenuHovered(false);
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box shop">
+                              <ShoppingBag size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Shop & Create</span>
+                                <span className="nav-submenu-pill bespoke">Bespoke</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Handcrafted luxury bags & custom leather goods</p>
+                              <div className="nav-submenu-tags">
+                                <span>Italian Leather</span>
+                                <span>•</span>
+                                <span>Monograms</span>
+                                <span>•</span>
+                                <span>Custom Fit</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="nav-submenu-desc">Fixes, component repair & full restoration</div>
+
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setBagsStudioMode('restore');
+                              setSelectedCategory('bags');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('bags');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setBagsSubmenuHovered(false);
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box restore">
+                              <Wrench size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Repair & Restore</span>
+                                <span className="nav-submenu-pill repair">Atelier Care</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Diagnostics, hardware, zip fixes & rejuvenation</p>
+                              <div className="nav-submenu-tags">
+                                <span>Spa Clean</span>
+                                <span>•</span>
+                                <span>Color Touch-up</span>
+                                <span>•</span>
+                                <span>Hardware</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="nav-submenu-footer">
+                          <Shield size={12} style={{ color: '#f72585' }} />
+                          <span>Master Leather Artisans • Doorstep Pickup & Return</span>
                         </div>
                       </div>
                     </li>
@@ -3063,55 +3106,55 @@ export default function CustomerView({
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '10px', marginTop: '6px' }}>
                                 <button
                                   type="button"
-                                  onClick={() => {
-                                    setBagsStudioMode('shop');
-                                    setSelectedCategory('bags');
-                                    setActiveHub('category-landing');
-                                    if (setCustomerCategory) setCustomerCategory('bags');
-                                    if (setCustomerHub) setCustomerHub('category-landing');
-                                    setWizardOpen(false);
-                                    setSidebarOpen(false);
-                                  }}
-                                  style={{
-                                    padding: '7px 12px',
-                                    textAlign: 'left',
-                                    borderRadius: '6px',
-                                    border: `1px solid ${selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'var(--primary)' : 'transparent'}`,
-                                    background: selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'rgba(247,37,133,0.15)' : 'rgba(255,255,255,0.03)',
-                                    color: selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'var(--primary)' : colorTextPrimary,
-                                    fontSize: '0.76rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer'
-                                  }}
-                                >
-                                  ✨ Shop & Create
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setBagsStudioMode('restore');
-                                    setSelectedCategory('bags');
-                                    setActiveHub('category-landing');
-                                    if (setCustomerCategory) setCustomerCategory('bags');
-                                    if (setCustomerHub) setCustomerHub('category-landing');
-                                    setWizardOpen(false);
-                                    setSidebarOpen(false);
-                                  }}
-                                  style={{
-                                    padding: '7px 12px',
-                                    textAlign: 'left',
-                                    borderRadius: '6px',
-                                    border: `1px solid ${selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'var(--primary)' : 'transparent'}`,
-                                    background: selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'rgba(247,37,133,0.15)' : 'rgba(255,255,255,0.03)',
-                                    color: selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'var(--primary)' : colorTextPrimary,
-                                    fontSize: '0.76rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer'
-                                  }}
-                                >
-                                  🛠️ Repair & Restore
-                                </button>
-                              </div>
+                                    onClick={() => {
+                                      setBagsStudioMode('shop');
+                                      setSelectedCategory('bags');
+                                      setActiveHub('category-landing');
+                                      if (setCustomerCategory) setCustomerCategory('bags');
+                                      if (setCustomerHub) setCustomerHub('category-landing');
+                                      setWizardOpen(false);
+                                      setSidebarOpen(false);
+                                    }}
+                                    className={`mobile-bags-mode-btn ${selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'active' : ''}`}
+                                  >
+                                    <div className="mobile-bags-btn-icon shop">
+                                      <ShoppingBag size={14} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Shop & Create</span>
+                                        <span className="nav-submenu-pill bespoke" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Bespoke</span>
+                                      </div>
+                                      <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Handcrafted luxury bags & custom designs</span>
+                                    </div>
+                                    <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setBagsStudioMode('restore');
+                                      setSelectedCategory('bags');
+                                      setActiveHub('category-landing');
+                                      if (setCustomerCategory) setCustomerCategory('bags');
+                                      if (setCustomerHub) setCustomerHub('category-landing');
+                                      setWizardOpen(false);
+                                      setSidebarOpen(false);
+                                    }}
+                                    className={`mobile-bags-mode-btn ${selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'active' : ''}`}
+                                  >
+                                    <div className="mobile-bags-btn-icon restore">
+                                      <Wrench size={14} />
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Repair & Restore</span>
+                                        <span className="nav-submenu-pill repair" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Atelier Care</span>
+                                      </div>
+                                      <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Diagnostics, zip fixes & rejuvenation</span>
+                                    </div>
+                                    <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                  </button>
+                                </div>
                             )}
                           </div>
                         );
