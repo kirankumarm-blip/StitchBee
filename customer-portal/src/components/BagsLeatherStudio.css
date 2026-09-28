@@ -222,36 +222,41 @@
   padding: 0 !important;
   position: relative;
   overflow: hidden;
-  min-height: 520px;
-  background-image: linear-gradient(90deg, #fcf8f5 0%, #fcf8f5 34%, rgba(252, 248, 245, 0.94) 42%, rgba(252, 248, 245, 0.4) 54%, rgba(252, 248, 245, 0) 65%),
+  min-height: 420px;
+  height: clamp(400px, 44vh, 480px);
+  background-image: linear-gradient(90deg, #fcf8f5 0%, #fcf8f5 34%, rgba(252, 248, 245, 0.94) 42%, rgba(252, 248, 245, 0.25) 52%, rgba(252, 248, 245, 0) 60%),
                     url('/bags_shop_hero_bg.png');
   background-size: cover;
-  background-position: center right;
+  background-position: 64% center;
   background-repeat: no-repeat;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+  display: flex;
+  align-items: center;
 }
 
 body.bl-theme-dark .bl-shop-hero-fullwidth,
 .bl-theme-dark .bl-shop-hero-fullwidth {
-  background-image: linear-gradient(90deg, #0c0a14 0%, #0c0a14 34%, rgba(12, 10, 20, 0.95) 42%, rgba(12, 10, 20, 0.45) 54%, rgba(12, 10, 20, 0) 65%),
+  background-image: linear-gradient(90deg, #0c0a14 0%, #0c0a14 34%, rgba(12, 10, 20, 0.95) 42%, rgba(12, 10, 20, 0.3) 52%, rgba(12, 10, 20, 0) 60%),
                     url('/bags_shop_hero_bg.png');
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .bl-shop-hero-inner {
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 56px clamp(24px, 5vw, 72px);
-  min-height: 520px;
+  max-width: 100%;
+  margin: 0;
+  padding: 40px 2.5rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 32px;
   position: relative;
   z-index: 2;
   box-sizing: border-box;
+}
+
+.bl-hero-left {
+  max-width: 490px;
+  z-index: 2;
 }
 
 .bl-tag-label-shop {
@@ -261,43 +266,46 @@ body.bl-theme-dark .bl-shop-hero-fullwidth,
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #934a26;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-family: var(--bl-font-sans);
 }
 
 .bl-hero-heading-shop {
-  font-family: var(--bl-font-serif);
-  font-size: clamp(2.8rem, 4vw, 3.8rem);
-  font-weight: 700;
-  font-style: normal;
-  line-height: 1.12;
-  color: #0f172a;
-  margin: 0 0 18px 0;
-  letter-spacing: -0.5px;
+  font-family: var(--bl-font-serif) !important;
+  font-size: clamp(2.6rem, 3.4vw, 3.4rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.12 !important;
+  color: #0f172a !important;
+  margin: 0 0 16px 0 !important;
+  letter-spacing: -0.5px !important;
 }
 
 body.bl-theme-dark .bl-hero-heading-shop,
 .bl-theme-dark .bl-hero-heading-shop {
-  color: #f8fafc;
+  color: #f8fafc !important;
 }
 
-.bl-text-brown-shop {
-  color: #934a26;
+.bl-hero-heading-shop .bl-text-brown-shop,
+h1.bl-hero-heading-shop span.bl-text-brown-shop,
+span.bl-text-brown-shop {
+  color: #934a26 !important;
   font-style: normal !important;
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
+body.bl-theme-dark .bl-hero-heading-shop .bl-text-brown-shop,
 body.bl-theme-dark .bl-text-brown-shop,
 .bl-theme-dark .bl-text-brown-shop {
-  color: #d97706;
+  color: #d97706 !important;
 }
 
 .bl-hero-subtext-shop {
-  font-size: 1.02rem;
+  font-size: 0.95rem;
   color: #475569;
-  line-height: 1.6;
-  max-width: 480px;
-  margin-bottom: 30px;
+  line-height: 1.55;
+  max-width: 460px;
+  margin-bottom: 24px;
   font-family: var(--bl-font-sans);
 }
 
@@ -309,20 +317,20 @@ body.bl-theme-dark .bl-hero-subtext-shop,
 .bl-hero-trust-row-shop {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-bottom: 32px;
+  gap: 22px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
 }
 
 .bl-trust-item-shop {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 
 .bl-trust-icon-circle {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #faece5;
   color: #934a26;
@@ -343,8 +351,8 @@ body.bl-theme-dark .bl-trust-icon-circle,
 .bl-trust-text-stack {
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
-  font-size: 0.8rem;
+  line-height: 1.2;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #1e293b;
   font-family: var(--bl-font-sans);
@@ -362,15 +370,18 @@ body.bl-theme-dark .bl-trust-text-stack,
   flex-wrap: wrap;
 }
 
-.bl-hero-right-shop {
+/* Right dark backdrop panel with cursive script matching user mockup */
+.bl-hero-right-dark-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(210px, 20vw, 290px);
+  background: linear-gradient(90deg, rgba(24, 20, 18, 0) 0%, rgba(24, 20, 18, 0.82) 20%, #1a1614 45%, #14110f 100%);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  flex-shrink: 0;
-  align-self: center;
-  position: relative;
-  z-index: 2;
-  margin-right: clamp(10px, 3vw, 40px);
+  justify-content: center;
+  z-index: 3;
 }
 
 .bl-hero-script-stack {
@@ -378,12 +389,13 @@ body.bl-theme-dark .bl-trust-text-stack,
   flex-direction: column;
   align-items: flex-start;
   font-family: var(--bl-font-script);
-  font-size: clamp(2.8rem, 3.4vw, 3.6rem);
+  font-size: clamp(2.6rem, 3.2vw, 3.5rem);
   line-height: 1.05;
-  color: #d4a373;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  color: #d4a373 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
   user-select: none;
   letter-spacing: 0.5px;
+  padding: 0 20px;
 }
 
 .bl-script-line-1 {
@@ -391,11 +403,11 @@ body.bl-theme-dark .bl-trust-text-stack,
 }
 
 .bl-script-line-2 {
-  padding-left: 22px;
+  padding-left: 20px;
 }
 
 .bl-script-line-3 {
-  padding-left: 44px;
+  padding-left: 42px;
 }
 
 .bl-hero-section {
@@ -3355,17 +3367,22 @@ body.bl-theme-light .bl-item-type-card.selected,
     min-height: auto;
   }
 
-  .bl-shop-hero-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 36px 20px;
+  .bl-shop-hero-fullwidth {
+    height: auto;
     min-height: auto;
+    background-position: center right;
   }
 
-  .bl-hero-right-shop {
-    margin-right: 0;
-    margin-top: 24px;
-    align-self: flex-start;
+  .bl-shop-hero-inner {
+    padding: 36px 1.5rem;
+  }
+
+  .bl-hero-right-dark-panel {
+    position: static;
+    width: 100%;
+    background: #14110f;
+    padding: 24px;
+    justify-content: flex-start;
   }
 
   .bl-restore-heading {

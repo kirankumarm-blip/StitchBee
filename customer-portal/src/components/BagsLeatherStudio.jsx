@@ -1187,15 +1187,15 @@ export default function BagsLeatherStudio({
                 </div>
               </div>
 
-              {/* Hero Right Visual: Script tag stack on the dark shadow backdrop */}
-              <div className="bl-hero-right-shop">
-                <div className="bl-hero-script-stack">
-                  <span className="bl-script-line bl-script-line-1">Custom.</span>
-                  <span className="bl-script-line bl-script-line-2">Stylish.</span>
-                  <span className="bl-script-line bl-script-line-3">Yours.</span>
-                </div>
-              </div>
+            </div>
 
+            {/* Hero Right Visual: Dark panel backdrop with gold script */}
+            <div className="bl-hero-right-dark-panel">
+              <div className="bl-hero-script-stack">
+                <span className="bl-script-line bl-script-line-1">Custom.</span>
+                <span className="bl-script-line bl-script-line-2">Stylish.</span>
+                <span className="bl-script-line bl-script-line-3">Yours.</span>
+              </div>
             </div>
           </section>
 
