@@ -81,8 +81,19 @@ export default function BagsLeatherStudio({
   const [customQuoteSubmitted, setCustomQuoteSubmitted] = useState(false);
 
   // Repair & Restore state
-  const [selectedDamageOption, setSelectedDamageOption] = useState('zip');
+  const [selectedRestoreCategory, setSelectedRestoreCategory] = useState('handbag');
+  const [selectedIssue, setSelectedIssue] = useState('zip');
   const [selectedHotspot, setSelectedHotspot] = useState('zip');
+  const [accessorySubtype, setAccessorySubtype] = useState('Wallet');
+  const [isFading, setIsFading] = useState(false);
+  const [customItemType, setCustomItemType] = useState('');
+  const [customDescription, setCustomDescription] = useState('');
+  const [selectedBookingRepair, setSelectedBookingRepair] = useState({
+    category: 'Luxury Handbags',
+    issue: 'Zip & Runner Damaged',
+    service: 'Zip & Runner Restoration',
+    startingPrice: 249
+  });
   const [baCategory, setBaCategory] = useState('handbags');
   const [sliderPos, setSliderPos] = useState(50);
   const [isDraggingSlider, setIsDraggingSlider] = useState(false);
@@ -90,12 +101,109 @@ export default function BagsLeatherStudio({
   // Restoration 4-Step Wizard State
   const [wizardStep, setWizardStep] = useState(1); // 1: Item, 2: Damage, 3: Photos, 4: Pickup, 5: Confirmed
   const [wizardItem, setWizardItem] = useState('handbag');
+  const [wizardDamages, setWizardDamages] = useState(['Zip & Runner Damaged']);
   const [wizardPhotos, setWizardPhotos] = useState([
     'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=300&auto=format&fit=crop',
     null,
     null,
     null
   ]);
+
+  const scrollToDiagnosis = () => {
+    const el = document.getElementById('what-needs-attention');
+    if (el) {
+      const yOffset = -90;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  const handleCategorySelect = (catKey) => {
+    if (selectedRestoreCategory === catKey) {
+      scrollToDiagnosis();
+      return;
+    }
+
+    setIsFading(true);
+    setSelectedRestoreCategory(catKey);
+    setWizardItem(catKey);
+
+    const catData = repairCategories[catKey];
+    if (catData && catData.issues && catData.issues.length > 0) {
+      const firstIssue = catData.issues[0];
+      setSelectedIssue(firstIssue.id);
+      setSelectedHotspot(firstIssue.id);
+      setWizardDamages([firstIssue.label]);
+      setSelectedBookingRepair({
+        category: catData.title,
+        issue: firstIssue.label,
+        service: firstIssue.priorityService || (catData.services && catData.services[0]?.title) || 'General Restoration',
+        startingPrice: (catData.services && catData.services[0]?.priceNum) || 249
+      });
+    }
+
+    setTimeout(() => {
+      setIsFading(false);
+    }, 200);
+
+    setTimeout(() => {
+      scrollToDiagnosis();
+    }, 80);
+  };
+
+  const handleHotspotClick = (pin) => {
+    setSelectedHotspot(pin.id);
+    setSelectedIssue(pin.issueId);
+    const catData = repairCategories[selectedRestoreCategory] || repairCategories.handbag;
+    const matchedIssue = catData.issues?.find(i => i.id === pin.issueId);
+    if (matchedIssue) {
+      setWizardDamages([matchedIssue.label]);
+      setSelectedBookingRepair(prev => ({
+        category: catData.title,
+        issue: matchedIssue.label,
+        service: matchedIssue.priorityService || prev?.service || 'Restoration Service',
+        startingPrice: prev?.startingPrice || 249
+      }));
+      showToast(`Selected: ${matchedIssue.label}`);
+    }
+  };
+
+  const handleIssueClick = (issue) => {
+    setSelectedIssue(issue.id);
+    setSelectedHotspot(issue.id);
+    setWizardDamages([issue.label]);
+    const catData = repairCategories[selectedRestoreCategory] || repairCategories.handbag;
+    setSelectedBookingRepair(prev => ({
+      category: catData.title,
+      issue: issue.label,
+      service: issue.priorityService || prev?.service || 'Restoration Service',
+      startingPrice: prev?.startingPrice || 249
+    }));
+    showToast(`Selected: ${issue.label}`);
+  };
+
+  const handleSelectRepair = (service) => {
+    const catData = repairCategories[selectedRestoreCategory] || repairCategories.handbag;
+    const issueObj = catData.issues?.find(i => i.id === selectedIssue);
+    const repairInfo = {
+      category: catData.title,
+      issue: issueObj ? issueObj.label : 'General Restoration',
+      service: service.title,
+      startingPrice: service.priceNum || 249
+    };
+    setSelectedBookingRepair(repairInfo);
+    setWizardItem(selectedRestoreCategory);
+    setWizardDamages([service.title]);
+    setWizardStep(3); // Directly continues to photo upload / assessment
+    
+    const wizEl = document.getElementById('start-restoration-wizard');
+    if (wizEl) {
+      const yOffset = -90;
+      const y = wizEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    showToast(`Selected "${service.title}"! Attach inspection photos below.`);
+  };
 
   const handlePhotoFileChange = (e, targetIdx) => {
     const files = Array.from(e.target.files || []);
@@ -411,89 +519,552 @@ export default function BagsLeatherStudio({
   const restoreCategories = [
     {
       id: 'rc-handbags',
+      key: 'handbag',
       title: 'Luxury Handbags',
       count: '12 restoration types',
       img: '/restore_cat_handbag.jpg'
     },
     {
       id: 'rc-luggage',
+      key: 'luggage',
       title: 'Travel & Luggage',
       count: '9 restoration types',
       img: '/restore_cat_luggage.jpg'
     },
     {
       id: 'rc-backpacks',
+      key: 'backpack',
       title: 'Backpacks',
       count: '7 restoration types',
       img: '/restore_cat_backpack.jpg'
     },
     {
       id: 'rc-briefcases',
+      key: 'briefcase',
       title: 'Briefcases',
       count: '8 restoration types',
       img: '/restore_cat_briefcase.jpg'
     },
     {
       id: 'rc-accessories',
+      key: 'accessories',
       title: 'Leather Accessories',
       count: '10 restoration types',
       img: '/restore_cat_accessories.jpg'
     },
     {
       id: 'rc-other',
+      key: 'other',
       title: 'Something Else?',
       count: 'Get a custom assessment',
       img: '/restore_cat_other.jpg'
     }
   ];
 
-  // 8 Selectable Common Issues from Image 2
-  const commonIssues = [
-    { id: 'handle', label: 'Broken Handle / Strap', icon: '🧳' },
-    { id: 'zip', label: 'Zip & Runner Damaged', icon: '⚡' },
-    { id: 'lining', label: 'Torn Inner Lining', icon: '👜' },
-    { id: 'surface', label: 'Cracked Leather Surface', icon: '💧' },
-    { id: 'wheels', label: 'Broken Wheels / Trolley Rod', icon: '🛞' },
-    { id: 'stitching', label: 'Stitching Came Undone', icon: '🧵' },
-    { id: 'color', label: 'Colour Fading / Patina', icon: '🎨' },
-    { id: 'unsure', label: "I'm Not Sure", icon: '❓' }
-  ];
+  // Data-Driven Repair Categories Config
+  const repairCategories = {
+    handbag: {
+      key: 'handbag',
+      title: 'Luxury Handbags',
+      sectionLabel: 'YOUR HANDBAG',
+      heading: 'What needs attention?',
+      description: 'Tap the area on your bag or select from the options below.',
+      image: '/bag_diagnosis_anatomy.png',
+      hotspots: [
+        { id: 'handle', label: 'Handle', top: '10%', left: '44%', issueId: 'handle' },
+        { id: 'zip', label: 'Zip / Hardware', top: '35%', left: '68%', issueId: 'zip' },
+        { id: 'corner', label: 'Corner', top: '82%', left: '26%', issueId: 'surface' },
+        { id: 'surface', label: 'Surface', top: '56%', left: '45%', issueId: 'surface' },
+        { id: 'lining', label: 'Lining', top: '30%', left: '33%', issueId: 'lining' },
+        { id: 'strap', label: 'Strap', top: '22%', left: '16%', issueId: 'handle' }
+      ],
+      issues: [
+        { id: 'handle', label: 'Broken Handle / Strap', icon: '🧳', priorityService: 'Handle / Strap Replacement' },
+        { id: 'zip', label: 'Zip & Runner Damaged', icon: '⚡', priorityService: 'Zip & Runner Restoration' },
+        { id: 'lining', label: 'Torn Inner Lining', icon: '👜', priorityService: 'Inner Lining Replacement' },
+        { id: 'surface', label: 'Cracked Leather Surface', icon: '💧', priorityService: 'Corner & Edge Restoration' },
+        { id: 'stitching', label: 'Stitching Came Undone', icon: '🧵', priorityService: 'Leather Re-Dyeing' },
+        { id: 'color', label: 'Colour Fading / Patina', icon: '🎨', priorityService: 'Leather Re-Dyeing' },
+        { id: 'hardware', label: 'Hardware Damaged', icon: '🔒', priorityService: 'Hardware Replacement' },
+        { id: 'unsure', label: "I'm Not Sure", icon: '❓', priorityService: 'Zip & Runner Restoration' }
+      ],
+      recommendedHeading: 'Recommended for Your Handbag',
+      services: [
+        {
+          id: 'hb-zip',
+          title: 'Zip & Runner Restoration',
+          desc: 'Replace damaged sliders, runners or zipper components while retaining original construction.',
+          price: '₹249',
+          priceNum: 249,
+          turnaround: '2-4 days',
+          img: '/rec_zip_runner.png',
+          matchIssues: ['zip', 'unsure']
+        },
+        {
+          id: 'hb-handle',
+          title: 'Handle / Strap Replacement',
+          desc: 'Replace worn or broken handles and shoulder straps with matching leather and hardware.',
+          price: '₹499',
+          priceNum: 499,
+          turnaround: '3-5 days',
+          img: '/rec_handle_strap.png',
+          matchIssues: ['handle']
+        },
+        {
+          id: 'hb-lining',
+          title: 'Inner Lining Replacement',
+          desc: 'Restore torn or stained linings with premium fabrics/canvas matching original styles.',
+          price: '₹499',
+          priceNum: 499,
+          turnaround: '3-5 days',
+          img: '/rec_inner_lining.png',
+          matchIssues: ['lining']
+        },
+        {
+          id: 'hb-corner',
+          title: 'Corner & Edge Restoration',
+          desc: 'Repair scuffs, cracks, and worn corners with color-matched leather and finishing.',
+          price: '₹349',
+          priceNum: 349,
+          turnaround: '2-5 days',
+          img: '/rec_corner_edge.png',
+          matchIssues: ['surface']
+        },
+        {
+          id: 'hb-redye',
+          title: 'Leather Re-Dyeing',
+          desc: 'Deep clean, color restore, and condition faded luxury leather with expert patina blending.',
+          price: '₹699',
+          priceNum: 699,
+          turnaround: '4-6 days',
+          img: '/restore_cat_handbag.jpg',
+          matchIssues: ['color', 'stitching']
+        },
+        {
+          id: 'hb-hw',
+          title: 'Hardware Replacement',
+          desc: 'Fix or replace tarnished clasps, rings, studs, locks, and metallic embellishments.',
+          price: '₹399',
+          priceNum: 399,
+          turnaround: '3-5 days',
+          img: '/rec_zip_runner.png',
+          matchIssues: ['hardware']
+        }
+      ]
+    },
 
-  // 4 Recommended Services from Image 2
-  const recommendedServices = [
-    {
-      id: 'serv-1',
-      title: 'Zip & Runner Restoration',
-      desc: 'Replace damaged sliders, runners or zipper components while retaining original construction.',
-      price: '₹249',
-      turnaround: '2-4 days',
-      img: '/rec_zip_runner.png'
+    luggage: {
+      key: 'luggage',
+      title: 'Travel & Luggage',
+      sectionLabel: 'YOUR LUGGAGE',
+      heading: 'What needs attention?',
+      description: 'Tap the damaged area on your luggage or choose an issue below.',
+      image: '/restore_cat_luggage.jpg',
+      hotspots: [
+        { id: 'trolley-handle', label: 'Trolley Handle', top: '8%', left: '46%', issueId: 'trolley-handle' },
+        { id: 'zip', label: 'Main Zip', top: '38%', left: '76%', issueId: 'zip' },
+        { id: 'wheel', label: 'Wheel', top: '88%', left: '26%', issueId: 'wheel' },
+        { id: 'shell', label: 'Corner / Shell', top: '55%', left: '32%', issueId: 'shell' },
+        { id: 'lock', label: 'Lock', top: '48%', left: '80%', issueId: 'lock' },
+        { id: 'lining', label: 'Inner Lining', top: '65%', left: '55%', issueId: 'lining' }
+      ],
+      issues: [
+        { id: 'wheel', label: 'Broken Wheels', icon: '🛞', priorityService: 'Spinner Wheel Replacement' },
+        { id: 'trolley-handle', label: 'Trolley Handle / Rod Damaged', icon: '🧳', priorityService: 'Trolley Handle Replacement' },
+        { id: 'zip', label: 'Zip & Runner Damaged', icon: '⚡', priorityService: 'Zip & Runner Restoration' },
+        { id: 'lock', label: 'Lock Damaged', icon: '🔒', priorityService: 'Lock Replacement' },
+        { id: 'shell', label: 'Cracked / Dented Shell', icon: '🛡️', priorityService: 'Shell / Corner Repair' },
+        { id: 'lining', label: 'Torn Inner Lining', icon: '👜', priorityService: 'Inner Lining Replacement' },
+        { id: 'stitching', label: 'Stitching Damage', icon: '🧵', priorityService: 'Trolley Base Repair' },
+        { id: 'handle', label: 'Handle Damaged', icon: '🛠️', priorityService: 'Trolley Handle Replacement' },
+        { id: 'unsure', label: "I'm Not Sure", icon: '❓', priorityService: 'Spinner Wheel Replacement' }
+      ],
+      recommendedHeading: 'Recommended for Your Luggage',
+      services: [
+        {
+          id: 'lug-wheel',
+          title: 'Spinner Wheel Replacement',
+          desc: 'Replace noisy, jammed, or broken 360-degree caster wheels with smooth high-durability bearings.',
+          price: '₹399',
+          priceNum: 399,
+          turnaround: '2-3 days',
+          img: '/restore_cat_luggage.jpg',
+          matchIssues: ['wheel', 'unsure']
+        },
+        {
+          id: 'lug-wheel-house',
+          title: 'Wheel Housing Repair',
+          desc: 'Reinforce cracked wheel mounts, axles, and undercarriage housings for heavy-load stability.',
+          price: '₹449',
+          priceNum: 449,
+          turnaround: '2-4 days',
+          img: '/restore_cat_luggage.jpg',
+          matchIssues: ['wheel']
+        },
+        {
+          id: 'lug-base',
+          title: 'Trolley Base Repair',
+          desc: 'Re-align bent trolley structural chassis, bottom bumpers, and rivets to restore smooth rolling.',
+          price: '₹499',
+          priceNum: 499,
+          turnaround: '3-5 days',
+          img: '/restore_cat_luggage.jpg',
+          matchIssues: ['wheel', 'stitching']
+        },
+        {
+          id: 'lug-handle',
+          title: 'Trolley Handle Replacement',
+          desc: 'Fix or replace stuck, bent telescopic extension rods and top push-button grip mechanisms.',
+          price: '₹599',
+          priceNum: 599,
+          turnaround: '3-5 days',
+          img: '/restore_cat_luggage.jpg',
+          matchIssues: ['trolley-handle', 'handle']
+        },
+        {
+          id: 'lug-zip',
+          title: 'Zip & Runner Restoration',
+          desc: 'Heavy-duty zip slider re-tracking, tooth realignment, and weather-seal burst repair.',
+          price: '₹299',
+          priceNum: 299,
+          turnaround: '2-4 days',
+          img: '/rec_zip_runner.png',
+          matchIssues: ['zip']
+        },
+        {
+          id: 'lug-lock',
+          title: 'Lock Replacement',
+          desc: 'Reset or replace faulty TSA combination dials, key barrels, and interlocking sliders.',
+          price: '₹349',
+          priceNum: 349,
+          turnaround: '2-3 days',
+          img: '/restore_cat_luggage.jpg',
+          matchIssues: ['lock']
+        },
+        {
+          id: 'lug-shell',
+          title: 'Shell / Corner Repair',
+          desc: 'Fiberglass/polycarbonate weld repair for cracked luggage bodies and dent removal.',
+          price: '₹549',
+          priceNum: 549,
+          turnaround: '3-6 days',
+          img: '/rec_corner_edge.png',
+          matchIssues: ['shell']
+        },
+        {
+          id: 'lug-lining',
+          title: 'Inner Lining Replacement',
+          desc: 'Replace torn divider compartments, elastic packing straps, and zipper privacy pockets.',
+          price: '₹499',
+          priceNum: 499,
+          turnaround: '3-5 days',
+          img: '/rec_inner_lining.png',
+          matchIssues: ['lining']
+        }
+      ]
     },
-    {
-      id: 'serv-2',
-      title: 'Handle / Strap Replacement',
-      desc: 'Replace worn or broken handles and shoulder straps with matching leather and hardware.',
-      price: '₹499',
-      turnaround: '3-5 days',
-      img: '/rec_handle_strap.png'
+
+    backpack: {
+      key: 'backpack',
+      title: 'Backpacks',
+      sectionLabel: 'YOUR BACKPACK',
+      heading: 'What needs attention?',
+      description: 'Tap the damaged area on your backpack or choose an issue below.',
+      image: '/restore_cat_backpack.jpg',
+      hotspots: [
+        { id: 'shoulder-strap', label: 'Shoulder Strap', top: '25%', left: '22%', issueId: 'shoulder-strap' },
+        { id: 'top-handle', label: 'Top Handle', top: '10%', left: '48%', issueId: 'top-handle' },
+        { id: 'zip', label: 'Main Zip', top: '34%', left: '65%', issueId: 'zip' },
+        { id: 'buckle', label: 'Buckle', top: '65%', left: '72%', issueId: 'buckle' },
+        { id: 'surface', label: 'Surface', top: '55%', left: '42%', issueId: 'surface' },
+        { id: 'lining', label: 'Inner Lining', top: '42%', left: '35%', issueId: 'lining' }
+      ],
+      issues: [
+        { id: 'shoulder-strap', label: 'Broken Shoulder Strap', icon: '🎒', priorityService: 'Shoulder Strap Replacement' },
+        { id: 'zip', label: 'Zip / Runner Damaged', icon: '⚡', priorityService: 'Zip Restoration' },
+        { id: 'top-handle', label: 'Top Handle Damaged', icon: '🧳', priorityService: 'Top Handle Repair' },
+        { id: 'surface', label: 'Torn Fabric / Leather', icon: '✂️', priorityService: 'Fabric / Leather Patch Repair' },
+        { id: 'buckle', label: 'Broken Buckle', icon: '🔗', priorityService: 'Buckle Replacement' },
+        { id: 'lining', label: 'Torn Inner Lining', icon: '👜', priorityService: 'Inner Lining Repair' },
+        { id: 'stitching', label: 'Stitching Came Undone', icon: '🧵', priorityService: 'Shoulder Strap Replacement' },
+        { id: 'color', label: 'Colour Fading', icon: '🎨', priorityService: 'Fabric / Leather Patch Repair' },
+        { id: 'unsure', label: "I'm Not Sure", icon: '❓', priorityService: 'Zip Restoration' }
+      ],
+      recommendedHeading: 'Recommended for Your Backpack',
+      services: [
+        {
+          id: 'bp-zip',
+          title: 'Zip Restoration',
+          desc: 'Re-align and replace heavy-duty backpack zippers, cord pulls, and dual slider runners.',
+          price: '₹249',
+          priceNum: 249,
+          turnaround: '2-4 days',
+          img: '/rec_zip_runner.png',
+          matchIssues: ['zip', 'unsure']
+        },
+        {
+          id: 'bp-strap',
+          title: 'Shoulder Strap Replacement',
+          desc: 'Reinforce load-bearing strap anchors, replace torn padding, and re-stitch webbing.',
+          price: '₹399',
+          priceNum: 399,
+          turnaround: '3-5 days',
+          img: '/restore_cat_backpack.jpg',
+          matchIssues: ['shoulder-strap', 'stitching']
+        },
+        {
+          id: 'bp-handle',
+          title: 'Top Handle Repair',
+          desc: 'Reconstruct torn haul loop handles with heavy-duty bar-tack reinforced stitching.',
+          price: '₹349',
+          priceNum: 349,
+          turnaround: '2-4 days',
+          img: '/rec_handle_strap.png',
+          matchIssues: ['top-handle']
+        },
+        {
+          id: 'bp-buckle',
+          title: 'Buckle Replacement',
+          desc: 'Replace broken quick-release side-squeeze buckles, tension sliders, and sternum clasps.',
+          price: '₹199',
+          priceNum: 199,
+          turnaround: '1-3 days',
+          img: '/restore_cat_backpack.jpg',
+          matchIssues: ['buckle']
+        },
+        {
+          id: 'bp-patch',
+          title: 'Fabric / Leather Patch Repair',
+          desc: 'Invisible bonded darning and matched leather overlay patches for abrasions and cuts.',
+          price: '₹449',
+          priceNum: 449,
+          turnaround: '3-5 days',
+          img: '/rec_corner_edge.png',
+          matchIssues: ['surface', 'color']
+        },
+        {
+          id: 'bp-lining',
+          title: 'Inner Lining Repair',
+          desc: 'Repair torn laptop compartment padding, hydration sleeve dividers, and seam tapes.',
+          price: '₹399',
+          priceNum: 399,
+          turnaround: '2-4 days',
+          img: '/rec_inner_lining.png',
+          matchIssues: ['lining']
+        }
+      ]
     },
-    {
-      id: 'serv-3',
-      title: 'Inner Lining Replacement',
-      desc: 'Restore torn or stained linings with premium fabrics/canvas matching original styles.',
-      price: '₹499',
-      turnaround: '3-5 days',
-      img: '/rec_inner_lining.png'
+
+    briefcase: {
+      key: 'briefcase',
+      title: 'Briefcases',
+      sectionLabel: 'YOUR BRIEFCASE',
+      heading: 'What needs attention?',
+      description: 'Tap the damaged area on your briefcase or choose an issue below.',
+      image: '/restore_cat_briefcase.jpg',
+      hotspots: [
+        { id: 'handle', label: 'Handle', top: '15%', left: '48%', issueId: 'handle' },
+        { id: 'lock', label: 'Lock / Clasp', top: '35%', left: '50%', issueId: 'lock' },
+        { id: 'hinge', label: 'Hinge', top: '75%', left: '18%', issueId: 'hinge' },
+        { id: 'corner', label: 'Corner', top: '80%', left: '78%', issueId: 'corner' },
+        { id: 'surface', label: 'Surface', top: '55%', left: '35%', issueId: 'surface' },
+        { id: 'lining', label: 'Lining', top: '45%', left: '68%', issueId: 'lining' }
+      ],
+      issues: [
+        { id: 'handle', label: 'Broken Handle', icon: '🧳', priorityService: 'Handle Replacement' },
+        { id: 'lock', label: 'Lock / Clasp Damaged', icon: '🔒', priorityService: 'Lock / Clasp Repair' },
+        { id: 'hinge', label: 'Hinge Damaged', icon: '⚙️', priorityService: 'Hinge Replacement' },
+        { id: 'corner', label: 'Corner Wear', icon: '📐', priorityService: 'Corner & Edge Restoration' },
+        { id: 'surface', label: 'Leather Cracking', icon: '💧', priorityService: 'Leather Re-Dyeing' },
+        { id: 'lining', label: 'Torn Inner Lining', icon: '👜', priorityService: 'Inner Lining Replacement' },
+        { id: 'stitching', label: 'Stitching Damage', icon: '🧵', priorityService: 'Corner & Edge Restoration' },
+        { id: 'color', label: 'Colour Fading', icon: '🎨', priorityService: 'Leather Re-Dyeing' },
+        { id: 'unsure', label: "I'm Not Sure", icon: '❓', priorityService: 'Handle Replacement' }
+      ],
+      recommendedHeading: 'Recommended for Your Briefcase',
+      services: [
+        {
+          id: 'bc-handle',
+          title: 'Handle Replacement',
+          desc: 'Re-craft structured bridle leather handles, molded cores, and brass mounting anchors.',
+          price: '₹499',
+          priceNum: 499,
+          turnaround: '3-5 days',
+          img: '/rec_handle_strap.png',
+          matchIssues: ['handle', 'unsure']
+        },
+        {
+          id: 'bc-lock',
+          title: 'Lock / Clasp Repair',
+          desc: 'Restore key-lock latches, spring catches, combination dials, and brass tongue locks.',
+          price: '₹399',
+          priceNum: 399,
+          turnaround: '2-4 days',
+          img: '/restore_cat_briefcase.jpg',
+          matchIssues: ['lock']
+        },
+        {
+          id: 'bc-hinge',
+          title: 'Hinge Replacement',
+          desc: 'Repair or swap out loose metal stay hinges, rivets, and internal folding supports.',
+          price: '₹449',
+          priceNum: 449,
+          turnaround: '3-5 days',
+          img: '/restore_cat_briefcase.jpg',
+          matchIssues: ['hinge']
+        },
+        {
+          id: 'bc-corner',
+          title: 'Corner & Edge Restoration',
+          desc: 'Repair scuffed structural piping, edge coat re-glazing, and leather corner cap guards.',
+          price: '₹349',
+          priceNum: 349,
+          turnaround: '2-4 days',
+          img: '/rec_corner_edge.png',
+          matchIssues: ['corner', 'stitching']
+        },
+        {
+          id: 'bc-redye',
+          title: 'Leather Re-Dyeing',
+          desc: 'Remove deep scratches, nourish vegetable-tanned leathers, and restore rich executive luster.',
+          price: '₹699',
+          priceNum: 699,
+          turnaround: '4-6 days',
+          img: '/restore_cat_briefcase.jpg',
+          matchIssues: ['surface', 'color']
+        },
+        {
+          id: 'bc-lining',
+          title: 'Inner Lining Replacement',
+          desc: 'Re-line document partitions, pigskin or suede interiors, and pen loop pockets.',
+          price: '₹499',
+          priceNum: 499,
+          turnaround: '3-5 days',
+          img: '/rec_inner_lining.png',
+          matchIssues: ['lining']
+        }
+      ]
     },
-    {
-      id: 'serv-4',
-      title: 'Corner & Edge Restoration',
-      desc: 'Repair scuffs, cracks, and worn corners with color-matched leather and finishing.',
-      price: '₹349',
-      turnaround: '2-5 days',
-      img: '/rec_corner_edge.png'
+
+    accessories: {
+      key: 'accessories',
+      title: 'Leather Accessories',
+      sectionLabel: 'YOUR LEATHER ITEM',
+      heading: 'What needs attention?',
+      description: 'Select the damaged area or choose the issue affecting your leather item.',
+      image: '/restore_cat_accessories.jpg',
+      subtypes: ['Wallet', 'Belt', 'Pouch', 'Card Holder', 'Small Leather Item'],
+      hotspots: [
+        { id: 'edge', label: 'Edge Wear', top: '35%', left: '22%', issueId: 'edge' },
+        { id: 'stitching', label: 'Stitching', top: '65%', left: '35%', issueId: 'stitching' },
+        { id: 'snap', label: 'Buckle / Snap', top: '25%', left: '72%', issueId: 'snap' },
+        { id: 'surface', label: 'Surface', top: '52%', left: '55%', issueId: 'surface' },
+        { id: 'lining', label: 'Pocket / Lining', top: '78%', left: '68%', issueId: 'cracking' }
+      ],
+      issues: [
+        { id: 'stitching', label: 'Stitching Came Undone', icon: '🧵', priorityService: 'Leather Re-Stitching' },
+        { id: 'cracking', label: 'Leather Cracking', icon: '💧', priorityService: 'Leather Conditioning' },
+        { id: 'color', label: 'Colour Fading', icon: '🎨', priorityService: 'Leather Re-Dyeing' },
+        { id: 'edge', label: 'Edge Wear', icon: '📐', priorityService: 'Edge Restoration' },
+        { id: 'buckle', label: 'Broken Buckle', icon: '🔗', priorityService: 'Buckle Replacement' },
+        { id: 'snap', label: 'Broken Snap / Button', icon: '🔘', priorityService: 'Snap / Button Replacement' },
+        { id: 'surface', label: 'Surface Scratches', icon: '✨', priorityService: 'Leather Conditioning' },
+        { id: 'dryness', label: 'Leather Dryness', icon: '🧴', priorityService: 'Leather Conditioning' },
+        { id: 'unsure', label: "I'm Not Sure", icon: '❓', priorityService: 'Edge Restoration' }
+      ],
+      recommendedHeading: 'Recommended for Your Leather Item',
+      services: [
+        {
+          id: 'acc-stitch',
+          title: 'Leather Re-Stitching',
+          desc: 'Hand-sewn saddle stitching with waxed linen thread matching exact gauge and tension.',
+          price: '₹199',
+          priceNum: 199,
+          turnaround: '1-3 days',
+          img: '/restore_cat_accessories.jpg',
+          matchIssues: ['stitching']
+        },
+        {
+          id: 'acc-edge',
+          title: 'Edge Restoration',
+          desc: 'Beveling, burnishing, and multi-coat Italian edge paint application for flawless sealed edges.',
+          price: '₹249',
+          priceNum: 249,
+          turnaround: '2-4 days',
+          img: '/rec_corner_edge.png',
+          matchIssues: ['edge', 'unsure']
+        },
+        {
+          id: 'acc-redye',
+          title: 'Leather Re-Dyeing',
+          desc: 'Color re-pigmentation and sealing to mask pocket patina and restore original leather tone.',
+          price: '₹399',
+          priceNum: 399,
+          turnaround: '3-5 days',
+          img: '/restore_cat_accessories.jpg',
+          matchIssues: ['color', 'cracking']
+        },
+        {
+          id: 'acc-buckle',
+          title: 'Buckle Replacement',
+          desc: 'Solid brass, nickel, or gunmetal buckle replacement and strap shortening / hole punching.',
+          price: '₹249',
+          priceNum: 249,
+          turnaround: '1-3 days',
+          img: '/restore_cat_accessories.jpg',
+          matchIssues: ['buckle']
+        },
+        {
+          id: 'acc-snap',
+          title: 'Snap / Button Replacement',
+          desc: 'Replacement of magnetic clasps, press studs, and branded snaps without leather distortion.',
+          price: '₹149',
+          priceNum: 149,
+          turnaround: '1-2 days',
+          img: '/restore_cat_accessories.jpg',
+          matchIssues: ['snap']
+        },
+        {
+          id: 'acc-condition',
+          title: 'Leather Conditioning',
+          desc: 'Deep nourishing beeswax and lanolin treatment to reverse dryness and buff away fine scratches.',
+          price: '₹199',
+          priceNum: 199,
+          turnaround: '1-2 days',
+          img: '/restore_cat_accessories.jpg',
+          matchIssues: ['dryness', 'surface']
+        }
+      ]
+    },
+
+    other: {
+      key: 'other',
+      title: 'Something Else?',
+      sectionLabel: 'CUSTOM ASSESSMENT',
+      heading: "Tell us what you'd like restored.",
+      description: "Can't find your item above? Upload a few photos and our specialists will assess the item and recommend the right restoration service.",
+      recommendedHeading: 'Complimentary Diagnostic Assessment',
+      services: [
+        {
+          id: 'other-diag',
+          title: 'Complimentary Specialist Assessment',
+          desc: 'Our master craftsmen review your photos and send a guaranteed upfront estimate within 30 minutes.',
+          price: 'Free',
+          priceNum: 0,
+          turnaround: 'Same day',
+          img: '/restore_cat_other.jpg',
+          matchIssues: ['custom']
+        }
+      ]
     }
-  ];
+  };
+
+  const currentCatData = repairCategories[selectedRestoreCategory] || repairCategories.handbag;
+  const sortedServices = [...(currentCatData.services || [])].sort((a, b) => {
+    const aMatch = a.matchIssues?.includes(selectedIssue) ? 1 : 0;
+    const bMatch = b.matchIssues?.includes(selectedIssue) ? 1 : 0;
+    return bMatch - aMatch;
+  });
 
   // 3 Testimonials from Image 2: Customer Stories
   const restoreTestimonials = [
@@ -1135,28 +1706,26 @@ export default function BagsLeatherStudio({
 
               <div className="bl-restore-expertise-grid">
                 {restoreCategories.map(cat => {
-                  const itemKey = cat.id.replace('rc-', '');
-                  const isSelected = wizardItem === itemKey;
+                  const isSelected = selectedRestoreCategory === cat.key;
                   return (
                     <div 
                       key={cat.id} 
-                      className={`bl-restore-expertise-card ${isSelected ? 'active' : ''}`}
-                      onClick={() => {
-                        setWizardItem(itemKey);
-                        if (cat.id === 'rc-other') {
-                          setAssessmentModalOpen(true);
-                        } else {
-                          scrollToId('what-needs-attention');
-                        }
-                      }}
+                      className={`bl-restore-expertise-card ${isSelected ? 'selected active' : ''}`}
+                      onClick={() => handleCategorySelect(cat.key)}
                     >
                       <img 
                         src={cat.img} 
                         alt={cat.title} 
                         className="bl-restore-card-bg"
                       />
-                      <div className="bl-restore-card-overlay" />
+                      <div className={`bl-restore-card-overlay ${isSelected ? 'selected' : ''}`} />
                       
+                      {isSelected && (
+                        <div className="bl-cat-selected-badge">
+                          <Check size={13} color="#ffffff" strokeWidth={3} />
+                        </div>
+                      )}
+
                       <div className="bl-restore-card-content">
                         <div className="bl-restore-card-text">
                           <h4 className="bl-restore-card-title">{cat.title}</h4>
@@ -1177,121 +1746,223 @@ export default function BagsLeatherStudio({
           <section id="what-needs-attention" className="bl-section bl-diagnosis-section">
             <div className="bl-container">
               <div className="bl-diagnosis-wrapper">
-                <div className="bl-diagnosis-grid">
-                  
-                  {/* Left Column: Handbag Anatomy with Hotspot Pins */}
-                  <div className="bl-diagnosis-left">
-                    <span className="bl-tag-label">YOUR HANDBAG</span>
-                    <h3 className="bl-serif-title" style={{ fontSize: '1.8rem', margin: '6px 0 10px 0' }}>
-                      What needs attention?
+                {selectedRestoreCategory === 'other' ? (
+                  <div className="bl-custom-assessment-container">
+                    <span className="bl-tag-label bl-tag-label-pink">CUSTOM ASSESSMENT</span>
+                    <h3 className="bl-serif-title" style={{ fontSize: '1.9rem', margin: '8px 0 10px 0' }}>
+                      Tell us what you'd like restored.
                     </h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--bl-text-secondary)', margin: '0 0 24px 0' }}>
-                      Tap the area on the bag or select from the options below.
+                    <p style={{ fontSize: '0.88rem', color: 'var(--bl-text-secondary)', margin: '0 0 28px 0', maxWidth: '640px' }}>
+                      Can't find your item above? Upload a few photos and our specialists will assess the item and recommend the right restoration service.
                     </p>
 
-                    <div className="bl-hotspot-canvas-box">
-                      <img 
-                        src="/bag_diagnosis_anatomy.png" 
-                        alt="Handbag interactive diagnosis" 
-                        className="bl-hotspot-bag-img" 
-                      />
+                    <div className="bl-custom-assessment-form">
+                      <div className="bl-custom-form-group">
+                        <label className="bl-form-label" style={{ fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.05em' }}>ITEM TYPE</label>
+                        <input 
+                          type="text"
+                          value={customItemType}
+                          onChange={(e) => setCustomItemType(e.target.value)}
+                          placeholder="e.g. Camera bag, leather case, musical instrument case..."
+                          className="bl-form-input"
+                          style={{ maxWidth: '540px' }}
+                        />
+                      </div>
 
-                      {/* 5 Pins from Image 2 */}
-                      {/* 1. Handle Pin */}
+                      <div className="bl-custom-form-group">
+                        <label className="bl-form-label" style={{ fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.05em' }}>UPLOAD PHOTOS (2–4 photos)</label>
+                        <div className="bl-photos-drop-grid" style={{ maxWidth: '540px' }}>
+                          {['Full Item', 'Damage Close-Up', 'Another Angle', 'Optional Photo'].map((slotLabel, idx) => {
+                            const photoSrc = wizardPhotos[idx];
+                            const hasPhoto = Boolean(photoSrc);
+                            return (
+                              <div 
+                                key={idx} 
+                                className={`bl-photo-slot ${hasPhoto ? 'filled' : ''}`}
+                                onClick={() => {
+                                  if (!hasPhoto) {
+                                    const inputEl = document.getElementById(`custom-photo-input-${idx}`);
+                                    if (inputEl) inputEl.click();
+                                  }
+                                }}
+                              >
+                                <input 
+                                  id={`custom-photo-input-${idx}`}
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  style={{ display: 'none' }}
+                                  onChange={(e) => handlePhotoFileChange(e, idx)}
+                                />
+                                {hasPhoto ? (
+                                  <>
+                                    <img src={photoSrc} alt={slotLabel} />
+                                    <div className="bl-photo-tag-pill">{slotLabel}</div>
+                                    <div className="bl-photo-overlay">
+                                      <button 
+                                        type="button" 
+                                        className="bl-photo-action-btn"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          const inputEl = document.getElementById(`custom-photo-input-${idx}`);
+                                          if (inputEl) inputEl.click();
+                                        }}
+                                      >
+                                        <RefreshCw size={11} /> Replace
+                                      </button>
+                                      <button 
+                                        type="button" 
+                                        className="bl-photo-action-btn delete"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setWizardPhotos(prev => {
+                                            const next = [...prev];
+                                            next[idx] = null;
+                                            return next;
+                                          });
+                                          showToast('Photo removed');
+                                        }}
+                                      >
+                                        <Trash2 size={12} />
+                                      </button>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="bl-photo-empty">
+                                    <Camera size={18} color="var(--bl-pink)" />
+                                    <span>{slotLabel}</span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div className="bl-custom-form-group">
+                        <label className="bl-form-label" style={{ fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.05em' }}>DESCRIPTION</label>
+                        <textarea 
+                          rows={3}
+                          value={customDescription}
+                          onChange={(e) => setCustomDescription(e.target.value)}
+                          placeholder="Tell us what is damaged or what you would like restored..."
+                          className="bl-notes-textarea"
+                          style={{ maxWidth: '540px' }}
+                        />
+                      </div>
+
                       <button 
-                        className={`bl-hotspot-pin pin-handle ${selectedHotspot === 'handle' ? 'active' : ''}`}
+                        type="button"
+                        className="bl-btn-primary"
+                        style={{ padding: '12px 28px', fontSize: '0.9rem', marginTop: '6px' }}
                         onClick={() => {
-                          setSelectedHotspot('handle');
-                          setSelectedDamageOption('handle');
+                          const itemLabel = customItemType.trim() || 'Custom Item';
+                          const issueLabel = customDescription.trim() || 'Custom Assessment Request';
+                          setSelectedBookingRepair({
+                            category: itemLabel,
+                            issue: issueLabel,
+                            service: 'Complimentary Specialist Assessment',
+                            startingPrice: 0
+                          });
+                          setWizardItem('other');
+                          setWizardDamages([itemLabel ? `${itemLabel} Assessment` : 'Custom Item Assessment']);
+                          setWizardStep(3);
+                          scrollToId('start-restoration-wizard');
+                          showToast('Custom assessment details saved! Complete your booking below.');
                         }}
                       >
-                        <span className="bl-pin-dot" />
-                        <span className="bl-pin-label">Handle</span>
-                      </button>
-
-                      {/* 2. Zip / Hardware Pin */}
-                      <button 
-                        className={`bl-hotspot-pin pin-zip ${selectedHotspot === 'zip' ? 'active' : ''}`}
-                        onClick={() => {
-                          setSelectedHotspot('zip');
-                          setSelectedDamageOption('zip');
-                        }}
-                      >
-                        <span className="bl-pin-dot" />
-                        <span className="bl-pin-label">Zip / Hardware</span>
-                      </button>
-
-                      {/* 3. Lining Pin */}
-                      <button 
-                        className={`bl-hotspot-pin pin-lining ${selectedHotspot === 'lining' ? 'active' : ''}`}
-                        onClick={() => {
-                          setSelectedHotspot('lining');
-                          setSelectedDamageOption('lining');
-                        }}
-                      >
-                        <span className="bl-pin-dot" />
-                        <span className="bl-pin-label">Lining</span>
-                      </button>
-
-                      {/* 4. Surface Pin */}
-                      <button 
-                        className={`bl-hotspot-pin pin-surface ${selectedHotspot === 'surface' ? 'active' : ''}`}
-                        onClick={() => {
-                          setSelectedHotspot('surface');
-                          setSelectedDamageOption('surface');
-                        }}
-                      >
-                        <span className="bl-pin-dot" />
-                        <span className="bl-pin-label">Surface</span>
-                      </button>
-
-                      {/* 5. Corner Pin */}
-                      <button 
-                        className={`bl-hotspot-pin pin-corner ${selectedHotspot === 'corner' ? 'active' : ''}`}
-                        onClick={() => {
-                          setSelectedHotspot('corner');
-                          setSelectedDamageOption('corner');
-                        }}
-                      >
-                        <span className="bl-pin-dot" />
-                        <span className="bl-pin-label">Corner</span>
+                        Get Free Assessment →
                       </button>
                     </div>
                   </div>
+                ) : (
+                  <div className="bl-diagnosis-grid">
+                    
+                    {/* Left Column: Interactive Product Anatomy with Hotspots */}
+                    <div className="bl-diagnosis-left">
+                      <span className="bl-tag-label">{currentCatData.sectionLabel}</span>
+                      <h3 className="bl-serif-title" style={{ fontSize: '1.8rem', margin: '6px 0 10px 0' }}>
+                        {currentCatData.heading}
+                      </h3>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--bl-text-secondary)', margin: '0 0 20px 0' }}>
+                        {currentCatData.description}
+                      </p>
 
-                  {/* Right Column: 8 Common Issues List */}
-                  <div className="bl-diagnosis-right">
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 16px 0', color: 'var(--bl-text-secondary)' }}>
-                      Or choose from common issues:
-                    </h4>
+                      {/* If Accessories category, show sub-item switcher */}
+                      {selectedRestoreCategory === 'accessories' && (
+                        <div className="bl-accessory-subtype-pills">
+                          {currentCatData.subtypes?.map(sub => (
+                            <button 
+                              key={sub}
+                              type="button"
+                              className={`bl-accessory-pill ${accessorySubtype === sub ? 'active' : ''}`}
+                              onClick={() => {
+                                setAccessorySubtype(sub);
+                                showToast(`Selected: ${sub}`);
+                              }}
+                            >
+                              {sub}
+                            </button>
+                          ))}
+                        </div>
+                      )}
 
-                    <div className="bl-issues-list">
-                      {commonIssues.map(issue => {
-                        const isSelected = selectedDamageOption === issue.id;
-                        return (
-                          <div 
-                            key={issue.id}
-                            className={`bl-issue-row ${isSelected ? 'active' : ''}`}
-                            onClick={() => {
-                              setSelectedDamageOption(issue.id);
-                              setSelectedHotspot(issue.id);
-                              showToast(`Identified issue: ${issue.label}`);
-                            }}
-                          >
-                            <div className="bl-issue-row-left">
-                              <span className="bl-issue-icon">{issue.icon}</span>
-                              <span className="bl-issue-title">{issue.label}</span>
+                      <div className="bl-hotspot-canvas-box">
+                        <img 
+                          src={currentCatData.image} 
+                          alt={`${currentCatData.title} interactive diagnosis`} 
+                          className={`bl-hotspot-bag-img ${isFading ? 'fading' : ''}`} 
+                        />
+
+                        {/* Dynamic Hotspots for Current Category */}
+                        {currentCatData.hotspots?.map(pin => {
+                          const isPinActive = selectedHotspot === pin.id || selectedIssue === pin.issueId;
+                          return (
+                            <button 
+                              key={pin.id}
+                              type="button"
+                              className={`bl-hotspot-pin ${isPinActive ? 'active' : ''}`}
+                              style={{ top: pin.top, left: pin.left }}
+                              onClick={() => handleHotspotClick(pin)}
+                            >
+                              <span className="bl-pin-dot" />
+                              <span className="bl-pin-label">{pin.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Right Column: Dynamic Common Issues List */}
+                    <div className="bl-diagnosis-right">
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 16px 0', color: 'var(--bl-text-secondary)' }}>
+                        Or choose from common issues:
+                      </h4>
+
+                      <div className="bl-issues-list">
+                        {currentCatData.issues?.map(issue => {
+                          const isSelected = selectedIssue === issue.id;
+                          return (
+                            <div 
+                              key={issue.id}
+                              className={`bl-issue-row ${isSelected ? 'active' : ''}`}
+                              onClick={() => handleIssueClick(issue)}
+                            >
+                              <div className="bl-issue-row-left">
+                                <span className="bl-issue-icon">{issue.icon}</span>
+                                <span className="bl-issue-title">{issue.label}</span>
+                              </div>
+                              {isSelected && (
+                                <Check size={16} className="bl-issue-check" />
+                              )}
                             </div>
-                            {isSelected && (
-                              <Check size={16} className="bl-issue-check" />
-                            )}
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
 
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -1301,14 +1972,14 @@ export default function BagsLeatherStudio({
             <div className="bl-container">
               <div className="bl-section-header-center">
                 <span className="bl-tag-label">POPULAR SERVICES</span>
-                <h2 className="bl-serif-title bl-section-heading">Recommended for Your Bag</h2>
+                <h2 className="bl-serif-title bl-section-heading">{currentCatData.recommendedHeading}</h2>
                 <p className="bl-section-subtext">
-                  Our most requested restoration services for handbags. Transparent pricing and professional craftsmanship.
+                  Our most requested restoration services for {currentCatData.title.toLowerCase()}. Transparent pricing and professional craftsmanship.
                 </p>
               </div>
 
               <div className="bl-services-grid-4">
-                {recommendedServices.map(service => (
+                {sortedServices.map(service => (
                   <div key={service.id} className="bl-service-card">
                     <div className="bl-serv-img-box">
                       <img src={service.img} alt={service.title} />
@@ -1335,12 +2006,7 @@ export default function BagsLeatherStudio({
                         </button>
                         <button 
                           className="bl-serv-select-btn"
-                          onClick={() => {
-                            setWizardDamages([service.title]);
-                            setWizardStep(2);
-                            scrollToId('start-restoration-wizard');
-                            showToast(`Selected "${service.title}"! Complete your pickup below.`);
-                          }}
+                          onClick={() => handleSelectRepair(service)}
                         >
                           Select Repair
                         </button>
@@ -1605,6 +2271,33 @@ export default function BagsLeatherStudio({
                     ))}
                   </div>
 
+                  {/* Pre-Selected Summary Banner */}
+                  {selectedBookingRepair && (
+                    <div className="bl-wizard-preselected-banner">
+                      <div className="bl-preselected-tag">
+                        <Check size={13} color="#f72585" strokeWidth={3} />
+                        <span>{selectedBookingRepair.category}</span>
+                      </div>
+                      <span className="bl-preselected-sep">•</span>
+                      <div className="bl-preselected-tag">
+                        <Check size={13} color="#f72585" strokeWidth={3} />
+                        <span>{selectedBookingRepair.issue}</span>
+                      </div>
+                      <span className="bl-preselected-sep">•</span>
+                      <div className="bl-preselected-tag">
+                        <Check size={13} color="#f72585" strokeWidth={3} />
+                        <span>{selectedBookingRepair.service}</span>
+                      </div>
+                      <button 
+                        type="button" 
+                        className="bl-preselected-edit-btn"
+                        onClick={() => setWizardStep(1)}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  )}
+
                     {/* STEP 1: WHAT ARE WE RESTORING? */}
                     {wizardStep === 1 && (
                       <div className="bl-wizard-body-step">
@@ -1617,12 +2310,25 @@ export default function BagsLeatherStudio({
                             { id: 'luggage', label: 'Luggage', icon: '🧳' },
                             { id: 'backpack', label: 'Backpack', icon: '🎒' },
                             { id: 'briefcase', label: 'Briefcase', icon: '💼' },
+                            { id: 'accessories', label: 'Accessories', icon: '👛' },
                             { id: 'other', label: 'Other', icon: '🗃️' }
                           ].map(it => (
                             <div 
                               key={it.id}
                               className={`bl-item-type-card ${wizardItem === it.id ? 'selected' : ''}`}
-                              onClick={() => setWizardItem(it.id)}
+                              onClick={() => {
+                                setWizardItem(it.id);
+                                setSelectedRestoreCategory(it.id);
+                                const cData = repairCategories[it.id];
+                                if (cData) {
+                                  setSelectedBookingRepair(prev => ({
+                                    category: cData.title,
+                                    issue: cData.issues?.[0]?.label || prev?.issue || 'General Restoration',
+                                    service: cData.issues?.[0]?.priorityService || prev?.service || 'Restoration Service',
+                                    startingPrice: cData.services?.[0]?.priceNum || 249
+                                  }));
+                                }
+                              }}
                             >
                               <span className="bl-item-type-icon">{it.icon}</span>
                               <span className="bl-item-type-name">{it.label}</span>
@@ -1648,18 +2354,12 @@ export default function BagsLeatherStudio({
                         <h4 className="bl-wizard-step-title">Select Component & Damage</h4>
 
                         <div className="bl-damage-selection-grid">
-                          {[
-                            'Zip & Runner Damaged',
-                            'Broken Handle / Strap',
-                            'Torn Inner Lining',
-                            'Cracked Leather Surface',
-                            'Broken Wheels / Trolley Rod',
-                            'Stitching Came Undone'
-                          ].map(d => {
+                          {(currentCatData.issues || []).filter(i => i.id !== 'unsure').map(iss => {
+                            const d = iss.label;
                             const isChecked = wizardDamages.includes(d);
                             return (
                               <div 
-                                key={d}
+                                key={iss.id}
                                 className={`bl-damage-checkbox-card ${isChecked ? 'active' : ''}`}
                                 onClick={() => {
                                   if (isChecked) {
@@ -1667,6 +2367,13 @@ export default function BagsLeatherStudio({
                                   } else {
                                     setWizardDamages(prev => [...prev, d]);
                                   }
+                                  setSelectedIssue(iss.id);
+                                  setSelectedHotspot(iss.id);
+                                  setSelectedBookingRepair(prev => ({
+                                    ...prev,
+                                    issue: d,
+                                    service: iss.priorityService || prev?.service || 'Restoration Service'
+                                  }));
                                 }}
                               >
                                 <div className={`bl-checkbox-box ${isChecked ? 'checked' : ''}`}>

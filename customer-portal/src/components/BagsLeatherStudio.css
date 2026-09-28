@@ -1439,9 +1439,131 @@ body.bl-theme-light .bl-restore-expertise-card.active .bl-restore-card-arrow svg
   stroke: #ffffff !important;
 }
 
-.bl-restore-expertise-card.active {
+.bl-restore-expertise-card.active,
+.bl-restore-expertise-card.selected {
   border-color: #f72585 !important;
-  box-shadow: 0 6px 24px rgba(247, 37, 133, 0.3) !important;
+  box-shadow: 0 8px 28px rgba(247, 37, 133, 0.35) !important;
+}
+
+.bl-restore-card-overlay.selected {
+  background: linear-gradient(180deg, rgba(247, 37, 133, 0.18) 0%, rgba(15, 13, 30, 0.8) 100%) !important;
+}
+
+.bl-cat-selected-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bl-pink, #f72585);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(247, 37, 133, 0.6);
+  z-index: 5;
+  animation: bl-pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bl-pop-in {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Accessory Subtype Filter Pills */
+.bl-accessory-subtype-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.bl-accessory-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--bl-border);
+  color: var(--bl-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+body.bl-theme-dark .bl-accessory-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+}
+
+.bl-accessory-pill:hover {
+  border-color: var(--bl-pink);
+  color: var(--bl-pink);
+}
+
+.bl-accessory-pill.active {
+  background: var(--bl-pink, #f72585) !important;
+  color: #ffffff !important;
+  border-color: var(--bl-pink, #f72585) !important;
+  box-shadow: 0 4px 12px rgba(247, 37, 133, 0.35);
+}
+
+/* Pre-selected Repair Summary Banner in Wizard */
+.bl-wizard-preselected-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  background: rgba(247, 37, 133, 0.08);
+  border: 1px solid rgba(247, 37, 133, 0.25);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 18px;
+  font-size: 0.78rem;
+  color: var(--bl-text-primary);
+  animation: bl-fade-slide 0.3s ease;
+}
+
+.bl-preselected-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.bl-preselected-sep {
+  color: var(--bl-pink);
+  opacity: 0.6;
+}
+
+.bl-preselected-edit-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--bl-pink);
+  font-weight: 700;
+  font-size: 0.74rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 2px 6px;
+}
+
+/* Custom Assessment Form for 'Something Else?' */
+.bl-custom-assessment-container {
+  padding: 6px 0;
+}
+
+.bl-custom-form-group {
+  margin-bottom: 20px;
+}
+
+.bl-hotspot-bag-img {
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.bl-hotspot-bag-img.fading {
+  opacity: 0.18;
+  transform: scale(0.98);
 }
 
 /* Visual Diagnosis: Handbag Anatomy with Hotspot Pins */
