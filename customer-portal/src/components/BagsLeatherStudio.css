@@ -222,12 +222,12 @@
   padding: 0 !important;
   position: relative;
   overflow: hidden;
-  min-height: 420px;
-  height: clamp(400px, 44vh, 480px);
+  min-height: 560px;
+  height: clamp(540px, 60vh, 650px);
   background-image: linear-gradient(90deg, #fcf8f5 0%, #fcf8f5 34%, rgba(252, 248, 245, 0.94) 42%, rgba(252, 248, 245, 0.25) 52%, rgba(252, 248, 245, 0) 60%),
                     url('/bags_shop_hero_bg.png');
   background-size: cover;
-  background-position: 64% center;
+  background-position: 64% 38%;
   background-repeat: no-repeat;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
@@ -246,7 +246,7 @@ body.bl-theme-dark .bl-shop-hero-fullwidth,
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 40px 2.5rem;
+  padding: 56px 2.5rem;
   display: flex;
   align-items: center;
   position: relative;
@@ -376,26 +376,32 @@ body.bl-theme-dark .bl-trust-text-stack,
   top: 0;
   right: 0;
   bottom: 0;
-  width: clamp(210px, 20vw, 290px);
-  background: linear-gradient(90deg, rgba(24, 20, 18, 0) 0%, rgba(24, 20, 18, 0.82) 20%, #1a1614 45%, #14110f 100%);
+  width: clamp(220px, 22vw, 320px);
+  background: linear-gradient(90deg, rgba(20, 16, 14, 0) 0%, rgba(20, 16, 14, 0.78) 22%, #181412 52%, #13100e 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
 }
 
+.bl-hero-script-stack,
+.bl-hero-script-stack span,
+.bl-hero-right-dark-panel .bl-hero-script-stack span,
+.bl-script-line {
+  font-family: 'Alex Brush', 'Allura', var(--bl-font-script), cursive !important;
+  color: #e5b887 !important;
+  text-shadow: 0 0 16px rgba(229, 184, 135, 0.45), 0 2px 8px rgba(0, 0, 0, 0.75) !important;
+}
+
 .bl-hero-script-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-family: var(--bl-font-script);
-  font-size: clamp(2.6rem, 3.2vw, 3.5rem);
-  line-height: 1.05;
-  color: #d4a373 !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  font-size: clamp(2.8rem, 3.4vw, 3.8rem);
+  line-height: 1.08;
   user-select: none;
   letter-spacing: 0.5px;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
 .bl-script-line-1 {
@@ -403,11 +409,11 @@ body.bl-theme-dark .bl-trust-text-stack,
 }
 
 .bl-script-line-2 {
-  padding-left: 20px;
+  padding-left: 22px;
 }
 
 .bl-script-line-3 {
-  padding-left: 42px;
+  padding-left: 46px;
 }
 
 .bl-hero-section {
