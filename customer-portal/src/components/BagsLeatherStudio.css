@@ -214,7 +214,79 @@
    IMAGE 1: SHOP & CREATE SECTIONS
    ========================================================================== */
 
-/* Hero Section */
+/* Hero Section (Shop & Create) */
+.bl-shop-hero-wrapper {
+  width: 95% !important;
+  max-width: 95% !important;
+  margin: 18px auto 36px auto !important;
+  padding: 0 12px;
+}
+
+.bl-shop-hero-card {
+  position: relative;
+  min-height: 480px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.91) 36%, rgba(255, 255, 255, 0.42) 58%, rgba(255, 255, 255, 0) 78%),
+                    url('/bags_shop_hero_bg.png');
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 48px 54px;
+  gap: 32px;
+}
+
+body.bl-theme-dark .bl-shop-hero-card,
+.bl-theme-dark .bl-shop-hero-card {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  background-image: linear-gradient(90deg, #0c0a14 0%, rgba(12, 10, 20, 0.96) 38%, rgba(12, 10, 20, 0.6) 62%, rgba(12, 10, 20, 0.15) 100%),
+                    url('/bags_shop_hero_bg.png');
+}
+
+.bl-shop-hero-card .bl-hero-left {
+  max-width: 530px;
+  z-index: 2;
+}
+
+.bl-shop-hero-card .bl-hero-right {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  align-self: flex-start;
+  z-index: 2;
+  position: relative;
+}
+
+.bl-shop-hero-card .bl-hero-script-tag {
+  position: static;
+  font-family: var(--bl-font-script);
+  font-size: 2.2rem;
+  color: #78350f;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+  transform: rotate(-3deg);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+body.bl-theme-dark .bl-shop-hero-card .bl-hero-script-tag,
+.bl-theme-dark .bl-shop-hero-card .bl-hero-script-tag {
+  color: #f7a072;
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(255, 255, 255, 0.15);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
 .bl-hero-section {
   padding: 50px 0 60px 0;
   background: radial-gradient(circle at 80% 20%, rgba(247, 37, 133, 0.04) 0%, transparent 60%);
@@ -808,11 +880,11 @@
   position: relative;
   border-radius: var(--bl-radius-lg);
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(23, 27, 44, 0.85) 0%, rgba(109, 73, 53, 0.85) 100%),
-              url('https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1400&auto=format&fit=crop');
+  background: linear-gradient(135deg, rgba(23, 27, 44, 0.84) 0%, rgba(68, 43, 29, 0.8) 100%),
+              url('/bags_shop_hero_bg.png');
   background-size: cover;
   background-position: center;
-  padding: 60px 40px;
+  padding: 68px 40px;
   box-shadow: var(--bl-shadow-lg);
   text-align: center;
 }
@@ -3163,7 +3235,8 @@ body.bl-theme-light .bl-item-type-card.selected,
     height: 360px;
   }
 
-  .bl-restore-hero-card {
+  .bl-restore-hero-card,
+  .bl-shop-hero-card {
     flex-direction: column;
     align-items: flex-start;
     padding: 36px 24px;

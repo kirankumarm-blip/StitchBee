@@ -1128,65 +1128,56 @@ export default function BagsLeatherStudio({
       {activeMode === 'shop' && (
         <div className="bl-shop-create-page">
           
-          {/* SECTION 1: HERO */}
-          <section className="bl-hero-section bl-shop-hero">
-            <div className="bl-container">
-              <div className="bl-hero-grid">
-                
-                {/* Hero Left Content */}
-                <div className="bl-hero-left">
-                  <span className="bl-tag-label">
-                    <Sparkle size={14} /> STITCHBEE LEATHER & BAG STUDIO
-                  </span>
+          {/* SECTION 1: HERO (SHOP & CREATE) */}
+          <div className="bl-shop-hero-wrapper">
+            <div className="bl-shop-hero-card">
+              
+              {/* Hero Left Content */}
+              <div className="bl-hero-left">
+                <span className="bl-tag-label">
+                  <Sparkle size={14} /> STITCHBEE LEATHER & BAG STUDIO
+                </span>
 
-                  <h1 className="bl-serif-title bl-hero-heading">
-                    Bags That <br />
-                    <span className="bl-text-brown bl-italic">Match Your Story</span>
-                  </h1>
+                <h1 className="bl-serif-title bl-hero-heading">
+                  Bags That <br />
+                  <span className="bl-text-brown bl-italic">Match Your Story</span>
+                </h1>
 
-                  <p className="bl-hero-subtext">
-                    Custom-designed handbags, luggage, backpacks and leather goods — handcrafted by expert artisans, just for you.
-                  </p>
+                <p className="bl-hero-subtext">
+                  Custom-designed handbags, luggage, backpacks and leather goods — handcrafted by expert artisans, just for you.
+                </p>
 
-                  <div className="bl-hero-trust-row">
-                    <div className="bl-trust-item"><Award size={18} className="bl-trust-icon" /> Premium Materials</div>
-                    <div className="bl-trust-item"><Scissors size={18} className="bl-trust-icon" /> Custom Designs</div>
-                    <div className="bl-trust-item"><ShieldCheck size={18} className="bl-trust-icon" /> Verified Artisans</div>
-                  </div>
-
-                  <div className="bl-hero-cta-group">
-                    <button 
-                      className="bl-btn-primary"
-                      onClick={() => scrollToId('featured-bags-section')}
-                    >
-                      Shop Ready Bags →
-                    </button>
-                    <button 
-                      className="bl-btn-secondary"
-                      onClick={() => setCustomStudioModalOpen(true)}
-                    >
-                      Create Custom Design
-                    </button>
-                  </div>
+                <div className="bl-hero-trust-row">
+                  <div className="bl-trust-item"><Award size={18} className="bl-trust-icon" /> Premium Materials</div>
+                  <div className="bl-trust-item"><Scissors size={18} className="bl-trust-icon" /> Custom Designs</div>
+                  <div className="bl-trust-item"><ShieldCheck size={18} className="bl-trust-icon" /> Verified Artisans</div>
                 </div>
 
-                {/* Hero Right Visual */}
-                <div className="bl-hero-right">
-                  <div className="bl-hero-image-card">
-                    <img 
-                      src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1000&auto=format&fit=crop" 
-                      alt="Luxury Caramel Leather Handbag" 
-                      className="bl-hero-main-img" 
-                    />
-                    <div className="bl-hero-script-tag">
-                      "Custom. Stylish. Yours."
-                    </div>
-                  </div>
+                <div className="bl-hero-cta-group">
+                  <button 
+                    className="bl-btn-primary"
+                    onClick={() => scrollToId('featured-bags-section')}
+                  >
+                    Shop Ready Bags →
+                  </button>
+                  <button 
+                    className="bl-btn-secondary"
+                    onClick={() => setCustomStudioModalOpen(true)}
+                  >
+                    Create Custom Design
+                  </button>
                 </div>
-
               </div>
+
+              {/* Hero Right Visual: Script tag highlighting bespoke handcrafted piece */}
+              <div className="bl-hero-right">
+                <div className="bl-hero-script-tag">
+                  "Custom. Stylish. Yours."
+                </div>
+              </div>
+
             </div>
-          </section>
+          </div>
 
           {/* SECTION 2: EXPLORE COLLECTION — SHOP BY CATEGORY */}
           <section className="bl-section bl-shop-by-category">
