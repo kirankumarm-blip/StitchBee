@@ -4,7 +4,7 @@ import {
   Truck, ChevronRight, Check, Users, ShieldCheck, 
   ChevronLeft, ArrowRight, X, Layers, Clock, ShoppingBag, 
   Bell, Upload, Camera, Sliders, CheckCircle2, RotateCcw, Wrench, 
-  FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle
+  FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus
 } from 'lucide-react';
 import './BagsLeatherStudio.css';
 
@@ -90,8 +90,40 @@ export default function BagsLeatherStudio({
   // Restoration 4-Step Wizard State
   const [wizardStep, setWizardStep] = useState(1); // 1: Item, 2: Damage, 3: Photos, 4: Pickup, 5: Confirmed
   const [wizardItem, setWizardItem] = useState('handbag');
-  const [wizardDamages, setWizardDamages] = useState(['Zip & Runner Damaged']);
-  const [wizardPhotos, setWizardPhotos] = useState([true, false, false, false]);
+  const [wizardPhotos, setWizardPhotos] = useState([
+    'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=300&auto=format&fit=crop',
+    null,
+    null,
+    null
+  ]);
+
+  const handlePhotoFileChange = (e, targetIdx) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+
+    const readPromises = files.map(file => new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = ev => resolve(ev.target.result);
+      reader.readAsDataURL(file);
+    }));
+
+    Promise.all(readPromises).then(dataUrls => {
+      setWizardPhotos(prev => {
+        const next = [...prev];
+        let currentSlot = targetIdx;
+        dataUrls.forEach(url => {
+          if (currentSlot < next.length) {
+            next[currentSlot] = url;
+            currentSlot++;
+          }
+        });
+        return next;
+      });
+      showToast(dataUrls.length > 1 ? `${dataUrls.length} photos uploaded!` : `Photo ${targetIdx + 1} uploaded successfully!`);
+    });
+
+    e.target.value = '';
+  };
   const [wizardNotes, setWizardNotes] = useState('');
   const [pickupAddress, setPickupAddress] = useState('42, Residency Road, Shanthala Nagar, Bengaluru');
   const [pickupPincode, setPickupPincode] = useState('560025');
@@ -1667,30 +1699,100 @@ export default function BagsLeatherStudio({
                         </p>
 
                         <div className="bl-photos-drop-grid">
-                          {wizardPhotos.map((hasPhoto, idx) => (
-                            <div 
-                              key={idx} 
-                              className={`bl-photo-slot ${hasPhoto ? 'filled' : ''}`}
-                              onClick={() => {
-                                const next = [...wizardPhotos];
-                                next[idx] = !next[idx];
-                                setWizardPhotos(next);
-                                showToast(hasPhoto ? 'Photo removed' : 'Inspection photo uploaded!');
-                              }}
-                            >
-                              {hasPhoto ? (
-                                <img 
-                                  src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=300&auto=format&fit=crop" 
-                                  alt="Uploaded bag photo" 
+                          {wizardPhotos.map((photoSrc, idx) => {
+                            const hasPhoto = Boolean(photoSrc);
+                            return (
+                              <div 
+                                key={idx} 
+                                className={`bl-photo-slot ${hasPhoto ? 'filled' : ''}`}
+                                onClick={() => {
+                                  if (!hasPhoto) {
+                                    const inputEl = document.getElementById(`wizard-photo-input-${idx}`);
+                                    if (inputEl) inputEl.click();
+                                  }
+                                }}
+                                onDragOver={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  const file = e.dataTransfer.files?.[0];
+                                  if (file && file.type.startsWith('image/')) {
+                                    const reader = new FileReader();
+                                    reader.onload = (ev) => {
+                                      setWizardPhotos(prev => {
+                                        const next = [...prev];
+                                        next[idx] = ev.target.result;
+                                        return next;
+                                      });
+                                      showToast(`Photo ${idx + 1} uploaded!`);
+                                    };
+                                    reader.readAsDataURL(file);
+                                  }
+                                }}
+                              >
+                                <input 
+                                  id={`wizard-photo-input-${idx}`}
+                                  type="file"
+                                  accept="image/*"
+                                  multiple
+                                  style={{ display: 'none' }}
+                                  onChange={(e) => handlePhotoFileChange(e, idx)}
                                 />
-                              ) : (
-                                <div className="bl-photo-empty">
-                                  <Camera size={20} color="var(--bl-pink)" />
-                                  <span>+ Photo {idx + 1}</span>
-                                </div>
-                              )}
-                            </div>
-                          ))}
+                                {hasPhoto ? (
+                                  <>
+                                    <img 
+                                      src={photoSrc} 
+                                      alt={`Inspection bag photo ${idx + 1}`} 
+                                    />
+                                    <div className="bl-photo-tag-pill">
+                                      {['Front', 'Back', 'Damage', 'Detail'][idx] || `Photo ${idx + 1}`}
+                                    </div>
+                                    <div className="bl-photo-overlay">
+                                      <button 
+                                        type="button"
+                                        className="bl-photo-action-btn"
+                                        title="Replace photo"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          const inputEl = document.getElementById(`wizard-photo-input-${idx}`);
+                                          if (inputEl) inputEl.click();
+                                        }}
+                                      >
+                                        <RefreshCw size={11} /> Replace
+                                      </button>
+                                      <button 
+                                        type="button"
+                                        className="bl-photo-action-btn delete"
+                                        title="Remove photo"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setWizardPhotos(prev => {
+                                            const next = [...prev];
+                                            next[idx] = null;
+                                            return next;
+                                          });
+                                          showToast(`Photo ${idx + 1} removed`);
+                                        }}
+                                      >
+                                        <Trash2 size={12} />
+                                      </button>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="bl-photo-empty">
+                                    <Camera size={20} color="var(--bl-pink)" />
+                                    <span>+ Photo {idx + 1}</span>
+                                    <span style={{ fontSize: '0.62rem', opacity: 0.6, fontWeight: 500 }}>
+                                      {['Front', 'Back', 'Damage', 'Detail'][idx]}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
 
                         <textarea 
@@ -1764,7 +1866,18 @@ export default function BagsLeatherStudio({
                           </div>
                         </div>
 
-                        <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
+                        {wizardPhotos.some(Boolean) && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', background: 'var(--bl-warm-card)', borderRadius: '8px', border: '1px solid var(--bl-border)', marginTop: '14px' }}>
+                            <span style={{ fontSize: '0.76rem', color: 'var(--bl-text-secondary)', fontWeight: 600 }}>Inspection Photos:</span>
+                            <div style={{ display: 'flex', gap: '6px' }}>
+                              {wizardPhotos.map((p, i) => p ? (
+                                <img key={i} src={p} alt="Uploaded bag" style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'cover', border: '1px solid var(--bl-border)' }} />
+                              ) : null)}
+                            </div>
+                          </div>
+                        )}
+
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
                           <button className="bl-btn-secondary" onClick={() => setWizardStep(3)}>
                             ← Back
                           </button>
@@ -1798,6 +1911,7 @@ export default function BagsLeatherStudio({
                           <div><strong>Tracking ID:</strong> #STB-RESTORE-8842</div>
                           <div><strong>Assessment:</strong> Complimentary Diagnostic Quote</div>
                           <div><strong>Workshop:</strong> Master Atelier Bangalore</div>
+                          <div><strong>Photos Attached:</strong> {wizardPhotos.filter(Boolean).length} photo(s)</div>
                         </div>
 
                         <button 
@@ -2200,26 +2314,98 @@ export default function BagsLeatherStudio({
             </p>
 
             <div className="bl-photos-drop-grid">
-              {[0, 1, 2, 3].map(idx => (
-                <div 
-                  key={idx} 
-                  className={`bl-photo-slot ${wizardPhotos[idx] ? 'filled' : ''}`}
-                  onClick={() => {
-                    const next = [...wizardPhotos];
-                    next[idx] = !next[idx];
-                    setWizardPhotos(next);
-                  }}
-                >
-                  {wizardPhotos[idx] ? (
-                    <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=300&auto=format&fit=crop" alt="Inspection pic" />
-                  ) : (
-                    <div className="bl-photo-empty">
-                      <Upload size={18} color="var(--bl-pink)" />
-                      <span>Upload</span>
-                    </div>
-                  )}
-                </div>
-              ))}
+              {[0, 1, 2, 3].map(idx => {
+                const photoSrc = wizardPhotos[idx];
+                const hasPhoto = Boolean(photoSrc);
+                return (
+                  <div 
+                    key={idx} 
+                    className={`bl-photo-slot ${hasPhoto ? 'filled' : ''}`}
+                    onClick={() => {
+                      if (!hasPhoto) {
+                        const inputEl = document.getElementById(`modal-photo-input-${idx}`);
+                        if (inputEl) inputEl.click();
+                      }
+                    }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const file = e.dataTransfer.files?.[0];
+                      if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (ev) => {
+                          setWizardPhotos(prev => {
+                            const next = [...prev];
+                            next[idx] = ev.target.result;
+                            return next;
+                          });
+                          showToast(`Photo ${idx + 1} uploaded!`);
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  >
+                    <input 
+                      id={`modal-photo-input-${idx}`}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      style={{ display: 'none' }}
+                      onChange={(e) => handlePhotoFileChange(e, idx)}
+                    />
+                    {hasPhoto ? (
+                      <>
+                        <img src={photoSrc} alt="Inspection pic" />
+                        <div className="bl-photo-tag-pill">
+                          {['Front', 'Back', 'Damage', 'Detail'][idx] || `Photo ${idx + 1}`}
+                        </div>
+                        <div className="bl-photo-overlay">
+                          <button 
+                            type="button"
+                            className="bl-photo-action-btn"
+                            title="Replace photo"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const inputEl = document.getElementById(`modal-photo-input-${idx}`);
+                              if (inputEl) inputEl.click();
+                            }}
+                          >
+                            <RefreshCw size={11} /> Replace
+                          </button>
+                          <button 
+                            type="button"
+                            className="bl-photo-action-btn delete"
+                            title="Remove photo"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setWizardPhotos(prev => {
+                                const next = [...prev];
+                                next[idx] = null;
+                                return next;
+                              });
+                              showToast(`Photo ${idx + 1} removed`);
+                            }}
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="bl-photo-empty">
+                        <Upload size={18} color="var(--bl-pink)" />
+                        <span>Upload</span>
+                        <span style={{ fontSize: '0.62rem', opacity: 0.6, fontWeight: 500 }}>
+                          {['Front', 'Back', 'Damage', 'Detail'][idx]}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             <div style={{ marginTop: '20px' }}>

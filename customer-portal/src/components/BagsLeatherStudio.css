@@ -2520,22 +2520,103 @@ body.bl-theme-light .bl-item-type-card.selected,
   justify-content: center;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+  transition: all 0.22s ease;
+}
+
+.bl-photo-slot:hover {
+  border-color: var(--bl-pink);
+  background: rgba(247, 37, 133, 0.05);
+}
+
+.bl-photo-slot.filled {
+  border-style: solid;
+  border-color: var(--bl-border);
 }
 
 .bl-photo-slot img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .bl-photo-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   font-size: 0.72rem;
   color: var(--bl-text-secondary);
   font-weight: 600;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bl-photo-tag-pill {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.bl-photo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 3;
+}
+
+.bl-photo-slot:hover .bl-photo-overlay {
+  opacity: 1;
+}
+
+.bl-photo-action-btn {
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f172a;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bl-photo-action-btn:hover {
+  background: #ffffff;
+  transform: scale(1.05);
+}
+
+.bl-photo-action-btn.delete {
+  background: rgba(239, 68, 68, 0.92);
+  color: #ffffff;
+  padding: 5px 7px;
+}
+
+.bl-photo-action-btn.delete:hover {
+  background: #dc2626;
 }
 
 .bl-notes-textarea {
