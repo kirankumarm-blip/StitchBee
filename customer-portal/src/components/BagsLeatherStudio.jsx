@@ -299,35 +299,35 @@ export default function BagsLeatherStudio({
       title: 'Handbags',
       sub: 'Everyday, office & designer',
       action: 'Explore →',
-      img: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=800&auto=format&fit=crop'
+      img: '/custom_category/Handbags.png'
     },
     {
       id: 'luggage',
       title: 'Luggage & Travel',
       sub: 'Suitcases, travel bags',
       action: 'Explore →',
-      img: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?q=80&w=800&auto=format&fit=crop'
+      img: '/custom_category/Luguage and Travel.png'
     },
     {
       id: 'backpacks',
       title: 'Backpacks',
       sub: 'College, work & casual',
       action: 'Explore →',
-      img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop'
+      img: '/custom_category/bockpocks.png'
     },
     {
       id: 'briefcases',
       title: 'Briefcases',
       sub: 'Business & professional',
       action: 'Explore →',
-      img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800&auto=format&fit=crop'
+      img: '/custom_category/breif cases.png'
     },
     {
       id: 'accessories',
       title: 'Accessories',
       sub: 'Wallets, belts, pouches',
       action: 'Explore →',
-      img: 'https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=800&auto=format&fit=crop'
+      img: '/custom_category/Accessories.png'
     },
     {
       id: 'custom',
@@ -335,7 +335,7 @@ export default function BagsLeatherStudio({
       sub: 'Your design, our craft',
       action: 'Start Designing →',
       isCustom: true,
-      img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop'
+      img: '/custom_category/Custom Designs.png'
     }
   ];
 
