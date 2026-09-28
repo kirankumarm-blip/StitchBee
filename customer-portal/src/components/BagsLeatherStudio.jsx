@@ -4,7 +4,7 @@ import {
   Truck, ChevronRight, Check, Users, ShieldCheck, 
   ChevronLeft, ArrowRight, X, Layers, Clock, ShoppingBag, 
   Bell, Upload, Camera, Sliders, CheckCircle2, RotateCcw, Wrench, 
-  FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus
+  FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus, Gem
 } from 'lucide-react';
 import './BagsLeatherStudio.css';
 
@@ -1128,32 +1128,50 @@ export default function BagsLeatherStudio({
       {activeMode === 'shop' && (
         <div className="bl-shop-create-page">
           
-          {/* SECTION 1: HERO (SHOP & CREATE) */}
-          <div className="bl-shop-hero-wrapper">
-            <div className="bl-shop-hero-card">
+          {/* SECTION 1: HERO (100% WIDTH, MATCHING USER SCREENSHOT EXACTLY) */}
+          <section className="bl-shop-hero-fullwidth">
+            <div className="bl-shop-hero-inner">
               
               {/* Hero Left Content */}
               <div className="bl-hero-left">
-                <span className="bl-tag-label">
-                  <Sparkle size={14} /> STITCHBEE LEATHER & BAG STUDIO
+                <span className="bl-tag-label-shop">
+                  STITCHBEE LEATHER & BAG STUDIO
                 </span>
 
-                <h1 className="bl-serif-title bl-hero-heading">
+                <h1 className="bl-serif-title bl-hero-heading-shop">
                   Bags That <br />
-                  <span className="bl-text-brown bl-italic">Match Your Story</span>
+                  <span className="bl-text-brown-shop">Match Your Story</span>
                 </h1>
 
-                <p className="bl-hero-subtext">
+                <p className="bl-hero-subtext-shop">
                   Custom-designed handbags, luggage, backpacks and leather goods — handcrafted by expert artisans, just for you.
                 </p>
 
-                <div className="bl-hero-trust-row">
-                  <div className="bl-trust-item"><Award size={18} className="bl-trust-icon" /> Premium Materials</div>
-                  <div className="bl-trust-item"><Scissors size={18} className="bl-trust-icon" /> Custom Designs</div>
-                  <div className="bl-trust-item"><ShieldCheck size={18} className="bl-trust-icon" /> Verified Artisans</div>
+                <div className="bl-hero-trust-row-shop">
+                  <div className="bl-trust-item-shop">
+                    <div className="bl-trust-icon-circle"><Gem size={17} /></div>
+                    <div className="bl-trust-text-stack">
+                      <span>Premium</span>
+                      <span>Materials</span>
+                    </div>
+                  </div>
+                  <div className="bl-trust-item-shop">
+                    <div className="bl-trust-icon-circle"><Scissors size={17} /></div>
+                    <div className="bl-trust-text-stack">
+                      <span>Custom</span>
+                      <span>Designs</span>
+                    </div>
+                  </div>
+                  <div className="bl-trust-item-shop">
+                    <div className="bl-trust-icon-circle"><ShieldCheck size={17} /></div>
+                    <div className="bl-trust-text-stack">
+                      <span>Verified</span>
+                      <span>Artisans</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="bl-hero-cta-group">
+                <div className="bl-hero-cta-group-shop">
                   <button 
                     className="bl-btn-primary"
                     onClick={() => scrollToId('featured-bags-section')}
@@ -1169,15 +1187,17 @@ export default function BagsLeatherStudio({
                 </div>
               </div>
 
-              {/* Hero Right Visual: Script tag highlighting bespoke handcrafted piece */}
-              <div className="bl-hero-right">
-                <div className="bl-hero-script-tag">
-                  "Custom. Stylish. Yours."
+              {/* Hero Right Visual: Script tag stack on the dark shadow backdrop */}
+              <div className="bl-hero-right-shop">
+                <div className="bl-hero-script-stack">
+                  <span className="bl-script-line bl-script-line-1">Custom.</span>
+                  <span className="bl-script-line bl-script-line-2">Stylish.</span>
+                  <span className="bl-script-line bl-script-line-3">Yours.</span>
                 </div>
               </div>
 
             </div>
-          </div>
+          </section>
 
           {/* SECTION 2: EXPLORE COLLECTION — SHOP BY CATEGORY */}
           <section className="bl-section bl-shop-by-category">

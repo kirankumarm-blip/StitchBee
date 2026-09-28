@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Alex+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Alex+Brush&family=Allura&display=swap');
 
 /* ==========================================================================
    STITCHBEE BAGS & LEATHER ATELIER STYLES
@@ -214,77 +214,188 @@
    IMAGE 1: SHOP & CREATE SECTIONS
    ========================================================================== */
 
-/* Hero Section (Shop & Create) */
-.bl-shop-hero-wrapper {
-  width: 95% !important;
-  max-width: 95% !important;
-  margin: 18px auto 36px auto !important;
-  padding: 0 12px;
-}
-
-.bl-shop-hero-card {
+/* Hero Section (Shop & Create - 100% Full Width matching user screenshot) */
+.bl-shop-hero-fullwidth {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 36px 0 !important;
+  padding: 0 !important;
   position: relative;
-  min-height: 480px;
-  border-radius: 20px;
   overflow: hidden;
-  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.91) 36%, rgba(255, 255, 255, 0.42) 58%, rgba(255, 255, 255, 0) 78%),
+  min-height: 520px;
+  background-image: linear-gradient(90deg, #fcf8f5 0%, #fcf8f5 34%, rgba(252, 248, 245, 0.94) 42%, rgba(252, 248, 245, 0.4) 54%, rgba(252, 248, 245, 0) 65%),
                     url('/bags_shop_hero_bg.png');
   background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+}
+
+body.bl-theme-dark .bl-shop-hero-fullwidth,
+.bl-theme-dark .bl-shop-hero-fullwidth {
+  background-image: linear-gradient(90deg, #0c0a14 0%, #0c0a14 34%, rgba(12, 10, 20, 0.95) 42%, rgba(12, 10, 20, 0.45) 54%, rgba(12, 10, 20, 0) 65%),
+                    url('/bags_shop_hero_bg.png');
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.bl-shop-hero-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 56px clamp(24px, 5vw, 72px);
+  min-height: 520px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 48px 54px;
   gap: 32px;
-}
-
-body.bl-theme-dark .bl-shop-hero-card,
-.bl-theme-dark .bl-shop-hero-card {
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  background-image: linear-gradient(90deg, #0c0a14 0%, rgba(12, 10, 20, 0.96) 38%, rgba(12, 10, 20, 0.6) 62%, rgba(12, 10, 20, 0.15) 100%),
-                    url('/bags_shop_hero_bg.png');
-}
-
-.bl-shop-hero-card .bl-hero-left {
-  max-width: 530px;
-  z-index: 2;
-}
-
-.bl-shop-hero-card .bl-hero-right {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  align-self: flex-start;
-  z-index: 2;
   position: relative;
+  z-index: 2;
+  box-sizing: border-box;
 }
 
-.bl-shop-hero-card .bl-hero-script-tag {
-  position: static;
+.bl-tag-label-shop {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #934a26;
+  margin-bottom: 12px;
+  font-family: var(--bl-font-sans);
+}
+
+.bl-hero-heading-shop {
+  font-family: var(--bl-font-serif);
+  font-size: clamp(2.8rem, 4vw, 3.8rem);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.12;
+  color: #0f172a;
+  margin: 0 0 18px 0;
+  letter-spacing: -0.5px;
+}
+
+body.bl-theme-dark .bl-hero-heading-shop,
+.bl-theme-dark .bl-hero-heading-shop {
+  color: #f8fafc;
+}
+
+.bl-text-brown-shop {
+  color: #934a26;
+  font-style: normal !important;
+  font-weight: 700;
+}
+
+body.bl-theme-dark .bl-text-brown-shop,
+.bl-theme-dark .bl-text-brown-shop {
+  color: #d97706;
+}
+
+.bl-hero-subtext-shop {
+  font-size: 1.02rem;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 30px;
+  font-family: var(--bl-font-sans);
+}
+
+body.bl-theme-dark .bl-hero-subtext-shop,
+.bl-theme-dark .bl-hero-subtext-shop {
+  color: #94a3b8;
+}
+
+.bl-hero-trust-row-shop {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.bl-trust-item-shop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bl-trust-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #faece5;
+  color: #934a26;
+  border: 1px solid rgba(147, 74, 38, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+body.bl-theme-dark .bl-trust-icon-circle,
+.bl-theme-dark .bl-trust-icon-circle {
+  background: rgba(147, 74, 38, 0.25);
+  color: #f6ad55;
+  border-color: rgba(246, 173, 85, 0.3);
+}
+
+.bl-trust-text-stack {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-family: var(--bl-font-sans);
+}
+
+body.bl-theme-dark .bl-trust-text-stack,
+.bl-theme-dark .bl-trust-text-stack {
+  color: #f1f5f9;
+}
+
+.bl-hero-cta-group-shop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.bl-hero-right-shop {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  align-self: center;
+  position: relative;
+  z-index: 2;
+  margin-right: clamp(10px, 3vw, 40px);
+}
+
+.bl-hero-script-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   font-family: var(--bl-font-script);
-  font-size: 2.2rem;
-  color: #78350f;
-  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
-  transform: rotate(-3deg);
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 6px 18px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  font-size: clamp(2.8rem, 3.4vw, 3.6rem);
+  line-height: 1.05;
+  color: #d4a373;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  user-select: none;
+  letter-spacing: 0.5px;
 }
 
-body.bl-theme-dark .bl-shop-hero-card .bl-hero-script-tag,
-.bl-theme-dark .bl-shop-hero-card .bl-hero-script-tag {
-  color: #f7a072;
-  background: rgba(15, 23, 42, 0.65);
-  border-color: rgba(255, 255, 255, 0.15);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+.bl-script-line-1 {
+  padding-left: 0;
+}
+
+.bl-script-line-2 {
+  padding-left: 22px;
+}
+
+.bl-script-line-3 {
+  padding-left: 44px;
 }
 
 .bl-hero-section {
@@ -3242,6 +3353,19 @@ body.bl-theme-light .bl-item-type-card.selected,
     padding: 36px 24px;
     background-position: center top;
     min-height: auto;
+  }
+
+  .bl-shop-hero-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 36px 20px;
+    min-height: auto;
+  }
+
+  .bl-hero-right-shop {
+    margin-right: 0;
+    margin-top: 24px;
+    align-self: flex-start;
   }
 
   .bl-restore-heading {
