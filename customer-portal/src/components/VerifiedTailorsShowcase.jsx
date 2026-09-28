@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   MapPin, Star, ShieldCheck, CheckCircle2, Scissors, 
   Clock, Search, Navigation, RefreshCw, Eye, Award, 
@@ -23,10 +23,15 @@ const SPECIALTY_CATEGORIES = [
 
 const NEIGHBORHOODS = [
   "All Localities",
+  "Gottigere",
+  "Bannerghatta Road",
   "Koramangala",
   "Indiranagar",
   "Jayanagar",
+  "JP Nagar",
+  "BTM Layout",
   "HSR Layout",
+  "Electronic City",
   "Whitefield",
   "Malleshwaram",
   "Commercial Street",
@@ -34,7 +39,81 @@ const NEIGHBORHOODS = [
   "Rajajinagar"
 ];
 
+const NEIGHBORHOOD_COORDS = {
+  "Gottigere": [12.8596, 77.5888],
+  "Bannerghatta Road": [12.8750, 77.5950],
+  "Koramangala": [12.9348, 77.6189],
+  "Indiranagar": [12.9719, 77.6412],
+  "Jayanagar": [12.9298, 77.5833],
+  "JP Nagar": [12.9077, 77.5855],
+  "BTM Layout": [12.9166, 77.6101],
+  "HSR Layout": [12.9141, 77.6413],
+  "Electronic City": [12.8458, 77.6603],
+  "Whitefield": [12.9698, 77.7500],
+  "Malleshwaram": [13.0031, 77.5643],
+  "Commercial Street": [12.9822, 77.6083],
+  "Lavelle Road": [12.9712, 77.5985],
+  "Rajajinagar": [12.9982, 77.5530]
+};
+
 const CURATED_TAILORS = [
+  // GOTTIGERE & BANNERGHATTA ROAD
+  {
+    id: 't_gottigere_1',
+    name: "Gottigere Designer Tailors & Boutique",
+    masterTailor: "Master Manjunath Gowda",
+    experience: "16+ Yrs Master Cutter",
+    specialty: "Bridal Blouse, Lehengas, Salwar Suits & Resizing",
+    category: "bridal",
+    categoryLabel: "Bridal & Lehengas",
+    neighborhood: "Gottigere",
+    rating: 4.92,
+    reviewsCount: 142,
+    orders: 310,
+    availability: "🟢 Doorstep Fitting in Gottigere & Bannerghatta",
+    turnaround: "⚡ 2-Day Turnaround",
+    phone: "+91 98450 12345",
+    address: "Near Gottigere Lake, Bannerghatta Main Road, Gottigere, Bengaluru",
+    priceRange: "₹1,500 – ₹18,000",
+    image: "/why_join_4.jpg",
+    avatar: "/kiran.jpg",
+    tags: ["Bridal Blouse", "Maggam Work", "Aari Work", "Gottigere Ateliers"],
+    lat: 12.8596,
+    lng: 77.5888,
+    mapQuery: "Gottigere Bannerghatta Road Bengaluru",
+    portfolio: [
+      { img: "/bridal 5.jpg", title: "Aari Work Silk Blouse", price: "₹3,500" },
+      { img: "/bridal2.jpg", title: "Velvet Bridal Lehenga", price: "₹14,000" }
+    ]
+  },
+  {
+    id: 't_gottigere_2',
+    name: "Royal South Bespoke Tailors",
+    masterTailor: "Master Venkatesh",
+    experience: "20+ Yrs Master Cutter",
+    specialty: "Suits, Blazers, Tuxedos & Formal Wear",
+    category: "mens",
+    categoryLabel: "Men's Bespoke",
+    neighborhood: "Gottigere",
+    rating: 4.89,
+    reviewsCount: 118,
+    orders: 240,
+    availability: "🟢 Home Visit for Fitting Available",
+    turnaround: "⚡ 3-Day Turnaround",
+    phone: "+91 98450 67890",
+    address: "1st Cross, Bannerghatta Main Road, Gottigere, Bengaluru",
+    priceRange: "₹2,500 – ₹22,000",
+    image: "/mens_suit.jpg",
+    avatar: "/manoj.jpg",
+    tags: ["Suits", "Sherwanis", "Blazers", "Trousers"],
+    lat: 12.8625,
+    lng: 77.5895,
+    mapQuery: "Gottigere Bannerghatta Road Bengaluru",
+    portfolio: [
+      { img: "/Pastel Blue Suit.png", title: "3-Piece Bespoke Suit", price: "₹8,500" },
+      { img: "/men1.jpg", title: "Italian Wool Blazer", price: "₹6,200" }
+    ]
+  },
   // BRIDAL
   {
     id: 't_bridal_1',
@@ -544,6 +623,12 @@ export default function VerifiedTailorsShowcase({
   const [savedTailors, setSavedTailors] = useState([]);
   const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
 
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const tileLayerRef = useRef(null);
+  const markersLayerRef = useRef(null);
+  const tailorMarkersRef = useRef({});
+
   // Calculate Distance in KM
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -648,24 +733,217 @@ export default function VerifiedTailorsShowcase({
     );
   };
 
-  // Dynamic Map Target Determination:
-  // 1. If user typed a search query, show that search location on Google Maps (e.g. "Bannerghatta, Bengaluru")
-  // 2. Else if user clicked a tailor card (activeTailor), show that tailor's location
-  // 3. Else if userLocation is active, show userLocation
-  // 4. Default to Bangalore
-  const getMapEmbedUrl = () => {
-    const tParam = mapType === 'satellite' ? 'k' : 'm';
-    if (searchQuery && searchQuery.trim().length > 1) {
-      return `https://maps.google.com/maps?q=${encodeURIComponent(searchQuery.trim() + ', Bengaluru')}&hl=en&z=14&t=${tParam}&output=embed`;
+  // 1. Initialize Leaflet Map with authentic Google Maps tiles
+  useEffect(() => {
+    if (!window.L || !mapContainerRef.current) return;
+    const container = mapContainerRef.current;
+
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {
+        console.error("Leaflet cleanup error:", e);
+      }
+      mapInstanceRef.current = null;
     }
-    if (activeTailor) {
-      return `https://maps.google.com/maps?q=${activeTailor.lat},${activeTailor.lng}&hl=en&z=15&t=${tParam}&output=embed`;
+    if (container._leaflet_id) {
+      delete container._leaflet_id;
     }
+
+    const initialLat = activeTailor ? activeTailor.lat : (userLocation ? userLocation.lat : 12.9716);
+    const initialLng = activeTailor ? activeTailor.lng : (userLocation ? userLocation.lng : 77.5946);
+
+    const map = window.L.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: false
+    }).setView([initialLat, initialLng], 13);
+
+    const tileUrl = mapType === 'satellite'
+      ? 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+      : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+
+    const tileLayer = window.L.tileLayer(tileUrl, {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
+    }).addTo(map);
+
+    tileLayerRef.current = tileLayer;
+
+    const markersGroup = window.L.layerGroup().addTo(map);
+    markersLayerRef.current = markersGroup;
+
+    mapInstanceRef.current = map;
+
+    // Invalidate size to guarantee no partial grey tiles after rendering
+    setTimeout(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 250);
+    setTimeout(() => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 600);
+
+    return () => {
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {
+          console.error("Cleanup map error:", e);
+        }
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
+  // 2. Switch Google Maps Tile Layer on mapType toggle ('roadmap' vs 'satellite')
+  useEffect(() => {
+    if (!mapInstanceRef.current || !window.L) return;
+    if (tileLayerRef.current) {
+      try {
+        mapInstanceRef.current.removeLayer(tileLayerRef.current);
+      } catch (e) {}
+    }
+
+    const tileUrl = mapType === 'satellite'
+      ? 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+      : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+
+    const newLayer = window.L.tileLayer(tileUrl, {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
+    }).addTo(mapInstanceRef.current);
+
+    tileLayerRef.current = newLayer;
+  }, [mapType]);
+
+  // 3. Render Tailor Markers & GPS Pulse on Map
+  useEffect(() => {
+    if (!mapInstanceRef.current || !markersLayerRef.current || !window.L) return;
+
+    markersLayerRef.current.clearLayers();
+    tailorMarkersRef.current = {};
+
+    // User GPS location marker
     if (userLocation) {
-      return `https://maps.google.com/maps?q=${userLocation.lat},${userLocation.lng}&hl=en&z=15&t=${tParam}&output=embed`;
+      const userSvgIcon = window.L.divIcon({
+        html: `
+          <div style="position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            <div style="position: absolute; width: 28px; height: 28px; border-radius: 50%; background: rgba(76, 201, 240, 0.4); animation: pulse-glow 1.5s infinite;"></div>
+            <div style="position: relative; width: 14px; height: 14px; border-radius: 50%; background: #4cc9f0; border: 2.5px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>
+          </div>
+        `,
+        className: 'user-gps-pulse-marker',
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+
+      window.L.marker([userLocation.lat, userLocation.lng], { icon: userSvgIcon })
+        .addTo(markersLayerRef.current)
+        .bindPopup(`
+          <div style="font-family: Inter, sans-serif; font-size: 12px; color: #1e293b; padding: 2px;">
+            <strong style="color: #0284c7; display: flex; align-items: center; gap: 4px;">📍 Your Location</strong>
+            <span style="font-size: 11px; color: #64748b;">GPS Live Accuracy Active</span>
+          </div>
+        `);
     }
-    return `https://maps.google.com/maps?q=12.9716,77.5946&hl=en&z=13&t=${tParam}&output=embed`;
-  };
+
+    // Curated Tailor Pins
+    filteredTailors.forEach(t => {
+      const isActive = activeTailor && activeTailor.id === t.id;
+      const markerScale = isActive ? 'scale(1.15)' : 'scale(1)';
+
+      const tailorIcon = window.L.divIcon({
+        html: `
+          <div style="transform: ${markerScale}; transition: transform 0.2s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center;">
+            <div style="
+              background: ${isActive ? 'linear-gradient(135deg, #F72585 0%, #B5179E 100%)' : 'linear-gradient(135deg, #7209B7 0%, #4361EE 100%)'}; 
+              width: 32px; 
+              height: 32px; 
+              border-radius: 50% 50% 50% 0; 
+              transform: rotate(-45deg); 
+              border: 2px solid #ffffff; 
+              box-shadow: ${isActive ? '0 4px 14px rgba(247, 37, 133, 0.6), 0 0 10px rgba(247, 37, 133, 0.4)' : '0 3px 8px rgba(0,0,0,0.3)'}; 
+              display: flex; 
+              align-items: center; 
+              justify-content: center;
+            ">
+              <span style="transform: rotate(45deg); font-size: 13px; line-height: 1;">✂️</span>
+            </div>
+            ${isActive ? `<div style="margin-top: 3px; background: #F72585; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 5px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.35);">★ ${t.rating}</div>` : ''}
+          </div>
+        `,
+        className: `tailor-marker-${t.id}`,
+        iconSize: [34, 42],
+        iconAnchor: [17, 34],
+        popupAnchor: [0, -34]
+      });
+
+      const marker = window.L.marker([t.lat, t.lng], { 
+        icon: tailorIcon,
+        zIndexOffset: isActive ? 1000 : 100 
+      }).addTo(markersLayerRef.current);
+
+      tailorMarkersRef.current[t.id] = marker;
+
+      const popupHtml = `
+        <div style="font-family: 'Outfit', 'Inter', sans-serif; min-width: 210px; max-width: 250px; padding: 4px 2px; color: #1e293b;">
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+            <img src="${t.image}" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 2px solid #F72585; flex-shrink: 0;" />
+            <div style="min-width: 0; flex: 1;">
+              <div style="font-weight: 800; font-size: 13px; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${t.name}</div>
+              <div style="font-size: 11px; color: #F72585; font-weight: 800;">★ ${t.rating} <span style="color: #64748b; font-weight: 500;">(${t.reviewsCount || t.orders} reviews)</span></div>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: #475569; margin-bottom: 8px; line-height: 1.35;">
+            📍 ${t.address}
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${t.lat},${t.lng}" target="_blank" rel="noopener noreferrer" style="flex: 1; text-align: center; background: linear-gradient(135deg, #F72585 0%, #7209B7 100%); color: #ffffff !important; text-decoration: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+              🧭 Directions
+            </a>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml);
+
+      marker.on('click', () => {
+        setActiveTailor(t);
+      });
+
+      if (isActive) {
+        marker.openPopup();
+      }
+    });
+  }, [filteredTailors, activeTailor, userLocation]);
+
+  // 4. Smooth Pan to activeTailor when activeTailor changes
+  useEffect(() => {
+    if (!mapInstanceRef.current || !activeTailor) return;
+    mapInstanceRef.current.flyTo([activeTailor.lat, activeTailor.lng], 15, {
+      animate: true,
+      duration: 0.8
+    });
+    if (tailorMarkersRef.current[activeTailor.id]) {
+      tailorMarkersRef.current[activeTailor.id].openPopup();
+    }
+  }, [activeTailor]);
+
+  // 5. Center map on neighborhood selection
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    if (selectedNeighborhood !== "All Localities" && NEIGHBORHOOD_COORDS[selectedNeighborhood]) {
+      mapInstanceRef.current.flyTo(NEIGHBORHOOD_COORDS[selectedNeighborhood], 14, {
+        animate: true,
+        duration: 0.8
+      });
+    }
+  }, [selectedNeighborhood]);
 
   const getMapDirectionsUrl = () => {
     if (searchQuery && searchQuery.trim().length > 1) {
@@ -992,7 +1270,7 @@ export default function VerifiedTailorsShowcase({
               alignItems: 'center',
               flexWrap: 'wrap',
               gap: '10px',
-              zIndex: 10
+              zIndex: 500
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#10B981', display: 'inline-block', boxShadow: '0 0 10px #10B981' }}></span>
@@ -1048,22 +1326,17 @@ export default function VerifiedTailorsShowcase({
               </div>
             </div>
 
-            {/* Embedded Live Google Maps Iframe */}
-            <div style={{ width: '100%', flex: 1, minHeight: '440px', position: 'relative' }}>
-              <iframe
-                title="Google Maps Studio Locator"
-                src={getMapEmbedUrl()}
-                width="100%"
-                height="100%"
+            {/* Live Interactive Leaflet Google Maps View */}
+            <div style={{ width: '100%', flex: 1, minHeight: '440px', position: 'relative', overflow: 'hidden' }}>
+              <div
+                ref={mapContainerRef}
                 style={{
-                  border: 0,
                   width: '100%',
                   height: '100%',
                   minHeight: '440px',
-                  display: 'block'
+                  position: 'relative',
+                  zIndex: 1
                 }}
-                loading="lazy"
-                allowFullScreen
               />
             </div>
 
@@ -1077,7 +1350,7 @@ export default function VerifiedTailorsShowcase({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: '14px',
-                zIndex: 10
+                zIndex: 500
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
                   <img 

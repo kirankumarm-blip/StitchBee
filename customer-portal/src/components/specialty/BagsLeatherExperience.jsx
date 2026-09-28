@@ -298,56 +298,56 @@ export default function BagsLeatherExperience({
         />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
 
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: '640px' }}>
-          <div className="specialty-hero-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', marginBottom: '18px' }}>
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: '680px' }}>
+          <div className="specialty-hero-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '20px', marginBottom: '18px', background: 'rgba(247, 37, 133, 0.12)', border: '1px solid rgba(247, 37, 133, 0.3)' }}>
             <Sparkles size={15} style={{ color: 'var(--primary)' }} />
-            <span style={{ fontSize: '0.76rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <span style={{ fontSize: '0.76rem', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)' }}>
               StitchBee Leather & Bag Studio
             </span>
           </div>
 
-          <h1>
-            Crafted with care.<br />
+          <h1 style={{ fontSize: '2.8rem', fontWeight: 900, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+            Crafted with Care.<br />
             <span style={{ background: 'var(--grad-primary)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Restored with precision.
+              Restored with Precision.
             </span><br />
-            Made for you.
+            Made for You.
           </h1>
 
-          <p className="specialty-hero-subtext">
-            From heirloom travel bags and burst luggage zippers to bespoke custom leather jackets, StitchBee connects you with master leathercraft artisans who repair, customize, and create.
+          <p className="specialty-hero-subtext" style={{ fontSize: '0.96rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: '28px' }}>
+            From heirloom travel bags and burst luggage zippers to handcrafted clutches and leather goods, StitchBee connects you with master leathercraft artisans who repair, customize, and create with full-grain heritage materials.
           </p>
 
-          {/* Action Pills */}
+          {/* Action Pills (White Text on Active Buttons) */}
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '32px' }}>
             <button
               type="button"
               onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
-              className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+              className={`btn ${serviceMode === 'buying' ? 'btn-leather-primary has-white-text' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700, borderRadius: '12px', border: serviceMode === 'buying' ? 'none' : undefined, background: serviceMode === 'buying' ? 'var(--primary)' : undefined, color: serviceMode === 'buying' ? '#ffffff' : 'inherit', boxShadow: serviceMode === 'buying' ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none' }}
             >
-              🛍️ Custom Jackets & Goods
+              🛍️ Atelier Catalog
             </button>
             <button
               type="button"
               onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
-              className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+              className={`btn ${serviceMode === 'alteration' ? 'btn-leather-primary has-white-text' : 'btn-secondary'}`}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700, borderRadius: '12px', border: serviceMode === 'alteration' ? 'none' : undefined, background: serviceMode === 'alteration' ? 'var(--primary)' : undefined, color: serviceMode === 'alteration' ? '#ffffff' : 'inherit', boxShadow: serviceMode === 'alteration' ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none' }}
             >
               ✂️ Bag & Luggage Repairs
             </button>
             <button
               type="button"
               onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
-              className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+              className={`btn ${serviceMode === 'partner' ? 'btn-leather-primary has-white-text' : 'btn-secondary'}`}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700, borderRadius: '12px', border: serviceMode === 'partner' ? 'none' : undefined, background: serviceMode === 'partner' ? 'var(--primary)' : undefined, color: serviceMode === 'partner' ? '#ffffff' : 'inherit', boxShadow: serviceMode === 'partner' ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none' }}
             >
               📍 Find Specialist Partners
             </button>
             <button
               onClick={() => setWarrantyModalOpen(true)}
               className="btn"
-              style={{ padding: '12px 18px', fontSize: '0.9rem', background: 'rgba(76,201,240,0.1)', color: 'var(--accent)', border: '1px solid rgba(76,201,240,0.3)', fontWeight: 600 }}
+              style={{ padding: '12px 18px', fontSize: '0.9rem', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', border: '1px solid rgba(247,37,133,0.3)', fontWeight: 700, borderRadius: '12px' }}
             >
               <ShieldCheck size={16} style={{ display: 'inline', marginRight: '6px', verticalAlign: '-2px' }} />
               Trolley Warranty Claim
@@ -365,7 +365,7 @@ export default function BagsLeatherExperience({
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
               <strong className="metric-value" style={{ fontSize: '1.25rem', display: 'block', color: 'var(--primary)' }}>1,400+</strong>
-              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Bags & Jackets Restored</span>
+              <span className="metric-label" style={{ fontSize: '0.72rem', display: 'block' }}>Bags & Leather Goods Restored</span>
             </div>
             <div style={{ width: '1px', height: '28px', background: 'var(--border-color)' }} />
             <div>
@@ -524,15 +524,17 @@ export default function BagsLeatherExperience({
                       key={b}
                       type="button"
                       onClick={() => setSelectedBagType(b)}
-                      className="btn"
+                      className={`btn ${selectedBagType === b ? 'btn-leather-primary has-white-text' : 'btn-secondary'}`}
                       style={{
-                        padding: '8px 16px',
-                        fontSize: '0.8rem',
-                        borderRadius: '10px',
-                        border: selectedBagType === b ? '2px solid var(--primary)' : '1px solid var(--border-color)',
+                        padding: '10px 16px',
+                        fontSize: '0.82rem',
+                        borderRadius: '12px',
+                        border: selectedBagType === b ? 'none' : '1px solid var(--border-color)',
                         background: selectedBagType === b ? 'var(--primary)' : 'var(--bg-card)',
-                        color: selectedBagType === b ? '#fff' : 'var(--text-primary)',
-                        fontWeight: selectedBagType === b ? 700 : 500
+                        color: selectedBagType === b ? '#ffffff' : 'var(--text-primary)',
+                        fontWeight: selectedBagType === b ? 700 : 500,
+                        boxShadow: selectedBagType === b ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
+                        cursor: 'pointer'
                       }}
                     >
                       {b}
@@ -558,16 +560,17 @@ export default function BagsLeatherExperience({
                         padding: '12px',
                         borderRadius: '10px',
                         cursor: 'pointer',
-                        border: selectedIssue === iss ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                        background: selectedIssue === iss ? 'rgba(247,37,133,0.1)' : 'var(--bg-card)',
-                        color: selectedIssue === iss ? 'var(--primary)' : 'var(--text-primary)',
+                        border: selectedIssue === iss ? '1.5px solid #f72585' : '1px solid var(--border-color)',
+                        background: selectedIssue === iss ? 'rgba(247, 37, 133, 0.12)' : 'var(--bg-card)',
+                        color: selectedIssue === iss ? '#f72585' : 'var(--text-primary)',
                         fontSize: '0.82rem',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '8px'
+                        gap: '8px',
+                        fontWeight: selectedIssue === iss ? 700 : 500
                       }}
                     >
-                      <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: selectedIssue === iss ? '5px solid var(--primary)' : '1.5px solid var(--border-color)', flexShrink: 0 }} />
+                      <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: selectedIssue === iss ? '5px solid #f72585' : '1.5px solid var(--border-color)', flexShrink: 0 }} />
                       <span>{iss}</span>
                     </div>
                   ))}
@@ -592,7 +595,7 @@ export default function BagsLeatherExperience({
                     gap: '6px'
                   }}
                 >
-                  <Upload size={22} style={{ color: repairPhotoUploaded ? '#10b981' : 'var(--primary)' }} />
+                  <Upload size={22} style={{ color: repairPhotoUploaded ? '#10b981' : '#f72585' }} />
                   <span style={{ fontSize: '0.82rem', color: '#fff', fontWeight: 600 }}>
                     {repairPhotoUploaded ? '✓ 2 Photos Attached' : 'Upload Damage Photos'}
                   </span>
@@ -612,10 +615,10 @@ export default function BagsLeatherExperience({
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', borderTop: '1px solid var(--border-color)', paddingTop: '18px' }}>
                 <div>
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'block' }}>Estimated Evaluation Base</span>
-                  <strong style={{ fontSize: '1.25rem', color: 'var(--primary)' }}>₹499</strong>
+                  <strong style={{ fontSize: '1.25rem', color: '#f72585' }}>₹499</strong>
                   <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginLeft: '6px' }}>includes doorstep pickup</span>
                 </div>
-                <button type="submit" className="btn btn-primary" style={{ padding: '12px 28px', fontWeight: 700 }}>
+                <button type="submit" className="btn-leather-primary has-white-text" style={{ padding: '12px 28px', fontWeight: 700, borderRadius: '12px', background: 'var(--primary)', border: 'none', color: '#ffffff', boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)' }}>
                   Book Repair Service Now <ArrowRight size={16} style={{ display: 'inline', marginLeft: '6px' }} />
                 </button>
               </div>
@@ -654,7 +657,7 @@ export default function BagsLeatherExperience({
                 <FlipkartCatalogView
                   categoryKey="bags"
                   categoryTitle="Handmade Bags & Leather"
-                  breadcrumbs={['Home', 'Bags, Wallets & Belts', 'Handbags & Clutches']}
+                  breadcrumbs={[]}
                   products={leatherProducts}
                   onSelectProduct={(prod) => {
                     setSelectedPdpProduct(prod);
@@ -667,244 +670,7 @@ export default function BagsLeatherExperience({
                 />
               </section>
 
-              {/* 5. CUSTOM LEATHER JACKET BESPOKE STUDIO */}
-              <section id="custom-jacket-section" style={{ margin: '4.5rem 0' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Atelier Bespoke Tailoring
-          </span>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '4px 0 8px 0', color: 'var(--text-primary)' }}>
-            Custom Tailored Leather Jackets
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '620px', margin: '0 auto' }}>
-            Individually patterned to your precise anatomical contours. Choice of Italian full-grain, lining materials, and YKK heavy brass hardware.
-          </p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: '32px', alignItems: 'start' }} className="specialist-grid-responsive">
-          {/* Visual Jacket Preview Card */}
-          <div
-            className="glass-card-no-hover"
-            style={{
-              borderRadius: '20px',
-              overflow: 'hidden',
-              border: '1px solid var(--border-color)',
-              background: 'var(--bg-card)',
-              position: 'relative'
-            }}
-          >
-            <div style={{ width: '100%', height: '380px', position: 'relative', overflow: 'hidden', background: '#0a0914' }}>
-              <img
-                src="./bagf_fb1.jpg"
-                alt="Jacket Leather Texture"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,9,20,0.9) 0%, transparent 60%)' }} />
-
-              <div style={{ position: 'absolute', bottom: '20px', left: '20px', right: '20px' }}>
-                <span style={{ fontSize: '0.72rem', background: 'var(--grad-primary)', color: '#fff', padding: '3px 8px', borderRadius: '6px', fontWeight: 800, textTransform: 'uppercase' }}>
-                  {jacketGender} • {jacketStyle}
-                </span>
-                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', margin: '6px 0 2px 0' }}>
-                  {jacketColor} Leather Jacket
-                </h3>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                  {jacketLeather} • {jacketLining}
-                </span>
-              </div>
-            </div>
-
-            {/* Price Review Breakdown (Section 16 requirement) */}
-            <div style={{ padding: '20px', borderTop: '1px solid var(--border-color)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                <span>Custom Leather Jacket Labor & Craft</span>
-                <span>₹8,499</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                <span>Doorstep Fit-Helper Measurement</span>
-                <span>₹199</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                <span>Reinforced Garment Carrier Delivery</span>
-                <span>₹149</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.1rem', fontWeight: 800, color: '#fff', borderTop: '1px solid var(--border-color)', paddingTop: '10px' }}>
-                <span>Total Guaranteed Price</span>
-                <span style={{ color: 'var(--primary)' }}>₹8,847</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Jacket Customization Controls */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-            {/* Gender Toggle */}
-            <div>
-              <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
-                Gender Cut
-              </label>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {['Men', 'Women', 'Unisex'].map(g => (
-                  <button
-                    key={g}
-                    type="button"
-                    onClick={() => setJacketGender(g)}
-                    className="btn"
-                    style={{
-                      flex: 1,
-                      padding: '8px',
-                      fontSize: '0.8rem',
-                      borderRadius: '8px',
-                      border: jacketGender === g ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                      background: jacketGender === g ? 'var(--primary)' : 'var(--bg-card)',
-                      color: jacketGender === g ? '#fff' : 'var(--text-primary)',
-                      fontWeight: jacketGender === g ? 700 : 500
-                    }}
-                  >
-                    {g}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Silhouette Style */}
-            <div>
-              <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
-                Silhouette & Collar Cut
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                {[
-                  'Biker Double-Rider', 'Flight Bomber', 'Cafe Racer',
-                  'Classic Blazer', 'Sherpa Shearling', 'Bespoke Concept'
-                ].map(st => (
-                  <button
-                    key={st}
-                    type="button"
-                    onClick={() => setJacketStyle(st)}
-                    className="btn"
-                    style={{
-                      padding: '10px 8px',
-                      fontSize: '0.75rem',
-                      borderRadius: '8px',
-                      border: jacketStyle === st ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                      background: jacketStyle === st ? 'var(--primary)' : 'var(--bg-card)',
-                      color: jacketStyle === st ? '#fff' : 'var(--text-primary)',
-                      fontWeight: jacketStyle === st ? 700 : 500
-                    }}
-                  >
-                    {st}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Leather Grade & Color */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-              <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
-                  Leather Grade
-                </label>
-                <select
-                  value={jacketLeather}
-                  onChange={e => setJacketLeather(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
-                >
-                  <option value="Full-Grain Italian Calfskin">Full-Grain Italian Calfskin</option>
-                  <option value="Soft Vegetable-Tanned Nappa">Soft Vegetable-Tanned Nappa</option>
-                  <option value="Distressed Vintage Cowhide">Distressed Vintage Cowhide</option>
-                  <option value="Supple Lambskin Suede">Supple Lambskin Suede</option>
-                </select>
-              </div>
-
-              <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
-                  Leather Color
-                </label>
-                <select
-                  value={jacketColor}
-                  onChange={e => setJacketColor(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
-                >
-                  <option value="Vintage Cognac">Vintage Cognac (Tan)</option>
-                  <option value="Jet Midnight Black">Jet Midnight Black</option>
-                  <option value="Dark Espresso Brown">Dark Espresso Brown</option>
-                  <option value="Oxblood Maroon">Oxblood Maroon</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Hardware & Lining */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-              <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
-                  Hardware / Zipper
-                </label>
-                <select
-                  value={jacketHardware}
-                  onChange={e => setJacketHardware(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
-                >
-                  <option value="Antique Brass">Antique Brass</option>
-                  <option value="Gunmetal Matte Silver">Gunmetal Matte Silver</option>
-                  <option value="Stealth Jet Black">Stealth Jet Black</option>
-                </select>
-              </div>
-
-              <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
-                  Inner Lining
-                </label>
-                <select
-                  value={jacketLining}
-                  onChange={e => setJacketLining(e.target.value)}
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', background: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', fontSize: '0.8rem' }}
-                >
-                  <option value="Quilted Bemberg Silk">Quilted Bemberg Silk</option>
-                  <option value="Heavy Cotton Tartan">Heavy Cotton Tartan</option>
-                  <option value="Breathable Satin Jacquard">Breathable Satin Jacquard</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Measurements Trigger */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '14px', borderRadius: '12px', background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
-              <div style={{ flex: 1 }}>
-                <strong style={{ fontSize: '0.84rem', color: 'var(--text-primary)', display: 'block' }}>
-                  Body Measurement: {jacketMeasurements ? '✓ Verified' : 'AI Scan or Home Visit'}
-                </strong>
-                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                  Required for custom pattern grading (Chest, Shoulder, Sleeve, Waist).
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setAiMeasurementOpen(true)}
-                className="btn btn-secondary"
-                style={{ fontSize: '0.78rem', padding: '8px 14px' }}
-              >
-                {jacketMeasurements ? 'Edit Sizing' : 'Set Measurements'}
-              </button>
-            </div>
-
-            {/* Checkout Button */}
-            <button
-              onClick={handleJacketCheckout}
-              className="btn btn-primary"
-              style={{ width: '100%', padding: '14px', fontSize: '0.95rem', fontWeight: 800, marginTop: '4px' }}
-            >
-              Order Custom Leather Jacket (₹8,847)
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. TACTILE MATERIAL SHOWCASE */}
-      <MaterialShowcase
-        materials={leatherMaterials}
-        title="Curated Leather & Canvas Anatomy"
-        subtitle="Explore high-resolution textures, tensile strength, and water-resistance metrics."
-      />
-
-      {/* 8. CRAFTSMANSHIP SECTION: "MADE BY SKILLED HANDS" */}
+              {/* CRAFTSMANSHIP SECTION: "MADE BY SKILLED HANDS" */}
       <section style={{ margin: '4.5rem 0', background: 'rgba(255,255,255,0.02)', padding: '40px 32px', borderRadius: '24px', border: '1px solid var(--border-color)' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 6px 0', color: '#fff' }}>

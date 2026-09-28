@@ -2,6 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+if (typeof window !== 'undefined') {
+  window.L = L;
+}
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

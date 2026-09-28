@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Star, Heart, ShieldCheck, ChevronRight, SlidersHorizontal, 
-  RotateCcw, ArrowUpDown, Check, Eye, ShoppingCart, Zap, Filter
+  RotateCcw, ArrowUpDown, Check, Eye, ShoppingCart, Zap, Filter, Award, Sparkles
 } from 'lucide-react';
 
 export default function FlipkartCatalogView({
   categoryKey = 'bags',
   categoryTitle = 'Handmade Bags & Leather',
-  breadcrumbs = ['Home', 'Bags, Wallets & Belts', 'Handbags & Clutches'],
+  breadcrumbs = [],
   products = [],
   onSelectProduct,
   onQuickBuy,
@@ -116,121 +116,213 @@ export default function FlipkartCatalogView({
     setSelectedOffer('all');
   };
 
+  const activeFilterCount = (selectedColors.length > 0 ? 1 : 0) + 
+    (assuredOnly ? 1 : 0) + 
+    (selectedSubcategory !== 'all' ? 1 : 0) + 
+    (priceRange < 15000 ? 1 : 0) + 
+    (minRating > 0 ? 1 : 0) + 
+    (selectedOffer !== 'all' ? 1 : 0);
+
   return (
     <div className="flipkart-catalog-container animate-fade-in">
       {/* Mobile Filter Toggle Bar */}
-      <div className="catalog-mobile-bar" style={{ display: 'none', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'var(--bg-card)', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
+      <div className="catalog-mobile-bar" style={{ display: 'none', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'var(--bg-card)', borderBottom: '1px solid var(--border-color)', marginBottom: '16px', borderRadius: '12px' }}>
         <button
           onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-          className="btn btn-secondary"
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.85rem', fontWeight: 600 }}
+          className="btn-leather-primary has-white-text"
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, borderRadius: '12px', background: 'var(--primary)', border: 'none', color: '#ffffff', boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)' }}
         >
-          <Filter size={16} /> Filters {selectedColors.length > 0 || assuredOnly || selectedSubcategory !== 'all' ? `(${ (selectedColors.length > 0 ? 1 : 0) + (assuredOnly ? 1 : 0) + (selectedSubcategory !== 'all' ? 1 : 0) })` : ''}
+          <Filter size={16} /> Filters {activeFilterCount > 0 ? `(${activeFilterCount})` : ''}
         </button>
-        <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+        <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
           {filteredProducts.length} Results
         </span>
       </div>
 
-      <div className="catalog-main-layout" style={{ display: 'grid', gridTemplateColumns: '270px 1fr', gap: '16px', alignItems: 'start' }}>
+      <div className="catalog-main-layout" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '20px', alignItems: 'start' }}>
         
         {/* ============================================================== */}
-        {/* LEFT COLUMN: FILTERS SIDEBAR (Image 1 reference)               */}
+        {/* LEFT COLUMN: FILTERS SIDEBAR (App Pink Brand Redesign)        */}
         {/* ============================================================== */}
         <aside 
           className={`catalog-filter-sidebar ${mobileFilterOpen ? 'mobile-open' : ''}`}
           style={{
             background: 'var(--bg-card)',
-            borderRadius: '12px',
+            borderRadius: '16px',
             border: '1px solid var(--border-color)',
-            padding: '20px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+            padding: '22px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
             position: 'sticky',
             top: '80px'
           }}
         >
           {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '14px', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <SlidersHorizontal size={18} style={{ color: 'var(--primary)' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '14px', marginBottom: '18px' }}>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', letterSpacing: '-0.01em' }}>
+              <SlidersHorizontal size={18} style={{ color: '#f72585' }} />
               Filters
             </h3>
-            {(selectedColors.length > 0 || assuredOnly || selectedSubcategory !== 'all' || priceRange < 15000 || minRating > 0) && (
+            {activeFilterCount > 0 && (
               <button 
                 onClick={clearAllFilters}
-                style={{ background: 'transparent', border: 'none', color: 'var(--primary)', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', textTransform: 'uppercase' }}
+                style={{ 
+                  background: 'rgba(247, 37, 133, 0.12)', 
+                  border: '1px solid rgba(247, 37, 133, 0.3)', 
+                  color: '#f72585', 
+                  fontSize: '0.74rem', 
+                  fontWeight: 700, 
+                  cursor: 'pointer', 
+                  textTransform: 'uppercase',
+                  padding: '6px 12px',
+                  borderRadius: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  transition: 'all 0.15s ease'
+                }}
               >
-                Clear All
+                <RotateCcw size={11} /> Reset
               </button>
             )}
           </div>
 
           {/* Categories / Subcategories */}
-          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
+          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '18px' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#f72585', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>
               Categories
             </span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {/* All Category Pill */}
               <button
                 onClick={() => setSelectedSubcategory('all')}
+                className={`leather-cat-btn ${selectedSubcategory === 'all' ? 'active has-white-text' : ''}`}
                 style={{
+                  width: '100%',
                   textAlign: 'left',
-                  background: selectedSubcategory === 'all' ? 'rgba(247,37,133,0.1)' : 'transparent',
-                  color: selectedSubcategory === 'all' ? 'var(--primary)' : 'var(--text-primary)',
-                  fontWeight: selectedSubcategory === 'all' ? 700 : 500,
-                  border: 'none',
-                  padding: '6px 10px',
-                  borderRadius: '6px',
+                  padding: '10px 14px',
+                  borderRadius: '12px',
                   fontSize: '0.85rem',
-                  cursor: 'pointer'
+                  fontWeight: selectedSubcategory === 'all' ? 700 : 500,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: selectedSubcategory === 'all' ? 'var(--primary)' : 'transparent',
+                  color: selectedSubcategory === 'all' ? '#ffffff' : 'var(--text-primary)',
+                  border: 'none',
+                  boxShadow: selectedSubcategory === 'all' ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
+                  transition: 'all 0.18s ease'
                 }}
               >
-                All {categoryTitle}
+                <span>All {categoryTitle}</span>
+                <span style={{ 
+                  fontSize: '0.72rem', 
+                  background: selectedSubcategory === 'all' ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.06)', 
+                  color: selectedSubcategory === 'all' ? '#ffffff' : 'var(--text-muted)', 
+                  padding: '3px 8px', 
+                  borderRadius: '10px', 
+                  fontWeight: 700 
+                }}>
+                  {products.length}
+                </span>
               </button>
-              {subcategories.map(sub => (
-                <button
-                  key={sub}
-                  onClick={() => setSelectedSubcategory(sub)}
-                  style={{
-                    textAlign: 'left',
-                    background: selectedSubcategory === sub ? 'rgba(247,37,133,0.1)' : 'transparent',
-                    color: selectedSubcategory === sub ? 'var(--primary)' : 'var(--text-primary)',
-                    fontWeight: selectedSubcategory === sub ? 700 : 500,
-                    border: 'none',
-                    padding: '6px 10px',
-                    borderRadius: '6px',
-                    fontSize: '0.85rem',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {sub}
-                </button>
-              ))}
+
+              {/* Subcategories */}
+              {subcategories.map(sub => {
+                const isSelected = selectedSubcategory === sub;
+                const count = products.filter(p => (p.subcategory === sub || p.categoryLabel === sub)).length;
+                return (
+                  <button
+                    key={sub}
+                    onClick={() => setSelectedSubcategory(sub)}
+                    className={`leather-cat-btn ${isSelected ? 'active has-white-text' : ''}`}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '10px 14px',
+                      borderRadius: '12px',
+                      fontSize: '0.85rem',
+                      fontWeight: isSelected ? 700 : 500,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      background: isSelected ? 'var(--primary)' : 'transparent',
+                      color: isSelected ? '#ffffff' : 'var(--text-primary)',
+                      border: 'none',
+                      boxShadow: isSelected ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
+                      transition: 'all 0.18s ease'
+                    }}
+                  >
+                    <span>{sub}</span>
+                    <span style={{ 
+                      fontSize: '0.72rem', 
+                      background: isSelected ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.06)', 
+                      color: isSelected ? '#ffffff' : 'var(--text-muted)', 
+                      padding: '3px 8px', 
+                      borderRadius: '10px', 
+                      fontWeight: 600 
+                    }}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* StitchBee Assured Badge Filter */}
-          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', userSelect: 'none' }}>
-              <input
-                type="checkbox"
-                checked={assuredOnly}
-                onChange={e => setAssuredOnly(e.target.checked)}
-                style={{ width: '16px', height: '16px', accentColor: 'var(--primary)', cursor: 'pointer' }}
-              />
-              <span className="assured-badge-flipkart" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(247,37,133,0.12)', color: 'var(--primary)', padding: '3px 8px', borderRadius: '4px', fontSize: '0.78rem', fontWeight: 800 }}>
-                <ShieldCheck size={14} style={{ color: 'var(--primary)' }} /> StitchBee <span style={{ color: 'var(--accent)' }}>Assured</span>
-              </span>
-            </label>
+          {/* StitchBee Assured Badge Filter (App Pink & Teal Branding) */}
+          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '18px' }}>
+            <div 
+              onClick={() => setAssuredOnly(!assuredOnly)}
+              className={`leather-assured-seal ${assuredOnly ? 'active' : ''}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                cursor: 'pointer',
+                userSelect: 'none',
+                padding: '12px 14px',
+                borderRadius: '10px',
+                border: assuredOnly ? '1.5px solid #f72585' : '1px solid var(--border-color)',
+                background: assuredOnly ? 'linear-gradient(135deg, rgba(247, 37, 133, 0.16), rgba(114, 9, 183, 0.08))' : 'rgba(0,0,0,0.02)',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <div style={{
+                width: '18px',
+                height: '18px',
+                borderRadius: '4px',
+                border: assuredOnly ? '2px solid #f72585' : '1.5px solid var(--border-color)',
+                background: assuredOnly ? '#f72585' : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                flexShrink: 0,
+                transition: 'all 0.15s ease'
+              }}>
+                {assuredOnly && <Check size={12} strokeWidth={3} />}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.82rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                  <ShieldCheck size={16} style={{ color: '#f72585' }} />
+                  StitchBee <span style={{ color: '#4cc9f0' }}>Assured</span>
+                </div>
+                <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', marginTop: '2px', lineHeight: 1.25 }}>
+                  100% verified quality & artisan craft
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Price Range Slider */}
-          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '18px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+              <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#f72585', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Price Range
               </span>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--primary)' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#f72585', background: 'rgba(247, 37, 133, 0.1)', border: '1px solid rgba(247, 37, 133, 0.25)', padding: '2px 8px', borderRadius: '12px' }}>
                 Up to ₹{priceRange.toLocaleString()}
               </span>
             </div>
@@ -241,44 +333,50 @@ export default function FlipkartCatalogView({
               step="200"
               value={priceRange}
               onChange={e => setPriceRange(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--primary)', cursor: 'pointer' }}
+              style={{ width: '100%', accentColor: '#f72585', cursor: 'pointer', height: '6px' }}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '6px', fontWeight: 500 }}>
               <span>₹400</span>
               <span>₹5,000</span>
               <span>₹15,000+</span>
             </div>
             {/* Quick Price Buttons */}
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px' }}>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '12px' }}>
               {[
                 { label: 'Under ₹1K', val: 1000 },
                 { label: 'Under ₹2.5K', val: 2500 },
                 { label: 'Under ₹5K', val: 5000 },
                 { label: 'All Prices', val: 15000 }
-              ].map(b => (
-                <button
-                  key={b.label}
-                  onClick={() => setPriceRange(b.val)}
-                  style={{
-                    padding: '4px 8px',
-                    fontSize: '0.72rem',
-                    borderRadius: '4px',
-                    border: priceRange === b.val ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                    background: priceRange === b.val ? 'rgba(247,37,133,0.12)' : 'transparent',
-                    color: priceRange === b.val ? 'var(--primary)' : 'var(--text-secondary)',
-                    fontWeight: 600,
-                    cursor: 'pointer'
-                  }}
-                >
-                  {b.label}
-                </button>
-              ))}
+              ].map(b => {
+                const isActive = priceRange === b.val;
+                return (
+                  <button
+                    key={b.label}
+                    onClick={() => setPriceRange(b.val)}
+                    className={`leather-price-pill ${isActive ? 'active has-white-text' : ''}`}
+                    style={{
+                      padding: '7px 12px',
+                      fontSize: '0.76rem',
+                      borderRadius: '10px',
+                      border: isActive ? 'none' : '1px solid var(--border-color)',
+                      background: isActive ? 'var(--primary)' : 'transparent',
+                      color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                      fontWeight: isActive ? 700 : 500,
+                      boxShadow: isActive ? '0 3px 10px rgba(247, 37, 133, 0.35)' : 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.18s ease'
+                    }}
+                  >
+                    {b.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Color Filter */}
-          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
+          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '18px' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#f72585', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>
               Color Swatches
             </span>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
@@ -293,30 +391,34 @@ export default function FlipkartCatalogView({
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '4px',
-                      padding: '6px 4px',
-                      borderRadius: '6px',
-                      border: isSelected ? '1.5px solid var(--primary)' : '1px solid var(--border-color)',
-                      background: isSelected ? 'rgba(247,37,133,0.1)' : 'transparent',
-                      cursor: 'pointer'
+                      gap: '5px',
+                      padding: '8px 4px',
+                      borderRadius: '8px',
+                      border: isSelected ? '1.5px solid #f72585' : '1px solid var(--border-color)',
+                      background: isSelected ? 'rgba(247, 37, 133, 0.1)' : 'transparent',
+                      cursor: 'pointer',
+                      transition: 'all 0.18s ease'
                     }}
                   >
                     <span 
                       style={{ 
-                        width: '18px', 
-                        height: '18px', 
+                        width: '20px', 
+                        height: '20px', 
                         borderRadius: '50%', 
                         background: c.hex, 
                         border: '1px solid rgba(0,0,0,0.2)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#fff'
+                        color: '#fff',
+                        boxShadow: isSelected ? '0 0 0 2px var(--bg-card), 0 0 0 4px #f72585' : 'none',
+                        transform: isSelected ? 'scale(1.08)' : 'none',
+                        transition: 'all 0.2s ease'
                       }}
                     >
                       {isSelected && <Check size={11} strokeWidth={3} />}
                     </span>
-                    <span style={{ fontSize: '0.65rem', color: isSelected ? 'var(--primary)' : 'var(--text-secondary)', fontWeight: isSelected ? 700 : 500, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '48px' }}>
+                    <span style={{ fontSize: '0.66rem', color: isSelected ? '#f72585' : 'var(--text-secondary)', fontWeight: isSelected ? 700 : 500, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '52px' }}>
                       {c.name}
                     </span>
                   </button>
@@ -326,44 +428,86 @@ export default function FlipkartCatalogView({
           </div>
 
           {/* Customer Rating Filter */}
-          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
+          <div className="filter-group" style={{ marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '18px' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#f72585', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>
               Customer Ratings
             </span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
-                { label: '4★ & above', val: 4.0 },
-                { label: '4.5★ & above', val: 4.5 },
-                { label: 'All Ratings', val: 0 }
-              ].map(r => (
-                <label key={r.label} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--text-primary)', cursor: 'pointer' }}>
-                  <input
-                    type="radio"
-                    name="rating-filter"
-                    checked={minRating === r.val}
-                    onChange={() => setMinRating(r.val)}
-                    style={{ accentColor: 'var(--primary)' }}
-                  />
-                  <span>{r.label}</span>
-                </label>
-              ))}
+                { label: '4.5★ & above', val: 4.5, stars: '★★★★½' },
+                { label: '4.0★ & above', val: 4.0, stars: '★★★★☆' },
+                { label: 'All Ratings', val: 0, stars: 'All' }
+              ].map(r => {
+                const isSelected = minRating === r.val;
+                return (
+                  <label 
+                    key={r.label} 
+                    onClick={() => setMinRating(r.val)}
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      padding: '7px 10px',
+                      borderRadius: '6px',
+                      background: isSelected ? 'rgba(247, 37, 133, 0.1)' : 'transparent',
+                      border: isSelected ? '1px solid rgba(247, 37, 133, 0.35)' : '1px solid transparent',
+                      fontSize: '0.82rem', 
+                      color: isSelected ? '#f72585' : 'var(--text-primary)', 
+                      cursor: 'pointer',
+                      fontWeight: isSelected ? 700 : 500,
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <input
+                        type="radio"
+                        name="rating-filter"
+                        checked={isSelected}
+                        onChange={() => setMinRating(r.val)}
+                        style={{ accentColor: '#f72585', cursor: 'pointer' }}
+                      />
+                      <span>{r.label}</span>
+                    </span>
+                    {r.stars !== 'All' && (
+                      <span style={{ color: '#f59e0b', fontSize: '0.78rem', letterSpacing: '1px' }}>
+                        {r.stars}
+                      </span>
+                    )}
+                  </label>
+                );
+              })}
             </div>
           </div>
 
           {/* Special Offers Filter */}
           <div className="filter-group">
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#f72585', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>
               Special Offers
             </span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: 'var(--text-primary)', cursor: 'pointer' }}>
+              <label 
+                onClick={() => setSelectedOffer(selectedOffer === 'special' ? 'all' : 'special')}
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px', 
+                  fontSize: '0.82rem', 
+                  color: selectedOffer === 'special' ? '#f72585' : 'var(--text-primary)', 
+                  cursor: 'pointer',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  background: selectedOffer === 'special' ? 'rgba(247, 37, 133, 0.1)' : 'transparent',
+                  border: selectedOffer === 'special' ? '1px solid rgba(247, 37, 133, 0.35)' : '1px solid transparent',
+                  fontWeight: selectedOffer === 'special' ? 700 : 500
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={selectedOffer === 'special'}
                   onChange={e => setSelectedOffer(e.target.checked ? 'special' : 'all')}
-                  style={{ accentColor: 'var(--primary)' }}
+                  style={{ accentColor: '#f72585' }}
                 />
-                <span>Special Price (30%+ Off)</span>
+                <span>Special Discount (30%+ Off)</span>
               </label>
             </div>
           </div>
@@ -371,48 +515,39 @@ export default function FlipkartCatalogView({
         </aside>
 
         {/* ============================================================== */}
-        {/* RIGHT COLUMN: CATALOG RESULTS HEADER & PRODUCT GRID (Image 1)  */}
+        {/* RIGHT COLUMN: CATALOG RESULTS HEADER & PRODUCT GRID            */}
         {/* ============================================================== */}
         <main className="catalog-content-main">
-          {/* Top Breadcrumb & Sorting Strip */}
+          {/* Top Results & Sorting Strip (Breadcrumb Removed per Request 1) */}
           <div
             style={{
               background: 'var(--bg-card)',
-              borderRadius: '12px',
+              borderRadius: '16px',
               border: '1px solid var(--border-color)',
-              padding: '14px 20px',
-              marginBottom: '16px',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
+              padding: '18px 24px',
+              marginBottom: '20px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.03)'
             }}
           >
-            {/* Breadcrumb Navigation */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
-              {breadcrumbs.map((crumb, idx) => (
-                <React.Fragment key={crumb}>
-                  <span style={{ cursor: idx < breadcrumbs.length - 1 ? 'pointer' : 'default', color: idx === breadcrumbs.length - 1 ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: idx === breadcrumbs.length - 1 ? 600 : 400 }}>
-                    {crumb}
-                  </span>
-                  {idx < breadcrumbs.length - 1 && <ChevronRight size={12} />}
-                </React.Fragment>
-              ))}
-            </div>
-
             {/* Results Title & Count */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '14px', marginBottom: '14px' }}>
               <div>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: '0 0 2px 0', color: 'var(--text-primary)' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#f72585', fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '4px' }}>
+                  <Award size={14} style={{ color: '#f72585' }} /> StitchBee Verified Studio
+                </div>
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
                   Showing 1 – {filteredProducts.length} of {products.length} results for "{categoryTitle}"
                 </h2>
-                <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                   Authentic artisan handcrafted goods direct from verified master ateliers
                 </span>
               </div>
             </div>
 
-            {/* Sort Options Strip (Flipkart style tab switcher) */}
+            {/* Sort Options Strip (App Pink Segmented Control) */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', marginRight: '8px' }}>
-                Sort By
+              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', marginRight: '8px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <ArrowUpDown size={14} style={{ color: '#f72585' }} /> Sort By:
               </span>
               {[
                 { id: 'relevance', label: 'Relevance' },
@@ -420,35 +555,39 @@ export default function FlipkartCatalogView({
                 { id: 'low-to-high', label: 'Price -- Low to High' },
                 { id: 'high-to-low', label: 'Price -- High to Low' },
                 { id: 'newest', label: 'Newest First' }
-              ].map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => setSortBy(s.id)}
-                  style={{
-                    padding: '6px 14px',
-                    fontSize: '0.8rem',
-                    fontWeight: sortBy === s.id ? 700 : 500,
-                    borderRadius: '20px',
-                    border: 'none',
-                    background: sortBy === s.id ? 'var(--grad-primary)' : 'transparent',
-                    color: sortBy === s.id ? '#ffffff' : 'var(--text-secondary)',
-                    cursor: 'pointer',
-                    boxShadow: sortBy === s.id ? '0 2px 10px rgba(247,37,133,0.3)' : 'none',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  {s.label}
-                </button>
-              ))}
+              ].map(s => {
+                const isActive = sortBy === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => setSortBy(s.id)}
+                    className={`catalog-sort-btn ${isActive ? 'active has-white-text' : ''}`}
+                    style={{
+                      padding: '8px 18px',
+                      fontSize: '0.82rem',
+                      fontWeight: isActive ? 700 : 500,
+                      borderRadius: '12px',
+                      border: isActive ? 'none' : '1px solid var(--border-color)',
+                      background: isActive ? 'var(--primary)' : 'transparent',
+                      color: isActive ? '#ffffff' : 'var(--text-secondary)',
+                      cursor: 'pointer',
+                      boxShadow: isActive ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
+                      transition: 'all 0.18s ease'
+                    }}
+                  >
+                    {s.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Product Cards Grid (Matching Image 1 Card Anatomy) */}
+          {/* Product Cards Grid (Luxury Atelier Cards) */}
           {filteredProducts.length === 0 ? (
             <div 
               style={{
                 background: 'var(--bg-card)',
-                borderRadius: '12px',
+                borderRadius: '16px',
                 border: '1px solid var(--border-color)',
                 padding: '60px 24px',
                 textAlign: 'center'
@@ -459,9 +598,13 @@ export default function FlipkartCatalogView({
                 No Products Match Your Filter
               </h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginBottom: '20px' }}>
-                Try adjusting your price range or clearing active color filters.
+                Try adjusting your price range or clearing active color swatches.
               </p>
-              <button onClick={clearAllFilters} className="btn btn-primary" style={{ padding: '8px 24px' }}>
+              <button 
+                onClick={clearAllFilters} 
+                className="btn-leather-primary has-white-text" 
+                style={{ padding: '12px 28px', borderRadius: '12px', fontSize: '0.88rem', fontWeight: 700, color: '#ffffff', background: 'var(--primary)', border: 'none', boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)' }}
+              >
                 Reset All Filters
               </button>
             </div>
@@ -470,8 +613,8 @@ export default function FlipkartCatalogView({
               className="flipkart-product-grid" 
               style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', 
-                gap: '16px' 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', 
+                gap: '20px' 
               }}
             >
               {filteredProducts.map(prod => {
@@ -482,30 +625,22 @@ export default function FlipkartCatalogView({
                 return (
                   <div
                     key={prod.id}
-                    className="flipkart-product-card glass-card"
+                    className="leather-luxury-card"
                     onClick={() => onSelectProduct && onSelectProduct(prod)}
                     style={{
                       background: 'var(--bg-card)',
-                      borderRadius: '12px',
+                      borderRadius: '16px',
                       border: '1px solid var(--border-color)',
                       overflow: 'hidden',
                       cursor: 'pointer',
                       display: 'flex',
                       flexDirection: 'column',
                       position: 'relative',
-                      transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--primary)';
-                      e.currentTarget.style.transform = 'translateY(-3px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'var(--border-color)';
-                      e.currentTarget.style.transform = 'none';
+                      transition: 'all 0.25s ease'
                     }}
                   >
-                    {/* Top Image Box with Dots & Wishlist */}
-                    <div style={{ position: 'relative', width: '100%', height: '240px', background: '#0a0914', overflow: 'hidden' }}>
+                    {/* Top Image Box with Atelier Badges & Wishlist */}
+                    <div style={{ position: 'relative', width: '100%', height: '250px', background: '#0a0914', overflow: 'hidden' }}>
                       <img
                         src={prod.image}
                         alt={prod.name}
@@ -513,38 +648,53 @@ export default function FlipkartCatalogView({
                           width: '100%',
                           height: '100%',
                           objectFit: 'cover',
-                          transition: 'transform 0.3s ease'
+                          transition: 'transform 0.4s ease'
                         }}
                         className="catalog-product-img"
                       />
 
-                      {/* Image Carousel Dots (Matching Image 2 Reference) */}
-                      <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '3px', zIndex: 2, background: 'rgba(0,0,0,0.3)', padding: '3px 6px', borderRadius: '10px' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#fff' }}></span>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.4)' }}></span>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.4)' }}></span>
+                      {/* Luxury Atelier Floating Tag */}
+                      <div style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 2 }}>
+                        <span style={{ 
+                          fontSize: '0.68rem', 
+                          fontWeight: 800, 
+                          background: 'rgba(15, 23, 42, 0.85)', 
+                          color: '#f72585', 
+                          backdropFilter: 'blur(4px)', 
+                          padding: '3px 8px', 
+                          borderRadius: '6px', 
+                          border: '1px solid rgba(247, 37, 133, 0.4)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase'
+                        }}>
+                          <Sparkles size={11} style={{ color: '#f72585' }} /> Handcrafted
+                        </span>
                       </div>
 
-                      {/* Wishlist Heart Button (Matching Image 2 Reference) */}
+                      {/* Wishlist Heart Button */}
                       <button
                         type="button"
                         onClick={(e) => toggleWishlist(e, prod.id)}
                         style={{
                           position: 'absolute',
-                          top: '10px',
-                          right: '10px',
-                          width: '32px',
-                          height: '32px',
+                          top: '12px',
+                          right: '12px',
+                          width: '34px',
+                          height: '34px',
                           borderRadius: '50%',
-                          background: 'rgba(255,255,255,0.85)',
-                          backdropFilter: 'blur(4px)',
+                          background: 'rgba(255,255,255,0.9)',
+                          backdropFilter: 'blur(6px)',
                           border: 'none',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           cursor: 'pointer',
-                          boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                          zIndex: 3
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                          zIndex: 3,
+                          transition: 'transform 0.15s ease'
                         }}
                         title="Save to wishlist"
                       >
@@ -558,29 +708,24 @@ export default function FlipkartCatalogView({
                       </button>
                     </div>
 
-                    {/* Card Content Details (Matching Image 2 Anatomy) */}
-                    <div style={{ padding: '14px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    {/* Card Content Details */}
+                    <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                       <div>
-                        {/* Sponsored label */}
-                        <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginBottom: '2px' }}>
-                          Sponsored
-                        </div>
-
                         {/* Brand Name */}
-                        <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                        <div style={{ fontSize: '0.74rem', fontWeight: 800, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>
                           {prod.brand || 'StitchBee Atelier'}
                         </div>
 
                         {/* Title */}
                         <h4 
                           style={{ 
-                            fontSize: '0.85rem', 
-                            fontWeight: 500, 
-                            color: 'var(--text-secondary)', 
-                            margin: '0 0 6px 0',
-                            lineHeight: 1.35,
+                            fontSize: '0.92rem', 
+                            fontWeight: 600, 
+                            color: 'var(--text-primary)', 
+                            margin: '0 0 8px 0',
+                            lineHeight: 1.4,
                             display: '-webkit-box',
-                            WebkitLineClamp: 1,
+                            WebkitLineClamp: 2,
                             WebkitBoxOrient: 'vertical',
                             overflow: 'hidden'
                           }}
@@ -590,33 +735,60 @@ export default function FlipkartCatalogView({
                         </h4>
 
                         {/* Assured & Rating Badge */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', background: 'rgba(247,37,133,0.12)', color: 'var(--primary)', padding: '1px 6px', borderRadius: '3px', fontSize: '0.68rem', fontWeight: 800 }}>
-                            <ShieldCheck size={11} style={{ color: 'var(--primary)' }} /> Assured
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#388e3c', color: '#fff', padding: '2px 7px', borderRadius: '4px', fontSize: '0.72rem', fontWeight: 800 }}>
+                            {prod.rating || 4.6} <Star size={10} style={{ fill: '#fff' }} />
                           </span>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: '#388e3c', color: '#fff', padding: '1px 5px', borderRadius: '3px', fontSize: '0.68rem', fontWeight: 700 }}>
-                            {prod.rating || 4.6} <Star size={9} style={{ fill: '#fff' }} />
+                          <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                            ({prod.reviewsCount || 120})
+                          </span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', background: 'rgba(247, 37, 133, 0.12)', color: '#f72585', padding: '2px 7px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800 }}>
+                            <ShieldCheck size={12} style={{ color: '#f72585' }} /> Assured
                           </span>
                         </div>
 
-                        {/* Pricing (Flipkart Style: Current Price, MRP strike, Discount %) */}
+                        {/* Pricing */}
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
-                          <strong style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                          <strong style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                             ₹{prod.price.toLocaleString()}
                           </strong>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>
                             ₹{original.toLocaleString()}
                           </span>
-                          <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#388e3c' }}>
-                            {discountPercent}% off
+                          <span style={{ fontSize: '0.76rem', fontWeight: 800, color: '#388e3c', background: 'rgba(56, 142, 60, 0.1)', padding: '1px 6px', borderRadius: '4px' }}>
+                            {discountPercent}% OFF
                           </span>
                         </div>
-
-                        {/* Status (e.g. Only few left) */}
-                        <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--primary)', marginTop: '4px' }}>
-                          Only few left
-                        </div>
                       </div>
+
+                      {/* Card Action Button (App Pink with Crisp White Text by Default) */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelectProduct && onSelectProduct(prod);
+                        }}
+                        className="btn-leather-primary has-white-text"
+                        style={{
+                          marginTop: '12px',
+                          width: '100%',
+                          padding: '11px 18px',
+                          borderRadius: '12px',
+                          fontSize: '0.85rem',
+                          fontWeight: 700,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px',
+                          cursor: 'pointer',
+                          background: 'var(--primary)',
+                          border: 'none',
+                          color: '#ffffff',
+                          boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)'
+                        }}
+                      >
+                        <Eye size={15} /> View Details
+                      </button>
                     </div>
                   </div>
                 );

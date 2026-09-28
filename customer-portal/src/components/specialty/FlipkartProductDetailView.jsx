@@ -113,20 +113,14 @@ export default function FlipkartProductDetailView({
           gap: '12px'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={onBack}
-            className="btn btn-ghost"
-            style={{ padding: '4px 8px', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontWeight: 700, fontSize: '0.82rem' }}
+            className="btn-leather-primary has-white-text"
+            style={{ padding: '9px 18px', display: 'flex', alignItems: 'center', gap: '6px', color: '#ffffff', fontWeight: 700, fontSize: '0.84rem', borderRadius: '12px', background: 'var(--primary)', border: 'none', boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)' }}
           >
-            <ArrowLeft size={16} /> Back to Catalog
+            <ArrowLeft size={16} /> Back to Atelier Catalog
           </button>
-          <span>/</span>
-          <span>Home</span>
-          <ChevronRight size={12} />
-          <span>{categoryTitle}</span>
-          <ChevronRight size={12} />
-          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{product.name}</span>
         </div>
 
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -238,13 +232,15 @@ export default function FlipkartProductDetailView({
             <button
               type="button"
               onClick={handleAdd}
-              className="btn btn-secondary"
+              className="btn has-white-text"
               style={{
                 padding: '14px',
                 fontSize: '0.95rem',
                 fontWeight: 700,
-                borderRadius: '8px',
-                border: '1.5px solid var(--border-color)',
+                borderRadius: '12px',
+                background: '#1e293b',
+                color: '#ffffff',
+                border: '1.5px solid rgba(255, 255, 255, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -258,21 +254,21 @@ export default function FlipkartProductDetailView({
             <button
               type="button"
               onClick={handleBuy}
-              className="btn"
+              className="btn-leather-primary has-white-text"
               style={{
                 padding: '14px',
                 fontSize: '0.95rem',
-                fontWeight: 800,
-                borderRadius: '8px',
-                background: 'var(--grad-primary)',
-                color: '#fff',
+                fontWeight: 700,
+                borderRadius: '12px',
+                background: 'var(--primary)',
+                color: '#ffffff',
                 border: 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
                 cursor: 'pointer',
-                boxShadow: '0 4px 16px rgba(247, 37, 133, 0.4)'
+                boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)'
               }}
             >
               <Zap size={18} /> Buy at ₹{effectivePrice.toLocaleString()}
@@ -469,8 +465,8 @@ export default function FlipkartProductDetailView({
               <button
                 type="button"
                 onClick={handlePincodeCheck}
-                className="btn btn-secondary"
-                style={{ padding: '10px 16px', fontSize: '0.82rem', fontWeight: 700 }}
+                className="btn-leather-primary has-white-text"
+                style={{ padding: '10px 18px', fontSize: '0.82rem', fontWeight: 700, borderRadius: '12px', background: 'var(--primary)', border: 'none', color: '#ffffff', boxShadow: '0 4px 14px rgba(247, 37, 133, 0.35)' }}
               >
                 Check
               </button>
@@ -482,9 +478,10 @@ export default function FlipkartProductDetailView({
                   padding: '10px 14px',
                   fontSize: '0.82rem',
                   fontWeight: 700,
-                  background: 'rgba(247,37,133,0.1)',
+                  background: 'rgba(247, 37, 133, 0.1)',
                   color: 'var(--primary)',
-                  border: '1px solid rgba(247,37,133,0.3)',
+                  border: '1px solid rgba(247, 37, 133, 0.3)',
+                  borderRadius: '12px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px'

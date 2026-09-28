@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Facebook, Instagram, Linkedin, Twitter, Play, Pause, Volume2, VolumeX, Apple, Menu, X } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Facebook, Instagram, Linkedin, Twitter, Play, Pause, Volume2, VolumeX, Apple, Menu, X, Home, Layers, Shirt, Clock, ChevronDown, BookOpen, Phone, LogOut } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import CustomerView from './components/CustomerView';
 import AuthModal from './components/AuthModal';
@@ -148,6 +148,7 @@ export default function App() {
   const [customerHub, setCustomerHub] = useState('home');
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   // Guest landing banner carousel states
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
@@ -371,9 +372,15 @@ export default function App() {
     
     const map = window.L.map(container).setView([centerLat, centerLng], 13);
     
-    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    window.L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps'
     }).addTo(map);
+
+    setTimeout(() => {
+      if (map) map.invalidateSize();
+    }, 200);
     
     const markers = [];
     
@@ -781,9 +788,9 @@ export default function App() {
                 className="mobile-menu-toggle-btn"
                 onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
                 aria-label="Toggle menu"
-                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none' }}
+                style={{ padding: '6px', cursor: 'pointer', background: 'transparent', border: 'none', color: 'var(--text-primary)' }}
               >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
 
               <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
@@ -911,54 +918,356 @@ export default function App() {
             </div>
           </header>
 
-          {/* Slide down / drawer Mobile Menu */}
+          {/* Slide-out Navigation Drawer (Mobile & Tablet - Tailor Style) */}
           {mobileMenuOpen && (
-            <div className="mobile-dropdown-menu-v3" onClick={(e) => e.stopPropagation()}>
-              <div className="mobile-menu-links-v3">
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); navigateToSection('categories-section'); setMobileMenuOpen(false); }}
+            <>
+              <div 
+                className="drawer-backdrop"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ top: '64px' }}
+              />
+
+              <div 
+                className="left-nav-drawer"
+                onClick={(e) => e.stopPropagation()}
+                style={{ 
+                  top: '64px', 
+                  height: 'calc(100vh - 64px)', 
+                  zIndex: 999,
+                  background: theme === 'dark' ? '#0F0C1B' : '#F8F9FC',
+                  color: theme === 'dark' ? '#ffffff' : '#172033',
+                  borderRight: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB'
+                }}
+              >
+                {/* Top Close Header */}
+                <div className="drawer-top-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 800, letterSpacing: '0.5px', textTransform: 'uppercase', color: 'var(--primary)' }}>
+                      Navigation Menu
+                    </span>
+                  </div>
+                  <button 
+                    className="drawer-close-btn"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ 
+                      width: '36px', 
+                      height: '36px', 
+                      borderRadius: '10px', 
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#FFFFFF', 
+                      border: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E5E7EB',
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      color: theme === 'dark' ? '#ffffff' : '#1B1B2F', 
+                      cursor: 'pointer' 
+                    }}
+                    aria-label="Close menu"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* User / Brand Welcome Card */}
+                <div className="drawer-welcome-card" style={{ background: 'linear-gradient(135deg, #1B0F2A 0%, #3B154C 50%, var(--primary) 100%)', margin: '0 0 16px 0', padding: '16px', borderRadius: '18px' }}>
+                  <div className="drawer-welcome-inner" style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <div className="drawer-welcome-icon-box" style={{ background: 'linear-gradient(135deg, var(--primary) 0%, #B5179E 100%)', width: '48px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <User size={24} color="#ffffff" />
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: '0.72rem', opacity: 0.95, fontWeight: 500, color: '#ffffff' }}>
+                        {currentUser ? 'Customer Account' : 'Welcome to StitchBee'}
+                      </div>
+                      <h3 style={{ fontSize: '1.12rem', fontWeight: 700, margin: '2px 0', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {currentUser ? `${currentUser.name} 👋` : 'Explore & Custom Stitch'}
+                      </h3>
+                      <p style={{ fontSize: '0.72rem', opacity: 0.85, margin: 0, color: '#ffffff' }}>
+                        {currentUser ? (currentUser.phone || '+91 98765 43210') : 'Bespoke Tailoring & Designer Studio'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Navigation Items List */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', flex: 1, overflowY: 'auto' }}>
+                  {[
+                    { id: 'home', label: 'Home', subtitle: 'Atelier Discovery & Trends', icon: <Home size={20} />, action: () => { setRole('landing'); navigateToSection('hero-section'); } },
+                    { id: 'categories', label: 'Categories', subtitle: 'Browse Garments & Crafts', icon: <Sparkles size={20} />, action: () => navigateToSection('categories-section') },
+                    { id: 'fabrics', label: 'Fabric Marketplace', subtitle: 'Explore Pure Silks & Linens', icon: <Layers size={20} />, action: () => { setRole('customer'); setCustomerHub('fabrics'); } },
+                    { id: 'tailors', label: 'Tailors Near You', subtitle: 'Locate Verified Local Boutiques', icon: <MapPin size={20} />, action: () => navigateToSection('tailors-near-you') },
+                    { id: 'how-it-works', label: 'How It Works', subtitle: 'Doorstep Measurements & Delivery', icon: <Scissors size={20} />, action: () => navigateToSection('how-it-works') },
+                    { id: 'pricing', label: 'Pricing Plans', subtitle: 'Tailoring & Alteration Rates', icon: <Award size={20} />, action: () => navigateToSection('pricing-section') },
+                    { id: 'track', label: 'Track Order', subtitle: 'Live Stitching & Dispatch Status', icon: <Truck size={20} />, action: () => handleTrackOrder() },
+                    { id: 'blogs', label: 'Style Blogs', subtitle: 'Fashion Articles & Care Guides', icon: <BookOpen size={20} />, action: () => setRole('blogs') },
+                    { id: 'contact', label: 'Contact Us', subtitle: '24/7 Atelier & Support Desk', icon: <Phone size={20} />, action: () => navigateToSection('contact-footer') }
+                  ].map(tab => (
+                    <div
+                      key={tab.id}
+                      className="drawer-nav-item"
+                      onClick={() => {
+                        tab.action();
+                        setMobileMenuOpen(false);
+                      }}
+                      style={{
+                        background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent',
+                        borderRadius: '12px',
+                        padding: '10px 14px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'nowrap',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        gap: '8px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                        <div 
+                          className="drawer-nav-icon-box" 
+                          style={{ 
+                            background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
+                            color: theme === 'dark' ? '#E2E8F0' : '#475467',
+                            flexShrink: 0
+                          }}
+                        >
+                          {tab.icon}
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                          <span style={{ 
+                            fontSize: '0.9rem', 
+                            fontWeight: 700, 
+                            color: theme === 'dark' ? '#FFFFFF' : '#1B1B2F',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }}>
+                            {tab.label}
+                          </span>
+                          <span style={{ 
+                            fontSize: '0.72rem', 
+                            color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                          }}>
+                            {tab.subtitle}
+                          </span>
+                        </div>
+                      </div>
+                      <ChevronRight 
+                        size={18} 
+                        style={{ 
+                          color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : '#9CA3AF',
+                          flexShrink: 0,
+                          marginLeft: 'auto'
+                        }} 
+                      />
+                    </div>
+                  ))}
+
+                  {/* Stitching Services Expandable Accordion */}
+                  <div
+                    style={{
+                      background: theme === 'dark' ? 'rgba(255,255,255,0.02)' : 'transparent',
+                      borderRadius: '12px',
+                      border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
+                      overflow: 'hidden',
+                      marginTop: '4px'
+                    }}
+                  >
+                    <div 
+                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                      style={{
+                        padding: '10px 14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div 
+                          className="drawer-nav-icon-box"
+                          style={{
+                            background: theme === 'dark' ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
+                            color: 'var(--primary)',
+                            flexShrink: 0
+                          }}
+                        >
+                          <Scissors size={20} />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                          <span style={{ fontSize: '0.9rem', fontWeight: 700, color: theme === 'dark' ? '#FFFFFF' : '#1B1B2F', display: 'block' }}>
+                            Custom Stitching Services
+                          </span>
+                          <span style={{ fontSize: '0.72rem', color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280' }}>
+                            Men, Women, Bridal, Alterations...
+                          </span>
+                        </div>
+                      </div>
+                      <ChevronDown 
+                        size={16} 
+                        style={{ 
+                          transform: mobileServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
+                          transition: 'transform 0.2s ease',
+                          color: theme === 'dark' ? 'rgba(255,255,255,0.5)' : '#6B7280'
+                        }} 
+                      />
+                    </div>
+
+                    {mobileServicesOpen && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '0 12px 12px 12px' }}>
+                        {[
+                          { id: 'mens', label: 'Men' },
+                          { id: 'womens', label: 'Women' },
+                          { id: 'bridal', label: 'Bridal' },
+                          { id: 'kids', label: 'Kids' },
+                          { id: 'alterations', label: 'Alterations' },
+                          { id: 'uniforms', label: 'Uniforms' },
+                          { id: 'bags', label: 'Bags & Leathers' },
+                          { id: 'shoes', label: 'Shoes & Slippers' },
+                          { id: 'seats', label: 'Vehicle Seat Covers' },
+                          { id: 'designers', label: 'Custom Design' },
+                          { id: 'gifts', label: 'Hand Made Gifts' },
+                          { id: 'pets', label: 'Pet Outfits' },
+                          { id: 'sofas', label: 'Sofas' },
+                        ].map(cat => (
+                          <button
+                            key={cat.id}
+                            onClick={() => {
+                              if (cat.id === 'designers') {
+                                setRole('customer');
+                                setCustomerHub('designers');
+                                setCustomerCategory('all');
+                              } else {
+                                setRole('customer');
+                                setCustomerHub('category-landing');
+                                setCustomerCategory(cat.id);
+                              }
+                              setMobileMenuOpen(false);
+                            }}
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              border: theme === 'dark' ? '1px solid rgba(255,255,255,0.1)' : '1px solid #E5E7EB',
+                              background: theme === 'dark' ? 'rgba(255,255,255,0.04)' : '#fff',
+                              color: theme === 'dark' ? '#FFFFFF' : '#1B1B2F',
+                              fontSize: '0.75rem',
+                              fontWeight: 600,
+                              cursor: 'pointer'
+                            }}
+                          >
+                            {cat.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* VIP Customer Tier Card */}
+                <div className="drawer-tier-card" style={{ background: 'linear-gradient(135deg, #7B3FF2 0%, #5B21B6 100%)', margin: '8px 0 12px 0', padding: '14px', borderRadius: '18px', color: '#ffffff' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '1.25rem' }}>💎</span>
+                      <div>
+                        <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#ffffff' }}>
+                          StitchBee VIP Club
+                        </div>
+                        <div style={{ fontSize: '0.7rem', opacity: 0.9, color: '#ffffff', marginTop: '1px' }}>
+                          Doorstep Measurements & Free Delivery
+                        </div>
+                      </div>
+                    </div>
+                    <span style={{ background: 'rgba(255, 255, 255, 0.2)', padding: '3px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, color: '#ffffff' }}>
+                      VIP Tier
+                    </span>
+                  </div>
+                </div>
+
+                {/* Theme Toggle Button */}
+                <div 
+                  className="drawer-nav-item"
+                  onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                  style={{
+                    background: theme === 'dark' ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
+                    border: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB',
+                    borderRadius: '12px',
+                    padding: '10px 14px',
+                    marginBottom: '8px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  Categories
-                </span>
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); navigateToSection('how-it-works'); setMobileMenuOpen(false); }}
-                >
-                  How It Works
-                </span>
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); navigateToSection('tailors-near-you'); setMobileMenuOpen(false); }}
-                >
-                  Tailors Near You
-                </span>
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); navigateToSection('pricing-section'); setMobileMenuOpen(false); }}
-                >
-                  Pricing
-                </span>
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); handleTrackOrder(); setMobileMenuOpen(false); }}
-                >
-                  Track Order
-                </span>
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); setRole('blogs'); setMobileMenuOpen(false); }}
-                >
-                  Blogs
-                </span>
-                <span 
-                  className="mobile-menu-link-v3"
-                  onClick={(e) => { e.stopPropagation(); navigateToSection('contact-footer'); setMobileMenuOpen(false); }}
-                >
-                  Contact
-                </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div className="drawer-nav-icon-box" style={{ background: theme === 'dark' ? 'rgba(251,191,36,0.15)' : '#FEF3C7', color: '#D97706', width: '36px', height: '36px', borderRadius: '10px' }}>
+                      {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                    </div>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: theme === 'dark' ? '#FFFFFF' : '#1B1B2F' }}>
+                      {theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--primary)' }}>
+                    {theme === 'dark' ? 'Dark' : 'Light'}
+                  </span>
+                </div>
+
+                {/* Auth Actions: Logout or Login/Signup */}
+                {currentUser ? (
+                  <button 
+                    className="drawer-logout-btn"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleLogout();
+                    }}
+                    style={{
+                      background: theme === 'dark' ? 'rgba(239,68,68,0.15)' : '#FEF2F2',
+                      color: '#EF4444',
+                      border: '1.5px solid rgba(239,68,68,0.25)',
+                      borderRadius: '12px',
+                      padding: '12px',
+                      fontWeight: 700,
+                      fontSize: '0.88rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                      width: '100%'
+                    }}
+                  >
+                    <LogOut size={16} /> Logout ({currentUser.name})
+                  </button>
+                ) : (
+                  <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                    <button 
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        openAuthModal('customer', 'login');
+                      }}
+                      style={{ flex: 1, padding: '10px', fontSize: '0.85rem', borderRadius: '10px', fontWeight: 600 }}
+                    >
+                      Login
+                    </button>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        openAuthModal('customer', 'signup');
+                      }}
+                      style={{ flex: 1, padding: '10px', fontSize: '0.85rem', borderRadius: '10px', fontWeight: 600 }}
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
+            </>
           )}
         </>
       )}

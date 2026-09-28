@@ -4,6 +4,7 @@ import {
   ShoppingCart, Lock, ArrowRight, User, Award, ShieldCheck, MapPin, Phone, Check, Gift 
 } from 'lucide-react';
 import SpecialtyCategoryView from './specialty/SpecialtyCategoryView';
+import BagsLeatherStudio from './BagsLeatherStudio';
 
 const categoryTemplates = {
   mens: {
@@ -436,8 +437,25 @@ const categoryTemplates = {
 const SPECIALTY_KEYS = ['bags', 'shoes', 'seats', 'gifts', 'pets', 'sofas'];
 
 export default function ServiceCategoryView({ 
-  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart 
+  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart, theme, setTheme,
+  bagsStudioMode = 'shop', setBagsStudioMode 
 }) {
+  if (categoryKey === 'bags') {
+    return (
+      <BagsLeatherStudio
+        currentUser={currentUser}
+        theme={theme}
+        setTheme={setTheme}
+        initialMode={bagsStudioMode}
+        onSwitchMode={setBagsStudioMode}
+        onNavigateHome={onExploreDesigns}
+        onNavigateCategory={onSelectCategory}
+        onOpenAuthModal={onLoginRequired}
+        onAddToCart={onAddToCart}
+      />
+    );
+  }
+
   if (SPECIALTY_KEYS.includes(categoryKey)) {
     return (
       <SpecialtyCategoryView

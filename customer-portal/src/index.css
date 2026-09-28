@@ -181,19 +181,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background: var(--grad-primary);
-  color: #ffffff;
-  box-shadow: var(--shadow-sm);
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.35);
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-glow);
-  opacity: 0.95;
+  background: #e01e74 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.48);
+  color: #ffffff !important;
 }
 
 .btn-primary:active {
   transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(247, 37, 133, 0.3);
 }
 
 .btn-secondary {
@@ -973,8 +978,8 @@ body.light-theme .auth-role-card.active span {
   color: var(--primary) !important;
 }
 
-body.light-theme button:not(.btn-primary) {
-  color: var(--text-primary) !important;
+body.light-theme button:not(.btn-primary):not(.btn-accent):not(.btn-leather-primary):not(.active):not([data-active="true"]):not(.active-pill):not(.sort-btn-active):not(.catalog-sort-btn):not(.price-pill-active):not(.has-white-text):not(.text-white):not([data-variant="primary"]) {
+  color: var(--text-primary);
 }
 
 body.light-theme .btn-secondary {
@@ -3078,6 +3083,99 @@ body.light-theme .reels-nav-btn {
   background: rgba(247, 37, 133, 0.08);
   color: #ffffff;
 }
+
+/* Services Dropdown Submenu (Bags and Leather Studio) */
+.nav-item-has-submenu {
+  position: relative;
+}
+
+.nav-submenu {
+  position: absolute;
+  top: -8px;
+  left: calc(100% + 8px);
+  background: #0f0d1e;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-8px);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 300;
+  pointer-events: none;
+}
+
+.nav-item-has-submenu:hover .nav-submenu,
+.nav-submenu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.nav-submenu-card {
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+}
+
+.nav-submenu-card:hover {
+  background: rgba(247, 37, 133, 0.12);
+  border-color: rgba(247, 37, 133, 0.35);
+  transform: translateX(3px);
+}
+
+.nav-submenu-card.active {
+  background: rgba(247, 37, 133, 0.15);
+  border-color: var(--primary);
+}
+
+.nav-submenu-title {
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-submenu-desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+body.light-theme .nav-submenu {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14) !important;
+}
+
+body.light-theme .nav-submenu-card {
+  background: #f8fafc;
+}
+
+body.light-theme .nav-submenu-card:hover {
+  background: rgba(247, 37, 133, 0.08);
+}
+
+body.light-theme .nav-submenu-title {
+  color: #0f172a;
+}
+
 
 /* Hero Split Fold Layout */
 .hero-split-grid {
@@ -10393,8 +10491,9 @@ body.dark-theme .drawer-nav-item.active .drawer-nav-icon-box {
   transform: translateY(-2px);
 }
 
-/* Media Query to switch desktop nav to mobile hamburger menu dropdown */
-@media (max-width: 900px) {
+/* Media Query to switch desktop nav to mobile & tablet hamburger menu drawer */
+@media (max-width: 1024px) {
+  .role-switcher,
   .desktop-nav-menu,
   .desktop-header-nav {
     display: none !important;
@@ -10402,12 +10501,40 @@ body.dark-theme .drawer-nav-item.active .drawer-nav-icon-box {
   .mobile-menu-toggle-btn {
     display: flex !important;
   }
+  .top-nav {
+    padding: 0 1rem !important;
+  }
   .header-logo-image {
+    height: 60px !important;
+    width: 180px !important;
+    max-width: 180px !important;
+    margin-left: -30px !important;
+    margin-right: -10px !important;
+  }
+  .top-nav .logo img {
     height: 70px !important;
-    width: 220px !important;
-    max-width: 220px !important;
-    margin-left: -65px !important;
-    margin-right: -40px !important;
+    width: 200px !important;
+    margin-left: -35px !important;
+  }
+  .customer-search-input {
+    width: 130px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .customer-search-input {
+    display: none !important;
+  }
+  .top-nav .logo img {
+    height: 60px !important;
+    width: 170px !important;
+    margin-left: -30px !important;
+  }
+  .user-profile-chip span {
+    display: none !important;
+  }
+  .user-profile-chip {
+    padding: 4px !important;
   }
 }
 
@@ -12481,3 +12608,210 @@ body.light-theme .flipkart-checkout-modal-content {
   background: #f8fafc !important;
   color: #1e293b !important;
 }
+
+/* ============================================================== */
+/* LUXURY ATELIER & BAGS/LEATHER PREMIUM STYLING SYSTEM           */
+/* ============================================================== */
+
+/* Universal White Text on Active, Primary, and Solid Action Buttons */
+.btn-primary,
+.btn-accent,
+.btn-leather-primary,
+.catalog-sort-btn.active,
+.catalog-sort-btn-active,
+.leather-cat-btn.active,
+.price-pill.active,
+.price-pill-active,
+.active-pill,
+.has-white-text,
+.text-white,
+button.btn-primary,
+button.btn-accent,
+button.btn-leather-primary,
+button.active-pill,
+body.light-theme .btn-primary,
+body.light-theme .btn-accent,
+body.light-theme .btn-leather-primary,
+body.light-theme .catalog-sort-btn.active,
+body.light-theme .catalog-sort-btn-active,
+body.light-theme .leather-cat-btn.active,
+body.light-theme .price-pill.active,
+body.light-theme .price-pill-active,
+body.light-theme .active-pill,
+body.light-theme .has-white-text,
+body.light-theme .text-white,
+body.light-theme button.btn-leather-primary,
+body.light-theme button.active-pill,
+body.light-theme button[data-active="true"] {
+  color: #ffffff !important;
+}
+
+body.light-theme .btn-primary *,
+body.light-theme .btn-leather-primary *,
+body.light-theme .catalog-sort-btn.active *,
+body.light-theme .catalog-sort-btn-active *,
+body.light-theme .leather-cat-btn.active *,
+body.light-theme .has-white-text * {
+  color: #ffffff !important;
+}
+
+/* StitchBee Signature Solid Pink Button System (Matching User Reference) */
+.btn-leather-primary {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.35) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-leather-primary:hover {
+  background: #e01e74 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.5) !important;
+  color: #ffffff !important;
+}
+
+.btn-leather-primary:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 2px 8px rgba(247, 37, 133, 0.3) !important;
+}
+
+/* App Pink Filter Sidebar Highlighting (Exact Signature Button Style) */
+.leather-cat-btn {
+  width: 100%;
+  text-align: left;
+  border: none !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  font-size: 0.86rem !important;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.leather-cat-btn:hover:not(.active) {
+  background: rgba(247, 37, 133, 0.08) !important;
+  color: #f72585 !important;
+  transform: translateX(3px);
+}
+
+.leather-cat-btn.active {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.35) !important;
+}
+
+.leather-cat-btn.active span,
+.leather-cat-btn.active svg {
+  color: #ffffff !important;
+}
+
+/* App Pink Price Quick Pills */
+.leather-price-pill {
+  padding: 7px 12px !important;
+  font-size: 0.76rem !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.18s ease !important;
+  border: 1px solid var(--border-color) !important;
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+}
+
+.leather-price-pill:hover:not(.active) {
+  border-color: #f72585 !important;
+  color: #f72585 !important;
+  background: rgba(247, 37, 133, 0.08) !important;
+}
+
+.leather-price-pill.active {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(247, 37, 133, 0.35) !important;
+}
+
+/* App Pink Sort By Filter Buttons */
+.catalog-sort-btn {
+  padding: 8px 18px !important;
+  font-size: 0.82rem !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border-color) !important;
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.18s ease !important;
+}
+
+.catalog-sort-btn:hover:not(.active) {
+  background: rgba(247, 37, 133, 0.08) !important;
+  color: #f72585 !important;
+  border-color: rgba(247, 37, 133, 0.35) !important;
+}
+
+.catalog-sort-btn.active {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.35) !important;
+}
+
+/* App Pink Product Cards */
+.leather-luxury-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.leather-luxury-card:hover {
+  transform: translateY(-5px);
+  border-color: #f72585 !important;
+  box-shadow: 0 16px 32px -8px rgba(247, 37, 133, 0.22), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.leather-luxury-card .catalog-product-img {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.leather-luxury-card:hover .catalog-product-img {
+  transform: scale(1.05);
+}
+
+/* Assured Atelier Seal */
+.leather-assured-seal {
+  background: linear-gradient(135deg, rgba(247, 37, 133, 0.1), rgba(114, 9, 183, 0.05));
+  border: 1px solid rgba(247, 37, 133, 0.3);
+  color: #f72585;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+}
+
+.leather-assured-seal.active {
+  background: linear-gradient(135deg, rgba(247, 37, 133, 0.18), rgba(114, 9, 183, 0.1));
+  border-color: #f72585;
+}
+

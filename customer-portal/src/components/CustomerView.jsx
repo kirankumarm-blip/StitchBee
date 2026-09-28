@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import L from 'leaflet';
 import { 
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
   CreditCard, ChevronLeft, ChevronRight, ChevronDown, X, ShoppingCart, Plus, Minus, Check, Camera, RefreshCw, Upload, 
   Video, Layers, Activity, FileText, Shield, Sliders, Bell, Heart, HelpCircle, Menu, Sun, Moon, Phone,
-  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift
+  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
 import ServiceCategoryView from './ServiceCategoryView';
+import BagsLeatherStudio from './BagsLeatherStudio';
 
 const resolveInspirationImage = (inputUrl) => {
   if (!inputUrl) return '';
@@ -42,6 +44,308 @@ const resolveInspirationImage = (inputUrl) => {
   return trimmed;
 };
 
+export const BENGALURU_LOCALITIES = {
+  'gottigere': [12.8596, 77.5888],
+  'gottigere lake': [12.8596, 77.5888],
+  'bannerghatta': [12.8452, 77.5768],
+  'bannerghatta road': [12.8943, 77.5976],
+  'bannerghatta main road': [12.8750, 77.5950],
+  'hulimavu': [12.8797, 77.6017],
+  'arekere': [12.8885, 77.5947],
+  'meenakshi mall': [12.8752, 77.5960],
+  'kothnur': [12.8683, 77.5802],
+  'konanakunte': [12.8884, 77.5647],
+  'jp nagar': [12.9077, 77.5855],
+  'jp nagar 7th phase': [12.8967, 77.5822],
+  'jayanagar': [12.9307, 77.5840],
+  'btm': [12.9166, 77.6101],
+  'btm layout': [12.9166, 77.6101],
+  'hsr': [12.9141, 77.6413],
+  'hsr layout': [12.9141, 77.6413],
+  'koramangala': [12.9348, 77.6189],
+  'indiranagar': [12.9719, 77.6412],
+  'whitefield': [12.9698, 77.7500],
+  'electronic city': [12.8458, 77.6603],
+  'electronic city phase 1': [12.8458, 77.6603],
+  'electronic city phase 2': [12.8427, 77.6830],
+  'bellandur': [12.9304, 77.6784],
+  'sarjapur': [12.8601, 77.7865],
+  'sarjapur road': [12.9110, 77.6835],
+  'marathahalli': [12.9591, 77.6974],
+  'hebbal': [13.0358, 77.5970],
+  'yelahanka': [13.1007, 77.5963],
+  'malleshwaram': [13.0031, 77.5643],
+  'rajajinagar': [12.9982, 77.5530],
+  'basavanagudi': [12.9421, 77.5753],
+  'commercial street': [12.9822, 77.6083],
+  'lavelle road': [12.9712, 77.5985],
+  'mg road': [12.9756, 77.6097],
+  'brigade road': [12.9740, 77.6074],
+  'frazer town': [12.9972, 77.6143],
+  'kammanahalli': [13.0097, 77.6377],
+  'kalyan nagar': [13.0221, 77.6403],
+  'banashankari': [12.9255, 77.5468],
+  'vijayanagar': [12.9719, 77.5305],
+  'rajeshwari nagar': [12.9268, 77.5195],
+  'rr nagar': [12.9268, 77.5195],
+  'kanakapura road': [12.8804, 77.5529],
+  'mysore road': [12.9538, 77.5401],
+  'peenya': [13.0287, 77.5197],
+  'yeshwanthpur': [13.0238, 77.5529],
+  'rt nagar': [13.0247, 77.5948],
+  'nagarbhavi': [12.9646, 77.5098],
+  'padmanabhanagar': [12.9180, 77.5577],
+  'kumaraswamy layout': [12.9048, 77.5649],
+  'bommanahalli': [12.9029, 77.6242],
+  'begur': [12.8827, 77.6256],
+  'kudlu gate': [12.8906, 77.6416],
+  'singasandra': [12.8767, 77.6508],
+  'bangalore': [12.9716, 77.5946],
+  'bengaluru': [12.9716, 77.5946],
+  'chennai': [13.0827, 80.2707],
+  'mumbai': [19.0760, 72.8777],
+  'delhi': [28.6139, 77.2090],
+  'hyderabad': [17.3850, 78.4867],
+  'pune': [18.5204, 73.8567],
+  'kochi': [9.9312, 76.2673]
+};
+
+export const resolveLocalityCoords = (query) => {
+  if (!query) return [12.9716, 77.5946];
+  const q = query.toLowerCase().trim().replace(/,/g, ' ');
+  const words = q.split(/\s+/);
+  
+  if (BENGALURU_LOCALITIES[q]) return BENGALURU_LOCALITIES[q];
+
+  for (const [key, coords] of Object.entries(BENGALURU_LOCALITIES)) {
+    if (q.includes(key) || key.includes(q)) {
+      return coords;
+    }
+  }
+
+  for (const word of words) {
+    if (word.length > 2 && BENGALURU_LOCALITIES[word]) {
+      return BENGALURU_LOCALITIES[word];
+    }
+  }
+
+  return [12.9716, 77.5946];
+};
+
+function WizardGoogleMap({ searchCoords, locationName, tailors, selectedTailor, onSelectTailor, borderColor, isDark }) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersLayerRef = useRef(null);
+  const [mapType, setMapType] = useState('roadmap');
+
+  useEffect(() => {
+    if (!window.L || !mapRef.current) return;
+    const container = mapRef.current;
+
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {
+        console.error(e);
+      }
+      mapInstanceRef.current = null;
+    }
+    if (container._leaflet_id) {
+      delete container._leaflet_id;
+    }
+
+    const map = window.L.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: false
+    }).setView(searchCoords, 14);
+
+    const tileUrl = mapType === 'satellite'
+      ? 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+      : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+
+    window.L.tileLayer(tileUrl, {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps'
+    }).addTo(map);
+
+    const markersGroup = window.L.layerGroup().addTo(map);
+    markersLayerRef.current = markersGroup;
+    mapInstanceRef.current = map;
+
+    setTimeout(() => { if (map) map.invalidateSize(); }, 150);
+    setTimeout(() => { if (map) map.invalidateSize(); }, 400);
+
+    return () => {
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {}
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !window.L) return;
+    const map = mapInstanceRef.current;
+    const tileUrl = mapType === 'satellite'
+      ? 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+      : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+
+    map.eachLayer(layer => {
+      if (layer instanceof window.L.TileLayer) {
+        map.removeLayer(layer);
+      }
+    });
+
+    window.L.tileLayer(tileUrl, {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps'
+    }).addTo(map);
+  }, [mapType]);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    mapInstanceRef.current.flyTo(searchCoords, 14, { animate: true, duration: 0.8 });
+    setTimeout(() => { if (mapInstanceRef.current) mapInstanceRef.current.invalidateSize(); }, 200);
+  }, [searchCoords[0], searchCoords[1]]);
+
+  useEffect(() => {
+    if (!mapInstanceRef.current || !markersLayerRef.current || !window.L) return;
+    markersLayerRef.current.clearLayers();
+
+    window.L.circle(searchCoords, {
+      color: '#f72585',
+      fillColor: '#f72585',
+      fillOpacity: 0.08,
+      radius: 4000,
+      dashArray: '6, 6',
+      weight: 2
+    }).addTo(markersLayerRef.current);
+
+    const userPin = window.L.divIcon({
+      html: `
+        <div style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
+          <div style="position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            <div style="position: absolute; width: 28px; height: 28px; border-radius: 50%; background: rgba(76, 201, 240, 0.45); animation: pulse-glow 1.5s infinite;"></div>
+            <div style="position: relative; width: 14px; height: 14px; border-radius: 50%; background: #4cc9f0; border: 2.5px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>
+          </div>
+          <div style="margin-top: 2px; background: #0284c7; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.35);">
+            📍 Pickup Area
+          </div>
+        </div>
+      `,
+      className: 'user-pickup-marker',
+      iconSize: [80, 44],
+      iconAnchor: [40, 22]
+    });
+    window.L.marker(searchCoords, { icon: userPin, zIndexOffset: 500 })
+      .addTo(markersLayerRef.current)
+      .bindPopup(`<strong>📍 Pickup Location:</strong><br/>${locationName || 'Bengaluru'}`);
+
+    tailors.forEach((t, idx) => {
+      const isSelected = selectedTailor?.id === t.id;
+      const markerScale = isSelected ? 'scale(1.2)' : 'scale(1)';
+
+      const tailorIcon = window.L.divIcon({
+        html: `
+          <div style="transform: ${markerScale}; transition: transform 0.2s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center;">
+            <div style="
+              background: ${isSelected ? 'linear-gradient(135deg, #F72585 0%, #B5179E 100%)' : 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}; 
+              width: 32px; 
+              height: 32px; 
+              border-radius: 50% 50% 50% 0; 
+              transform: rotate(-45deg); 
+              border: 2px solid #ffffff; 
+              box-shadow: ${isSelected ? '0 4px 14px rgba(247, 37, 133, 0.7), 0 0 10px rgba(247, 37, 133, 0.4)' : '0 3px 8px rgba(0,0,0,0.3)'}; 
+              display: flex; 
+              align-items: center; 
+              justify-content: center;
+            ">
+              <span style="transform: rotate(45deg); font-size: 12px; line-height: 1;">✂️</span>
+            </div>
+            <div style="margin-top: 3px; background: ${isSelected ? '#F72585' : '#0f172a'}; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 4px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,0.35);">
+              ${idx + 1}. ★ ${t.rating}
+            </div>
+          </div>
+        `,
+        className: `wizard-tailor-marker-${t.id}`,
+        iconSize: [42, 46],
+        iconAnchor: [21, 36],
+        popupAnchor: [0, -36]
+      });
+
+      const marker = window.L.marker([t.lat, t.lng], { 
+        icon: tailorIcon, 
+        zIndexOffset: isSelected ? 1000 : 200 
+      }).addTo(markersLayerRef.current);
+
+      marker.bindPopup(`
+        <div style="font-family: 'Outfit', 'Inter', sans-serif; min-width: 190px; color: #1e293b; padding: 2px;">
+          <div style="font-weight: 800; font-size: 13px; color: #0f172a; margin-bottom: 2px;">${t.name}</div>
+          <div style="font-size: 11px; color: #F72585; font-weight: 700; margin-bottom: 4px;">★ ${t.rating} • ${t.distance} km away</div>
+          <div style="font-size: 11px; color: #475569; margin-bottom: 6px; line-height: 1.3;">📍 ${t.address}</div>
+          <button style="background: linear-gradient(135deg, #F72585 0%, #7209B7 100%); color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; width: 100%; cursor: pointer;" onclick="window.selectWizardTailorFromMap('${t.id}')">Select This Tailor</button>
+        </div>
+      `);
+
+      marker.on('click', () => {
+        onSelectTailor(t);
+      });
+
+      if (isSelected) {
+        marker.openPopup();
+      }
+    });
+
+    window.selectWizardTailorFromMap = (tailorId) => {
+      const found = tailors.find(t => t.id === tailorId);
+      if (found) onSelectTailor(found);
+    };
+
+  }, [searchCoords, tailors, selectedTailor]);
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '440px', borderRadius: '16px', overflow: 'hidden', border: `1.5px solid ${borderColor}`, boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}>
+      {/* Top Google Maps bar */}
+      <div style={{ position: 'absolute', top: '12px', left: '12px', right: '12px', zIndex: 500, display: 'flex', justifyContent: 'space-between', alignItems: 'center', pointerEvents: 'none' }}>
+        <div style={{ background: 'rgba(15, 23, 42, 0.88)', backdropFilter: 'blur(8px)', padding: '6px 14px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontSize: '11.5px', fontWeight: '700', pointerEvents: 'auto', border: '1px solid rgba(255,255,255,0.15)', boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }}></span>
+          Google Maps • {locationName || 'Radar Active'}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setMapType(mapType === 'roadmap' ? 'satellite' : 'roadmap')}
+          style={{
+            background: 'rgba(15, 23, 42, 0.88)',
+            backdropFilter: 'blur(8px)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            color: '#fff',
+            padding: '6px 12px',
+            borderRadius: '10px',
+            fontSize: '11.5px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            pointerEvents: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.25)'
+          }}
+        >
+          <Layers size={13} />
+          {mapType === 'roadmap' ? 'Satellite' : 'Roadmap'}
+        </button>
+      </div>
+
+      <div ref={mapRef} style={{ width: '100%', height: '100%', minHeight: '440px', position: 'relative', zIndex: 1 }} />
+    </div>
+  );
+}
+
 export default function CustomerView({ 
   tailors, orders, addOrder, updateOrderStatus, ledger, setLedger, banners, articles, currentUser,
   initialCategory = 'all', initialHub = 'tailors', onLoginRequired,
@@ -59,6 +363,8 @@ export default function CustomerView({
   const bannerCarouselRef = React.useRef(null);
   const designerCarouselRef = React.useRef(null);
   const [activeHub, setActiveHub] = useState(initialHub); // 'tailors' | 'fabrics' | 'sarees' | 'designers' | 'articles' | 'history' | 'home' | 'wishlist'
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   
   // My Orders filter & sort states
   const [ordersFilter, setOrdersFilter] = useState('all'); // 'all' | 'in-progress' | 'completed' | 'cancelled'
@@ -121,6 +427,9 @@ export default function CustomerView({
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [bagsStudioMode, setBagsStudioMode] = useState('shop'); // 'shop' | 'restore'
+  const [bagsSubmenuHovered, setBagsSubmenuHovered] = useState(false);
+  const [mobileBagsExpanded, setMobileBagsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [rewardPoints, setRewardPoints] = useState(120);
   
@@ -250,6 +559,7 @@ export default function CustomerView({
   useEffect(() => {
     const handleGlobalClick = () => {
       setServicesDropdownOpen(false);
+      setBagsSubmenuHovered(false);
       setNotificationDropdownOpen(false);
       setProfileDropdownOpen(false);
     };
@@ -530,10 +840,17 @@ export default function CustomerView({
 
   // Full tailors list data
   const nearByTailorsData = [
+    { id: 't_gottigere_1', name: 'Gottigere Designer Tailors & Boutique', rating: 4.8, reviews: 114, area: 'Gottigere', city: 'Bangalore', distance: 0.4, img: '/tailor_hero_4.jpg', tags: ["Blouse Stitching", "Salwar Suits", "Lehenga", "Alterations"], status: 'Open', lat: 12.8596, lng: 77.5888 },
+    { id: 't_gottigere_2', name: 'Royal Bespoke South Tailors', rating: 4.9, reviews: 142, area: 'Gottigere', city: 'Bangalore', distance: 0.8, img: '/tailor_hero_1.jpg', tags: ["Men's Wear", "Suits", "Sherwani", "Alterations"], status: 'Open', lat: 12.8625, lng: 77.5895 },
+    { id: 't_gottigere_3', name: 'Siri Couture & Bridal Atelier', rating: 4.8, reviews: 178, area: 'Bannerghatta Road', city: 'Bangalore', distance: 1.6, img: '/tailor_hero_2.jpg', tags: ["Bridal Wear", "Aari Work", "Maggam Work", "Blouse Stitching"], status: 'Open', lat: 12.8752, lng: 77.5960 },
+    { id: 't_gottigere_4', name: 'Classic Stitch & Alterations', rating: 4.7, reviews: 92, area: 'Arekere', city: 'Bangalore', distance: 2.3, img: '/tailor_hero_3.jpg', tags: ["Alterations", "Casual Wear", "Custom Tailoring"], status: 'Open', lat: 12.8885, lng: 77.5947 },
     { id: 't1', name: 'Royal Bespoke Tailors', rating: 4.8, reviews: 128, area: 'HSR Layout', city: 'Bangalore', distance: 0.3, img: '/tailor_hero_1.jpg', tags: ["Men's Wear", "Women's Wear", "Alterations", "Custom Tailoring"], status: 'Open', lat: 12.9141, lng: 77.6413 },
     { id: 't2', name: 'Perfect Stitches', rating: 4.7, reviews: 96, area: 'Koramangala', city: 'Bangalore', distance: 0.7, img: '/tailor_hero_2.jpg', tags: ["Blouse Stitching", "Salwar Suits", "Alterations", "Kids Wear"], status: 'Open', lat: 12.9279, lng: 77.6271 },
     { id: 't3', name: 'Style Tailors', rating: 4.6, reviews: 84, area: 'BTM Layout', city: 'Bangalore', distance: 1.2, img: '/tailor_hero_3.jpg', tags: ["Men's Wear", "Shirts", "Pants", "Alterations"], status: 'Open', lat: 12.9166, lng: 77.6101 },
     { id: 't4', name: 'Elegant Fashions', rating: 4.5, reviews: 72, area: 'Jayanagar', city: 'Bangalore', distance: 1.8, img: '/tailor_hero_4.jpg', tags: ["Saree Blouse", "Lehenga", "Alterations", "Custom Fit"], status: 'Open', lat: 12.9250, lng: 77.5938 },
+    { id: 't_ecity', name: 'Electronic City Fast Stitch', rating: 4.7, reviews: 104, area: 'Electronic City', city: 'Bangalore', distance: 2.1, img: '/tailor_hero_5.jpg', tags: ["Formal Wear", "Suits", "Alterations"], status: 'Open', lat: 12.8458, lng: 77.6603 },
+    { id: 't_indiranagar', name: 'Indiranagar Couture Atelier', rating: 4.9, reviews: 220, area: 'Indiranagar', city: 'Bangalore', distance: 3.5, img: '/tailor_hero_2.jpg', tags: ["Bridal Wear", "Designer Dresses", "Gowns"], status: 'Open', lat: 12.9719, lng: 77.6412 },
+    { id: 't_whitefield', name: 'Whitefield Bespoke Hub', rating: 4.8, reviews: 135, area: 'Whitefield', city: 'Bangalore', distance: 4.2, img: '/tailor_hero_3.jpg', tags: ["Men's Wear", "Women's Wear", "Alterations"], status: 'Open', lat: 12.9698, lng: 77.7500 },
     { id: 't5', name: 'Elite Cut Tailors', rating: 4.9, reviews: 110, area: 'T Nagar', city: 'Chennai', distance: 5.4, img: '/tailor_hero_5.jpg', tags: ["Bridal Wear", "Suits", "Women's Wear"], status: 'Open', lat: 13.0418, lng: 80.2337 },
     { id: 't6', name: 'Mumbai Master Fit', rating: 4.7, reviews: 154, area: 'Bandra', city: 'Mumbai', distance: 8.2, img: '/tailor_hero_2.jpg', tags: ["Men's Wear", "Lehenga", "Alterations"], status: 'Open', lat: 19.0596, lng: 72.8295 },
     { id: 't7', name: 'Delhi Designer Labs', rating: 4.8, reviews: 198, area: 'Connaught Place', city: 'Delhi', distance: 6.1, img: '/tailor_hero_1.jpg', tags: ["Sherwani", "Lehenga", "Ethnic Wear"], status: 'Open', lat: 28.6304, lng: 77.2177 }
@@ -553,47 +870,28 @@ export default function CustomerView({
   };
 
   const getSearchCenter = () => {
-    const LOCALITY_COORDS = {
-      'hsr': [12.9141, 77.6413],
-      'hsr layout': [12.9141, 77.6413],
-      'koramangala': [12.9348, 77.6189],
-      'btm': [12.9166, 77.6101],
-      'btm layout': [12.9166, 77.6101],
-      'jayanagar': [12.9307, 77.5840],
-      'indiranagar': [12.9719, 77.6412],
-      'whitefield': [12.9698, 77.7500],
-      'bangalore': [12.9716, 77.5946],
-      'bengaluru': [12.9716, 77.5946],
-      'chennai': [13.0827, 80.2707],
-      'mumbai': [19.0760, 72.8777],
-      'delhi': [28.6139, 77.2090],
-      'hyderabad': [17.3850, 78.4867],
-    };
-
     if (gpsCoords && searchLocationName.includes('GPS')) {
       return [gpsCoords.lat, gpsCoords.lng];
     }
-    const normalized = searchLocationName.toLowerCase().split(',')[0].trim();
-    if (LOCALITY_COORDS[normalized]) return LOCALITY_COORDS[normalized];
-    const matchedKey = Object.keys(LOCALITY_COORDS).find(k => normalized.includes(k));
-    return matchedKey ? LOCALITY_COORDS[matchedKey] : [12.9141, 77.6413];
+    return resolveLocalityCoords(searchLocationName);
   };
 
   const searchCenter = getSearchCenter();
 
   const filteredNearByTailors = nearByTailorsData.map(t => {
     const dist = getDistanceCoords(searchCenter[0], searchCenter[1], t.lat, t.lng);
-    return { ...t, computedDistance: dist };
+    return { ...t, computedDistance: isNaN(dist) ? 1.0 : parseFloat(dist.toFixed(1)) };
   }).filter(t => {
     let matchesSearch = true;
     if (searchQueryText.trim() !== '') {
-      if (searchMode === 'area') {
-        matchesSearch = t.area.toLowerCase().includes(searchQueryText.toLowerCase());
-      } else {
-        matchesSearch = t.city.toLowerCase().includes(searchQueryText.toLowerCase());
-      }
+      const q = searchQueryText.toLowerCase().trim();
+      matchesSearch = 
+        t.area.toLowerCase().includes(q) ||
+        t.city.toLowerCase().includes(q) ||
+        t.name.toLowerCase().includes(q) ||
+        t.tags.some(tag => tag.toLowerCase().includes(q));
     }
-    const matchesRadius = t.computedDistance <= filterRadius;
+    const matchesRadius = searchQueryText.trim() !== '' ? true : (t.computedDistance <= filterRadius);
     const matchesRating = t.rating >= filterMinRating;
     let matchesService = true;
     if (filterServiceType !== 'All Services') {
@@ -1853,94 +2151,122 @@ export default function CustomerView({
   // Map refs and states
   const mapContainerRef = React.useRef(null);
   const mapInstanceRef = React.useRef(null);
+  const homeMarkersLayerRef = React.useRef(null);
   const tailorsMapRef = React.useRef(null);
   const tailorsMapInstanceRef = React.useRef(null);
+  const tailorsMarkersLayerRef = React.useRef(null);
   const [mapFilter, setMapFilter] = useState('all'); // 'all' | 'bridal' | 'alterations' | 'premium' | 'budget'
 
+  // 1. Initialize "Tailors Near You" Leaflet Map once
   useEffect(() => {
-    if (activeHub !== 'tailors' || !window.L || wizardOpen) return;
+    const Leaflet = window.L || L;
+    if (activeHub !== 'tailors' || !Leaflet || wizardOpen) return;
 
     const container = tailorsMapRef.current;
     if (!container) return;
 
-    // Clean up previous instance
     if (tailorsMapInstanceRef.current) {
       try {
         tailorsMapInstanceRef.current.remove();
-      } catch (e) {
-        console.error("Error removing tailors map instance:", e);
-      }
+      } catch (e) {}
       tailorsMapInstanceRef.current = null;
     }
     if (container._leaflet_id) {
       delete container._leaflet_id;
     }
 
-    // Geocoder dictionary for search queries
-    const LOCALITY_COORDS = {
-      'hsr': [12.9141, 77.6413],
-      'hsr layout': [12.9141, 77.6413],
-      'koramangala': [12.9348, 77.6189],
-      'btm': [12.9166, 77.6101],
-      'btm layout': [12.9166, 77.6101],
-      'jayanagar': [12.9307, 77.5840],
-      'indiranagar': [12.9719, 77.6412],
-      'whitefield': [12.9698, 77.7500],
-      'bangalore': [12.9716, 77.5946],
-      'bengaluru': [12.9716, 77.5946],
-      'chennai': [13.0827, 80.2707],
-      'mumbai': [19.0760, 72.8777],
-      'delhi': [28.6139, 77.2090],
-      'hyderabad': [17.3850, 78.4867],
-    };
-
-    let centerCoords = [12.9141, 77.6413]; // Default HSR
+    let centerCoords = [12.9716, 77.5946];
     if (gpsCoords && searchLocationName.includes('GPS')) {
       centerCoords = [gpsCoords.lat, gpsCoords.lng];
     } else {
-      const normalizedSearch = searchLocationName.toLowerCase().split(',')[0].trim();
-      if (LOCALITY_COORDS[normalizedSearch]) {
-        centerCoords = LOCALITY_COORDS[normalizedSearch];
-      } else {
-        const matchedKey = Object.keys(LOCALITY_COORDS).find(key => normalizedSearch.includes(key));
-        if (matchedKey) {
-          centerCoords = LOCALITY_COORDS[matchedKey];
-        }
-      }
+      centerCoords = resolveLocalityCoords(searchLocationName);
     }
 
-    // Initialize map
-    const map = window.L.map(container).setView(centerCoords, 14);
+    const map = Leaflet.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: false
+    }).setView(centerCoords, 14);
     tailorsMapInstanceRef.current = map;
 
-    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    Leaflet.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps'
     }).addTo(map);
 
-    // Circle showing search radius
-    window.L.circle(centerCoords, {
+    const layer = Leaflet.layerGroup().addTo(map);
+    tailorsMarkersLayerRef.current = layer;
+
+    const t1 = setTimeout(() => { if (map) map.invalidateSize(); }, 150);
+    const t2 = setTimeout(() => { if (map) map.invalidateSize(); }, 400);
+    const t3 = setTimeout(() => { if (map) map.invalidateSize(); }, 800);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      if (tailorsMapInstanceRef.current) {
+        try {
+          tailorsMapInstanceRef.current.remove();
+        } catch (e) {}
+        tailorsMapInstanceRef.current = null;
+      }
+    };
+  }, [activeHub, wizardOpen]);
+
+  // 2. Update Markers & Center on "Tailors Near You" Map without destroying instance
+  useEffect(() => {
+    const Leaflet = window.L || L;
+    const map = tailorsMapInstanceRef.current;
+    const layer = tailorsMarkersLayerRef.current;
+    if (!map || !layer || !Leaflet || activeHub !== 'tailors') return;
+
+    let centerCoords = [12.9716, 77.5946];
+    if (gpsCoords && searchLocationName.includes('GPS')) {
+      centerCoords = [gpsCoords.lat, gpsCoords.lng];
+    } else {
+      centerCoords = resolveLocalityCoords(searchLocationName);
+    }
+
+    map.flyTo(centerCoords, 14, { animate: true, duration: 0.6 });
+    setTimeout(() => { if (map) map.invalidateSize(); }, 200);
+
+    layer.clearLayers();
+
+    Leaflet.circle(centerCoords, {
       color: '#f72585',
       fillColor: '#f72585',
       fillOpacity: 0.08,
-      radius: filterRadius * 1000
-    }).addTo(map);
+      radius: (filterRadius || 5) * 1000
+    }).addTo(layer);
 
-    const tailorSvgIcon = window.L.divIcon({
-      html: `<div style="background: #f72585; width: 22px; height: 22px; border: 2.5px solid #fff; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="width: 7px; height: 7px; background: #fff; border-radius: 50%; transform: rotate(45deg);"></div></div>`,
+    const userSvgIcon = Leaflet.divIcon({
+      html: `<div style="position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;"><div style="position: absolute; width: 28px; height: 28px; border-radius: 50%; background: rgba(76, 201, 240, 0.45); animation: pulse-glow 1.5s infinite;"></div><div style="position: relative; width: 14px; height: 14px; border-radius: 50%; background: #4cc9f0; border: 2.5px solid #ffffff; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div></div>`,
+      className: 'user-gps-pulse-marker',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14]
+    });
+    Leaflet.marker(centerCoords, { icon: userSvgIcon })
+      .addTo(layer)
+      .bindPopup(`<strong style="color:#0284c7;">📍 ${searchLocationName || 'Selected Area'}</strong>`);
+
+    const tailorSvgIcon = Leaflet.divIcon({
+      html: `<div style="background: #f72585; width: 26px; height: 26px; border: 2.5px solid #fff; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><span style="transform: rotate(45deg); font-size: 11px;">✂️</span></div>`,
       className: 'custom-tailor-marker',
-      iconSize: [22, 22],
-      iconAnchor: [11, 22]
+      iconSize: [26, 26],
+      iconAnchor: [13, 26]
     });
 
     sortedNearByTailors.forEach(t => {
       const lat = t.lat || (centerCoords[0] + (Math.random() - 0.5) * 0.02);
       const lng = t.lng || (centerCoords[1] + (Math.random() - 0.5) * 0.02);
-      const marker = window.L.marker([lat, lng], { icon: tailorSvgIcon }).addTo(map);
+      const marker = Leaflet.marker([lat, lng], { icon: tailorSvgIcon }).addTo(layer);
+      const distVal = typeof t.computedDistance === 'number' ? t.computedDistance.toFixed(1) : (t.distance || '1.0');
       marker.bindPopup(`
         <div style="color: #1a2238; font-family: sans-serif; font-size: 0.8rem; min-width: 140px;">
           <strong style="color: #f72585;">${t.name}</strong><br/>
           Rating: ⭐${t.rating || '4.5'} (${t.reviews} reviews)<br/>
-          Distance: ${t.computedDistance.toFixed(1)} km<br/>
+          Distance: ${distVal} km<br/>
           <button class="btn btn-primary" style="margin-top:8px; padding: 4px 8px; font-size: 0.7rem; width: 100%; text-align: center; background: #f72585; border: none; color: #fff; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="window.startStitchingFromTailorNearYou('${t.id}')">View Details</button>
         </div>
       `);
@@ -1952,22 +2278,14 @@ export default function CustomerView({
         startWizardWithTailor(selectedT);
       }
     };
-
-    return () => {
-      if (tailorsMapInstanceRef.current) {
-        try {
-          tailorsMapInstanceRef.current.remove();
-        } catch (e) {
-          console.error("Cleanup tailors map error:", e);
-        }
-        tailorsMapInstanceRef.current = null;
-      }
-    };
-  }, [activeHub, searchLocationName, sortedNearByTailors, filterRadius, wizardOpen]);
+  }, [activeHub, searchLocationName, filterRadius, sortedNearByTailors]);
 
 
+
+  // 3. Initialize Home Dashboard Map once
   useEffect(() => {
-    if (activeHub !== 'home' || !window.L || wizardOpen) return;
+    const Leaflet = window.L || L;
+    if ((activeHub !== 'home' && activeHub !== 'landing') || !Leaflet || wizardOpen) return;
     
     const container = mapContainerRef.current;
     if (!container) return;
@@ -1975,9 +2293,7 @@ export default function CustomerView({
     if (mapInstanceRef.current) {
       try {
         mapInstanceRef.current.remove();
-      } catch (e) {
-        console.error("Error removing map instance:", e);
-      }
+      } catch (e) {}
       mapInstanceRef.current = null;
     }
     if (container._leaflet_id) {
@@ -1987,12 +2303,49 @@ export default function CustomerView({
     const centerLat = 12.9716;
     const centerLng = 77.5946;
 
-    const map = window.L.map(container).setView([centerLat, centerLng], 12);
+    const map = Leaflet.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: false
+    }).setView([centerLat, centerLng], 12);
     mapInstanceRef.current = map;
 
-    window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    Leaflet.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps'
     }).addTo(map);
+
+    const layer = Leaflet.layerGroup().addTo(map);
+    homeMarkersLayerRef.current = layer;
+
+    const t1 = setTimeout(() => { if (map) map.invalidateSize(); }, 150);
+    const t2 = setTimeout(() => { if (map) map.invalidateSize(); }, 400);
+    const t3 = setTimeout(() => { if (map) map.invalidateSize(); }, 800);
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {}
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [activeHub, wizardOpen]);
+
+  // 4. Update Markers on Home Dashboard Map
+  useEffect(() => {
+    const Leaflet = window.L || L;
+    const map = mapInstanceRef.current;
+    const layer = homeMarkersLayerRef.current;
+    if (!map || !layer || !Leaflet || (activeHub !== 'home' && activeHub !== 'landing')) return;
+
+    layer.clearLayers();
+
+    const centerLat = 12.9716;
+    const centerLng = 77.5946;
 
     const mapTailors = tailors.filter(t => {
       if (t.status !== 'approved') return false;
@@ -2003,7 +2356,7 @@ export default function CustomerView({
       return true;
     });
 
-    const tailorSvgIcon = window.L.divIcon({
+    const tailorSvgIcon = Leaflet.divIcon({
       html: `<div style="background: #f72585; width: 22px; height: 22px; border: 2.5px solid #fff; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 4px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;"><div style="width: 7px; height: 7px; background: #fff; border-radius: 50%; transform: rotate(45deg);"></div></div>`,
       className: 'custom-tailor-marker',
       iconSize: [22, 22],
@@ -2013,13 +2366,13 @@ export default function CustomerView({
     mapTailors.forEach(t => {
       const lat = t.lat || (centerLat + (Math.random() - 0.5) * 0.05);
       const lng = t.lng || (centerLng + (Math.random() - 0.5) * 0.05);
-      const marker = window.L.marker([lat, lng], { icon: tailorSvgIcon }).addTo(map);
+      const marker = Leaflet.marker([lat, lng], { icon: tailorSvgIcon }).addTo(layer);
       marker.bindPopup(`
-        <div style="color: #fff; font-family: sans-serif; font-size: 0.8rem; min-width: 140px;">
-          <strong style="color: var(--accent);">${t.name}</strong><br/>
+        <div style="color: #1a2238; font-family: sans-serif; font-size: 0.8rem; min-width: 140px;">
+          <strong style="color: #f72585;">${t.name}</strong><br/>
           Rating: ⭐${t.rating || '4.5'}<br/>
           Specialty: ${t.specialties ? t.specialties.join(', ') : 'Custom Sewing'}<br/>
-          <button class="btn btn-primary" style="margin-top:8px; padding: 2px 8px; font-size: 0.7rem; width: 100%; text-align: center;" onclick="window.startStitchingFromMap('${t.id}')">Book Tailor</button>
+          <button class="btn btn-primary" style="margin-top:8px; padding: 2px 8px; font-size: 0.7rem; width: 100%; text-align: center; background: #f72585; border: none; color: #fff; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="window.startStitchingFromMap('${t.id}')">Book Tailor</button>
         </div>
       `);
     });
@@ -2034,18 +2387,8 @@ export default function CustomerView({
         setSelectedTailor(selectedT);
       }
     };
+  }, [activeHub, mapFilter, tailors]);
 
-    return () => {
-      if (mapInstanceRef.current) {
-        try {
-          mapInstanceRef.current.remove();
-        } catch (e) {
-          console.error("Cleanup map error:", e);
-        }
-        mapInstanceRef.current = null;
-      }
-    };
-  }, [activeHub, mapFilter, tailors, wizardOpen]);
 
   // Group completed orders for History Tab
   const completedOrders = orders.filter(o => o.status === 'closed');
@@ -2055,19 +2398,39 @@ export default function CustomerView({
     <>
       {/* CUSTOM CUSTOMER STICKY HEADER */}
       <header className="top-nav">
-        <div className="logo" onClick={() => {
-          if (!currentUser && setRole) {
-            setRole('landing');
-          } else {
-            setActiveHub('home');
-            setWizardOpen(false);
-          }
-        }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+        {/* Left Section: Mobile Menu Toggle & Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button 
+            className="mobile-menu-toggle-btn"
+            onClick={() => setSidebarOpen(!sidebarOpen)} 
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              padding: '6px', 
+              color: 'var(--text-primary)', 
+              cursor: 'pointer', 
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            aria-label="Toggle Navigation Drawer"
+          >
+            {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          <div className="logo" onClick={() => {
+            if (!currentUser && setRole) {
+              setRole('landing');
+            } else {
+              setActiveHub('home');
+              setWizardOpen(false);
+            }
+          }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
+          </div>
         </div>
 
         {/* Center Nav Menu */}
-        <div className="role-switcher">
+        <div className="role-switcher desktop-nav-menu">
           <button 
             className={`role-btn ${activeHub === 'home' ? 'active' : ''}`}
             onClick={() => {
@@ -2098,9 +2461,74 @@ export default function CustomerView({
             
             <ul className={`nav-dropdown-menu services-dropdown-menu ${servicesDropdownOpen ? 'show' : ''}`} style={{ minWidth: '220px' }}>
               {categoryCards.map(cat => {
+                const isBags = cat.id === 'bags';
                 const isActive = cat.id === 'designers'
                   ? activeHub === 'designers'
                   : (activeHub === 'category-landing' && selectedCategory === cat.id);
+
+                if (isBags) {
+                  return (
+                    <li 
+                      key={cat.id}
+                      className={`dropdown-item nav-item-has-submenu ${isActive ? 'active' : ''}`}
+                      onMouseEnter={() => setBagsSubmenuHovered(true)}
+                      onMouseLeave={() => setBagsSubmenuHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setBagsSubmenuHovered(prev => !prev);
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                        <span>{cat.label}</span>
+                        <ChevronRight size={13} style={{ opacity: 0.7 }} />
+                      </div>
+
+                      {/* Submenu on hover & select */}
+                      <div className={`nav-submenu ${bagsSubmenuHovered ? 'show' : ''}`}>
+                        <div 
+                          className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'active' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setBagsStudioMode('shop');
+                            setSelectedCategory('bags');
+                            setActiveHub('category-landing');
+                            if (setCustomerCategory) setCustomerCategory('bags');
+                            if (setCustomerHub) setCustomerHub('category-landing');
+                            setWizardOpen(false);
+                            setServicesDropdownOpen(false);
+                            setBagsSubmenuHovered(false);
+                          }}
+                        >
+                          <div className="nav-submenu-title">
+                            <span>✨ Shop & Create</span>
+                          </div>
+                          <div className="nav-submenu-desc">Ready-made bags & custom bespoke designs</div>
+                        </div>
+
+                        <div 
+                          className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'active' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setBagsStudioMode('restore');
+                            setSelectedCategory('bags');
+                            setActiveHub('category-landing');
+                            if (setCustomerCategory) setCustomerCategory('bags');
+                            if (setCustomerHub) setCustomerHub('category-landing');
+                            setWizardOpen(false);
+                            setServicesDropdownOpen(false);
+                            setBagsSubmenuHovered(false);
+                          }}
+                        >
+                          <div className="nav-submenu-title">
+                            <span>🛠️ Repair & Restore</span>
+                          </div>
+                          <div className="nav-submenu-desc">Fixes, component repair & full restoration</div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+
                 return (
                   <li 
                     key={cat.id}
@@ -2373,6 +2801,464 @@ export default function CustomerView({
           </div>
         </div>
       </header>
+
+      {/* 3. SLIDE-OUT NAVIGATION DRAWER (MOBILE & TABLET - TAILOR STYLE) */}
+      {sidebarOpen && (
+        <>
+          <div 
+            className="drawer-backdrop"
+            onClick={() => setSidebarOpen(false)}
+            style={{ top: '64px' }}
+          />
+
+          <div 
+            className="left-nav-drawer"
+            onClick={(e) => e.stopPropagation()}
+            style={{ 
+              top: '64px', 
+              height: 'calc(100vh - 64px)', 
+              zIndex: 999,
+              background: isDark ? '#0F0C1B' : '#F8F9FC',
+              color: isDark ? '#ffffff' : '#172033',
+              borderRight: isDark ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E5E7EB'
+            }}
+          >
+            {/* Top Close Header */}
+            <div className="drawer-top-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 800, letterSpacing: '0.5px', textTransform: 'uppercase', color: 'var(--primary)' }}>
+                  Menu
+                </span>
+              </div>
+              <button 
+                className="drawer-close-btn"
+                onClick={() => setSidebarOpen(false)}
+                style={{ 
+                  width: '36px', 
+                  height: '36px', 
+                  borderRadius: '10px', 
+                  background: isDark ? 'rgba(255,255,255,0.08)' : '#FFFFFF', 
+                  border: `1px solid ${borderColor}`,
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  color: colorTextPrimary, 
+                  cursor: 'pointer' 
+                }}
+                aria-label="Close menu"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Customer Welcome Card */}
+            <div className="drawer-welcome-card" style={{ background: 'linear-gradient(135deg, #1B0F2A 0%, #3B154C 50%, var(--primary) 100%)', margin: '0 0 16px 0', padding: '16px', borderRadius: '18px' }}>
+              <div className="drawer-welcome-inner" style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div className="drawer-welcome-icon-box" style={{ background: 'linear-gradient(135deg, var(--primary) 0%, #B5179E 100%)', width: '48px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <User size={24} color="#ffffff" />
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: '0.72rem', opacity: 0.95, fontWeight: 500, color: '#ffffff' }}>
+                    Customer Hub
+                  </div>
+                  <h3 style={{ fontSize: '1.12rem', fontWeight: 700, margin: '2px 0', color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {currentUser?.name || customerName || 'Kiran'} 👋
+                  </h3>
+                  <p style={{ fontSize: '0.72rem', opacity: 0.85, margin: 0, color: '#ffffff' }}>
+                    {currentUser?.phone || '+91 98765 43210'} • Bengaluru
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Items List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', flex: 1, overflowY: 'auto' }}>
+              {[
+                { id: 'home', label: 'Home', subtitle: 'Dashboard & Active Orders', icon: <Home size={20} /> },
+                { id: 'fabrics', label: 'Fabric Marketplace', subtitle: 'Explore Premium Fabrics & Silk', icon: <Layers size={20} /> },
+                { id: 'sarees', label: 'Ready Designs', subtitle: 'Curated Designer Outfits', icon: <Sparkles size={20} /> },
+                { id: 'designers', label: 'Designer Studio', subtitle: 'Bespoke Design Bids & Consults', icon: <Shirt size={20} /> },
+                { id: 'tailors', label: 'Tailors Near You', subtitle: 'Locate Verified Ateliers & Shops', icon: <MapPin size={20} /> },
+                { id: 'history', label: 'My Orders', subtitle: 'Track Live Orders & History', icon: <Clock size={20} /> },
+                { id: 'wishlist', label: 'Wishlist', subtitle: 'Saved Fabrics & Outfits', icon: <Heart size={20} /> },
+                { id: 'profile', label: 'My Profile', subtitle: 'Sizing Vault & Addresses', icon: <User size={20} /> }
+              ].map(tab => {
+                const isActive = activeHub === tab.id;
+                return (
+                  <div
+                    key={tab.id}
+                    className={`drawer-nav-item ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      if (tab.id === 'profile') {
+                        setIsMyProfileOpen(true);
+                        setSidebarOpen(false);
+                        return;
+                      }
+                      if (tab.id === 'wishlist' && !currentUser) {
+                        if (onLoginRequired) onLoginRequired();
+                        setSidebarOpen(false);
+                        return;
+                      }
+                      setActiveHub(tab.id);
+                      setWizardOpen(false);
+                      if (setCustomerHub) setCustomerHub(tab.id);
+                      setSidebarOpen(false);
+                    }}
+                    style={{
+                      background: isActive 
+                        ? (isDark ? 'rgba(247,37,133,0.15)' : '#FFF0F6') 
+                        : (isDark ? 'rgba(255,255,255,0.02)' : 'transparent'),
+                      borderRadius: '12px',
+                      padding: '10px 14px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      gap: '8px'
+                    }}
+                  >
+                    {isActive && <div className="drawer-nav-indicator" style={{ background: 'var(--primary)' }} />}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                      <div 
+                        className="drawer-nav-icon-box" 
+                        style={{ 
+                          background: isActive 
+                            ? (isDark ? 'rgba(247,37,133,0.2)' : '#FFE4F2') 
+                            : (isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9'),
+                          color: isActive 
+                            ? '#F72585' 
+                            : (isDark ? '#E2E8F0' : '#475467'),
+                          flexShrink: 0
+                        }}
+                      >
+                        {tab.icon}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0, overflow: 'hidden' }}>
+                        <span style={{ 
+                          fontSize: '0.9rem', 
+                          fontWeight: 700, 
+                          color: isActive ? 'var(--primary)' : (isDark ? '#FFFFFF' : '#1B1B2F'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}>
+                          {tab.label}
+                        </span>
+                        <span style={{ 
+                          fontSize: '0.72rem', 
+                          color: isActive ? 'var(--primary)' : (isDark ? 'rgba(255,255,255,0.5)' : '#6B7280'),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}>
+                          {tab.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight 
+                      size={18} 
+                      style={{ 
+                        color: isActive ? 'var(--primary)' : (isDark ? 'rgba(255,255,255,0.4)' : '#9CA3AF'),
+                        transition: 'transform 0.2s ease',
+                        flexShrink: 0,
+                        marginLeft: 'auto'
+                      }} 
+                    />
+                  </div>
+                );
+              })}
+
+              {/* Stitching Services Expandable Section */}
+              <div
+                style={{
+                  background: isDark ? 'rgba(255,255,255,0.02)' : 'transparent',
+                  borderRadius: '12px',
+                  border: `1px solid ${borderColor}`,
+                  overflow: 'hidden',
+                  marginTop: '4px'
+                }}
+              >
+                <div 
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  style={{
+                    padding: '10px 14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div 
+                      className="drawer-nav-icon-box"
+                      style={{
+                        background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
+                        color: 'var(--primary)',
+                        flexShrink: 0
+                      }}
+                    >
+                      <Scissors size={20} />
+                    </div>
+                    <div style={{ textAlign: 'left' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 700, color: colorTextPrimary, display: 'block' }}>
+                        Custom Stitching Services
+                      </span>
+                      <span style={{ fontSize: '0.72rem', color: colorTextMuted }}>
+                        Men, Women, Bridal, Alterations...
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronDown 
+                    size={16} 
+                    style={{ 
+                      transform: mobileServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
+                      transition: 'transform 0.2s ease',
+                      color: colorTextMuted
+                    }} 
+                  />
+                </div>
+
+                {mobileServicesOpen && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '0 12px 12px 12px' }}>
+                    {categoryCards.map(cat => {
+                      if (cat.id === 'bags') {
+                        return (
+                          <div key={cat.id} style={{ width: '100%', margin: '4px 0' }}>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMobileBagsExpanded(!mobileBagsExpanded);
+                              }}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                border: `1px solid ${selectedCategory === 'bags' ? 'var(--primary)' : borderColor}`,
+                                background: selectedCategory === 'bags' ? 'rgba(247,37,133,0.1)' : (isDark ? 'rgba(255,255,255,0.04)' : '#fff'),
+                                color: selectedCategory === 'bags' ? 'var(--primary)' : colorTextPrimary,
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <span>👜 {cat.label}</span>
+                              <ChevronDown 
+                                size={14} 
+                                style={{ 
+                                  transform: mobileBagsExpanded ? 'rotate(180deg)' : 'none', 
+                                  transition: 'transform 0.2s ease' 
+                                }} 
+                              />
+                            </button>
+                            {mobileBagsExpanded && (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '10px', marginTop: '6px' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setBagsStudioMode('shop');
+                                    setSelectedCategory('bags');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('bags');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                  }}
+                                  style={{
+                                    padding: '7px 12px',
+                                    textAlign: 'left',
+                                    borderRadius: '6px',
+                                    border: `1px solid ${selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'var(--primary)' : 'transparent'}`,
+                                    background: selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'rgba(247,37,133,0.15)' : 'rgba(255,255,255,0.03)',
+                                    color: selectedCategory === 'bags' && bagsStudioMode === 'shop' ? 'var(--primary)' : colorTextPrimary,
+                                    fontSize: '0.76rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  ✨ Shop & Create
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setBagsStudioMode('restore');
+                                    setSelectedCategory('bags');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('bags');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                  }}
+                                  style={{
+                                    padding: '7px 12px',
+                                    textAlign: 'left',
+                                    borderRadius: '6px',
+                                    border: `1px solid ${selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'var(--primary)' : 'transparent'}`,
+                                    background: selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'rgba(247,37,133,0.15)' : 'rgba(255,255,255,0.03)',
+                                    color: selectedCategory === 'bags' && bagsStudioMode === 'restore' ? 'var(--primary)' : colorTextPrimary,
+                                    fontSize: '0.76rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  🛠️ Repair & Restore
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <button
+                          key={cat.id}
+                          onClick={() => {
+                            if (cat.id === 'designers') {
+                              setActiveHub('designers');
+                              if (setCustomerHub) setCustomerHub('designers');
+                              if (setCustomerCategory) setCustomerCategory('all');
+                            } else {
+                              setActiveHub('category-landing');
+                              setSelectedCategory(cat.id);
+                              if (setCustomerCategory) setCustomerCategory(cat.id);
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                            }
+                            setWizardOpen(false);
+                            setSidebarOpen(false);
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            borderRadius: '20px',
+                            border: `1px solid ${selectedCategory === cat.id ? 'var(--primary)' : borderColor}`,
+                            background: selectedCategory === cat.id ? 'rgba(247,37,133,0.1)' : (isDark ? 'rgba(255,255,255,0.04)' : '#fff'),
+                            color: selectedCategory === cat.id ? 'var(--primary)' : colorTextPrimary,
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {cat.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* VIP Customer Tier Card */}
+            <div className="drawer-tier-card" style={{ background: 'linear-gradient(135deg, #7B3FF2 0%, #5B21B6 100%)', margin: '8px 0 12px 0', padding: '14px', borderRadius: '18px', color: '#ffffff' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '1.25rem' }}>💎</span>
+                  <div>
+                    <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#ffffff' }}>
+                      StitchBee VIP Club
+                    </div>
+                    <div style={{ fontSize: '0.7rem', opacity: 0.9, color: '#ffffff', marginTop: '1px' }}>
+                      Tier 1 • Free Doorstep Pickup
+                    </div>
+                  </div>
+                </div>
+                <span style={{ background: 'rgba(255, 255, 255, 0.2)', padding: '3px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, color: '#ffffff' }}>
+                  Gold Tier
+                </span>
+              </div>
+              <div className="drawer-tier-progress-bar" style={{ marginTop: '8px', height: '6px' }}>
+                <div className="drawer-tier-progress-fill" style={{ width: '70%', background: 'linear-gradient(90deg, var(--primary) 0%, #10b981 100%)' }} />
+              </div>
+            </div>
+
+            {/* Theme Toggle Button */}
+            <div 
+              className="drawer-nav-item"
+              onClick={() => setTheme && setTheme(theme === 'dark' ? 'light' : 'dark')}
+              style={{
+                background: isDark ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
+                border: `1px solid ${borderColor}`,
+                borderRadius: '12px',
+                padding: '10px 14px',
+                marginBottom: '8px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div className="drawer-nav-icon-box" style={{ background: isDark ? 'rgba(251,191,36,0.15)' : '#FEF3C7', color: '#D97706', width: '36px', height: '36px', borderRadius: '10px' }}>
+                  {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                </div>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: colorTextPrimary }}>
+                  {isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                </span>
+              </div>
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--primary)' }}>
+                {isDark ? 'Dark' : 'Light'}
+              </span>
+            </div>
+
+            {/* Logout / Sign In Button */}
+            {currentUser ? (
+              <button 
+                className="drawer-logout-btn"
+                onClick={() => {
+                  setSidebarOpen(false);
+                  if (onLogout) onLogout();
+                }}
+                style={{
+                  background: isDark ? 'rgba(239,68,68,0.15)' : '#FEF2F2',
+                  color: '#EF4444',
+                  border: '1.5px solid rgba(239,68,68,0.25)',
+                  borderRadius: '12px',
+                  padding: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
+                  width: '100%'
+                }}
+              >
+                <LogOut size={16} /> Logout ({currentUser.name})
+              </button>
+            ) : (
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  setSidebarOpen(false);
+                  if (onLoginRequired) onLoginRequired();
+                }}
+                style={{
+                  borderRadius: '12px',
+                  padding: '12px',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
+                  width: '100%'
+                }}
+              >
+                <User size={16} /> Sign In / Register
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
 
       <div className="view-container">
 
@@ -3578,25 +4464,123 @@ export default function CustomerView({
 
             {/* STEP 3: Match Nearby Tailor (Uber/Namma Yatri style) */}
             {wizardStep === 3 && (() => {
-              const localWizardTailors = [
+              const wizardSearchCoords = resolveLocalityCoords(placeSearchText);
+
+              const ALL_WIZARD_TAILORS = [
+                { 
+                  id: 'w_gottigere_1', 
+                  name: 'Gottigere Designer Tailors & Boutique', 
+                  owner: 'Manjunath Gowda',
+                  rating: 4.9, 
+                  reviews: 142, 
+                  time: '15-20 mins', 
+                  orders: '310+ Orders', 
+                  specialty: 'Bridal Blouse, Lehengas, Salwar Suits',
+                  categories: ['womens', 'bridal', 'alterations'],
+                  address: 'Near Gottigere Lake, Bannerghatta Main Road, Gottigere, Bengaluru',
+                  lat: 12.8596, 
+                  lng: 77.5888,
+                  image: 'https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'GD', 
+                  bg: '#7209b7', 
+                  reviewsList: [
+                    { name: 'Rashmi N.', rating: 5, comment: 'Best boutique near Gottigere! Perfectly fitting bridal blouse.', date: '2026-06-10' }
+                  ],
+                  portfolio: [
+                    { title: 'Aari Work Silk Blouse', image: './bridal 5.jpg' },
+                    { title: 'Velvet Bridal Lehenga', image: './bridal2.jpg' }
+                  ]
+                },
+                { 
+                  id: 'w_gottigere_2', 
+                  name: 'Royal South Bespoke Tailors', 
+                  owner: 'Master Venkatesh',
+                  rating: 4.8, 
+                  reviews: 118, 
+                  time: '20-25 mins', 
+                  orders: '240+ Orders', 
+                  specialty: 'Suits, Sherwanis, Blazers, Trousers',
+                  categories: ['mens', 'alterations', 'uniforms'],
+                  address: '1st Cross, Bannerghatta Main Road, Gottigere, Bengaluru',
+                  lat: 12.8625, 
+                  lng: 77.5895,
+                  image: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'RS', 
+                  bg: '#0b162c', 
+                  reviewsList: [
+                    { name: 'Karthik Rao', rating: 5, comment: 'Bespoke blazer stitched to perfection in 2 days.', date: '2026-06-08' }
+                  ],
+                  portfolio: [
+                    { title: 'Classic Tuxedo Suit', image: './Mens Collection.jpg' }
+                  ]
+                },
+                { 
+                  id: 'w_gottigere_3', 
+                  name: 'Siri Couture & Bridal Studio', 
+                  owner: 'Sowmya Reddy',
+                  rating: 4.8, 
+                  reviews: 165, 
+                  time: '25-30 mins', 
+                  orders: '280+ Orders', 
+                  specialty: 'Kanjeevaram Blouses, Maggam Work, Gowns',
+                  categories: ['womens', 'bridal'],
+                  address: 'Near Meenakshi Mall, Bannerghatta Road, Hulimavu, Bengaluru',
+                  lat: 12.8752, 
+                  lng: 77.5960,
+                  image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'SC', 
+                  bg: '#f72585', 
+                  reviewsList: [
+                    { name: 'Deepa V.', rating: 5, comment: 'Outstanding maggam embroidery work near Bannerghatta Road.', date: '2026-06-04' }
+                  ],
+                  portfolio: [
+                    { title: 'Heavy Maggam Bridal Blouse', image: './br_bridal 5.jpg' }
+                  ]
+                },
+                { 
+                  id: 'w_gottigere_4', 
+                  name: 'Classic Stitch & 24h Alterations', 
+                  owner: 'Basavaraj K.',
+                  rating: 4.7, 
+                  reviews: 88, 
+                  time: '15-20 mins', 
+                  orders: '190+ Orders', 
+                  specialty: '24h Express Alterations, Pants, Shirts',
+                  categories: ['alterations', 'mens', 'womens'],
+                  address: 'Arekere Junction, Bannerghatta Road, Bengaluru',
+                  lat: 12.8885, 
+                  lng: 77.5947,
+                  image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=400&q=80',
+                  status: 'approved',
+                  initial: 'CS', 
+                  bg: '#4361ee', 
+                  reviewsList: [
+                    { name: 'Anand Kumar', rating: 5, comment: 'Super quick alteration and fitting.', date: '2026-06-02' }
+                  ],
+                  portfolio: [
+                    { title: 'Formal Alterations', image: './step_tailor.jpg' }
+                  ]
+                },
                 { 
                   id: 't1', 
                   name: 'Royal Bespoke Tailors', 
                   owner: 'Master Rajesh Kumar',
                   rating: 4.8, 
                   reviews: 126, 
-                  distance: 0.8, 
                   time: '15-20 mins', 
                   orders: '250+ Orders', 
                   specialty: 'Suits, Indo-Western, Sherwani',
                   categories: ['mens', 'alterations', 'uniforms'],
                   address: 'Sector 4, HSR Layout, Bengaluru',
-                  coordinates: { x: 30, y: 40 },
+                  lat: 12.9141, 
+                  lng: 77.6413,
                   image: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?auto=format&fit=crop&w=400&q=80',
                   status: 'approved',
                   initial: 'RB', 
                   bg: '#0b162c', 
-                  mapCoords: { top: '68%', left: '76%', label: '1' },
                   reviewsList: [
                     { name: 'Rohan Sharma', rating: 5, comment: 'Royal Bespoke is excellent. The sherwani fits like a glove!', date: '2026-05-28' }
                   ],
@@ -3610,18 +4594,17 @@ export default function CustomerView({
                   owner: 'Ananya Sharma',
                   rating: 4.6, 
                   reviews: 98, 
-                  distance: 1.6, 
                   time: '20-25 mins', 
                   orders: '180+ Orders', 
                   specialty: 'Saree, Blouse, Lehengas',
                   categories: ['womens', 'bridal'],
                   address: '12th Main, Indiranagar, Bengaluru',
-                  coordinates: { x: 75, y: 25 },
+                  lat: 12.9719, 
+                  lng: 77.6412,
                   image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80',
                   status: 'approved',
                   initial: 'TS', 
                   bg: '#0b2c1b', 
-                  mapCoords: { top: '55%', left: '40%', label: '4' },
                   reviewsList: [
                     { name: 'Priya Sen', rating: 5, comment: 'Stunning embroidery and blouse lining work!', date: '2026-06-02' }
                   ],
@@ -3635,18 +4618,17 @@ export default function CustomerView({
                   owner: 'David D\'Souza',
                   rating: 4.5, 
                   reviews: 74, 
-                  distance: 2.1, 
                   time: '25-30 mins', 
                   orders: '140+ Orders', 
                   specialty: 'Casual Wear, Kurtis, Dresses',
                   categories: ['kids', 'alterations'],
                   address: 'Koramangala 5th Block, Bengaluru',
-                  coordinates: { x: 45, y: 80 },
+                  lat: 12.9348, 
+                  lng: 77.6189,
                   image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=400&q=80',
                   status: 'approved',
                   initial: 'TN', 
                   bg: '#2c1e0b', 
-                  mapCoords: { top: '78%', left: '60%', label: '2' },
                   reviewsList: [
                     { name: 'Kavitha M.', rating: 5, comment: 'Stitched a beautiful birthday dress for my daughter.', date: '2026-06-05' }
                   ],
@@ -3660,18 +4642,17 @@ export default function CustomerView({
                   owner: 'Guru Prasad',
                   rating: 4.3, 
                   reviews: 58, 
-                  distance: 2.9, 
                   time: '30-35 mins', 
                   orders: '120+ Orders', 
                   specialty: 'Alterations, Formal Wear',
                   categories: ['seats', 'bags'],
                   address: 'BTM Layout 2nd Stage, Bengaluru',
-                  coordinates: { x: 60, y: 60 },
+                  lat: 12.9166, 
+                  lng: 77.6101,
                   image: 'https://images.unsplash.com/photo-1542435503-956c469947f6?auto=format&fit=crop&w=400&q=80',
                   status: 'approved',
                   initial: 'SC', 
                   bg: '#230b2c', 
-                  mapCoords: { top: '40%', left: '80%', label: '3' },
                   reviewsList: [
                     { name: 'Guru Prasad', rating: 4, comment: 'Alterations done quickly and cleanly.', date: '2026-06-01' }
                   ],
@@ -3680,6 +4661,11 @@ export default function CustomerView({
                   ]
                 }
               ];
+
+              const localWizardTailors = ALL_WIZARD_TAILORS.map(t => {
+                const dist = getDistanceCoords(wizardSearchCoords[0], wizardSearchCoords[1], t.lat, t.lng);
+                return { ...t, distance: parseFloat(dist.toFixed(1)) };
+              }).sort((a, b) => a.distance - b.distance);
 
               return (
                 <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -3705,8 +4691,22 @@ export default function CustomerView({
                     <button 
                       type="button"
                       className="btn" 
-                      style={{ padding: '8px 16px', borderRadius: '8px', border: '1.5px solid var(--primary)', color: 'var(--primary)', background: 'transparent', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', height: '38px' }}
-                      onClick={() => alert("Acquiring GPS location coordinates...")}
+                      style={{ padding: '8px 16px', borderRadius: '8px', border: '1.5px solid var(--primary)', color: 'var(--primary)', background: 'transparent', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', height: '38px', cursor: 'pointer' }}
+                      onClick={() => {
+                        if (navigator.geolocation) {
+                          navigator.geolocation.getCurrentPosition(
+                            () => {
+                              setPlaceSearchText("Gottigere, Bengaluru");
+                            },
+                            () => {
+                              setPlaceSearchText("Gottigere, Bengaluru");
+                            },
+                            { timeout: 3000 }
+                          );
+                        } else {
+                          setPlaceSearchText("Gottigere, Bengaluru");
+                        }
+                      }}
                     >
                       <MapPin size={14} /> Use my current location
                     </button>
@@ -3853,155 +4853,17 @@ export default function CustomerView({
                       </button>
                     </div>
 
-                    {/* Right Column: Simulated Map */}
-                    <div 
-                      className="map-sim" 
-                      style={{ 
-                        height: '100%', 
-                        minHeight: '380px',
-                        borderRadius: '16px', 
-                        backgroundImage: 'url(./map_sim.png)', 
-                        backgroundSize: 'cover', 
-                        backgroundPosition: 'center',
-                        border: `1.5px solid ${borderColor}`,
-                        position: 'relative',
-                        overflow: 'hidden',
-                        boxShadow: 'inset 0 0 40px rgba(0,0,0,0.1)'
-                      }}
-                    >
-                      {/* Circle range indicator overlay */}
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          top: '60%', 
-                          left: '70%', 
-                          transform: 'translate(-50%, -50%)', 
-                          width: '240px', 
-                          height: '240px', 
-                          borderRadius: '50%', 
-                          border: '2px dashed var(--primary)', 
-                          background: 'rgba(247, 37, 133, 0.05)',
-                          pointerEvents: 'none',
-                          boxShadow: '0 0 20px rgba(247, 37, 133, 0.1)'
-                        }}
-                      ></div>
-
-                      {/* Toggle switch area */}
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          top: '16px', 
-                          left: '16px', 
-                          background: 'rgba(255, 255, 255, 0.9)', 
-                          padding: '8px 14px', 
-                          borderRadius: '24px', 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          gap: '10px', 
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                          zIndex: 10
-                        }}
-                      >
-                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#1a2238' }}>Show tailors in this area</span>
-                        <div style={{ width: '36px', height: '20px', borderRadius: '10px', background: 'var(--primary)', position: 'relative', cursor: 'pointer' }}>
-                          <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '2px', right: '2px' }}></div>
-                        </div>
-                      </div>
-
-                      {/* Zoom controls */}
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: '16px', 
-                          right: '16px', 
-                          background: 'rgba(255, 255, 255, 0.9)', 
-                          borderRadius: '8px', 
-                          display: 'flex', 
-                          flexDirection: 'column', 
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                          zIndex: 10
-                        }}
-                      >
-                        <button type="button" style={{ width: '32px', height: '32px', border: 'none', background: 'none', fontSize: '1.25rem', fontWeight: 'bold', cursor: 'pointer', borderBottom: '1px solid #e2e8f0', color: '#1a2238' }} onClick={() => alert("Zoom in")}>+</button>
-                        <button type="button" style={{ width: '32px', height: '32px', border: 'none', background: 'none', fontSize: '1.25rem', fontWeight: 'bold', cursor: 'pointer', color: '#1a2238' }} onClick={() => alert("Zoom out")}>-</button>
-                      </div>
-
-                      {/* Target location picker icon */}
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: '90px', 
-                          right: '16px', 
-                          background: 'rgba(255, 255, 255, 0.9)', 
-                          borderRadius: '8px', 
-                          width: '32px', 
-                          height: '32px',
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          justifyContent: 'center', 
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                          cursor: 'pointer',
-                          zIndex: 10
-                        }}
-                        onClick={() => alert("Re-centering map on user GPS coordinates...")}
-                      >
-                        <MapPin size={16} style={{ color: '#1a2238' }} />
-                      </div>
-
-                      {/* User Marker: Center */}
-                      <div style={{ position: 'absolute', top: '60%', left: '70%', transform: 'translate(-50%, -50%)', zIndex: 15, textAlign: 'center' }}>
-                        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'var(--primary)', border: '2.5px solid #ffffff', boxShadow: '0 0 10px var(--primary)', margin: '0 auto' }}></div>
-                        <div style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.62rem', padding: '2px 8px', borderRadius: '4px', marginTop: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }}>
-                          You (Pickup)
-                        </div>
-                      </div>
-
-                      {/* Tailor Markers */}
-                      {localWizardTailors.map(tailor => {
-                        const isSelected = selectedTailor?.id === tailor.id;
-                        return (
-                          <div 
-                            key={tailor.id} 
-                            style={{ 
-                              position: 'absolute', 
-                              top: tailor.mapCoords.top, 
-                              left: tailor.mapCoords.left, 
-                              transform: 'translate(-50%, -50%)', 
-                              zIndex: isSelected ? 30 : 20, 
-                              cursor: 'pointer',
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'center'
-                            }}
-                            onClick={() => setSelectedTailor(tailor)}
-                          >
-                            <div 
-                              style={{ 
-                                width: '24px', 
-                                height: '24px', 
-                                borderRadius: '50%', 
-                                background: isSelected ? 'var(--primary)' : '#10b981', 
-                                border: '2px solid #ffffff', 
-                                boxShadow: `0 0 10px ${isSelected ? 'var(--primary)' : '#10b981'}`, 
-                                display: 'flex', 
-                                alignItems: 'center', 
-                                justifyContent: 'center',
-                                color: '#fff',
-                                fontSize: '0.72rem',
-                                fontWeight: 'bold'
-                              }}
-                            >
-                              {tailor.mapCoords.label}
-                            </div>
-                            {isSelected && (
-                              <div style={{ background: '#fff', color: '#1a2238', fontSize: '0.62rem', padding: '2px 8px', borderRadius: '4px', marginTop: '4px', fontWeight: 'bold', whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', border: '1px solid var(--primary)' }}>
-                                {tailor.name}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-
+                    {/* Right Column: Real Interactive Google Map */}
+                    <div style={{ height: '100%', minHeight: '480px' }}>
+                      <WizardGoogleMap
+                        searchCoords={wizardSearchCoords}
+                        locationName={placeSearchText || 'Bengaluru'}
+                        tailors={localWizardTailors}
+                        selectedTailor={selectedTailor}
+                        onSelectTailor={(tailor) => setSelectedTailor(tailor)}
+                        borderColor={borderColor}
+                        isDark={isDark}
+                      />
                     </div>
 
                   </div>
@@ -4064,7 +4926,6 @@ export default function CustomerView({
                 </div>
               );
             })()}
-            )}
 
             {/* STEP 4: Request Tailor & Negotiation Simulation */}
             {wizardStep === 4 && (
@@ -4528,29 +5389,11 @@ export default function CustomerView({
                     height: '100%', 
                     borderRadius: '12px', 
                     overflow: 'hidden', 
-                    border: '2.5px solid var(--primary)',
-                    boxShadow: '0 0 15px rgba(247, 37, 133, 0.45)',
-                    position: 'relative',
-                    background: '#eae3d5'
+                    border: '1.5px solid ' + borderColor,
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.06)',
+                    position: 'relative'
                   }}
-                >
-                  {!window.L && (
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(247,37,133,0.15) 10%, transparent 10.5%), linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)',
-                      backgroundSize: '100% 100%, 20px 20px, 20px 20px',
-                      position: 'relative'
-                    }}>
-                      <div style={{ position: 'absolute', top: '35%', left: '30%', transform: 'translate(-50%, -50%)' }}>
-                        <MapPin size={18} style={{ color: 'var(--primary)' }} />
-                      </div>
-                      <div style={{ position: 'absolute', top: '65%', left: '70%', transform: 'translate(-50%, -50%)' }}>
-                        <MapPin size={18} style={{ color: 'var(--accent)' }} />
-                      </div>
-                    </div>
-                  )}
-                </div>
+                />
 
                 {/* Tailors list */}
                 <div style={{ width: '50%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
@@ -5639,6 +6482,10 @@ export default function CustomerView({
         <ServiceCategoryView 
           categoryKey={selectedCategory}
           currentUser={currentUser}
+          theme={theme}
+          setTheme={setTheme}
+          bagsStudioMode={bagsStudioMode}
+          setBagsStudioMode={setBagsStudioMode}
           onLoginRequired={onLoginRequired}
           onExploreDesigns={() => {
             const el = document.getElementById('popular-designs-section');
@@ -5763,9 +6610,14 @@ export default function CustomerView({
               <Search size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
               <input 
                 type="text" 
-                placeholder={searchMode === 'area' ? "Search area, locality or landmark..." : "Search by city (e.g. Bangalore, Chennai, Mumbai, Delhi)..."}
+                placeholder={searchMode === 'area' ? "Search area, locality or landmark (e.g. Gottigere, HSR Layout, Koramangala)..." : "Search by city (e.g. Bangalore, Chennai, Mumbai, Delhi)..."}
                 value={searchQueryText}
                 onChange={(e) => setSearchQueryText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && searchQueryText.trim() !== '') {
+                    setSearchLocationName(`${searchQueryText}, ${searchMode === 'area' ? 'Bangalore' : 'India'}`);
+                  }
+                }}
                 style={{
                   width: '100%',
                   padding: '12px 16px 12px 44px',
@@ -6011,14 +6863,16 @@ export default function CustomerView({
                         key={rOpt.val}
                         onClick={() => setFilterMinRating(rOpt.val)}
                         style={{
-                          padding: '6px 4px',
-                          borderRadius: '6px',
-                          border: `1.5px solid ${filterMinRating === rOpt.val ? 'var(--primary)' : 'var(--border-color)'}`,
-                          background: filterMinRating === rOpt.val ? bgActiveOption : bgCard,
-                          color: filterMinRating === rOpt.val ? 'var(--primary)' : 'var(--text-secondary)',
-                          fontSize: '0.75rem',
+                          padding: '8px 6px',
+                          borderRadius: '10px',
+                          border: filterMinRating === rOpt.val ? 'none' : `1px solid ${borderColor}`,
+                          background: filterMinRating === rOpt.val ? 'var(--primary)' : bgCard,
+                          color: filterMinRating === rOpt.val ? '#ffffff' : 'var(--text-secondary)',
+                          fontSize: '0.78rem',
                           fontWeight: 'bold',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          boxShadow: filterMinRating === rOpt.val ? '0 4px 14px rgba(247, 37, 133, 0.35)' : 'none',
+                          transition: 'all 0.18s ease'
                         }}
                       >
                         {rOpt.label}
