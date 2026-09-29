@@ -1333,12 +1333,9 @@ export default function BagsLeatherStudio({
                   {/* Left: Artisan Sketching Photo */}
                   <div className="bl-custom-studio-photo">
                     <img 
-                      src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=900&auto=format&fit=crop" 
+                      src="/design_bags/sketching.png" 
                       alt="Artisan sketching bespoke handbag" 
                     />
-                    <div className="bl-custom-studio-badge">
-                      <span>Artisan Studio Workbench</span>
-                    </div>
                   </div>
 
                   {/* Center: Details & Steps */}
@@ -1346,12 +1343,12 @@ export default function BagsLeatherStudio({
                     <span className="bl-tag-label">CUSTOM DESIGN STUDIO</span>
                     <h2 className="bl-serif-title bl-custom-studio-heading">Design Your Dream Bag</h2>
                     <p className="bl-custom-studio-sub">
-                      Choose the style, leather, color, size and detailing. Our artisans will bring your design to life.
+                      Choose the style, leather, color, size and detailing.<br className="bl-br-desktop" />
+                      Our artisans will bring your design to life.
                     </p>
 
                     <button 
-                      className="bl-btn-primary" 
-                      style={{ margin: '14px 0 28px 0' }}
+                      className="bl-custom-studio-cta" 
                       onClick={() => setCustomStudioModalOpen(true)}
                     >
                       Start Designing →
@@ -1359,59 +1356,39 @@ export default function BagsLeatherStudio({
 
                     <div className="bl-custom-steps-row">
                       <div className="bl-custom-step-item">
-                        <div className="bl-step-icon-wrap"><Scissors size={18} /></div>
-                        <span className="bl-step-name">Upload Sketch or Idea</span>
+                        <div className="bl-step-icon-wrap">
+                          <Upload size={18} color="#f72585" strokeWidth={2.2} />
+                        </div>
+                        <span className="bl-step-name">Upload Sketch<br />or Idea</span>
                       </div>
                       <div className="bl-custom-step-item">
-                        <div className="bl-step-icon-wrap"><Layers size={18} /></div>
-                        <span className="bl-step-name">Choose Material & Details</span>
+                        <div className="bl-step-icon-wrap">
+                          <Layers size={18} color="#f72585" strokeWidth={2.2} />
+                        </div>
+                        <span className="bl-step-name">Choose Material<br />& Details</span>
                       </div>
                       <div className="bl-custom-step-item">
-                        <div className="bl-step-icon-wrap"><FileText size={18} /></div>
-                        <span className="bl-step-name">Get Review & Quote</span>
+                        <div className="bl-step-icon-wrap">
+                          <FileText size={18} color="#f72585" strokeWidth={2.2} />
+                        </div>
+                        <span className="bl-step-name">Get Preview<br />& Quote</span>
                       </div>
                       <div className="bl-custom-step-item">
-                        <div className="bl-step-icon-wrap"><Truck size={18} /></div>
-                        <span className="bl-step-name">Handcrafted & Delivered</span>
+                        <div className="bl-step-icon-wrap">
+                          <Award size={18} color="#f72585" strokeWidth={2.2} />
+                        </div>
+                        <span className="bl-step-name">Handcrafted<br />& Delivered</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Right: Technical Line Art Drawing with Callouts */}
+                  {/* Right: Bespoke Handbag Sketch with Callouts */}
                   <div className="bl-custom-studio-sketch">
-                    <div className="bl-blueprint-canvas">
-                      <svg viewBox="0 0 300 260" className="bl-schematic-svg">
-                        <defs>
-                          <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#f72585" />
-                          </marker>
-                        </defs>
-                        {/* Bag Outline */}
-                        <path d="M 60 90 L 80 220 C 80 230 220 230 220 220 L 240 90 C 240 80 60 80 60 90 Z" fill="rgba(247,37,133,0.04)" stroke="#475569" strokeWidth="2.5" strokeDasharray="3 3" />
-                        {/* Top Flap */}
-                        <path d="M 60 90 Q 150 140 240 90" fill="none" stroke="#475569" strokeWidth="2" />
-                        {/* Clasp & Lock */}
-                        <rect x="138" y="115" width="24" height="20" rx="3" fill="#d97706" stroke="#b45309" strokeWidth="1.5" />
-                        <circle cx="150" cy="125" r="3" fill="#fff" />
-                        {/* Handle */}
-                        <path d="M 95 90 C 95 20, 205 20, 205 90" fill="none" stroke="#475569" strokeWidth="3" />
-                        
-                        {/* Annotations */}
-                        <path d="M 230 35 L 180 40" stroke="#f72585" strokeWidth="1.5" markerEnd="url(#arrow)" />
-                        <text x="235" y="38" fill="#f72585" fontSize="11" fontWeight="700">Your Style</text>
-
-                        <path d="M 255 105 L 210 115" stroke="#f72585" strokeWidth="1.5" markerEnd="url(#arrow)" />
-                        <text x="250" y="100" fill="#f72585" fontSize="11" fontWeight="700">Your Color</text>
-
-                        <path d="M 35 150 L 95 160" stroke="#f72585" strokeWidth="1.5" markerEnd="url(#arrow)" />
-                        <text x="10" y="148" fill="#f72585" fontSize="11" fontWeight="700">Your Material</text>
-
-                        <path d="M 45 210 L 125 190" stroke="#f72585" strokeWidth="1.5" markerEnd="url(#arrow)" />
-                        <text x="15" y="222" fill="#f72585" fontSize="11" fontWeight="700">+ Your Details</text>
-
-                        <text x="110" y="248" fill="#934a26" fontSize="12" fontStyle="italic" fontWeight="700">StitchBee Atelier</text>
-                      </svg>
-                    </div>
+                    <img 
+                      src="/design_bags/sketch.png" 
+                      alt="Custom handbag sketch with design callouts" 
+                      className="bl-custom-sketch-img"
+                    />
                   </div>
 
                 </div>
