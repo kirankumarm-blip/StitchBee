@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Scissors, User, Award, Heart, Star, Sparkles, MapPin, 
   Truck, ChevronRight, Check, Users, ShieldCheck, 
-  ChevronLeft, ArrowRight, X, Layers, Clock, ShoppingBag, 
+  ChevronLeft, ArrowRight, X, Layers, Clock, ShoppingBag, ShoppingCart, 
   Bell, Upload, Camera, Sliders, CheckCircle2, RotateCcw, Wrench, 
   FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus, Gem
 } from 'lucide-react';
@@ -52,8 +52,8 @@ export default function BagsLeatherStudio({
       id: 'prod-1', 
       name: 'Classic Leather Handbag', 
       price: 3999, 
-      color: 'Cognac Brown', 
-      img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop', 
+      color: 'Nude Beige', 
+      img: '/featured_bags/prod_1.png', 
       qty: 1 
     }
   ]);
@@ -347,28 +347,28 @@ export default function BagsLeatherStudio({
       category: 'handbags',
       price: 3999,
       colors: [
-        { name: 'Onyx Black', hex: '#1c1917' },
-        { name: 'Cognac Brown', hex: '#8b4513' },
-        { name: 'Blush Rose', hex: '#f472b6' }
+        { name: 'Nude Beige', hex: '#cbb59d' },
+        { name: 'Onyx Black', hex: '#111111' },
+        { name: 'Dusty Rose', hex: '#b85b6c' }
       ],
-      selectedColor: 'Onyx Black',
-      img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop',
-      material: 'Full-Grain Tuscan Calfskin',
+      selectedColor: 'Nude Beige',
+      img: '/featured_bags/prod_1.png',
+      material: 'Full-Grain Tuscan Quilted Leather',
       dimensions: '28cm x 20cm x 12cm',
-      description: 'Handcrafted with precision saddle stitching, structured silhouette, interior zip separator, and gold-plated protective feet.'
+      description: 'Handcrafted with precision chevron quilting, structured silhouette, interior zip separator, and gold-plated chain strap.'
     },
     {
       id: 'prod-2',
       name: 'Travel Luggage Suitcase',
       category: 'luggage',
-      price: 5999,
+      price: 6999,
       colors: [
-        { name: 'Mocha Bronze', hex: '#543d2b' },
-        { name: 'Jet Black', hex: '#1c1917' },
-        { name: 'Saddle Tan', hex: '#c28859' }
+        { name: 'Champagne Tan', hex: '#d4b996' },
+        { name: 'Jet Black', hex: '#1a1a1a' },
+        { name: 'Cognac Brown', hex: '#b08060' }
       ],
-      selectedColor: 'Mocha Bronze',
-      img: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?q=80&w=800&auto=format&fit=crop',
+      selectedColor: 'Champagne Tan',
+      img: '/featured_bags/prod_2.png',
       material: 'Reinforced Polycarbonate with Italian Leather Trim',
       dimensions: '55cm x 38cm x 23cm (Cabin compliant)',
       description: 'Whisper-quiet 360° spinner wheels, TSA approved lock, telescopic aerospace aluminum handle, and vegetable-tanned leather handle straps.'
@@ -377,14 +377,14 @@ export default function BagsLeatherStudio({
       id: 'prod-3',
       name: 'Urban Leather Backpack',
       category: 'backpacks',
-      price: 2699,
+      price: 2999,
       colors: [
-        { name: 'Matte Black', hex: '#1c1917' },
-        { name: 'Saddle Brown', hex: '#b47a46' },
-        { name: 'Cream Stone', hex: '#e7d8c5' }
+        { name: 'Camel Tan', hex: '#d2b48c' },
+        { name: 'Obsidian Black', hex: '#171717' },
+        { name: 'Terracotta Brown', hex: '#c48b71' }
       ],
-      selectedColor: 'Matte Black',
-      img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop',
+      selectedColor: 'Camel Tan',
+      img: '/featured_bags/prod_3.png',
       material: 'Pebble Grain Buffalo Leather',
       dimensions: '42cm x 30cm x 15cm',
       description: 'Features a dedicated padded 16-inch laptop compartment, water-resistant interior lining, ergonomic shoulder straps, and quick-access passport pocket.'
@@ -395,12 +395,12 @@ export default function BagsLeatherStudio({
       category: 'briefcases',
       price: 4499,
       colors: [
-        { name: 'Vintage Cognac', hex: '#9a4f21' },
-        { name: 'Midnight Black', hex: '#1c1917' },
-        { name: 'Desert Sand', hex: '#d7c1a8' }
+        { name: 'Bone Beige', hex: '#e5d3b3' },
+        { name: 'Midnight Black', hex: '#171717' },
+        { name: 'Ivory Cream', hex: '#f5ede3' }
       ],
-      selectedColor: 'Vintage Cognac',
-      img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800&auto=format&fit=crop',
+      selectedColor: 'Bone Beige',
+      img: '/featured_bags/prod_4.png',
       material: 'Vegetable-Tanned Heritage Leather',
       dimensions: '40cm x 29cm x 9cm',
       description: 'Polished brass clasp lock with key, structured accordion dividers for documents, reinforced top handle, and detachable padded leather shoulder strap.'
@@ -411,12 +411,12 @@ export default function BagsLeatherStudio({
       category: 'handbags',
       price: 3499,
       colors: [
-        { name: 'Warm Ivory', hex: '#f5f0e8' },
-        { name: 'Pitch Black', hex: '#1c1917' },
-        { name: 'Chestnut Tan', hex: '#b6875b' }
+        { name: 'Almond Beige', hex: '#d8c2aa' },
+        { name: 'Dark Espresso', hex: '#38271d' },
+        { name: 'Pitch Black', hex: '#0d0d0d' }
       ],
-      selectedColor: 'Warm Ivory',
-      img: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=800&auto=format&fit=crop',
+      selectedColor: 'Almond Beige',
+      img: '/featured_bags/prod_5.png',
       material: 'Soft Nappa Leather with Suede Lining',
       dimensions: '36cm x 31cm x 14cm',
       description: 'Spacious everyday tote with magnetic snap bridge closure, interior zippered clutch pouch, and comfortable double-stitched shoulder drop handles.'
@@ -1252,82 +1252,74 @@ export default function BagsLeatherStudio({
                 </div>
                 <button 
                   className="bl-link-text-pink"
-                  onClick={() => setReadyCategoryFilter('all')}
+                  onClick={() => {
+                    const catalogEl = document.getElementById('bags-catalog-section');
+                    if (catalogEl) {
+                      catalogEl.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                 >
                   View All →
                 </button>
               </div>
 
-              {/* Filter Pills */}
-              <div className="bl-filter-strip">
-                {['all', 'handbags', 'luggage', 'backpacks', 'briefcases'].map(filterKey => (
-                  <button
-                    key={filterKey}
-                    className={`bl-filter-pill ${readyCategoryFilter === filterKey ? 'active' : ''}`}
-                    onClick={() => setReadyCategoryFilter(filterKey)}
-                  >
-                    {filterKey.charAt(0).toUpperCase() + filterKey.slice(1)}
-                  </button>
-                ))}
-              </div>
-
-              {/* Product Grid (5 items from Image 1) */}
+              {/* Product Grid (5 items from Mockup) */}
               <div className="bl-products-grid-5">
-                {featuredProducts
-                  .filter(p => readyCategoryFilter === 'all' || p.category === readyCategoryFilter)
-                  .map(product => {
-                    const isWish = wishlist.has(product.id);
-                    return (
-                      <div 
-                        key={product.id} 
-                        className="bl-product-card"
-                        onClick={() => setSelectedProductModal(product)}
-                      >
-                        <div className="bl-prod-img-box">
-                          <img src={product.img} alt={product.name} />
+                {featuredProducts.map(product => {
+                  const isWish = wishlist.has(product.id);
+                  return (
+                    <div 
+                      key={product.id} 
+                      className="bl-product-card"
+                      onClick={() => setSelectedProductModal(product)}
+                    >
+                      <div className="bl-prod-img-box">
+                        <img src={product.img} alt={product.name} />
+                        <button 
+                          className={`bl-prod-wish-btn ${isWish ? 'active' : ''}`}
+                          onClick={(e) => handleToggleWishlist(product.id, e)}
+                          title="Add to wishlist"
+                          aria-label="Add to wishlist"
+                        >
+                          <Heart size={16} fill={isWish ? '#f72585' : 'none'} color={isWish ? '#f72585' : '#334155'} strokeWidth={2} />
+                        </button>
+                      </div>
+
+                      <div className="bl-prod-info">
+                        <h4 className="bl-prod-name">{product.name}</h4>
+                        <div className="bl-prod-price">₹{product.price.toLocaleString('en-IN')}</div>
+
+                        <div className="bl-prod-bottom-row">
+                          {/* Color swatches */}
+                          <div className="bl-prod-swatches">
+                            {product.colors.map(col => (
+                              <span 
+                                key={col.name} 
+                                className={`bl-prod-swatch-dot ${product.selectedColor === col.name ? 'active' : ''}`}
+                                style={{ backgroundColor: col.hex }}
+                                title={col.name}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setFeaturedProducts(prev => prev.map(item => item.id === product.id ? { ...item, selectedColor: col.name } : item));
+                                }}
+                              />
+                            ))}
+                          </div>
+
+                          {/* Add to cart icon button */}
                           <button 
-                            className={`bl-prod-wish-btn ${isWish ? 'active' : ''}`}
-                            onClick={(e) => handleToggleWishlist(product.id, e)}
-                            title="Add to wishlist"
+                            className="bl-prod-cart-btn"
+                            onClick={(e) => handleAddToCartItem(product, e)}
+                            title="Add to Cart"
+                            aria-label="Add to Cart"
                           >
-                            <Heart size={16} fill={isWish ? '#f72585' : 'none'} color={isWish ? '#f72585' : '#475569'} />
+                            <ShoppingCart size={15} />
                           </button>
                         </div>
-
-                        <div className="bl-prod-info">
-                          <h4 className="bl-prod-name">{product.name}</h4>
-                          <div className="bl-prod-price">₹{product.price.toLocaleString('en-IN')}</div>
-
-                          <div className="bl-prod-bottom-row">
-                            {/* Color swatches */}
-                            <div className="bl-prod-swatches">
-                              {product.colors.map(col => (
-                                <span 
-                                  key={col.name} 
-                                  className={`bl-prod-swatch-dot ${product.selectedColor === col.name ? 'active' : ''}`}
-                                  style={{ backgroundColor: col.hex }}
-                                  title={col.name}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setFeaturedProducts(prev => prev.map(item => item.id === product.id ? { ...item, selectedColor: col.name } : item));
-                                  }}
-                                />
-                              ))}
-                            </div>
-
-                            {/* Add to cart icon button */}
-                            <button 
-                              className="bl-prod-cart-btn"
-                              onClick={(e) => handleAddToCartItem(product, e)}
-                              title="Add to Cart"
-                            >
-                              <ShoppingBag size={15} />
-                            </button>
-                          </div>
-                        </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </section>

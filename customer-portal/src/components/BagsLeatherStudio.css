@@ -623,33 +623,53 @@ body.bl-theme-dark .bl-trust-text-stack,
 
 .bl-products-grid-5 {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 4px;
+}
+
+@media (max-width: 1100px) {
+  .bl-products-grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .bl-products-grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bl-products-grid-5 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .bl-product-card {
-  background: var(--bl-warm-card);
-  border: 1px solid var(--bl-border);
-  border-radius: var(--bl-radius-md);
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: var(--bl-shadow-sm);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
 }
 
 .bl-product-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--bl-shadow-md);
-  border-color: var(--bl-pink-border);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  border-color: rgba(247, 37, 133, 0.35);
 }
 
 .bl-prod-img-box {
   position: relative;
   width: 100%;
-  height: 200px;
-  background: #f1f5f9;
+  height: 205px;
+  background: #f8fafc;
   overflow: hidden;
 }
 
@@ -657,11 +677,12 @@ body.bl-theme-dark .bl-trust-text-stack,
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.4s ease;
 }
 
 .bl-product-card:hover .bl-prod-img-box img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 .bl-prod-wish-btn {
@@ -671,7 +692,7 @@ body.bl-theme-dark .bl-trust-text-stack,
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);
   border: none;
   cursor: pointer;
@@ -679,7 +700,8 @@ body.bl-theme-dark .bl-trust-text-stack,
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 2;
 }
 
 .bl-prod-wish-btn:hover {
@@ -688,26 +710,27 @@ body.bl-theme-dark .bl-trust-text-stack,
 }
 
 .bl-prod-info {
-  padding: 14px;
+  padding: 12px 14px 14px 14px;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
 .bl-prod-name {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  margin: 0 0 6px 0;
-  color: var(--bl-text-primary);
+  margin: 0 0 4px 0;
+  color: #0f172a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: inherit;
 }
 
 .bl-prod-price {
   font-size: 1.05rem;
   font-weight: 800;
-  color: var(--bl-text-primary);
+  color: #0f172a;
   margin-bottom: 12px;
 }
 
@@ -721,40 +744,64 @@ body.bl-theme-dark .bl-trust-text-stack,
 .bl-prod-swatches {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .bl-prod-swatch-dot {
-  width: 11px;
-  height: 11px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: 1.5px solid transparent;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+}
+
+.bl-prod-swatch-dot:hover {
+  transform: scale(1.18);
 }
 
 .bl-prod-swatch-dot.active {
-  border-color: var(--bl-pink);
-  transform: scale(1.25);
+  box-shadow: 0 0 0 1.5px #ffffff, 0 0 0 3px #f72585;
+  transform: scale(1.15);
 }
 
 .bl-prod-cart-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  background: var(--bl-pink);
+  background: #f72585;
   color: #ffffff;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 8px rgba(247, 37, 133, 0.25);
 }
 
 .bl-prod-cart-btn:hover {
-  background: var(--bl-pink-hover);
-  transform: scale(1.08);
+  background: #e01e74;
+  transform: scale(1.06);
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.4);
+}
+
+body.bl-theme-dark .bl-product-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.bl-theme-dark .bl-prod-name,
+body.bl-theme-dark .bl-prod-price {
+  color: #f8fafc;
+}
+
+body.bl-theme-dark .bl-prod-wish-btn {
+  background: rgba(30, 41, 59, 0.92);
+}
+
+body.bl-theme-dark .bl-prod-swatch-dot.active {
+  box-shadow: 0 0 0 1.5px #1e293b, 0 0 0 3px #f72585;
 }
 
 /* Custom Design Studio Card */
