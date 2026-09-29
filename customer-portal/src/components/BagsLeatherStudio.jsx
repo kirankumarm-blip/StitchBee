@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Scissors, User, Award, Heart, Star, Sparkles, MapPin, 
   Truck, ChevronRight, Check, Users, ShieldCheck, 
@@ -63,6 +63,7 @@ export default function BagsLeatherStudio({
 
   // Modals
   const [selectedProductModal, setSelectedProductModal] = useState(null);
+  const [selectedMaterialModal, setSelectedMaterialModal] = useState(null);
   const [customStudioModalOpen, setCustomStudioModalOpen] = useState(false);
   const [assessmentModalOpen, setAssessmentModalOpen] = useState(false);
   const [selectedServiceModal, setSelectedServiceModal] = useState(null);
@@ -70,6 +71,14 @@ export default function BagsLeatherStudio({
   // Shop & Create state
   const [readyCategoryFilter, setReadyCategoryFilter] = useState('all');
   const [materialCarouselIndex, setMaterialCarouselIndex] = useState(0);
+  const materialsTrackRef = useRef(null);
+
+  const scrollMaterials = (direction) => {
+    if (materialsTrackRef.current) {
+      const scrollAmount = direction === 'left' ? -280 : 280;
+      materialsTrackRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   // Custom Designer Modal state
   const [builderStyle, setBuilderStyle] = useState('handbag');
@@ -430,56 +439,56 @@ export default function BagsLeatherStudio({
       name: 'Full Grain Leather',
       desc: 'The highest grade hide with natural grain and enduring patina.',
       tag: 'Heritage Grade',
-      img: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_full_grain.jpg'
     },
     {
       id: 'm-top-grain',
       name: 'Top Grain Leather',
       desc: 'Smooth, uniform surface treated for scratch and stain resistance.',
       tag: 'Everyday Luxury',
-      img: 'https://images.unsplash.com/photo-1524388676161-0777ea826500?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_top_grain.jpg'
     },
     {
       id: 'm-suede',
       name: 'Suede Leather',
       desc: 'Velvety napped underside offering luxurious softness and warmth.',
       tag: 'Velvet Touch',
-      img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_suede.jpg'
     },
     {
       id: 'm-nappa',
       name: 'Nappa Leather',
       desc: 'Buttery-soft full-grain lambskin and calfskin known for supple drape.',
       tag: 'Ultra Soft',
-      img: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_nappa.jpg'
     },
     {
       id: 'm-canvas',
       name: 'Canvas Fabric',
       desc: 'Heavyweight military-grade cotton duck canvas for rugged durability.',
       tag: 'Rugged Work',
-      img: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_canvas.jpg'
     },
     {
       id: 'm-vegan',
       name: 'Vegan Leather',
       desc: 'Eco-conscious plant-based PU crafted without animal derivatives.',
       tag: 'Sustainable',
-      img: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_vegan.jpg'
     },
     {
       id: 'm-croc',
       name: 'Croc Texture',
       desc: 'Embossed scale pattern with high-gloss lacquer finish.',
       tag: 'Statement Exotic',
-      img: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_croc.jpg'
     },
     {
       id: 'm-metallic',
       name: 'Metallic Finish',
       desc: 'Subtle champagne and silver shimmer bonded to fine grain leather.',
       tag: 'Evening Glam',
-      img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=600&auto=format&fit=crop'
+      img: '/materials/mat_metallic.jpg'
     }
   ];
 
@@ -1399,46 +1408,53 @@ export default function BagsLeatherStudio({
           {/* SECTION 5: LEATHER & MATERIAL OPTIONS */}
           <section className="bl-section bl-materials-section">
             <div className="bl-container">
-              <div className="bl-section-header-split">
-                <div>
-                  <span className="bl-tag-label">LEATHER & MATERIAL OPTIONS</span>
-                  <h2 className="bl-serif-title bl-section-heading">Premium Materials for Every Style</h2>
-                  <p className="bl-section-subtext">
-                    Handpicked leathers, fabrics and finishes to create long-lasting, beautiful bags.
-                  </p>
-                </div>
-
-                <div className="bl-carousel-nav-arrows">
-                  <button 
-                    className="bl-arrow-btn"
-                    onClick={() => setMaterialCarouselIndex(prev => Math.max(0, prev - 1))}
-                    disabled={materialCarouselIndex === 0}
-                  >
-                    <ChevronLeft size={20} />
-                  </button>
-                  <button 
-                    className="bl-arrow-btn"
-                    onClick={() => setMaterialCarouselIndex(prev => Math.min(materialsList.length - 4, prev + 1))}
-                    disabled={materialCarouselIndex >= materialsList.length - 4}
-                  >
-                    <ChevronRight size={20} />
-                  </button>
-                </div>
+              <div className="bl-materials-header">
+                <span className="bl-tag-label">LEATHER & MATERIAL OPTIONS</span>
+                <h2 className="bl-serif-title bl-section-heading">Premium Materials for Every Style</h2>
+                <p className="bl-section-subtext">
+                  Handpicked leathers, fabrics and finishes to create long-lasting, beautiful bags.
+                </p>
               </div>
 
-              <div className="bl-materials-carousel">
-                {materialsList.map(mat => (
-                  <div key={mat.id} className="bl-material-card">
-                    <div className="bl-material-img-box">
-                      <img src={mat.img} alt={mat.name} />
-                      <span className="bl-mat-tag">{mat.tag}</span>
+              <div className="bl-materials-carousel-wrapper">
+                <button 
+                  type="button"
+                  className="bl-mat-nav-arrow bl-mat-nav-prev"
+                  onClick={() => scrollMaterials('left')}
+                  aria-label="Previous materials"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+
+                <div className="bl-materials-carousel" ref={materialsTrackRef}>
+                  {materialsList.map(mat => (
+                    <div 
+                      key={mat.id} 
+                      className="bl-material-card"
+                      onClick={() => setSelectedMaterialModal(mat)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter') setSelectedMaterialModal(mat); }}
+                      title={`${mat.name} – Click for details`}
+                    >
+                      <div className="bl-material-img-box">
+                        <img src={mat.img} alt={mat.name} loading="lazy" />
+                      </div>
+                      <div className="bl-material-label-pill">
+                        <span className="bl-material-name">{mat.name}</span>
+                      </div>
                     </div>
-                    <div className="bl-material-info">
-                      <h4 className="bl-material-name">{mat.name}</h4>
-                      <p className="bl-material-desc">{mat.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <button 
+                  type="button"
+                  className="bl-mat-nav-arrow bl-mat-nav-next"
+                  onClick={() => scrollMaterials('right')}
+                  aria-label="Next materials"
+                >
+                  <ChevronRight size={16} />
+                </button>
               </div>
             </div>
           </section>
@@ -2763,6 +2779,64 @@ export default function BagsLeatherStudio({
                     }}
                   >
                     Customize in 3D
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 1.1 MATERIAL DETAIL MODAL */}
+      {selectedMaterialModal && (
+        <div className="bl-modal-backdrop" onClick={() => setSelectedMaterialModal(null)}>
+          <div className="bl-modal-card bl-material-detail-modal" onClick={e => e.stopPropagation()}>
+            <button className="bl-modal-close" onClick={() => setSelectedMaterialModal(null)}>
+              <X size={20} />
+            </button>
+            <div className="bl-material-detail-grid">
+              <div className="bl-mat-detail-img-box">
+                <img src={selectedMaterialModal.img} alt={selectedMaterialModal.name} />
+                <span className="bl-mat-tag">{selectedMaterialModal.tag}</span>
+              </div>
+              <div className="bl-mat-detail-content">
+                <span className="bl-tag-label">LUXURY SPECIFICATION</span>
+                <h3 className="bl-serif-title" style={{ fontSize: '1.75rem', margin: '6px 0 12px' }}>
+                  {selectedMaterialModal.name}
+                </h3>
+                <p className="bl-detail-desc" style={{ marginBottom: '16px', lineHeight: 1.6 }}>
+                  {selectedMaterialModal.desc}
+                </p>
+                <div className="bl-mat-features-list">
+                  <div className="bl-mat-feat-item">
+                    <CheckCircle2 size={16} className="bl-text-pink" />
+                    <span>Ethically sourced premium grade hides and certified textiles</span>
+                  </div>
+                  <div className="bl-mat-feat-item">
+                    <CheckCircle2 size={16} className="bl-text-pink" />
+                    <span>Hand-finished patina with exceptional tactile feel and durability</span>
+                  </div>
+                  <div className="bl-mat-feat-item">
+                    <CheckCircle2 size={16} className="bl-text-pink" />
+                    <span>Available for bespoke custom builds and full bag restorations</span>
+                  </div>
+                </div>
+                <div style={{ marginTop: '24px', display: 'flex', gap: '10px' }}>
+                  <button
+                    className="bl-btn bl-btn-primary"
+                    onClick={() => {
+                      setSelectedMaterialModal(null);
+                      setCustomStudioModalOpen(true);
+                      showToast(`Configuring Dream Bag with ${selectedMaterialModal.name}! ✨`);
+                    }}
+                  >
+                    <Sparkles size={16} /> Customize Bag with this Material
+                  </button>
+                  <button
+                    className="bl-btn bl-btn-outline"
+                    onClick={() => setSelectedMaterialModal(null)}
+                  >
+                    Close
                   </button>
                 </div>
               </div>
