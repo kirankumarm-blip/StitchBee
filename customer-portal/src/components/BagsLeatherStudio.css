@@ -4085,7 +4085,7 @@ body.bl-theme-light .bl-item-type-card.selected,
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
   .bl-hero-grid,
   .bl-custom-studio-grid,
   .bl-split-work-grid,
@@ -4115,22 +4115,75 @@ body.bl-theme-light .bl-item-type-card.selected,
     min-height: auto;
   }
 
+  /* Hero Section: Switch from side-by-side to vertical flex stack on tablet */
   .bl-shop-hero-fullwidth {
-    height: auto;
-    min-height: auto;
-    background-position: center right;
+    height: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    background-image: 
+      linear-gradient(90deg, 
+        rgba(252, 248, 245, 0.96) 0%, 
+        rgba(252, 248, 245, 0.92) 55%, 
+        rgba(252, 248, 245, 0.5) 80%, 
+        rgba(252, 248, 245, 0.1) 100%
+      ),
+      url('/bags_shop_hero_bg.png') !important;
+    background-position: 60% center !important;
+  }
+
+  body.bl-theme-dark .bl-shop-hero-fullwidth,
+  .bl-theme-dark .bl-shop-hero-fullwidth {
+    background-image: 
+      linear-gradient(90deg, 
+        rgba(12, 10, 20, 0.96) 0%, 
+        rgba(12, 10, 20, 0.92) 55%, 
+        rgba(12, 10, 20, 0.5) 80%, 
+        rgba(12, 10, 20, 0.1) 100%
+      ),
+      url('/bags_shop_hero_bg.png') !important;
   }
 
   .bl-shop-hero-inner {
-    padding: 36px 1.5rem;
+    padding: 44px 28px 36px 28px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .bl-hero-left {
+    max-width: 580px !important;
+    width: 100% !important;
+  }
+
+  .bl-hero-heading-shop {
+    font-size: 2.8rem !important;
   }
 
   .bl-hero-right-dark-panel {
-    position: static;
-    width: 100%;
-    background: #14110f;
-    padding: 24px;
-    justify-content: flex-start;
+    position: static !important;
+    width: 100% !important;
+    background: linear-gradient(90deg, #181412 0%, #251e1a 50%, #181412 100%) !important;
+    padding: 16px 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-top: 1px solid rgba(229, 184, 135, 0.15) !important;
+  }
+
+  .bl-hero-script-stack {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 24px !important;
+    font-size: 2.2rem !important;
+    padding: 0 !important;
+  }
+
+  .bl-script-line-1,
+  .bl-script-line-2,
+  .bl-script-line-3 {
+    padding-left: 0 !important;
   }
 
   .bl-restore-heading {
@@ -4177,7 +4230,8 @@ body.bl-theme-light .bl-item-type-card.selected,
   }
 
   .bl-horizontal-stepper {
-    gap: 6px;
+    gap: 8px;
+    max-width: 100%;
   }
 
   .bl-statement-card {
@@ -4197,11 +4251,11 @@ body.bl-theme-light .bl-item-type-card.selected,
   }
 
   .bl-testimonials-grid-3 {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .bl-bottom-cta-card {
-    padding: 36px 28px;
+    padding: 36px 32px;
     background-image: 
       linear-gradient(180deg, 
         rgba(18, 12, 8, 0.75) 0%, 
@@ -4250,96 +4304,586 @@ body.bl-theme-light .bl-item-type-card.selected,
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .bl-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 16px !important;
+  }
+
+  .bl-section {
+    padding: 40px 0 !important;
+  }
+
+  .bl-section-heading {
+    font-size: 1.85rem !important;
+  }
+
+  .bl-section-header-center {
+    margin-bottom: 28px !important;
+  }
+
+  /* Hero Section: Mobile Full-width Luxury Card with vertical flow */
+  .bl-shop-hero-fullwidth {
+    margin: 0 0 24px 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(252, 248, 245, 0.97) 0%, 
+        rgba(252, 248, 245, 0.93) 60%, 
+        rgba(252, 248, 245, 0.98) 100%
+      ),
+      url('/bags_shop_hero_bg.png') !important;
+    background-position: center top !important;
+  }
+
+  body.bl-theme-dark .bl-shop-hero-fullwidth,
+  .bl-theme-dark .bl-shop-hero-fullwidth {
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(12, 10, 20, 0.97) 0%, 
+        rgba(12, 10, 20, 0.93) 60%, 
+        rgba(12, 10, 20, 0.98) 100%
+      ),
+      url('/bags_shop_hero_bg.png') !important;
+  }
+
+  .bl-shop-hero-inner {
+    padding: 28px 18px 24px 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .bl-hero-left {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .bl-tag-label-shop {
+    font-size: 0.72rem !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .bl-hero-heading-shop {
+    font-size: clamp(2rem, 7vw, 2.45rem) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .bl-hero-subtext-shop {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+    margin-bottom: 20px !important;
+    max-width: 100% !important;
+  }
+
+  .bl-hero-trust-row-shop {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px 16px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .bl-trust-item-shop {
+    gap: 8px !important;
+  }
+
+  .bl-trust-icon-circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .bl-trust-text-stack {
+    font-size: 0.74rem !important;
+  }
+
+  .bl-hero-cta-group-shop {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .bl-hero-cta-group-shop .bl-btn-primary,
+  .bl-hero-cta-group-shop .bl-btn-secondary {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 13px 20px !important;
+    font-size: 0.92rem !important;
+  }
+
+  /* Cursive gold script ribbon */
+  .bl-hero-right-dark-panel {
+    position: static !important;
+    width: 100% !important;
+    padding: 14px 16px !important;
+    background: linear-gradient(90deg, #181412 0%, #251e1a 50%, #181412 100%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-top: 1px solid rgba(229, 184, 135, 0.15) !important;
+  }
+
+  .bl-hero-script-stack {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px 16px !important;
+    font-size: 1.65rem !important;
+    padding: 0 !important;
+  }
+
+  /* Categories Grid: 2 columns on mobile */
   .bl-category-grid-6 {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
   }
 
-  .bl-restore-expertise-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
+  .bl-cat-img-box {
+    height: 140px !important;
   }
 
-  .bl-restore-expertise-card {
-    height: 195px;
+  .bl-cat-info {
+    padding: 10px 10px 12px 10px !important;
   }
 
-  .bl-restore-card-title {
-    font-size: 1.15rem;
+  .bl-cat-title {
+    font-size: 0.92rem !important;
   }
 
+  .bl-cat-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .bl-cat-action {
+    font-size: 0.75rem !important;
+  }
+
+  /* Products Grid */
   .bl-products-grid-5 {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
   }
 
-  .bl-materials-carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
+  .bl-prod-img-box {
+    height: 180px !important;
+  }
+
+  .bl-prod-name {
+    font-size: 0.84rem !important;
+  }
+
+  .bl-prod-price {
+    font-size: 0.88rem !important;
+  }
+
+  /* Filter strip swipeable on mobile */
+  .bl-filter-strip {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 6px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .bl-filter-strip::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .bl-filter-pill {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    padding: 6px 14px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Custom Design Studio Card */
+  .bl-custom-studio-card {
+    border-radius: 16px !important;
+  }
+
+  .bl-custom-studio-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .bl-custom-studio-photo {
+    height: 200px !important;
+    min-height: 200px !important;
+  }
+
+  .bl-custom-studio-details {
+    padding: 22px 16px !important;
+  }
+
+  .bl-custom-studio-heading {
+    font-size: 1.65rem !important;
+  }
+
+  .bl-custom-studio-cta {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .bl-custom-steps-row {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(58px, 1fr)) !important;
+    gap: 10px 4px !important;
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+
+  .bl-custom-step-item {
+    min-width: 0 !important;
+  }
+
+  .bl-step-icon-wrap {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .bl-step-name {
+    font-size: 0.68rem !important;
+  }
+
+  .bl-custom-studio-sketch {
+    display: none !important;
+  }
+
+  /* Materials Carousel & Detail Modal */
+  .bl-materials-section {
+    padding: 40px 0 !important;
+  }
+
+  .bl-mat-nav-prev {
+    left: 4px !important;
+  }
+
+  .bl-mat-nav-next {
+    right: 4px !important;
   }
 
   .bl-material-card {
-    flex: 0 0 115px;
-    min-width: 115px;
+    flex: 0 0 115px !important;
+    min-width: 115px !important;
   }
 
-  .bl-services-grid-4 {
-    grid-template-columns: 1fr;
+  .bl-material-detail-modal {
+    width: 94% !important;
+    max-width: 460px !important;
+    padding: 22px 16px !important;
   }
 
-  .bl-item-type-cards {
-    grid-template-columns: repeat(3, 1fr);
+  .bl-material-detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
   }
 
-  .bl-damage-selection-grid {
-    grid-template-columns: 1fr;
+  .bl-mat-detail-img-box {
+    height: 180px !important;
   }
 
-  .bl-hero-heading {
-    font-size: 2.1rem;
+  /* How It Works Split */
+  .bl-how-it-works-split {
+    padding: 36px 0 !important;
+  }
+
+  .bl-how-it-works-left {
+    padding: 0 16px !important;
+  }
+
+  .bl-how-it-works-left .bl-section-heading {
+    font-size: 2.1rem !important;
   }
 
   .bl-how-it-works-right {
-    display: none;
+    display: none !important;
   }
 
   .bl-horizontal-stepper {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 10px;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 18px 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .bl-num-step {
+    max-width: 100% !important;
+  }
+
+  .bl-step-icon-circle {
+    width: 58px !important;
+    height: 58px !important;
   }
 
   .bl-step-arrow-line {
-    display: none;
+    display: none !important;
+  }
+
+  /* Statement Banner */
+  .bl-statement-banner {
+    padding: 24px 0 40px 0 !important;
   }
 
   .bl-statement-card {
-    min-height: auto;
-    padding: 36px 20px;
+    min-height: auto !important;
+    padding: 30px 18px !important;
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(248, 243, 236, 0.97) 0%, 
+        rgba(248, 243, 236, 0.92) 100%
+      ),
+      url('/5bags.png') !important;
+  }
+
+  body.bl-theme-dark .bl-statement-card {
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(16, 12, 28, 0.97) 0%, 
+        rgba(16, 12, 28, 0.92) 100%
+      ),
+      url('/5bags.png') !important;
+  }
+
+  .bl-statement-content {
+    max-width: 100% !important;
+    padding: 0 !important;
   }
 
   .bl-statement-heading {
-    font-size: 2.1rem;
+    font-size: 1.75rem !important;
+  }
+
+  .bl-statement-cta-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Testimonials */
+  .bl-testimonials-section {
+    padding: 40px 0 28px 0 !important;
+  }
+
+  .bl-testimonials-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .bl-testimonial-card {
+    padding: 18px 16px !important;
+  }
+
+  /* Bottom Last Banner */
+  .bl-bottom-cta-banner {
+    padding: 20px 0 48px 0 !important;
   }
 
   .bl-bottom-cta-card {
-    padding: 32px 18px;
+    padding: 28px 16px !important;
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(18, 12, 8, 0.85) 0%, 
+        rgba(18, 12, 8, 0.97) 100%
+      ),
+      url('/leather_journey_banner.jpg') !important;
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .bl-bottom-cta-text {
+    text-align: center !important;
+    width: 100% !important;
   }
 
   .bl-bottom-cta-heading {
-    font-size: 1.75rem;
+    font-size: 1.65rem !important;
+  }
+
+  .bl-bottom-cta-sub {
+    font-size: 0.9rem !important;
+    margin: 8px 0 20px 0 !important;
   }
 
   .bl-bottom-cta-btns {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
   }
 
   .bl-cta-btn-pink,
   .bl-cta-btn-glass {
-    width: 100%;
-    justify-content: center;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Functional Subviews Responsiveness */
+  .bl-filter-control-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+  }
+
+  .bl-filter-left-col,
+  .bl-filter-right-col {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .bl-filter-search-box {
+    width: 100% !important;
+  }
+
+  .bl-filter-search-input {
+    width: 100% !important;
+  }
+
+  .bl-shop-products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .bl-pdp-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .bl-pdp-main-img-box {
+    height: 320px !important;
+    padding: 16px !important;
+  }
+
+  .bl-pdp-actions-row {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .bl-pdp-actions-row button {
+    width: 100% !important;
+  }
+
+  .bl-pdp-title {
+    font-size: 1.65rem !important;
+  }
+
+  .bl-pdp-price {
+    font-size: 1.45rem !important;
+  }
+
+  .bl-cart-layout-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .bl-cart-item-row {
+    padding: 14px 12px !important;
+    gap: 12px !important;
+  }
+
+  .bl-cart-thumb-box {
+    width: 72px !important;
+    height: 72px !important;
+  }
+
+  .bl-reviews-summary-card {
+    grid-template-columns: 1fr !important;
+    padding: 20px 16px !important;
+  }
+
+  .bl-rating-trust-box {
+    border-left: none !important;
+    border-top: 1px solid var(--bl-border) !important;
+    padding-top: 16px !important;
+    padding-left: 0 !important;
+  }
+
+  .bl-reviews-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .bl-wishlist-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .bl-products-grid-5 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .bl-prod-img-box {
+    height: 240px !important;
+  }
+
+  .bl-shop-products-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .bl-wishlist-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .bl-shop-hero-inner {
+    padding: 22px 14px 18px 14px !important;
+  }
+
+  .bl-hero-heading-shop {
+    font-size: 1.95rem !important;
+  }
+
+  .bl-hero-heading-shop br {
+    display: none !important;
+  }
+
+  .bl-hero-script-stack {
+    font-size: 1.45rem !important;
+    gap: 6px 12px !important;
+  }
+
+  .bl-category-grid-6 {
+    gap: 8px !important;
+  }
+
+  .bl-cat-img-box {
+    height: 125px !important;
+  }
+
+  .bl-cat-title {
+    font-size: 0.86rem !important;
+  }
+
+  .bl-cat-desc {
+    display: none !important;
+  }
+
+  .bl-pdp-main-img-box {
+    height: 260px !important;
+  }
+
+  .bl-stepper-track {
+    min-width: 580px !important;
+  }
+
+  .bl-stepper-circle {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.76rem !important;
+  }
+
+  .bl-stepper-label {
+    font-size: 0.68rem !important;
   }
 }
 
