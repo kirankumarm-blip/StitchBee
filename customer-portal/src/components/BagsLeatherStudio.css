@@ -1547,97 +1547,266 @@ body.bl-theme-dark .bl-statement-sub {
   color: #d6d3d1;
 }
 
-/* Testimonials (3 cards) */
+/* SECTION 8: CUSTOMER TESTIMONIALS (Loved by Our Customers) */
+.bl-testimonials-section {
+  padding: 56px 0 36px 0;
+}
+
 .bl-testimonials-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 20px;
 }
 
 .bl-testimonial-card {
-  background: var(--bl-warm-card);
-  border: 1px solid var(--bl-border);
-  border-radius: var(--bl-radius-md);
-  padding: 24px;
-  box-shadow: var(--bl-shadow-sm);
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 14px;
+  padding: 22px 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.bl-testimonial-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  border-color: #cbd5e1;
+}
+
+.bl-testimonial-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.bl-t-avatar-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.bl-t-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.bl-t-pin-badge {
+  color: #f72585;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bl-t-content {
+  flex: 1;
 }
 
 .bl-t-stars {
   display: flex;
   gap: 3px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .bl-t-quote {
-  font-size: 0.92rem;
-  color: var(--bl-text-primary);
-  line-height: 1.55;
-  margin: 0 0 20px 0;
-  flex: 1;
-  font-style: italic;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #1e293b;
+  line-height: 1.45;
+  margin: 0;
+  font-style: normal;
 }
 
 .bl-t-footer {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  border-top: 1px solid var(--bl-border-light);
-  padding-top: 14px;
+  border-top: 1px solid #f8fafc;
+  padding-top: 12px;
+  margin-top: auto;
 }
 
-.bl-t-user {
+.bl-t-author {
   display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.bl-t-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .bl-t-name {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: var(--bl-text-primary);
+  color: #0f172a;
 }
 
 .bl-t-loc {
-  font-size: 0.72rem;
-  color: var(--bl-text-secondary);
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.bl-t-product-box {
+  width: 76px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #f1f5f9;
+  padding: 4px;
 }
 
 .bl-t-item-thumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  object-fit: cover;
-  border: 1px solid var(--bl-border);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-/* Bottom CTA Banner */
+/* Dark mode adjustments for testimonials */
+body.bl-theme-dark .bl-testimonial-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+body.bl-theme-dark .bl-t-quote {
+  color: #cbd5e1;
+}
+
+body.bl-theme-dark .bl-t-name {
+  color: #f8fafc;
+}
+
+body.bl-theme-dark .bl-t-loc {
+  color: #94a3b8;
+}
+
+body.bl-theme-dark .bl-t-footer {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+body.bl-theme-dark .bl-t-product-box {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* SECTION 9: BOTTOM LAST CTA BANNER ("Crafted for Your Next Journey") */
 .bl-bottom-cta-banner {
-  background: #1a120b;
-  padding: 48px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 0 60px 0;
+  background: transparent;
 }
 
-.bl-bottom-cta-inner {
+.bl-bottom-cta-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #120e0a;
+  background-image: 
+    linear-gradient(90deg, 
+      rgba(18, 12, 8, 0.1) 0%, 
+      rgba(18, 12, 8, 0.45) 26%, 
+      rgba(18, 12, 8, 0.88) 55%, 
+      rgba(18, 12, 8, 0.95) 100%
+    ),
+    url('/leather_journey_banner.jpg');
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 24px;
+  padding: 40px 52px 40px clamp(280px, 30vw, 420px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+  gap: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bl-bottom-cta-text {
+  flex: 1;
+  min-width: 260px;
+  z-index: 2;
+}
+
+.bl-bottom-cta-heading {
+  font-family: 'Playfair Display', serif;
+  color: #ffffff;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.bl-bottom-cta-sub {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  margin: 0;
 }
 
 .bl-bottom-cta-btns {
   display: flex;
-  gap: 14px;
+  align-items: center;
+  gap: 12px;
   flex-wrap: wrap;
+  z-index: 2;
+}
+
+.bl-cta-btn-pink {
+  background: #f72585;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.35);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.bl-cta-btn-pink:hover {
+  background: #e01e75;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.45);
+}
+
+.bl-cta-btn-glass {
+  background: rgba(20, 16, 14, 0.55);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.bl-cta-btn-glass:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+  transform: translateY(-2px);
 }
 
 /* Bottom CTA Card for Repair & Restore mode (Ready to restore your favourite piece?) */
@@ -3981,6 +4150,28 @@ body.bl-theme-light .bl-item-type-card.selected,
     grid-template-columns: 1fr;
   }
 
+  .bl-bottom-cta-card {
+    padding: 36px 28px;
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(18, 12, 8, 0.75) 0%, 
+        rgba(18, 12, 8, 0.95) 100%
+      ),
+      url('/leather_journey_banner.jpg');
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bl-bottom-cta-text {
+    text-align: center;
+  }
+
+  .bl-bottom-cta-btns {
+    justify-content: center;
+    width: 100%;
+  }
+
   .bl-restore-expertise-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -4079,5 +4270,25 @@ body.bl-theme-light .bl-item-type-card.selected,
 
   .bl-statement-heading {
     font-size: 2.1rem;
+  }
+
+  .bl-bottom-cta-card {
+    padding: 32px 18px;
+  }
+
+  .bl-bottom-cta-heading {
+    font-size: 1.75rem;
+  }
+
+  .bl-bottom-cta-btns {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .bl-cta-btn-pink,
+  .bl-cta-btn-glass {
+    width: 100%;
+    justify-content: center;
   }
 }

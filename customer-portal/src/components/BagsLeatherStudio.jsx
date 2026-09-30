@@ -508,7 +508,7 @@ export default function BagsLeatherStudio({
       location: 'Hyderabad',
       quote: 'Perfect travel bag for my Europe trip. Sturdy and stylish. Highly recommended!',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop',
-      itemImg: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?q=80&w=400&auto=format&fit=crop'
+      itemImg: '/restore_cat_luggage.jpg'
     },
     {
       id: 't-3',
@@ -516,7 +516,7 @@ export default function BagsLeatherStudio({
       location: 'Chennai',
       quote: 'The custom briefcase looks premium and professional. Great craftsmanship.',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop',
-      itemImg: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=400&auto=format&fit=crop'
+      itemImg: '/featured_bags/prod_4.png'
     }
   ];
 
@@ -1560,28 +1560,45 @@ export default function BagsLeatherStudio({
                     See how our custom and ready-made bags have become a part of their journey.
                   </p>
                 </div>
-                <span className="bl-link-text-pink">View More Reviews →</span>
+                <button 
+                  className="bl-link-text-pink" 
+                  onClick={() => showToast('Displaying 50+ verified customer reviews ⭐')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                >
+                  View More Reviews →
+                </button>
               </div>
 
               <div className="bl-testimonials-grid-3">
                 {shopTestimonials.map(t => (
                   <div key={t.id} className="bl-testimonial-card">
-                    <div className="bl-t-stars">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={15} fill="#f59e0b" color="#f59e0b" />
-                      ))}
-                    </div>
-                    <p className="bl-t-quote">"{t.quote}"</p>
-
-                    <div className="bl-t-footer">
-                      <div className="bl-t-user">
+                    {/* Top Row: Avatar on left, Stars and Quote on right */}
+                    <div className="bl-testimonial-top">
+                      <div className="bl-t-avatar-box">
                         <img src={t.avatar} alt={t.name} className="bl-t-avatar" />
-                        <div>
-                          <div className="bl-t-name">{t.name}</div>
-                          <div className="bl-t-loc">{t.location}</div>
+                        <div className="bl-t-pin-badge">
+                          <MapPin size={13} />
                         </div>
                       </div>
-                      <img src={t.itemImg} alt="Bag item" className="bl-t-item-thumb" />
+                      <div className="bl-t-content">
+                        <div className="bl-t-stars">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={15} fill="#f59e0b" color="#f59e0b" />
+                          ))}
+                        </div>
+                        <p className="bl-t-quote">"{t.quote}"</p>
+                      </div>
+                    </div>
+
+                    {/* Bottom Row: Name/Location on left, Bag thumbnail on right */}
+                    <div className="bl-t-footer">
+                      <div className="bl-t-author">
+                        <span className="bl-t-name">{t.name}</span>
+                        <span className="bl-t-loc">{t.location}</span>
+                      </div>
+                      <div className="bl-t-product-box">
+                        <img src={t.itemImg} alt="Purchased bag" className="bl-t-item-thumb" />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -1589,28 +1606,28 @@ export default function BagsLeatherStudio({
             </div>
           </section>
 
-          {/* SECTION 9: BOTTOM CTA BANNER */}
+          {/* SECTION 9: BOTTOM LAST CTA BANNER ("Crafted for Your Next Journey") */}
           <section className="bl-bottom-cta-banner">
             <div className="bl-container">
-              <div className="bl-bottom-cta-inner">
+              <div className="bl-bottom-cta-card">
                 <div className="bl-bottom-cta-text">
-                  <h2 className="bl-serif-title" style={{ color: '#fff', fontSize: '2.1rem', margin: '0 0 10px 0' }}>
+                  <h2 className="bl-serif-title bl-bottom-cta-heading">
                     Crafted for Your Next Journey
                   </h2>
-                  <p style={{ color: 'rgba(255,255,255,0.75)', margin: 0, fontSize: '0.95rem' }}>
-                    Explore premium bags or create your own custom design today.
+                  <p className="bl-bottom-cta-sub">
+                    Explore premium bags or create your own custom design today
                   </p>
                 </div>
 
                 <div className="bl-bottom-cta-btns">
                   <button 
-                    className="bl-btn-primary"
+                    className="bl-cta-btn-pink"
                     onClick={() => scrollToId('featured-bags-section')}
                   >
                     Shop Ready Bags →
                   </button>
                   <button 
-                    className="bl-btn-dark-outline"
+                    className="bl-cta-btn-glass"
                     onClick={() => setCustomStudioModalOpen(true)}
                   >
                     Create Custom Design
