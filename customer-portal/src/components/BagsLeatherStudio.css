@@ -1712,21 +1712,22 @@ body.bl-theme-dark .bl-t-product-box {
   background-color: #120e0a;
   background-image: 
     linear-gradient(90deg, 
-      rgba(18, 12, 8, 0.1) 0%, 
-      rgba(18, 12, 8, 0.45) 26%, 
-      rgba(18, 12, 8, 0.88) 55%, 
-      rgba(18, 12, 8, 0.95) 100%
+      rgba(18, 12, 8, 0) 0%, 
+      rgba(18, 12, 8, 0.25) 24%, 
+      rgba(18, 12, 8, 0.82) 42%, 
+      rgba(18, 12, 8, 0.96) 65%, 
+      rgba(18, 12, 8, 0.98) 100%
     ),
-    url('/leather_journey_banner.jpg');
+    url('/leather_journey_banner.jpg') !important;
   background-size: cover;
   background-position: left center;
   background-repeat: no-repeat;
-  min-height: 200px;
+  min-height: 180px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 40px 52px 40px clamp(280px, 30vw, 420px);
+  padding: 42px 48px 42px clamp(300px, 33vw, 480px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
   gap: 20px;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1738,21 +1739,36 @@ body.bl-theme-dark .bl-t-product-box {
   z-index: 2;
 }
 
+/* Ensure heading is ALWAYS pure bright white in ALL themes */
+body.light-theme .bl-bottom-cta-card h2,
+body.light-theme .bl-bottom-cta-heading,
+body.bl-theme-light .bl-bottom-cta-card h2,
+body.bl-theme-light .bl-bottom-cta-heading,
+.bl-bottom-cta-card h2,
 .bl-bottom-cta-heading {
-  font-family: 'Playfair Display', serif;
-  color: #ffffff;
-  font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0 0 6px 0;
-  letter-spacing: -0.01em;
+  color: #ffffff !important;
+  font-family: 'Playfair Display', serif !important;
+  font-size: 2.3rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  margin: 0 0 6px 0 !important;
+  letter-spacing: -0.01em !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85) !important;
 }
 
+/* Ensure subtitle is ALWAYS crisp light white in ALL themes */
+body.light-theme .bl-bottom-cta-card p,
+body.light-theme .bl-bottom-cta-sub,
+body.bl-theme-light .bl-bottom-cta-card p,
+body.bl-theme-light .bl-bottom-cta-sub,
+.bl-bottom-cta-card p,
 .bl-bottom-cta-sub {
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 0.92rem;
-  line-height: 1.45;
-  margin: 0;
+  color: #f1f5f9 !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  font-weight: 400 !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8) !important;
 }
 
 .bl-bottom-cta-btns {
@@ -1763,49 +1779,83 @@ body.bl-theme-dark .bl-t-product-box {
   z-index: 2;
 }
 
-.bl-cta-btn-pink {
-  background: #f72585;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.35);
-  transition: all 0.2s ease;
-  white-space: nowrap;
+/* Pink button: pure white text in ALL theme states */
+body.light-theme button.bl-cta-btn-pink,
+body.light-theme button.bl-cta-btn-pink *,
+body.light-theme .bl-cta-btn-pink,
+body.light-theme .bl-cta-btn-pink *,
+body.bl-theme-light button.bl-cta-btn-pink,
+body.bl-theme-light button.bl-cta-btn-pink *,
+body.bl-theme-light .bl-cta-btn-pink,
+body.bl-theme-light .bl-cta-btn-pink *,
+button.bl-cta-btn-pink,
+button.bl-cta-btn-pink *,
+.bl-cta-btn-pink,
+.bl-cta-btn-pink * {
+  background: #f72585 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.4) !important;
+  transition: all 0.25s ease !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
 }
 
+body.light-theme button.bl-cta-btn-pink:hover,
+body.light-theme .bl-cta-btn-pink:hover,
+button.bl-cta-btn-pink:hover,
 .bl-cta-btn-pink:hover {
-  background: #e01e75;
+  background: #e01e75 !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.45);
+  box-shadow: 0 8px 24px rgba(247, 37, 133, 0.55) !important;
 }
 
-.bl-cta-btn-glass {
-  background: rgba(20, 16, 14, 0.55);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-size: 0.92rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  backdrop-filter: blur(6px);
-  transition: all 0.2s ease;
-  white-space: nowrap;
+/* Glass outline button: crisp white text and border in ALL theme states */
+body.light-theme button.bl-cta-btn-glass,
+body.light-theme button.bl-cta-btn-glass *,
+body.light-theme .bl-cta-btn-glass,
+body.light-theme .bl-cta-btn-glass *,
+body.bl-theme-light button.bl-cta-btn-glass,
+body.bl-theme-light button.bl-cta-btn-glass *,
+body.bl-theme-light .bl-cta-btn-glass,
+body.bl-theme-light .bl-cta-btn-glass *,
+button.bl-cta-btn-glass,
+button.bl-cta-btn-glass *,
+.bl-cta-btn-glass,
+.bl-cta-btn-glass * {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.65) !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.25s ease !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
 }
 
+body.light-theme button.bl-cta-btn-glass:hover,
+body.light-theme .bl-cta-btn-glass:hover,
+button.bl-cta-btn-glass:hover,
 .bl-cta-btn-glass:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
 }
 

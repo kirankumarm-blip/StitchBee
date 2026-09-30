@@ -1611,23 +1611,31 @@ export default function BagsLeatherStudio({
             <div className="bl-container">
               <div className="bl-bottom-cta-card">
                 <div className="bl-bottom-cta-text">
-                  <h2 className="bl-serif-title bl-bottom-cta-heading">
+                  <h2 
+                    className="bl-serif-title bl-bottom-cta-heading has-white-text text-white"
+                    style={{ color: '#ffffff' }}
+                  >
                     Crafted for Your Next Journey
                   </h2>
-                  <p className="bl-bottom-cta-sub">
+                  <p 
+                    className="bl-bottom-cta-sub has-white-text text-white"
+                    style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                  >
                     Explore premium bags or create your own custom design today
                   </p>
                 </div>
 
                 <div className="bl-bottom-cta-btns">
                   <button 
-                    className="bl-cta-btn-pink"
+                    className="bl-cta-btn-pink has-white-text text-white"
+                    style={{ color: '#ffffff', background: '#f72585' }}
                     onClick={() => scrollToId('featured-bags-section')}
                   >
                     Shop Ready Bags →
                   </button>
                   <button 
-                    className="bl-cta-btn-glass"
+                    className="bl-cta-btn-glass has-white-text text-white"
+                    style={{ color: '#ffffff', borderColor: 'rgba(255, 255, 255, 0.65)' }}
                     onClick={() => setCustomStudioModalOpen(true)}
                   >
                     Create Custom Design
