@@ -1461,15 +1461,8 @@ export default function BagsLeatherStudio({
 
           {/* SECTION 6: HOW IT WORKS — FROM IDEA TO YOUR BAG */}
           <section className="bl-section bl-how-it-works-split">
-            <div className="bl-how-it-works-bg-img" aria-hidden="true">
-              <img 
-                src="/Lining.png" 
-                alt="Artisan handcrafting leather bag at sewing machine" 
-              />
-            </div>
-
-            <div className="bl-container bl-how-it-works-container">
-              <div className="bl-work-steps-col">
+            <div className="bl-how-it-works-container">
+              <div className="bl-how-it-works-left">
                 <span className="bl-tag-label">HOW IT WORKS</span>
                 <h2 className="bl-serif-title bl-section-heading">From Idea to Your Bag</h2>
                 <p className="bl-section-subtext">
@@ -1480,7 +1473,7 @@ export default function BagsLeatherStudio({
                   {/* Step 1 */}
                   <div className="bl-num-step">
                     <div className="bl-step-icon-circle">
-                      <ShoppingBag size={24} strokeWidth={2.2} />
+                      <ShoppingBag size={28} strokeWidth={2.2} />
                     </div>
                     <h5 className="bl-num-title">1. Choose</h5>
                     <p className="bl-num-desc">Pick a ready design or create a custom bag.</p>
@@ -1493,7 +1486,7 @@ export default function BagsLeatherStudio({
                   {/* Step 2 */}
                   <div className="bl-num-step">
                     <div className="bl-step-icon-circle">
-                      <Sliders size={24} strokeWidth={2.2} />
+                      <Sliders size={28} strokeWidth={2.2} />
                     </div>
                     <h5 className="bl-num-title">2. Customize</h5>
                     <p className="bl-num-desc">Select material, color and details.</p>
@@ -1506,7 +1499,7 @@ export default function BagsLeatherStudio({
                   {/* Step 3 */}
                   <div className="bl-num-step">
                     <div className="bl-step-icon-circle">
-                      <Scissors size={24} strokeWidth={2.2} />
+                      <Scissors size={28} strokeWidth={2.2} />
                     </div>
                     <h5 className="bl-num-title">3. Crafted</h5>
                     <p className="bl-num-desc">Our artisans handcraft your bag.</p>
@@ -1519,12 +1512,19 @@ export default function BagsLeatherStudio({
                   {/* Step 4 */}
                   <div className="bl-num-step">
                     <div className="bl-step-icon-circle">
-                      <Package size={24} strokeWidth={2.2} />
+                      <Package size={28} strokeWidth={2.2} />
                     </div>
                     <h5 className="bl-num-title">4. Delivered</h5>
                     <p className="bl-num-desc">Securely packed and delivered to you.</p>
                   </div>
                 </div>
+              </div>
+
+              <div className="bl-how-it-works-right" aria-hidden="true">
+                <img 
+                  src="/Lining.png" 
+                  alt="Artisan handcrafting leather bag at sewing machine" 
+                />
               </div>
             </div>
           </section>
@@ -1534,15 +1534,17 @@ export default function BagsLeatherStudio({
             <div className="bl-container">
               <div className="bl-statement-card">
                 <div className="bl-statement-content">
-                  <h2 className="bl-serif-title bl-statement-heading">More Than a Bag, It's a Statement</h2>
+                  <h2 className="bl-serif-title bl-statement-heading">
+                    More Than a Bag,<br />It's a Statement
+                  </h2>
                   <p className="bl-statement-sub">
                     Elegant, durable and designed for your everyday journeys.
                   </p>
                   <button 
-                    className="bl-btn-primary"
+                    className="bl-statement-btn"
                     onClick={() => scrollToId('featured-bags-section')}
                   >
-                    Shop Collection →
+                    Shop Collection <ArrowRight size={16} />
                   </button>
                 </div>
               </div>

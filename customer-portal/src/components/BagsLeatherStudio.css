@@ -1284,69 +1284,75 @@ body.bl-theme-dark .bl-mat-feat-item {
   cursor: not-allowed;
 }
 
-/* How It Works Split Section */
+/* How It Works Split Section (Matching Image 2) */
 .bl-how-it-works-split {
   position: relative;
   background-color: #ffffff;
-  padding: 68px 0;
+  padding: 56px 0;
   overflow: hidden;
+  width: 100%;
+}
+
+.bl-how-it-works-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  min-height: 380px;
+}
+
+.bl-how-it-works-left {
+  flex: 0 0 58%;
+  max-width: 58%;
+  z-index: 2;
+  padding-right: 20px;
+}
+
+.bl-how-it-works-right {
+  flex: 0 0 42%;
+  max-width: 42%;
+  height: 100%;
   min-height: 380px;
   display: flex;
   align-items: center;
-}
-
-.bl-how-it-works-bg-img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 46%;
-  max-width: 740px;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  display: flex;
   justify-content: flex-end;
-  overflow: hidden;
+  position: relative;
+  pointer-events: none;
 }
 
-.bl-how-it-works-bg-img img {
+.bl-how-it-works-right img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 440px;
   object-fit: cover;
   object-position: right center;
   display: block;
 }
 
-.bl-how-it-works-container {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-}
-
-.bl-how-it-works-split .bl-work-steps-col {
-  max-width: 640px;
-}
-
-.bl-how-it-works-split .bl-section-heading {
-  margin-top: 4px;
+.bl-how-it-works-left .bl-section-heading {
+  margin-top: 6px;
   margin-bottom: 8px;
-  font-size: 2.35rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #0f172a;
 }
 
-.bl-how-it-works-split .bl-section-subtext {
-  margin-bottom: 34px;
+.bl-how-it-works-left .bl-section-subtext {
+  margin-bottom: 36px;
   color: #64748b;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
 }
 
 .bl-horizontal-stepper {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
   gap: 8px;
-  margin-top: 10px;
 }
 
 .bl-num-step {
@@ -1355,27 +1361,27 @@ body.bl-theme-dark .bl-mat-feat-item {
   align-items: center;
   text-align: center;
   flex: 1;
-  max-width: 130px;
+  max-width: 135px;
 }
 
 .bl-step-icon-circle {
-  width: 58px;
-  height: 58px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  background: #ffe3ec;
+  background: #ffe5ee;
   color: #f72585;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-  box-shadow: 0 2px 10px rgba(247, 37, 133, 0.12);
+  box-shadow: 0 3px 12px rgba(247, 37, 133, 0.12);
 }
 
 .bl-num-step:hover .bl-step-icon-circle {
   transform: translateY(-3px) scale(1.06);
-  box-shadow: 0 6px 18px rgba(247, 37, 133, 0.24);
-  background: #ffd4e4;
+  box-shadow: 0 8px 20px rgba(247, 37, 133, 0.22);
+  background: #ffd6e5;
 }
 
 .bl-num-title {
@@ -1393,20 +1399,20 @@ body.bl-theme-dark .bl-mat-feat-item {
   line-height: 1.35;
   margin: 0;
   text-align: center;
-  max-width: 125px;
+  max-width: 130px;
 }
 
 .bl-step-arrow-line {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 58px;
+  height: 66px;
   color: #94a3b8;
   padding: 0 2px;
   flex-shrink: 0;
 }
 
-/* Dark Theme Adjustments */
+/* Dark Theme Adjustments for How It Works */
 body.bl-theme-dark .bl-how-it-works-split {
   background-color: #0b1120;
 }
@@ -1432,41 +1438,114 @@ body.bl-theme-dark .bl-step-icon-circle {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
-body.bl-theme-dark .bl-how-it-works-bg-img img {
-  opacity: 0.85;
+body.bl-theme-dark .bl-how-it-works-right img {
+  opacity: 0.88;
   filter: brightness(0.9) contrast(1.05);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 15%, black 40%);
 }
 
-/* Statement Banner */
+/* SECTION 7: STATEMENT BANNER (Matching Image 3 & using 5bags.png) */
 .bl-statement-banner {
-  padding: 30px 0;
+  padding: 32px 0 50px 0;
 }
 
 .bl-statement-card {
   position: relative;
-  border-radius: var(--bl-radius-lg);
+  border-radius: 18px;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(23, 27, 44, 0.84) 0%, rgba(68, 43, 29, 0.8) 100%),
-              url('/bags_shop_hero_bg.png');
+  background-color: #f8f3ec;
+  background-image: 
+    linear-gradient(to right, 
+      #f8f3ec 0%, 
+      #f8f3ec 28%, 
+      rgba(248, 243, 236, 0.95) 38%, 
+      rgba(248, 243, 236, 0.4) 48%, 
+      rgba(248, 243, 236, 0) 58%
+    ),
+    url('/5bags.png');
   background-size: cover;
-  background-position: center;
-  padding: 68px 40px;
-  box-shadow: var(--bl-shadow-lg);
-  text-align: center;
+  background-position: right center;
+  background-repeat: no-repeat;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e7ded0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.bl-statement-content {
+  padding: 56px 64px;
+  max-width: 480px;
+  z-index: 2;
+  text-align: left;
 }
 
 .bl-statement-heading {
-  color: #ffffff;
-  font-size: 2.6rem;
-  margin: 0 0 10px 0;
+  font-family: 'Playfair Display', serif;
+  color: #1c1917;
+  font-size: 2.7rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.01em;
 }
 
 .bl-statement-sub {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1.05rem;
-  max-width: 500px;
-  margin: 0 auto 24px auto;
+  color: #57534e;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  margin: 0 0 28px 0;
+  font-weight: 400;
+}
+
+.bl-statement-btn {
+  background: #f72585;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 26px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.28);
+  transition: all 0.25s ease;
+}
+
+.bl-statement-btn:hover {
+  background: #e01e75;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 37, 133, 0.4);
+}
+
+.bl-statement-btn:active {
+  transform: translateY(0);
+}
+
+/* Dark theme adjustments for statement banner */
+body.bl-theme-dark .bl-statement-card {
+  background-color: #14110f;
+  background-image: 
+    linear-gradient(to right, 
+      #14110f 0%, 
+      #14110f 30%, 
+      rgba(20, 17, 15, 0.94) 42%, 
+      rgba(20, 17, 15, 0.4) 52%, 
+      rgba(20, 17, 15, 0) 65%
+    ),
+    url('/5bags.png');
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+body.bl-theme-dark .bl-statement-heading {
+  color: #fdfbf7;
+}
+
+body.bl-theme-dark .bl-statement-sub {
+  color: #d6d3d1;
 }
 
 /* Testimonials (3 cards) */
@@ -3858,17 +3937,44 @@ body.bl-theme-light .bl-item-type-card.selected,
     height: 280px;
   }
 
-  .bl-how-it-works-split .bl-work-steps-col {
-    max-width: 100%;
+  .bl-how-it-works-container {
+    flex-direction: column;
+    padding: 0 20px;
+    min-height: auto;
   }
 
-  .bl-how-it-works-bg-img {
-    width: 38%;
-    opacity: 0.35;
+  .bl-how-it-works-left {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding-right: 0;
+    margin-bottom: 24px;
+  }
+
+  .bl-how-it-works-right {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-height: 240px;
+    justify-content: center;
   }
 
   .bl-horizontal-stepper {
     gap: 6px;
+  }
+
+  .bl-statement-card {
+    background-image: 
+      linear-gradient(to right, 
+        rgba(248, 243, 236, 0.96) 0%, 
+        rgba(248, 243, 236, 0.9) 50%, 
+        rgba(248, 243, 236, 0.45) 100%
+      ),
+      url('/5bags.png');
+    padding: 40px 32px;
+  }
+
+  .bl-statement-content {
+    padding: 0;
+    max-width: 100%;
   }
 
   .bl-testimonials-grid-3 {
@@ -3952,7 +4058,7 @@ body.bl-theme-light .bl-item-type-card.selected,
     font-size: 2.1rem;
   }
 
-  .bl-how-it-works-bg-img {
+  .bl-how-it-works-right {
     display: none;
   }
 
@@ -3964,5 +4070,14 @@ body.bl-theme-light .bl-item-type-card.selected,
 
   .bl-step-arrow-line {
     display: none;
+  }
+
+  .bl-statement-card {
+    min-height: auto;
+    padding: 36px 20px;
+  }
+
+  .bl-statement-heading {
+    font-size: 2.1rem;
   }
 }
