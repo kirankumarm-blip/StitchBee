@@ -1460,72 +1460,70 @@ export default function BagsLeatherStudio({
           </section>
 
           {/* SECTION 6: HOW IT WORKS — FROM IDEA TO YOUR BAG */}
-          <section className="bl-section bl-how-it-works-split">
-            <div className="bl-how-it-works-container">
-              <div className="bl-how-it-works-left">
-                <span className="bl-tag-label">HOW IT WORKS</span>
-                <h2 className="bl-serif-title bl-section-heading">From Idea to Your Bag</h2>
-                <p className="bl-section-subtext">
-                  A simple and transparent process to create or buy your perfect bag.
-                </p>
+          <section className="bl-how-it-works-split">
+            <div className="bl-how-it-works-left">
+              <span className="bl-tag-label">HOW IT WORKS</span>
+              <h2 className="bl-serif-title bl-section-heading">From Idea to Your Bag</h2>
+              <p className="bl-section-subtext">
+                A simple and transparent process to create or buy your perfect bag.
+              </p>
 
-                <div className="bl-horizontal-stepper">
-                  {/* Step 1 */}
-                  <div className="bl-num-step">
-                    <div className="bl-step-icon-circle">
-                      <ShoppingBag size={28} strokeWidth={2.2} />
-                    </div>
-                    <h5 className="bl-num-title">1. Choose</h5>
-                    <p className="bl-num-desc">Pick a ready design or create a custom bag.</p>
+              <div className="bl-horizontal-stepper">
+                {/* Step 1 */}
+                <div className="bl-num-step">
+                  <div className="bl-step-icon-circle">
+                    <ShoppingBag size={30} strokeWidth={2.2} />
                   </div>
+                  <h5 className="bl-num-title">1. Choose</h5>
+                  <p className="bl-num-desc">Pick a ready design or create a custom bag.</p>
+                </div>
 
-                  <div className="bl-step-arrow-line">
-                    <ArrowRight size={18} />
-                  </div>
+                <div className="bl-step-arrow-line">
+                  <ArrowRight size={20} strokeWidth={2} />
+                </div>
 
-                  {/* Step 2 */}
-                  <div className="bl-num-step">
-                    <div className="bl-step-icon-circle">
-                      <Sliders size={28} strokeWidth={2.2} />
-                    </div>
-                    <h5 className="bl-num-title">2. Customize</h5>
-                    <p className="bl-num-desc">Select material, color and details.</p>
+                {/* Step 2 */}
+                <div className="bl-num-step">
+                  <div className="bl-step-icon-circle">
+                    <Sliders size={30} strokeWidth={2.2} />
                   </div>
+                  <h5 className="bl-num-title">2. Customize</h5>
+                  <p className="bl-num-desc">Select material, color and details.</p>
+                </div>
 
-                  <div className="bl-step-arrow-line">
-                    <ArrowRight size={18} />
-                  </div>
+                <div className="bl-step-arrow-line">
+                  <ArrowRight size={20} strokeWidth={2} />
+                </div>
 
-                  {/* Step 3 */}
-                  <div className="bl-num-step">
-                    <div className="bl-step-icon-circle">
-                      <Scissors size={28} strokeWidth={2.2} />
-                    </div>
-                    <h5 className="bl-num-title">3. Crafted</h5>
-                    <p className="bl-num-desc">Our artisans handcraft your bag.</p>
+                {/* Step 3 */}
+                <div className="bl-num-step">
+                  <div className="bl-step-icon-circle">
+                    <Scissors size={30} strokeWidth={2.2} />
                   </div>
+                  <h5 className="bl-num-title">3. Crafted</h5>
+                  <p className="bl-num-desc">Our artisans handcraft your bag.</p>
+                </div>
 
-                  <div className="bl-step-arrow-line">
-                    <ArrowRight size={18} />
-                  </div>
+                <div className="bl-step-arrow-line">
+                  <ArrowRight size={20} strokeWidth={2} />
+                </div>
 
-                  {/* Step 4 */}
-                  <div className="bl-num-step">
-                    <div className="bl-step-icon-circle">
-                      <Package size={28} strokeWidth={2.2} />
-                    </div>
-                    <h5 className="bl-num-title">4. Delivered</h5>
-                    <p className="bl-num-desc">Securely packed and delivered to you.</p>
+                {/* Step 4 */}
+                <div className="bl-num-step">
+                  <div className="bl-step-icon-circle">
+                    <Package size={30} strokeWidth={2.2} />
                   </div>
+                  <h5 className="bl-num-title">4. Delivered</h5>
+                  <p className="bl-num-desc">Securely packed and delivered to you.</p>
                 </div>
               </div>
+            </div>
 
-              <div className="bl-how-it-works-right" aria-hidden="true">
-                <img 
-                  src="/Lining.png" 
-                  alt="Artisan handcrafting leather bag at sewing machine" 
-                />
-              </div>
+            <div className="bl-how-it-works-right" aria-hidden="true">
+              <img 
+                src="/Lining.png" 
+                alt="Artisan handcrafting leather bag at sewing machine" 
+              />
             </div>
           </section>
 

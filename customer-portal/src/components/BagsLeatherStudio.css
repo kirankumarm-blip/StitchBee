@@ -1284,50 +1284,48 @@ body.bl-theme-dark .bl-mat-feat-item {
   cursor: not-allowed;
 }
 
-/* How It Works Split Section (Matching Image 2) */
+/* How It Works Split Section - 100% Full Width Edge-to-Edge (Matching Image 2) */
 .bl-how-it-works-split {
   position: relative;
   background-color: #ffffff;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
   padding: 56px 0;
   overflow: hidden;
-  width: 100%;
-}
-
-.bl-how-it-works-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  max-width: 1420px;
-  margin: 0 auto;
-  padding: 0 32px;
-  position: relative;
-  min-height: 380px;
+  min-height: 420px;
 }
 
 .bl-how-it-works-left {
-  flex: 0 0 58%;
-  max-width: 58%;
+  flex: 1 1 56%;
+  max-width: 60%;
   z-index: 2;
+  padding-left: clamp(24px, 5vw, 80px);
   padding-right: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .bl-how-it-works-right {
-  flex: 0 0 42%;
-  max-width: 42%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 45%;
   height: 100%;
-  min-height: 380px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  position: relative;
   pointer-events: none;
+  z-index: 1;
 }
 
 .bl-how-it-works-right img {
   width: 100%;
-  height: auto;
-  max-height: 440px;
+  height: 100%;
   object-fit: cover;
   object-position: right center;
   display: block;
@@ -1336,13 +1334,13 @@ body.bl-theme-dark .bl-mat-feat-item {
 .bl-how-it-works-left .bl-section-heading {
   margin-top: 6px;
   margin-bottom: 8px;
-  font-size: 2.5rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: #0f172a;
 }
 
 .bl-how-it-works-left .bl-section-subtext {
-  margin-bottom: 36px;
+  margin-bottom: 38px;
   color: #64748b;
   font-size: 0.98rem;
 }
@@ -1352,6 +1350,7 @@ body.bl-theme-dark .bl-mat-feat-item {
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
+  max-width: 680px;
   gap: 8px;
 }
 
@@ -1361,12 +1360,12 @@ body.bl-theme-dark .bl-mat-feat-item {
   align-items: center;
   text-align: center;
   flex: 1;
-  max-width: 135px;
+  max-width: 140px;
 }
 
 .bl-step-icon-circle {
-  width: 66px;
-  height: 66px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: #ffe5ee;
   color: #f72585;
@@ -1375,12 +1374,12 @@ body.bl-theme-dark .bl-mat-feat-item {
   justify-content: center;
   margin-bottom: 12px;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-  box-shadow: 0 3px 12px rgba(247, 37, 133, 0.12);
+  box-shadow: 0 4px 14px rgba(247, 37, 133, 0.15);
 }
 
 .bl-num-step:hover .bl-step-icon-circle {
   transform: translateY(-3px) scale(1.06);
-  box-shadow: 0 8px 20px rgba(247, 37, 133, 0.22);
+  box-shadow: 0 8px 22px rgba(247, 37, 133, 0.26);
   background: #ffd6e5;
 }
 
@@ -1406,7 +1405,7 @@ body.bl-theme-dark .bl-mat-feat-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 66px;
+  height: 72px;
   color: #94a3b8;
   padding: 0 2px;
   flex-shrink: 0;
@@ -3937,23 +3936,24 @@ body.bl-theme-light .bl-item-type-card.selected,
     height: 280px;
   }
 
-  .bl-how-it-works-container {
+  .bl-how-it-works-split {
     flex-direction: column;
-    padding: 0 20px;
+    padding: 40px 0;
     min-height: auto;
   }
 
   .bl-how-it-works-left {
     flex: 1 1 100%;
     max-width: 100%;
-    padding-right: 0;
+    padding: 0 24px;
     margin-bottom: 24px;
   }
 
   .bl-how-it-works-right {
-    flex: 1 1 100%;
-    max-width: 100%;
-    min-height: 240px;
+    position: relative;
+    width: 100%;
+    height: 260px;
+    min-height: 260px;
     justify-content: center;
   }
 
