@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   Scissors, User, Award, Heart, Star, Sparkles, MapPin, 
   Truck, ChevronRight, Check, Users, ShieldCheck, 
@@ -7,6 +8,24 @@ import {
   FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus, Gem, Package
 } from 'lucide-react';
 import './BagsLeatherStudio.css';
+import BagsShopView from './bags/BagsShopView';
+import BagsProductDetailView from './bags/BagsProductDetailView';
+import BagsCustomDesignWizard from './bags/BagsCustomDesignWizard';
+import BagsReviewsView from './bags/BagsReviewsView';
+import BagsCartView from './bags/BagsCartView';
+import BagsWishlistView from './bags/BagsWishlistView';
+import BagsOrdersView from './bags/BagsOrdersView';
+import { 
+  ALL_BAG_PRODUCTS, 
+  ALL_MATERIALS, 
+  getCart, 
+  saveCart, 
+  addToCart, 
+  updateCartQty, 
+  removeFromCart, 
+  getWishlist, 
+  toggleWishlist 
+} from '../utils/bagsStore';
 
 export default function BagsLeatherStudio({
   currentUser,
@@ -20,6 +39,19 @@ export default function BagsLeatherStudio({
   onSwitchMode,
   onAddToCart
 }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const pathname = location.pathname;
+
+  const isShopView = pathname === '/bags/shop';
+  const isPdpView = pathname.startsWith('/bags/product/');
+  const isCustomDesignView = pathname === '/bags/custom-design';
+  const isReviewsView = pathname === '/bags/reviews';
+  const isCartView = pathname === '/cart';
+  const isWishlistView = pathname === '/wishlist';
+  const isOrdersView = pathname === '/orders';
+  const isSubView = isShopView || isPdpView || isCustomDesignView || isReviewsView || isCartView || isWishlistView || isOrdersView;
+
   const isDark = theme === 'dark';
 
   // Primary mode state: 'shop' (Shop & Create) or 'restore' (Repair & Restore)
@@ -30,6 +62,15 @@ export default function BagsLeatherStudio({
       setActiveMode(initialMode);
     }
   }, [initialMode]);
+
+  // Sync mode with route if navigating to /bags/repair or /bags
+  useEffect(() => {
+    if (pathname === '/bags/repair') {
+      setActiveMode('restore');
+    } else if (pathname === '/bags') {
+      setActiveMode('shop');
+    }
+  }, [pathname]);
 
   // Sync theme class to document.body so all body.bl-theme-dark and body.bl-theme-light styles work reliably
   useEffect(() => {
@@ -46,20 +87,20 @@ export default function BagsLeatherStudio({
     };
   }, [isDark]);
 
-  // Cart & Wishlist state
-  const [cart, setCart] = useState([
-    { 
-      id: 'prod-1', 
-      name: 'Classic Leather Handbag', 
-      price: 3999, 
-      color: 'Nude Beige', 
-      img: '/featured_bags/prod_1.png', 
-      qty: 1 
-    }
-  ]);
+  // Cart & Wishlist state synchronized with bagsStore
+  const [cart, setCart] = useState(() => getCart());
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [wishlist, setWishlist] = useState(new Set(['prod-1', 'prod-4']));
+  const [wishlist, setWishlist] = useState(() => new Set(getWishlist()));
   const [toastMessage, setToastMessage] = useState(null);
+
+  useEffect(() => {
+    const handleStoreUpdate = () => {
+      setCart(getCart());
+      setWishlist(new Set(getWishlist()));
+    };
+    window.addEventListener('stitchbee-store-update', handleStoreUpdate);
+    return () => window.removeEventListener('stitchbee-store-update', handleStoreUpdate);
+  }, []);
 
   // Modals
   const [selectedProductModal, setSelectedProductModal] = useState(null);
@@ -261,36 +302,17 @@ export default function BagsLeatherStudio({
 
   const handleToggleWishlist = (id, e) => {
     if (e) e.stopPropagation();
-    setWishlist(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-        showToast('Removed from wishlist');
-      } else {
-        next.add(id);
-        showToast('Saved to your wishlist ❤️');
-      }
-      return next;
-    });
+    const { updated, added } = toggleWishlist(id);
+    setWishlist(new Set(updated));
+    showToast(added ? 'Saved to your wishlist ❤️' : 'Removed from wishlist');
   };
 
   const handleAddToCartItem = (product, e) => {
     if (e) e.stopPropagation();
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item => item.id === product.id ? { ...item, qty: item.qty + 1 } : item);
-      }
-      return [...prev, {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        color: product.selectedColor || product.colors?.[0]?.name || 'Standard',
-        img: product.img,
-        qty: 1
-      }];
-    });
-    showToast(`Added "${product.name}" to cart! 🛍️`);
+    const chosenColor = product.selectedColor || product.colors?.[0]?.name || 'Standard';
+    const updated = addToCart(product, 1, chosenColor);
+    setCart(updated);
+    showToast(`Added "${product.name}" (${chosenColor}) to cart! 🛍️`);
     setIsCartOpen(true);
     if (onAddToCart) {
       onAddToCart(product);
@@ -436,59 +458,99 @@ export default function BagsLeatherStudio({
   const materialsList = [
     {
       id: 'm-full-grain',
+      storeId: 'full-grain-leather',
       name: 'Full Grain Leather',
       desc: 'The highest grade hide with natural grain and enduring patina.',
       tag: 'Heritage Grade',
-      img: '/materials/mat_full_grain.jpg'
+      img: '/materials/mat_full_grain.jpg',
+      texture: 'Natural pebble & rich pull-up marbling',
+      bestFor: 'Structured everyday totes, heritage satchels & briefcases',
+      durability: '10+ Years (Develops rich golden patina over time)',
+      care: 'Condition biannually with natural beeswax leather balm'
     },
     {
       id: 'm-top-grain',
+      storeId: 'top-grain-leather',
       name: 'Top Grain Leather',
       desc: 'Smooth, uniform surface treated for scratch and stain resistance.',
       tag: 'Everyday Luxury',
-      img: '/materials/mat_top_grain.jpg'
+      img: '/materials/mat_top_grain.jpg',
+      texture: 'Fine-buffed smooth matte finish',
+      bestFor: 'Corporate laptops, office bags & structured shoulder bags',
+      durability: '7-10 Years (Scratch and water resistant coating)',
+      care: 'Wipe down with damp microfiber cloth and neutral cleaner'
     },
     {
       id: 'm-suede',
+      storeId: 'suede-leather',
       name: 'Suede Leather',
       desc: 'Velvety napped underside offering luxurious softness and warmth.',
       tag: 'Velvet Touch',
-      img: '/materials/mat_suede.jpg'
+      img: '/materials/mat_suede.jpg',
+      texture: 'Ultra-soft napped velvety texture',
+      bestFor: 'Slouchy hobo bags, clutch accents & evening crossover bags',
+      durability: '5-7 Years (Requires water-repellent spray treatment)',
+      care: 'Use brass wire suede brush and specialized stain eraser'
     },
     {
       id: 'm-nappa',
+      storeId: 'nappa-leather',
       name: 'Nappa Leather',
       desc: 'Buttery-soft full-grain lambskin and calfskin known for supple drape.',
       tag: 'Ultra Soft',
-      img: '/materials/mat_nappa.jpg'
+      img: '/materials/mat_nappa.jpg',
+      texture: 'Silky smooth, extremely pliable lambskin feel',
+      bestFor: 'Pouch bags, designer drawstring crossbodies & weekend clutches',
+      durability: '6-8 Years (Delicate luxury finish with gentle elasticity)',
+      care: 'Protect from sharp objects; apply delicate cream conditioner'
     },
     {
       id: 'm-canvas',
+      storeId: 'canvas-fabric',
       name: 'Canvas Fabric',
       desc: 'Heavyweight military-grade cotton duck canvas for rugged durability.',
       tag: 'Rugged Work',
-      img: '/materials/mat_canvas.jpg'
+      img: '/materials/mat_canvas.jpg',
+      texture: 'Heavyweight 18oz double-weave cotton duck weave',
+      bestFor: 'Duffels, weekender bags, field backpacks & tote combos',
+      durability: '8-10 Years (Water-resistant paraffin wax finish)',
+      care: 'Spot clean with mild soapy water; air dry in natural shade'
     },
     {
       id: 'm-vegan',
+      storeId: 'vegan-leather',
       name: 'Vegan Leather',
       desc: 'Eco-conscious plant-based PU crafted without animal derivatives.',
       tag: 'Sustainable',
-      img: '/materials/mat_vegan.jpg'
+      img: '/materials/mat_vegan.jpg',
+      texture: 'Supple grain-textured eco polymer',
+      bestFor: 'Cruelty-free modern backpacks, wallets & daily totes',
+      durability: '4-6 Years (Zero cracking formulation, UV-resistant)',
+      care: 'Clean with damp cloth; avoid alcohol-based sanitizers'
     },
     {
       id: 'm-croc',
+      storeId: 'croc-texture',
       name: 'Croc Texture',
       desc: 'Embossed scale pattern with high-gloss lacquer finish.',
       tag: 'Statement Exotic',
-      img: '/materials/mat_croc.jpg'
+      img: '/materials/mat_croc.jpg',
+      texture: 'Exotic raised scales with glossy high-shine glaze',
+      bestFor: 'Cocktail clutches, statement party satchels & cardholders',
+      durability: '6-8 Years (Embossed heat-stamped resilience)',
+      care: 'Buff lightly with dry flannel cloth to maintain glossy sheen'
     },
     {
       id: 'm-metallic',
+      storeId: 'metallic-finish',
       name: 'Metallic Finish',
       desc: 'Subtle champagne and silver shimmer bonded to fine grain leather.',
       tag: 'Evening Glam',
-      img: '/materials/mat_metallic.jpg'
+      img: '/materials/mat_metallic.jpg',
+      texture: 'Champagne foil shimmer bonded to fine-grain leather',
+      bestFor: 'Red carpet clutches, evening envelope bags & festive wristlets',
+      durability: '5-7 Years (Treated against foil rubbing and peeling)',
+      care: 'Store in soft cotton dustbag; avoid direct friction'
     }
   ];
 
@@ -1111,9 +1173,35 @@ export default function BagsLeatherStudio({
     }
   };
 
+  // Interactive How It Works Stepper state
+  const [activeHowStep, setActiveHowStep] = useState(1);
+  const stepTips = {
+    1: {
+      title: 'Choose Ready-Made or Custom',
+      text: 'Explore our catalog of structured handbags, backpacks, and luggage or start with a custom silhouette tailored to your exact measurements.'
+    },
+    2: {
+      title: 'Select Materials & Personalize',
+      text: 'Pick from 8 ethically sourced Italian leathers, hardware finishes (gold, brass, gunmetal), and specify custom monograms or pocket layouts.'
+    },
+    3: {
+      title: 'Master Artisan Handcrafting',
+      text: 'Hand-cut, bevel-edged, and saddle-stitched by certified master artisans in our Bengaluru atelier with dual-strand wax thread.'
+    },
+    4: {
+      title: 'Insured Doorstep Delivery',
+      text: 'Delivered in an archival dust bag and presentation gift box with certificate of authenticity and 6-month craft warranty.'
+    }
+  };
+
   // Switch mode handler
   const handleModeSwitch = (mode) => {
     setActiveMode(mode);
+    if (mode === 'restore') {
+      navigate('/bags/repair');
+    } else {
+      navigate('/bags');
+    }
     if (onSwitchMode) onSwitchMode(mode);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1129,12 +1217,21 @@ export default function BagsLeatherStudio({
         </div>
       )}
 
-
+      {/* ========================================================================= */}
+      {/* DEDICATED ROUTED SUBVIEWS                                                 */}
+      {/* ========================================================================= */}
+      {isShopView && <BagsShopView showToast={showToast} />}
+      {isPdpView && <BagsProductDetailView showToast={showToast} />}
+      {isCustomDesignView && <BagsCustomDesignWizard showToast={showToast} currentUser={currentUser} onOpenAuthModal={onOpenAuthModal} />}
+      {isReviewsView && <BagsReviewsView showToast={showToast} />}
+      {isCartView && <BagsCartView showToast={showToast} />}
+      {isWishlistView && <BagsWishlistView showToast={showToast} />}
+      {isOrdersView && <BagsOrdersView showToast={showToast} />}
 
       {/* ========================================================================= */}
       {/* MODE 1: SHOP & CREATE (MATCHING IMAGE 1 EXACTLY)                         */}
       {/* ========================================================================= */}
-      {activeMode === 'shop' && (
+      {!isSubView && (activeMode === 'shop' || pathname === '/bags') && pathname !== '/bags/repair' && (
         <div className="bl-shop-create-page">
           
           {/* SECTION 1: HERO (100% WIDTH, MATCHING USER SCREENSHOT EXACTLY) */}
@@ -1183,13 +1280,16 @@ export default function BagsLeatherStudio({
                 <div className="bl-hero-cta-group-shop">
                   <button 
                     className="bl-btn-primary"
-                    onClick={() => scrollToId('featured-bags-section')}
+                    onClick={() => {
+                      setReadyCategoryFilter('all');
+                      scrollToId('featured-bags-section');
+                    }}
                   >
                     Shop Ready Bags →
                   </button>
                   <button 
                     className="bl-btn-secondary"
-                    onClick={() => setCustomStudioModalOpen(true)}
+                    onClick={() => scrollToId('design-dream-bag-section')}
                   >
                     Create Custom Design
                   </button>
@@ -1226,7 +1326,7 @@ export default function BagsLeatherStudio({
                     className="bl-cat-card"
                     onClick={() => {
                       if (cat.isCustom) {
-                        setCustomStudioModalOpen(true);
+                        scrollToId('design-dream-bag-section');
                       } else {
                         setReadyCategoryFilter(cat.id);
                         scrollToId('featured-bags-section');
@@ -1254,33 +1354,61 @@ export default function BagsLeatherStudio({
               <div className="bl-section-header-split">
                 <div>
                   <span className="bl-tag-label">FEATURED COLLECTION</span>
-                  <h2 className="bl-serif-title bl-section-heading">Premium Bags, Ready for You</h2>
+                  <h2 className="bl-serif-title bl-section-heading">
+                    {readyCategoryFilter === 'all' 
+                      ? 'Premium Bags, Ready for You' 
+                      : (shopCategories.find(c => c.id === readyCategoryFilter)?.title ? `${shopCategories.find(c => c.id === readyCategoryFilter).title} Collection` : 'Premium Bags Collection')}
+                  </h2>
                   <p className="bl-section-subtext">
-                    Handpicked designs crafted with premium leather and fine detailing.
+                    {readyCategoryFilter === 'all'
+                      ? 'Handpicked designs crafted with premium leather and fine detailing.'
+                      : `Handcrafted ${shopCategories.find(c => c.id === readyCategoryFilter)?.title || ''} designs made with authentic materials.`}
                   </p>
+                  {readyCategoryFilter !== 'all' && (
+                    <button 
+                      className="bl-filter-clear-pill"
+                      onClick={() => setReadyCategoryFilter('all')}
+                      style={{
+                        marginTop: '10px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        fontSize: '0.78rem',
+                        fontWeight: 600,
+                        background: 'rgba(247, 37, 133, 0.1)',
+                        color: '#f72585',
+                        border: '1px solid rgba(247, 37, 133, 0.25)',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <span>✕ Show All Bags ({ALL_BAG_PRODUCTS.length})</span>
+                    </button>
+                  )}
                 </div>
                 <button 
                   className="bl-link-text-pink"
-                  onClick={() => {
-                    const catalogEl = document.getElementById('bags-catalog-section');
-                    if (catalogEl) {
-                      catalogEl.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
+                  onClick={() => navigate('/bags/shop')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   View All →
                 </button>
               </div>
 
-              {/* Product Grid (5 items from Mockup) */}
+              {/* Product Grid */}
               <div className="bl-products-grid-5">
-                {featuredProducts.map(product => {
+                {(readyCategoryFilter === 'all'
+                  ? featuredProducts
+                  : ALL_BAG_PRODUCTS.filter(p => p.category === readyCategoryFilter)
+                ).map(product => {
                   const isWish = wishlist.has(product.id);
                   return (
                     <div 
                       key={product.id} 
                       className="bl-product-card"
-                      onClick={() => setSelectedProductModal(product)}
+                      onClick={() => navigate(`/bags/product/${product.id}`)}
+                      style={{ cursor: 'pointer' }}
                     >
                       <div className="bl-prod-img-box">
                         <img src={product.img} alt={product.name} />
@@ -1309,7 +1437,11 @@ export default function BagsLeatherStudio({
                                 title={col.name}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setFeaturedProducts(prev => prev.map(item => item.id === product.id ? { ...item, selectedColor: col.name } : item));
+                                  setFeaturedProducts(prev => prev.map(item => item.id === product.id ? { 
+                                    ...item, 
+                                    selectedColor: col.name,
+                                    img: col.img || item.img 
+                                  } : item));
                                 }}
                               />
                             ))}
@@ -1334,7 +1466,7 @@ export default function BagsLeatherStudio({
           </section>
 
           {/* SECTION 4: CUSTOM DESIGN STUDIO — DESIGN YOUR DREAM BAG */}
-          <section className="bl-section bl-custom-design-studio">
+          <section id="design-dream-bag-section" className="bl-section bl-custom-design-studio">
             <div className="bl-container">
               <div className="bl-custom-studio-card">
                 <div className="bl-custom-studio-grid">
@@ -1358,7 +1490,7 @@ export default function BagsLeatherStudio({
 
                     <button 
                       className="bl-custom-studio-cta" 
-                      onClick={() => setCustomStudioModalOpen(true)}
+                      onClick={() => navigate('/bags/custom-design')}
                     >
                       Start Designing →
                     </button>
@@ -1470,7 +1602,11 @@ export default function BagsLeatherStudio({
 
               <div className="bl-horizontal-stepper">
                 {/* Step 1 */}
-                <div className="bl-num-step">
+                <div 
+                  className={`bl-num-step ${activeHowStep === 1 ? 'active' : ''}`}
+                  onClick={() => setActiveHowStep(1)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="bl-step-icon-circle">
                     <ShoppingBag size={30} strokeWidth={2.2} />
                   </div>
@@ -1483,7 +1619,11 @@ export default function BagsLeatherStudio({
                 </div>
 
                 {/* Step 2 */}
-                <div className="bl-num-step">
+                <div 
+                  className={`bl-num-step ${activeHowStep === 2 ? 'active' : ''}`}
+                  onClick={() => setActiveHowStep(2)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="bl-step-icon-circle">
                     <Sliders size={30} strokeWidth={2.2} />
                   </div>
@@ -1496,7 +1636,11 @@ export default function BagsLeatherStudio({
                 </div>
 
                 {/* Step 3 */}
-                <div className="bl-num-step">
+                <div 
+                  className={`bl-num-step ${activeHowStep === 3 ? 'active' : ''}`}
+                  onClick={() => setActiveHowStep(3)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="bl-step-icon-circle">
                     <Scissors size={30} strokeWidth={2.2} />
                   </div>
@@ -1509,12 +1653,38 @@ export default function BagsLeatherStudio({
                 </div>
 
                 {/* Step 4 */}
-                <div className="bl-num-step">
+                <div 
+                  className={`bl-num-step ${activeHowStep === 4 ? 'active' : ''}`}
+                  onClick={() => setActiveHowStep(4)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="bl-step-icon-circle">
                     <Package size={30} strokeWidth={2.2} />
                   </div>
                   <h5 className="bl-num-title">4. Delivered</h5>
                   <p className="bl-num-desc">Securely packed and delivered to you.</p>
+                </div>
+              </div>
+
+              {/* Interactive Step Detail Card */}
+              <div className="bl-how-step-detail-card" style={{
+                marginTop: '24px',
+                padding: '16px 20px',
+                borderRadius: '12px',
+                background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(247, 37, 133, 0.04)',
+                border: '1px solid rgba(247, 37, 133, 0.22)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}>
+                <Sparkles size={18} color="#f72585" style={{ flexShrink: 0 }} />
+                <div>
+                  <strong style={{ fontSize: '0.9rem', color: isDark ? '#ffffff' : '#0f172a' }}>
+                    Step {activeHowStep}: {stepTips[activeHowStep]?.title}
+                  </strong>
+                  <p style={{ margin: '3px 0 0', fontSize: '0.82rem', color: isDark ? '#94a3b8' : '#64748b', lineHeight: 1.4 }}>
+                    {stepTips[activeHowStep]?.text}
+                  </p>
                 </div>
               </div>
             </div>
@@ -1540,7 +1710,7 @@ export default function BagsLeatherStudio({
                   </p>
                   <button 
                     className="bl-statement-btn"
-                    onClick={() => scrollToId('featured-bags-section')}
+                    onClick={() => navigate('/bags/shop')}
                   >
                     Shop Collection <ArrowRight size={16} />
                   </button>
@@ -1562,7 +1732,7 @@ export default function BagsLeatherStudio({
                 </div>
                 <button 
                   className="bl-link-text-pink" 
-                  onClick={() => showToast('Displaying 50+ verified customer reviews ⭐')}
+                  onClick={() => navigate('/bags/reviews')}
                   style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                 >
                   View More Reviews →
@@ -1629,14 +1799,14 @@ export default function BagsLeatherStudio({
                   <button 
                     className="bl-cta-btn-pink has-white-text text-white"
                     style={{ color: '#ffffff', background: '#f72585' }}
-                    onClick={() => scrollToId('featured-bags-section')}
+                    onClick={() => navigate('/bags/shop')}
                   >
                     Shop Ready Bags →
                   </button>
                   <button 
                     className="bl-cta-btn-glass has-white-text text-white"
                     style={{ color: '#ffffff', borderColor: 'rgba(255, 255, 255, 0.65)' }}
-                    onClick={() => setCustomStudioModalOpen(true)}
+                    onClick={() => navigate('/bags/custom-design')}
                   >
                     Create Custom Design
                   </button>
@@ -1651,7 +1821,7 @@ export default function BagsLeatherStudio({
       {/* ========================================================================= */}
       {/* MODE 2: REPAIR & RESTORE (MATCHING IMAGE 2 EXACTLY)                      */}
       {/* ========================================================================= */}
-      {activeMode === 'restore' && (
+      {!isSubView && (activeMode === 'restore' || pathname === '/bags/repair') && (
         <div className="bl-repair-restore-page">
           
           {/* SECTION 1: HERO (MATCHING USER SCREENSHOT EXACTLY) */}
@@ -2806,6 +2976,7 @@ export default function BagsLeatherStudio({
                     onClick={() => {
                       handleAddToCartItem(selectedProductModal);
                       setSelectedProductModal(null);
+                      navigate('/cart');
                     }}
                   >
                     Add to Cart & Checkout
@@ -2813,8 +2984,9 @@ export default function BagsLeatherStudio({
                   <button 
                     className="bl-btn-secondary"
                     onClick={() => {
+                      const baseProduct = selectedProductModal;
                       setSelectedProductModal(null);
-                      setCustomStudioModalOpen(true);
+                      navigate(`/bags/custom-design?base=${baseProduct.id}&style=${baseProduct.category}&color=${encodeURIComponent(baseProduct.selectedColor || '')}`);
                     }}
                   >
                     Customize in 3D
@@ -2860,16 +3032,24 @@ export default function BagsLeatherStudio({
                     <span>Available for bespoke custom builds and full bag restorations</span>
                   </div>
                 </div>
-                <div style={{ marginTop: '24px', display: 'flex', gap: '10px' }}>
+                <div className="bl-mat-specs-grid" style={{ margin: '14px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '0.8rem', background: 'rgba(255,255,255,0.03)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div><strong>Texture:</strong> {selectedMaterialModal.texture || 'Supple natural grain'}</div>
+                  <div><strong>Durability:</strong> {selectedMaterialModal.durability || '8+ Years'}</div>
+                  <div style={{ gridColumn: 'span 2' }}><strong>Best Suited For:</strong> {selectedMaterialModal.bestFor || 'Bespoke daily luxury bags & totes'}</div>
+                  <div style={{ gridColumn: 'span 2' }}><strong>Care:</strong> {selectedMaterialModal.care || 'Condition periodically with leather balm'}</div>
+                </div>
+
+                <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
                   <button
                     className="bl-btn bl-btn-primary"
                     onClick={() => {
+                      const matKey = selectedMaterialModal.storeId || selectedMaterialModal.id;
                       setSelectedMaterialModal(null);
-                      setCustomStudioModalOpen(true);
+                      navigate(`/bags/custom-design?material=${matKey}`);
                       showToast(`Configuring Dream Bag with ${selectedMaterialModal.name}! ✨`);
                     }}
                   >
-                    <Sparkles size={16} /> Customize Bag with this Material
+                    <Sparkles size={16} /> Design With This Material
                   </button>
                   <button
                     className="bl-btn bl-btn-outline"
@@ -3307,7 +3487,8 @@ export default function BagsLeatherStudio({
                       <button 
                         className="bl-qty-btn"
                         onClick={() => {
-                          setCart(prev => prev.map(p => p.id === item.id ? { ...p, qty: Math.max(1, p.qty - 1) } : p));
+                          const updated = updateCartQty(item.id, item.color, -1);
+                          setCart(updated);
                         }}
                       >
                         -
@@ -3316,7 +3497,8 @@ export default function BagsLeatherStudio({
                       <button 
                         className="bl-qty-btn"
                         onClick={() => {
-                          setCart(prev => prev.map(p => p.id === item.id ? { ...p, qty: p.qty + 1 } : p));
+                          const updated = updateCartQty(item.id, item.color, 1);
+                          setCart(updated);
                         }}
                       >
                         +
@@ -3324,7 +3506,8 @@ export default function BagsLeatherStudio({
                       <button 
                         className="bl-remove-btn"
                         onClick={() => {
-                          setCart(prev => prev.filter(p => p.id !== item.id));
+                          const updated = removeFromCart(item.id, item.color);
+                          setCart(updated);
                           showToast('Item removed from cart');
                         }}
                       >
@@ -3351,9 +3534,8 @@ export default function BagsLeatherStudio({
                   className="bl-btn-primary" 
                   style={{ width: '100%', marginTop: '16px' }}
                   onClick={() => {
-                    showToast('Order confirmed! Tracking details sent to your registered mobile.');
-                    setCart([]);
                     setIsCartOpen(false);
+                    navigate('/cart');
                   }}
                 >
                   Proceed to Secure Checkout →

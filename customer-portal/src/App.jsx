@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Facebook, Instagram, Linkedin, Twitter, Play, Pause, Volume2, VolumeX, Apple, Menu, X, Home, Layers, Shirt, Clock, ChevronDown, BookOpen, Phone, LogOut } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import CustomerView from './components/CustomerView';
@@ -140,6 +141,9 @@ function TrendingReelCard({ reel, idx, currentUser, openAuthModal, setCustomerCa
 }
 
 export default function App() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [role, setRole] = useState('landing'); // 'landing' | 'customer' | 'tailor' | 'student' | 'admin'
   const [currentUser, setCurrentUser] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -149,6 +153,21 @@ export default function App() {
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+
+  // Sync role and category when URL matches bags or customer routes
+  useEffect(() => {
+    const path = location.pathname;
+    if (
+      path.startsWith('/bags') || 
+      path === '/cart' || 
+      path === '/wishlist' || 
+      path === '/orders'
+    ) {
+      setRole('customer');
+      setCustomerCategory('bags');
+      setCustomerHub('category-landing');
+    }
+  }, [location.pathname]);
 
   // Guest landing banner carousel states
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
@@ -816,7 +835,7 @@ export default function App() {
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); }}>Bags And Leathers</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); navigate('/bags'); }}>Bags And Leathers</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
@@ -1565,6 +1584,9 @@ export default function App() {
                     setCustomerCategory(category.cat);
                     setCustomerHub('category-landing');
                     setRole('customer');
+                    if (category.cat === 'bags') {
+                      navigate('/bags');
+                    }
                   }}
                   onMouseEnter={() => setHoveredCategoryIdx(idx)}
                   onMouseLeave={() => setHoveredCategoryIdx(null)}

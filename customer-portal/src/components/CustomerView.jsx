@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import L from 'leaflet';
 import { 
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
@@ -7,6 +8,7 @@ import {
   MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut, ShoppingBag, Wrench, ArrowRight
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
+import { getCart as getBagsCart, getWishlist as getBagsWishlist } from '../utils/bagsStore';
 import ServiceCategoryView from './ServiceCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
 
@@ -351,6 +353,20 @@ export default function CustomerView({
   initialCategory = 'all', initialHub = 'tailors', onLoginRequired,
   onLogout, setRole, setCustomerHub, setCustomerCategory, theme, setTheme
 }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [bagsCartCount, setBagsCartCount] = useState(() => getBagsCart().reduce((sum, i) => sum + i.qty, 0));
+  const [bagsWishlistCount, setBagsWishlistCount] = useState(() => getBagsWishlist().length);
+
+  useEffect(() => {
+    const updateBagsCounters = () => {
+      setBagsCartCount(getBagsCart().reduce((sum, i) => sum + i.qty, 0));
+      setBagsWishlistCount(getBagsWishlist().length);
+    };
+    window.addEventListener('stitchbee-store-update', updateBagsCounters);
+    return () => window.removeEventListener('stitchbee-store-update', updateBagsCounters);
+  }, []);
+
   const isDark = theme === 'dark';
   const bgCard = isDark ? '#1a1a2e' : '#fff';
   const bgInput = isDark ? '#12121f' : '#f8fafc';
@@ -555,6 +571,23 @@ export default function CustomerView({
       setActiveHub(initialHub);
     }
   }, [initialHub]);
+
+  // Sync URL route to selectedCategory, activeHub, and bagsStudioMode
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/bags') {
+      setSelectedCategory('bags');
+      setActiveHub('category-landing');
+      setBagsStudioMode('shop');
+    } else if (path === '/bags/repair') {
+      setSelectedCategory('bags');
+      setActiveHub('category-landing');
+      setBagsStudioMode('restore');
+    } else if (path.startsWith('/bags') || path === '/cart' || path === '/wishlist' || path === '/orders') {
+      setSelectedCategory('bags');
+      setActiveHub('category-landing');
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleGlobalClick = () => {
@@ -2506,6 +2539,7 @@ export default function CustomerView({
                               setWizardOpen(false);
                               setServicesDropdownOpen(false);
                               setBagsSubmenuHovered(false);
+                              navigate('/bags');
                             }}
                           >
                             <div className="nav-submenu-icon-box shop">
@@ -2540,6 +2574,7 @@ export default function CustomerView({
                               setWizardOpen(false);
                               setServicesDropdownOpen(false);
                               setBagsSubmenuHovered(false);
+                              navigate('/bags/repair');
                             }}
                           >
                             <div className="nav-submenu-icon-box restore">
@@ -2643,8 +2678,12 @@ export default function CustomerView({
           </button>
 
           <button 
-            className={`role-btn ${activeHub === 'history' ? 'active' : ''}`}
+            className={`role-btn ${activeHub === 'history' || location.pathname === '/orders' ? 'active' : ''}`}
             onClick={() => { 
+              if (selectedCategory === 'bags' || location.pathname.startsWith('/bags')) {
+                navigate('/orders');
+                return;
+              }
               setActiveHub('history'); 
               setWizardOpen(false); 
               if (setCustomerHub) setCustomerHub('history');
@@ -2654,8 +2693,12 @@ export default function CustomerView({
           </button>
 
           <button 
-            className={`role-btn ${activeHub === 'wishlist' ? 'active' : ''}`}
+            className={`role-btn ${activeHub === 'wishlist' || location.pathname === '/wishlist' ? 'active' : ''}`}
             onClick={() => { 
+              if (selectedCategory === 'bags' || location.pathname.startsWith('/bags')) {
+                navigate('/wishlist');
+                return;
+              }
               if (!currentUser) {
                 if (onLoginRequired) onLoginRequired();
                 return;
@@ -2680,6 +2723,13 @@ export default function CustomerView({
               className="customer-search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  navigate('/bags/shop?q=' + encodeURIComponent(searchQuery.trim()));
+                  setSelectedCategory('bags');
+                  setActiveHub('category-landing');
+                }
+              }}
               style={{ paddingLeft: '30px', height: '36px', borderRadius: '18px', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)', color: 'inherit' }}
             />
           </div>
@@ -2737,9 +2787,20 @@ export default function CustomerView({
           </div>
 
           {/* Cart Icon with badge */}
-          <button className="role-btn" style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setCartOpen(true)}>
+          <button 
+            className="role-btn" 
+            style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }} 
+            onClick={() => {
+              if (selectedCategory === 'bags' || location.pathname.startsWith('/bags')) {
+                navigate('/cart');
+              } else {
+                setCartOpen(true);
+              }
+            }}
+            title="Shopping Cart"
+          >
             <ShoppingCart size={18} />
-            {cart.length > 0 && (
+            {(cart.length > 0 || bagsCartCount > 0) && (
               <span className="notif-badge-dot" style={{ top: '6px', right: '6px', background: 'var(--accent)' }} />
             )}
           </button>
