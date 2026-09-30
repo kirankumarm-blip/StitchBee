@@ -4,7 +4,7 @@ import {
   Truck, ChevronRight, Check, Users, ShieldCheck, 
   ChevronLeft, ArrowRight, X, Layers, Clock, ShoppingBag, ShoppingCart, 
   Bell, Upload, Camera, Sliders, CheckCircle2, RotateCcw, Wrench, 
-  FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus, Gem
+  FileText, Sparkle, Tag, Info, ArrowUpRight, Eye, Phone, HelpCircle, Trash2, RefreshCw, Plus, Gem, Package
 } from 'lucide-react';
 import './BagsLeatherStudio.css';
 
@@ -1461,56 +1461,70 @@ export default function BagsLeatherStudio({
 
           {/* SECTION 6: HOW IT WORKS — FROM IDEA TO YOUR BAG */}
           <section className="bl-section bl-how-it-works-split">
-            <div className="bl-container">
-              <div className="bl-split-work-grid">
-                
-                {/* Left 4 steps */}
-                <div className="bl-work-steps-col">
-                  <span className="bl-tag-label">HOW IT WORKS</span>
-                  <h2 className="bl-serif-title bl-section-heading">From Idea to Your Bag</h2>
-                  <p className="bl-section-subtext" style={{ marginBottom: '32px' }}>
-                    A simple and transparent process to create or buy your perfect bag.
-                  </p>
+            <div className="bl-how-it-works-bg-img" aria-hidden="true">
+              <img 
+                src="/Lining.png" 
+                alt="Artisan handcrafting leather bag at sewing machine" 
+              />
+            </div>
 
-                  <div className="bl-horizontal-stepper">
-                    <div className="bl-num-step">
-                      <div className="bl-num-circle">1</div>
-                      <h5 className="bl-num-title">1. Choose</h5>
-                      <p className="bl-num-desc">Pick a ready design or create a custom bag.</p>
-                    </div>
-                    <div className="bl-step-arrow-line">→</div>
+            <div className="bl-container bl-how-it-works-container">
+              <div className="bl-work-steps-col">
+                <span className="bl-tag-label">HOW IT WORKS</span>
+                <h2 className="bl-serif-title bl-section-heading">From Idea to Your Bag</h2>
+                <p className="bl-section-subtext">
+                  A simple and transparent process to create or buy your perfect bag.
+                </p>
 
-                    <div className="bl-num-step">
-                      <div className="bl-num-circle">2</div>
-                      <h5 className="bl-num-title">2. Customize</h5>
-                      <p className="bl-num-desc">Select material, color and details.</p>
+                <div className="bl-horizontal-stepper">
+                  {/* Step 1 */}
+                  <div className="bl-num-step">
+                    <div className="bl-step-icon-circle">
+                      <ShoppingBag size={24} strokeWidth={2.2} />
                     </div>
-                    <div className="bl-step-arrow-line">→</div>
+                    <h5 className="bl-num-title">1. Choose</h5>
+                    <p className="bl-num-desc">Pick a ready design or create a custom bag.</p>
+                  </div>
 
-                    <div className="bl-num-step">
-                      <div className="bl-num-circle">3</div>
-                      <h5 className="bl-num-title">3. Crafted</h5>
-                      <p className="bl-num-desc">Our artisans handcraft your bag.</p>
-                    </div>
-                    <div className="bl-step-arrow-line">→</div>
+                  <div className="bl-step-arrow-line">
+                    <ArrowRight size={18} />
+                  </div>
 
-                    <div className="bl-num-step">
-                      <div className="bl-num-circle">4</div>
-                      <h5 className="bl-num-title">4. Delivered</h5>
-                      <p className="bl-num-desc">Securely packed and delivered to you.</p>
+                  {/* Step 2 */}
+                  <div className="bl-num-step">
+                    <div className="bl-step-icon-circle">
+                      <Sliders size={24} strokeWidth={2.2} />
                     </div>
+                    <h5 className="bl-num-title">2. Customize</h5>
+                    <p className="bl-num-desc">Select material, color and details.</p>
+                  </div>
+
+                  <div className="bl-step-arrow-line">
+                    <ArrowRight size={18} />
+                  </div>
+
+                  {/* Step 3 */}
+                  <div className="bl-num-step">
+                    <div className="bl-step-icon-circle">
+                      <Scissors size={24} strokeWidth={2.2} />
+                    </div>
+                    <h5 className="bl-num-title">3. Crafted</h5>
+                    <p className="bl-num-desc">Our artisans handcraft your bag.</p>
+                  </div>
+
+                  <div className="bl-step-arrow-line">
+                    <ArrowRight size={18} />
+                  </div>
+
+                  {/* Step 4 */}
+                  <div className="bl-num-step">
+                    <div className="bl-step-icon-circle">
+                      <Package size={24} strokeWidth={2.2} />
+                    </div>
+                    <h5 className="bl-num-title">4. Delivered</h5>
+                    <p className="bl-num-desc">Securely packed and delivered to you.</p>
                   </div>
                 </div>
-
-                {/* Right Photo */}
-                <div className="bl-work-photo-col">
-                  <img 
-                    src="https://images.unsplash.com/photo-1524388676161-0777ea826500?q=80&w=900&auto=format&fit=crop" 
-                    alt="Leather Stitching Machine Work" 
-                    className="bl-work-photo-img" 
-                  />
-                </div>
-
               </div>
             </div>
           </section>

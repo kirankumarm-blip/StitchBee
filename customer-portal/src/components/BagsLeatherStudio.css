@@ -1284,63 +1284,158 @@ body.bl-theme-dark .bl-mat-feat-item {
   cursor: not-allowed;
 }
 
-/* How It Works Split */
-.bl-split-work-grid {
-  display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap: 40px;
+/* How It Works Split Section */
+.bl-how-it-works-split {
+  position: relative;
+  background-color: #ffffff;
+  padding: 68px 0;
+  overflow: hidden;
+  min-height: 380px;
+  display: flex;
   align-items: center;
+}
+
+.bl-how-it-works-bg-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 46%;
+  max-width: 740px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.bl-how-it-works-bg-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+
+.bl-how-it-works-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.bl-how-it-works-split .bl-work-steps-col {
+  max-width: 640px;
+}
+
+.bl-how-it-works-split .bl-section-heading {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  font-size: 2.35rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.bl-how-it-works-split .bl-section-subtext {
+  margin-bottom: 34px;
+  color: #64748b;
+  font-size: 0.95rem;
 }
 
 .bl-horizontal-stepper {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .bl-num-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   flex: 1;
+  max-width: 130px;
 }
 
-.bl-num-circle {
-  width: 44px;
-  height: 44px;
+.bl-step-icon-circle {
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: rgba(247, 37, 133, 0.1);
-  color: var(--bl-pink);
-  font-weight: 800;
-  font-size: 1.1rem;
+  background: #ffe3ec;
+  color: #f72585;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  box-shadow: 0 2px 10px rgba(247, 37, 133, 0.12);
+}
+
+.bl-num-step:hover .bl-step-icon-circle {
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 6px 18px rgba(247, 37, 133, 0.24);
+  background: #ffd4e4;
 }
 
 .bl-num-title {
   font-size: 0.95rem;
-  font-weight: 800;
-  margin: 0 0 4px 0;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 5px 0;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .bl-num-desc {
-  font-size: 0.8rem;
-  color: var(--bl-text-secondary);
-  line-height: 1.4;
+  font-size: 0.78rem;
+  color: #64748b;
+  line-height: 1.35;
   margin: 0;
+  text-align: center;
+  max-width: 125px;
 }
 
 .bl-step-arrow-line {
-  color: var(--bl-text-muted);
-  font-size: 1.2rem;
-  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 58px;
+  color: #94a3b8;
+  padding: 0 2px;
+  flex-shrink: 0;
 }
 
-.bl-work-photo-img {
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
-  border-radius: var(--bl-radius-lg);
-  box-shadow: var(--bl-shadow-md);
+/* Dark Theme Adjustments */
+body.bl-theme-dark .bl-how-it-works-split {
+  background-color: #0b1120;
+}
+
+body.bl-theme-dark .bl-how-it-works-split .bl-section-heading {
+  color: #f8fafc;
+}
+
+body.bl-theme-dark .bl-how-it-works-split .bl-section-subtext {
+  color: #94a3b8;
+}
+
+body.bl-theme-dark .bl-num-title {
+  color: #f8fafc;
+}
+
+body.bl-theme-dark .bl-num-desc {
+  color: #94a3b8;
+}
+
+body.bl-theme-dark .bl-step-icon-circle {
+  background: rgba(247, 37, 133, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+body.bl-theme-dark .bl-how-it-works-bg-img img {
+  opacity: 0.85;
+  filter: brightness(0.9) contrast(1.05);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.5) 15%, black 40%);
 }
 
 /* Statement Banner */
@@ -3763,13 +3858,17 @@ body.bl-theme-light .bl-item-type-card.selected,
     height: 280px;
   }
 
-  .bl-horizontal-stepper {
-    flex-direction: column;
-    gap: 16px;
+  .bl-how-it-works-split .bl-work-steps-col {
+    max-width: 100%;
   }
 
-  .bl-step-arrow-line {
-    display: none;
+  .bl-how-it-works-bg-img {
+    width: 38%;
+    opacity: 0.35;
+  }
+
+  .bl-horizontal-stepper {
+    gap: 6px;
   }
 
   .bl-testimonials-grid-3 {
@@ -3851,5 +3950,19 @@ body.bl-theme-light .bl-item-type-card.selected,
 
   .bl-hero-heading {
     font-size: 2.1rem;
+  }
+
+  .bl-how-it-works-bg-img {
+    display: none;
+  }
+
+  .bl-horizontal-stepper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 10px;
+  }
+
+  .bl-step-arrow-line {
+    display: none;
   }
 }
