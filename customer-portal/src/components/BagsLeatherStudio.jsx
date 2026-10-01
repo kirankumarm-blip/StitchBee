@@ -24,7 +24,8 @@ import {
   updateCartQty, 
   removeFromCart, 
   getWishlist, 
-  toggleWishlist 
+  toggleWishlist,
+  createOrder 
 } from '../utils/bagsStore';
 
 export default function BagsLeatherStudio({
@@ -148,8 +149,8 @@ export default function BagsLeatherStudio({
   const [sliderPos, setSliderPos] = useState(50);
   const [isDraggingSlider, setIsDraggingSlider] = useState(false);
 
-  // Restoration 4-Step Wizard State
-  const [wizardStep, setWizardStep] = useState(1); // 1: Item, 2: Damage, 3: Photos, 4: Pickup, 5: Confirmed
+  // Restoration 5-Step Wizard State (Item -> Damage -> Photos -> Find Tailors -> Pickup -> Confirmed)
+  const [wizardStep, setWizardStep] = useState(1); // 1: Item, 2: Damage, 3: Photos, 4: Find Tailors, 5: Pickup, 6: Confirmed
   const [wizardItem, setWizardItem] = useState('handbag');
   const [wizardDamages, setWizardDamages] = useState(['Zip & Runner Damaged']);
   const [wizardPhotos, setWizardPhotos] = useState([
@@ -287,6 +288,218 @@ export default function BagsLeatherStudio({
   const [pickupPincode, setPickupPincode] = useState('560025');
   const [pickupDate, setPickupDate] = useState('2026-10-02');
   const [pickupTimeSlot, setPickupTimeSlot] = useState('10:00 AM - 01:00 PM');
+  const [pickupPhone, setPickupPhone] = useState('+91 98450 12345');
+
+  // Step 4: Nearby Tailors & Artisans State
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const [tailorMatchingStatus, setTailorMatchingStatus] = useState('searching'); // 'searching' | 'accepted'
+  const [countdownSeconds, setCountdownSeconds] = useState(3);
+  const [assignedTailor, setAssignedTailor] = useState(null);
+
+  // Ready list of nearby verified leather craftsmen (easily connected to backend later)
+  const [nearbyTailors] = useState([
+    {
+      id: 'tailor-1',
+      name: 'Master Rajesh Kumar',
+      studio: 'Royal Leather Craft Studio',
+      neighborhood: 'Indiranagar 100ft Rd',
+      distanceKm: 1.2,
+      rating: 4.9,
+      reviewsCount: 184,
+      specialty: 'Master Leather Craftsman & Luxury Bag Restorer',
+      experienceYears: 16,
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop',
+      lat: 12.9784,
+      lng: 77.6408,
+      phone: '+91 98450 12345',
+      turnaround: '2-3 Business Days'
+    },
+    {
+      id: 'tailor-2',
+      name: 'Vikram Singh',
+      studio: 'Heritage Leather Atelier',
+      neighborhood: 'Koramangala 5th Block',
+      distanceKm: 2.1,
+      rating: 4.8,
+      reviewsCount: 128,
+      specialty: 'Luggage & Hard Leather Specialist',
+      experienceYears: 12,
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop',
+      lat: 12.9352,
+      lng: 77.6245,
+      phone: '+91 98451 67890',
+      turnaround: '3-4 Business Days'
+    },
+    {
+      id: 'tailor-3',
+      name: 'Ananya Sen',
+      studio: 'Elite Bag Studio',
+      neighborhood: 'MG Road Atelier',
+      distanceKm: 3.4,
+      rating: 5.0,
+      reviewsCount: 96,
+      specialty: 'Exotic Skin & Suede Restorer',
+      experienceYears: 9,
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop',
+      lat: 12.9756,
+      lng: 77.6067,
+      phone: '+91 98452 11223',
+      turnaround: '2-4 Business Days'
+    }
+  ]);
+
+  // Step 4: Tailor matching timer simulation (ready to be replaced with WebSocket / real-time backend API)
+  useEffect(() => {
+    if (wizardStep === 4) {
+      setTailorMatchingStatus('searching');
+      setCountdownSeconds(3);
+      setAssignedTailor(null);
+
+      const timerInterval = setInterval(() => {
+        setCountdownSeconds(prev => {
+          if (prev <= 1) {
+            clearInterval(timerInterval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      // Simulate one of the nearby tailors accepting after ~3.2 seconds
+      const matchTimer = setTimeout(() => {
+        setTailorMatchingStatus('accepted');
+        setAssignedTailor(nearbyTailors[0]);
+        if (typeof showToast === 'function') {
+          showToast('🎉 Master Rajesh Kumar accepted your bag repair request!');
+        }
+      }, 3200);
+
+      return () => {
+        clearInterval(timerInterval);
+        clearTimeout(matchTimer);
+      };
+    }
+  }, [wizardStep]);
+
+  // Step 4: Initialize Interactive Google Maps with Leaflet
+  useEffect(() => {
+    if (wizardStep !== 4 || !mapContainerRef.current) return;
+
+    if (typeof window !== 'undefined' && window.L) {
+      const container = mapContainerRef.current;
+      if (container._leaflet_id) {
+        delete container._leaflet_id;
+      }
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {
+          console.warn('Map cleanup error:', e);
+        }
+        mapInstanceRef.current = null;
+      }
+
+      // Center around Bangalore Indiranagar / user coordinate
+      const map = window.L.map(container, {
+        zoomControl: true,
+        scrollWheelZoom: false
+      }).setView([12.965, 77.625], 13);
+
+      // Google Maps Roadmap tile layer
+      window.L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
+      }).addTo(map);
+
+      // User GPS pulse marker
+      const userPin = window.L.divIcon({
+        html: `
+          <div style="position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+            <div style="position: absolute; width: 28px; height: 28px; border-radius: 50%; background: rgba(247, 37, 133, 0.4); animation: pulse 1.8s infinite;"></div>
+            <div style="position: relative; width: 14px; height: 14px; border-radius: 50%; background: #f72585; border: 2.5px solid #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>
+          </div>
+        `,
+        className: 'user-repair-gps-pulse',
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
+      });
+
+      window.L.marker([12.965, 77.625], { icon: userPin })
+        .addTo(map)
+        .bindPopup('<strong style="font-size:12px;">📍 Your Location</strong><br><span style="font-size:11px;color:#64748b;">Pickup Origin</span>');
+
+      // Nearby Tailor markers
+      nearbyTailors.forEach(t => {
+        const isRajesh = t.id === 'tailor-1';
+        const pinColor = isRajesh ? '#f72585' : '#7209b7';
+        const tailorIcon = window.L.divIcon({
+          html: `
+            <div style="cursor: pointer; display: flex; flex-direction: column; align-items: center; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+              <div style="
+                background: linear-gradient(135deg, ${pinColor} 0%, #4361ee 100%); 
+                width: 34px; 
+                height: 34px; 
+                border-radius: 50% 50% 50% 0; 
+                transform: rotate(-45deg); 
+                border: 2px solid #ffffff; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center;
+              ">
+                <span style="transform: rotate(45deg); font-size: 14px;">👜</span>
+              </div>
+              <div style="margin-top: 2px; background: #1e293b; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 5px; border-radius: 4px; white-space: nowrap;">
+                ★ ${t.rating}
+              </div>
+            </div>
+          `,
+          className: `tailor-marker-${t.id}`,
+          iconSize: [36, 46],
+          iconAnchor: [18, 42]
+        });
+
+        const marker = window.L.marker([t.lat, t.lng], { icon: tailorIcon }).addTo(map);
+        marker.bindPopup(`
+          <div style="font-family: Inter, sans-serif; font-size: 12px; color: #1e293b; min-width: 150px;">
+            <strong style="color: #0f172a; font-size: 13px;">${t.name}</strong><br>
+            <span style="color: #64748b; font-size: 11px;">${t.studio}</span><br>
+            <span style="color: #f72585; font-weight: 700; font-size: 11px;">★ ${t.rating} (${t.reviewsCount}) • ${t.distanceKm} km</span><br>
+            <span style="font-size: 11px; color: #475569;">${t.specialty}</span>
+          </div>
+        `);
+
+        if (isRajesh && tailorMatchingStatus === 'accepted') {
+          setTimeout(() => marker.openPopup(), 400);
+        }
+      });
+
+      mapInstanceRef.current = map;
+
+      setTimeout(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize();
+        }
+      }, 200);
+      setTimeout(() => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize();
+        }
+      }, 500);
+    }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {
+          console.warn('Map cleanup error:', e);
+        }
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [wizardStep, tailorMatchingStatus]);
 
   // Auto-hide toast
   useEffect(() => {
@@ -2450,7 +2663,7 @@ export default function BagsLeatherStudio({
                   </h3>
                 </div>
 
-                {/* 3. Right: 4-Step Interactive Wizard */}
+                {/* 3. Right: 5-Step Interactive Wizard */}
                 <div className="bl-wizard-content-col">
                   
                   {/* Stepper Bar with Connecting Lines */}
@@ -2459,7 +2672,8 @@ export default function BagsLeatherStudio({
                       { step: 1, label: 'Item' },
                       { step: 2, label: 'Damage' },
                       { step: 3, label: 'Photos' },
-                      { step: 4, label: 'Pickup' }
+                      { step: 4, label: 'Find Tailors' },
+                      { step: 5, label: 'Pickup' }
                     ].map((s, idx) => (
                       <React.Fragment key={s.step}>
                         {idx > 0 && (
@@ -2506,7 +2720,7 @@ export default function BagsLeatherStudio({
                     {/* STEP 1: WHAT ARE WE RESTORING? */}
                     {wizardStep === 1 && (
                       <div className="bl-wizard-body-step">
-                        <span className="bl-step-indicator">Step 1 of 4</span>
+                        <span className="bl-step-indicator">Step 1 of 5</span>
                         <h4 className="bl-wizard-step-title">What are we restoring?</h4>
 
                         <div className="bl-item-type-cards">
@@ -2555,7 +2769,7 @@ export default function BagsLeatherStudio({
                     {/* STEP 2: DAMAGE SELECTION */}
                     {wizardStep === 2 && (
                       <div className="bl-wizard-body-step">
-                        <span className="bl-step-indicator">Step 2 of 4</span>
+                        <span className="bl-step-indicator">Step 2 of 5</span>
                         <h4 className="bl-wizard-step-title">Select Component & Damage</h4>
 
                         <div className="bl-damage-selection-grid">
@@ -2604,7 +2818,7 @@ export default function BagsLeatherStudio({
                     {/* STEP 3: UPLOAD PHOTOS */}
                     {wizardStep === 3 && (
                       <div className="bl-wizard-body-step">
-                        <span className="bl-step-indicator">Step 3 of 4</span>
+                        <span className="bl-step-indicator">Step 3 of 5</span>
                         <h4 className="bl-wizard-step-title">Upload Inspection Photos</h4>
                         <p style={{ fontSize: '0.82rem', color: 'var(--bl-text-secondary)', margin: '0 0 16px 0' }}>
                           Clear photos of the front, back, and damage areas help our specialists assess the scope quickly.
@@ -2719,18 +2933,142 @@ export default function BagsLeatherStudio({
                           <button className="bl-btn-secondary" onClick={() => setWizardStep(2)}>
                             ← Back
                           </button>
-                          <button className="bl-btn-primary" onClick={() => setWizardStep(4)}>
-                            Next: Pickup Details →
+                          <button 
+                            className="bl-btn-primary" 
+                            onClick={() => {
+                              setWizardStep(4);
+                              showToast('Searching nearby verified leather artisans... 🔍');
+                            }}
+                          >
+                            Next: Find Nearby Tailors →
                           </button>
                         </div>
                       </div>
                     )}
 
-                    {/* STEP 4: SCHEDULE PICKUP */}
+                    {/* STEP 4: FIND NEARBY TAILORS (GOOGLE MAPS & LIVE MATCHING) */}
                     {wizardStep === 4 && (
                       <div className="bl-wizard-body-step">
-                        <span className="bl-step-indicator">Step 4 of 4</span>
+                        <span className="bl-step-indicator">Step 4 of 5</span>
+                        <h4 className="bl-wizard-step-title">Find Nearby Leather Tailors</h4>
+                        <p style={{ fontSize: '0.82rem', color: 'var(--bl-text-secondary)', margin: '0 0 16px 0' }}>
+                          Broadcasting your bag photos & restoration requirements to certified leather ateliers within 5 km.
+                        </p>
+
+                        {/* Interactive Google Map with Radar Status */}
+                        <div className="bl-map-radar-card">
+                          <div className="bl-map-radar-header">
+                            <div className="bl-map-radar-title">
+                              <MapPin size={16} color="var(--bl-pink)" />
+                              <span>Live Artisan Radar (Bangalore Central)</span>
+                            </div>
+                            <div className="bl-radar-status-badge">
+                              {tailorMatchingStatus === 'searching' ? (
+                                <>
+                                  <span className="bl-radar-dot animate-ping" />
+                                  <span>Broadcasting... ({countdownSeconds}s)</span>
+                                </>
+                              ) : (
+                                <>
+                                  <CheckCircle2 size={13} color="#10b981" />
+                                  <span style={{ color: '#10b981', fontWeight: 700 }}>Request Accepted!</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Map Container */}
+                          <div 
+                            ref={mapContainerRef} 
+                            className="bl-map-radar-canvas"
+                            style={{ width: '100%', height: '230px', borderRadius: '10px', overflow: 'hidden' }}
+                          />
+                        </div>
+
+                        {/* Status Box or Accepted Tailor Card */}
+                        {tailorMatchingStatus === 'searching' ? (
+                          <div className="bl-tailor-searching-box">
+                            <div className="bl-searching-spinner" />
+                            <div>
+                              <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--bl-text-primary)' }}>
+                                Connecting with 3 nearby Master Leather Specialists...
+                              </div>
+                              <div style={{ fontSize: '0.78rem', color: 'var(--bl-text-secondary)', marginTop: '2px' }}>
+                                Reviewing your {wizardPhotos.filter(Boolean).length || 1} inspection photo(s) & repair components
+                              </div>
+                            </div>
+                          </div>
+                        ) : assignedTailor ? (
+                          <div className="bl-tailor-accepted-card">
+                            <div className="bl-accepted-banner-tag">
+                              <Sparkles size={12} /> Master Artisan Accepted Your Request!
+                            </div>
+                            <div className="bl-accepted-body">
+                              <img 
+                                src={assignedTailor.avatar} 
+                                alt={assignedTailor.name} 
+                                className="bl-accepted-avatar" 
+                              />
+                              <div className="bl-accepted-details">
+                                <div className="bl-accepted-name-row">
+                                  <span className="bl-accepted-name">{assignedTailor.name}</span>
+                                  <span className="bl-accepted-studio">{assignedTailor.studio}</span>
+                                </div>
+                                <div className="bl-accepted-metrics">
+                                  <span className="bl-accepted-star">★ {assignedTailor.rating} ({assignedTailor.reviewsCount} reviews)</span>
+                                  <span className="bl-accepted-dot">•</span>
+                                  <span className="bl-accepted-distance">{assignedTailor.distanceKm} km ({assignedTailor.neighborhood})</span>
+                                  <span className="bl-accepted-dot">•</span>
+                                  <span className="bl-accepted-exp">{assignedTailor.experienceYears}+ yrs exp</span>
+                                </div>
+                                <div className="bl-accepted-badge-pill">
+                                  <span>{assignedTailor.specialty}</span>
+                                  <span className="bl-accepted-turnaround">⚡ Est. {assignedTailor.turnaround}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
+                          <button className="bl-btn-secondary" onClick={() => setWizardStep(3)}>
+                            ← Back
+                          </button>
+                          <button 
+                            className="bl-btn-primary" 
+                            disabled={tailorMatchingStatus === 'searching'}
+                            style={{ 
+                              opacity: tailorMatchingStatus === 'searching' ? 0.65 : 1,
+                              cursor: tailorMatchingStatus === 'searching' ? 'not-allowed' : 'pointer'
+                            }}
+                            onClick={() => {
+                              if (tailorMatchingStatus === 'accepted') {
+                                setWizardStep(5);
+                              }
+                            }}
+                          >
+                            {tailorMatchingStatus === 'searching' ? 'Waiting for tailor acceptance...' : 'Continue: Enter Pickup Details →'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 5: SCHEDULE PICKUP */}
+                    {wizardStep === 5 && (
+                      <div className="bl-wizard-body-step">
+                        <span className="bl-step-indicator">Step 5 of 5</span>
                         <h4 className="bl-wizard-step-title">Doorstep Collection & Assessment</h4>
+
+                        {assignedTailor && (
+                          <div className="bl-assigned-artisan-pill-banner">
+                            <img src={assignedTailor.avatar} alt={assignedTailor.name} className="bl-assigned-mini-avatar" />
+                            <div className="bl-assigned-info">
+                              <span className="bl-assigned-name">Assigned Specialist: {assignedTailor.name} ({assignedTailor.studio})</span>
+                              <span className="bl-assigned-spec">★ {assignedTailor.rating} • {assignedTailor.neighborhood} • Pickup inspection confirmed</span>
+                            </div>
+                            <span className="bl-accepted-tick-badge"><Check size={13} strokeWidth={3} /> Accepted</span>
+                          </div>
+                        )}
 
                         <div className="bl-pickup-form">
                           <div>
@@ -2790,13 +3128,43 @@ export default function BagsLeatherStudio({
                         )}
 
                         <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
-                          <button className="bl-btn-secondary" onClick={() => setWizardStep(3)}>
+                          <button className="bl-btn-secondary" onClick={() => setWizardStep(4)}>
                             ← Back
                           </button>
                           <button 
                             className="bl-btn-primary" 
                             onClick={() => {
-                              setWizardStep(5);
+                              try {
+                                createOrder({
+                                  type: 'restoration',
+                                  title: `${selectedBookingRepair?.service || 'Bag Restoration & Repair'} (${wizardItem})`,
+                                  category: wizardItem,
+                                  status: 'Confirmed',
+                                  tailor: assignedTailor ? {
+                                    name: assignedTailor.name,
+                                    studio: assignedTailor.studio,
+                                    rating: assignedTailor.rating,
+                                    phone: assignedTailor.phone
+                                  } : {
+                                    name: 'Master Rajesh Kumar',
+                                    studio: 'Royal Leather Craft Studio'
+                                  },
+                                  pickup: {
+                                    address: pickupAddress,
+                                    pincode: pickupPincode,
+                                    date: pickupDate,
+                                    slot: pickupTimeSlot
+                                  },
+                                  damages: wizardDamages,
+                                  notes: wizardNotes,
+                                  photos: wizardPhotos.filter(Boolean),
+                                  total: 0,
+                                  assessment: 'Complimentary Free Diagnostic Pickup'
+                                });
+                              } catch (err) {
+                                console.warn('Order store sync:', err);
+                              }
+                              setWizardStep(6);
                               showToast('Restoration pickup scheduled! 🛵');
                             }}
                           >
@@ -2806,8 +3174,8 @@ export default function BagsLeatherStudio({
                       </div>
                     )}
 
-                    {/* STEP 5: CONFIRMED */}
-                    {wizardStep === 5 && (
+                    {/* STEP 6: CONFIRMED */}
+                    {wizardStep === 6 && (
                       <div className="bl-wizard-body-step" style={{ textAlign: 'center', padding: '30px 10px' }}>
                         <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(16,185,129,0.15)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
                           <CheckCircle2 size={36} />
@@ -2816,23 +3184,35 @@ export default function BagsLeatherStudio({
                           Pickup Scheduled!
                         </h3>
                         <p style={{ fontSize: '0.88rem', color: 'var(--bl-text-secondary)', maxWidth: '440px', margin: '0 auto 20px auto' }}>
-                          A StitchBee leather logistics partner will collect your bag on <strong>{pickupDate}</strong> during <strong>{pickupTimeSlot}</strong>.
+                          A StitchBee leather logistics partner will collect your bag on <strong>{pickupDate}</strong> during <strong>{pickupTimeSlot}</strong> and deliver it directly to <strong>{assignedTailor?.name || 'Master Rajesh Kumar'}</strong> at <strong>{assignedTailor?.studio || 'Royal Leather Craft Studio'}</strong>.
                         </p>
 
                         <div className="bl-order-meta-box">
                           <div><strong>Tracking ID:</strong> #STB-RESTORE-8842</div>
+                          <div><strong>Assigned Artisan:</strong> {assignedTailor?.name || 'Master Rajesh Kumar'} ({assignedTailor?.studio || 'Royal Leather Craft'})</div>
+                          <div><strong>Location:</strong> {assignedTailor?.neighborhood || 'Indiranagar'}, Bangalore</div>
                           <div><strong>Assessment:</strong> Complimentary Diagnostic Quote</div>
-                          <div><strong>Workshop:</strong> Master Atelier Bangalore</div>
                           <div><strong>Photos Attached:</strong> {wizardPhotos.filter(Boolean).length} photo(s)</div>
                         </div>
 
-                        <button 
-                          className="bl-btn-primary" 
-                          style={{ marginTop: '20px' }}
-                          onClick={() => setWizardStep(1)}
-                        >
-                          Book Another Item
-                        </button>
+                        <div style={{ marginTop: '20px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                          <button 
+                            className="bl-btn-secondary"
+                            onClick={() => {
+                              setWizardStep(1);
+                              setTailorMatchingStatus('searching');
+                              setAssignedTailor(null);
+                            }}
+                          >
+                            Book Another Item
+                          </button>
+                          <button 
+                            className="bl-btn-primary"
+                            onClick={() => navigate('/orders')}
+                          >
+                            View in My Orders →
+                          </button>
+                        </div>
                       </div>
                     )}
 

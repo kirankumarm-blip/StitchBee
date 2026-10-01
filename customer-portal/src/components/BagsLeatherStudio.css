@@ -3725,6 +3725,216 @@ body.bl-theme-light .bl-item-type-card.selected,
   gap: 6px;
 }
 
+/* Step 4: Nearby Tailors & Artisans Radar */
+.bl-map-radar-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--bl-border);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  background: var(--bl-warm-card);
+  margin-bottom: 16px;
+}
+
+.bl-map-radar-header {
+  padding: 10px 16px;
+  background: var(--bl-warm-cream);
+  border-bottom: 1px solid var(--bl-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bl-radar-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.bl-radar-status-badge.searching {
+  background: rgba(247, 37, 133, 0.1);
+  color: var(--bl-pink);
+  border: 1px solid rgba(247, 37, 133, 0.25);
+}
+
+.bl-radar-status-badge.accepted {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.bl-radar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.bl-radar-dot.searching {
+  background: var(--bl-pink);
+  box-shadow: 0 0 8px var(--bl-pink);
+  animation: bl-pulse 1.2s infinite ease-in-out;
+}
+
+.bl-radar-dot.accepted {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+@keyframes bl-pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.bl-map-radar-canvas {
+  width: 100%;
+  height: 280px;
+  background: #f1f5f9;
+}
+
+.bl-tailor-searching-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: rgba(247, 37, 133, 0.05);
+  border: 1px dashed rgba(247, 37, 133, 0.35);
+  margin-top: 14px;
+}
+
+.bl-radar-pulse-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(247, 37, 133, 0.18);
+  flex-shrink: 0;
+}
+
+.bl-spin {
+  animation: bl-rotate 1.6s linear infinite;
+}
+
+@keyframes bl-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Accepted Tailor Card */
+.bl-tailor-accepted-card {
+  margin-top: 16px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1.5px solid #10b981;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.14);
+  overflow: hidden;
+  animation: bl-fade-in 0.35s ease;
+}
+
+body.bl-theme-dark .bl-tailor-accepted-card {
+  background: #181528;
+  border-color: #10b981;
+}
+
+@keyframes bl-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bl-accepted-banner-tag {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.3px;
+}
+
+.bl-accepted-tailor-row {
+  display: flex;
+  gap: 16px;
+  padding: 16px 18px;
+  align-items: center;
+}
+
+.bl-accepted-avatar {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #10b981;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.bl-accepted-tailor-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--bl-text-primary);
+}
+
+.bl-verified-badge {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.bl-accepted-studio-sub {
+  margin: 3px 0 8px 0;
+  font-size: 0.82rem;
+  color: var(--bl-text-secondary);
+}
+
+.bl-accepted-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bl-pill-info {
+  background: var(--bl-warm-cream);
+  border: 1px solid var(--bl-border);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--bl-text-secondary);
+}
+
+.bl-artisan-quote-preview {
+  background: var(--bl-warm-cream);
+  padding: 12px 18px;
+  border-top: 1px solid var(--bl-border);
+}
+
+.bl-assigned-artisan-pill-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  margin-bottom: 16px;
+}
+
 /* ==========================================================================
    MODALS AND SLIDE-OUT DRAWERS
    ========================================================================== */

@@ -621,7 +621,7 @@ export function saveOrders(orders) {
 export function addOrder(orderData) {
   const current = getOrders();
   const newOrder = {
-    id: orderData.type === 'custom' ? `CUST-${Math.floor(1000 + Math.random() * 9000)}` : `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+    id: orderData.type === 'custom' ? `CUST-${Math.floor(1000 + Math.random() * 9000)}` : (orderData.type === 'restoration' ? `RESTORE-${Math.floor(1000 + Math.random() * 9000)}` : `ORD-${Math.floor(1000 + Math.random() * 9000)}`),
     date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
     ...orderData
   };
@@ -629,6 +629,9 @@ export function addOrder(orderData) {
   saveOrders(updated);
   return newOrder;
 }
+
+export const createOrder = addOrder;
+
 
 // -------------------------------------------------------------
 // CUSTOM DESIGN STORAGE (stitchbeez_custom_design)
