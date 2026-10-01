@@ -292,46 +292,62 @@ export default function ShoesFootwearStudio({
       {activeMode === 'shop' && (
         <div className="sf-shop-experience">
           
-          {/* SECTION 1: HERO BANNER */}
-          <section className="sf-hero-section">
-            <div className="sf-container sf-hero-grid">
+          {/* SECTION 1: HERO BANNER (100% Full-Width Panoramic Banner matching user reference) */}
+          <section className="sf-hero-section-panoramic">
+            <div className="sf-hero-panoramic-inner">
               
-              {/* Left Column */}
-              <div className="sf-hero-left">
-                <span className="sf-hero-tag">
-                  <Gem size={14} />
+              {/* Hero Left Content */}
+              <div className="sf-hero-left-content">
+                <span className="sf-hero-tag-label">
                   STITCHBEEZ FOOTWEAR STUDIO
                 </span>
 
-                <h1 className="sf-serif-title sf-hero-heading">
+                <h1 className="sf-serif-title sf-hero-panoramic-title">
                   Footwear <br />
-                  <span className="sf-hero-highlight">Made for Your Journey</span>
+                  <span className="sf-hero-brown-text">Made for Your Journey</span>
                 </h1>
 
-                <p className="sf-hero-description">
+                <p className="sf-hero-panoramic-desc">
                   Premium shoes, sandals, slippers and custom-made footwear — handcrafted with quality materials and designed for your unique style.
                 </p>
 
-                {/* Trust Indicators */}
-                <div className="sf-hero-trust-row">
-                  <div className="sf-trust-item">
-                    <span className="sf-trust-icon-sym">◆</span>
-                    <span>Premium Materials</span>
+                {/* Trust Indicators with circular badges */}
+                <div className="sf-hero-trust-badges-row">
+                  <div className="sf-hero-trust-badge">
+                    <div className="sf-trust-badge-circle">
+                      <Gem size={17} color="#f72585" strokeWidth={2.2} />
+                    </div>
+                    <div className="sf-trust-badge-text">
+                      <span>Premium</span>
+                      <span>Materials</span>
+                    </div>
                   </div>
-                  <div className="sf-trust-item">
-                    <span className="sf-trust-icon-sym">✂</span>
-                    <span>Custom Designs</span>
+
+                  <div className="sf-hero-trust-badge">
+                    <div className="sf-trust-badge-circle">
+                      <Scissors size={17} color="#f72585" strokeWidth={2.2} />
+                    </div>
+                    <div className="sf-trust-badge-text">
+                      <span>Custom</span>
+                      <span>Designs</span>
+                    </div>
                   </div>
-                  <div className="sf-trust-item">
-                    <span className="sf-trust-icon-sym">✓</span>
-                    <span>Verified Artisans</span>
+
+                  <div className="sf-hero-trust-badge">
+                    <div className="sf-trust-badge-circle">
+                      <ShieldCheck size={17} color="#f72585" strokeWidth={2.2} />
+                    </div>
+                    <div className="sf-trust-badge-text">
+                      <span>Verified</span>
+                      <span>Artisans</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* CTAs */}
-                <div className="sf-hero-ctas">
+                {/* CTA Buttons */}
+                <div className="sf-hero-panoramic-ctas">
                   <button 
-                    className="sf-btn-primary"
+                    className="sf-btn-panoramic-pink"
                     onClick={() => {
                       setCategoryFilter('all');
                       scrollToId('sf-featured-collection');
@@ -340,7 +356,7 @@ export default function ShoesFootwearStudio({
                     Shop Ready Footwear →
                   </button>
                   <button 
-                    className="sf-btn-secondary"
+                    className="sf-btn-panoramic-white"
                     onClick={() => scrollToId('sf-custom-studio')}
                   >
                     Create Custom Design
@@ -348,21 +364,12 @@ export default function ShoesFootwearStudio({
                 </div>
               </div>
 
-              {/* Right Column: Hero Image with script overlay */}
-              <div className="sf-hero-right">
-                <div className="sf-hero-img-frame">
-                  <img 
-                    src="/footwear_hero.jpg" 
-                    alt="Handcrafted leather brogues on artisan workbench" 
-                  />
-                  <div className="sf-hero-img-blend-overlay" />
-                  
-                  <div className="sf-hero-script-overlay">
-                    <span className="sf-hero-script-text">Every Step.</span>
-                    <span className="sf-hero-script-text">Your Style.</span>
-                    <span className="sf-hero-script-sub">Bespoke Atelier</span>
-                  </div>
-                </div>
+              {/* Top-Right Decorative Script */}
+              <div className="sf-hero-panoramic-script">
+                <span className="sf-script-word sf-script-every">Every</span>
+                <span className="sf-script-word sf-script-step">Step.</span>
+                <span className="sf-script-word sf-script-your">Your</span>
+                <span className="sf-script-word sf-script-style">Style.</span>
               </div>
 
             </div>
