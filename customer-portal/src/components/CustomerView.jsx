@@ -3581,7 +3581,7 @@ export default function CustomerView({
       )}
 
 
-      <div className="view-container">
+      <div className={`view-container ${activeHub === 'category-landing' ? 'category-landing-fullwidth' : ''}`}>
 
 
 

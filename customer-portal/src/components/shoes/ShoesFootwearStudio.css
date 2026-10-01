@@ -52,16 +52,19 @@
   --sf-shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.6);
 }
 
-/* Base Studio Layout */
+/* Base Studio Layout - 100% Edge-to-Edge Full Width */
 .sf-shoes-studio {
   background-color: var(--sf-canvas);
   color: var(--sf-text-primary);
   font-family: var(--sf-font-sans);
   min-height: 100vh;
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
   position: relative;
   overflow-x: hidden;
   box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .sf-shoes-studio * {
@@ -69,11 +72,30 @@
 }
 
 .sf-container {
-  width: 95% !important;
-  max-width: 1380px !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 0 auto !important;
-  padding: 0 16px;
+  padding: 0 48px !important;
   position: relative;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 1200px) {
+  .sf-container {
+    padding: 0 32px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .sf-container {
+    padding: 0 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sf-container {
+    padding: 0 16px !important;
+  }
 }
 
 /* Typography Helpers */
@@ -201,6 +223,10 @@
   padding: 56px 0 64px;
   position: relative;
   overflow: hidden;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .sf-shoes-studio.sf-theme-dark .sf-hero-section {
@@ -339,7 +365,7 @@
 .sf-hero-img-frame {
   position: relative;
   width: 100%;
-  max-width: 540px;
+  max-width: 600px;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 20px 45px rgba(20, 10, 5, 0.14);

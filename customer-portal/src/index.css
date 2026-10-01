@@ -1387,9 +1387,24 @@ body.light-theme .negotiation-panel {
   animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* 100% Edge-to-Edge Container for Specialty & Atelier Studios */
+.view-container.category-landing-fullwidth,
+.view-container:has(.sf-shoes-studio),
+.view-container:has(.bl-leather-studio) {
+  padding: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
 @media (max-width: 768px) {
   .view-container {
     padding: 0 1rem 2rem 1rem;
+  }
+  .view-container.category-landing-fullwidth,
+  .view-container:has(.sf-shoes-studio),
+  .view-container:has(.bl-leather-studio) {
+    padding: 0 !important;
   }
 }
 
