@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import SpecialtyCategoryView from './specialty/SpecialtyCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
+import ShoesFootwearStudio from './shoes/ShoesFootwearStudio';
 
 const categoryTemplates = {
   mens: {
@@ -453,6 +454,24 @@ export default function ServiceCategoryView({
         onNavigateCategory={onSelectCategory}
         onOpenAuthModal={onLoginRequired}
         onAddToCart={onAddToCart}
+      />
+    );
+  }
+
+  if (categoryKey === 'shoes' && shoesStudioMode === 'shop') {
+    return (
+      <ShoesFootwearStudio
+        currentUser={currentUser}
+        theme={theme}
+        setTheme={setTheme}
+        initialMode={shoesStudioMode}
+        onSwitchMode={setShoesStudioMode}
+        onNavigateHome={onExploreDesigns}
+        onNavigateCategory={onSelectCategory}
+        onOpenAuthModal={onLoginRequired}
+        onAddToCart={onAddToCart}
+        tailors={tailors}
+        onBookStitching={onBookStitching}
       />
     );
   }
