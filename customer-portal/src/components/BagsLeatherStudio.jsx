@@ -2988,43 +2988,107 @@ export default function BagsLeatherStudio({
                         {/* Status Box or Accepted Tailor Card */}
                         {tailorMatchingStatus === 'searching' ? (
                           <div className="bl-tailor-searching-box">
-                            <div className="bl-searching-spinner" />
-                            <div>
-                              <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--bl-text-primary)' }}>
-                                Connecting with 3 nearby Master Leather Specialists...
+                            <div className="bl-radar-pulse-icon">
+                              <span className="bl-spin">🔍</span>
+                            </div>
+                            <div className="bl-searching-text-wrap">
+                              <div className="bl-searching-title">
+                                Broadcasting to nearby verified leather ateliers...
                               </div>
-                              <div style={{ fontSize: '0.78rem', color: 'var(--bl-text-secondary)', marginTop: '2px' }}>
-                                Reviewing your {wizardPhotos.filter(Boolean).length || 1} inspection photo(s) & repair components
+                              <div className="bl-searching-sub">
+                                Specialists reviewing your {wizardPhotos.filter(Boolean).length || 1} inspection photo(s) & repair scope
                               </div>
+                            </div>
+                            <div className="bl-searching-chip-pulse">
+                              <span className="bl-radar-dot animate-ping" />
+                              <span>Live Matching</span>
                             </div>
                           </div>
                         ) : assignedTailor ? (
                           <div className="bl-tailor-accepted-card">
-                            <div className="bl-accepted-banner-tag">
-                              <Sparkles size={12} /> Master Artisan Accepted Your Request!
+                            {/* Premium Header Bar */}
+                            <div className="bl-accepted-card-header">
+                              <div className="bl-accepted-header-left">
+                                <span className="bl-accepted-sparkle-pill">
+                                  <Sparkles size={14} />
+                                </span>
+                                <div>
+                                  <div className="bl-accepted-header-title">Request Accepted by Master Artisan</div>
+                                  <div className="bl-accepted-header-sub">Ready to inspect & restore your bag</div>
+                                </div>
+                              </div>
+                              <div className="bl-accepted-response-badge">
+                                <CheckCircle2 size={13} color="#059669" />
+                                <span>Accepted in 3s</span>
+                              </div>
                             </div>
-                            <div className="bl-accepted-body">
-                              <img 
-                                src={assignedTailor.avatar} 
-                                alt={assignedTailor.name} 
-                                className="bl-accepted-avatar" 
-                              />
-                              <div className="bl-accepted-details">
-                                <div className="bl-accepted-name-row">
-                                  <span className="bl-accepted-name">{assignedTailor.name}</span>
-                                  <span className="bl-accepted-studio">{assignedTailor.studio}</span>
+
+                            {/* Card Body */}
+                            <div className="bl-accepted-card-body">
+                              <div className="bl-artisan-profile-row">
+                                {/* Artisan Avatar with Verified Badge */}
+                                <div className="bl-artisan-avatar-wrap">
+                                  <img 
+                                    src={assignedTailor.avatar} 
+                                    alt={assignedTailor.name} 
+                                    className="bl-artisan-avatar-img" 
+                                  />
+                                  <div className="bl-artisan-verified-badge" title="StitchBee Certified Artisan">
+                                    <Check size={11} strokeWidth={3.5} />
+                                  </div>
                                 </div>
-                                <div className="bl-accepted-metrics">
-                                  <span className="bl-accepted-star">★ {assignedTailor.rating} ({assignedTailor.reviewsCount} reviews)</span>
-                                  <span className="bl-accepted-dot">•</span>
-                                  <span className="bl-accepted-distance">{assignedTailor.distanceKm} km ({assignedTailor.neighborhood})</span>
-                                  <span className="bl-accepted-dot">•</span>
-                                  <span className="bl-accepted-exp">{assignedTailor.experienceYears}+ yrs exp</span>
+
+                                {/* Artisan Details */}
+                                <div className="bl-artisan-info-col">
+                                  <div className="bl-artisan-name-line">
+                                    <h4 className="bl-artisan-name">{assignedTailor.name}</h4>
+                                    <span className="bl-artisan-badge-certified">
+                                      <Award size={12} /> Certified Master
+                                    </span>
+                                  </div>
+
+                                  <div className="bl-artisan-studio-line">
+                                    <span className="bl-artisan-studio-name">{assignedTailor.studio}</span>
+                                    <span className="bl-meta-sep">•</span>
+                                    <span className="bl-artisan-location">
+                                      <MapPin size={12} /> {assignedTailor.distanceKm} km away ({assignedTailor.neighborhood})
+                                    </span>
+                                  </div>
+
+                                  <div className="bl-artisan-rating-line">
+                                    <div className="bl-star-rating-pill">
+                                      <Star size={13} fill="#f59e0b" color="#f59e0b" />
+                                      <span className="bl-rating-value">{assignedTailor.rating}</span>
+                                      <span className="bl-rating-count">({assignedTailor.reviewsCount} reviews)</span>
+                                    </div>
+                                    <span className="bl-meta-sep">•</span>
+                                    <span className="bl-exp-tag">
+                                      <ShieldCheck size={12} color="#10b981" /> {assignedTailor.experienceYears}+ yrs exp
+                                    </span>
+                                  </div>
                                 </div>
-                                <div className="bl-accepted-badge-pill">
-                                  <span>{assignedTailor.specialty}</span>
-                                  <span className="bl-accepted-turnaround">⚡ Est. {assignedTailor.turnaround}</span>
+                              </div>
+
+                              {/* Highlight Badges Strip */}
+                              <div className="bl-accepted-highlights-strip">
+                                <div className="bl-highlight-item">
+                                  <span className="bl-highlight-label">Specialty</span>
+                                  <span className="bl-highlight-val">{assignedTailor.specialty}</span>
                                 </div>
+                                <div className="bl-highlight-item">
+                                  <span className="bl-highlight-label">Est. Turnaround</span>
+                                  <span className="bl-highlight-val highlight-pink">⚡ {assignedTailor.turnaround}</span>
+                                </div>
+                                <div className="bl-highlight-item">
+                                  <span className="bl-highlight-label">Assessment</span>
+                                  <span className="bl-highlight-val highlight-green">✓ Free Diagnostic</span>
+                                </div>
+                              </div>
+
+                              {/* Assurance footer */}
+                              <div className="bl-accepted-assurance-banner">
+                                <ShieldCheck size={14} color="#10b981" />
+                                <span>Free doorstep inspection. Exact quote and repair scope confirmed only upon physical diagnosis.</span>
                               </div>
                             </div>
                           </div>
