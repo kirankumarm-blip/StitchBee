@@ -446,6 +446,9 @@ export default function CustomerView({
   const [bagsStudioMode, setBagsStudioMode] = useState('shop'); // 'shop' | 'restore'
   const [bagsSubmenuHovered, setBagsSubmenuHovered] = useState(false);
   const [mobileBagsExpanded, setMobileBagsExpanded] = useState(false);
+  const [shoesStudioMode, setShoesStudioMode] = useState('shop'); // 'shop' | 'restore'
+  const [shoesSubmenuHovered, setShoesSubmenuHovered] = useState(false);
+  const [mobileShoesExpanded, setMobileShoesExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [rewardPoints, setRewardPoints] = useState(120);
   
@@ -572,7 +575,7 @@ export default function CustomerView({
     }
   }, [initialHub]);
 
-  // Sync URL route to selectedCategory, activeHub, and bagsStudioMode
+  // Sync URL route to selectedCategory, activeHub, bagsStudioMode, and shoesStudioMode
   useEffect(() => {
     const path = location.pathname;
     if (path === '/bags') {
@@ -586,6 +589,17 @@ export default function CustomerView({
     } else if (path.startsWith('/bags') || path === '/cart' || path === '/wishlist' || path === '/orders') {
       setSelectedCategory('bags');
       setActiveHub('category-landing');
+    } else if (path === '/shoes' || path === '/shoes/shop' || path === '/shoes-slippers') {
+      setSelectedCategory('shoes');
+      setActiveHub('category-landing');
+      setShoesStudioMode('shop');
+    } else if (path === '/shoes/repair' || path === '/shoes/restore' || path === '/shoes-slippers/repair') {
+      setSelectedCategory('shoes');
+      setActiveHub('category-landing');
+      setShoesStudioMode('restore');
+    } else if (path.startsWith('/shoes')) {
+      setSelectedCategory('shoes');
+      setActiveHub('category-landing');
     }
   }, [location.pathname]);
 
@@ -593,6 +607,7 @@ export default function CustomerView({
     const handleGlobalClick = () => {
       setServicesDropdownOpen(false);
       setBagsSubmenuHovered(false);
+      setShoesSubmenuHovered(false);
       setNotificationDropdownOpen(false);
       setProfileDropdownOpen(false);
     };
@@ -2495,6 +2510,7 @@ export default function CustomerView({
             <ul className={`nav-dropdown-menu services-dropdown-menu ${servicesDropdownOpen ? 'show' : ''}`} style={{ minWidth: '220px' }}>
               {categoryCards.map(cat => {
                 const isBags = cat.id === 'bags';
+                const isShoes = cat.id === 'shoes';
                 const isActive = cat.id === 'designers'
                   ? activeHub === 'designers'
                   : (activeHub === 'category-landing' && selectedCategory === cat.id);
@@ -2601,6 +2617,114 @@ export default function CustomerView({
                         <div className="nav-submenu-footer">
                           <Shield size={12} style={{ color: '#f72585' }} />
                           <span>Master Leather Artisans • Doorstep Pickup & Return</span>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+
+                if (isShoes) {
+                  return (
+                    <li 
+                      key={cat.id}
+                      className={`dropdown-item nav-item-has-submenu ${isActive ? 'active' : ''}`}
+                      onMouseEnter={() => setShoesSubmenuHovered(true)}
+                      onMouseLeave={() => setShoesSubmenuHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShoesSubmenuHovered(prev => !prev);
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                        <span>{cat.label}</span>
+                        <ChevronRight size={13} style={{ opacity: 0.7 }} />
+                      </div>
+
+                      {/* Submenu on hover & select */}
+                      <div className={`nav-submenu ${shoesSubmenuHovered ? 'show' : ''}`}>
+                        <div className="nav-submenu-header">
+                          <div className="nav-submenu-eyebrow">
+                            <Sparkles size={11} className="nav-submenu-sparkle" />
+                            <span>STITCHBEE COBBLER ATELIER</span>
+                          </div>
+                          <div className="nav-submenu-header-sub">Bespoke Footwear & Expert Cobbler Restoration</div>
+                        </div>
+
+                        <div className="nav-submenu-body">
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'shoes' && shoesStudioMode === 'shop' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShoesStudioMode('shop');
+                              setSelectedCategory('shoes');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('shoes');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setShoesSubmenuHovered(false);
+                              navigate('/shoes');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box shop">
+                              <ShoppingBag size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Shop & Create</span>
+                                <span className="nav-submenu-pill bespoke">Bespoke</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Bespoke formal shoes, wedding mojaris & slides</p>
+                              <div className="nav-submenu-tags">
+                                <span>Italian Calfskin</span>
+                                <span>•</span>
+                                <span>Goodyear Welt</span>
+                                <span>•</span>
+                                <span>Custom Fit</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'shoes' && shoesStudioMode === 'restore' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShoesStudioMode('restore');
+                              setSelectedCategory('shoes');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('shoes');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setShoesSubmenuHovered(false);
+                              navigate('/shoes/repair');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box restore">
+                              <Wrench size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Repair & Restore</span>
+                                <span className="nav-submenu-pill repair">Cobbler Care</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Vibram resoling, heel reconstruction & deep spa</p>
+                              <div className="nav-submenu-tags">
+                                <span>Resoling</span>
+                                <span>•</span>
+                                <span>Heel Repair</span>
+                                <span>•</span>
+                                <span>Mirror Shine</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="nav-submenu-footer">
+                          <Shield size={12} style={{ color: '#f72585' }} />
+                          <span>Master Cobbler Specialists • Doorstep Pickup & Return</span>
                         </div>
                       </div>
                     </li>
@@ -3216,6 +3340,99 @@ export default function CustomerView({
                                     <ChevronRight size={13} style={{ opacity: 0.5 }} />
                                   </button>
                                 </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      if (cat.id === 'shoes') {
+                        return (
+                          <div key={cat.id} style={{ width: '100%', margin: '4px 0' }}>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMobileShoesExpanded(!mobileShoesExpanded);
+                              }}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                border: `1px solid ${selectedCategory === 'shoes' ? 'var(--primary)' : borderColor}`,
+                                background: selectedCategory === 'shoes' ? 'rgba(247,37,133,0.1)' : (isDark ? 'rgba(255,255,255,0.04)' : '#fff'),
+                                color: selectedCategory === 'shoes' ? 'var(--primary)' : colorTextPrimary,
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <span>👞 {cat.label}</span>
+                              <ChevronDown 
+                                size={14} 
+                                style={{ 
+                                  transform: mobileShoesExpanded ? 'rotate(180deg)' : 'none', 
+                                  transition: 'transform 0.2s ease' 
+                                }} 
+                              />
+                            </button>
+                            {mobileShoesExpanded && (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '10px', marginTop: '6px' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setShoesStudioMode('shop');
+                                    setSelectedCategory('shoes');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('shoes');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/shoes');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'shoes' && shoesStudioMode === 'shop' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon shop">
+                                    <ShoppingBag size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Shop & Create</span>
+                                      <span className="nav-submenu-pill bespoke" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Bespoke</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Handcrafted leather shoes, mojaris & slides</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setShoesStudioMode('restore');
+                                    setSelectedCategory('shoes');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('shoes');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/shoes/repair');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'shoes' && shoesStudioMode === 'restore' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon restore">
+                                    <Wrench size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Repair & Restore</span>
+                                      <span className="nav-submenu-pill repair" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Cobbler Care</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Resoling, heel repair & deep spa restoration</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                              </div>
                             )}
                           </div>
                         );
@@ -5410,6 +5627,20 @@ export default function CustomerView({
                     setActiveHub('designers');
                     if (setCustomerHub) setCustomerHub('designers');
                     if (setCustomerCategory) setCustomerCategory('all');
+                  } else if (category.cat === 'bags') {
+                    setSelectedCategory('bags');
+                    setActiveHub('category-landing');
+                    setBagsStudioMode('shop');
+                    if (setCustomerCategory) setCustomerCategory('bags');
+                    if (setCustomerHub) setCustomerHub('category-landing');
+                    navigate('/bags');
+                  } else if (category.cat === 'shoes') {
+                    setSelectedCategory('shoes');
+                    setActiveHub('category-landing');
+                    setShoesStudioMode('shop');
+                    if (setCustomerCategory) setCustomerCategory('shoes');
+                    if (setCustomerHub) setCustomerHub('category-landing');
+                    navigate('/shoes');
                   } else {
                     setSelectedCategory(category.cat);
                     setActiveHub('category-landing');
@@ -6590,6 +6821,8 @@ export default function CustomerView({
           setTheme={setTheme}
           bagsStudioMode={bagsStudioMode}
           setBagsStudioMode={setBagsStudioMode}
+          shoesStudioMode={shoesStudioMode}
+          setShoesStudioMode={setShoesStudioMode}
           onLoginRequired={onLoginRequired}
           onExploreDesigns={() => {
             const el = document.getElementById('popular-designs-section');

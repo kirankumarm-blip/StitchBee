@@ -154,7 +154,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
-  // Sync role and category when URL matches bags or customer routes
+  // Sync role and category when URL matches bags, shoes, or customer routes
   useEffect(() => {
     const path = location.pathname;
     if (
@@ -165,6 +165,13 @@ export default function App() {
     ) {
       setRole('customer');
       setCustomerCategory('bags');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/shoes') ||
+      path.startsWith('/shoes-slippers')
+    ) {
+      setRole('customer');
+      setCustomerCategory('shoes');
       setCustomerHub('category-landing');
     }
   }, [location.pathname]);
@@ -836,7 +843,7 @@ export default function App() {
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); navigate('/bags'); }}>Bags And Leathers</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); }}>Shoes And Slippers</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'shoes' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('shoes'); setActiveDropdown(null); navigate('/shoes'); }}>Shoes And Slippers</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'gifts' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('gifts'); setActiveDropdown(null); }}>Hand Made Gifts</li>
@@ -1586,6 +1593,8 @@ export default function App() {
                     setRole('customer');
                     if (category.cat === 'bags') {
                       navigate('/bags');
+                    } else if (category.cat === 'shoes') {
+                      navigate('/shoes');
                     }
                   }}
                   onMouseEnter={() => setHoveredCategoryIdx(idx)}

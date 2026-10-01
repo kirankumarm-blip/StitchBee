@@ -31,10 +31,13 @@ export default function SpecialtyCategoryView({
   onAddToCart: parentAddToCart,
   onBookStitching,
   onExploreDesigns,
-  onViewFabrics
+  onViewFabrics,
+  shoesStudioMode = 'shop',
+  setShoesStudioMode
 }) {
   const [activeCategory, setActiveCategory] = useState(categoryKey);
-  const [serviceMode, setServiceMode] = useState('buying'); // 'buying' | 'alteration' | 'partner'
+  const initialMode = (categoryKey === 'shoes' && shoesStudioMode === 'restore') ? 'alteration' : 'buying';
+  const [serviceMode, setServiceMode] = useState(initialMode);
   const [cartItems, setCartItems] = useState([]);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
@@ -53,6 +56,24 @@ export default function SpecialtyCategoryView({
       setActiveCategory(categoryKey);
     }
   }, [categoryKey]);
+
+  // Sync serviceMode when shoesStudioMode prop changes
+  useEffect(() => {
+    if (activeCategory === 'shoes') {
+      if (shoesStudioMode === 'restore') {
+        setServiceMode('alteration');
+      } else if (shoesStudioMode === 'shop') {
+        setServiceMode('buying');
+      }
+    }
+  }, [shoesStudioMode, activeCategory]);
+
+  const handleShoeModeChange = (mode) => {
+    setServiceMode(mode);
+    if (setShoesStudioMode) {
+      setShoesStudioMode(mode === 'alteration' ? 'restore' : 'shop');
+    }
+  };
 
   const handleTabClick = (tabId) => {
     setActiveCategory(tabId);
@@ -306,7 +327,7 @@ export default function SpecialtyCategoryView({
                 onAddToCart={handleAddToCart}
                 onDirectCheckout={handleDirectCheckout}
                 serviceMode={serviceMode}
-                onSelectServiceMode={setServiceMode}
+                onSelectServiceMode={handleShoeModeChange}
               />
             )}
 

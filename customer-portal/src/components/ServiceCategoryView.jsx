@@ -438,7 +438,8 @@ const SPECIALTY_KEYS = ['bags', 'shoes', 'seats', 'gifts', 'pets', 'sofas'];
 
 export default function ServiceCategoryView({ 
   categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart, theme, setTheme,
-  bagsStudioMode = 'shop', setBagsStudioMode 
+  bagsStudioMode = 'shop', setBagsStudioMode,
+  shoesStudioMode = 'shop', setShoesStudioMode
 }) {
   if (categoryKey === 'bags') {
     return (
@@ -468,6 +469,8 @@ export default function ServiceCategoryView({
         tailors={tailors}
         onSelectCategory={onSelectCategory}
         onAddToCart={onAddToCart}
+        shoesStudioMode={shoesStudioMode}
+        setShoesStudioMode={setShoesStudioMode}
       />
     );
   }

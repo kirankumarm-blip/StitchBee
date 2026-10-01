@@ -269,23 +269,23 @@ export default function ShoesSlippersExperience({
               type="button"
               onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
               className={`btn ${serviceMode === 'buying' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700, borderRadius: '10px' }}
             >
-              🛍️ Bespoke Shoes & Catalog
+              🛍️ Shop & Create (Bespoke)
             </button>
             <button
               type="button"
               onClick={() => onSelectServiceMode && onSelectServiceMode('alteration')}
               className={`btn ${serviceMode === 'alteration' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '12px 22px', fontSize: '0.9rem', fontWeight: 700 }}
+              style={{ padding: '12px 24px', fontSize: '0.9rem', fontWeight: 700, borderRadius: '10px' }}
             >
-              ✂️ Shoe Repair & Resoling
+              ✂️ Repair & Restore (Cobbler Care)
             </button>
             <button
               type="button"
               onClick={() => onSelectServiceMode && onSelectServiceMode('partner')}
               className={`btn ${serviceMode === 'partner' ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+              style={{ padding: '12px 20px', fontSize: '0.9rem', fontWeight: 700, borderRadius: '10px' }}
             >
               📍 Find Cobbler Specialists
             </button>
