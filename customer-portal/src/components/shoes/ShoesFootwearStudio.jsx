@@ -284,57 +284,7 @@ export default function ShoesFootwearStudio({
         </div>
       )}
 
-      {/* SUB-NAVIGATION BAR (Immediately below existing header) */}
-      <div className="sf-subnav-bar">
-        <div className="sf-container sf-subnav-inner">
-          <div className="sf-subnav-pills">
-            <button 
-              className={`sf-mode-pill ${activeMode === 'shop' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveMode('shop');
-                if (onSwitchMode) onSwitchMode('shop');
-              }}
-            >
-              <ShoppingBag size={16} />
-              <span>Shop & Create Custom</span>
-            </button>
-            <button 
-              className={`sf-mode-pill ${activeMode === 'restore' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveMode('restore');
-                if (onSwitchMode) onSwitchMode('restore');
-              }}
-            >
-              <Wrench size={16} />
-              <span>Repair & Restore</span>
-            </button>
-          </div>
 
-          <div className="sf-subnav-quick-actions">
-            <button 
-              className="sf-quick-badge-btn"
-              onClick={() => scrollToId('sf-featured-collection')}
-              title="View Collection"
-            >
-              <span>Ready Pairs</span>
-              <span className="sf-badge-count">{productsList.length}</span>
-            </button>
-
-            <button 
-              className="sf-quick-badge-btn"
-              onClick={() => {
-                setIsWizardOpen(true);
-                setWizardStep(1);
-                setWizardSuccessData(null);
-              }}
-              style={{ borderColor: 'var(--sf-pink)', color: 'var(--sf-pink)' }}
-            >
-              <Scissors size={14} />
-              <span>Design Bespoke</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
       {/* ========================================================================= */}
       {/* MODE 1: SHOP & CREATE CUSTOM FOOTWEAR                                    */}
