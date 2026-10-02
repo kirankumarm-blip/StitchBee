@@ -3,13 +3,13 @@
 
 export const SHOE_CATEGORIES = [
   { id: 'all', label: 'All Footwear', singular: 'Footwear' },
-  { id: 'mens', label: "Men's Shoes", singular: 'Men\'s Shoes', sub: 'Formal, casual & leather shoes', img: '/prod_shoe_formal.jpg', action: 'Explore →' },
-  { id: 'womens', label: "Women's Shoes", singular: 'Women\'s Shoes', sub: 'Heels, flats & leather footwear', img: '/prod_shoe_heels.jpg', action: 'Explore →' },
-  { id: 'sneakers', label: 'Sneakers', singular: 'Sneakers', sub: 'Sports, casual & lifestyle sneakers', img: '/prod_shoe_urban_sneaker.jpg', action: 'Explore →' },
-  { id: 'sandals', label: 'Sandals', singular: 'Sandals', sub: 'Leather sandals & everyday footwear', img: '/prod_shoe_sandals.jpg', action: 'Explore →' },
-  { id: 'slippers', label: 'Slippers', singular: 'Slippers', sub: 'Comfort slippers & home footwear', img: '/shoef_c3.jpg', action: 'Explore →' },
-  { id: 'boots', label: 'Boots', singular: 'Boots', sub: 'Ankle & premium boots', img: '/shoef_c10.jpg', action: 'Explore →' },
-  { id: 'custom', label: 'Custom Design', singular: 'Custom Design', sub: 'Your design, our craft', img: '/footwear_concept_sketch.jpg', action: 'Start Designing →', isCustom: true }
+  { id: 'mens', label: "Men's Shoes", singular: 'Men\'s Shoes', sub: 'Formal, casual & leather shoes', img: '/shoes_categories/MensShoe.png', action: 'Explore →' },
+  { id: 'womens', label: "Women's Shoes", singular: 'Women\'s Shoes', sub: 'Heels, flats & trendy footwear', img: '/shoes_categories/WomensShoes.png', action: 'Explore →' },
+  { id: 'sneakers', label: 'Sneakers', singular: 'Sneakers', sub: 'Sports, casual & lifestyle sneakers', img: '/shoes_categories/Sneakers.png', action: 'Explore →' },
+  { id: 'sandals', label: 'Sandals', singular: 'Sandals', sub: 'Leather sandals & everyday footwear', img: '/shoes_categories/Sandals.png', action: 'Explore →' },
+  { id: 'slippers', label: 'Slippers', singular: 'Slippers', sub: 'Comfort slippers & home footwear', img: '/shoes_categories/Slippers.png', action: 'Explore →' },
+  { id: 'boots', label: 'Boots', singular: 'Boots', sub: 'Ankle & premium boots', img: '/shoes_categories/Boots.png', action: 'Explore →' },
+  { id: 'custom', label: 'Custom Design', singular: 'Custom Design', sub: 'Your design, our craft', img: '/shoes_categories/CustomDesigns.png', action: 'Start Designing →', isCustom: true }
 ];
 
 export const ALL_SHOE_PRODUCTS = [

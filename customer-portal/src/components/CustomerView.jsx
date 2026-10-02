@@ -18,27 +18,27 @@ const resolveInspirationImage = (inputUrl) => {
   const lower = trimmed.toLowerCase();
   
   if (lower.includes('bridal 5.jpg') || lower.includes('bridal%205.jpg')) return './br_bridal 5.jpg';
-  if (lower.includes('bridal2.jpg')) return './br_bridal2.jpg';
-  if (lower.includes('bridal3.jpg')) return './br_bridal3.jpg';
-  if (lower.includes('bridal4.jpg')) return './br_bridal4.jpg';
-  if (lower.includes('bridal6.jpg')) return './br_bridal6.jpg';
-  if (lower.includes('bridal7.jpg')) return './br_bridal7.jpg';
-  if (lower.includes('b1.jpg')) return './br_b1.jpg';
-  if (lower.includes('b2.jpg')) return './br_b2.jpg';
+  if (lower.includes('bridal2.jpg')) return '/br_bridal2.jpg';
+  if (lower.includes('bridal3.jpg')) return '/br_bridal3.jpg';
+  if (lower.includes('bridal4.jpg')) return '/br_bridal4.jpg';
+  if (lower.includes('bridal6.jpg')) return '/br_bridal6.jpg';
+  if (lower.includes('bridal7.jpg')) return '/br_bridal7.jpg';
+  if (lower.includes('b1.jpg')) return '/br_b1.jpg';
+  if (lower.includes('b2.jpg')) return '/br_b2.jpg';
   
-  if (lower.includes('bridalcollection.jpg')) return './bridalCollection.jpg';
-  if (lower.includes('kidscollection.jpg')) return './kidsCollection.jpg';
-  if (lower.includes('luxurycollection.jpg')) return './luxuryCollection.jpg';
+  if (lower.includes('bridalcollection.jpg')) return '/bridalCollection.jpg';
+  if (lower.includes('kidscollection.jpg')) return '/kidsCollection.jpg';
+  if (lower.includes('luxurycollection.jpg')) return '/luxuryCollection.jpg';
   if (lower.includes('mens collection.jpg') || lower.includes('mens%20collection.jpg') || lower.includes('menscollection.jpg')) return './Mens Collection.jpg';
-  if (lower.includes('womenscollection.jpg')) return './womensCollection.jpg';
+  if (lower.includes('womenscollection.jpg')) return '/womensCollection.jpg';
   
-  if (lower.includes('men1.jpg')) return './men1.jpg';
-  if (lower.includes('k1.jpg')) return './k_k1.jpg';
-  if (lower.includes('k2.jpg')) return './k_k2.jpg';
-  if (lower.includes('k3.jpg')) return './k_k3.jpg';
-  if (lower.includes('k4.jpg')) return './k_k4.jpg';
-  if (lower.includes('k5.jpg')) return './k_k5.jpg';
-  if (lower.includes('k6.jpg')) return './k_k6.jpg';
+  if (lower.includes('men1.jpg')) return '/men1.jpg';
+  if (lower.includes('k1.jpg')) return '/k_k1.jpg';
+  if (lower.includes('k2.jpg')) return '/k_k2.jpg';
+  if (lower.includes('k3.jpg')) return '/k_k3.jpg';
+  if (lower.includes('k4.jpg')) return '/k_k4.jpg';
+  if (lower.includes('k5.jpg')) return '/k_k5.jpg';
+  if (lower.includes('k6.jpg')) return '/k_k6.jpg';
   
   if (trimmed.startsWith('http') || trimmed.startsWith('./') || trimmed.startsWith('/')) {
     return trimmed;
@@ -350,7 +350,7 @@ function WizardGoogleMap({ searchCoords, locationName, tailors, selectedTailor, 
 
 export default function CustomerView({ 
   tailors, orders, addOrder, updateOrderStatus, ledger, setLedger, banners, articles, currentUser,
-  initialCategory = 'all', initialHub = 'tailors', onLoginRequired,
+  initialCategory = 'all', initialHub = 'home', onLoginRequired,
   onLogout, setRole, setCustomerHub, setCustomerCategory, theme, setTheme
 }) {
   const navigate = useNavigate();
@@ -552,7 +552,7 @@ export default function CustomerView({
   // Dynamic Hero Card Background Image Rotation (every 10s)
   const [heroBgIdx, setHeroBgIdx] = useState(0);
   const [categoriesExpanded, setCategoriesExpanded] = useState(false);
-  const heroBgs = ['./card_bg1.png', './card_bg2.jpg', './card_bg3.jpg', './card_bg4.jpg'];
+  const heroBgs = ['/card_bg1.png', '/card_bg2.jpg', '/card_bg3.jpg', '/card_bg4.jpg'];
 
   useEffect(() => {
     if (activeHub !== 'home') return;
@@ -578,7 +578,10 @@ export default function CustomerView({
   // Sync URL route to selectedCategory, activeHub, bagsStudioMode, and shoesStudioMode
   useEffect(() => {
     const path = location.pathname;
-    if (path === '/bags') {
+    if (path === '/' || path === '') {
+      setActiveHub('home');
+      setSelectedCategory('all');
+    } else if (path === '/bags') {
       setSelectedCategory('bags');
       setActiveHub('category-landing');
       setBagsStudioMode('shop');
@@ -1151,13 +1154,13 @@ export default function CustomerView({
     { id: 'bridal', label: "Bridal", desc: "Royal Lehengas, Heavy Embroidery", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=300&q=80" },
     { id: 'kids', label: "Kids", desc: "Children Dresses, Frocks, Uniforms", img: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=300&q=80" },
     { id: 'alterations', label: "Alterations", desc: "Resize, Repair & Hemming", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80" },
-    { id: 'uniforms', label: "Uniforms", desc: "Corporate & School Uniforms", img: "./Uniform.png" },
+    { id: 'uniforms', label: "Uniforms", desc: "Corporate & School Uniforms", img: "/Uniform.png" },
     { id: 'bags', label: "Bags And Leathers", desc: "Bespoke Totes, Laptop Bags", img: "./Bags And Leather.png" },
     { id: 'shoes', label: "Shoes And Slippers", desc: "Handcrafted Footwear & Slides", img: "./Shoes And Slippers.png" },
     { id: 'seats', label: "Vehicle Seat Covers", desc: "Custom Car & Bike Seat Covers", img: "./Vehicle Seat Covers.png" },
     { id: 'designers', label: "Custom Design", desc: "Consult Certified Designers", img: "./Custom Design.png" },
-    { id: 'gifts', label: "Hand Made Gifts", desc: "Custom Fabric Crafts & Gift Sets", img: "./handmade_gifts.jpg" },
-    { id: 'pets', label: "Pet Outfits", desc: "Custom Costumes & Pet Harnesses", img: "./Pets.png" },
+    { id: 'gifts', label: "Hand Made Gifts", desc: "Custom Fabric Crafts & Gift Sets", img: "/handmade_gifts.jpg" },
+    { id: 'pets', label: "Pet Outfits", desc: "Custom Costumes & Pet Harnesses", img: "/Pets.png" },
     { id: 'sofas', label: "Sofas", desc: "Custom Sofa Covers & Cushion Repair", img: "./Vehicle Seat Covers.png" }
   ];
 
@@ -3865,7 +3868,7 @@ export default function CustomerView({
 
                     {/* Middle stack image */}
                     <div style={{ flex: '0 0 160px', height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src="./pink_fabrics_rolls.png" alt="Fabrics Stack" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                      <img src="/pink_fabrics_rolls.png" alt="Fabrics Stack" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                     </div>
 
                     {/* Right checkbox card */}
@@ -4810,7 +4813,7 @@ export default function CustomerView({
                   ],
                   portfolio: [
                     { title: 'Aari Work Silk Blouse', image: './bridal 5.jpg' },
-                    { title: 'Velvet Bridal Lehenga', image: './bridal2.jpg' }
+                    { title: 'Velvet Bridal Lehenga', image: '/bridal2.jpg' }
                   ]
                 },
                 { 
@@ -4882,7 +4885,7 @@ export default function CustomerView({
                     { name: 'Anand Kumar', rating: 5, comment: 'Super quick alteration and fitting.', date: '2026-06-02' }
                   ],
                   portfolio: [
-                    { title: 'Formal Alterations', image: './step_tailor.jpg' }
+                    { title: 'Formal Alterations', image: '/step_tailor.jpg' }
                   ]
                 },
                 { 
@@ -5609,18 +5612,18 @@ export default function CustomerView({
             
             <div className="categories-grid-split">
               {[
-                { name: "Men's Wear", img: "./Men.png", price: "399", cat: "mens", sub: "Suits, Kurtas, Shirts & more", icon: <User size={16} /> },
-                { name: "Women's Wear", img: "./Women.png", price: "499", cat: "womens", sub: "Sarees, Dresses, Kurtis & more", icon: <Heart size={16} /> },
-                { name: "Bridal Wear", img: "./Bridal.png", price: "1,999", cat: "bridal", sub: "Lehenga, Saree, Gown & more", icon: <Sparkles size={16} /> },
-                { name: "Kids Wear", img: "./Kids.png", price: "349", cat: "kids", sub: "Ethnic, Western, Party & more", icon: <Star size={16} /> },
-                { name: "Alterations", img: "./Alteration.png", price: "149", cat: "alterations", sub: "Perfect Fit, Repairs & more", icon: <Scissors size={16} /> },
-                { name: "Uniforms", img: "./Uniform.png", price: "349", cat: "uniforms", sub: "School, Corporate & Industrial", icon: <Layers size={16} /> },
+                { name: "Men's Wear", img: "/Men.png", price: "399", cat: "mens", sub: "Suits, Kurtas, Shirts & more", icon: <User size={16} /> },
+                { name: "Women's Wear", img: "/Women.png", price: "499", cat: "womens", sub: "Sarees, Dresses, Kurtis & more", icon: <Heart size={16} /> },
+                { name: "Bridal Wear", img: "/Bridal.png", price: "1,999", cat: "bridal", sub: "Lehenga, Saree, Gown & more", icon: <Sparkles size={16} /> },
+                { name: "Kids Wear", img: "/Kids.png", price: "349", cat: "kids", sub: "Ethnic, Western, Party & more", icon: <Star size={16} /> },
+                { name: "Alterations", img: "/Alteration.png", price: "149", cat: "alterations", sub: "Perfect Fit, Repairs & more", icon: <Scissors size={16} /> },
+                { name: "Uniforms", img: "/Uniform.png", price: "349", cat: "uniforms", sub: "School, Corporate & Industrial", icon: <Layers size={16} /> },
                 { name: "Bags & Leather", img: "./Bags And Leather.png", price: "699", cat: "bags", sub: "Custom Bags, Wallets & more", icon: <Shield size={16} /> },
                 { name: "Shoes & Slippers", img: "./Shoes And Slippers.png", price: "499", cat: "shoes", sub: "Custom Shoes, Sandals & more", icon: <Sliders size={16} /> },
                 { name: "Vehicle Seat Covers", img: "./Vehicle Seat Covers.png", price: "799", cat: "seats", sub: "Premium leather & fabric covers", icon: <Truck size={16} /> },
                 { name: "Custom Design", img: "./Custom Design.png", price: "999", cat: "designers", sub: "Bespoke tailoring design layouts", icon: <Upload size={16} /> },
-                { name: "Hand Made Gifts", img: "./handmade_gifts.jpg", price: "349", cat: "gifts", sub: "Personalized crafts & keepsakes", icon: <Gift size={16} /> },
-                { name: "Pet Outfits", img: "./Pets.png", price: "299", cat: "pets", sub: "Cute custom outfits & accessories", icon: <Sparkles size={16} /> }
+                { name: "Hand Made Gifts", img: "/handmade_gifts.jpg", price: "349", cat: "gifts", sub: "Personalized crafts & keepsakes", icon: <Gift size={16} /> },
+                { name: "Pet Outfits", img: "/Pets.png", price: "299", cat: "pets", sub: "Cute custom outfits & accessories", icon: <Sparkles size={16} /> }
               ].slice(0, categoriesExpanded ? undefined : 8).map((category, idx) => (
                 <div key={idx} className="category-card-split" onClick={() => {
                   if (category.cat === 'designers') {
@@ -8750,10 +8753,10 @@ export default function CustomerView({
               <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '16px', borderLeft: '3px solid var(--primary)', paddingLeft: '10px' }}>Trending Design Concepts</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '20px' }}>
                 {[
-                  { title: 'Minimal Bridal Lehenga', desc: 'Luxury silk drape with delicate gold borders and tone-on-tone fine thread embroidery.', img: './br_b1.jpg', tag: 'Wedding' },
-                  { title: 'Royal Lucknowi Ghagra', desc: 'Intricate georgette lehenga showcasing heavy ivory Chikankari and pearl accents.', img: './br_b2.jpg', tag: 'Royal Bridal' },
-                  { title: 'Velvet Zardozi Couture', desc: 'Plush velvet panels hand-embroidered with classic gold thread and antique metallic motifs.', img: './br_bridal2.jpg', tag: 'Luxury Velvet' },
-                  { title: 'Pastel Organza Lehenga', desc: 'Muted champagne silk textures styled with floral bootis and matching organza dupattas.', img: './br_bridal3.jpg', tag: 'Pastel Trends' }
+                  { title: 'Minimal Bridal Lehenga', desc: 'Luxury silk drape with delicate gold borders and tone-on-tone fine thread embroidery.', img: '/br_b1.jpg', tag: 'Wedding' },
+                  { title: 'Royal Lucknowi Ghagra', desc: 'Intricate georgette lehenga showcasing heavy ivory Chikankari and pearl accents.', img: '/br_b2.jpg', tag: 'Royal Bridal' },
+                  { title: 'Velvet Zardozi Couture', desc: 'Plush velvet panels hand-embroidered with classic gold thread and antique metallic motifs.', img: '/br_bridal2.jpg', tag: 'Luxury Velvet' },
+                  { title: 'Pastel Organza Lehenga', desc: 'Muted champagne silk textures styled with floral bootis and matching organza dupattas.', img: '/br_bridal3.jpg', tag: 'Pastel Trends' }
                 ].map((tr, idx) => (
                   <div key={idx} className="glass-card" style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' }}>
                     <div style={{ height: '180px', borderRadius: '6px', overflow: 'hidden', position: 'relative', background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -8961,34 +8964,34 @@ export default function CustomerView({
       {activeHub === 'articles' && (() => {
         const localArticles = [
           // Fabric Knowledge
-          { id: 'f1', title: 'Wool vs Linen: Choosing the Right Weight', category: 'Fabric Guides', author: 'Vikram Das', reads: 1420, img: './fab6.jpg', body: 'Wool and Linen represent two extremes of the fabric spectrum. While wool excels in cold temperatures due to its high insulation and heat-trapping crimps, linen is the ultimate summer champion. Sourced from flax fibers, linen features a hollow core that allows maximum breathability and moisture-wicking. When choosing between them, consider the occasion and the climate: suiting wool (280-340 GSM) provides structural drape, while lightweight linen (120-180 GSM) is ideal for casual shirts and relaxed trousers.' },
-          { id: 'f2', title: 'Best Summer Fabrics for Tropical Climates', category: 'Fabric Guides', author: 'Priya Sharma', reads: 980, img: './fab2.jpg', body: 'Dressing for high heat requires lightweight, breathable fibers. The best fabrics for tropical summers include Giza Cotton, Belgian Flax Linen, and lightweight Chanderi silks. Avoid synthetic materials like polyester, which trap heat and cause perspiration. Stick to light colors like lavender, sky blue, and pastel pink, which reflect light rather than absorb it.' },
-          { id: 'f3', title: 'Silk Types Explained: Banarasi to Chanderi', category: 'Fabric Guides', author: 'Sneha Reddy', reads: 2410, img: './brf_fa2.jpg', body: 'Silks carry a rich legacy in Indian tailoring. Banarasi silk is characterized by its heavy gold zari brocade work and metallic sheets, making it ideal for bridal lehengas. Chanderi silk is a lightweight blend of cotton and silk yarn, offering a sheer texture and glossy finish suitable for summer festivals. Kanjeevaram silk is double-threaded and heavy, providing excellent structural drape for traditional sarees.' },
-          { id: 'f4', title: 'Understanding Cotton GSM: Weave & Weights', category: 'Fabric Guides', author: 'Vikram Das', reads: 850, img: './fab3.jpg', body: 'GSM stands for Grams per Square Meter. It measures the weight and thickness of a fabric. For cotton, 50-100 GSM represents sheer, lightweight fabric (like lawn or voile), ideal for linings and summer slips. 100-150 GSM is medium weight, used for standard shirts and blouses. 150-250+ GSM is heavy weight, perfect for structured trousers, jackets, and winter kurtas.' },
-          { id: 'f5', title: 'How to Choose the Perfect Bridal Lehenga Fabric', category: 'Fabric Guides', author: 'Malini Iyer', reads: 3200, img: './brf_fa5.jpg', body: 'Your bridal lehenga drape is determined entirely by the base fabric. Velvet is heavy, royal, and holds heavy zardozi embroidery without sagging. Pure raw silk offers a beautiful natural sheen and holds structure well, ideal for classic A-line flares. Georgette and net are lightweight, providing a soft, flowy, and highly romantic silhouette.' },
-          { id: 'f6', title: 'Fabric Care Guide: Preservation & Ironing Tips', category: 'Fabric Guides', author: 'Amit Patel', reads: 1120, img: './fab5.jpg', body: 'Premium fabrics require proper care. Pure silk should always be dry cleaned and stored in soft muslin bags to avoid moisture damage. Linen can be machine-washed but should be ironed while slightly damp to smooth out deep creases. Wool garments must be stored with cedar balls and dry cleaned to preserve natural fibers.' },
+          { id: 'f1', title: 'Wool vs Linen: Choosing the Right Weight', category: 'Fabric Guides', author: 'Vikram Das', reads: 1420, img: '/fab6.jpg', body: 'Wool and Linen represent two extremes of the fabric spectrum. While wool excels in cold temperatures due to its high insulation and heat-trapping crimps, linen is the ultimate summer champion. Sourced from flax fibers, linen features a hollow core that allows maximum breathability and moisture-wicking. When choosing between them, consider the occasion and the climate: suiting wool (280-340 GSM) provides structural drape, while lightweight linen (120-180 GSM) is ideal for casual shirts and relaxed trousers.' },
+          { id: 'f2', title: 'Best Summer Fabrics for Tropical Climates', category: 'Fabric Guides', author: 'Priya Sharma', reads: 980, img: '/fab2.jpg', body: 'Dressing for high heat requires lightweight, breathable fibers. The best fabrics for tropical summers include Giza Cotton, Belgian Flax Linen, and lightweight Chanderi silks. Avoid synthetic materials like polyester, which trap heat and cause perspiration. Stick to light colors like lavender, sky blue, and pastel pink, which reflect light rather than absorb it.' },
+          { id: 'f3', title: 'Silk Types Explained: Banarasi to Chanderi', category: 'Fabric Guides', author: 'Sneha Reddy', reads: 2410, img: '/brf_fa2.jpg', body: 'Silks carry a rich legacy in Indian tailoring. Banarasi silk is characterized by its heavy gold zari brocade work and metallic sheets, making it ideal for bridal lehengas. Chanderi silk is a lightweight blend of cotton and silk yarn, offering a sheer texture and glossy finish suitable for summer festivals. Kanjeevaram silk is double-threaded and heavy, providing excellent structural drape for traditional sarees.' },
+          { id: 'f4', title: 'Understanding Cotton GSM: Weave & Weights', category: 'Fabric Guides', author: 'Vikram Das', reads: 850, img: '/fab3.jpg', body: 'GSM stands for Grams per Square Meter. It measures the weight and thickness of a fabric. For cotton, 50-100 GSM represents sheer, lightweight fabric (like lawn or voile), ideal for linings and summer slips. 100-150 GSM is medium weight, used for standard shirts and blouses. 150-250+ GSM is heavy weight, perfect for structured trousers, jackets, and winter kurtas.' },
+          { id: 'f5', title: 'How to Choose the Perfect Bridal Lehenga Fabric', category: 'Fabric Guides', author: 'Malini Iyer', reads: 3200, img: '/brf_fa5.jpg', body: 'Your bridal lehenga drape is determined entirely by the base fabric. Velvet is heavy, royal, and holds heavy zardozi embroidery without sagging. Pure raw silk offers a beautiful natural sheen and holds structure well, ideal for classic A-line flares. Georgette and net are lightweight, providing a soft, flowy, and highly romantic silhouette.' },
+          { id: 'f6', title: 'Fabric Care Guide: Preservation & Ironing Tips', category: 'Fabric Guides', author: 'Amit Patel', reads: 1120, img: '/fab5.jpg', body: 'Premium fabrics require proper care. Pure silk should always be dry cleaned and stored in soft muslin bags to avoid moisture damage. Linen can be machine-washed but should be ironed while slightly damp to smooth out deep creases. Wool garments must be stored with cedar balls and dry cleaned to preserve natural fibers.' },
           
           // Design Inspiration
-          { id: 'd1', title: 'Celebrity Inspired Red Carpet Outfits', category: 'Celebrity Looks', author: 'Rahul Varma', reads: 1850, img: './br_bridal4.jpg', body: 'Red carpet fashion this season is dominated by asymmetrical cuts and bold color blocks. We see a shift towards high-neck collars, sheer organza capes, and metallic thread details. To replicate these looks on a budget, choose premium georgette or crepe fabrics and pair them with a specialized custom design consult.' },
-          { id: 'd2', title: 'Instagram Viral Fashion Trends this Month', category: 'Trending Styles', author: 'Rahul Varma', reads: 2200, img: './w_women1.jpg', body: 'Pastel coordinates, puff-sleeve blouses, and oversized structured blazers are taking over social media feeds. The trend focuses on comfort-meets-elegance. Light lilac and mint green are the colors of the month.' },
-          { id: 'd3', title: 'Pinterest Wedding Boards: Style Inklings', category: 'Wedding Fashion', author: 'Malini Iyer', reads: 3400, img: './br_bridal7.jpg', body: 'Pinterest bridal boards show a clear trend: tone-on-tone embroidery. Instead of contrasting thread, modern brides prefer gold work on gold fabric, or red-on-red. Minimal jewelry and long sheer veils complete this aesthetic.' },
-          { id: 'd4', title: 'Minimalist Bridal Looks for Day Ceremonies', category: 'Wedding Fashion', author: 'Sneha Reddy', reads: 1950, img: './br_b1.jpg', body: 'Daytime weddings call for lighter fabrics that breathe. Pastel organza, lightweight silk, and georgette with minimal sequins are ideal. Muted champagne and peach tones capture natural light beautifully, avoiding the heavy weight of traditional evening bridal wear.' },
-          { id: 'd5', title: 'Korean Fashion Trends: Oversized Silhouettes', category: 'Seasonal Fashion', author: 'Rahul Varma', reads: 2800, img: './w_women2.jpg', body: 'Korean street fashion is all about layering. Oversized trench coats, double-breasted blazers in pastel lavender, and loose linen trousers dominate. The key is balancing the proportions: pair an oversized jacket with a fitted inner top.' },
+          { id: 'd1', title: 'Celebrity Inspired Red Carpet Outfits', category: 'Celebrity Looks', author: 'Rahul Varma', reads: 1850, img: '/br_bridal4.jpg', body: 'Red carpet fashion this season is dominated by asymmetrical cuts and bold color blocks. We see a shift towards high-neck collars, sheer organza capes, and metallic thread details. To replicate these looks on a budget, choose premium georgette or crepe fabrics and pair them with a specialized custom design consult.' },
+          { id: 'd2', title: 'Instagram Viral Fashion Trends this Month', category: 'Trending Styles', author: 'Rahul Varma', reads: 2200, img: '/w_women1.jpg', body: 'Pastel coordinates, puff-sleeve blouses, and oversized structured blazers are taking over social media feeds. The trend focuses on comfort-meets-elegance. Light lilac and mint green are the colors of the month.' },
+          { id: 'd3', title: 'Pinterest Wedding Boards: Style Inklings', category: 'Wedding Fashion', author: 'Malini Iyer', reads: 3400, img: '/br_bridal7.jpg', body: 'Pinterest bridal boards show a clear trend: tone-on-tone embroidery. Instead of contrasting thread, modern brides prefer gold work on gold fabric, or red-on-red. Minimal jewelry and long sheer veils complete this aesthetic.' },
+          { id: 'd4', title: 'Minimalist Bridal Looks for Day Ceremonies', category: 'Wedding Fashion', author: 'Sneha Reddy', reads: 1950, img: '/br_b1.jpg', body: 'Daytime weddings call for lighter fabrics that breathe. Pastel organza, lightweight silk, and georgette with minimal sequins are ideal. Muted champagne and peach tones capture natural light beautifully, avoiding the heavy weight of traditional evening bridal wear.' },
+          { id: 'd5', title: 'Korean Fashion Trends: Oversized Silhouettes', category: 'Seasonal Fashion', author: 'Rahul Varma', reads: 2800, img: '/w_women2.jpg', body: 'Korean street fashion is all about layering. Oversized trench coats, double-breasted blazers in pastel lavender, and loose linen trousers dominate. The key is balancing the proportions: pair an oversized jacket with a fitted inner top.' },
           
           // Stitching Education
-          { id: 's1', title: 'How Perfect Measurements Work: 3D vs Tape', category: 'Tailoring Tips', author: 'Rajesh Kumar', reads: 1600, img: './why_join_4.png', body: 'Traditional measuring uses a tape, which is subject to human error and posture shifts. Modern digital custom shops use multi-point photos or 3D coordinate mapping to calculate precise chest drops, shoulder angles, and arm curves. For the best fit, stand naturally with feet shoulder-width apart and breathe regularly during measurements.' },
-          { id: 's2', title: '5 Common Stitching Mistakes & How to Avoid Them', category: 'Tailoring Tips', author: 'Rajesh Kumar', reads: 1250, img: './why_join_3.jpg', body: 'The most common mistakes include: choosing the wrong fabric drape for a pattern (e.g. using stiff cotton for a flowy gown), ignoring seam allowances, incorrect shoulder drops, tight armholes, and not checking the lining weight. Always discuss fabric mapping with your tailor before cutting.' },
-          { id: 's3', title: 'Suit Fitting Guide: Shoulder Seams & Hemlines', category: 'Tailoring Tips', author: 'Amit Patel', reads: 1450, img: './mens_tailoring.jpg', body: 'A perfect suit starts at the shoulders. The shoulder seam should lie flat and align exactly where your arm meets the collarbone. The jacket hemline should cover your seat, and the trouser bottom should have a slight break over the shoe lace.' },
-          { id: 's4', title: 'Blouse Fitting Secrets: Dart Placements', category: 'Tailoring Tips', author: 'Sneha Reddy', reads: 3100, img: './why_join_5.jpg', body: 'A saree blouse fit depends entirely on the apex point and dart placement. Double darts create a structured cup shape, while single darts offer a softer fit. Ensure the neck drop does not gap when you lean forward, and choose a lining that matches the stretch of the blouse fabric.' },
-          { id: 's5', title: 'Alteration Tips: Re-adjusting Seams at Home', category: 'Tailoring Tips', author: 'Amit Patel', reads: 950, img: './alterations_fit_v2.jpg', body: 'For simple adjustments, search for the side seam stitch. You can easily let out or take in up to 1 inch if the tailor left a seam allowance. Always use a seam ripper to avoid tearing the fabric fibers, and iron the new seam flat to remove needle holes.' },
+          { id: 's1', title: 'How Perfect Measurements Work: 3D vs Tape', category: 'Tailoring Tips', author: 'Rajesh Kumar', reads: 1600, img: '/why_join_4.png', body: 'Traditional measuring uses a tape, which is subject to human error and posture shifts. Modern digital custom shops use multi-point photos or 3D coordinate mapping to calculate precise chest drops, shoulder angles, and arm curves. For the best fit, stand naturally with feet shoulder-width apart and breathe regularly during measurements.' },
+          { id: 's2', title: '5 Common Stitching Mistakes & How to Avoid Them', category: 'Tailoring Tips', author: 'Rajesh Kumar', reads: 1250, img: '/why_join_3.jpg', body: 'The most common mistakes include: choosing the wrong fabric drape for a pattern (e.g. using stiff cotton for a flowy gown), ignoring seam allowances, incorrect shoulder drops, tight armholes, and not checking the lining weight. Always discuss fabric mapping with your tailor before cutting.' },
+          { id: 's3', title: 'Suit Fitting Guide: Shoulder Seams & Hemlines', category: 'Tailoring Tips', author: 'Amit Patel', reads: 1450, img: '/mens_tailoring.jpg', body: 'A perfect suit starts at the shoulders. The shoulder seam should lie flat and align exactly where your arm meets the collarbone. The jacket hemline should cover your seat, and the trouser bottom should have a slight break over the shoe lace.' },
+          { id: 's4', title: 'Blouse Fitting Secrets: Dart Placements', category: 'Tailoring Tips', author: 'Sneha Reddy', reads: 3100, img: '/why_join_5.jpg', body: 'A saree blouse fit depends entirely on the apex point and dart placement. Double darts create a structured cup shape, while single darts offer a softer fit. Ensure the neck drop does not gap when you lean forward, and choose a lining that matches the stretch of the blouse fabric.' },
+          { id: 's5', title: 'Alteration Tips: Re-adjusting Seams at Home', category: 'Tailoring Tips', author: 'Amit Patel', reads: 950, img: '/alterations_fit_v2.jpg', body: 'For simple adjustments, search for the side seam stitch. You can easily let out or take in up to 1 inch if the tailor left a seam allowance. Always use a seam ripper to avoid tearing the fabric fibers, and iron the new seam flat to remove needle holes.' },
           
           // Student Learning Hub
-          { id: 'l1', title: 'Beginner Tailoring: Needle Threading & Basics', category: 'Fashion Careers', author: 'Rahul Varma', reads: 750, img: './student_hero_1.jpg', body: 'Learning to stitch starts with machine control. Practice sewing straight lines on paper before using fabric. Learn to wind the bobbin evenly, adjust thread tension, and thread the needle. A standard size 14 needle is perfect for starting with medium cotton fabrics.' },
-          { id: 'l2', title: 'Pattern Making Basics: Paper Drafting Layouts', category: 'Fashion Careers', author: 'Ananya Sen', reads: 880, img: './student_hero_4.jpg', body: 'Pattern drafting is translating 3D body shapes onto 2D paper sheets. Learn to draft basic blocks: front bodice, back bodice, sleeve, and skirt. Use French curves to draw smooth armholes and necklines, and always add seam allowances (typically 0.5 inch for necklines, 1 inch for side seams).' },
-          { id: 'l3', title: 'Fashion Sketching: Outfit Proportions & Croquis', category: 'Fashion Careers', author: 'Vikram Das', reads: 1100, img: './student_hero_3.jpg', body: 'Fashion sketching uses a 9-head or 10-head figure ratio to emphasize clothing details. Start with a light wireframe pencil sketch (croquis), map the shoulder and hip slant, and drape the fabric folds naturally over the joints. Shade the fabric creases to simulate drape weight.' },
-          { id: 'l4', title: 'Understanding Fabric Weaves: Plain, Twill, Satin', category: 'Fashion Careers', author: 'Ananya Sen', reads: 620, img: './student_hero_2.jpg', body: 'Fabric feel depends on weave geometry. Plain weave (over-one, under-one) is durable and flat (e.g. linen, canvas). Twill weave has diagonal ridges, making it heavy and stretch-resistant (e.g. denim, gabardine). Satin weave features long thread floats, creating a highly glossy, smooth, but snag-prone surface.' },
-          { id: 'l5', title: 'Stitching Certifications: Ranks & Badges Guide', category: 'Fashion Careers', author: 'Priya Sharma', reads: 530, img: './student_hero_5.jpg', body: 'StitchBee Academy ranks certify tailoring skill sets. Bronze requires simple seams and alterations. Silver includes shirts and blouses. Gold covers double-breasted suits and bridal lehengas. Complete practical exams to unlock higher partner payouts.' },
-          { id: 'l6', title: 'Delivery Etiquette: Handling Premium Garments', category: 'Fashion Careers', author: 'Rajesh Kumar', reads: 400, img: './delivery_works_3.jpg', body: 'Fashion delivery is about presentation. Premium garments must be transported on hangers inside dust-proof garment bags. Never fold a structured blazer or heavily embroidered lehenga. Greet the client politely and offer fitting assistance if required.' }
+          { id: 'l1', title: 'Beginner Tailoring: Needle Threading & Basics', category: 'Fashion Careers', author: 'Rahul Varma', reads: 750, img: '/student_hero_1.jpg', body: 'Learning to stitch starts with machine control. Practice sewing straight lines on paper before using fabric. Learn to wind the bobbin evenly, adjust thread tension, and thread the needle. A standard size 14 needle is perfect for starting with medium cotton fabrics.' },
+          { id: 'l2', title: 'Pattern Making Basics: Paper Drafting Layouts', category: 'Fashion Careers', author: 'Ananya Sen', reads: 880, img: '/student_hero_4.jpg', body: 'Pattern drafting is translating 3D body shapes onto 2D paper sheets. Learn to draft basic blocks: front bodice, back bodice, sleeve, and skirt. Use French curves to draw smooth armholes and necklines, and always add seam allowances (typically 0.5 inch for necklines, 1 inch for side seams).' },
+          { id: 'l3', title: 'Fashion Sketching: Outfit Proportions & Croquis', category: 'Fashion Careers', author: 'Vikram Das', reads: 1100, img: '/student_hero_3.jpg', body: 'Fashion sketching uses a 9-head or 10-head figure ratio to emphasize clothing details. Start with a light wireframe pencil sketch (croquis), map the shoulder and hip slant, and drape the fabric folds naturally over the joints. Shade the fabric creases to simulate drape weight.' },
+          { id: 'l4', title: 'Understanding Fabric Weaves: Plain, Twill, Satin', category: 'Fashion Careers', author: 'Ananya Sen', reads: 620, img: '/student_hero_2.jpg', body: 'Fabric feel depends on weave geometry. Plain weave (over-one, under-one) is durable and flat (e.g. linen, canvas). Twill weave has diagonal ridges, making it heavy and stretch-resistant (e.g. denim, gabardine). Satin weave features long thread floats, creating a highly glossy, smooth, but snag-prone surface.' },
+          { id: 'l5', title: 'Stitching Certifications: Ranks & Badges Guide', category: 'Fashion Careers', author: 'Priya Sharma', reads: 530, img: '/student_hero_5.jpg', body: 'StitchBee Academy ranks certify tailoring skill sets. Bronze requires simple seams and alterations. Silver includes shirts and blouses. Gold covers double-breasted suits and bridal lehengas. Complete practical exams to unlock higher partner payouts.' },
+          { id: 'l6', title: 'Delivery Etiquette: Handling Premium Garments', category: 'Fashion Careers', author: 'Rajesh Kumar', reads: 400, img: '/delivery_works_3.jpg', body: 'Fashion delivery is about presentation. Premium garments must be transported on hangers inside dust-proof garment bags. Never fold a structured blazer or heavily embroidered lehenga. Greet the client politely and offer fitting assistance if required.' }
         ];
 
         const categoriesList = [
@@ -9022,7 +9025,7 @@ export default function CustomerView({
             author: 'Editor Pick',
             reads: '4500+',
             body: item.body,
-            img: './br_bridal7.jpg'
+            img: '/br_bridal7.jpg'
           });
         };
 
@@ -9285,7 +9288,7 @@ export default function CustomerView({
                 </div>
               </div>
               <div style={{ height: '280px', borderRadius: '12px', overflow: 'hidden' }}>
-                <img src="./br_bridal6.jpg" alt="Bridal Fashion Trend" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/br_bridal6.jpg" alt="Bridal Fashion Trend" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             </div>
 
@@ -9867,7 +9870,7 @@ export default function CustomerView({
                   
                   {/* Small absolute mannequin illustration */}
                   <img 
-                    src="./media__1782584739193.png" 
+                    src="/media__1782584739193.png" 
                     alt="Mannequin" 
                     style={{ 
                       width: '45px', 

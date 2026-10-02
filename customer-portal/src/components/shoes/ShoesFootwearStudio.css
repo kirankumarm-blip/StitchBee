@@ -507,38 +507,40 @@
 .sf-category-grid-7 {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 16px;
+  gap: 14px;
 }
 
 .sf-cat-card {
   background: var(--sf-warm-card);
-  border: 1.5px solid var(--sf-border);
-  border-radius: var(--sf-radius-md);
+  border: 1px solid var(--sf-border);
+  border-radius: 16px;
+  padding: 8px 8px 16px 8px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: var(--sf-shadow-sm);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
   position: relative;
 }
 
 .sf-cat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: var(--sf-pink);
-  box-shadow: 0 14px 30px rgba(247, 37, 133, 0.12);
+  box-shadow: 0 12px 24px rgba(247, 37, 133, 0.12);
 }
 
 .sf-cat-card.active {
   border-color: var(--sf-pink);
-  box-shadow: 0 0 0 2px var(--sf-pink), 0 12px 25px rgba(247, 37, 133, 0.15);
+  box-shadow: 0 0 0 2px var(--sf-pink), 0 10px 22px rgba(247, 37, 133, 0.15);
 }
 
 .sf-cat-img-box {
   width: 100%;
-  height: 140px;
+  height: 155px;
+  border-radius: 12px;
   overflow: hidden;
-  background: #f1f5f9;
+  background: #f8fafc;
   position: relative;
 }
 
@@ -550,37 +552,40 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 12px;
   transition: transform 0.4s ease;
 }
 
 .sf-cat-card:hover .sf-cat-img-box img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .sf-cat-info {
-  padding: 14px 12px;
+  padding: 12px 6px 0 6px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
 .sf-cat-title {
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 700;
   margin: 0 0 4px;
   color: var(--sf-text-primary);
+  line-height: 1.25;
 }
 
 .sf-cat-desc {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   line-height: 1.35;
   color: var(--sf-text-secondary);
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   flex-grow: 1;
+  min-height: 32px;
 }
 
 .sf-cat-action {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--sf-pink);
   display: inline-flex;

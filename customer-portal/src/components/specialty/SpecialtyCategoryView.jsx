@@ -97,7 +97,7 @@ export default function SpecialtyCategoryView({
       category: productOrConfig.category || activeCategory,
       price: Number(productOrConfig.price) || 2499,
       quantity: productOrConfig.quantity || 1,
-      image: productOrConfig.image || productOrConfig.img || './bagf_fb1.jpg',
+      image: productOrConfig.image || productOrConfig.img || '/bagf_fb1.jpg',
       specs: productOrConfig.specs || productOrConfig.desc || 'Custom Atelier Handcrafted Specification',
       requiresMeasurement: !!productOrConfig.requiresMeasurement
     };
@@ -120,7 +120,7 @@ export default function SpecialtyCategoryView({
       effectivePrice: Number(productOrConfig.effectivePrice || productOrConfig.price) || 2499,
       originalPrice: Number(productOrConfig.originalPrice) || Math.round((Number(productOrConfig.price) || 2499) * 1.4),
       quantity: productOrConfig.quantity || 1,
-      image: productOrConfig.image || productOrConfig.img || './bagf_fb1.jpg',
+      image: productOrConfig.image || productOrConfig.img || '/bagf_fb1.jpg',
       specs: productOrConfig.specs || productOrConfig.details || productOrConfig.description || 'Direct Specialty Checkout',
       requiresMeasurement: !!productOrConfig.requiresMeasurement
     };
@@ -453,7 +453,7 @@ export default function SpecialtyCategoryView({
                       src={item.image} 
                       alt={item.title} 
                       style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }}
-                      onError={(e) => { e.target.src = './bagf_fb1.jpg'; }}
+                      onError={(e) => { e.target.src = '/bagf_fb1.jpg'; }}
                     />
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

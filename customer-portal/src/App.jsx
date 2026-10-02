@@ -623,6 +623,10 @@ export default function App() {
           const custUser = { ...parsed, role: 'customer' };
           setCurrentUser(custUser);
           setRole('customer');
+          if (location.pathname === '/' || !location.pathname) {
+            setCustomerHub('home');
+            setCustomerCategory('all');
+          }
         } else {
           setCurrentUser(null);
           setRole('landing');
@@ -761,12 +765,18 @@ export default function App() {
     setCurrentUser(custUser);
     localStorage.setItem('stitchbee_user', JSON.stringify(custUser));
     setRole('customer');
+    setCustomerHub('home');
+    setCustomerCategory('all');
+    setAuthModalOpen(false);
+    navigate('/');
   };
 
   const handleLogout = () => {
     localStorage.removeItem('stitchbee_user');
     setCurrentUser(null);
     setRole('landing');
+    setCustomerHub('home');
+    navigate('/');
   };
 
   const openAuthModal = (targetRole, tab) => {
@@ -1412,21 +1422,21 @@ export default function App() {
                 {[
                   { 
                     name: "Men's Tailoring", 
-                    img: "./mens_tailoring.jpg", 
+                    img: "/mens_tailoring.jpg", 
                     desc: "Custom shirts, suits, trousers, kurtas & traditional wear.", 
                     cat: "mens",
                     icon: <span style={{ fontSize: '1.2rem', fontWeight: 'bold', lineHeight: 1 }}>♂</span>
                   },
                   { 
                     name: "Women's Tailoring", 
-                    img: "./womens_tailoring_v2.jpg", 
+                    img: "/womens_tailoring_v2.jpg", 
                     desc: "Stitched kurtis, lehengas, suits, and daily-wear ethnic outfits.", 
                     cat: "womens",
                     icon: <span style={{ fontSize: '1.2rem', fontWeight: 'bold', lineHeight: 1 }}>♀</span>
                   },
                   { 
                     name: "Bridal Wear", 
-                    img: "./bridal_wear.jpg", 
+                    img: "/bridal_wear.jpg", 
                     desc: "Exquisite wedding lehengas, heavy embroidered gowns, and luxury wear.", 
                     cat: "bridal",
                     icon: (
@@ -1437,7 +1447,7 @@ export default function App() {
                   },
                   { 
                     name: "Alterations & Fit", 
-                    img: "./alterations_fit_v2.jpg", 
+                    img: "/alterations_fit_v2.jpg", 
                     desc: "Expert alterations, sizing corrections, and perfect custom-fit styling.", 
                     cat: "alterations",
                     icon: (
@@ -1452,7 +1462,7 @@ export default function App() {
                   },
                   { 
                     name: "Uniform Stitching", 
-                    img: "./uniform_stitching.jpg", 
+                    img: "/uniform_stitching.jpg", 
                     desc: "Perfect school, college, corporate and professional uniforms.", 
                     cat: "uniforms",
                     icon: (
@@ -1463,7 +1473,7 @@ export default function App() {
                   },
                   { 
                     name: "Custom Design", 
-                    img: "./custom_design.jpg", 
+                    img: "/custom_design.jpg", 
                     desc: "Collaborate with designers for one-of-a-kind bespoke creations.", 
                     cat: "all",
                     icon: (
@@ -1478,7 +1488,7 @@ export default function App() {
                   },
                   { 
                     name: "Kids Wear", 
-                    img: "./kids_wear_v2.jpg", 
+                    img: "/kids_wear_v2.jpg", 
                     desc: "Comfortable and cute clothes for children of all ages.", 
                     cat: "kids",
                     icon: (
@@ -1492,7 +1502,7 @@ export default function App() {
                   },
                   { 
                     name: "Bags & Leathers", 
-                    img: "./bags_leathers.jpg", 
+                    img: "/bags_leathers.jpg", 
                     desc: "Premium tailored leather jackets, custom travel bags, and goods.", 
                     cat: "bags",
                     icon: (
@@ -1515,7 +1525,7 @@ export default function App() {
                   },
                   { 
                     name: "Vehicle Seat Covers", 
-                    img: "./vehicle_seats.jpg", 
+                    img: "/vehicle_seats.jpg", 
                     desc: "Tailored car & bike seat covers, matching interior trims & styling.", 
                     cat: "seats",
                     icon: (
@@ -1528,7 +1538,7 @@ export default function App() {
                   },
                   {
                     name: "Pets",
-                    img: "./Pets.png",
+                    img: "/Pets.png",
                     desc: "Custom stitched dresses & outfits for your furry friends.",
                     cat: "pets",
                     icon: (
@@ -1542,7 +1552,7 @@ export default function App() {
                   },
                   {
                     name: "Hand Made Gifts",
-                    img: "./handmade_gifts.jpg",
+                    img: "/handmade_gifts.jpg",
                     desc: "Personalized stitching, fabric gifts & embroidered crafts.",
                     cat: "gifts",
                     imgPos: "center 55%",
@@ -1558,7 +1568,7 @@ export default function App() {
                   },
                   {
                     name: "Bulk Orders",
-                    img: "./Uniform.png",
+                    img: "/Uniform.png",
                     desc: "Wholesale uniform stitching, corporate garments & event orders.",
                     cat: "uniforms",
                     icon: (
@@ -1744,7 +1754,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_style.jpg" alt="Select Style" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    <img src="/step_style.jpg" alt="Select Style" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1809,7 +1819,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    <img src="/step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1874,7 +1884,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    <img src="/step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -1939,7 +1949,7 @@ export default function App() {
                   </h3>
 
                   <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="./step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    <img src="/step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
 
                   <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -2048,18 +2058,18 @@ export default function App() {
             <div className="reels-carousel-container">
               <div className="reels-carousel" ref={reelsRef}>
                 {[
-                  { title: "Zardozi Royal Lehenga", designer: "Sneha Reddy (Expert)", price: 8500, cat: "bridal", videoUrl: "./trending_video_1.mp4" },
-                  { title: "Italian Double-Breasted Suit", designer: "Vikram Singh (Expert)", price: 5500, cat: "mens", videoUrl: "./trending_video_2.mp4" },
-                  { title: "Georgette Floral Kurti", designer: "Ananya Pillai (Expert)", price: 1200, cat: "womens", videoUrl: "./trending_video_3.mp4" },
-                  { title: "Padded Silk Blouse", designer: "Sarah Khan (Expert)", price: 1500, cat: "womens", videoUrl: "./trending_video_4.mp4" },
-                  { title: "Classic Oxford Cotton Shirt", designer: "Amit Kumar (Student)", price: 1800, cat: "mens", videoUrl: "./trending_video_5.mp4" },
-                  { title: "Handwoven Chanderi Saree", designer: "Pooja Mehta (Expert)", price: 6200, cat: "womens", videoUrl: "./trending_video_6.mp4" },
-                  { title: "Bespoke Indigo Sherwani", designer: "Rajesh Nair (Expert)", price: 9500, cat: "mens", videoUrl: "./trending_video_7.mp4" },
-                  { title: "Organza Pastel Anarkali", designer: "Kiran Shah (Student)", price: 4800, cat: "womens", videoUrl: "./trending_video_8.mp4" },
-                  { title: "Kid's Velvet Party Suit", designer: "Meena Patel (Expert)", price: 2400, cat: "kids", videoUrl: "./trending_video_9.mp4" },
-                  { title: "Premium Tweed Blazer", designer: "Sanjay Dutta (Expert)", price: 3800, cat: "mens", videoUrl: "./trending_video_10.mp4" },
-                  { title: "Satin Evening Slip Gown", designer: "Nisha Sen (Student)", price: 5200, cat: "womens", videoUrl: "./trending_video_11.mp4" },
-                  { title: "Embroidered Pashmina Shawl", designer: "Harish Gupta (Expert)", price: 7000, cat: "womens", videoUrl: "./trending_video_12.mp4" }
+                  { title: "Zardozi Royal Lehenga", designer: "Sneha Reddy (Expert)", price: 8500, cat: "bridal", videoUrl: "/trending_video_1.mp4" },
+                  { title: "Italian Double-Breasted Suit", designer: "Vikram Singh (Expert)", price: 5500, cat: "mens", videoUrl: "/trending_video_2.mp4" },
+                  { title: "Georgette Floral Kurti", designer: "Ananya Pillai (Expert)", price: 1200, cat: "womens", videoUrl: "/trending_video_3.mp4" },
+                  { title: "Padded Silk Blouse", designer: "Sarah Khan (Expert)", price: 1500, cat: "womens", videoUrl: "/trending_video_4.mp4" },
+                  { title: "Classic Oxford Cotton Shirt", designer: "Amit Kumar (Student)", price: 1800, cat: "mens", videoUrl: "/trending_video_5.mp4" },
+                  { title: "Handwoven Chanderi Saree", designer: "Pooja Mehta (Expert)", price: 6200, cat: "womens", videoUrl: "/trending_video_6.mp4" },
+                  { title: "Bespoke Indigo Sherwani", designer: "Rajesh Nair (Expert)", price: 9500, cat: "mens", videoUrl: "/trending_video_7.mp4" },
+                  { title: "Organza Pastel Anarkali", designer: "Kiran Shah (Student)", price: 4800, cat: "womens", videoUrl: "/trending_video_8.mp4" },
+                  { title: "Kid's Velvet Party Suit", designer: "Meena Patel (Expert)", price: 2400, cat: "kids", videoUrl: "/trending_video_9.mp4" },
+                  { title: "Premium Tweed Blazer", designer: "Sanjay Dutta (Expert)", price: 3800, cat: "mens", videoUrl: "/trending_video_10.mp4" },
+                  { title: "Satin Evening Slip Gown", designer: "Nisha Sen (Student)", price: 5200, cat: "womens", videoUrl: "/trending_video_11.mp4" },
+                  { title: "Embroidered Pashmina Shawl", designer: "Harish Gupta (Expert)", price: 7000, cat: "womens", videoUrl: "/trending_video_12.mp4" }
                 ].map((reel, idx) => (
                   <TrendingReelCard 
                     key={idx}

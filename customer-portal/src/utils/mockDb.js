@@ -189,7 +189,7 @@ export const INITIAL_TAILORS = [
     categories: ['pets'],
     address: 'Whitefield Main Road, Bengaluru',
     coordinates: { x: 90, y: 45 },
-    image: './Pets.png',
+    image: '/Pets.png',
     status: 'approved',
     credits: 140,
     documents: { aadhaar: '2233-4455-6677', pan: 'NKIND2233P', license: 'LIC-PET-5501', gst: '29NKIND2233P1ZR' },
@@ -203,7 +203,7 @@ export const INITIAL_TAILORS = [
       { name: 'Karthik Rao', rating: 5, comment: 'Custom sherwani for our Golden Retriever was the highlight of Diwali!', date: '2026-06-08' }
     ],
     portfolio: [
-      { title: 'Golden Retriever Festive Wear', image: './Pets.png' }
+      { title: 'Golden Retriever Festive Wear', image: '/Pets.png' }
     ]
   },
   {
@@ -666,7 +666,7 @@ export const FABRIC_MARKETPLACE_DATA = {
     },
     women: {
       name: 'Women',
-      image: './womensCollection.jpg',
+      image: '/womensCollection.jpg',
       subcategories: {
         daily: { name: 'Daily Wear', fabricTypes: { cotton: { name: 'Cotton', brands: { fabindia: { name: 'Fabindia', collections: { classic: { name: 'Classic Collection', variants: [{ id: 'w-d-ctn-f-beige', color: 'Beige', price: 499, width: '44 inches', gsm: 120, texture: 'Soft', stretch: 'None', shine: 'None', season: 'Summer', bestFor: 'Kurtis', availability: 'In Stock', pattern: 'Printed', image: 'https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=400&q=80' }] } } } } } } },
         party: {
@@ -686,7 +686,7 @@ export const FABRIC_MARKETPLACE_DATA = {
     },
     bridal: {
       name: 'Bridal',
-      image: './bridalCollection.jpg',
+      image: '/bridalCollection.jpg',
       subcategories: {
         lehenga: {
           name: 'Lehenga',
@@ -706,7 +706,7 @@ export const FABRIC_MARKETPLACE_DATA = {
     },
     kids: {
       name: 'Kids',
-      image: './kidsCollection.jpg',
+      image: '/kidsCollection.jpg',
       subcategories: {
         daily: { name: 'Daily Wear', fabricTypes: { cotton: { name: 'Cotton', brands: { fabindia: { name: 'Fabindia', collections: { classic: { name: 'Classic Collection', variants: [{ id: 'k-d-ctn-f-wht', color: 'White', price: 399, width: '40 inches', gsm: 110, texture: 'Super Soft', stretch: 'Medium', shine: 'None', season: 'Summer', bestFor: 'Kids Frock, Shirt', availability: 'In Stock', pattern: 'Cartoon Print', image: 'https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=400&q=80' }] } } } } } } },
         festive: {
@@ -723,7 +723,7 @@ export const FABRIC_MARKETPLACE_DATA = {
     },
     luxury: {
       name: 'Luxury',
-      image: './luxuryCollection.jpg',
+      image: '/luxuryCollection.jpg',
       subcategories: {
         exclusive: {
           name: 'Exclusive Collection',

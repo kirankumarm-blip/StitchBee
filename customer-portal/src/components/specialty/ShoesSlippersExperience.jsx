@@ -45,7 +45,7 @@ export default function ShoesSlippersExperience({
       name: 'Full-Grain Italian Calfskin',
       type: 'Supple Aniline Finished',
       badge: 'PREMIUM DRESS TIER',
-      image: './shoef_c2.jpg',
+      image: '/shoef_c2.jpg',
       priceTier: 'Included (Base)',
       durability: '5 / 5',
       waterResistance: 'Medium (Wax Protect)',
@@ -57,7 +57,7 @@ export default function ShoesSlippersExperience({
       name: 'Water-Repellent Snuff Suede',
       type: 'Reverse Calf Split',
       badge: 'SUMMER CASUAL',
-      image: './shoef_c3.jpg',
+      image: '/shoef_c3.jpg',
       priceTier: 'Included (Base)',
       durability: '4.5 / 5',
       waterResistance: 'Scotchgard Treated',
@@ -69,7 +69,7 @@ export default function ShoesSlippersExperience({
       name: 'Traditional Oak-Bark Sole Leather',
       type: 'Slow-Tanned Heavy Rind',
       badge: 'GOODYEAR WELT SPEC',
-      image: './shoef_c4.jpg',
+      image: '/shoef_c4.jpg',
       priceTier: '+₹600 Upgrade',
       durability: '5 / 5',
       waterResistance: 'Dense Water Resistant',
@@ -90,8 +90,8 @@ export default function ShoesSlippersExperience({
       rating: 4.9,
       reviewsCount: 142,
       isAssured: true,
-      image: './shoe_c1.jpg',
-      gallery: ['./shoe_c1.jpg', './shoef_c2.jpg', './shoe_c2.jpg', './shoe_c4.jpg'],
+      image: '/shoe_c1.jpg',
+      gallery: ['/shoe_c1.jpg', '/shoef_c2.jpg', '/shoe_c2.jpg', '/shoe_c4.jpg'],
       colors: ['Polished Tan', 'Onyx Jet Black', 'Deep Oxblood'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
       description: 'Cut from a single flawless hide of Italian calfskin. Seamless closed silhouette with closed-channel Goodyear welted oak-bark leather soles.'
@@ -107,8 +107,8 @@ export default function ShoesSlippersExperience({
       rating: 4.8,
       reviewsCount: 89,
       isAssured: true,
-      image: './shoe_c2.jpg',
-      gallery: ['./shoe_c2.jpg', './shoef_c3.jpg', './shoe_c4.jpg'],
+      image: '/shoe_c2.jpg',
+      gallery: ['/shoe_c2.jpg', '/shoef_c3.jpg', '/shoe_c4.jpg'],
       colors: ['Snuff Brown Suede', 'Navy Blue Suede', 'Caramel Calf'],
       sizes: ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10'],
       description: 'Unlined glove-soft suede loafer with padded memory foam insole and hand-stitched beefroll apron. Exceptional sockless comfort.'
@@ -124,8 +124,8 @@ export default function ShoesSlippersExperience({
       rating: 4.9,
       reviewsCount: 218,
       isAssured: true,
-      image: './shoe_c3.jpg',
-      gallery: ['./shoe_c3.jpg', './shoe_c1.jpg', './shoef_c2.jpg'],
+      image: '/shoe_c3.jpg',
+      gallery: ['/shoe_c3.jpg', '/shoe_c1.jpg', '/shoef_c2.jpg'],
       colors: ['Ivory Gold', 'Ruby Velvet', 'Royal Navy'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10'],
       description: 'Handcrafted wedding footwear with authentic zari zardozi embroidery matching groom sherwanis. Padded cushion arch support.'
@@ -141,8 +141,8 @@ export default function ShoesSlippersExperience({
       rating: 4.8,
       reviewsCount: 310,
       isAssured: true,
-      image: './shoe_c6.jpg',
-      gallery: ['./shoe_c6.jpg', './shoe_c7.jpg'],
+      image: '/shoe_c6.jpg',
+      gallery: ['/shoe_c6.jpg', '/shoe_c7.jpg'],
       colors: ['Tan Cork', 'Matte Black', 'Dark Walnut'],
       sizes: ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
       description: 'Ergonomic anatomically contoured cork-latex footbed wrapped in supple cowhide lining with anti-skid ribbed EVA outsoles.'
@@ -158,8 +158,8 @@ export default function ShoesSlippersExperience({
       rating: 4.9,
       reviewsCount: 94,
       isAssured: true,
-      image: './shoe_c4.jpg',
-      gallery: ['./shoe_c4.jpg', './shoe_c1.jpg', './shoef_c4.jpg'],
+      image: '/shoe_c4.jpg',
+      gallery: ['/shoe_c4.jpg', '/shoe_c1.jpg', '/shoef_c4.jpg'],
       colors: ['Burnished Tan', 'Midnight Black', 'Vintage Olive'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
       description: 'Classic pull-on Chelsea boots crafted with heavy pull-up leather, reinforced elastic gussets, and Dainite studded rubber soles.'
@@ -175,8 +175,8 @@ export default function ShoesSlippersExperience({
       rating: 4.7,
       reviewsCount: 412,
       isAssured: true,
-      image: './shoe_c7.jpg',
-      gallery: ['./shoe_c7.jpg', './shoe_c6.jpg'],
+      image: '/shoe_c7.jpg',
+      gallery: ['/shoe_c7.jpg', '/shoe_c6.jpg'],
       colors: ['Natural Oiled Tan', 'Dark Mahogany', 'Dual Tone Gold'],
       sizes: ['UK 6', 'UK 7', 'UK 8', 'UK 9', 'UK 10'],
       description: 'Authentic Kolhapuri handcrafted chappals conditioned with vegetable oils, intricate hand-plaited braiding, and heavy leather sole.'
@@ -192,8 +192,8 @@ export default function ShoesSlippersExperience({
       rating: 4.6,
       reviewsCount: 67,
       isAssured: false,
-      image: './shoe_c8.jpg',
-      gallery: ['./shoe_c8.jpg', './shoe_c2.jpg'],
+      image: '/shoe_c8.jpg',
+      gallery: ['/shoe_c8.jpg', '/shoe_c2.jpg'],
       colors: ['Cream Canvas', 'Navy Blue', 'Olive Green'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10'],
       description: 'Breathable dual-layer duck canvas upper stitched to a natural braided jute sole vulcanized with a flexible rubber base.'
@@ -209,8 +209,8 @@ export default function ShoesSlippersExperience({
       rating: 4.8,
       reviewsCount: 153,
       isAssured: true,
-      image: './shoef_c5.jpg',
-      gallery: ['./shoef_c5.jpg', './shoe_c2.jpg', './shoef_c2.jpg'],
+      image: '/shoef_c5.jpg',
+      gallery: ['/shoef_c5.jpg', '/shoe_c2.jpg', '/shoef_c2.jpg'],
       colors: ['Tobacco Brown', 'Suede Navy', 'Racing Black'],
       sizes: ['UK 7', 'UK 8', 'UK 9', 'UK 10', 'UK 11'],
       description: 'Featherlight glove-soft calfskin with pebbled rubber grip studs extending up the heel. Perfect for long drives and city walking.'
@@ -222,7 +222,7 @@ export default function ShoesSlippersExperience({
       id: `shoe-custom-${Date.now()}`,
       name: `Bespoke ${customStyle}`,
       price: 3499,
-      image: './shoe_c1.jpg',
+      image: '/shoe_c1.jpg',
       selectedColor: customColor,
       details: `${customMaterial} • ${customSole} • Size: ${customSize} (${customWidth})`,
       requiresMeasurement: true,
@@ -518,7 +518,7 @@ export default function ShoesSlippersExperience({
           {/* Preview Card */}
           <div className="glass-card-no-hover" style={{ borderRadius: '20px', overflow: 'hidden', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
             <div style={{ width: '100%', height: '360px', overflow: 'hidden', position: 'relative' }}>
-              <img src="./shoe_c1.jpg" alt="Custom Shoe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src="/shoe_c1.jpg" alt="Custom Shoe" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               <div style={{ position: 'absolute', bottom: '16px', left: '16px', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', padding: '10px 14px', borderRadius: '12px' }}>
                 <h4 style={{ fontSize: '1.1rem', fontWeight: 800, margin: '0 0 2px 0', color: '#fff' }}>{customStyle}</h4>
                 <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>

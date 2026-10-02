@@ -404,9 +404,6 @@ export default function ShoesFootwearStudio({
                     >
                       <div className="sf-cat-img-box">
                         <img src={cat.img} alt={cat.label} />
-                        {cat.isCustom && (
-                          <span className="sf-cat-sketch-badge">Bespoke</span>
-                        )}
                       </div>
                       <div className="sf-cat-info">
                         <h4 className="sf-cat-title">{cat.label}</h4>

@@ -50,7 +50,7 @@ export default function PetOutfitsExperience({
       name: 'Hypoallergenic Organic Cotton',
       type: '100% Breathable Weave',
       badge: 'SKIN FRIENDLY',
-      image: './fab2.jpg',
+      image: '/fab2.jpg',
       priceTier: 'Included (Base)',
       durability: '4.8 / 5',
       waterResistance: 'Machine Washable 40°C',
@@ -62,7 +62,7 @@ export default function PetOutfitsExperience({
       name: 'Thermal Anti-Pill Polar Fleece',
       type: 'Double-Brushed Polyester',
       badge: 'WINTER WARMTH',
-      image: './fab4.jpg',
+      image: '/fab4.jpg',
       priceTier: 'Included (Base)',
       durability: '5 / 5',
       waterResistance: 'Fast Dry Hydrophobic',
@@ -74,7 +74,7 @@ export default function PetOutfitsExperience({
       name: 'Reflective Waterproof Ripstop',
       type: 'Diamond-Grid Nylon',
       badge: 'MONSOON SHIELD',
-      image: './fab5.jpg',
+      image: '/fab5.jpg',
       priceTier: '+₹150 Upgrade',
       durability: '5 / 5',
       waterResistance: '100% Sealed Seam Proof',
@@ -92,8 +92,8 @@ export default function PetOutfitsExperience({
       originalPrice: 1199,
       rating: 5.0,
       reviewsCount: 84,
-      image: './Pets.png',
-      gallery: ['./Pets.png', './pets_wear.jpg'],
+      image: '/Pets.png',
+      gallery: ['/Pets.png', '/pets_wear.jpg'],
       colors: ['Ruby Red & Gold', 'Emerald Green', 'Royal Navy'],
       sizes: ['Small (5-10kg)', 'Medium (12-22kg)', 'Large (25-38kg)'],
       description: 'Bespoke festive velvet sherwani with golden embroidered trims, Velcro belly strap for effortless 10-second wear, and leash portal.'
@@ -106,8 +106,8 @@ export default function PetOutfitsExperience({
       originalPrice: 1299,
       rating: 4.9,
       reviewsCount: 42,
-      image: './Pets.png',
-      gallery: ['./Pets.png'],
+      image: '/Pets.png',
+      gallery: ['/Pets.png'],
       colors: ['Classic Black & White', 'Midnight Blue'],
       sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
       description: 'Satin lapel tuxedo vest with integrated red bowtie. Elastic comfort belly band allowing natural bathroom breaks.'
@@ -120,8 +120,8 @@ export default function PetOutfitsExperience({
       originalPrice: 949,
       rating: 4.8,
       reviewsCount: 65,
-      image: './Pets.png',
-      gallery: ['./Pets.png'],
+      image: '/Pets.png',
+      gallery: ['/Pets.png'],
       colors: ['Safety Yellow', 'Electric Orange'],
       sizes: ['XS', 'S', 'M', 'L', 'XL'],
       description: 'Tough ripstop raincoat with transparent visor hood and underbelly splash guard. Keeps mud off your car interior.'
@@ -134,8 +134,8 @@ export default function PetOutfitsExperience({
       originalPrice: 1699,
       rating: 5.0,
       reviewsCount: 112,
-      image: './Pets.png',
-      gallery: ['./Pets.png'],
+      image: '/Pets.png',
+      gallery: ['/Pets.png'],
       colors: ['Natural Tan', 'Dark Brown', 'Onyx Black'],
       sizes: ['Custom Tailored to Chest Girth'],
       description: 'Hand-stitched vegetable-tanned leather harness lined with soft neoprene padding. Brass buckle and free engraved nameplate.'
@@ -147,7 +147,7 @@ export default function PetOutfitsExperience({
       id: `pet-outfit-${Date.now()}`,
       name: `Custom ${petBreed} ${petDesign}`,
       price: 899,
-      image: './Pets.png',
+      image: '/Pets.png',
       selectedColor: petFabric,
       details: `${petSpecies}: ${petBreed} (${petSize}) • ${petFabric} ${petMeasurements ? '• Custom Measurements Verified' : ''}`,
       requiresMeasurement: true,
@@ -167,7 +167,7 @@ export default function PetOutfitsExperience({
         <div
           className="specialty-hero-bg"
           style={{
-            backgroundImage: 'url("./Pets.png")',
+            backgroundImage: 'url("/Pets.png")',
             backgroundSize: 'contain',
             backgroundPosition: 'center right',
             backgroundRepeat: 'no-repeat',
@@ -328,7 +328,7 @@ export default function PetOutfitsExperience({
                           id: `pet-alter-${Date.now()}`,
                           name: `Pet Alteration: ${petAlterationType}`,
                           price: 249,
-                          image: './Pets.png',
+                          image: '/Pets.png',
                           itemType: 'alteration'
                         });
                       }
@@ -559,7 +559,7 @@ export default function PetOutfitsExperience({
             {/* Live Pet Preview Card */}
             <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
               <div style={{ height: '240px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="./Pets.png" alt="Pet preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img src="/Pets.png" alt="Pet preview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </div>
               <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                 {petBreed} • {petDesign}

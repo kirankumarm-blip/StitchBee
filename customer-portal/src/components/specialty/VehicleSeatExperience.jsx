@@ -80,7 +80,7 @@ export default function VehicleSeatExperience({
       name: 'Automotive Nappa Leatherette',
       type: '1.2mm High-Density Cast Layer',
       badge: 'UV RESISTANT TIER',
-      image: './carf_f1.jpg',
+      image: '/carf_f1.jpg',
       priceTier: 'Included (Base)',
       durability: '5 / 5',
       waterResistance: '100% Waterproof',
@@ -92,7 +92,7 @@ export default function VehicleSeatExperience({
       name: 'Perforated Sport Suede (Alcantara Spec)',
       type: 'Ultrasuede Microfiber',
       badge: 'TRACK & OFF-ROAD',
-      image: './carf_f3.jpg',
+      image: '/carf_f3.jpg',
       priceTier: '+₹1,500 Upgrade',
       durability: '4.8 / 5',
       waterResistance: 'Hydrophobic Coated',
@@ -104,7 +104,7 @@ export default function VehicleSeatExperience({
       name: 'Memory Gel-Foam Layering',
       type: 'Dual-Density Visco-Elastic',
       badge: 'ORTHOPEDIC TOURING',
-      image: './carf_f5.jpg',
+      image: '/carf_f5.jpg',
       priceTier: '+₹500 / Seat',
       durability: '5 / 5',
       waterResistance: 'Sealed Cell Core',
@@ -118,7 +118,7 @@ export default function VehicleSeatExperience({
       id: `seat-bike-${Date.now()}`,
       name: `Custom ${bikeBrand} ${bikeModel} Seat Cover Set`,
       price: bikePrice,
-      image: './car_c4.jpg',
+      image: '/car_c4.jpg',
       selectedColor: 'Black & Red Stitch',
       details: `${bikeSeatType} • ${bikeMaterial} • ${bikePattern} ${bikeGelAdded ? '• Includes Orthopedic Gel' : ''}`,
       quantity: 1,
@@ -133,7 +133,7 @@ export default function VehicleSeatExperience({
       id: `seat-car-${Date.now()}`,
       name: `Bespoke ${carMake} ${carModel} Seat Covers`,
       price: carPrice,
-      image: './car_c1.jpg',
+      image: '/car_c1.jpg',
       selectedColor: carColor,
       details: `${carConfig} • ${carMaterial} • ${installationPlace === 'home' ? 'Doorstep Fitting Included' : 'Fitted at Partner Garage'}`,
       quantity: 1,
@@ -565,7 +565,7 @@ export default function VehicleSeatExperience({
               {/* Live Bike Seat Summary & Buy Card */}
               <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)' }}>
                 <div style={{ height: '220px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px' }}>
-                  <img src="./car_c4.jpg" alt="Bike Seat" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src="/car_c4.jpg" alt="Bike Seat" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                   {bikeBrand} {bikeModel}
@@ -711,7 +711,7 @@ export default function VehicleSeatExperience({
               {/* Live Car Summary Card */}
               <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)' }}>
                 <div style={{ height: '220px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px' }}>
-                  <img src="./car_c1.jpg" alt="Car Seat" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src="/car_c1.jpg" alt="Car Seat" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 4px 0', color: 'var(--text-primary)' }}>
                   {carMake} {carModel}

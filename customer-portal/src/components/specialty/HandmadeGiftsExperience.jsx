@@ -47,7 +47,7 @@ export default function HandmadeGiftsExperience({
       name: 'Pure Banarasi Raw Silk',
       type: '100% Handloom Mulberry',
       badge: 'FESTIVE WEDDING',
-      image: './fab1.jpg',
+      image: '/fab1.jpg',
       priceTier: 'Included (Base)',
       durability: '4.8 / 5',
       waterResistance: 'Dry Clean Recommended',
@@ -59,7 +59,7 @@ export default function HandmadeGiftsExperience({
       name: 'Organic Handspun Khadi Cotton',
       type: '100% Breathable Eco-Fiber',
       badge: 'SUSTAINABLE CRAFT',
-      image: './fab2.jpg',
+      image: '/fab2.jpg',
       priceTier: 'Included (Base)',
       durability: '5 / 5',
       waterResistance: 'Machine Washable',
@@ -71,7 +71,7 @@ export default function HandmadeGiftsExperience({
       name: 'Royal Micro-Velvet',
       type: 'Plush High-Density Pile',
       badge: 'LUXURY EMBROIDERY',
-      image: './fab4.jpg',
+      image: '/fab4.jpg',
       priceTier: '+₹200 Upgrade',
       durability: '4.9 / 5',
       waterResistance: 'Stain Repellent',
@@ -92,8 +92,8 @@ export default function HandmadeGiftsExperience({
       rating: 5.0,
       reviewsCount: 124,
       isAssured: true,
-      image: './handmade_gifts.jpg',
-      gallery: ['./handmade_gifts.jpg', './br_bridal3.jpg', './wf_fab1.jpg'],
+      image: '/handmade_gifts.jpg',
+      gallery: ['/handmade_gifts.jpg', '/br_bridal3.jpg', '/wf_fab1.jpg'],
       colors: ['Ivory Gold', 'Blush Pink', 'Emerald Green', 'Royal Navy'],
       sizes: ['Standard (8x6 in)'],
       description: 'Intricately embroidered with genuine gold zari thread and lustrous pearl drawstrings. Ideal for weddings and return celebrations.'
@@ -109,8 +109,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.9,
       reviewsCount: 48,
       isAssured: true,
-      image: './k_k4.jpg',
-      gallery: ['./k_k4.jpg', './handmade_gifts.jpg', './kf_fab2.jpg'],
+      image: '/k_k4.jpg',
+      gallery: ['/k_k4.jpg', '/handmade_gifts.jpg', '/kf_fab2.jpg'],
       colors: ['Pastel Multi-Color', 'Soft Sky Blue', 'Blush Peach'],
       sizes: ['Crib Size (40x30 in)'],
       description: '100% organic cotton patchwork throw quilt featuring custom hand-embroidered baby name and birth milestones.'
@@ -126,8 +126,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.8,
       reviewsCount: 62,
       isAssured: true,
-      image: './uni_uni3.jpg',
-      gallery: ['./uni_uni3.jpg', './handmade_gifts.jpg', './unif_fab3.jpg'],
+      image: '/uni_uni3.jpg',
+      gallery: ['/uni_uni3.jpg', '/handmade_gifts.jpg', '/unif_fab3.jpg'],
       colors: ['Oatmeal Linen', 'Charcoal Denim', 'Sage Green'],
       sizes: ['Adjustable Fit'],
       description: 'Heavy 14oz canvas kitchen apron with cross-back leather straps and prominent hand-embroidered chest monogram.'
@@ -143,8 +143,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.9,
       reviewsCount: 75,
       isAssured: true,
-      image: './fab4.jpg',
-      gallery: ['./fab4.jpg', './handmade_gifts.jpg'],
+      image: '/fab4.jpg',
+      gallery: ['/fab4.jpg', '/handmade_gifts.jpg'],
       colors: ['Deep Wine & Gold', 'Dusty Rose & Silver', 'Teal & Gold'],
       sizes: ['16x16 in (Set of 2)'],
       description: 'Custom anniversary cushions featuring intertwined initials and wedding date embroidered with metallic thread.'
@@ -160,8 +160,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.7,
       reviewsCount: 92,
       isAssured: true,
-      image: './br_bridal4.jpg',
-      gallery: ['./br_bridal4.jpg', './handmade_gifts.jpg'],
+      image: '/br_bridal4.jpg',
+      gallery: ['/br_bridal4.jpg', '/handmade_gifts.jpg'],
       colors: ['Festive Gold', 'Royal Indigo', 'Marigold Yellow'],
       sizes: ['Gift Boxed (Set of 4)'],
       description: 'Handmade raw silk embellished shagun pouch set in an eco-friendly gift box with custom calligraphy message card.'
@@ -177,8 +177,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.9,
       reviewsCount: 56,
       isAssured: true,
-      image: './bagf_fb1.jpg',
-      gallery: ['./bagf_fb1.jpg', './handmade_gifts.jpg'],
+      image: '/bagf_fb1.jpg',
+      gallery: ['/bagf_fb1.jpg', '/handmade_gifts.jpg'],
       colors: ['Antique Brass Gold', 'Oxidized Silver'],
       sizes: ['Medium (6x4x3 in)'],
       description: 'Solid brass trinket box lined with velvet and personalized with hand-etched initials on the hinged lid.'
@@ -194,8 +194,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.8,
       reviewsCount: 114,
       isAssured: true,
-      image: './bag_b2.jpg',
-      gallery: ['./bag_b2.jpg', './handmade_gifts.jpg'],
+      image: '/bag_b2.jpg',
+      gallery: ['/bag_b2.jpg', '/handmade_gifts.jpg'],
       colors: ['Tan & Blush', 'Black & Burgundy', 'Olive & Chestnut'],
       sizes: ['Standard Travel Fit'],
       description: 'Full-grain leather passport cases featuring foil-stamped names and wedding wanderlust emblems.'
@@ -211,8 +211,8 @@ export default function HandmadeGiftsExperience({
       rating: 4.8,
       reviewsCount: 83,
       isAssured: true,
-      image: './br_bridal7.jpg',
-      gallery: ['./br_bridal7.jpg', './handmade_gifts.jpg'],
+      image: '/br_bridal7.jpg',
+      gallery: ['/br_bridal7.jpg', '/handmade_gifts.jpg'],
       colors: ['Pure Silver Finish', 'Antique Gold Accent'],
       sizes: ['9.5 inch Diameter'],
       description: 'Traditional etched pooja thali with matching diya, chandan wati, and agarbatti stand in royal red velvet presentation casing.'
@@ -224,7 +224,7 @@ export default function HandmadeGiftsExperience({
       id: `gift-custom-${Date.now()}`,
       name: `Personalized ${selectedGiftType}`,
       price: 999,
-      image: './handmade_gifts.jpg',
+      image: '/handmade_gifts.jpg',
       selectedColor: threadColor,
       details: `Embroidered Name: "${recipientName}" • Card Message: "${giftCardMessage.substring(0, 30)}..." • Eco Gift Wrap`,
       monogramText: recipientName,
@@ -245,7 +245,7 @@ export default function HandmadeGiftsExperience({
         <div
           className="specialty-hero-bg"
           style={{
-            backgroundImage: 'url("./handmade_gifts.jpg")',
+            backgroundImage: 'url("/handmade_gifts.jpg")',
           }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 20% 50%, rgba(247,37,133,0.18) 0%, transparent 60%)', pointerEvents: 'none' }} />
@@ -403,7 +403,7 @@ export default function HandmadeGiftsExperience({
                           id: `restore-gift-${Date.now()}`,
                           name: `Keepsake Restoration: ${restorationItemType}`,
                           price: 499,
-                          image: './handmade_gifts.jpg',
+                          image: '/handmade_gifts.jpg',
                           itemType: 'alteration'
                         });
                       }
@@ -665,7 +665,7 @@ export default function HandmadeGiftsExperience({
             {/* Live Gift Preview Card */}
             <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
               <div style={{ height: '200px', borderRadius: '14px', overflow: 'hidden', marginBottom: '16px', position: 'relative' }}>
-                <img src="./handmade_gifts.jpg" alt="Gift item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/handmade_gifts.jpg" alt="Gift item" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 {/* Live Floating Monogram Badge */}
                 <div style={{ position: 'absolute', bottom: '12px', left: '12px', right: '12px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', padding: '10px', borderRadius: '10px', textAlign: 'center', border: '1px dashed var(--primary)' }}>
                   <span style={{ fontSize: '0.65rem', color: '#cbd5e1', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block' }}>

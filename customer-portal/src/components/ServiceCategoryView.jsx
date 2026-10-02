@@ -22,20 +22,20 @@ const categoryTemplates = {
       { name: "Party Wear", desc: "Tuxedos and casual jackets for evening events.", icon: <Star size={20} /> }
     ],
     designs: [
-      { id: "m-blazer", name: "Premium Slim-Fit Blazer", img: "./men1.jpg", desc: "Single-breasted structured blazer suitable for business-casual outings.", price: "₹2,499" },
-      { id: "m-suit", name: "Executive Two-Piece Suit", img: "./men2.jpg", desc: "Classic corporate styling with custom pocket squares and trousers.", price: "₹2,999" },
-      { id: "m-shirt", name: "Oxford Collared Dress Shirt", img: "./men3.jpg", desc: "Crisp Giza cotton shirt with custom collar and cuff monograms.", price: "₹499" },
-      { id: "m-kurta", name: "Traditional Silk Kurta", img: "./m4.jpg", desc: "Fine silk blend kurta with elegant neckline embroidery details.", price: "₹799" },
-      { id: "m-sherwani", name: "Royal Wedding Sherwani", img: "./m5.jpg", desc: "Intricate zardozi handcrafted sherwani with premium dupatta.", price: "₹4,999" },
-      { id: "m-nehru", name: "Classic Nehru Jacket", img: "./m6.jpg", desc: "Premium textured sleeveless jacket, suitable for ethnic layered wear.", price: "₹999" }
+      { id: "m-blazer", name: "Premium Slim-Fit Blazer", img: "/men1.jpg", desc: "Single-breasted structured blazer suitable for business-casual outings.", price: "₹2,499" },
+      { id: "m-suit", name: "Executive Two-Piece Suit", img: "/men2.jpg", desc: "Classic corporate styling with custom pocket squares and trousers.", price: "₹2,999" },
+      { id: "m-shirt", name: "Oxford Collared Dress Shirt", img: "/men3.jpg", desc: "Crisp Giza cotton shirt with custom collar and cuff monograms.", price: "₹499" },
+      { id: "m-kurta", name: "Traditional Silk Kurta", img: "/m4.jpg", desc: "Fine silk blend kurta with elegant neckline embroidery details.", price: "₹799" },
+      { id: "m-sherwani", name: "Royal Wedding Sherwani", img: "/m5.jpg", desc: "Intricate zardozi handcrafted sherwani with premium dupatta.", price: "₹4,999" },
+      { id: "m-nehru", name: "Classic Nehru Jacket", img: "/m6.jpg", desc: "Premium textured sleeveless jacket, suitable for ethnic layered wear.", price: "₹999" }
     ],
     fabrics: [
-      { id: "f-wool", name: "Italian Merino Wool", type: "Italian Wool", price: 2499, rating: "5.0", img: "./fab1.jpg" },
-      { id: "f-cotton", name: "Egyptian Giza Cotton", type: "Egyptian Cotton", price: 899, rating: "4.9", img: "./fab2.jpg" },
-      { id: "f-linen", name: "Belgian Flax Linen", type: "Belgian Linen", price: 1599, rating: "4.8", img: "./fab3.jpg" },
-      { id: "f-tweed", name: "Harris Tweed Winter Wool", type: "Tweed Wool", price: 1999, rating: "4.7", img: "./fab4.jpg" },
-      { id: "f-supima", name: "Supima Classic Cotton", type: "Supima Cotton", price: 999, rating: "4.9", img: "./fab5.jpg" },
-      { id: "f-cashmere", name: "Cashmere Silk Blend", type: "Cashmere Silk", price: 2999, rating: "5.0", img: "./fab6.jpg" }
+      { id: "f-wool", name: "Italian Merino Wool", type: "Italian Wool", price: 2499, rating: "5.0", img: "/fab1.jpg" },
+      { id: "f-cotton", name: "Egyptian Giza Cotton", type: "Egyptian Cotton", price: 899, rating: "4.9", img: "/fab2.jpg" },
+      { id: "f-linen", name: "Belgian Flax Linen", type: "Belgian Linen", price: 1599, rating: "4.8", img: "/fab3.jpg" },
+      { id: "f-tweed", name: "Harris Tweed Winter Wool", type: "Tweed Wool", price: 1999, rating: "4.7", img: "/fab4.jpg" },
+      { id: "f-supima", name: "Supima Classic Cotton", type: "Supima Cotton", price: 999, rating: "4.9", img: "/fab5.jpg" },
+      { id: "f-cashmere", name: "Cashmere Silk Blend", type: "Cashmere Silk", price: 2999, rating: "5.0", img: "/fab6.jpg" }
     ],
     pricing: [
       { item: "Basic Cotton Shirt Stitching", price: "₹499" },
@@ -64,21 +64,21 @@ const categoryTemplates = {
       { name: "Party Wear", desc: "Embellished evening gowns and festive salwar suits.", icon: <Star size={20} /> }
     ],
     designs: [
-      { id: "w-lehenga", name: "Handcrafted Festive Lehenga", img: "./w_women1.jpg", desc: "Elegant georgette base with heavy border sequins and matching choli.", price: "₹3,999" },
-      { id: "w-blouse", name: "Padded Designer Saree Blouse", img: "./w_women2.jpg", desc: "Princess cut sweetheart blouse with backend lace tie customizations.", price: "₹599" },
-      { id: "w-suit", name: "Anarkali Salwar Suit", img: "./w_womens3.jpg", desc: "Royal flair silk salwar suit with embroidered georgette dupatta.", price: "₹999" },
-      { id: "w-gown", name: "Satin Evening Slip Gown", img: "./w_women4.jpg", desc: "Sleek cowl neck premium satin gown for corporate dinners.", price: "₹2,999" },
-      { id: "w-kurti", name: "Floral Georgette Kurti", img: "./w_women5.jpg", desc: "Lightweight A-line summer kurti with delicate cuff loops.", price: "₹399" },
-      { id: "w-blazer", name: "Tailored Women's Blazer", img: "./w_women6.jpg", desc: "Structured formal blazer for modern workplace style.", price: "₹2,199" },
-      { id: "w-saree", name: "Designer Saree Custom Drape", img: "./w_women7.jpg", desc: "Bespoke custom saree stitching and pre-pleated drape service.", price: "₹1,499" }
+      { id: "w-lehenga", name: "Handcrafted Festive Lehenga", img: "/w_women1.jpg", desc: "Elegant georgette base with heavy border sequins and matching choli.", price: "₹3,999" },
+      { id: "w-blouse", name: "Padded Designer Saree Blouse", img: "/w_women2.jpg", desc: "Princess cut sweetheart blouse with backend lace tie customizations.", price: "₹599" },
+      { id: "w-suit", name: "Anarkali Salwar Suit", img: "/w_womens3.jpg", desc: "Royal flair silk salwar suit with embroidered georgette dupatta.", price: "₹999" },
+      { id: "w-gown", name: "Satin Evening Slip Gown", img: "/w_women4.jpg", desc: "Sleek cowl neck premium satin gown for corporate dinners.", price: "₹2,999" },
+      { id: "w-kurti", name: "Floral Georgette Kurti", img: "/w_women5.jpg", desc: "Lightweight A-line summer kurti with delicate cuff loops.", price: "₹399" },
+      { id: "w-blazer", name: "Tailored Women's Blazer", img: "/w_women6.jpg", desc: "Structured formal blazer for modern workplace style.", price: "₹2,199" },
+      { id: "w-saree", name: "Designer Saree Custom Drape", img: "/w_women7.jpg", desc: "Bespoke custom saree stitching and pre-pleated drape service.", price: "₹1,499" }
     ],
     fabrics: [
-      { id: "f-satin", name: "Royal Crepe Satin", type: "Premium Satin", price: 799, rating: "4.9", img: "./wf_b2.jpg" },
-      { id: "f-georgette", name: "Embellished Georgette", type: "Georgette Silk", price: 699, rating: "4.8", img: "./wf_b3.jpg" },
-      { id: "f-chiffon", name: "Fine Pure Chiffon", type: "Chiffon Blend", price: 599, rating: "4.7", img: "./wf_b4.jpg" },
-      { id: "f-velvet", name: "Plush Maroon Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "./wf_b5.jpg" },
-      { id: "f-banarasi", name: "Premium Banarasi Brocade", type: "Banarasi Silk", price: 1299, rating: "4.9", img: "./wf_banarasi.jpg" },
-      { id: "f-organza", name: "Organza Floral Silk", type: "Organza Silk", price: 899, rating: "4.8", img: "./wf_b6.jpg" }
+      { id: "f-satin", name: "Royal Crepe Satin", type: "Premium Satin", price: 799, rating: "4.9", img: "/wf_b2.jpg" },
+      { id: "f-georgette", name: "Embellished Georgette", type: "Georgette Silk", price: 699, rating: "4.8", img: "/wf_b3.jpg" },
+      { id: "f-chiffon", name: "Fine Pure Chiffon", type: "Chiffon Blend", price: 599, rating: "4.7", img: "/wf_b4.jpg" },
+      { id: "f-velvet", name: "Plush Maroon Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "/wf_b5.jpg" },
+      { id: "f-banarasi", name: "Premium Banarasi Brocade", type: "Banarasi Silk", price: 1299, rating: "4.9", img: "/wf_banarasi.jpg" },
+      { id: "f-organza", name: "Organza Floral Silk", type: "Organza Silk", price: 899, rating: "4.8", img: "/wf_b6.jpg" }
     ],
     pricing: [
       { item: "Basic A-Line Kurti Stitching", price: "₹399" },
@@ -107,22 +107,22 @@ const categoryTemplates = {
       { name: "Luxury Fabric Sourcing", desc: "Sourcing gold-certified SilkMark Banarasi and Kanchipuram silk.", icon: <Star size={20} /> }
     ],
     designs: [
-      { id: "b-lehenga", name: "Royal Zardozi Bridal Lehenga", img: "./br_b1.jpg", desc: "Traditional dark red velvet lehenga with dual dupatta and gold metallic threads.", price: "₹7,999" },
-      { id: "b-blouse", name: "Embroidered Silk Bridal Blouse", img: "./br_b2.jpg", desc: "Heavy hand-beaded blouse with elbow-length sleeves and back neckline keyhole.", price: "₹1,999" },
-      { id: "b-gown", name: "Lace Overlay Wedding Gown", img: "./br_bridal2.jpg", desc: "Imported french lace bodice with layers of premium soft tulle trail.", price: "₹6,999" },
-      { id: "b-anarkali", name: "Luxury Bridal Anarkali Suit", img: "./br_bridal3.jpg", desc: "Floor-length heavy embroidered silk Anarkali suit for wedding festivities.", price: "₹3,499" },
-      { id: "b-saree", name: "Banarasi Bridal Saree Gown", img: "./br_bridal4.jpg", desc: "Stitched pre-draped bridal saree with heavy golden border details.", price: "₹4,499" },
+      { id: "b-lehenga", name: "Royal Zardozi Bridal Lehenga", img: "/br_b1.jpg", desc: "Traditional dark red velvet lehenga with dual dupatta and gold metallic threads.", price: "₹7,999" },
+      { id: "b-blouse", name: "Embroidered Silk Bridal Blouse", img: "/br_b2.jpg", desc: "Heavy hand-beaded blouse with elbow-length sleeves and back neckline keyhole.", price: "₹1,999" },
+      { id: "b-gown", name: "Lace Overlay Wedding Gown", img: "/br_bridal2.jpg", desc: "Imported french lace bodice with layers of premium soft tulle trail.", price: "₹6,999" },
+      { id: "b-anarkali", name: "Luxury Bridal Anarkali Suit", img: "/br_bridal3.jpg", desc: "Floor-length heavy embroidered silk Anarkali suit for wedding festivities.", price: "₹3,499" },
+      { id: "b-saree", name: "Banarasi Bridal Saree Gown", img: "/br_bridal4.jpg", desc: "Stitched pre-draped bridal saree with heavy golden border details.", price: "₹4,499" },
       { id: "b-sherwani-bride", name: "Royal Indowestern Bridal Set", img: "./br_bridal 5.jpg", desc: "Contemporary high-fashion wedding wear with matching custom details.", price: "₹5,499" },
-      { id: "b-reception-gown", name: "Glittering Reception Gown", img: "./br_bridal6.jpg", desc: "Glamorous off-shoulder gown with sparkling glass beads and trailing net skirt.", price: "₹8,999" },
-      { id: "b-haldi", name: "Yellow Haldi Crop-Top Set", img: "./br_bridal7.jpg", desc: "Charming mustard-yellow crop top and flared skirt with mirror work details.", price: "₹2,799" }
+      { id: "b-reception-gown", name: "Glittering Reception Gown", img: "/br_bridal6.jpg", desc: "Glamorous off-shoulder gown with sparkling glass beads and trailing net skirt.", price: "₹8,999" },
+      { id: "b-haldi", name: "Yellow Haldi Crop-Top Set", img: "/br_bridal7.jpg", desc: "Charming mustard-yellow crop top and flared skirt with mirror work details.", price: "₹2,799" }
     ],
     fabrics: [
-      { id: "f-silk", name: "Pure Silk Banarasi", type: "Banarasi Silk", price: 2999, rating: "5.0", img: "./brf_fa2.jpg" },
-      { id: "f-velvet-b", name: "Royal Wedding Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "./brf_fa3.jpg" },
-      { id: "f-raw-silk", name: "Certified Raw Silk", type: "Mulberry Raw Silk", price: 1499, rating: "4.9", img: "./brf_fa4.jpg" },
-      { id: "f-brocade-b", name: "Premium Golden Brocade", type: "Golden Brocade", price: 2199, rating: "4.9", img: "./brf_fa5.jpg" },
-      { id: "f-organza-b", name: "Sheer Organza Tissue", type: "Tissue Organza", price: 1299, rating: "4.8", img: "./brf_faa6.jpg" },
-      { id: "f-net-b", name: "Heavy Sequins Net", type: "Embroidered Net", price: 1799, rating: "4.7", img: "./brf_fa7.jpg" }
+      { id: "f-silk", name: "Pure Silk Banarasi", type: "Banarasi Silk", price: 2999, rating: "5.0", img: "/brf_fa2.jpg" },
+      { id: "f-velvet-b", name: "Royal Wedding Velvet", type: "Luxury Velvet", price: 1899, rating: "5.0", img: "/brf_fa3.jpg" },
+      { id: "f-raw-silk", name: "Certified Raw Silk", type: "Mulberry Raw Silk", price: 1499, rating: "4.9", img: "/brf_fa4.jpg" },
+      { id: "f-brocade-b", name: "Premium Golden Brocade", type: "Golden Brocade", price: 2199, rating: "4.9", img: "/brf_fa5.jpg" },
+      { id: "f-organza-b", name: "Sheer Organza Tissue", type: "Tissue Organza", price: 1299, rating: "4.8", img: "/brf_faa6.jpg" },
+      { id: "f-net-b", name: "Heavy Sequins Net", type: "Embroidered Net", price: 1799, rating: "4.7", img: "/brf_fa7.jpg" }
     ],
     pricing: [
       { item: "Zardozi Saree Blouse Stitching", price: "₹1,999" },
@@ -147,20 +147,20 @@ const categoryTemplates = {
       { name: "Doorstep Trials", desc: "Quick fit checks at home, designed for zero stress for parents.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "k-suit", name: "Toddler Party Tuxedo Suit", img: "./k_k1.jpg", desc: "Three-piece tiny suit with micro bow-tie and elastic waistband trouser.", price: "₹1,199" },
-      { id: "k-festive", name: "Kids Silk Kurta Pyjama", img: "./k_k2.jpg", desc: "Soft blend kurta with side buttons and comfortable cotton pajama.", price: "₹599" },
-      { id: "k-daily", name: "Comfort Cotton Frock", img: "./k_k3.jpg", desc: "Anti-allergen organic cotton frock with back zip closure.", price: "₹249" },
-      { id: "k-lehenga", name: "Kids Silk Lehenga Choli", img: "./k_k4.jpg", desc: "Cute mini silk lehenga with matching floral choli.", price: "₹899" },
-      { id: "k-sherwani", name: "Junior Wedding Sherwani", img: "./k_k5.jpg", desc: "Micro zardozi work sherwani for boys, comes with cotton pajama.", price: "₹1,099" },
-      { id: "k-frock", name: "Premium Tulle Birthday Frock", img: "./k_k6.jpg", desc: "Fluffy net frock with soft cotton lining layers and back ribbon tie.", price: "₹799" }
+      { id: "k-suit", name: "Toddler Party Tuxedo Suit", img: "/k_k1.jpg", desc: "Three-piece tiny suit with micro bow-tie and elastic waistband trouser.", price: "₹1,199" },
+      { id: "k-festive", name: "Kids Silk Kurta Pyjama", img: "/k_k2.jpg", desc: "Soft blend kurta with side buttons and comfortable cotton pajama.", price: "₹599" },
+      { id: "k-daily", name: "Comfort Cotton Frock", img: "/k_k3.jpg", desc: "Anti-allergen organic cotton frock with back zip closure.", price: "₹249" },
+      { id: "k-lehenga", name: "Kids Silk Lehenga Choli", img: "/k_k4.jpg", desc: "Cute mini silk lehenga with matching floral choli.", price: "₹899" },
+      { id: "k-sherwani", name: "Junior Wedding Sherwani", img: "/k_k5.jpg", desc: "Micro zardozi work sherwani for boys, comes with cotton pajama.", price: "₹1,099" },
+      { id: "k-frock", name: "Premium Tulle Birthday Frock", img: "/k_k6.jpg", desc: "Fluffy net frock with soft cotton lining layers and back ribbon tie.", price: "₹799" }
     ],
     fabrics: [
-      { id: "f-supima", name: "Organic Supima Cotton", type: "Supima Cotton", price: 899, rating: "4.9", img: "./kf_fab1.jpg" },
-      { id: "f-soft-satin", name: "Baby-Safe Soft Satin", type: "Soft Satin", price: 599, rating: "4.8", img: "./kf_fab2.jpg" },
-      { id: "f-cotton-b", name: "Combed Cotton Blend", type: "Combed Cotton", price: 399, rating: "4.7", img: "./kf_fab3.jpg" },
-      { id: "f-kids-linen", name: "Soft Organic Linen", type: "Organic Linen", price: 699, rating: "4.8", img: "./kf_fab4.jpg" },
-      { id: "f-kids-silk", name: "Soft Mulberry Silk", type: "Mulberry Silk", price: 1199, rating: "4.9", img: "./kf_fab5.jpg" },
-      { id: "f-kids-flannel", name: "Cozy Brushed Flannel", type: "Brushed Flannel", price: 499, rating: "4.7", img: "./kf_fab6.jpg" }
+      { id: "f-supima", name: "Organic Supima Cotton", type: "Supima Cotton", price: 899, rating: "4.9", img: "/kf_fab1.jpg" },
+      { id: "f-soft-satin", name: "Baby-Safe Soft Satin", type: "Soft Satin", price: 599, rating: "4.8", img: "/kf_fab2.jpg" },
+      { id: "f-cotton-b", name: "Combed Cotton Blend", type: "Combed Cotton", price: 399, rating: "4.7", img: "/kf_fab3.jpg" },
+      { id: "f-kids-linen", name: "Soft Organic Linen", type: "Organic Linen", price: 699, rating: "4.8", img: "/kf_fab4.jpg" },
+      { id: "f-kids-silk", name: "Soft Mulberry Silk", type: "Mulberry Silk", price: 1199, rating: "4.9", img: "/kf_fab5.jpg" },
+      { id: "f-kids-flannel", name: "Cozy Brushed Flannel", type: "Brushed Flannel", price: 499, rating: "4.7", img: "/kf_fab6.jpg" }
     ],
     pricing: [
       { item: "Kids Basic Cotton Wear", price: "₹249" },
@@ -185,20 +185,20 @@ const categoryTemplates = {
       { name: "Logo Embroidery", desc: "High-density custom machine embroidery for badges and logos.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "uni-boy", name: "Classic Boy's School Set", img: "./uni_uni1.jpg", desc: "Short sleeve formal white shirt with matching grey shorts.", price: "₹299" },
-      { id: "uni-girl", name: "Classic Girl's Pinafore", img: "./uni_uni2.jpg", desc: "Navy blue pinafore dress with short sleeve white collared shirt.", price: "₹349" },
-      { id: "uni-blazer", name: "School Crest Blazer", img: "./uni_uni3.jpg", desc: "Structured dark navy blazer with custom pocket crest lining.", price: "₹899" },
-      { id: "uni-shirt", name: "Premium Oxford School Shirt", img: "./uni_uni4.jpg", desc: "Durable cotton-poly blend collared shirt with reinforced elbows.", price: "₹199" },
-      { id: "uni-scrub", name: "Medical Scrub Set", img: "./uni_uni5.jpg", desc: "V-neck lightweight teal scrubs with multi-pocket trousers.", price: "₹399" },
-      { id: "uni-lab", name: "Classic Lab Coat", img: "./uni_uni6.jpg", desc: "Full-length white cotton lab coat with front button closure.", price: "₹299" }
+      { id: "uni-boy", name: "Classic Boy's School Set", img: "/uni_uni1.jpg", desc: "Short sleeve formal white shirt with matching grey shorts.", price: "₹299" },
+      { id: "uni-girl", name: "Classic Girl's Pinafore", img: "/uni_uni2.jpg", desc: "Navy blue pinafore dress with short sleeve white collared shirt.", price: "₹349" },
+      { id: "uni-blazer", name: "School Crest Blazer", img: "/uni_uni3.jpg", desc: "Structured dark navy blazer with custom pocket crest lining.", price: "₹899" },
+      { id: "uni-shirt", name: "Premium Oxford School Shirt", img: "/uni_uni4.jpg", desc: "Durable cotton-poly blend collared shirt with reinforced elbows.", price: "₹199" },
+      { id: "uni-scrub", name: "Medical Scrub Set", img: "/uni_uni5.jpg", desc: "V-neck lightweight teal scrubs with multi-pocket trousers.", price: "₹399" },
+      { id: "uni-lab", name: "Classic Lab Coat", img: "/uni_uni6.jpg", desc: "Full-length white cotton lab coat with front button closure.", price: "₹299" }
     ],
     fabrics: [
-      { id: "f-uni-cotton", name: "Twill School Cotton", type: "Cotton Poly", price: 290, rating: "4.8", img: "./unif_fab1.jpg" },
-      { id: "f-uni-poly", name: "Durable Polyester Blend", type: "Durable Poly", price: 180, rating: "4.7", img: "./unif_fab2.jpg" },
-      { id: "f-uni-suiting", name: "Premium Suiting Fabric", type: "Viscose Blend", price: 390, rating: "4.9", img: "./unif_fab3.jpg" },
-      { id: "f-uni-anti", name: "Anti-Bacterial Medical Fabric", type: "Anti-Bacterial", price: 450, rating: "4.9", img: "./unif_fab4.jpg" },
-      { id: "f-uni-drill", name: "Heavy Cotton Drill", type: "Cotton Drill", price: 320, rating: "4.8", img: "./unif_fab5.jpg" },
-      { id: "f-uni-terry", name: "Terrycot Classic Uniform", type: "Terrycot Blend", price: 240, rating: "4.7", img: "./unif_fab6.jpg" }
+      { id: "f-uni-cotton", name: "Twill School Cotton", type: "Cotton Poly", price: 290, rating: "4.8", img: "/unif_fab1.jpg" },
+      { id: "f-uni-poly", name: "Durable Polyester Blend", type: "Durable Poly", price: 180, rating: "4.7", img: "/unif_fab2.jpg" },
+      { id: "f-uni-suiting", name: "Premium Suiting Fabric", type: "Viscose Blend", price: 390, rating: "4.9", img: "/unif_fab3.jpg" },
+      { id: "f-uni-anti", name: "Anti-Bacterial Medical Fabric", type: "Anti-Bacterial", price: 450, rating: "4.9", img: "/unif_fab4.jpg" },
+      { id: "f-uni-drill", name: "Heavy Cotton Drill", type: "Cotton Drill", price: 320, rating: "4.8", img: "/unif_fab5.jpg" },
+      { id: "f-uni-terry", name: "Terrycot Classic Uniform", type: "Terrycot Blend", price: 240, rating: "4.7", img: "/unif_fab6.jpg" }
     ],
     pricing: [
       { item: "School Shirt Stitching", price: "₹199" },
@@ -223,12 +223,12 @@ const categoryTemplates = {
       { name: "doorstep trials", desc: "Student runner picks up reference garments and delivers alterations.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "a-suit", name: "Suit & Blazer Slimming", img: "./alt_al1.jpg", desc: "Narrowing jacket seams and sleeves to match athletic measurements.", price: "₹799" },
-      { id: "a-hem", name: "Trouser Leg Hemming", img: "./alt_al2.jpg", desc: "Shortening denim or formal trousers with original-looking borders.", price: "₹149" },
-      { id: "a-zip", name: "Heavy-Duty Zipper Swap", img: "./alt_al3.jpg", desc: "Replacing broken zippers on jackets, lehengas, and denim trousers.", price: "₹99" },
-      { id: "a-dress", name: "Dress & Kurti Resizing", img: "./alt_al4.jpg", desc: "Waist tightening and design modifications for women's dresses.", price: "₹299" },
-      { id: "a-sleeve", name: "Sleeve & Cuff Adjustments", img: "./alt_al5.jpg", desc: "Shortening sleeves or reshaping cuffs on formal shirts.", price: "₹199" },
-      { id: "a-lining", name: "Coat Lining Replacement", img: "./alt_al6.jpg", desc: "Replacing torn internal lining sheets with premium fabrics.", price: "₹499" }
+      { id: "a-suit", name: "Suit & Blazer Slimming", img: "/alt_al1.jpg", desc: "Narrowing jacket seams and sleeves to match athletic measurements.", price: "₹799" },
+      { id: "a-hem", name: "Trouser Leg Hemming", img: "/alt_al2.jpg", desc: "Shortening denim or formal trousers with original-looking borders.", price: "₹149" },
+      { id: "a-zip", name: "Heavy-Duty Zipper Swap", img: "/alt_al3.jpg", desc: "Replacing broken zippers on jackets, lehengas, and denim trousers.", price: "₹99" },
+      { id: "a-dress", name: "Dress & Kurti Resizing", img: "/alt_al4.jpg", desc: "Waist tightening and design modifications for women's dresses.", price: "₹299" },
+      { id: "a-sleeve", name: "Sleeve & Cuff Adjustments", img: "/alt_al5.jpg", desc: "Shortening sleeves or reshaping cuffs on formal shirts.", price: "₹199" },
+      { id: "a-lining", name: "Coat Lining Replacement", img: "/alt_al6.jpg", desc: "Replacing torn internal lining sheets with premium fabrics.", price: "₹499" }
     ],
     pricing: [
       { item: "Jeans Hemming / Shortening", price: "₹149" },
@@ -253,20 +253,20 @@ const categoryTemplates = {
       { name: "Monogram Embossing", desc: "Custom hot-stamp name or logo engraving on leather surfaces.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "bag-tote", name: "Premium Leather Tote Bag", img: "./bag_b1.jpg", desc: "Spacious daily-carry tote bag made of full-grain pull-up leather.", price: "₹2,499" },
-      { id: "bag-messenger", name: "Executive Canvas Messenger", img: "./bag_b2.jpg", desc: "Water-resistant waxed canvas messenger bag with brass buckles.", price: "₹1,899" },
-      { id: "bag-wallet", name: "Minimalist Bifold Wallet", img: "./bag_b3.jpg", desc: "Sleek bifold pocket wallet with 6 card slots and currency pocket.", price: "₹599" },
-      { id: "bag-duffel", name: "Overnight Travel Duffel", img: "./bag_b4.jpg", desc: "Classic round-cut travel duffel with detachable shoulder strap.", price: "₹3,499" },
-      { id: "bag-clutch", name: "Elegant Ladies Clutch", img: "./bag_b5.jpg", desc: "Top-grain saffiano leather clutch with detachable gold chain.", price: "₹1,299" },
-      { id: "bag-backpack", name: "Urban Commuter Backpack", img: "./bag_b6.jpg", desc: "Roll-top canvas backpack with laptop compartment and leather accents.", price: "₹2,799" }
+      { id: "bag-tote", name: "Premium Leather Tote Bag", img: "/bag_b1.jpg", desc: "Spacious daily-carry tote bag made of full-grain pull-up leather.", price: "₹2,499" },
+      { id: "bag-messenger", name: "Executive Canvas Messenger", img: "/bag_b2.jpg", desc: "Water-resistant waxed canvas messenger bag with brass buckles.", price: "₹1,899" },
+      { id: "bag-wallet", name: "Minimalist Bifold Wallet", img: "/bag_b3.jpg", desc: "Sleek bifold pocket wallet with 6 card slots and currency pocket.", price: "₹599" },
+      { id: "bag-duffel", name: "Overnight Travel Duffel", img: "/bag_b4.jpg", desc: "Classic round-cut travel duffel with detachable shoulder strap.", price: "₹3,499" },
+      { id: "bag-clutch", name: "Elegant Ladies Clutch", img: "/bag_b5.jpg", desc: "Top-grain saffiano leather clutch with detachable gold chain.", price: "₹1,299" },
+      { id: "bag-backpack", name: "Urban Commuter Backpack", img: "/bag_b6.jpg", desc: "Roll-top canvas backpack with laptop compartment and leather accents.", price: "₹2,799" }
     ],
     fabrics: [
-      { id: "f-leather-full", name: "Full-Grain Tan Leather", type: "Full-Grain Leather", price: 1500, rating: "5.0", img: "./bagf_fb1.jpg" },
-      { id: "f-leather-saff", name: "Black Saffiano Leather", type: "Saffiano Leather", price: 1800, rating: "4.9", img: "./bagf_fb2.jpg" },
-      { id: "f-leather-suede", name: "Brown Suede Leather", type: "Suede Leather", price: 1400, rating: "4.8", img: "./bagf_fb3.jpg" },
-      { id: "f-canvas-waxed", name: "Heavy Waxed Canvas", type: "Waxed Canvas", price: 800, rating: "4.9", img: "./bagf_fb4.jpg" },
-      { id: "f-lining-jacq", name: "Bemberg Silk Lining", type: "Silk Jacquard", price: 600, rating: "4.8", img: "./bagf_fb5.jpg" },
-      { id: "f-leather-nappa", name: "Soft Nappa Leather", type: "Nappa Leather", price: 1900, rating: "5.0", img: "./bagf_fb6.jpg" }
+      { id: "f-leather-full", name: "Full-Grain Tan Leather", type: "Full-Grain Leather", price: 1500, rating: "5.0", img: "/bagf_fb1.jpg" },
+      { id: "f-leather-saff", name: "Black Saffiano Leather", type: "Saffiano Leather", price: 1800, rating: "4.9", img: "/bagf_fb2.jpg" },
+      { id: "f-leather-suede", name: "Brown Suede Leather", type: "Suede Leather", price: 1400, rating: "4.8", img: "/bagf_fb3.jpg" },
+      { id: "f-canvas-waxed", name: "Heavy Waxed Canvas", type: "Waxed Canvas", price: 800, rating: "4.9", img: "/bagf_fb4.jpg" },
+      { id: "f-lining-jacq", name: "Bemberg Silk Lining", type: "Silk Jacquard", price: 600, rating: "4.8", img: "/bagf_fb5.jpg" },
+      { id: "f-leather-nappa", name: "Soft Nappa Leather", type: "Nappa Leather", price: 1900, rating: "5.0", img: "/bagf_fb6.jpg" }
     ],
     pricing: [
       { item: "Bifold Wallet Stitching", price: "₹599" },
@@ -291,20 +291,20 @@ const categoryTemplates = {
       { name: "Leather Resoling", desc: "Resoling, shining, and heel reconstructions for luxury shoes.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "shoe-oxford", name: "Classic Wholecut Oxford", img: "./shoe_c1.jpg", desc: "Formal wholecut leather dress shoe with polished calfskin finish.", price: "₹3,499" },
-      { id: "shoe-loafer", name: "Penny Loafer Slip-On", img: "./shoe_c2.jpg", desc: "Casual penny loafers made of supple brown suede leather.", price: "₹2,799" },
-      { id: "shoe-mojari", name: "Royal Embroidered Mojari", img: "./shoe_c3.jpg", desc: "Ethnic wedding mojari shoe with golden zari thread embroidery.", price: "₹1,599" },
-      { id: "shoe-sandal", name: "Classic Leather Sandal", img: "./shoe_c4.jpg", desc: "Strappy leather sandals with durable rubber outsoles.", price: "₹1,299" },
-      { id: "shoe-slipper", name: "Premium Leather Slipper", img: "./shoe_c6.jpg", desc: "Open-toe indoor/outdoor slippers with cushioned footbeds.", price: "₹899" },
-      { id: "shoe-boot", name: "Chelsea Leather Boots", img: "./shoe_c7.jpg", desc: "Ankle-high Chelsea boots with elastic side panels and pull tabs.", price: "₹3,999" }
+      { id: "shoe-oxford", name: "Classic Wholecut Oxford", img: "/shoe_c1.jpg", desc: "Formal wholecut leather dress shoe with polished calfskin finish.", price: "₹3,499" },
+      { id: "shoe-loafer", name: "Penny Loafer Slip-On", img: "/shoe_c2.jpg", desc: "Casual penny loafers made of supple brown suede leather.", price: "₹2,799" },
+      { id: "shoe-mojari", name: "Royal Embroidered Mojari", img: "/shoe_c3.jpg", desc: "Ethnic wedding mojari shoe with golden zari thread embroidery.", price: "₹1,599" },
+      { id: "shoe-sandal", name: "Classic Leather Sandal", img: "/shoe_c4.jpg", desc: "Strappy leather sandals with durable rubber outsoles.", price: "₹1,299" },
+      { id: "shoe-slipper", name: "Premium Leather Slipper", img: "/shoe_c6.jpg", desc: "Open-toe indoor/outdoor slippers with cushioned footbeds.", price: "₹899" },
+      { id: "shoe-boot", name: "Chelsea Leather Boots", img: "/shoe_c7.jpg", desc: "Ankle-high Chelsea boots with elastic side panels and pull tabs.", price: "₹3,999" }
     ],
     fabrics: [
-      { id: "f-calfskin", name: "Italian Calfskin Leather", type: "Calfskin Leather", price: 2000, rating: "5.0", img: "./shoef_c2.jpg" },
-      { id: "f-suede-shoe", name: "Premium Suede Split", type: "Suede Leather", price: 1500, rating: "4.8", img: "./shoef_c3.jpg" },
-      { id: "f-sole-leather", name: "Heavy Oak Sole Leather", type: "Sole Leather", price: 1200, rating: "4.9", img: "./shoef_c4.jpg" },
-      { id: "f-nubuck", name: "Velvety Nubuck Leather", type: "Nubuck Leather", price: 1700, rating: "4.8", img: "./shoef_c5.jpg" },
-      { id: "f-lining-cow", name: "Soft Cowhide Lining", type: "Cowhide Lining", price: 800, rating: "4.9", img: "./shoef_c6.jpg" },
-      { id: "f-patent", name: "Glossy Patent Leather", type: "Patent Leather", price: 1900, rating: "4.7", img: "./shoef_c7.jpg" }
+      { id: "f-calfskin", name: "Italian Calfskin Leather", type: "Calfskin Leather", price: 2000, rating: "5.0", img: "/shoef_c2.jpg" },
+      { id: "f-suede-shoe", name: "Premium Suede Split", type: "Suede Leather", price: 1500, rating: "4.8", img: "/shoef_c3.jpg" },
+      { id: "f-sole-leather", name: "Heavy Oak Sole Leather", type: "Sole Leather", price: 1200, rating: "4.9", img: "/shoef_c4.jpg" },
+      { id: "f-nubuck", name: "Velvety Nubuck Leather", type: "Nubuck Leather", price: 1700, rating: "4.8", img: "/shoef_c5.jpg" },
+      { id: "f-lining-cow", name: "Soft Cowhide Lining", type: "Cowhide Lining", price: 800, rating: "4.9", img: "/shoef_c6.jpg" },
+      { id: "f-patent", name: "Glossy Patent Leather", type: "Patent Leather", price: 1900, rating: "4.7", img: "/shoef_c7.jpg" }
     ],
     pricing: [
       { item: "Leather Slipper Stitching", price: "₹899" },
@@ -329,20 +329,20 @@ const categoryTemplates = {
       { name: "Steering & Dashboard Wrap", desc: "Matching custom leather wraps for steering wheels and dashboards.", icon: <Award size={20} /> }
     ],
     designs: [
-      { id: "seat-quilted", name: "Premium Quilted Leather Set", img: "./car_c1.jpg", desc: "Luxury diamond-stitched seat covers with double-bonded borders.", price: "₹12,000" },
-      { id: "seat-sporty", name: "Sporty Bucket Seat Covers", img: "./car_c2.jpg", desc: "Contoured bucket seat styling with high-contrast racing stripes.", price: "₹9,500" },
-      { id: "seat-classic", name: "Classic Matte Tan Set", img: "./car_c3.jpg", desc: "Sophisticated minimalist tan seat covers, perfect for luxury sedans.", price: "₹8,000" },
-      { id: "seat-bike-gel", name: "Gel-Cushioned Bike Seat", img: "./car_c4.jpg", desc: "Ergonomic motorcycle seat cover with integrated comfort gel pad.", price: "₹1,500" },
-      { id: "seat-perforated", name: "Perforated Breathable Leather", img: "./car_c5.jpg", desc: "Micro-perforated leather covers to prevent heat buildup in summer.", price: "₹11,000" },
-      { id: "seat-suv", name: "Heavy-Duty SUV Row Set", img: "./car_c6.jpg", desc: "Tough, water-resistant dirt-proof seat covers for 3-row SUVs.", price: "₹14,000" }
+      { id: "seat-quilted", name: "Premium Quilted Leather Set", img: "/car_c1.jpg", desc: "Luxury diamond-stitched seat covers with double-bonded borders.", price: "₹12,000" },
+      { id: "seat-sporty", name: "Sporty Bucket Seat Covers", img: "/car_c2.jpg", desc: "Contoured bucket seat styling with high-contrast racing stripes.", price: "₹9,500" },
+      { id: "seat-classic", name: "Classic Matte Tan Set", img: "/car_c3.jpg", desc: "Sophisticated minimalist tan seat covers, perfect for luxury sedans.", price: "₹8,000" },
+      { id: "seat-bike-gel", name: "Gel-Cushioned Bike Seat", img: "/car_c4.jpg", desc: "Ergonomic motorcycle seat cover with integrated comfort gel pad.", price: "₹1,500" },
+      { id: "seat-perforated", name: "Perforated Breathable Leather", img: "/car_c5.jpg", desc: "Micro-perforated leather covers to prevent heat buildup in summer.", price: "₹11,000" },
+      { id: "seat-suv", name: "Heavy-Duty SUV Row Set", img: "/car_c6.jpg", desc: "Tough, water-resistant dirt-proof seat covers for 3-row SUVs.", price: "₹14,000" }
     ],
     fabrics: [
-      { id: "f-car-nappa", name: "Premium Nappa Car Leather", type: "Nappa Leather", price: 2500, rating: "5.0", img: "./carf_f1.jpg" },
-      { id: "f-car-pu", name: "Heavy PU Leather", type: "PU Leather", price: 1200, rating: "4.8", img: "./carf_f2.jpg" },
-      { id: "f-car-suede", name: "Alcantara Style Suede", type: "Alcantara Suede", price: 2900, rating: "4.9", img: "./carf_f3.jpg" },
-      { id: "f-car-vinyl", name: "Durable Marine Vinyl", type: "Marine Vinyl", price: 1000, rating: "4.7", img: "./carf_f4.jpg" },
-      { id: "f-car-foam", name: "High-Density Foam Layer", type: "HD Foam", price: 500, rating: "4.8", img: "./carf_f5.jpg" },
-      { id: "f-car-mesh", name: "3D Spacer Mesh Fabric", type: "Spacer Mesh", price: 800, rating: "4.7", img: "./carf_f6.jpg" }
+      { id: "f-car-nappa", name: "Premium Nappa Car Leather", type: "Nappa Leather", price: 2500, rating: "5.0", img: "/carf_f1.jpg" },
+      { id: "f-car-pu", name: "Heavy PU Leather", type: "PU Leather", price: 1200, rating: "4.8", img: "/carf_f2.jpg" },
+      { id: "f-car-suede", name: "Alcantara Style Suede", type: "Alcantara Suede", price: 2900, rating: "4.9", img: "/carf_f3.jpg" },
+      { id: "f-car-vinyl", name: "Durable Marine Vinyl", type: "Marine Vinyl", price: 1000, rating: "4.7", img: "/carf_f4.jpg" },
+      { id: "f-car-foam", name: "High-Density Foam Layer", type: "HD Foam", price: 500, rating: "4.8", img: "/carf_f5.jpg" },
+      { id: "f-car-mesh", name: "3D Spacer Mesh Fabric", type: "Spacer Mesh", price: 800, rating: "4.7", img: "/carf_f6.jpg" }
     ],
     pricing: [
       { item: "Bike Seat Cover Stitching", price: "₹1,500" },
@@ -367,20 +367,20 @@ const categoryTemplates = {
       { name: "Custom Fabric Wall Art", desc: "Embroidered hoops, fabric tapestry, and decorative banners.", icon: <Star size={20} /> }
     ],
     designs: [
-      { id: "g-potli", name: "Hand-Embroidered Zari Potli", img: "./handmade_gifts.jpg", desc: "Intricate golden thread embellished potli pouch with pearls.", price: "₹499" },
-      { id: "g-quilt", name: "Patchwork Keepsake Baby Quilt", img: "./handmade_gifts.jpg", desc: "Soft organic cotton patchwork baby blanket with name patch.", price: "₹1,499" },
-      { id: "g-apron", name: "Custom Monogrammed Chef Apron", img: "./handmade_gifts.jpg", desc: "Heavy canvas kitchen apron with embroidered custom name.", price: "₹699" },
-      { id: "g-tote", name: "Handmade Fabric Tote & Pouch", img: "./handmade_gifts.jpg", desc: "Eco-friendly handloom cotton matching tote and vanity bag.", price: "₹799" },
-      { id: "g-cushion", name: "Embroidered Couple Cushion Set", img: "./handmade_gifts.jpg", desc: "Pair of plush velvet cushion covers with wedding anniversary initials.", price: "₹999" },
-      { id: "g-wallart", name: "Bespoke Hoop Art Embroidery", img: "./handmade_gifts.jpg", desc: "Hand-stitched botanical or family portrait hoop art.", price: "₹899" }
+      { id: "g-potli", name: "Hand-Embroidered Zari Potli", img: "/handmade_gifts.jpg", desc: "Intricate golden thread embellished potli pouch with pearls.", price: "₹499" },
+      { id: "g-quilt", name: "Patchwork Keepsake Baby Quilt", img: "/handmade_gifts.jpg", desc: "Soft organic cotton patchwork baby blanket with name patch.", price: "₹1,499" },
+      { id: "g-apron", name: "Custom Monogrammed Chef Apron", img: "/handmade_gifts.jpg", desc: "Heavy canvas kitchen apron with embroidered custom name.", price: "₹699" },
+      { id: "g-tote", name: "Handmade Fabric Tote & Pouch", img: "/handmade_gifts.jpg", desc: "Eco-friendly handloom cotton matching tote and vanity bag.", price: "₹799" },
+      { id: "g-cushion", name: "Embroidered Couple Cushion Set", img: "/handmade_gifts.jpg", desc: "Pair of plush velvet cushion covers with wedding anniversary initials.", price: "₹999" },
+      { id: "g-wallart", name: "Bespoke Hoop Art Embroidery", img: "/handmade_gifts.jpg", desc: "Hand-stitched botanical or family portrait hoop art.", price: "₹899" }
     ],
     fabrics: [
-      { id: "f-khadi", name: "Organic Handspun Khadi", type: "Handspun Cotton", price: 450, rating: "4.9", img: "./fab2.jpg" },
-      { id: "f-raw-silk", name: "Banarasi Raw Silk", type: "Raw Silk", price: 950, rating: "5.0", img: "./fab1.jpg" },
-      { id: "f-linen-craft", name: "Pure Flax Craft Linen", type: "Pure Linen", price: 750, rating: "4.8", img: "./fab3.jpg" },
-      { id: "f-velvet-craft", name: "Micro-Velvet Plush", type: "Plush Velvet", price: 850, rating: "4.9", img: "./fab4.jpg" },
-      { id: "f-canvas-craft", name: "Organic Cotton Duck", type: "Cotton Canvas", price: 550, rating: "4.8", img: "./fab5.jpg" },
-      { id: "f-chanderi", name: "Chanderi Silk Cotton", type: "Chanderi Silk", price: 890, rating: "4.9", img: "./fab6.jpg" }
+      { id: "f-khadi", name: "Organic Handspun Khadi", type: "Handspun Cotton", price: 450, rating: "4.9", img: "/fab2.jpg" },
+      { id: "f-raw-silk", name: "Banarasi Raw Silk", type: "Raw Silk", price: 950, rating: "5.0", img: "/fab1.jpg" },
+      { id: "f-linen-craft", name: "Pure Flax Craft Linen", type: "Pure Linen", price: 750, rating: "4.8", img: "/fab3.jpg" },
+      { id: "f-velvet-craft", name: "Micro-Velvet Plush", type: "Plush Velvet", price: 850, rating: "4.9", img: "/fab4.jpg" },
+      { id: "f-canvas-craft", name: "Organic Cotton Duck", type: "Cotton Canvas", price: 550, rating: "4.8", img: "/fab5.jpg" },
+      { id: "f-chanderi", name: "Chanderi Silk Cotton", type: "Chanderi Silk", price: 890, rating: "4.9", img: "/fab6.jpg" }
     ],
     pricing: [
       { item: "Monogrammed Handkerchief Set (3 pcs)", price: "₹349" },
@@ -406,20 +406,20 @@ const categoryTemplates = {
       { name: "Orthopedic Pet Beds", desc: "Washable, memory-foam custom bed covers with pet name embroidery.", icon: <ShieldCheck size={20} /> }
     ],
     designs: [
-      { id: "pet-sherwani", name: "Royal Festive Pet Sherwani", img: "./Pets.png", desc: "Velvet sherwani with golden zari trims and velcro belly strap.", price: "₹799" },
-      { id: "pet-tux", name: "Gentleman's Pet Tuxedo", img: "./Pets.png", desc: "Smart bowtie collar and satin lapel tuxedo vest for formal events.", price: "₹899" },
-      { id: "pet-raincoat", name: "Waterproof Hooded Raincoat", img: "./Pets.png", desc: "Reflective strip all-weather pet raincoat with leash opening.", price: "₹649" },
-      { id: "pet-fleece", name: "Cozy Fleece Winter Vest", img: "./Pets.png", desc: "Warm, ultra-soft stretch fleece pullover for chilly days.", price: "₹549" },
-      { id: "pet-harness", name: "Custom Padded Leather Harness", img: "./Pets.png", desc: "Bespoke leather dog harness with brass buckle and engraved tag.", price: "₹1,199" },
-      { id: "pet-dress", name: "Floral Pet Tutu Dress", img: "./Pets.png", desc: "Lightweight summer cotton ruffle dress with floral skirt.", price: "₹699" }
+      { id: "pet-sherwani", name: "Royal Festive Pet Sherwani", img: "/Pets.png", desc: "Velvet sherwani with golden zari trims and velcro belly strap.", price: "₹799" },
+      { id: "pet-tux", name: "Gentleman's Pet Tuxedo", img: "/Pets.png", desc: "Smart bowtie collar and satin lapel tuxedo vest for formal events.", price: "₹899" },
+      { id: "pet-raincoat", name: "Waterproof Hooded Raincoat", img: "/Pets.png", desc: "Reflective strip all-weather pet raincoat with leash opening.", price: "₹649" },
+      { id: "pet-fleece", name: "Cozy Fleece Winter Vest", img: "/Pets.png", desc: "Warm, ultra-soft stretch fleece pullover for chilly days.", price: "₹549" },
+      { id: "pet-harness", name: "Custom Padded Leather Harness", img: "/Pets.png", desc: "Bespoke leather dog harness with brass buckle and engraved tag.", price: "₹1,199" },
+      { id: "pet-dress", name: "Floral Pet Tutu Dress", img: "/Pets.png", desc: "Lightweight summer cotton ruffle dress with floral skirt.", price: "₹699" }
     ],
     fabrics: [
-      { id: "f-pet-cotton", name: "Breathable Organic Cotton", type: "Organic Cotton", price: 400, rating: "5.0", img: "./fab2.jpg" },
-      { id: "f-pet-fleece", name: "Thermal Polar Fleece", type: "Polar Fleece", price: 500, rating: "4.9", img: "./fab4.jpg" },
-      { id: "f-pet-ripstop", name: "Waterproof Ripstop Nylon", type: "Ripstop Nylon", price: 650, rating: "4.8", img: "./fab5.jpg" },
-      { id: "f-pet-velvet", name: "Royal Micro-Velvet", type: "Soft Velvet", price: 800, rating: "4.9", img: "./fab1.jpg" },
-      { id: "f-pet-mesh", name: "Breathable Air Mesh", type: "Air Mesh", price: 450, rating: "4.8", img: "./fab3.jpg" },
-      { id: "f-pet-canvas", name: "Tough Oxford Fabric", type: "Oxford Fabric", price: 600, rating: "4.7", img: "./fab6.jpg" }
+      { id: "f-pet-cotton", name: "Breathable Organic Cotton", type: "Organic Cotton", price: 400, rating: "5.0", img: "/fab2.jpg" },
+      { id: "f-pet-fleece", name: "Thermal Polar Fleece", type: "Polar Fleece", price: 500, rating: "4.9", img: "/fab4.jpg" },
+      { id: "f-pet-ripstop", name: "Waterproof Ripstop Nylon", type: "Ripstop Nylon", price: 650, rating: "4.8", img: "/fab5.jpg" },
+      { id: "f-pet-velvet", name: "Royal Micro-Velvet", type: "Soft Velvet", price: 800, rating: "4.9", img: "/fab1.jpg" },
+      { id: "f-pet-mesh", name: "Breathable Air Mesh", type: "Air Mesh", price: 450, rating: "4.8", img: "/fab3.jpg" },
+      { id: "f-pet-canvas", name: "Tough Oxford Fabric", type: "Oxford Fabric", price: 600, rating: "4.7", img: "/fab6.jpg" }
     ],
     pricing: [
       { item: "Custom Bandana / Bowtie", price: "₹249" },
