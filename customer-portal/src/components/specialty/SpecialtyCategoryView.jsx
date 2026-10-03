@@ -33,7 +33,8 @@ export default function SpecialtyCategoryView({
   onExploreDesigns,
   onViewFabrics,
   shoesStudioMode = 'shop',
-  setShoesStudioMode
+  setShoesStudioMode,
+  theme = 'light'
 }) {
   const [activeCategory, setActiveCategory] = useState(categoryKey);
   const initialMode = (categoryKey === 'shoes' && shoesStudioMode === 'restore') ? 'alteration' : 'buying';
@@ -352,6 +353,7 @@ export default function SpecialtyCategoryView({
                 onDirectCheckout={handleDirectCheckout}
                 serviceMode={serviceMode}
                 onSelectServiceMode={setServiceMode}
+                theme={theme}
               />
             )}
 

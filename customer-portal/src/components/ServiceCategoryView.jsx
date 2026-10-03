@@ -6,6 +6,7 @@ import {
 import SpecialtyCategoryView from './specialty/SpecialtyCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
 import ShoesFootwearStudio from './shoes/ShoesFootwearStudio';
+import ShoesRepairRestore from './shoes/ShoesRepairRestore';
 
 const categoryTemplates = {
   mens: {
@@ -440,7 +441,8 @@ const SPECIALTY_KEYS = ['bags', 'shoes', 'seats', 'gifts', 'pets', 'sofas'];
 export default function ServiceCategoryView({ 
   categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart, theme, setTheme,
   bagsStudioMode = 'shop', setBagsStudioMode,
-  shoesStudioMode = 'shop', setShoesStudioMode
+  shoesStudioMode = 'shop', setShoesStudioMode,
+  searchQuery, setSearchQuery
 }) {
   if (categoryKey === 'bags') {
     return (
@@ -458,7 +460,20 @@ export default function ServiceCategoryView({
     );
   }
 
-  if (categoryKey === 'shoes' && shoesStudioMode === 'shop') {
+  if (categoryKey === 'shoes') {
+    if (shoesStudioMode === 'restore') {
+      return (
+        <ShoesRepairRestore
+          currentUser={currentUser}
+          theme={theme}
+          setTheme={setTheme}
+          onSwitchMode={setShoesStudioMode}
+          onNavigateHome={onExploreDesigns}
+          onNavigateCategory={onSelectCategory}
+          onOpenAuthModal={onLoginRequired}
+        />
+      );
+    }
     return (
       <ShoesFootwearStudio
         currentUser={currentUser}
@@ -472,6 +487,8 @@ export default function ServiceCategoryView({
         onAddToCart={onAddToCart}
         tailors={tailors}
         onBookStitching={onBookStitching}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
     );
   }
@@ -490,6 +507,8 @@ export default function ServiceCategoryView({
         onAddToCart={onAddToCart}
         shoesStudioMode={shoesStudioMode}
         setShoesStudioMode={setShoesStudioMode}
+        theme={theme}
+        setTheme={setTheme}
       />
     );
   }

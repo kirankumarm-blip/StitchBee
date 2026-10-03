@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Package, Truck, CheckCircle2, ChevronRight, ArrowLeft, Clock, 
   Sparkles, ShieldCheck, MapPin, User, ArrowRight 
@@ -8,11 +8,36 @@ import { getOrders } from '../../utils/bagsStore';
 
 export default function BagsOrdersView({ showToast }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const justPlaced = location.state?.justPlaced;
+  const newOrderId = location.state?.newOrderId;
 
-  const [orders] = useState(getOrders());
+  const [orders, setOrders] = useState(() => {
+    try {
+      return getOrders() || [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        setOrders(getOrders() || []);
+      } catch (e) {}
+    };
+    window.addEventListener('stitchbee-store-update', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('stitchbee-store-update', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, []);
+
   const [filterType, setFilterType] = useState('all'); // 'all' | 'ready' | 'custom'
 
-  const filteredOrders = orders.filter(o => {
+  const filteredOrders = (orders || []).filter(o => {
+    if (!o) return false;
     if (filterType === 'ready') return o.type === 'ready';
     if (filterType === 'custom') return o.type === 'custom';
     return true;
@@ -46,13 +71,19 @@ export default function BagsOrdersView({ showToast }) {
         <nav className="bl-breadcrumbs" aria-label="Breadcrumb">
           <span onClick={() => navigate('/')} className="bl-crumb-link">Home</span>
           <ChevronRight size={14} className="bl-crumb-sep" />
-          <span onClick={() => navigate('/bags')} className="bl-crumb-link">Bags & Leather</span>
+          <span onClick={() => navigate('/bags')} className="bl-crumb-link">Studio Collection</span>
           <ChevronRight size={14} className="bl-crumb-sep" />
           <span className="bl-crumb-active">My Orders</span>
         </nav>
 
         {/* Back Link */}
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <button 
+            className="bl-back-btn" 
+            onClick={() => navigate('/footwear')}
+          >
+            <ArrowLeft size={16} /> Back to Footwear Studio
+          </button>
           <button 
             className="bl-back-btn" 
             onClick={() => navigate('/bags')}
@@ -68,9 +99,52 @@ export default function BagsOrdersView({ showToast }) {
             My Orders & Custom Quotes
           </h1>
           <p className="bl-section-subtext" style={{ margin: 0 }}>
-            Live status of your handcrafted bag orders and bespoke artisan quote consultations.
+            Live status of your handcrafted footwear, artisan bags, and bespoke quote requests.
           </p>
         </div>
+
+        {/* New Order Just Placed Alert Banner */}
+        {justPlaced && (
+          <div className="bl-just-placed-banner" style={{
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(247, 37, 133, 0.12) 100%)',
+            border: '1.5px solid #10b981',
+            borderRadius: '16px',
+            padding: '20px 24px',
+            marginBottom: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            boxShadow: '0 8px 24px rgba(16, 185, 129, 0.18)'
+          }}>
+            <div style={{
+              width: '46px',
+              height: '46px',
+              borderRadius: '50%',
+              background: '#10b981',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <CheckCircle2 size={26} color="#ffffff" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff', fontWeight: 700 }}>
+                  Order Confirmed! Live Tracking Active
+                </h3>
+                {newOrderId && (
+                  <span style={{ background: 'rgba(255, 255, 255, 0.2)', padding: '2px 10px', borderRadius: '20px', fontSize: '0.82rem', fontWeight: 700, color: '#ffffff' }}>
+                    {newOrderId}
+                  </span>
+                )}
+              </div>
+              <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.88)' }}>
+                Thank you! Your handcrafted order is now in active artisan preparation. Follow each real-time milestone below.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Filter Tabs */}
         <div className="bl-orders-tabs-row">
@@ -84,7 +158,7 @@ export default function BagsOrdersView({ showToast }) {
             className={`bl-shop-cat-pill ${filterType === 'ready' ? 'active' : ''}`}
             onClick={() => setFilterType('ready')}
           >
-            Ready Bags ({orders.filter(o => o.type === 'ready').length})
+            Ready Orders ({orders.filter(o => o.type === 'ready').length})
           </button>
           <button 
             className={`bl-shop-cat-pill ${filterType === 'custom' ? 'active' : ''}`}
@@ -98,24 +172,28 @@ export default function BagsOrdersView({ showToast }) {
         <div className="bl-orders-stack">
           {filteredOrders.length > 0 ? (
             filteredOrders.map(order => {
-              const isCustom = order.type === 'custom';
+              if (!order) return null;
+              const isCustom = order.type === 'custom' || order.category === 'custom';
               const steps = isCustom ? customSteps : regularSteps;
-              const currentIndex = order.statusIndex ?? (isCustom ? 0 : 2);
+              const currentIndex = typeof order.statusIndex === 'number' ? order.statusIndex : (isCustom ? 0 : 2);
+              const orderCategory = order.category === 'shoes' ? 'Footwear' : 'Leather Bags';
 
               return (
-                <div key={order.id} className="bl-order-card">
+                <div key={order.id || `order-${Math.random()}`} className="bl-order-card">
                   {/* Order Top Bar */}
                   <div className="bl-order-top-bar">
                     <div className="bl-order-ref-group">
                       <span className="bl-order-id-label">Order Ref:</span>
                       <strong>{order.id}</strong>
-                      <span className="bl-order-type-badge">{isCustom ? 'Custom Bespoke' : 'Ready Bag'}</span>
+                      <span className="bl-order-type-badge">
+                        {isCustom ? (order.category === 'shoes' ? 'Bespoke Footwear' : 'Custom Bespoke') : (order.category === 'shoes' ? 'Footwear Pair' : 'Ready Bag')}
+                      </span>
                     </div>
 
                     <div className="bl-order-meta-right">
-                      <span className="bl-order-date">Placed: {order.date}</span>
+                      <span className="bl-order-date">Placed: {order.date || 'Recently'}</span>
                       <span className={`bl-order-status-chip ${order.statusCode || 'processing'}`}>
-                        {order.status}
+                        {order.status || 'Order Placed'}
                       </span>
                     </div>
                   </div>
@@ -143,35 +221,58 @@ export default function BagsOrdersView({ showToast }) {
 
                   {/* Items or Custom Specs List */}
                   <div className="bl-order-content-area">
-                    {order.items && order.items.length > 0 && (
+                    {order.items && Array.isArray(order.items) && order.items.length > 0 && (
                       <div className="bl-order-items-sublist">
-                        {order.items.map((it, idx) => (
-                          <div key={idx} className="bl-order-item-mini">
-                            <img src={it.img} alt={it.name} />
-                            <div>
-                              <strong>{it.name}</strong>
-                              <span>Qty: {it.qty} • Color: {it.color}</span>
-                              <span className="bl-order-item-price">₹{(it.price * it.qty).toLocaleString('en-IN')}</span>
+                        {order.items.map((it, idx) => {
+                          if (!it) return null;
+                          const itPrice = typeof it.price === 'number' ? it.price : (parseFloat(String(it.price).replace(/[^0-9.]/g, '')) || 0);
+                          const itQty = it.qty || it.quantity || 1;
+                          const itImg = it.img || it.image || '/shoes_categories/HeroSection.png';
+                          return (
+                            <div key={idx} className="bl-order-item-mini">
+                              <img src={itImg} alt={it.name || 'Order Item'} onError={(e) => { e.target.src = '/shoes_categories/HeroSection.png'; }} />
+                              <div>
+                                <strong>{it.name || 'Artisan Product'}</strong>
+                                <span>Qty: {itQty} {it.color ? `• Color: ${it.color}` : ''} {it.size ? `• Size: ${it.size}` : ''}</span>
+                                <span className="bl-order-item-price">
+                                  {itPrice > 0 ? `₹${(itPrice * itQty).toLocaleString('en-IN')}` : (isCustom ? 'Included in Quote' : 'Artisan Handcrafted')}
+                                </span>
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
 
                     {isCustom && order.customDetails && (
                       <div className="bl-order-custom-details-box">
                         <div className="bl-custom-spec-pill">
-                          <span>Silhouette:</span> <strong>{order.customDetails.bagType}</strong>
+                          <span>Silhouette:</span> <strong>{order.customDetails.footwearType || order.customDetails.bagType || order.title || 'Bespoke Item'}</strong>
+                        </div>
+                        {order.customDetails.baseSilhouette && (
+                          <div className="bl-custom-spec-pill">
+                            <span>Base Style:</span> <strong>{order.customDetails.baseSilhouette}</strong>
+                          </div>
+                        )}
+                        <div className="bl-custom-spec-pill">
+                          <span>Material:</span> <strong>{order.customDetails.material || 'Artisan Leather'}</strong>
                         </div>
                         <div className="bl-custom-spec-pill">
-                          <span>Material:</span> <strong>{order.customDetails.material}</strong>
+                          <span>Color:</span> <strong>{order.customDetails.color || 'Custom'}</strong>
                         </div>
-                        <div className="bl-custom-spec-pill">
-                          <span>Color:</span> <strong>{order.customDetails.color}</strong>
-                        </div>
+                        {order.customDetails.size && (
+                          <div className="bl-custom-spec-pill">
+                            <span>Fit / Size:</span> <strong>{order.customDetails.size}</strong>
+                          </div>
+                        )}
                         <div className="bl-custom-spec-pill">
                           <span>Initials:</span> <strong>{order.customDetails.initials || 'None'}</strong>
                         </div>
+                        {order.customDetails.notes && (
+                          <div className="bl-custom-spec-pill" style={{ gridColumn: 'span 2' }}>
+                            <span>Notes:</span> <span>{order.customDetails.notes}</span>
+                          </div>
+                        )}
                         {order.artisanAssigned && (
                           <div className="bl-custom-spec-pill artisan">
                             <Sparkles size={13} className="bl-text-pink" />
@@ -185,12 +286,16 @@ export default function BagsOrdersView({ showToast }) {
                     <div className="bl-order-card-footer">
                       <div className="bl-order-addr-text">
                         <MapPin size={14} className="bl-text-pink" />
-                        <span>{order.address}</span>
+                        <span>{typeof order.address === 'string' ? order.address : (order.address?.street || 'Doorstep Delivery')}</span>
                       </div>
 
                       <div className="bl-order-total-box">
                         <span>Total:</span>
-                        <strong>{typeof order.total === 'number' ? `₹${order.total.toLocaleString('en-IN')}` : order.total}</strong>
+                        <strong>
+                          {typeof order.total === 'number' 
+                            ? `₹${order.total.toLocaleString('en-IN')}` 
+                            : (order.total || (order.price ? `₹${Number(order.price).toLocaleString('en-IN')}` : 'Pending Quote'))}
+                        </strong>
                       </div>
                     </div>
                   </div>

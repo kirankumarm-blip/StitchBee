@@ -982,6 +982,18 @@ body.light-theme button:not(.btn-primary):not(.btn-accent):not(.btn-leather-prim
   color: var(--text-primary);
 }
 
+body.light-theme .sf-bottom-cta-card h2,
+body.light-theme .sf-bottom-cta-card p,
+body.light-theme .sf-bottom-cta-card button,
+body.light-theme .sf-bottom-cta-card span,
+body.light-theme .sf-bottom-cta-heading,
+body.light-theme .sf-bottom-cta-sub,
+body.light-theme .sf-cta-btn-pink,
+body.light-theme .sf-cta-btn-glass {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
 body.light-theme .btn-secondary {
   background: rgba(15, 23, 42, 0.05) !important;
   border: 1px solid rgba(15, 23, 42, 0.08) !important;

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Trash2, Heart, Plus, Minus, ShoppingBag, ShieldCheck, Truck, 
   ChevronRight, ArrowLeft, ArrowRight, Check, Tag, CreditCard, 
-  Sparkles, CheckCircle2 
+  Sparkles, CheckCircle2, Info, MapPin, Phone, User
 } from 'lucide-react';
 import { 
   getCart, 
@@ -17,8 +17,28 @@ import {
 export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }) {
   const navigate = useNavigate();
 
-  const [cartItems, setCartItems] = useState(getCart());
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      return getCart() || [];
+    } catch (e) {
+      return [];
+    }
+  });
   const [checkoutStep, setCheckoutStep] = useState(0); // 0: Cart list, 1: Address, 2: Delivery, 3: Payment, 4: Confirmation
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      try {
+        setCartItems(getCart() || []);
+      } catch (e) {}
+    };
+    window.addEventListener('stitchbee-store-update', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('stitchbee-store-update', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, []);
   
   // Checkout Form State
   const [addressName, setAddressName] = useState(currentUser?.name || 'Aarav Sharma');
@@ -35,6 +55,11 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
   const [couponMessage, setCouponMessage] = useState('');
   const [confirmedOrder, setConfirmedOrder] = useState(null);
 
+  const formatCurrency = (val) => {
+    const num = typeof val === 'number' ? val : (parseFloat(String(val).replace(/[^0-9.]/g, '')) || 0);
+    return (num || 0).toLocaleString('en-IN');
+  };
+
   const handleQtyChange = (productId, color, delta) => {
     const updated = updateCartQty(productId, color, delta);
     setCartItems(updated);
@@ -43,14 +68,14 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
   const handleRemove = (productId, color) => {
     const updated = removeFromCart(productId, color);
     setCartItems(updated);
-    showToast('Item removed from cart');
+    if (showToast) showToast('Item removed from cart');
   };
 
   const handleMoveToWishlist = (item) => {
     toggleWishlist(item.id);
     const updated = removeFromCart(item.id, item.color);
     setCartItems(updated);
-    showToast(`Moved "${item.name}" to your wishlist ❤️`);
+    if (showToast) showToast(`Moved "${item.name}" to your wishlist ❤️`);
   };
 
   const handleApplyCoupon = (e) => {
@@ -58,39 +83,94 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
     if (couponCode.trim().toUpperCase() === 'STITCH10') {
       setAppliedDiscount(10);
       setCouponMessage('STITCH10 applied! 10% artisan discount granted ✨');
-      showToast('10% discount applied! 🎉');
+      if (showToast) showToast('10% discount applied! 🎉');
     } else {
       setCouponMessage('Invalid promo code. Try "STITCH10" for 10% off.');
-      showToast('Invalid promo code');
+      if (showToast) showToast('Invalid promo code');
     }
   };
 
   // Pricing calculations
-  const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.qty), 0);
+  const subtotal = (cartItems || []).reduce((acc, item) => {
+    const itemPrice = typeof item.price === 'number' ? item.price : (parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0);
+    const itemQty = item.qty || item.quantity || 1;
+    return acc + (itemPrice * itemQty);
+  }, 0);
   const discountAmount = appliedDiscount > 0 ? Math.round((subtotal * appliedDiscount) / 100) : 0;
   const shippingCost = shippingMethod === 'express' ? 199 : 0;
   const totalAmount = Math.max(0, subtotal - discountAmount + shippingCost);
 
   const handlePlaceOrder = () => {
-    const newOrder = addOrder({
-      type: 'ready',
-      status: 'Order Placed',
-      statusCode: 'placed',
-      statusIndex: 0,
-      total: totalAmount,
-      items: cartItems,
-      address: `${addressName}, ${addressLine}, ${addressCity}, ${addressState} - ${addressPincode} (Ph: ${addressPhone})`,
-      deliveryMethod: shippingMethod === 'express' ? 'Express Courier (1-2 Days)' : 'Standard Free (3-5 Days)',
-      paymentMethod: paymentMethod.toUpperCase(),
-      paymentStatus: 'Pending Gateway Integration (Demo Placed)'
-    });
+    try {
+      const sanitizedItems = (cartItems || []).map(it => {
+        const itPrice = typeof it.price === 'number' ? it.price : (parseFloat(String(it.price).replace(/[^0-9.]/g, '')) || 0);
+        const itQty = it.qty || it.quantity || 1;
+        return {
+          ...it,
+          id: it.id || it.productId || `item-${Date.now()}`,
+          name: it.name || 'Artisan Item',
+          img: it.img || it.image || '/shoes_categories/HeroSection.png',
+          image: it.image || it.img || '/shoes_categories/HeroSection.png',
+          price: itPrice,
+          qty: itQty,
+          quantity: itQty,
+          color: it.color || 'Default',
+          size: it.size || 'Standard'
+        };
+      });
 
-    // Clear cart
-    saveCart([]);
-    setCartItems([]);
-    setConfirmedOrder(newOrder);
-    setCheckoutStep(4);
-    showToast('Order placed successfully! Tracking initiated 🚀');
+      const isFootwearOrder = sanitizedItems.some(it => it.category && !['bags', 'handbag', 'backpack', 'tote', 'crossbody', 'wallet', 'duffle'].includes(it.category.toLowerCase()));
+      const finalAddress = `${addressName || 'Customer'}, ${addressLine || 'Address'}, ${addressCity || 'Bengaluru'}, ${addressState || 'Karnataka'} - ${addressPincode || '560078'} (Ph: ${addressPhone || ''})`;
+
+      const newOrder = addOrder({
+        type: 'ready',
+        category: isFootwearOrder ? 'shoes' : 'bags',
+        title: sanitizedItems.length > 0 
+          ? (sanitizedItems.length === 1 ? sanitizedItems[0].name : `${sanitizedItems[0].name} + ${sanitizedItems.length - 1} more`)
+          : 'Artisan Handcrafted Order',
+        status: 'Order Placed',
+        statusCode: 'placed',
+        statusIndex: 0,
+        total: totalAmount || 0,
+        price: totalAmount || 0,
+        items: sanitizedItems,
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        deliveryDate: shippingMethod === 'express' ? '1-2 Days (Express)' : '3-5 Days (Standard)',
+        address: finalAddress,
+        deliveryMethod: shippingMethod === 'express' ? 'Express Courier (1-2 Days)' : 'Standard Free (3-5 Days)',
+        paymentMethod: (paymentMethod || 'upi').toUpperCase(),
+        paymentStatus: 'Paid / Authorized (Order Placed)',
+        steps: [
+          { name: 'Order Placed', date: 'Today', completed: true, active: true },
+          { name: 'Confirmed', date: 'Within 2h', pending: true },
+          { name: 'Crafting / Processing', date: 'Pending', pending: true },
+          { name: 'Quality Check', date: 'Pending', pending: true },
+          { name: 'Shipped', date: 'Pending', pending: true },
+          { name: 'Out for Delivery', date: 'Pending', pending: true },
+          { name: 'Delivered', date: 'Pending', pending: true }
+        ]
+      });
+
+      // Also sync into stichbee_orders in localStorage for CustomerView
+      try {
+        const raw = localStorage.getItem('stichbee_orders');
+        const existing = raw ? JSON.parse(raw) : [];
+        localStorage.setItem('stichbee_orders', JSON.stringify([newOrder, ...existing]));
+      } catch (e) {}
+
+      // Clear cart
+      saveCart([]);
+      setCartItems([]);
+      setConfirmedOrder(newOrder);
+      if (showToast) showToast('Order placed successfully! Tracking initiated 🚀');
+
+      // Navigate directly to the orders tracking page so the user sees live tracking immediately!
+      navigate('/orders', { state: { newOrderId: newOrder.id, justPlaced: true } });
+    } catch (err) {
+      console.error('Error in handlePlaceOrder:', err);
+      if (showToast) showToast('Order placed! Navigating to your orders tracking...');
+      navigate('/orders');
+    }
   };
 
   return (
@@ -338,6 +418,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                     value={addressName} 
                     onChange={e => setAddressName(e.target.value)} 
                     className="bl-form-input" 
+                    placeholder="e.g. Aarav Sharma"
                   />
                 </div>
 
@@ -348,6 +429,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                     value={addressPhone} 
                     onChange={e => setAddressPhone(e.target.value)} 
                     className="bl-form-input" 
+                    placeholder="+91 98765 43210"
                   />
                 </div>
 
@@ -358,6 +440,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                     value={addressPincode} 
                     onChange={e => setAddressPincode(e.target.value)} 
                     className="bl-form-input" 
+                    placeholder="e.g. 560078"
                   />
                 </div>
 
@@ -368,6 +451,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                     value={addressCity} 
                     onChange={e => setAddressCity(e.target.value)} 
                     className="bl-form-input" 
+                    placeholder="e.g. Bengaluru"
                   />
                 </div>
 
@@ -378,6 +462,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                     value={addressLine} 
                     onChange={e => setAddressLine(e.target.value)} 
                     className="bl-form-input" 
+                    placeholder="Flat / House / Street Address"
                   />
                 </div>
               </div>
@@ -462,7 +547,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
 
               <div className="bl-order-review-mini-card">
                 <div>
-                  <strong>Total Payable:</strong> <span className="bl-total-price">₹{totalAmount.toLocaleString('en-IN')}</span>
+                  <strong>Total Payable:</strong> <span className="bl-total-price">₹{formatCurrency(totalAmount)}</span>
                 </div>
                 <div style={{ fontSize: '0.85rem', color: 'var(--bl-text-secondary)' }}>
                   Delivering to: {addressName}, {addressCity} ({addressPincode})
@@ -537,7 +622,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                   className="bl-btn-primary" 
                   onClick={handlePlaceOrder}
                 >
-                  Confirm & Place Order (₹{totalAmount.toLocaleString('en-IN')}) →
+                  Confirm & Place Order (₹{formatCurrency(totalAmount)}) →
                 </button>
               </div>
             </div>
@@ -570,11 +655,11 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
               </div>
               <div className="bl-conf-row">
                 <span>Total Paid:</span>
-                <strong>₹{confirmedOrder.total.toLocaleString('en-IN')}</strong>
+                <strong>₹{formatCurrency(confirmedOrder.total)}</strong>
               </div>
               <div className="bl-conf-row">
                 <span>Delivery Address:</span>
-                <span>{confirmedOrder.address}</span>
+                <span>{typeof confirmedOrder.address === 'string' ? confirmedOrder.address : 'Registered Address'}</span>
               </div>
             </div>
 

@@ -8,7 +8,7 @@ import {
   MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut, ShoppingBag, Wrench, ArrowRight
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
-import { getCart as getBagsCart, getWishlist as getBagsWishlist } from '../utils/bagsStore';
+import { getCart as getBagsCart, getWishlist as getBagsWishlist, getOrders as getBagsOrders } from '../utils/bagsStore';
 import ServiceCategoryView from './ServiceCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
 
@@ -592,16 +592,19 @@ export default function CustomerView({
     } else if (path.startsWith('/bags') || path === '/cart' || path === '/wishlist' || path === '/orders') {
       setSelectedCategory('bags');
       setActiveHub('category-landing');
-    } else if (path === '/shoes' || path === '/shoes/shop' || path === '/shoes-slippers') {
+    } else if (path === '/shoes' || path === '/shoes/shop' || path === '/shoes-slippers' || path === '/footwear' || path.startsWith('/footwear/product') || path === '/footwear/custom-design') {
       setSelectedCategory('shoes');
       setActiveHub('category-landing');
       setShoesStudioMode('shop');
-    } else if (path === '/shoes/repair' || path === '/shoes/restore' || path === '/shoes-slippers/repair') {
+    } else if (path === '/shoes/repair' || path === '/shoes/restore' || path === '/shoes-slippers/repair' || path === '/footwear/repair' || path.startsWith('/repair/footwear')) {
       setSelectedCategory('shoes');
       setActiveHub('category-landing');
       setShoesStudioMode('restore');
-    } else if (path.startsWith('/shoes')) {
+    } else if (path.startsWith('/shoes') || path.startsWith('/footwear')) {
       setSelectedCategory('shoes');
+      setActiveHub('category-landing');
+    } else if (path === '/gifts' || path === '/handmade-gifts' || path === '/handmade' || path.startsWith('/gifts') || path.startsWith('/handmade-gifts') || path.startsWith('/handmade')) {
+      setSelectedCategory('gifts');
       setActiveHub('category-landing');
     }
   }, [location.pathname]);
@@ -2807,7 +2810,7 @@ export default function CustomerView({
           <button 
             className={`role-btn ${activeHub === 'history' || location.pathname === '/orders' ? 'active' : ''}`}
             onClick={() => { 
-              if (selectedCategory === 'bags' || location.pathname.startsWith('/bags')) {
+              if (selectedCategory === 'bags' || selectedCategory === 'shoes' || location.pathname.startsWith('/bags') || location.pathname.startsWith('/footwear') || location.pathname.startsWith('/shoes')) {
                 navigate('/orders');
                 return;
               }
@@ -2852,9 +2855,15 @@ export default function CustomerView({
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && searchQuery.trim()) {
-                  navigate('/bags/shop?q=' + encodeURIComponent(searchQuery.trim()));
-                  setSelectedCategory('bags');
-                  setActiveHub('category-landing');
+                  if (selectedCategory === 'shoes' || location.pathname.startsWith('/shoes') || location.pathname.startsWith('/footwear')) {
+                    navigate('/footwear?q=' + encodeURIComponent(searchQuery.trim()));
+                    setSelectedCategory('shoes');
+                    setActiveHub('category-landing');
+                  } else {
+                    navigate('/bags/shop?q=' + encodeURIComponent(searchQuery.trim()));
+                    setSelectedCategory('bags');
+                    setActiveHub('category-landing');
+                  }
                 }
               }}
               style={{ paddingLeft: '30px', height: '36px', borderRadius: '18px', border: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.03)', color: 'inherit' }}
@@ -2918,11 +2927,7 @@ export default function CustomerView({
             className="role-btn" 
             style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }} 
             onClick={() => {
-              if (selectedCategory === 'bags' || location.pathname.startsWith('/bags')) {
-                navigate('/cart');
-              } else {
-                setCartOpen(true);
-              }
+              navigate('/cart');
             }}
             title="Shopping Cart"
           >
@@ -3631,7 +3636,7 @@ export default function CustomerView({
       {/* Cart Float Button */}
       {cart.length > 0 && (
         <button 
-          onClick={() => setCartOpen(true)}
+          onClick={() => navigate('/cart')}
           style={{
             position: 'fixed', bottom: '30px', right: '30px', zIndex: 120,
             background: 'var(--grad-primary)', padding: '16px 20px', borderRadius: '30px',
@@ -6826,6 +6831,8 @@ export default function CustomerView({
           setBagsStudioMode={setBagsStudioMode}
           shoesStudioMode={shoesStudioMode}
           setShoesStudioMode={setShoesStudioMode}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           onLoginRequired={onLoginRequired}
           onExploreDesigns={() => {
             const el = document.getElementById('popular-designs-section');
@@ -6851,7 +6858,7 @@ export default function CustomerView({
             setActiveHub('tailors');
           }}
           tailors={tailors}
-          onAddToCart={handleAddToCart}
+          onAddToCart={null}
           onSelectCategory={(catId) => {
             setSelectedCategory(catId);
             if (setCustomerCategory) setCustomerCategory(catId);
@@ -9473,7 +9480,55 @@ export default function CustomerView({
 
       {/* --- HUB 6: HISTORY & INVOICES TAB --- */}
       {activeHub === 'history' && (() => {
-        const allOrdersList = [
+        const savedBagsAndShoes = (() => {
+          try {
+            return getBagsOrders() || [];
+          } catch (e) {
+            return [];
+          }
+        })();
+
+        const savedDbOrders = (() => {
+          try {
+            return loadFromStorage('stichbee_orders', []) || [];
+          } catch (e) {
+            return [];
+          }
+        })();
+
+        const allRawUserOrders = [...savedBagsAndShoes, ...savedDbOrders];
+        const seenIds = new Set();
+        const dedupedUserOrders = allRawUserOrders.filter(o => {
+          if (!o || !o.id) return false;
+          if (seenIds.has(o.id)) return false;
+          seenIds.add(o.id);
+          return true;
+        });
+
+        const normalizedUserOrders = dedupedUserOrders.map(o => {
+          const firstItem = (o.items && o.items[0]) || {};
+          const calcPrice = typeof o.total === 'number' ? o.total : (typeof o.price === 'number' ? o.price : (parseFloat(String(o.total || o.price).replace(/[^0-9.]/g, '')) || 0));
+          return {
+            id: o.id || `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+            title: o.title || (firstItem.name ? (o.items.length > 1 ? `${firstItem.name} + ${o.items.length - 1} more` : firstItem.name) : (o.type === 'custom' ? 'Custom Bespoke Design' : 'Artisan Handcrafted Order')),
+            tailor: o.artisanAssigned || 'StitchBee Master Atelier',
+            size: firstItem.size || (o.customDetails && o.customDetails.size) || 'Standard',
+            qty: o.items && Array.isArray(o.items) ? o.items.reduce((s, it) => s + (it.qty || it.quantity || 1), 0) : 1,
+            price: calcPrice,
+            deliveryDate: o.deliveryDate || o.expectedDelivery || (o.type === 'custom' ? 'Quote within 4h' : '3-5 Business Days'),
+            status: o.status || 'Order Placed',
+            img: firstItem.img || firstItem.image || (o.items && o.items[0]?.img) || '/shoes_categories/HeroSection.png',
+            steps: o.steps && Array.isArray(o.steps) ? o.steps : [
+              { name: 'Order Placed', date: o.date || 'Today', completed: true, active: true },
+              { name: 'Crafting', date: 'Pending', pending: true },
+              { name: 'Quality Check', date: 'Pending', pending: true },
+              { name: 'Shipped', date: 'Pending', pending: true },
+              { name: 'Delivered', date: 'Pending', pending: true }
+            ]
+          };
+        });
+
+        const staticOrdersList = [
           {
             id: 'ORD-101',
             title: 'Premium 2-Piece Suit',
@@ -9544,6 +9599,8 @@ export default function CustomerView({
             ]
           }
         ];
+
+        const allOrdersList = [...normalizedUserOrders, ...staticOrdersList];
 
         const filteredOrders = allOrdersList.filter(o => {
           if (ordersFilter === 'all') return true;
@@ -9743,7 +9800,7 @@ export default function CustomerView({
 
                           {/* Steps Nodes */}
                           <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', zIndex: 2 }}>
-                            {order.steps.map((st, sIdx) => (
+                            {(order.steps || []).map((st, sIdx) => (
                               <div key={sIdx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '60px' }}>
                                 <div 
                                   style={{ 
@@ -9777,7 +9834,9 @@ export default function CustomerView({
                       {/* Pricing and Actions */}
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', height: '100%', paddingLeft: '20px', borderLeft: `1px solid ${borderColor}` }}>
                         <div style={{ textAlign: 'right' }}>
-                          <span style={{ fontSize: '1.25rem', fontWeight: '800', color: colorTextPrimary }}>₹{order.price.toLocaleString()}</span>
+                          <span style={{ fontSize: '1.25rem', fontWeight: '800', color: colorTextPrimary }}>
+                            {typeof order.price === 'number' && order.price > 0 ? `₹${order.price.toLocaleString()}` : (order.price ? `₹${order.price}` : 'Pending Quote')}
+                          </span>
                           <p style={{ fontSize: '0.68rem', color: colorTextMuted, margin: '2px 0 0 0' }}>
                             {order.status === 'Completed' ? 'Delivered on' : order.status === 'Cancelled' ? 'Cancelled on' : 'Est. Delivery'}<br/>
                             <strong style={{ color: colorTextSecondary }}>{order.deliveryDate}</strong>
@@ -10561,59 +10620,7 @@ export default function CustomerView({
         </div>
       )}
 
-      {/* CART OVERLAY SLIDE OUT */}
-      {cartOpen && (
-        <div className="modal-overlay" style={{ justifyContent: 'flex-end', padding: 0 }}>
-          <div className="modal-content animate-fade-in" style={{ width: '400px', height: '100vh', borderRadius: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '24px' }}>
-            <div>
-              <div className="modal-header" style={{ marginBottom: '16px' }}>
-                <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ShoppingCart size={20} /> Shopping Cart</h3>
-                <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }} onClick={() => setCartOpen(false)}>
-                  <X size={20} />
-                </button>
-              </div>
 
-              {cart.length === 0 ? (
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center', marginTop: '40px' }}>Your cart is empty.</p>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxHeight: '70vh', overflowY: 'auto' }}>
-                  {cart.map(item => (
-                    <div key={item.id} className="flex-row-between" style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.04)' }}>
-                      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                        <img src={item.image} alt={item.name} style={{ width: '45px', height: '45px', borderRadius: '4px', objectFit: 'cover' }} />
-                        <div>
-                          <div style={{ fontSize: '0.85rem', fontWeight: '600', color: '#fff' }}>{item.name}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>₹{item.price}{item.type === 'fabric' && '/m'}</div>
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }} onClick={() => handleUpdateCartQty(item.id, -1)}><Minus size={12} /></button>
-                        <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>{item.qty} {item.type === 'fabric' && 'm'}</span>
-                        <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }} onClick={() => handleAddToCart(item, item.type)}><Plus size={12} /></button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {cart.length > 0 && (
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '16px' }}>
-                <div className="flex-row-between" style={{ marginBottom: '16px' }}>
-                  <span style={{ color: 'var(--text-secondary)' }}>Total Cost:</span>
-                  <span style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--accent)' }}>
-                    ₹{cart.reduce((a,c) => a + (c.price * c.qty), 0)}
-                  </span>
-                </div>
-                <button className="btn btn-primary" style={{ width: '100%', padding: '12px' }} onClick={handleCheckoutCart}>
-                  Checkout & Pay via UPI
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Article Details Modal Overlay */}
       {selectedArticle && (

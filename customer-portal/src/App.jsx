@@ -168,10 +168,20 @@ export default function App() {
       setCustomerHub('category-landing');
     } else if (
       path.startsWith('/shoes') ||
-      path.startsWith('/shoes-slippers')
+      path.startsWith('/shoes-slippers') ||
+      path.startsWith('/footwear') ||
+      path.startsWith('/repair/footwear')
     ) {
       setRole('customer');
       setCustomerCategory('shoes');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/gifts') ||
+      path.startsWith('/handmade-gifts') ||
+      path.startsWith('/handmade')
+    ) {
+      setRole('customer');
+      setCustomerCategory('gifts');
       setCustomerHub('category-landing');
     }
   }, [location.pathname]);
@@ -1605,6 +1615,8 @@ export default function App() {
                       navigate('/bags');
                     } else if (category.cat === 'shoes') {
                       navigate('/shoes');
+                    } else if (category.cat === 'gifts') {
+                      navigate('/gifts');
                     }
                   }}
                   onMouseEnter={() => setHoveredCategoryIdx(idx)}
