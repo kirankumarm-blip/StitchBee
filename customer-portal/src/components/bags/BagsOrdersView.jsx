@@ -80,6 +80,12 @@ export default function BagsOrdersView({ showToast }) {
         <div style={{ marginBottom: '20px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <button 
             className="bl-back-btn" 
+            onClick={() => navigate('/handmade-gifts')}
+          >
+            <ArrowLeft size={16} /> Back to Handmade Gifts
+          </button>
+          <button 
+            className="bl-back-btn" 
             onClick={() => navigate('/footwear')}
           >
             <ArrowLeft size={16} /> Back to Footwear Studio

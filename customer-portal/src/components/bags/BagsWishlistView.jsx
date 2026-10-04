@@ -10,13 +10,26 @@ import {
   toggleWishlist, 
   addToCart 
 } from '../../utils/bagsStore';
+import { ALL_HANDMADE_GIFTS } from '../../utils/handmadeGiftsStore';
+import { ALL_SHOE_PRODUCTS } from '../../utils/shoesStore';
 
 export default function BagsWishlistView({ showToast }) {
   const navigate = useNavigate();
 
   const [wishlistIds, setWishlistIds] = useState(getWishlist());
 
-  const wishlistProducts = ALL_BAG_PRODUCTS.filter(p => wishlistIds.includes(p.id));
+  const ALL_CATALOG_PRODUCTS = [...ALL_BAG_PRODUCTS, ...ALL_HANDMADE_GIFTS, ...(ALL_SHOE_PRODUCTS || [])];
+  const wishlistProducts = ALL_CATALOG_PRODUCTS.filter(p => wishlistIds.includes(p.id));
+
+  const getProductRoute = (prod) => {
+    if (prod.catId || prod.category === 'Handmade Gifts' || /prod-/.test(prod.id)) {
+      return `/handmade-gifts/product/${prod.slug || prod.id}`;
+    }
+    if (prod.slug && prod.sizes) {
+      return `/footwear/product/${prod.slug}`;
+    }
+    return `/bags/product/${prod.id}`;
+  };
 
   const handleRemove = (productId) => {
     const { updated } = toggleWishlist(productId);
@@ -44,8 +57,14 @@ export default function BagsWishlistView({ showToast }) {
           <span className="bl-crumb-active">My Wishlist</span>
         </nav>
 
-        {/* Back Link */}
-        <div style={{ marginBottom: '20px' }}>
+        {/* Back Links */}
+        <div style={{ marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button 
+            className="bl-back-btn" 
+            onClick={() => navigate('/handmade-gifts')}
+          >
+            <ArrowLeft size={16} /> Back to Handmade Gifts
+          </button>
           <button 
             className="bl-back-btn" 
             onClick={() => navigate('/bags')}
@@ -61,7 +80,7 @@ export default function BagsWishlistView({ showToast }) {
             My Wishlist ({wishlistProducts.length})
           </h1>
           <p className="bl-section-subtext" style={{ margin: 0 }}>
-            Saved handcrafted leather bags ready for your next order or bespoke customization.
+            Saved handcrafted creations ready for your next order or bespoke customization.
           </p>
         </div>
 
@@ -71,7 +90,7 @@ export default function BagsWishlistView({ showToast }) {
               <div key={product.id} className="bl-product-card bl-wishlist-card">
                 <div 
                   className="bl-prod-img-box"
-                  onClick={() => navigate(`/bags/product/${product.id}`)}
+                  onClick={() => navigate(getProductRoute(product))}
                   style={{ cursor: 'pointer' }}
                 >
                   <img src={product.img} alt={product.name} />
@@ -90,7 +109,7 @@ export default function BagsWishlistView({ showToast }) {
 
                 <div className="bl-prod-info">
                   <div className="bl-prod-meta-top">
-                    <span className="bl-prod-cat-tag">{product.category.toUpperCase()}</span>
+                    <span className="bl-prod-cat-tag">{(product.category || 'ARTISAN').toUpperCase()}</span>
                     <div className="bl-prod-rating">
                       <Star size={13} fill="#f59e0b" color="#f59e0b" />
                       <span>{product.rating}</span>
@@ -99,7 +118,7 @@ export default function BagsWishlistView({ showToast }) {
 
                   <h4 
                     className="bl-prod-name"
-                    onClick={() => navigate(`/bags/product/${product.id}`)}
+                    onClick={() => navigate(getProductRoute(product))}
                     style={{ cursor: 'pointer' }}
                   >
                     {product.name}

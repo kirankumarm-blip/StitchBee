@@ -1,4 +1,5 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Heart, ShoppingCart, ArrowRight, Check, Star, 
   ChevronLeft, ChevronRight, X, Sparkles, Sliders,
@@ -6,6 +7,8 @@ import {
   Upload, Scissors, Compass, ShieldCheck, MapPin
 } from 'lucide-react';
 import './HandmadeGiftsPage.css';
+import { getWishlist, toggleWishlist } from '../../utils/bagsStore';
+import { addHandmadeGiftToCart } from '../../utils/handmadeGiftsStore';
 
 // ============================================================================
 // ASSET MAPPINGS (Exact local assets from Desktop/HandMadeGifts)
@@ -123,6 +126,7 @@ export const GIFT_CATEGORIES = [
 export const FEATURED_GIFTS = [
   {
     id: "prod-classic-teddy",
+    slug: "classic-teddy-bear",
     name: "Classic Teddy Bear",
     price: "₹1,299",
     rawPrice: 1299,
@@ -137,6 +141,7 @@ export const FEATURED_GIFTS = [
   },
   {
     id: "prod-floral-cushion",
+    slug: "floral-cushion-cover",
     name: "Floral Cushion Cover",
     price: "₹899",
     rawPrice: 899,
@@ -150,6 +155,7 @@ export const FEATURED_GIFTS = [
   },
   {
     id: "prod-personalized-cushion",
+    slug: "personalized-name-cushion",
     name: "Personalized Name Cushion",
     price: "₹999",
     rawPrice: 999,
@@ -163,6 +169,7 @@ export const FEATURED_GIFTS = [
   },
   {
     id: "prod-embroidered-tote",
+    slug: "embroidered-tote-bag",
     name: "Embroidered Tote Bag",
     price: "₹1,299",
     rawPrice: 1299,
@@ -175,6 +182,7 @@ export const FEATURED_GIFTS = [
   },
   {
     id: "prod-baby-bib",
+    slug: "baby-bib-embroidered",
     name: "Baby Bib (Embroidered)",
     price: "₹499",
     rawPrice: 499,
@@ -189,6 +197,7 @@ export const FEATURED_GIFTS = [
   },
   {
     id: "prod-cosmetic-pouch",
+    slug: "cosmetic-pouch",
     name: "Cosmetic Pouch",
     price: "₹799",
     rawPrice: 799,
@@ -318,11 +327,25 @@ export default function HandmadeGiftsPage({
   onLoginRequired,
   onNavigateHome
 }) {
+  const navigate = useNavigate();
+
   // 1. Category Filtering
   const [selectedCatId, setSelectedCatId] = useState('all');
 
-  // 2. Wishlist State
-  const [wishlist, setWishlist] = useState({});
+  // 2. Wishlist State (synchronized with global store)
+  const [wishlist, setWishlist] = useState(() => getWishlist());
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setWishlist(getWishlist());
+    };
+    window.addEventListener('stitchbee-store-update', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('stitchbee-store-update', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, []);
 
   // 3. Product Swatch States (map of productId -> colorIndex)
   const [selectedSwatches, setSelectedSwatches] = useState({
@@ -361,39 +384,34 @@ export default function HandmadeGiftsPage({
   };
 
   const handleWishlistToggle = (productId, productName) => {
-    setWishlist(prev => {
-      const next = !prev[productId];
-      showToast(next ? `Added ${productName} to your Wishlist ❤️` : `Removed ${productName} from Wishlist`);
-      return { ...prev, [productId]: next };
-    });
+    const { updated, added } = toggleWishlist(productId);
+    setWishlist(updated);
+    showToast(added ? `Added "${productName}" to your Wishlist ❤️` : `Removed "${productName}" from Wishlist`);
   };
 
   const handleAddProductToCart = (product) => {
-    const chosenColor = product.colors[selectedSwatches[product.id] || 0];
+    const activeColorIdx = selectedSwatches[product.id] || 0;
+    const chosenColor = product.colors[activeColorIdx]?.name || 'Standard';
+    addHandmadeGiftToCart(product, chosenColor, null, 1);
     if (onAddToCart) {
       onAddToCart({
         id: product.id,
         name: product.name,
-        price: product.rawPrice,
-        color: chosenColor.name,
+        price: product.rawPrice || product.price,
+        color: chosenColor,
         image: product.img,
         category: 'Handmade Gifts'
       });
     }
-    showToast(`Added ${product.name} (${chosenColor.name}) to Cart 🛍️`);
+    showToast(`Added ${product.name} (${chosenColor}) to Cart 🛍️`);
   };
 
   const handleCategoryClick = (category) => {
-    if (category.isCustom) {
-      setIsCustomModalOpen(true);
+    if (category.isCustom || category.id === 'custom') {
+      navigate('/handmade-gifts/customize');
       return;
     }
-    setSelectedCatId(category.id);
-    const target = document.getElementById('hm-featured-collection');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-    showToast(`Viewing collection: ${category.name}`);
+    navigate(`/handmade-gifts/category/${category.id}`);
   };
 
   const scrollFabrics = (direction) => {
@@ -492,7 +510,7 @@ export default function HandmadeGiftsPage({
                 <button 
                   type="button"
                   className="hm-btn-secondary"
-                  onClick={() => setIsCustomModalOpen(true)}
+                  onClick={() => navigate('/handmade-gifts/customize')}
                 >
                   Create Custom Gift
                 </button>
@@ -576,10 +594,7 @@ export default function HandmadeGiftsPage({
             <button 
               type="button"
               className="hm-view-all-link"
-              onClick={() => {
-                setSelectedCatId('all');
-                showToast("Showing all 6 featured handmade gifts");
-              }}
+              onClick={() => navigate('/handmade-gifts/category/all')}
               style={{ background: 'none', border: 'none' }}
             >
               View All <ArrowRight size={16} />
@@ -589,13 +604,17 @@ export default function HandmadeGiftsPage({
           <div className="hm-products-grid">
             {filteredProducts.map(prod => {
               const activeColorIdx = selectedSwatches[prod.id] || 0;
-              const isWishlisted = !!wishlist[prod.id];
+              const isWishlisted = Array.isArray(wishlist) ? wishlist.includes(prod.id) : !!wishlist[prod.id];
 
               return (
                 <div key={prod.id} className="hm-product-card">
                   
                   {/* Image with Wishlist Button */}
-                  <div className="hm-product-img-wrap">
+                  <div 
+                    className="hm-product-img-wrap"
+                    onClick={() => navigate(`/handmade-gifts/product/${prod.slug || prod.id}`)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <img 
                       src={prod.img} 
                       alt={prod.name} 
@@ -612,13 +631,19 @@ export default function HandmadeGiftsPage({
                       }}
                       title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
                     >
-                      <Heart size={16} />
+                      <Heart size={16} fill={isWishlisted ? '#FF1678' : 'none'} color={isWishlisted ? '#FF1678' : '#1E293B'} />
                     </button>
                   </div>
 
                   {/* Body & Footer */}
                   <div className="hm-product-body">
-                    <div className="hm-product-title">{prod.name}</div>
+                    <div 
+                      className="hm-product-title"
+                      onClick={() => navigate(`/handmade-gifts/product/${prod.slug || prod.id}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {prod.name}
+                    </div>
                     <div className="hm-product-price">{prod.price}</div>
                     
                     <div className="hm-product-footer">
@@ -643,7 +668,10 @@ export default function HandmadeGiftsPage({
                       <button 
                         type="button"
                         className="hm-cart-btn"
-                        onClick={() => handleAddProductToCart(prod)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddProductToCart(prod);
+                        }}
                         title="Add to Cart"
                       >
                         <ShoppingCart size={15} />
@@ -692,7 +720,7 @@ export default function HandmadeGiftsPage({
               <button 
                 type="button"
                 className="hm-btn-primary"
-                onClick={() => setIsCustomModalOpen(true)}
+                onClick={() => navigate('/handmade-gifts/customize')}
               >
                 Start Customizing <ArrowRight size={17} />
               </button>
@@ -714,21 +742,33 @@ export default function HandmadeGiftsPage({
 
           {/* 5 Process Step Icons */}
           <div className="hm-studio-process-row">
-            <div className="hm-process-step-col">
+            <div 
+              className="hm-process-step-col"
+              onClick={() => navigate('/handmade-gifts/customize?step=idea')}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="hm-step-circle-icon">
                 <Lightbulb size={22} />
               </div>
               <div className="hm-step-label">Upload Sketch or Idea</div>
             </div>
 
-            <div className="hm-process-step-col">
+            <div 
+              className="hm-process-step-col"
+              onClick={() => navigate('/handmade-gifts/customize?step=fabric')}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="hm-step-circle-icon">
                 <Layers size={22} />
               </div>
               <div className="hm-step-label">Choose Fabric & Details</div>
             </div>
 
-            <div className="hm-process-step-col">
+            <div 
+              className="hm-process-step-col"
+              onClick={() => navigate('/handmade-gifts/customize?step=personalization')}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="hm-step-circle-icon">
                 <Type size={22} />
               </div>
@@ -736,14 +776,22 @@ export default function HandmadeGiftsPage({
               <div className="hm-step-sublabel">(Name, Message)</div>
             </div>
 
-            <div className="hm-process-step-col">
+            <div 
+              className="hm-process-step-col"
+              onClick={() => navigate('/handmade-gifts/customize?step=quote')}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="hm-step-circle-icon">
                 <Tag size={22} />
               </div>
               <div className="hm-step-label">Get Preview & Quote</div>
             </div>
 
-            <div className="hm-process-step-col">
+            <div 
+              className="hm-process-step-col"
+              onClick={() => navigate('/handmade-gifts/customize?step=size')}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="hm-step-circle-icon">
                 <Truck size={22} />
               </div>
@@ -788,9 +836,9 @@ export default function HandmadeGiftsPage({
                   className={`hm-fabric-card ${selectedFabric === fabric.id ? 'selected' : ''}`}
                   onClick={() => {
                     setSelectedFabric(fabric.id);
-                    setCustomForm(prev => ({ ...prev, fabric: fabric.name }));
-                    showToast(`Selected material: ${fabric.name}`);
+                    navigate(`/handmade-gifts/customize?fabric=${fabric.id}`);
                   }}
+                  style={{ cursor: 'pointer' }}
                 >
                   <div className="hm-fabric-img-wrap">
                     <img 
@@ -839,9 +887,18 @@ export default function HandmadeGiftsPage({
               <div className="hm-how-steps-row">
                 {GIFT_PROCESS_STEPS.map((item, idx) => {
                   const Icon = item.icon;
+                  const isChoose = item.step.includes("Choose");
+                  const isCustomize = item.step.includes("Customize");
                   return (
                     <React.Fragment key={item.step}>
-                      <div className="hm-how-step-item">
+                      <div 
+                        className="hm-how-step-item"
+                        onClick={() => {
+                          if (isChoose) scrollToFeatured();
+                          else if (isCustomize) navigate('/handmade-gifts/customize');
+                        }}
+                        style={{ cursor: isChoose || isCustomize ? 'pointer' : 'default' }}
+                      >
                         <div className="hm-how-step-icon">
                           <Icon size={20} />
                         </div>
@@ -1025,7 +1082,7 @@ export default function HandmadeGiftsPage({
               <button 
                 type="button"
                 className="hm-btn-outline-white"
-                onClick={() => setIsCustomModalOpen(true)}
+                onClick={() => navigate('/handmade-gifts/customize')}
               >
                 Create Custom Gift →
               </button>
