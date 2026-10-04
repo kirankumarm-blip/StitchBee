@@ -482,16 +482,21 @@ export const getHandmadeGiftBySlug = (slugOrId) => {
 
 export const getHandmadeGiftsByCategory = (catSlugOrId) => {
   if (!catSlugOrId || catSlugOrId === 'all') return ALL_HANDMADE_GIFTS;
+  const normalizedSlug = (catSlugOrId === 'pouches-cosmetic' || catSlugOrId === 'pouches') ? 'pouches-cosmetic-bags' : catSlugOrId;
   return ALL_HANDMADE_GIFTS.filter(p => 
     p.catId === catSlugOrId || 
+    p.catId === normalizedSlug ||
     p.categorySlug === catSlugOrId ||
-    (catSlugOrId === 'cushion-covers' && (p.catId === 'cushion-covers' || p.catId === 'personalized-gifts')) ||
-    (catSlugOrId === 'personalized-gifts' && p.personalizable)
+    p.categorySlug === normalizedSlug ||
+    (catSlugOrId === 'cushion-covers' && (p.catId === 'cushion-covers' || p.catId === 'personalized-gifts' || p.categorySlug === 'cushion-covers')) ||
+    (catSlugOrId === 'personalized-gifts' && (p.personalizable || p.id === 'prod-personalized-cushion')) ||
+    (catSlugOrId === 'baby-gifts' && (p.catId === 'baby-gifts' || p.id === 'prod-classic-teddy'))
   );
 };
 
 export const getHandmadeGiftCategory = (catSlugOrId) => {
-  return GIFT_CATEGORIES.find(c => c.id === catSlugOrId) || {
+  const normalizedSlug = (catSlugOrId === 'pouches-cosmetic' || catSlugOrId === 'pouches') ? 'pouches-cosmetic-bags' : catSlugOrId;
+  return GIFT_CATEGORIES.find(c => c.id === catSlugOrId || c.id === normalizedSlug) || {
     id: catSlugOrId,
     name: "Handmade Gifts Collection",
     desc: "Thoughtful gifts, beautifully stitched by master artisans."

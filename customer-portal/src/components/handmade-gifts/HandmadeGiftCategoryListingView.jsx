@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Heart, ShoppingCart, ArrowRight, ArrowLeft, ChevronRight, 
   Star, Sparkles, Filter, SlidersHorizontal, Check, RefreshCw 
@@ -14,7 +14,11 @@ import { getWishlist, toggleWishlist } from '../../utils/bagsStore';
 
 export default function HandmadeGiftCategoryListingView({ showToast }) {
   const { categorySlug, slug } = useParams();
-  const catParam = categorySlug || slug || 'all';
+  const location = useLocation();
+  const pathParts = (location.pathname || '').split('/').filter(Boolean);
+  const catIdx = pathParts.indexOf('category');
+  const pathCatSlug = catIdx !== -1 && pathParts[catIdx + 1] ? pathParts[catIdx + 1] : null;
+  const catParam = categorySlug || slug || pathCatSlug || 'all';
   const navigate = useNavigate();
 
   const categoryInfo = getHandmadeGiftCategory(catParam);

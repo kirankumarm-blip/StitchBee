@@ -208,6 +208,19 @@ export const FEATURED_GIFTS = [
       { name: "Warm Tan", hex: "#9F6F4C" }
     ],
     catId: "pouches-cosmetic"
+  },
+  {
+    id: "prod-linen-apron",
+    slug: "embroidered-kitchen-apron",
+    name: "Embroidered Kitchen Apron",
+    price: "₹1,199",
+    rawPrice: 1199,
+    img: handmadeGiftImages.categories.kitchen,
+    colors: [
+      { name: "Natural Oatmeal", hex: "#D9CBB6" },
+      { name: "Charcoal Slate", hex: "#3E444B" }
+    ],
+    catId: "kitchen-linen"
   }
 ];
 
@@ -407,11 +420,29 @@ export default function HandmadeGiftsPage({
   };
 
   const handleCategoryClick = (category) => {
-    if (category.isCustom || category.id === 'custom') {
-      navigate('/handmade-gifts/customize');
+    if (category.isCustom || category.id === 'custom-design' || category.id === 'custom') {
+      const studioTarget = document.getElementById('hm-custom-gift-studio');
+      if (studioTarget) {
+        studioTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        navigate('/handmade-gifts/customize');
+      }
       return;
     }
-    navigate(`/handmade-gifts/category/${category.id}`);
+
+    const nextCat = selectedCatId === category.id ? 'all' : category.id;
+    setSelectedCatId(nextCat);
+
+    const target = document.getElementById('hm-featured-collection');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (nextCat !== 'all') {
+      showToast(`Showing ${category.name}`);
+    } else {
+      showToast('Showing all gifts');
+    }
   };
 
   const scrollFabrics = (direction) => {
@@ -430,8 +461,15 @@ export default function HandmadeGiftsPage({
 
   const filteredProducts = useMemo(() => {
     if (selectedCatId === 'all') return FEATURED_GIFTS;
-    const matched = FEATURED_GIFTS.filter(p => p.catId === selectedCatId);
-    return matched.length > 0 ? matched : FEATURED_GIFTS;
+    return FEATURED_GIFTS.filter(p => {
+      if (p.catId === selectedCatId) return true;
+      if (selectedCatId === 'cushion-covers' && (p.catId === 'cushion-covers' || p.id === 'prod-personalized-cushion')) return true;
+      if (selectedCatId === 'personalized-gifts' && (p.id === 'prod-personalized-cushion' || p.id === 'prod-classic-teddy' || p.id === 'prod-baby-bib')) return true;
+      if (selectedCatId === 'baby-gifts' && (p.catId === 'baby-gifts' || p.id === 'prod-classic-teddy')) return true;
+      if (selectedCatId === 'pouches-cosmetic' && (p.catId === 'pouches-cosmetic' || p.catId === 'pouches-cosmetic-bags')) return true;
+      if (selectedCatId === 'kitchen-linen' && p.catId === 'kitchen-linen') return true;
+      return false;
+    });
   }, [selectedCatId]);
 
   return (
@@ -587,15 +625,52 @@ export default function HandmadeGiftsPage({
           <div className="hm-featured-top-row">
             <div>
               <span className="hm-eyebrow">FEATURED COLLECTION</span>
-              <h2 className="hm-heading">Handmade Stitched Gifts, Ready for You</h2>
-              <p className="hm-subtitle">Carefully crafted with fine stitching and beautiful detailing.</p>
+              <h2 className="hm-heading">
+                {selectedCatId === 'all' 
+                  ? 'Handmade Stitched Gifts, Ready for You' 
+                  : `${GIFT_CATEGORIES.find(c => c.id === selectedCatId)?.name || 'Selected'} Collection`}
+              </h2>
+              <p className="hm-subtitle">
+                {selectedCatId === 'all'
+                  ? 'Carefully crafted with fine stitching and beautiful detailing.'
+                  : `Handcrafted ${GIFT_CATEGORIES.find(c => c.id === selectedCatId)?.name || ''} designs made with authentic materials.`}
+              </p>
+
+              {selectedCatId !== 'all' && (
+                <button 
+                  type="button"
+                  className="hm-filter-clear-pill"
+                  onClick={() => setSelectedCatId('all')}
+                  style={{
+                    marginTop: '10px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '5px 14px',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    background: 'rgba(255, 22, 120, 0.08)',
+                    color: '#FF1678',
+                    border: '1px solid rgba(255, 22, 120, 0.25)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <X size={13} />
+                  <span>Show All Stitched Gifts ({FEATURED_GIFTS.length})</span>
+                </button>
+              )}
             </div>
             
             <button 
               type="button"
               className="hm-view-all-link"
-              onClick={() => navigate('/handmade-gifts/category/all')}
-              style={{ background: 'none', border: 'none' }}
+              onClick={() => {
+                const targetCat = selectedCatId && selectedCatId !== 'all' ? selectedCatId : 'all';
+                navigate(`/handmade-gifts/category/${targetCat}`);
+              }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
             >
               View All <ArrowRight size={16} />
             </button>
