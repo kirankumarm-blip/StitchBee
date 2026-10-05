@@ -527,14 +527,13 @@ export default function PetOutfitsPage({
           
           <div className="pet-studio-layout">
             
-            {/* Left Image: Tailoring Table with Soft Right Fade */}
+            {/* Left Image: Tailoring Table with Natural Visibility */}
             <div className="pet-studio-left-wrap">
               <img 
                 src={petAssets.customStudio.left} 
                 alt="Pet tailoring craftsmanship" 
                 className="pet-studio-left-img"
               />
-              <div className="pet-studio-left-fade-overlay" />
             </div>
 
             {/* Center Content */}
@@ -719,14 +718,13 @@ export default function PetOutfitsPage({
               </div>
             </div>
 
-            {/* Right Image with Soft Left Fade */}
+            {/* Right Image with Natural Cat Visibility */}
             <div className="pet-how-right-wrap">
               <img 
                 src={petAssets.howItWorks} 
                 alt="Cat in bespoke stitched pink dress" 
                 className="pet-how-right-img"
               />
-              <div className="pet-how-right-fade-overlay" />
             </div>
 
           </div>
