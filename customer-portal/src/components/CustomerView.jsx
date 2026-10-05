@@ -606,6 +606,9 @@ export default function CustomerView({
     } else if (path === '/gifts' || path === '/handmade-gifts' || path === '/handmade' || path.startsWith('/gifts') || path.startsWith('/handmade-gifts') || path.startsWith('/handmade')) {
       setSelectedCategory('gifts');
       setActiveHub('category-landing');
+    } else if (path === '/pets' || path === '/pet-outfits' || path === '/pet' || path.startsWith('/pets') || path.startsWith('/pet-outfits') || path.startsWith('/pet/')) {
+      setSelectedCategory('pets');
+      setActiveHub('category-landing');
     }
   }, [location.pathname]);
 

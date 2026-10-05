@@ -183,6 +183,14 @@ export default function App() {
       setRole('customer');
       setCustomerCategory('gifts');
       setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/pets') ||
+      path.startsWith('/pet-outfits') ||
+      path.startsWith('/pet')
+    ) {
+      setRole('customer');
+      setCustomerCategory('pets');
+      setCustomerHub('category-landing');
     }
   }, [location.pathname]);
 
