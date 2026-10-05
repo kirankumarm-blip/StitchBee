@@ -182,57 +182,48 @@
 .pet-hero-section {
   position: relative;
   background: #FFF2F6;
-  min-height: clamp(480px, 32vw, 560px);
+  width: 100%;
+  min-height: clamp(480px, 36vw, 660px);
   overflow: hidden;
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--pet-border-subtle);
-  width: 100%;
 }
 
 .pet-page.dark .pet-hero-section {
   background: #141720;
 }
 
-/* Background image wrap spanning the full hero banner */
+/* Background image wrap spanning the full 100% hero banner */
 .pet-hero-bg-wrap {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  overflow: hidden;
 }
 
 .pet-hero-bg-img {
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 100%;
   height: 100%;
-  width: auto;
-  min-width: clamp(820px, 68vw, 1400px);
-  max-width: none;
   object-fit: cover;
-  object-position: right top;
+  object-position: center;
   display: block;
 }
 
-/* Seamless soft fade over the left text area blending softly into the photo */
+/* Subtle soft backdrop on left to keep text ultra-crisp while letting the full background image shine through */
 .pet-hero-gradient-overlay {
   position: absolute;
   top: 0;
   left: 0;
-  width: 52%;
+  width: 48%;
   height: 100%;
   background: linear-gradient(
     to right,
-    #FFF2F6 0%,
-    #FFF2F6 30%,
-    rgba(255, 242, 246, 0.94) 50%,
-    rgba(255, 242, 246, 0.4) 75%,
+    rgba(255, 242, 246, 0.72) 0%,
+    rgba(255, 242, 246, 0.5) 40%,
+    rgba(255, 242, 246, 0.18) 75%,
     transparent 100%
   );
   pointer-events: none;
@@ -241,10 +232,9 @@
 .pet-page.dark .pet-hero-gradient-overlay {
   background: linear-gradient(
     to right,
-    #141720 0%,
-    #141720 30%,
-    rgba(20, 23, 32, 0.94) 50%,
-    rgba(20, 23, 32, 0.4) 75%,
+    rgba(20, 23, 32, 0.82) 0%,
+    rgba(20, 23, 32, 0.6) 40%,
+    rgba(20, 23, 32, 0.22) 75%,
     transparent 100%
   );
 }
