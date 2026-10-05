@@ -47,6 +47,97 @@ export const petAssets = {
   }
 };
 
+// Hero Badges & Decorative Strip matching Master Reference Screenshot
+const HeartBadgeIcon = () => (
+  <div className="pet-feature-icon-circle">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path 
+        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+        fill="#FF1684" 
+        stroke="#14213D" 
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </div>
+);
+
+const TapeBadgeIcon = () => (
+  <div className="pet-feature-icon-circle">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <g transform="rotate(-30 12 12)">
+        <rect x="2" y="7" width="20" height="10" rx="5" fill="#FF1684" stroke="#14213D" strokeWidth="1.5" />
+        <line x1="7" y1="7" x2="7" y2="17" stroke="#FFFFFF" strokeWidth="1.2" />
+        <line x1="11" y1="7" x2="11" y2="13" stroke="#FFFFFF" strokeWidth="1.2" />
+        <line x1="15" y1="7" x2="15" y2="17" stroke="#FFFFFF" strokeWidth="1.2" />
+        <circle cx="18" cy="12" r="2.2" fill="#FFFFFF" stroke="#14213D" strokeWidth="1" />
+      </g>
+    </svg>
+  </div>
+);
+
+const AwardBadgeIcon = () => (
+  <div className="pet-feature-icon-circle">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M9 13.5L6 21L11 19.5L12 15" fill="#FF1684" stroke="#14213D" strokeWidth="1.2" strokeLinejoin="round" />
+      <path d="M15 13.5L18 21L13 19.5L12 15" fill="#E01171" stroke="#14213D" strokeWidth="1.2" strokeLinejoin="round" />
+      <circle cx="12" cy="9" r="6" fill="#FF1684" stroke="#14213D" strokeWidth="1.5" />
+      <circle cx="12" cy="9" r="2.6" fill="#FFFFFF" stroke="#14213D" strokeWidth="1.2" />
+    </svg>
+  </div>
+);
+
+const PetHeroDeco = () => (
+  <div className="pet-hero-deco-strip" aria-hidden="true">
+    <svg width="40" height="380" viewBox="0 0 40 380" fill="none">
+      {/* Top Paw */}
+      <g transform="translate(4, 12)">
+        <ellipse cx="16" cy="18" rx="9" ry="7.5" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="8" cy="7" r="3.4" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="14" cy="4" r="3.6" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="20" cy="4" r="3.6" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="25" cy="7" r="3.4" fill="#FFA3BD" opacity="0.9" />
+      </g>
+
+      {/* Upper Botanical Leaves */}
+      <g transform="translate(4, 52)">
+        <path d="M12 85 C18 60 24 35 18 10" stroke="#7E9A75" strokeWidth="2" strokeLinecap="round" />
+        <ellipse cx="24" cy="65" rx="6.5" ry="11" fill="#8FA986" transform="rotate(35 24 65)" opacity="0.85" />
+        <ellipse cx="8" cy="50" rx="6" ry="10" fill="#A4BCA0" transform="rotate(-30 8 50)" opacity="0.85" />
+        <ellipse cx="22" cy="35" rx="6" ry="10" fill="#7E9A75" transform="rotate(25 22 35)" opacity="0.85" />
+        <ellipse cx="10" cy="20" rx="5" ry="8.5" fill="#8FA986" transform="rotate(-25 10 20)" opacity="0.85" />
+      </g>
+
+      {/* Middle Paw */}
+      <g transform="translate(4, 155)">
+        <ellipse cx="16" cy="18" rx="9" ry="7.5" fill="#FF8CAE" opacity="0.9" />
+        <circle cx="8" cy="7" r="3.4" fill="#FF8CAE" opacity="0.9" />
+        <circle cx="14" cy="4" r="3.6" fill="#FF8CAE" opacity="0.9" />
+        <circle cx="20" cy="4" r="3.6" fill="#FF8CAE" opacity="0.9" />
+        <circle cx="25" cy="7" r="3.4" fill="#FF8CAE" opacity="0.9" />
+      </g>
+
+      {/* Lower Botanical Leaves */}
+      <g transform="translate(4, 195)">
+        <path d="M14 85 C8 60 14 35 20 10" stroke="#7E9A75" strokeWidth="2" strokeLinecap="round" />
+        <ellipse cx="8" cy="65" rx="6.5" ry="11" fill="#8FA986" transform="rotate(-35 8 65)" opacity="0.85" />
+        <ellipse cx="22" cy="50" rx="6" ry="10" fill="#A4BCA0" transform="rotate(30 22 50)" opacity="0.85" />
+        <ellipse cx="10" cy="35" rx="6" ry="10" fill="#7E9A75" transform="rotate(-25 10 35)" opacity="0.85" />
+        <ellipse cx="20" cy="20" rx="5" ry="8.5" fill="#8FA986" transform="rotate(25 20 20)" opacity="0.85" />
+      </g>
+
+      {/* Bottom Paw */}
+      <g transform="translate(4, 305)">
+        <ellipse cx="16" cy="18" rx="9" ry="7.5" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="8" cy="7" r="3.4" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="14" cy="4" r="3.6" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="20" cy="4" r="3.6" fill="#FFA3BD" opacity="0.9" />
+        <circle cx="25" cy="7" r="3.4" fill="#FFA3BD" opacity="0.9" />
+      </g>
+    </svg>
+  </div>
+);
+
 export default function PetOutfitsPage({
   currentUser,
   theme = 'light',
@@ -193,86 +284,73 @@ export default function PetOutfitsPage({
       )}
 
       {/* ====================================================================
-          1. HERO SECTION
+          1. HERO SECTION (MATCHING REFERENCE SCREENSHOT EXACTLY)
           ==================================================================== */}
       <section className="pet-hero-section">
-        <div className="pet-container">
-          <div className="pet-hero-grid">
+        {/* Full-width background image anchored right with natural dimensions */}
+        <div className="pet-hero-bg-wrap">
+          <img 
+            src={petAssets.hero} 
+            alt="StitchBeez Pet Outfits Hero" 
+            className="pet-hero-bg-img"
+          />
+          <div className="pet-hero-gradient-overlay" />
+        </div>
+
+        <div className="pet-container pet-hero-container">
+          {/* Decorative Paw & Botanical Leaf Strip on left margin */}
+          <PetHeroDeco />
+
+          {/* Left Hero Content */}
+          <div className="pet-hero-content">
+            <span className="pet-eyebrow">STITCHBEEZ PET OUTFITS</span>
             
-            {/* Left Hero Content */}
-            <div className="pet-hero-left">
-              <span className="pet-eyebrow">STITCHBEEZ PET OUTFITS</span>
-              
-              <h1 className="pet-hero-heading">
-                Style Made for<br />
-                <span className="pink-text">Every Paw</span>
-              </h1>
-              
-              <p className="pet-hero-desc">
-                Adorable, comfortable and custom-made outfits for your furry friends. 
-                From everyday wear to festive looks, create unique styles that match their personality.
-              </p>
+            <h1 className="pet-hero-heading">
+              Style Made for<br />
+              <span className="pink-text">Every Paw</span>
+            </h1>
+            
+            <p className="pet-hero-desc">
+              Adorable, comfortable and custom-made outfits for your furry friends. 
+              From everyday wear to festive looks, create unique styles that match their personality.
+            </p>
 
-              {/* 3 Key Feature Badges */}
-              <div className="pet-hero-features">
-                <div className="pet-feature-badge">
-                  <div className="pet-feature-icon-circle">
-                    <Heart size={18} />
-                  </div>
-                  <span className="pet-feature-text">Pet-Friendly<br />Fabrics</span>
-                </div>
-
-                <div className="pet-feature-badge">
-                  <div className="pet-feature-icon-circle">
-                    <Scissors size={18} />
-                  </div>
-                  <span className="pet-feature-text">Custom Fit<br />for Every Pet</span>
-                </div>
-
-                <div className="pet-feature-badge">
-                  <div className="pet-feature-icon-circle">
-                    <Award size={18} />
-                  </div>
-                  <span className="pet-feature-text">Verified<br />Tailors</span>
-                </div>
+            {/* 3 Key Feature Badges matching reference screenshot */}
+            <div className="pet-hero-features">
+              <div className="pet-feature-badge">
+                <HeartBadgeIcon />
+                <span className="pet-feature-text">Pet-Friendly<br />Fabrics</span>
               </div>
 
-              {/* Hero Action Buttons */}
-              <div className="pet-hero-cta-group">
-                <button 
-                  type="button"
-                  className="pet-btn-primary"
-                  onClick={scrollToFeatured}
-                >
-                  Shop Pet Outfits <ArrowRight size={17} />
-                </button>
-                
-                <button 
-                  type="button"
-                  className="pet-btn-secondary"
-                  onClick={() => navigate('/pet-outfits/customize')}
-                >
-                  Create Custom Outfit
-                </button>
+              <div className="pet-feature-badge">
+                <TapeBadgeIcon />
+                <span className="pet-feature-text">Custom Fit<br />for Every Pet</span>
+              </div>
+
+              <div className="pet-feature-badge">
+                <AwardBadgeIcon />
+                <span className="pet-feature-text">Verified<br />Tailors</span>
               </div>
             </div>
 
-            {/* Right Hero Image */}
-            <div className="pet-hero-right">
-              <div className="pet-hero-banner-wrap">
-                <img 
-                  src={petAssets.hero} 
-                  alt="StitchBeez Pet Outfits Hero" 
-                  className="pet-hero-banner-img"
-                />
-                <div className="pet-hero-image-overlay" />
-                <div className="pet-hero-script-tag">
-                  Happy Paws<br />
-                  Happy Outfits ♡
-                </div>
-              </div>
+            {/* Hero Action Buttons */}
+            <div className="pet-hero-cta-group">
+              <button 
+                type="button"
+                className="pet-btn-primary"
+                onClick={scrollToFeatured}
+              >
+                Shop Pet Outfits →
+              </button>
+              
+              <button 
+                type="button"
+                className="pet-btn-secondary"
+                onClick={() => navigate('/pet-outfits/customize')}
+              >
+                Create Custom Outfit
+              </button>
             </div>
-
           </div>
         </div>
       </section>
