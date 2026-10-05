@@ -59,9 +59,10 @@
 
 .pet-container {
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 3vw, 48px);
+  max-width: 100%;
+  margin: 0;
+  padding: 0 clamp(20px, 3.5vw, 64px);
+  box-sizing: border-box;
 }
 
 /* Shared Section Typography */
@@ -180,7 +181,7 @@
    ========================================================================== */
 .pet-hero-section {
   position: relative;
-  background: linear-gradient(180deg, #FFF9F7 0%, #FFFFFF 100%);
+  background: #FFF2F6;
   padding: 44px 0 54px;
   border-bottom: 1px solid var(--pet-border-subtle);
 }
@@ -269,19 +270,39 @@
 .pet-hero-banner-wrap {
   position: relative;
   width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: var(--pet-shadow-lg);
-  aspect-ratio: 16 / 10.5;
-  background: #FDF4F0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  background: transparent;
 }
 
 .pet-hero-banner-img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 520px;
   object-fit: cover;
-  object-position: center;
+  object-position: right center;
   display: block;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 12%, rgba(0, 0, 0, 0.85) 26%, black 42%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 12%, rgba(0, 0, 0, 0.85) 26%, black 42%);
+}
+
+.pet-hero-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(140px, 22vw, 320px);
+  height: 100%;
+  background: linear-gradient(to right, #FFF2F6 0%, rgba(255, 242, 246, 0.95) 25%, rgba(255, 242, 246, 0.4) 65%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pet-page.dark .pet-hero-image-overlay {
+  background: linear-gradient(to right, #151820 0%, rgba(21, 24, 32, 0.95) 25%, rgba(21, 24, 32, 0.4) 65%, transparent 100%);
 }
 
 .pet-hero-script-tag {
@@ -585,9 +606,13 @@
    ========================================================================== */
 .pet-studio-section {
   padding: 56px 0 64px;
-  background: var(--pet-surface);
+  background: #FFF2F6;
   border-top: 1px solid var(--pet-border-subtle);
   border-bottom: 1px solid var(--pet-border-subtle);
+}
+
+.pet-page.dark .pet-studio-section {
+  background: #151820;
 }
 
 .pet-studio-layout {
@@ -600,11 +625,11 @@
 
 .pet-studio-left-wrap {
   position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: var(--pet-shadow-md);
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
   aspect-ratio: 4 / 3.4;
-  background: #FFF;
+  background: transparent;
 }
 
 .pet-studio-left-img {
@@ -612,6 +637,23 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, rgba(0, 0, 0, 0.25) 12%, rgba(0, 0, 0, 0.85) 28%, black 45%);
+  mask-image: linear-gradient(to left, transparent 0%, rgba(0, 0, 0, 0.25) 12%, rgba(0, 0, 0, 0.85) 28%, black 45%);
+}
+
+.pet-studio-left-fade-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(120px, 18vw, 240px);
+  height: 100%;
+  background: linear-gradient(to left, #FFF2F6 0%, rgba(255, 242, 246, 0.95) 30%, rgba(255, 242, 246, 0.4) 65%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pet-page.dark .pet-studio-left-fade-overlay {
+  background: linear-gradient(to left, #151820 0%, rgba(21, 24, 32, 0.95) 30%, rgba(21, 24, 32, 0.4) 65%, transparent 100%);
 }
 
 .pet-studio-center {
@@ -873,10 +915,11 @@
 
 .pet-how-right-wrap {
   position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: var(--pet-shadow-lg);
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
   aspect-ratio: 4 / 3;
+  background: transparent;
 }
 
 .pet-how-right-img {
@@ -884,6 +927,23 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 12%, rgba(0, 0, 0, 0.85) 28%, black 45%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.25) 12%, rgba(0, 0, 0, 0.85) 28%, black 45%);
+}
+
+.pet-how-right-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(120px, 18vw, 240px);
+  height: 100%;
+  background: linear-gradient(to right, var(--pet-bg) 0%, rgba(255, 255, 255, 0.95) 25%, rgba(255, 255, 255, 0.4) 65%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pet-page.dark .pet-how-right-fade-overlay {
+  background: linear-gradient(to right, var(--pet-bg) 0%, rgba(15, 17, 21, 0.95) 25%, rgba(15, 17, 21, 0.4) 65%, transparent 100%);
 }
 
 /* ==========================================================================
@@ -1070,18 +1130,36 @@
   display: block;
 }
 
-.pet-final-cta-title {
-  font-family: var(--pet-font-serif);
-  font-size: clamp(1.4rem, 2vw, 1.9rem);
-  font-weight: 700;
-  color: #FFFFFF;
-  margin: 0 0 4px;
+/* Specificity overrides to GUARANTEE text & buttons in final CTA banner are 100% visible across all themes */
+.pet-final-cta-banner h3,
+.pet-final-cta-title,
+body.light-theme .pet-final-cta-banner h3,
+body.light-theme .pet-final-cta-title,
+body .pet-final-cta-banner .pet-final-cta-title {
+  font-family: var(--pet-font-serif) !important;
+  font-size: clamp(1.4rem, 2vw, 1.95rem) !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  margin: 0 0 6px !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
 }
 
-.pet-final-cta-desc {
-  font-size: 0.86rem;
-  color: #CBD5E1;
-  margin: 0;
+.pet-final-cta-banner p,
+.pet-final-cta-desc,
+body.light-theme .pet-final-cta-banner p,
+body.light-theme .pet-final-cta-desc,
+body .pet-final-cta-banner .pet-final-cta-desc {
+  font-size: 0.92rem !important;
+  color: #E2E8F0 !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
 }
 
 .pet-final-cta-buttons {
@@ -1090,25 +1168,34 @@
   gap: 14px;
 }
 
-.pet-btn-cta-custom {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 12px 24px;
-  border-radius: 26px;
-  cursor: pointer;
-  transition: all 0.22s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.pet-btn-cta-custom,
+.pet-final-cta-banner .pet-btn-cta-custom,
+body.light-theme .pet-final-cta-banner .pet-btn-cta-custom,
+body .pet-final-cta-banner .pet-btn-cta-custom {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.55) !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  padding: 12px 24px !important;
+  border-radius: 26px !important;
+  cursor: pointer !important;
+  transition: all 0.22s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-.pet-btn-cta-custom:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: #FFFFFF;
-  transform: translateY(-2px);
+.pet-btn-cta-custom:hover,
+.pet-final-cta-banner .pet-btn-cta-custom:hover,
+body.light-theme .pet-final-cta-banner .pet-btn-cta-custom:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px) !important;
 }
 
 /* ==========================================================================

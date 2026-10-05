@@ -265,6 +265,7 @@ export default function PetOutfitsPage({
                   alt="StitchBeez Pet Outfits Hero" 
                   className="pet-hero-banner-img"
                 />
+                <div className="pet-hero-image-overlay" />
                 <div className="pet-hero-script-tag">
                   Happy Paws<br />
                   Happy Outfits ♡
@@ -448,13 +449,14 @@ export default function PetOutfitsPage({
           
           <div className="pet-studio-layout">
             
-            {/* Left Image: Tailoring Table */}
+            {/* Left Image: Tailoring Table with Soft Right Fade */}
             <div className="pet-studio-left-wrap">
               <img 
                 src={petAssets.customStudio.left} 
                 alt="Pet tailoring craftsmanship" 
                 className="pet-studio-left-img"
               />
+              <div className="pet-studio-left-fade-overlay" />
             </div>
 
             {/* Center Content */}
@@ -639,13 +641,14 @@ export default function PetOutfitsPage({
               </div>
             </div>
 
-            {/* Right Image */}
+            {/* Right Image with Soft Left Fade */}
             <div className="pet-how-right-wrap">
               <img 
                 src={petAssets.howItWorks} 
                 alt="Cat in bespoke stitched pink dress" 
                 className="pet-how-right-img"
               />
+              <div className="pet-how-right-fade-overlay" />
             </div>
 
           </div>
@@ -761,8 +764,12 @@ export default function PetOutfitsPage({
                 className="pet-final-cta-toys-img"
               />
               <div>
-                <h3 className="pet-final-cta-title">Dress Them in Something Special</h3>
-                <p className="pet-final-cta-desc">Explore our pet outfit collection or create a custom design today.</p>
+                <h3 className="pet-final-cta-title" style={{ color: '#FFFFFF', margin: '0 0 6px', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
+                  Dress Them in Something Special
+                </h3>
+                <p className="pet-final-cta-desc" style={{ color: '#E2E8F0', margin: 0, textShadow: '0 1px 2px rgba(0,0,0,0.4)' }}>
+                  Explore our pet outfit collection or create a custom design today.
+                </p>
               </div>
             </div>
 
@@ -779,6 +786,7 @@ export default function PetOutfitsPage({
                 type="button"
                 className="pet-btn-cta-custom"
                 onClick={() => navigate('/pet-outfits/customize')}
+                style={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.45)', background: 'rgba(255,255,255,0.14)' }}
               >
                 Create Custom Outfit →
               </button>
