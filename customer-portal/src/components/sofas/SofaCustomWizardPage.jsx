@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, ArrowRight, Check, Upload, Sparkles, Star, 
   MapPin, ShieldCheck, Ruler, Scissors, Award, Info, X, 
-  Camera, Eye, Layers, Palette, Armchair, Sliders, Truck, FileText
+  Camera, Eye, Layers, Palette, Armchair, Sliders, Truck, FileText,
+  Search, Navigation, Phone, ExternalLink, ThumbsUp, CheckCircle2
 } from 'lucide-react';
 import './SofasShopPage.css';
 import { 
@@ -106,6 +107,12 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
     };
   });
 
+  // Map & Specialist Profile States
+  const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
+  const [mapSearchQuery, setMapSearchQuery] = useState('Bengaluru (Indiranagar / Koramangala)');
+  const [selectedProfileModalSpecialist, setSelectedProfileModalSpecialist] = useState(null);
+  const [mapFilter, setMapFilter] = useState('all'); // 'all' | 'near' | 'top'
+
   // Save to draft on changes
   useEffect(() => {
     saveCustomSofaDraft(sofaConfig);
@@ -160,6 +167,20 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
     setSofaConfig({ ...sofaConfig, selectedAddons: updated });
   };
 
+  // Direct Selection & Step Transition (User Requirement)
+  const handleSelectSpecialistAndContinue = (spec) => {
+    setSofaConfig(prev => ({
+      ...prev,
+      specialist: spec
+    }));
+    setSelectedProfileModalSpecialist(null);
+    if (showToast) {
+      showToast(`Selected ${spec.name}! Continuing to Final Quote & Review.`);
+    }
+    setStep(10);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleAddToCartAndProceed = () => {
     const customItem = {
       id: `custom-sofa-${Date.now()}`,
@@ -183,9 +204,16 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
     navigate('/cart');
   };
 
+  const filteredSpecialists = SOFA_SPECIALISTS.filter(spec => {
+    if (mapFilter === 'near') return parseFloat(spec.distance) <= 3.0;
+    if (mapFilter === 'top') return spec.rating >= 4.95;
+    return true;
+  });
+
   return (
     <div className="sofa-shop-page-root" style={{ paddingTop: '20px' }}>
-      <div className="sofa-featured-section" style={{ maxWidth: '1280px', margin: '0 auto 60px auto' }}>
+      {/* 100% Fluid Width Container */}
+      <div className="sofa-featured-section" style={{ width: '100%', maxWidth: '100%', padding: '0 48px', margin: '0 auto 60px auto' }}>
         
         {/* Header Bar */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -222,8 +250,8 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
           />
         </div>
 
-        {/* Wizard Main Container */}
-        <div style={{ background: '#FFFFFF', borderRadius: '24px', border: '1px solid #E2E8F0', padding: '40px 36px', boxShadow: '0 8px 30px rgba(0,0,0,0.05)' }}>
+        {/* Wizard Main Card (Expands across 100% of container) */}
+        <div style={{ background: '#FFFFFF', borderRadius: '24px', border: '1px solid #E2E8F0', padding: '40px 36px', boxShadow: '0 8px 30px rgba(0,0,0,0.05)', width: '100%', boxSizing: 'border-box' }}>
           
           {/* STEP 1: SILHOUETTE */}
           {step === 1 && (
@@ -247,7 +275,7 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                       boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
                     }}
                   >
-                    <div style={{ height: '170px', borderRadius: '10px', overflow: 'hidden', background: '#F8FAFC', marginBottom: '12px' }}>
+                    <div style={{ height: '180px', borderRadius: '10px', overflow: 'hidden', background: '#F8FAFC', marginBottom: '12px' }}>
                       <img src={sil.img} alt={sil.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -538,42 +566,238 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
             </div>
           )}
 
-          {/* STEP 9: SPECIALIST SELECTION */}
+          {/* STEP 9: SPECIALIST SELECTION WITH GOOGLE MAPS & PORTFOLIO */}
           {step === 9 && (
             <div>
-              <span className="sofa-section-eyebrow">STEP 9 OF 10</span>
-              <h2 className="sofa-section-title">Choose Your Doorstep Master Upholsterer</h2>
-              <p className="sofa-section-subtitle">Our certified artisan visits your living room to verify dimensions and show physical fabric swatches.</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
+                <div>
+                  <span className="sofa-section-eyebrow">STEP 9 OF 10 • INTERACTIVE WORKSHOP LOCATOR</span>
+                  <h2 className="sofa-section-title">Choose Your Doorstep Master Upholsterer</h2>
+                  <p className="sofa-section-subtitle">
+                    Select a specialist on the map to review their works, ratings, and past custom sofa builds before scheduling.
+                  </p>
+                </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginTop: '28px' }}>
-                {SOFA_SPECIALISTS.map(spec => (
-                  <div
-                    key={spec.id}
-                    onClick={() => setSofaConfig({ ...sofaConfig, specialist: spec })}
-                    style={{
-                      borderRadius: '16px',
-                      border: sofaConfig.specialist.id === spec.id ? '2px solid #E11D74' : '1px solid #E2E8F0',
-                      background: sofaConfig.specialist.id === spec.id ? '#FDF2F8' : '#FFFFFF',
-                      padding: '20px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                      <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden', background: '#F1F5F9' }}>
-                        <img src={spec.avatar} alt={spec.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      </div>
-                      <div>
-                        <h4 style={{ margin: 0, fontSize: '1.05rem', color: '#14213D' }}>{spec.name}</h4>
-                        <span style={{ fontSize: '0.78rem', color: '#059669', fontWeight: 600 }}>{spec.badge}</span>
-                      </div>
-                    </div>
-                    <p style={{ fontSize: '0.82rem', color: '#64748B', margin: '0 0 10px 0' }}>{spec.specialty}</p>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#94A3B8', borderTop: '1px solid #E2E8F0', paddingTop: '8px' }}>
-                      <span>⭐ {spec.rating} ({spec.reviews} reviews)</span>
-                      <span>📍 {spec.distance}</span>
-                    </div>
+                {/* Filter Pills */}
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {[
+                    { id: 'all', label: 'All Ateliers' },
+                    { id: 'near', label: 'Nearby (< 3.0 km)' },
+                    { id: 'top', label: 'Top Rated (4.95+ ★)' }
+                  ].map(f => (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setMapFilter(f.id)}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '20px',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        border: mapFilter === f.id ? '2px solid #E11D74' : '1px solid #CBD5E1',
+                        background: mapFilter === f.id ? '#FCE7F3' : '#FFFFFF',
+                        color: mapFilter === f.id ? '#E11D74' : '#14213D',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 1. INTERACTIVE GOOGLE MAP CANVAS */}
+              <div className="sofa-map-wrapper">
+                {/* Simulated Google Maps Canvas with SVG Roads & Geography */}
+                <div className="sofa-map-canvas" style={{ filter: mapType === 'satellite' ? 'brightness(0.7) contrast(1.2)' : 'none' }}>
+                  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    {/* Land background */}
+                    <rect width="100%" height="100%" fill={mapType === 'satellite' ? '#27372B' : '#F4F2EA'} />
+                    {/* Parks & Green zones */}
+                    <path d="M 50 40 Q 180 80 220 220 T 100 380 Z" fill={mapType === 'satellite' ? '#1E2D22' : '#CBE6A3'} opacity="0.7" />
+                    <path d="M 680 120 Q 820 180 940 320 T 780 440 Z" fill={mapType === 'satellite' ? '#1E2D22' : '#CBE6A3'} opacity="0.6" />
+                    {/* Major Highways & Primary Roads */}
+                    <path d="M -20 180 Q 300 240 650 140 T 1300 210" stroke="#FFFFFF" strokeWidth="10" fill="none" />
+                    <path d="M -20 180 Q 300 240 650 140 T 1300 210" stroke="#FFD166" strokeWidth="6" fill="none" />
+                    <path d="M 280 -20 Q 360 260 520 520" stroke="#FFFFFF" strokeWidth="12" fill="none" />
+                    <path d="M 280 -20 Q 360 260 520 520" stroke="#FFAA00" strokeWidth="8" fill="none" />
+                    <path d="M 650 -20 Q 720 280 840 520" stroke="#FFFFFF" strokeWidth="8" fill="none" />
+                    {/* Secondary City Streets Grid */}
+                    <path d="M 50 340 L 950 340 M 100 100 L 900 100 M 420 50 L 420 450 M 750 40 L 750 440" stroke="#FFFFFF" strokeWidth="4" fill="none" opacity="0.9" />
+                    {/* Road Labels */}
+                    <text x="320" y="270" fill="#71717A" fontSize="11" fontWeight="bold" transform="rotate(32 320 270)">100ft Road Indiranagar</text>
+                    <text x="540" y="165" fill="#71717A" fontSize="11" fontWeight="bold" transform="rotate(-10 540 165)">Koramangala Inner Ring Rd</text>
+                  </svg>
+                </div>
+
+                {/* Top Google Maps Controls Bar */}
+                <div className="sofa-map-controls-top">
+                  <div className="sofa-map-search-bar">
+                    <Search size={18} color="#E11D74" />
+                    <input 
+                      type="text" 
+                      className="sofa-map-search-input" 
+                      value={mapSearchQuery}
+                      onChange={e => setMapSearchQuery(e.target.value)}
+                      placeholder="Search locality or pincode..."
+                    />
+                    <button 
+                      type="button"
+                      style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                      onClick={() => {
+                        setMapSearchQuery('Bengaluru (HSR Layout)');
+                        if (showToast) showToast('GPS pinned to your current living room location.');
+                      }}
+                    >
+                      <Navigation size={13} />
+                      <span>GPS</span>
+                    </button>
                   </div>
-                ))}
+
+                  <div className="sofa-map-types-toggle">
+                    <button 
+                      type="button" 
+                      className={`map-type-btn ${mapType === 'roadmap' ? 'active' : ''}`}
+                      onClick={() => setMapType('roadmap')}
+                    >
+                      Map
+                    </button>
+                    <button 
+                      type="button" 
+                      className={`map-type-btn ${mapType === 'satellite' ? 'active' : ''}`}
+                      onClick={() => setMapType('satellite')}
+                    >
+                      Satellite
+                    </button>
+                  </div>
+                </div>
+
+                {/* User Location Marker */}
+                <div className="sofa-user-location-pin">
+                  <div className="user-pulse-dot">
+                    <div className="user-pulse-ring" />
+                  </div>
+                  <span className="user-pin-label">You (HSR Layout)</span>
+                </div>
+
+                {/* Specialist Workshop Pins on Map */}
+                {filteredSpecialists.map(spec => {
+                  const isSelected = sofaConfig.specialist.id === spec.id;
+                  return (
+                    <div
+                      key={spec.id}
+                      className={`sofa-specialist-map-pin ${isSelected ? 'selected' : ''}`}
+                      style={{ top: spec.mapPinPos.top, left: spec.mapPinPos.left }}
+                      onClick={() => setSelectedProfileModalSpecialist(spec)}
+                      title={`Click to view ${spec.name}'s works & portfolio`}
+                    >
+                      <div className="pin-bubble">
+                        <img src={spec.avatar} alt="" className="pin-avatar" />
+                        <div>
+                          <span className="pin-name">{spec.name}</span>
+                          <span style={{ fontSize: '0.68rem', display: 'block', opacity: 0.9 }}>
+                            ⭐ {spec.rating} • {spec.distance}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="pin-tail" />
+                    </div>
+                  );
+                })}
+
+                {/* Google Watermark */}
+                <div className="sofa-map-google-watermark">
+                  <span style={{ color: '#4285F4', fontWeight: 900 }}>G</span>
+                  <span style={{ color: '#EA4335', fontWeight: 900 }}>o</span>
+                  <span style={{ color: '#FBBC05', fontWeight: 900 }}>o</span>
+                  <span style={{ color: '#4285F4', fontWeight: 900 }}>g</span>
+                  <span style={{ color: '#34A853', fontWeight: 900 }}>l</span>
+                  <span style={{ color: '#EA4335', fontWeight: 900 }}>e</span>
+                  <span style={{ color: '#64748B', marginLeft: '4px', fontSize: '0.68rem' }}>Maps ©2026</span>
+                </div>
+              </div>
+
+              {/* 2. SPECIALIST CARDS LIST WITH WORKS & CHOOSE BUTTONS */}
+              <div className="sofa-specialists-list-grid">
+                {filteredSpecialists.map(spec => {
+                  const isSelected = sofaConfig.specialist.id === spec.id;
+
+                  return (
+                    <div
+                      key={spec.id}
+                      className={`sofa-specialist-card-v2 ${isSelected ? 'selected' : ''}`}
+                      onClick={() => setSofaConfig({ ...sofaConfig, specialist: spec })}
+                    >
+                      {isSelected && (
+                        <div className="spec-selected-check-badge">
+                          <Check size={16} />
+                        </div>
+                      )}
+
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '14px' }}>
+                          <div style={{ width: '56px', height: '56px', borderRadius: '50%', overflow: 'hidden', background: '#F1F5F9', border: '2px solid #E11D74', flexShrink: 0 }}>
+                            <img src={spec.avatar} alt={spec.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          </div>
+                          <div>
+                            <h4 style={{ margin: '0 0 2px 0', fontSize: '1.1rem', color: '#14213D', fontWeight: 700 }}>
+                              {spec.name}
+                            </h4>
+                            <span style={{ fontSize: '0.78rem', color: '#059669', fontWeight: 700, display: 'block' }}>
+                              ✓ {spec.badge} • {spec.experience}
+                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                              <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#D97706' }}>
+                                ⭐ {spec.rating} ({spec.reviews} reviews)
+                              </span>
+                              <span style={{ fontSize: '0.78rem', color: '#64748B' }}>
+                                • {spec.distance}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p style={{ fontSize: '0.84rem', color: '#475569', lineHeight: '1.45', margin: '0 0 12px 0' }}>
+                          {spec.specialty}
+                        </p>
+
+                        <div style={{ fontSize: '0.76rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '16px' }}>
+                          <MapPin size={13} color="#E11D74" />
+                          <span>{spec.address}</span>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons: 1. View Works & Ratings, 2. Select & Continue */}
+                      <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '14px', display: 'flex', gap: '10px' }}>
+                        <button
+                          type="button"
+                          className="sofa-btn-secondary"
+                          style={{ flex: 1, padding: '10px 12px', fontSize: '0.82rem', borderRadius: '8px', gap: '6px' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedProfileModalSpecialist(spec);
+                          }}
+                        >
+                          <Eye size={15} color="#E11D74" />
+                          <span>View Works & Rating</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className="sofa-btn-primary"
+                          style={{ flex: 1.1, padding: '10px 12px', fontSize: '0.82rem', borderRadius: '8px', gap: '6px' }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSelectSpecialistAndContinue(spec);
+                          }}
+                        >
+                          <Check size={15} />
+                          <span>Select & Next</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -617,7 +841,7 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0', paddingBottom: '6px' }}>
                       <span style={{ color: '#64748B' }}>Assigned Master:</span>
-                      <strong style={{ color: '#14213D' }}>{sofaConfig.specialist.name}</strong>
+                      <strong style={{ color: '#E11D74' }}>{sofaConfig.specialist.name} ({sofaConfig.specialist.distance})</strong>
                     </div>
                   </div>
 
@@ -737,6 +961,149 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
         </div>
 
       </div>
+
+      {/* ================================================================ */}
+      {/* SPECIALIST PROFILE MODAL WITH WORKS & RATINGS (USER REQUIREMENT) */}
+      {/* ================================================================ */}
+      {selectedProfileModalSpecialist && (
+        <div className="sofa-profile-modal-overlay" onClick={() => setSelectedProfileModalSpecialist(null)}>
+          <div className="sofa-profile-modal-body animate-scale-up" onClick={e => e.stopPropagation()}>
+            <button 
+              type="button" 
+              className="sofa-modal-close-btn"
+              onClick={() => setSelectedProfileModalSpecialist(null)}
+            >
+              <X size={20} />
+            </button>
+
+            {/* Profile Header */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '24px', flexWrap: 'wrap' }}>
+              <div style={{ width: '84px', height: '84px', borderRadius: '50%', overflow: 'hidden', border: '3px solid #E11D74', flexShrink: 0 }}>
+                <img src={selectedProfileModalSpecialist.avatar} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <span className="sofa-section-eyebrow">VERIFIED UPHOLSTERY MASTER</span>
+                <h3 style={{ fontFamily: 'Playfair Display, Georgia, serif', fontSize: '1.9rem', color: '#14213D', margin: '4px 0 6px 0' }}>
+                  {selectedProfileModalSpecialist.name}
+                </h3>
+                <p style={{ margin: '0 0 6px 0', fontSize: '0.88rem', color: '#059669', fontWeight: 700 }}>
+                  ✓ {selectedProfileModalSpecialist.badge} • {selectedProfileModalSpecialist.experience}
+                </p>
+                <div style={{ display: 'flex', gap: '16px', fontSize: '0.82rem', color: '#64748B', flexWrap: 'wrap' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <MapPin size={14} color="#E11D74" />
+                    {selectedProfileModalSpecialist.address} ({selectedProfileModalSpecialist.distance})
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Phone size={14} color="#E11D74" />
+                    {selectedProfileModalSpecialist.phone}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Rating Breakdown Bar */}
+            <div className="spec-ratings-breakdown-box">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <div>
+                  <strong style={{ fontSize: '1.5rem', color: '#14213D' }}>⭐ {selectedProfileModalSpecialist.rating}</strong>
+                  <span style={{ fontSize: '0.82rem', color: '#64748B', marginLeft: '6px' }}>
+                    out of 5.0 ({selectedProfileModalSpecialist.reviews} Verified Customer Ratings)
+                  </span>
+                </div>
+                <span style={{ fontSize: '0.78rem', background: '#DCFCE7', color: '#166534', padding: '4px 10px', borderRadius: '20px', fontWeight: 700 }}>
+                  Top 1% Craftsman in Bengaluru
+                </span>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '8px' }}>
+                <div className="spec-breakdown-row">
+                  <span>Craftsmanship & Stitching:</span>
+                  <div className="spec-bar-wrap"><div className="spec-bar-fill" style={{ width: '100%' }} /></div>
+                  <strong>5.0</strong>
+                </div>
+                <div className="spec-breakdown-row">
+                  <span>Punctuality & Doorstep Visit:</span>
+                  <div className="spec-bar-wrap"><div className="spec-bar-fill" style={{ width: '98%' }} /></div>
+                  <strong>4.95</strong>
+                </div>
+                <div className="spec-breakdown-row">
+                  <span>Fabric & Padding Knowledge:</span>
+                  <div className="spec-bar-wrap"><div className="spec-bar-fill" style={{ width: '100%' }} /></div>
+                  <strong>5.0</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* HANDCRAFTED WORKS & PORTFOLIO GALLERY (KEY REQUIREMENT) */}
+            <div style={{ marginBottom: '28px' }}>
+              <span className="sofa-section-eyebrow">PORTFOLIO & PREVIOUS BUILDS</span>
+              <h4 style={{ fontSize: '1.25rem', color: '#14213D', margin: '4px 0 12px 0' }}>
+                Handcrafted Sofas & Works by {selectedProfileModalSpecialist.name}
+              </h4>
+              <p style={{ fontSize: '0.85rem', color: '#64748B', margin: '0 0 16px 0' }}>
+                Actual living room projects built, reupholstered, and delivered by this master artisan.
+              </p>
+
+              <div className="spec-portfolio-grid">
+                {selectedProfileModalSpecialist.portfolio?.map((item, i) => (
+                  <div key={i} className="spec-portfolio-card">
+                    <img src={item.image} alt={item.title} className="spec-work-img" />
+                    <div className="spec-work-info">
+                      <span className="spec-work-cat">{item.category}</span>
+                      <h5 className="spec-work-title">{item.title}</h5>
+                      <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0, lineHeight: '1.35' }}>
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Customer Testimonials */}
+            {selectedProfileModalSpecialist.reviewsList && selectedProfileModalSpecialist.reviewsList.length > 0 && (
+              <div style={{ marginBottom: '28px', borderTop: '1px solid #E2E8F0', paddingTop: '16px' }}>
+                <h5 style={{ fontSize: '0.95rem', color: '#14213D', margin: '0 0 12px 0' }}>Recent Homeowner Reviews</h5>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {selectedProfileModalSpecialist.reviewsList.map((rev, i) => (
+                    <div key={i} style={{ background: '#F8FAFC', padding: '12px 16px', borderRadius: '10px', fontSize: '0.82rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                        <strong style={{ color: '#14213D' }}>{rev.author}</strong>
+                        <span style={{ color: '#F59E0B' }}>{'★'.repeat(rev.rating)}</span>
+                      </div>
+                      <p style={{ margin: 0, color: '#475569', lineHeight: '1.4' }}>"{rev.comment}"</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Direct Selection and Advance to Step 10 Action Button */}
+            <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '20px', display: 'flex', gap: '12px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="sofa-btn-secondary"
+                onClick={() => setSelectedProfileModalSpecialist(null)}
+              >
+                Close Profile
+              </button>
+
+              <button
+                type="button"
+                className="sofa-btn-primary"
+                style={{ padding: '14px 28px', fontSize: '0.95rem' }}
+                onClick={() => handleSelectSpecialistAndContinue(selectedProfileModalSpecialist)}
+              >
+                <Check size={18} />
+                <span>Select This Specialist & Continue to Quote (Step 10) →</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

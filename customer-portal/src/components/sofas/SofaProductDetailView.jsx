@@ -158,7 +158,7 @@ export default function SofaProductDetailView({
 
   return (
     <div className="sofa-shop-page-root" style={{ paddingTop: '20px' }}>
-      <div className="sofa-featured-section" style={{ maxWidth: '1360px', margin: '0 auto 60px auto' }}>
+      <div className="sofa-featured-section" style={{ width: '100%', maxWidth: '100%', padding: '0 48px', margin: '0 auto 60px auto' }}>
         
         {/* Navigation Breadcrumbs */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: '#64748B', marginBottom: '24px' }}>

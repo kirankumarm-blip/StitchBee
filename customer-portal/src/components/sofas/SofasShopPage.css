@@ -354,9 +354,9 @@
    ========================================================================== */
 .sofa-category-section {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto 56px auto;
-  padding: 0 32px;
+  padding: 0 48px;
   box-sizing: border-box;
 }
 
@@ -450,9 +450,9 @@
    ========================================================================== */
 .sofa-featured-section {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto 64px auto;
-  padding: 0 32px;
+  padding: 0 48px;
   box-sizing: border-box;
 }
 
@@ -643,9 +643,9 @@
    ========================================================================== */
 .sofa-custom-studio-section {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto 64px auto;
-  padding: 0 32px;
+  padding: 0 48px;
   box-sizing: border-box;
 }
 
@@ -748,9 +748,9 @@
    ========================================================================== */
 .sofa-fabrics-section {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto 64px auto;
-  padding: 0 32px;
+  padding: 0 48px;
   box-sizing: border-box;
 }
 
@@ -929,9 +929,9 @@
    ========================================================================== */
 .sofa-how-it-works-section {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto 64px auto;
-  padding: 0 32px;
+  padding: 0 48px;
   box-sizing: border-box;
 }
 
@@ -1036,9 +1036,9 @@
    ========================================================================== */
 .sofa-lifestyle-banner-section {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 48px;
   box-sizing: border-box;
 }
 
@@ -1469,4 +1469,397 @@
   .fabric-modal-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ==========================================================================
+   GOOGLE MAPS & SPECIALIST DISCOVERY / PORTFOLIO STYLES
+   ========================================================================== */
+.sofa-map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  border-radius: var(--sofa-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--sofa-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: #E5E3DF; /* Google Maps land beige */
+}
+
+.dark .sofa-map-wrapper {
+  background-color: #1A1F2C;
+  border-color: #334155;
+}
+
+/* Simulated Google Maps Roads & Canvas */
+.sofa-map-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.sofa-map-controls-top {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.sofa-map-search-bar {
+  pointer-events: auto;
+  background: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  flex: 1;
+  max-width: 440px;
+}
+
+.dark .sofa-map-search-bar {
+  background: #1E293B;
+  color: #F8FAFC;
+}
+
+.sofa-map-search-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.88rem;
+  outline: none;
+  color: inherit;
+}
+
+.sofa-map-types-toggle {
+  pointer-events: auto;
+  background: #FFFFFF;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  overflow: hidden;
+}
+
+.dark .sofa-map-types-toggle {
+  background: #1E293B;
+}
+
+.map-type-btn {
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #64748B;
+  transition: all 0.2s ease;
+}
+
+.map-type-btn.active {
+  background: var(--sofa-primary);
+  color: #FFFFFF;
+}
+
+/* Map Watermark bottom left */
+.sofa-map-google-watermark {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #5F6368;
+}
+
+.dark .sofa-map-google-watermark {
+  background: rgba(15, 23, 42, 0.85);
+  color: #94A3B8;
+}
+
+/* User Location Pin */
+.sofa-user-location-pin {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.user-pulse-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2563EB;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 14px #2563EB;
+  position: relative;
+}
+
+.user-pulse-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid #2563EB;
+  animation: pulseGlow 2s infinite ease-out;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.user-pin-label {
+  margin-top: 4px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Specialist Map Pins */
+.sofa-specialist-map-pin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  z-index: 9;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sofa-specialist-map-pin:hover,
+.sofa-specialist-map-pin.selected {
+  transform: translate(-50%, -115%) scale(1.12);
+  z-index: 15;
+}
+
+.pin-bubble {
+  background: #FFFFFF;
+  border: 2px solid var(--sofa-primary);
+  border-radius: 20px;
+  padding: 4px 10px 4px 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  position: relative;
+  white-space: nowrap;
+}
+
+.dark .pin-bubble {
+  background: #1E293B;
+}
+
+.sofa-specialist-map-pin.selected .pin-bubble {
+  background: var(--sofa-primary);
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.sofa-specialist-map-pin.selected .pin-name {
+  color: #FFFFFF;
+}
+
+.pin-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pin-name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--sofa-dark-navy);
+}
+
+.pin-tail {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--sofa-primary);
+}
+
+/* Specialist List Cards */
+.sofa-specialists-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.sofa-specialist-card-v2 {
+  background: var(--sofa-card-bg);
+  border: 1.5px solid var(--sofa-border);
+  border-radius: 18px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--sofa-shadow-sm);
+  position: relative;
+}
+
+.sofa-specialist-card-v2:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sofa-shadow-md);
+  border-color: var(--sofa-primary);
+}
+
+.sofa-specialist-card-v2.selected {
+  border-color: var(--sofa-primary);
+  background: linear-gradient(180deg, var(--sofa-card-bg) 0%, rgba(225, 29, 116, 0.04) 100%);
+  box-shadow: 0 0 0 2px rgba(225, 29, 116, 0.25), var(--sofa-shadow-md);
+}
+
+.spec-selected-check-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--sofa-primary);
+  color: #FFFFFF;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Specialist Profile & Portfolio Modal */
+.sofa-profile-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(5px);
+  z-index: 99995;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.sofa-profile-modal-body {
+  background: var(--sofa-card-bg);
+  border-radius: 24px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid var(--sofa-border);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+  position: relative;
+  padding: 36px 32px;
+}
+
+.spec-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 16px 0 28px 0;
+}
+
+.spec-portfolio-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--sofa-border);
+  background: #F8FAFC;
+  transition: transform 0.2s ease;
+}
+
+.dark .spec-portfolio-card {
+  background: #0F172A;
+}
+
+.spec-portfolio-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sofa-shadow-sm);
+}
+
+.spec-work-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.spec-work-info {
+  padding: 10px 12px;
+}
+
+.spec-work-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--sofa-dark-navy);
+  margin: 0 0 2px 0;
+}
+
+.spec-work-cat {
+  font-size: 0.72rem;
+  color: var(--sofa-primary);
+  font-weight: 600;
+}
+
+.spec-ratings-breakdown-box {
+  background: #FAF6F0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  border: 1px solid var(--sofa-border);
+  margin-bottom: 24px;
+}
+
+.dark .spec-ratings-breakdown-box {
+  background: #131E32;
+}
+
+.spec-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+}
+
+.spec-bar-wrap {
+  flex: 1;
+  max-width: 180px;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0 12px;
+}
+
+.dark .spec-bar-wrap {
+  background: #334155;
+}
+
+.spec-bar-fill {
+  height: 100%;
+  background: var(--sofa-primary);
+  border-radius: 4px;
 }

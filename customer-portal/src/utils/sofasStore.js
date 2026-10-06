@@ -518,7 +518,57 @@ export const SOFA_SPECIALISTS = [
     location: "Koramangala Atelier, Bengaluru",
     distance: "2.4 km away",
     badge: "Master Upholsterer",
-    avatar: "/assets/sofas/how_it_works.png"
+    phone: "+91 98452 31094",
+    address: "84, 4th Block, 14th Main, Koramangala, Bengaluru",
+    avatar: "/assets/sofas/how_it_works.png",
+    coordinates: { lat: 12.9352, lng: 77.6245 },
+    mapPinPos: { top: '38%', left: '32%' },
+    ratingBreakdown: {
+      craftsmanship: 5.0,
+      punctuality: 4.9,
+      fabricKnowledge: 5.0,
+      finishing: 4.95
+    },
+    portfolio: [
+      {
+        title: "Bespoke Modern 3-Seater in Belgian Linen",
+        category: "Custom Stitching",
+        image: "/assets/sofas/prod_modern_3_seater.png",
+        desc: "Constructed on seasoned teakwood with double-corded piping and 40D HR foam core."
+      },
+      {
+        title: "Forest Green L-Shape Sectional",
+        category: "Sectional Modular",
+        image: "/assets/sofas/prod_lshape_sectional.png",
+        desc: "High-traffic chenille upholstery with interlocking chaise anchors and matching toss cushions."
+      },
+      {
+        title: "Royal Fluted Cocktail Accent Chair",
+        category: "Armchair Upholstery",
+        image: "/assets/sofas/prod_accent_chair.png",
+        desc: "Channel-tufted micro-velvet curved shell chair with electroplated gold legs."
+      },
+      {
+        title: "Motorized Recliner Leatherette Reupholstery",
+        category: "Restoration & Repair",
+        image: "/assets/sofas/prod_recliner.png",
+        desc: "Replaced peeling surface with automotive-grade scratch-proof leatherette."
+      }
+    ],
+    reviewsList: [
+      {
+        author: "Meera Krishnan",
+        rating: 5,
+        date: "3 days ago",
+        comment: "Rafiq ji personally came home with the fabric trunk. He helped us pick the exact linen weave that matches our floor tiles. The finished couch is museum quality!"
+      },
+      {
+        author: "Aditya Roy",
+        rating: 5,
+        date: "2 weeks ago",
+        comment: "Master craftsmanship. Frame feels indestructible and the stitch alignment is mathematically perfect."
+      }
+    ]
   },
   {
     id: "spec-2",
@@ -530,7 +580,45 @@ export const SOFA_SPECIALISTS = [
     location: "Indiranagar Craft Studio, Bengaluru",
     distance: "3.8 km away",
     badge: "Sectional Specialist",
-    avatar: "/assets/sofas/how_it_works.png"
+    phone: "+91 97314 88201",
+    address: "100ft Road, Opposite Metro Pillar 42, Indiranagar, Bengaluru",
+    avatar: "/assets/sofas/how_it_works.png",
+    coordinates: { lat: 12.9719, lng: 77.6412 },
+    mapPinPos: { top: '24%', left: '68%' },
+    ratingBreakdown: {
+      craftsmanship: 4.9,
+      punctuality: 4.95,
+      fabricKnowledge: 4.85,
+      finishing: 4.9
+    },
+    portfolio: [
+      {
+        title: "Expansive Sectional with Dual Chaise",
+        category: "Sectional Living",
+        image: "/assets/sofas/prod_lshape_sectional.png",
+        desc: "Deep 38-inch chaise modules crafted with water-resistant pet-friendly performance fabric."
+      },
+      {
+        title: "Pull-Out Queen Sofa-Cum-Bed",
+        category: "Convertible Furniture",
+        image: "/assets/sofas/prod_sofa_cum_bed.png",
+        desc: "Heavy-duty steel runner mechanism fitted with 5-inch orthopedic mattress core."
+      },
+      {
+        title: "Dusty Rose Velvet Luxury Couch",
+        category: "Velvet Couture",
+        image: "/assets/sofas/prod_premium_fabric_sofa.png",
+        desc: "Down-alternative feather wrap layer around HR foam for hotel-like cloud softness."
+      }
+    ],
+    reviewsList: [
+      {
+        author: "Tanvi Saxena",
+        rating: 5,
+        date: "1 week ago",
+        comment: "We have two golden retrievers so we needed claw-proof fabric. Gurpreet brought scratch test swatches. 6 months in and the sofa is spotless!"
+      }
+    ]
   },
   {
     id: "spec-3",
@@ -540,9 +628,85 @@ export const SOFA_SPECIALISTS = [
     rating: 4.88,
     reviews: 142,
     location: "HSR Layout Studio, Bengaluru",
-    distance: "4.5 km away",
+    distance: "1.8 km away",
     badge: "Linen & Slipcovers",
-    avatar: "/assets/sofas/how_it_works.png"
+    phone: "+91 99002 44719",
+    address: "Sector 2, 27th Main, HSR Layout, Bengaluru",
+    avatar: "/assets/sofas/how_it_works.png",
+    coordinates: { lat: 12.9116, lng: 77.6389 },
+    mapPinPos: { top: '65%', left: '52%' },
+    ratingBreakdown: {
+      craftsmanship: 4.85,
+      punctuality: 4.9,
+      fabricKnowledge: 5.0,
+      finishing: 4.9
+    },
+    portfolio: [
+      {
+        title: "Tailored Belgian Jute-Linen Slipcovers",
+        category: "Slipcover Fit",
+        image: "/assets/sofas/prod_modern_3_seater.png",
+        desc: "Pre-shrunk washable slipcovers with concealed zipper envelopes and piped edges."
+      },
+      {
+        title: "Heritage Recliner Lounge Chair",
+        category: "Recliner Comfort",
+        image: "/assets/sofas/prod_recliner.png",
+        desc: "Refoamed armrests and multi-position lumbar contouring."
+      }
+    ],
+    reviewsList: [
+      {
+        author: "Siddharth Rao",
+        rating: 5,
+        date: "3 weeks ago",
+        comment: "Lakshmi Atelier did an outstanding job making custom covers for our 7-seater sectional. Highly recommended."
+      }
+    ]
+  },
+  {
+    id: "spec-4",
+    name: "Venkateshwara Furniture Atelier",
+    experience: "28 Years Experience",
+    specialty: "Hand-Carved Teakwood Frames & Chesterfield Deep Buttoning",
+    rating: 4.97,
+    reviews: 310,
+    location: "Jayanagar 4th Block, Bengaluru",
+    distance: "4.2 km away",
+    badge: "Master Joiner & Carver",
+    phone: "+91 98440 91823",
+    address: "32, 11th Main, 4th Block, Jayanagar, Bengaluru",
+    avatar: "/assets/sofas/how_it_works.png",
+    coordinates: { lat: 12.9250, lng: 77.5938 },
+    mapPinPos: { top: '55%', left: '18%' },
+    ratingBreakdown: {
+      craftsmanship: 5.0,
+      punctuality: 4.95,
+      fabricKnowledge: 4.9,
+      finishing: 5.0
+    },
+    portfolio: [
+      {
+        title: "Heritage Chesterfield 3-Seater",
+        category: "Hand Tufting",
+        image: "/assets/sofas/cat_sofa_sets.png",
+        desc: "Deep diamond button tufting with hand-pleated rolled arms and antique brass studs."
+      },
+      {
+        title: "Art Deco Emerald Velvet Single Chair",
+        category: "Accent Seating",
+        image: "/assets/sofas/prod_accent_chair.png",
+        desc: "Curved channel fluting with hand-turned teakwood tapered legs."
+      }
+    ],
+    reviewsList: [
+      {
+        author: "Harish Murthy",
+        rating: 5,
+        date: "1 month ago",
+        comment: "Old school woodworking mastery. The sofa frame is solid teak and feels like heirloom furniture."
+      }
+    ]
   }
 ];
 
