@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import L from 'leaflet';
 import { 
   ArrowLeft, ArrowRight, Check, Upload, Sparkles, Star, 
   MapPin, ShieldCheck, Ruler, Scissors, Award, Info, X, 
@@ -107,11 +108,16 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
     };
   });
 
-  // Map & Specialist Profile States
+  // Real Google Maps States & Refs
   const [mapType, setMapType] = useState('roadmap'); // 'roadmap' | 'satellite'
   const [mapSearchQuery, setMapSearchQuery] = useState('Bengaluru (Indiranagar / Koramangala)');
   const [selectedProfileModalSpecialist, setSelectedProfileModalSpecialist] = useState(null);
   const [mapFilter, setMapFilter] = useState('all'); // 'all' | 'near' | 'top'
+
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const tileLayerRef = useRef(null);
+  const markersLayerRef = useRef(null);
 
   // Save to draft on changes
   useEffect(() => {
@@ -209,6 +215,210 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
     if (mapFilter === 'top') return spec.rating >= 4.95;
     return true;
   });
+
+  // =========================================================================
+  // REAL GOOGLE MAPS LEAFLET INTEGRATION (Step 9)
+  // =========================================================================
+  useEffect(() => {
+    if (step !== 9) return;
+    if (!mapContainerRef.current) return;
+    const container = mapContainerRef.current;
+
+    // Remove existing instance if any
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {
+        console.error("Map cleanup error:", e);
+      }
+      mapInstanceRef.current = null;
+    }
+    if (container._leaflet_id) {
+      delete container._leaflet_id;
+    }
+
+    const initialLat = sofaConfig.specialist?.coordinates?.lat || 12.9352;
+    const initialLng = sofaConfig.specialist?.coordinates?.lng || 77.6245;
+
+    // Create real Leaflet map instance
+    const map = L.map(container, {
+      zoomControl: true,
+      scrollWheelZoom: true,
+      attributionControl: true
+    }).setView([initialLat, initialLng], 13);
+
+    // Attach Authentic Google Maps Tile Layer
+    const tileUrl = mapType === 'satellite'
+      ? 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+      : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+
+    const tileLayer = L.tileLayer(tileUrl, {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
+    }).addTo(map);
+
+    tileLayerRef.current = tileLayer;
+
+    const markersGroup = L.layerGroup().addTo(map);
+    markersLayerRef.current = markersGroup;
+    mapInstanceRef.current = map;
+
+    // 1. User Live GPS Location Marker (HSR Layout)
+    const userIcon = L.divIcon({
+      html: `
+        <div style="position: relative; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;">
+          <div style="position: absolute; inset: -4px; border-radius: 50%; background: rgba(37,99,235,0.35); animation: pulseGlow 1.8s infinite;"></div>
+          <div style="width: 16px; height: 16px; border-radius: 50%; background: #2563EB; border: 3px solid #FFFFFF; box-shadow: 0 2px 8px rgba(0,0,0,0.4);"></div>
+        </div>
+      `,
+      className: 'user-map-gps-marker',
+      iconSize: [34, 34],
+      iconAnchor: [17, 17]
+    });
+
+    L.marker([12.9352, 77.6245], { icon: userIcon })
+      .addTo(markersGroup)
+      .bindPopup(`
+        <div style="font-family: Inter, sans-serif; font-size: 12px; color: #1e293b; padding: 4px;">
+          <strong style="color: #2563EB; display: flex; align-items: center; gap: 4px;">📍 Your Living Room</strong>
+          <span style="font-size: 11px; color: #64748b;">HSR Layout, Bengaluru (GPS Live)</span>
+        </div>
+      `);
+
+    // 2. Real Interactive Specialist Pins on Google Maps
+    filteredSpecialists.forEach(spec => {
+      const isSelected = sofaConfig.specialist?.id === spec.id;
+      const markerHtml = `
+        <div style="
+          background: ${isSelected ? '#E11D74' : '#FFFFFF'}; 
+          border: 2px solid #E11D74; 
+          border-radius: 20px; 
+          padding: 4px 10px 4px 5px; 
+          display: flex; 
+          align-items: center; 
+          gap: 6px; 
+          box-shadow: 0 4px 16px rgba(0,0,0,0.35); 
+          cursor: pointer;
+          transform: translate(-50%, -100%);
+          white-space: nowrap;
+        ">
+          <img src="${spec.avatar}" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #FFFFFF;" />
+          <div>
+            <div style="font-size: 11px; font-weight: 700; color: ${isSelected ? '#FFFFFF' : '#14213D'}; line-height: 1.2;">${spec.name}</div>
+            <div style="font-size: 9px; font-weight: 600; color: ${isSelected ? '#FFE4E6' : '#E11D74'};">⭐ ${spec.rating} • ${spec.distance}</div>
+          </div>
+        </div>
+      `;
+
+      const specIcon = L.divIcon({
+        html: markerHtml,
+        className: 'sofa-spec-marker',
+        iconSize: [140, 36],
+        iconAnchor: [70, 36]
+      });
+
+      const marker = L.marker([spec.coordinates.lat, spec.coordinates.lng], { icon: specIcon }).addTo(markersGroup);
+
+      marker.on('click', () => {
+        setSofaConfig(prev => ({ ...prev, specialist: spec }));
+        map.flyTo([spec.coordinates.lat, spec.coordinates.lng], 14, { duration: 0.8 });
+      });
+
+      const popupHtml = `
+        <div style="font-family: Inter, sans-serif; min-width: 210px; padding: 4px;">
+          <div style="font-weight: 800; font-size: 13px; color: #14213D; margin-bottom: 2px;">${spec.name}</div>
+          <div style="color: #059669; font-weight: 700; font-size: 11px; margin-bottom: 4px;">✓ ${spec.badge} • ${spec.experience}</div>
+          <div style="color: #64748B; font-size: 11px; margin-bottom: 8px;">⭐ ${spec.rating} (${spec.reviews} reviews) • ${spec.distance}</div>
+          <div style="display: flex; gap: 6px;">
+            <button id="view-works-btn-${spec.id}" style="
+              flex: 1; padding: 6px 8px; border-radius: 6px; border: 1px solid #CBD5E1; 
+              background: #FFFFFF; color: #14213D; font-size: 10px; font-weight: 700; cursor: pointer;
+            ">View Works</button>
+            <button id="select-btn-${spec.id}" style="
+              flex: 1; padding: 6px 8px; border-radius: 6px; border: none; 
+              background: #E11D74; color: #FFFFFF; font-size: 10px; font-weight: 700; cursor: pointer;
+            ">Select & Next</button>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml);
+
+      marker.on('popupopen', () => {
+        const viewBtn = document.getElementById(`view-works-btn-${spec.id}`);
+        const selBtn = document.getElementById(`select-btn-${spec.id}`);
+        if (viewBtn) {
+          viewBtn.onclick = () => {
+            setSelectedProfileModalSpecialist(spec);
+          };
+        }
+        if (selBtn) {
+          selBtn.onclick = () => {
+            handleSelectSpecialistAndContinue(spec);
+          };
+        }
+      });
+    });
+
+    // Invalidate map size to prevent any grey tiles
+    setTimeout(() => {
+      if (mapInstanceRef.current) mapInstanceRef.current.invalidateSize();
+    }, 150);
+    setTimeout(() => {
+      if (mapInstanceRef.current) mapInstanceRef.current.invalidateSize();
+    }, 500);
+
+    const handleResize = () => {
+      if (mapInstanceRef.current) mapInstanceRef.current.invalidateSize();
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {}
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [step, mapFilter]);
+
+  // Switch between Google Roadmap and Google Satellite tiles
+  useEffect(() => {
+    if (!mapInstanceRef.current || step !== 9) return;
+    if (tileLayerRef.current) {
+      try {
+        mapInstanceRef.current.removeLayer(tileLayerRef.current);
+      } catch (e) {}
+    }
+    const tileUrl = mapType === 'satellite'
+      ? 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+      : 'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+
+    const newLayer = L.tileLayer(tileUrl, {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; <a href="https://maps.google.com" target="_blank" rel="noreferrer">Google Maps</a>'
+    }).addTo(mapInstanceRef.current);
+
+    tileLayerRef.current = newLayer;
+  }, [mapType, step]);
+
+  const handleFlyToLocality = (locality) => {
+    setMapSearchQuery(locality);
+    if (!mapInstanceRef.current) return;
+    if (locality.includes('Koramangala')) {
+      mapInstanceRef.current.flyTo([12.9352, 77.6245], 14, { duration: 1.2 });
+    } else if (locality.includes('Indiranagar')) {
+      mapInstanceRef.current.flyTo([12.9719, 77.6412], 14, { duration: 1.2 });
+    } else if (locality.includes('HSR')) {
+      mapInstanceRef.current.flyTo([12.9116, 77.6389], 14, { duration: 1.2 });
+    } else if (locality.includes('Jayanagar')) {
+      mapInstanceRef.current.flyTo([12.9250, 77.5938], 14, { duration: 1.2 });
+    }
+  };
 
   return (
     <div className="sofa-shop-page-root" style={{ paddingTop: '20px' }}>
@@ -566,15 +776,15 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
             </div>
           )}
 
-          {/* STEP 9: SPECIALIST SELECTION WITH GOOGLE MAPS & PORTFOLIO */}
+          {/* STEP 9: SPECIALIST SELECTION WITH REAL INTERACTIVE GOOGLE MAPS & PORTFOLIO */}
           {step === 9 && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
                 <div>
-                  <span className="sofa-section-eyebrow">STEP 9 OF 10 • INTERACTIVE WORKSHOP LOCATOR</span>
+                  <span className="sofa-section-eyebrow">STEP 9 OF 10 • INTERACTIVE GOOGLE MAPS WORKSHOP LOCATOR</span>
                   <h2 className="sofa-section-title">Choose Your Doorstep Master Upholsterer</h2>
                   <p className="sofa-section-subtitle">
-                    Select a specialist on the map to review their works, ratings, and past custom sofa builds before scheduling.
+                    Explore verified ateliers on Google Maps. Click any workshop to review their handcrafted works, ratings, and past builds.
                   </p>
                 </div>
 
@@ -606,31 +816,16 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                 </div>
               </div>
 
-              {/* 1. INTERACTIVE GOOGLE MAP CANVAS */}
+              {/* 1. REAL INTERACTIVE LEAFLET GOOGLE MAP CANVAS */}
               <div className="sofa-map-wrapper">
-                {/* Simulated Google Maps Canvas with SVG Roads & Geography */}
-                <div className="sofa-map-canvas" style={{ filter: mapType === 'satellite' ? 'brightness(0.7) contrast(1.2)' : 'none' }}>
-                  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                    {/* Land background */}
-                    <rect width="100%" height="100%" fill={mapType === 'satellite' ? '#27372B' : '#F4F2EA'} />
-                    {/* Parks & Green zones */}
-                    <path d="M 50 40 Q 180 80 220 220 T 100 380 Z" fill={mapType === 'satellite' ? '#1E2D22' : '#CBE6A3'} opacity="0.7" />
-                    <path d="M 680 120 Q 820 180 940 320 T 780 440 Z" fill={mapType === 'satellite' ? '#1E2D22' : '#CBE6A3'} opacity="0.6" />
-                    {/* Major Highways & Primary Roads */}
-                    <path d="M -20 180 Q 300 240 650 140 T 1300 210" stroke="#FFFFFF" strokeWidth="10" fill="none" />
-                    <path d="M -20 180 Q 300 240 650 140 T 1300 210" stroke="#FFD166" strokeWidth="6" fill="none" />
-                    <path d="M 280 -20 Q 360 260 520 520" stroke="#FFFFFF" strokeWidth="12" fill="none" />
-                    <path d="M 280 -20 Q 360 260 520 520" stroke="#FFAA00" strokeWidth="8" fill="none" />
-                    <path d="M 650 -20 Q 720 280 840 520" stroke="#FFFFFF" strokeWidth="8" fill="none" />
-                    {/* Secondary City Streets Grid */}
-                    <path d="M 50 340 L 950 340 M 100 100 L 900 100 M 420 50 L 420 450 M 750 40 L 750 440" stroke="#FFFFFF" strokeWidth="4" fill="none" opacity="0.9" />
-                    {/* Road Labels */}
-                    <text x="320" y="270" fill="#71717A" fontSize="11" fontWeight="bold" transform="rotate(32 320 270)">100ft Road Indiranagar</text>
-                    <text x="540" y="165" fill="#71717A" fontSize="11" fontWeight="bold" transform="rotate(-10 540 165)">Koramangala Inner Ring Rd</text>
-                  </svg>
-                </div>
+                {/* Real Leaflet Map DOM Element */}
+                <div 
+                  ref={mapContainerRef} 
+                  className="sofa-real-leaflet-map" 
+                  id="sofa-google-maps-leaflet" 
+                />
 
-                {/* Top Google Maps Controls Bar */}
+                {/* Top Google Maps Floating Search Bar & View Mode Toggle */}
                 <div className="sofa-map-controls-top">
                   <div className="sofa-map-search-bar">
                     <Search size={18} color="#E11D74" />
@@ -639,14 +834,14 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                       className="sofa-map-search-input" 
                       value={mapSearchQuery}
                       onChange={e => setMapSearchQuery(e.target.value)}
-                      placeholder="Search locality or pincode..."
+                      placeholder="Search locality or pincode in Bengaluru..."
                     />
                     <button 
                       type="button"
                       style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
                       onClick={() => {
-                        setMapSearchQuery('Bengaluru (HSR Layout)');
-                        if (showToast) showToast('GPS pinned to your current living room location.');
+                        handleFlyToLocality('HSR Layout');
+                        if (showToast) showToast('GPS pinned to your current living room location in HSR Layout.');
                       }}
                     >
                       <Navigation size={13} />
@@ -672,61 +867,47 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                   </div>
                 </div>
 
-                {/* User Location Marker */}
-                <div className="sofa-user-location-pin">
-                  <div className="user-pulse-dot">
-                    <div className="user-pulse-ring" />
-                  </div>
-                  <span className="user-pin-label">You (HSR Layout)</span>
+                {/* Google Maps Authentic Brand Watermark in bottom left */}
+                <div style={{ position: 'absolute', bottom: '16px', left: '14px', zIndex: 500, pointerEvents: 'none', background: 'rgba(255,255,255,0.92)', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px', boxShadow: '0 1px 6px rgba(0,0,0,0.2)' }}>
+                  <span style={{ color: '#4285F4' }}>G</span>
+                  <span style={{ color: '#EA4335' }}>o</span>
+                  <span style={{ color: '#FBBC05' }}>o</span>
+                  <span style={{ color: '#4285F4' }}>g</span>
+                  <span style={{ color: '#34A853' }}>l</span>
+                  <span style={{ color: '#EA4335' }}>e</span>
+                  <span style={{ color: '#5F6368', marginLeft: '3px', fontWeight: 600 }}>Maps</span>
                 </div>
 
-                {/* Specialist Workshop Pins on Map */}
-                {filteredSpecialists.map(spec => {
-                  const isSelected = sofaConfig.specialist.id === spec.id;
-                  return (
-                    <div
-                      key={spec.id}
-                      className={`sofa-specialist-map-pin ${isSelected ? 'selected' : ''}`}
-                      style={{ top: spec.mapPinPos.top, left: spec.mapPinPos.left }}
-                      onClick={() => setSelectedProfileModalSpecialist(spec)}
-                      title={`Click to view ${spec.name}'s works & portfolio`}
+                {/* Quick Area Jump Pills */}
+                <div style={{ position: 'absolute', bottom: '16px', right: '14px', zIndex: 500, display: 'flex', gap: '6px', background: 'rgba(255,255,255,0.92)', padding: '6px 10px', borderRadius: '10px', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+                  {['Koramangala', 'Indiranagar', 'HSR Layout', 'Jayanagar'].map(loc => (
+                    <button
+                      key={loc}
+                      type="button"
+                      onClick={() => handleFlyToLocality(loc)}
+                      style={{ border: 'none', background: 'transparent', color: '#1E293B', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', padding: '2px 4px' }}
                     >
-                      <div className="pin-bubble">
-                        <img src={spec.avatar} alt="" className="pin-avatar" />
-                        <div>
-                          <span className="pin-name">{spec.name}</span>
-                          <span style={{ fontSize: '0.68rem', display: 'block', opacity: 0.9 }}>
-                            ⭐ {spec.rating} • {spec.distance}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="pin-tail" />
-                    </div>
-                  );
-                })}
-
-                {/* Google Watermark */}
-                <div className="sofa-map-google-watermark">
-                  <span style={{ color: '#4285F4', fontWeight: 900 }}>G</span>
-                  <span style={{ color: '#EA4335', fontWeight: 900 }}>o</span>
-                  <span style={{ color: '#FBBC05', fontWeight: 900 }}>o</span>
-                  <span style={{ color: '#4285F4', fontWeight: 900 }}>g</span>
-                  <span style={{ color: '#34A853', fontWeight: 900 }}>l</span>
-                  <span style={{ color: '#EA4335', fontWeight: 900 }}>e</span>
-                  <span style={{ color: '#64748B', marginLeft: '4px', fontSize: '0.68rem' }}>Maps ©2026</span>
+                      {loc}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               {/* 2. SPECIALIST CARDS LIST WITH WORKS & CHOOSE BUTTONS */}
               <div className="sofa-specialists-list-grid">
                 {filteredSpecialists.map(spec => {
-                  const isSelected = sofaConfig.specialist.id === spec.id;
+                  const isSelected = sofaConfig.specialist?.id === spec.id;
 
                   return (
                     <div
                       key={spec.id}
                       className={`sofa-specialist-card-v2 ${isSelected ? 'selected' : ''}`}
-                      onClick={() => setSofaConfig({ ...sofaConfig, specialist: spec })}
+                      onClick={() => {
+                        setSofaConfig({ ...sofaConfig, specialist: spec });
+                        if (mapInstanceRef.current) {
+                          mapInstanceRef.current.flyTo([spec.coordinates.lat, spec.coordinates.lng], 14, { duration: 0.8 });
+                        }
+                      }}
                     >
                       {isSelected && (
                         <div className="spec-selected-check-badge">
@@ -761,9 +942,21 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                           {spec.specialty}
                         </p>
 
-                        <div style={{ fontSize: '0.76rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '16px' }}>
-                          <MapPin size={13} color="#E11D74" />
-                          <span>{spec.address}</span>
+                        <div style={{ fontSize: '0.76rem', color: '#64748B', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '6px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <MapPin size={13} color="#E11D74" />
+                            <span>{spec.address}</span>
+                          </div>
+                          <a 
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spec.name + ' ' + spec.address)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ color: '#2563EB', display: 'inline-flex', alignItems: 'center', gap: '3px', textDecoration: 'none', fontWeight: 600, fontSize: '0.74rem' }}
+                            title="Open workshop location in Google Maps"
+                          >
+                            <ExternalLink size={12} /> Google Maps
+                          </a>
                         </div>
                       </div>
 
@@ -989,11 +1182,19 @@ export default function SofaCustomWizardPage({ currentUser, showToast, onAddToCa
                 <p style={{ margin: '0 0 6px 0', fontSize: '0.88rem', color: '#059669', fontWeight: 700 }}>
                   ✓ {selectedProfileModalSpecialist.badge} • {selectedProfileModalSpecialist.experience}
                 </p>
-                <div style={{ display: 'flex', gap: '16px', fontSize: '0.82rem', color: '#64748B', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '16px', fontSize: '0.82rem', color: '#64748B', flexWrap: 'wrap', alignItems: 'center' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <MapPin size={14} color="#E11D74" />
                     {selectedProfileModalSpecialist.address} ({selectedProfileModalSpecialist.distance})
                   </span>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedProfileModalSpecialist.name + ' ' + selectedProfileModalSpecialist.address)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#2563EB', textDecoration: 'none', fontWeight: 600 }}
+                  >
+                    <ExternalLink size={13} /> Open in Google Maps
+                  </a>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Phone size={14} color="#E11D74" />
                     {selectedProfileModalSpecialist.phone}
