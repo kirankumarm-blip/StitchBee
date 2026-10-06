@@ -5,7 +5,8 @@ import {
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
   CreditCard, ChevronLeft, ChevronRight, ChevronDown, X, ShoppingCart, Plus, Minus, Check, Camera, RefreshCw, Upload, 
   Video, Layers, Activity, FileText, Shield, Sliders, Bell, Heart, HelpCircle, Menu, Sun, Moon, Phone,
-  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut, ShoppingBag, Wrench, ArrowRight
+  MessageSquare, Home, Share2, Trash2, Box, Edit, Shirt, Gift, LogOut, ShoppingBag, Wrench, ArrowRight,
+  Armchair
 } from 'lucide-react';
 import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA } from '../utils/mockDb';
 import { getCart as getBagsCart, getWishlist as getBagsWishlist, getOrders as getBagsOrders } from '../utils/bagsStore';
@@ -449,6 +450,9 @@ export default function CustomerView({
   const [shoesStudioMode, setShoesStudioMode] = useState('shop'); // 'shop' | 'restore'
   const [shoesSubmenuHovered, setShoesSubmenuHovered] = useState(false);
   const [mobileShoesExpanded, setMobileShoesExpanded] = useState(false);
+  const [sofasStudioMode, setSofasStudioMode] = useState('shop'); // 'shop' | 'restore'
+  const [sofasSubmenuHovered, setSofasSubmenuHovered] = useState(false);
+  const [mobileSofasExpanded, setMobileSofasExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [rewardPoints, setRewardPoints] = useState(120);
   
@@ -609,6 +613,17 @@ export default function CustomerView({
     } else if (path === '/pets' || path === '/pet-outfits' || path === '/pet' || path.startsWith('/pets') || path.startsWith('/pet-outfits') || path.startsWith('/pet/')) {
       setSelectedCategory('pets');
       setActiveHub('category-landing');
+    } else if (path === '/sofas' || path === '/sofas/shop' || path.startsWith('/sofas/product') || path.startsWith('/sofas/category') || path === '/sofas/products' || path === '/sofas/customize') {
+      setSelectedCategory('sofas');
+      setActiveHub('category-landing');
+      setSofasStudioMode('shop');
+    } else if (path === '/sofas/repair' || path === '/sofas/restore' || path === '/sofa/repair') {
+      setSelectedCategory('sofas');
+      setActiveHub('category-landing');
+      setSofasStudioMode('restore');
+    } else if (path.startsWith('/sofas') || path.startsWith('/sofa')) {
+      setSelectedCategory('sofas');
+      setActiveHub('category-landing');
     }
   }, [location.pathname]);
 
@@ -617,6 +632,7 @@ export default function CustomerView({
       setServicesDropdownOpen(false);
       setBagsSubmenuHovered(false);
       setShoesSubmenuHovered(false);
+      setSofasSubmenuHovered(false);
       setNotificationDropdownOpen(false);
       setProfileDropdownOpen(false);
     };
@@ -2520,6 +2536,7 @@ export default function CustomerView({
               {categoryCards.map(cat => {
                 const isBags = cat.id === 'bags';
                 const isShoes = cat.id === 'shoes';
+                const isSofas = cat.id === 'sofas';
                 const isActive = cat.id === 'designers'
                   ? activeHub === 'designers'
                   : (activeHub === 'category-landing' && selectedCategory === cat.id);
@@ -2734,6 +2751,114 @@ export default function CustomerView({
                         <div className="nav-submenu-footer">
                           <Shield size={12} style={{ color: '#f72585' }} />
                           <span>Master Cobbler Specialists • Doorstep Pickup & Return</span>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+
+                if (isSofas) {
+                  return (
+                    <li 
+                      key={cat.id}
+                      className={`dropdown-item nav-item-has-submenu ${isActive ? 'active' : ''}`}
+                      onMouseEnter={() => setSofasSubmenuHovered(true)}
+                      onMouseLeave={() => setSofasSubmenuHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSofasSubmenuHovered(prev => !prev);
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                        <span>{cat.label}</span>
+                        <ChevronRight size={13} style={{ opacity: 0.7 }} />
+                      </div>
+
+                      {/* Submenu on hover & select */}
+                      <div className={`nav-submenu ${sofasSubmenuHovered ? 'show' : ''}`}>
+                        <div className="nav-submenu-header">
+                          <div className="nav-submenu-eyebrow">
+                            <Sparkles size={11} className="nav-submenu-sparkle" />
+                            <span>STITCHBEE SOFA ATELIER</span>
+                          </div>
+                          <div className="nav-submenu-header-sub">Bespoke Creation & Expert Reupholstery</div>
+                        </div>
+
+                        <div className="nav-submenu-body">
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'sofas' && sofasStudioMode === 'shop' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSofasStudioMode('shop');
+                              setSelectedCategory('sofas');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('sofas');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setSofasSubmenuHovered(false);
+                              navigate('/sofas');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box shop">
+                              <Armchair size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Shop & Create</span>
+                                <span className="nav-submenu-pill bespoke">Bespoke</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Handcrafted luxury sofas, sectionals & custom studio</p>
+                              <div className="nav-submenu-tags">
+                                <span>Belgian Linen</span>
+                                <span>•</span>
+                                <span>Teakwood Frame</span>
+                                <span>•</span>
+                                <span>Custom Studio</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'sofas' && sofasStudioMode === 'restore' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSofasStudioMode('restore');
+                              setSelectedCategory('sofas');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('sofas');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setSofasSubmenuHovered(false);
+                              navigate('/sofas/repair');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box restore">
+                              <Wrench size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Repair & Restore</span>
+                                <span className="nav-submenu-pill repair">Atelier Care</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Reupholstery, foam rejuvenation & fitted covers</p>
+                              <div className="nav-submenu-tags">
+                                <span>Reupholstery</span>
+                                <span>•</span>
+                                <span>Foam Replacement</span>
+                                <span>•</span>
+                                <span>Fitted Covers</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="nav-submenu-footer">
+                          <Shield size={12} style={{ color: '#E11D74' }} />
+                          <span>Master Upholstery Craftsmen • Doorstep Swatches & Pickup</span>
                         </div>
                       </div>
                     </li>
@@ -3440,6 +3565,99 @@ export default function CustomerView({
                                       <span className="nav-submenu-pill repair" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Cobbler Care</span>
                                     </div>
                                     <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Resoling, heel repair & deep spa restoration</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      if (cat.id === 'sofas') {
+                        return (
+                          <div key={cat.id} style={{ width: '100%', margin: '4px 0' }}>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMobileSofasExpanded(!mobileSofasExpanded);
+                              }}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                border: `1px solid ${selectedCategory === 'sofas' ? 'var(--primary)' : borderColor}`,
+                                background: selectedCategory === 'sofas' ? 'rgba(225,29,116,0.1)' : (isDark ? 'rgba(255,255,255,0.04)' : '#fff'),
+                                color: selectedCategory === 'sofas' ? 'var(--primary)' : colorTextPrimary,
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <span>🛋️ {cat.label}</span>
+                              <ChevronDown 
+                                size={14} 
+                                style={{ 
+                                  transform: mobileSofasExpanded ? 'rotate(180deg)' : 'none', 
+                                  transition: 'transform 0.2s ease' 
+                                }} 
+                              />
+                            </button>
+                            {mobileSofasExpanded && (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '10px', marginTop: '6px' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSofasStudioMode('shop');
+                                    setSelectedCategory('sofas');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('sofas');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/sofas');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'sofas' && sofasStudioMode === 'shop' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon shop">
+                                    <Armchair size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Shop & Create</span>
+                                      <span className="nav-submenu-pill bespoke" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Bespoke</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Handcrafted luxury sofas & custom studio</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSofasStudioMode('restore');
+                                    setSelectedCategory('sofas');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('sofas');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/sofas/repair');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'sofas' && sofasStudioMode === 'restore' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon restore">
+                                    <Wrench size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Repair & Restore</span>
+                                      <span className="nav-submenu-pill repair" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Atelier Care</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Reupholstery, foam rejuvenation & zip repair</span>
                                   </div>
                                   <ChevronRight size={13} style={{ opacity: 0.5 }} />
                                 </button>
@@ -6834,6 +7052,8 @@ export default function CustomerView({
           setBagsStudioMode={setBagsStudioMode}
           shoesStudioMode={shoesStudioMode}
           setShoesStudioMode={setShoesStudioMode}
+          sofasStudioMode={sofasStudioMode}
+          setSofasStudioMode={setSofasStudioMode}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onLoginRequired={onLoginRequired}

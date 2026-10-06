@@ -666,6 +666,7 @@
   min-height: 340px;
   overflow: hidden;
   position: relative;
+  background: transparent;
 }
 
 .sofa-studio-side-img .studio-img {
@@ -673,6 +674,60 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* Left sketching image fading on its right edge towards center panel */
+.sofa-studio-side-img.left-img .studio-img {
+  -webkit-mask-image: linear-gradient(to right, black 65%, rgba(0, 0, 0, 0.4) 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 65%, rgba(0, 0, 0, 0.4) 85%, transparent 100%);
+}
+
+.sofa-studio-left-fade-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent 50%,
+    rgba(250, 246, 240, 0.7) 80%,
+    var(--sofa-bg-warm, #FAF6F0) 100%
+  );
+  pointer-events: none;
+}
+
+.dark .sofa-studio-left-fade-overlay {
+  background: linear-gradient(
+    to right,
+    transparent 50%,
+    rgba(19, 30, 50, 0.7) 80%,
+    var(--sofa-bg-warm, #131E32) 100%
+  );
+}
+
+/* Right sofa callout image fading on its left edge towards center panel */
+.sofa-studio-side-img.right-img .studio-img {
+  -webkit-mask-image: linear-gradient(to left, black 70%, rgba(0, 0, 0, 0.4) 88%, transparent 100%);
+  mask-image: linear-gradient(to left, black 70%, rgba(0, 0, 0, 0.4) 88%, transparent 100%);
+}
+
+.sofa-studio-right-fade-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to left,
+    transparent 50%,
+    rgba(250, 246, 240, 0.7) 80%,
+    var(--sofa-bg-warm, #FAF6F0) 100%
+  );
+  pointer-events: none;
+}
+
+.dark .sofa-studio-right-fade-overlay {
+  background: linear-gradient(
+    to left,
+    transparent 50%,
+    rgba(19, 30, 50, 0.7) 80%,
+    var(--sofa-bg-warm, #131E32) 100%
+  );
 }
 
 .sofa-studio-center-panel {
@@ -995,6 +1050,8 @@
   width: 100%;
   height: 100%;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .craftsman-img-wrapper {
@@ -1003,13 +1060,18 @@
   border-radius: var(--sofa-radius-lg);
   overflow: hidden;
   position: relative;
-  box-shadow: var(--sofa-shadow-md);
+  box-shadow: none;
+  background: transparent;
 }
 
 .craftsman-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  /* Feather left edge seamlessly into the step-by-step process */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 12%, black 35%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.3) 12%, black 35%);
 }
 
 .craftsman-fade-overlay {
@@ -1017,8 +1079,10 @@
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(255, 255, 255, 0.35) 0%,
-    transparent 40%
+    #FFFFFF 0%,
+    rgba(255, 255, 255, 0.85) 12%,
+    rgba(255, 255, 255, 0.3) 25%,
+    transparent 50%
   );
   pointer-events: none;
 }
@@ -1026,8 +1090,10 @@
 .dark .craftsman-fade-overlay {
   background: linear-gradient(
     to right,
-    rgba(11, 17, 32, 0.5) 0%,
-    transparent 40%
+    #0B1120 0%,
+    rgba(11, 17, 32, 0.85) 12%,
+    rgba(11, 17, 32, 0.3) 25%,
+    transparent 50%
   );
 }
 

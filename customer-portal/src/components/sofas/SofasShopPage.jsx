@@ -427,6 +427,7 @@ export default function SofasShopPage({
               className="studio-img"
               loading="lazy"
             />
+            <div className="sofa-studio-left-fade-overlay" />
           </div>
 
           {/* Center Column: Design Your Dream Sofa */}
@@ -496,6 +497,7 @@ export default function SofasShopPage({
               className="studio-img"
               loading="lazy"
             />
+            <div className="sofa-studio-right-fade-overlay" />
           </div>
         </div>
       </section>

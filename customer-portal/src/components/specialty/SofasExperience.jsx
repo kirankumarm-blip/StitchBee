@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Armchair, Wrench, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 import SofasShopPage from '../sofas/SofasShopPage';
 import SofaProductDetailView from '../sofas/SofaProductDetailView';
 import SofaCustomWizardPage from '../sofas/SofaCustomWizardPage';
@@ -22,6 +23,19 @@ export default function SofasExperience({
   const pathname = location.pathname;
   const [toastMessage, setToastMessage] = useState(null);
 
+  // Sync pathname to serviceMode
+  useEffect(() => {
+    if (pathname === '/sofas/repair' || pathname === '/sofas/restore') {
+      if (onSelectServiceMode && serviceMode !== 'alteration') {
+        onSelectServiceMode('alteration');
+      }
+    } else if (pathname === '/sofas' || pathname.startsWith('/sofas/product') || pathname.startsWith('/sofas/category') || pathname === '/sofas/customize') {
+      if (onSelectServiceMode && serviceMode === 'alteration') {
+        onSelectServiceMode('buying');
+      }
+    }
+  }, [pathname]);
+
   const showToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => {
@@ -35,6 +49,77 @@ export default function SofasExperience({
 
   return (
     <div className={`sofas-experience-wrapper ${theme === 'dark' ? 'dark' : ''}`} style={{ width: '100%', minHeight: '100vh' }}>
+      
+      {/* Top Category Mode Switcher Bar (Shop & Create vs Repair & Restore) */}
+      <div style={{ 
+        width: '100%', 
+        borderBottom: '1px solid var(--sofa-border)', 
+        background: 'var(--sofa-card-bg)', 
+        padding: '12px 48px', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        boxSizing: 'border-box',
+        flexWrap: 'wrap',
+        gap: '12px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            type="button"
+            onClick={() => {
+              if (onSelectServiceMode) onSelectServiceMode('buying');
+              navigate('/sofas');
+            }}
+            style={{
+              padding: '8px 20px',
+              borderRadius: '24px',
+              border: serviceMode === 'buying' ? '2px solid #E11D74' : '1px solid var(--sofa-border)',
+              background: serviceMode === 'buying' ? '#FCE7F3' : 'transparent',
+              color: serviceMode === 'buying' ? '#E11D74' : 'inherit',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <Armchair size={16} />
+            <span>Shop & Create</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (onSelectServiceMode) onSelectServiceMode('alteration');
+              navigate('/sofas/repair');
+            }}
+            style={{
+              padding: '8px 20px',
+              borderRadius: '24px',
+              border: serviceMode === 'alteration' ? '2px solid #E11D74' : '1px solid var(--sofa-border)',
+              background: serviceMode === 'alteration' ? '#FCE7F3' : 'transparent',
+              color: serviceMode === 'alteration' ? '#E11D74' : 'inherit',
+              fontWeight: 700,
+              fontSize: '0.85rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <Wrench size={16} />
+            <span>Repair & Restore</span>
+          </button>
+        </div>
+
+        <div style={{ fontSize: '0.82rem', color: 'var(--sofa-text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Sparkles size={14} color="#E11D74" />
+          <span>StitchBee Sofa Atelier • Handcrafted & Reupholstered in Bengaluru</span>
+        </div>
+      </div>
       {toastMessage && (
         <div 
           className="sofa-floating-toast animate-slide-up"
@@ -67,7 +152,10 @@ export default function SofasExperience({
           <div style={{ margin: '2rem 0' }}>
             <button 
               type="button" 
-              onClick={() => onSelectServiceMode && onSelectServiceMode('buying')}
+              onClick={() => {
+                if (onSelectServiceMode) onSelectServiceMode('buying');
+                navigate('/sofas');
+              }}
               className="sofa-btn-secondary"
               style={{ marginBottom: '16px' }}
             >

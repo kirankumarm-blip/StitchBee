@@ -442,6 +442,7 @@ export default function ServiceCategoryView({
   categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart, theme, setTheme,
   bagsStudioMode = 'shop', setBagsStudioMode,
   shoesStudioMode = 'shop', setShoesStudioMode,
+  sofasStudioMode = 'shop', setSofasStudioMode,
   searchQuery, setSearchQuery
 }) {
   if (categoryKey === 'bags') {
@@ -507,6 +508,8 @@ export default function ServiceCategoryView({
         onAddToCart={onAddToCart}
         shoesStudioMode={shoesStudioMode}
         setShoesStudioMode={setShoesStudioMode}
+        sofasStudioMode={sofasStudioMode}
+        setSofasStudioMode={setSofasStudioMode}
         theme={theme}
         setTheme={setTheme}
       />

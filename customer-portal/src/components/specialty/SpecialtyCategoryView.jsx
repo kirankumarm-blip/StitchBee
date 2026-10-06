@@ -34,10 +34,15 @@ export default function SpecialtyCategoryView({
   onViewFabrics,
   shoesStudioMode = 'shop',
   setShoesStudioMode,
+  sofasStudioMode = 'shop',
+  setSofasStudioMode,
   theme = 'light'
 }) {
   const [activeCategory, setActiveCategory] = useState(categoryKey);
-  const initialMode = (categoryKey === 'shoes' && shoesStudioMode === 'restore') ? 'alteration' : 'buying';
+  const initialMode = 
+    (categoryKey === 'shoes' && shoesStudioMode === 'restore') ? 'alteration' :
+    (categoryKey === 'sofas' && (sofasStudioMode === 'restore' || (typeof window !== 'undefined' && (window.location.pathname === '/sofas/repair' || window.location.pathname === '/sofas/restore')))) ? 'alteration' : 
+    'buying';
   const [serviceMode, setServiceMode] = useState(initialMode);
   const [cartItems, setCartItems] = useState([]);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
@@ -68,6 +73,17 @@ export default function SpecialtyCategoryView({
       }
     }
   }, [shoesStudioMode, activeCategory]);
+
+  // Sync serviceMode when sofasStudioMode prop changes
+  useEffect(() => {
+    if (activeCategory === 'sofas') {
+      if (sofasStudioMode === 'restore') {
+        setServiceMode('alteration');
+      } else if (sofasStudioMode === 'shop') {
+        setServiceMode('buying');
+      }
+    }
+  }, [sofasStudioMode, activeCategory]);
 
   const handleShoeModeChange = (mode) => {
     setServiceMode(mode);
@@ -378,7 +394,12 @@ export default function SpecialtyCategoryView({
                 onAddToCart={handleAddToCart}
                 onDirectCheckout={handleDirectCheckout}
                 serviceMode={serviceMode}
-                onSelectServiceMode={setServiceMode}
+                onSelectServiceMode={(mode) => {
+                  setServiceMode(mode);
+                  if (setSofasStudioMode) {
+                    setSofasStudioMode(mode === 'alteration' ? 'restore' : 'shop');
+                  }
+                }}
                 theme={theme}
               />
             )}
