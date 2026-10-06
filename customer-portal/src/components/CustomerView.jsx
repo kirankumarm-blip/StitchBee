@@ -2548,6 +2548,7 @@ export default function CustomerView({
                 const isBags = cat.id === 'bags';
                 const isShoes = cat.id === 'shoes';
                 const isSofas = cat.id === 'sofas';
+                const isSeats = cat.id === 'seats';
                 const isActive = cat.id === 'designers'
                   ? activeHub === 'designers'
                   : (activeHub === 'category-landing' && selectedCategory === cat.id);
@@ -2870,6 +2871,114 @@ export default function CustomerView({
                         <div className="nav-submenu-footer">
                           <Shield size={12} style={{ color: '#E11D74' }} />
                           <span>Master Upholstery Craftsmen • Doorstep Swatches & Pickup</span>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+
+                if (isSeats) {
+                  return (
+                    <li 
+                      key={cat.id}
+                      className={`dropdown-item nav-item-has-submenu ${isActive ? 'active' : ''}`}
+                      onMouseEnter={() => setSeatsSubmenuHovered(true)}
+                      onMouseLeave={() => setSeatsSubmenuHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSeatsSubmenuHovered(prev => !prev);
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                        <span>{cat.label}</span>
+                        <ChevronRight size={13} style={{ opacity: 0.7 }} />
+                      </div>
+
+                      {/* Submenu on hover & select */}
+                      <div className={`nav-submenu ${seatsSubmenuHovered ? 'show' : ''}`}>
+                        <div className="nav-submenu-header">
+                          <div className="nav-submenu-eyebrow">
+                            <Sparkles size={11} className="nav-submenu-sparkle" />
+                            <span>STITCHBEE VEHICLE ATELIER</span>
+                          </div>
+                          <div className="nav-submenu-header-sub">Custom Seat Covers & Vehicle Restoration</div>
+                        </div>
+
+                        <div className="nav-submenu-body">
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'seats' && seatsStudioMode === 'shop' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSeatsStudioMode('shop');
+                              setSelectedCategory('seats');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('seats');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setSeatsSubmenuHovered(false);
+                              navigate('/vehicle-seats');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box shop">
+                              <Layers size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Shop & Create</span>
+                                <span className="nav-submenu-pill bespoke">Bespoke</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Custom fit covers for bikes, cars, autos & commercial vehicles</p>
+                              <div className="nav-submenu-tags">
+                                <span>Nappa Leatherette</span>
+                                <span>•</span>
+                                <span>Diamond Quilting</span>
+                                <span>•</span>
+                                <span>Orthopedic Gel</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'seats' && seatsStudioMode === 'restore' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSeatsStudioMode('restore');
+                              setSelectedCategory('seats');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('seats');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setSeatsSubmenuHovered(false);
+                              navigate('/vehicle-seats/repair');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box restore">
+                              <Wrench size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Repair & Restore</span>
+                                <span className="nav-submenu-pill repair">Restoration</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Foam rebuilding, tear repair, restitching & doorstep service</p>
+                              <div className="nav-submenu-tags">
+                                <span>Foam Rebuild</span>
+                                <span>•</span>
+                                <span>Tear Patching</span>
+                                <span>•</span>
+                                <span>Doorstep Visit</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="nav-submenu-footer">
+                          <Shield size={12} style={{ color: '#E11D74' }} />
+                          <span>Automotive Upholstery Specialists • Doorstep Pickup & Fitting</span>
                         </div>
                       </div>
                     </li>
@@ -3669,6 +3778,102 @@ export default function CustomerView({
                                       <span className="nav-submenu-pill repair" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Atelier Care</span>
                                     </div>
                                     <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Reupholstery, foam rejuvenation & zip repair</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
+                      if (isSeats) {
+                        return (
+                          <div key={cat.id} style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMobileSeatsExpanded(!mobileSeatsExpanded);
+                              }}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                border: `1px solid ${selectedCategory === 'seats' ? 'var(--primary)' : borderColor}`,
+                                background: selectedCategory === 'seats' ? 'rgba(225,29,116,0.1)' : (isDark ? 'rgba(255,255,255,0.04)' : '#fff'),
+                                color: selectedCategory === 'seats' ? 'var(--primary)' : colorTextPrimary,
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span>{cat.label}</span>
+                                <span style={{ fontSize: '0.62rem', padding: '1px 6px', borderRadius: '10px', background: 'rgba(225,29,116,0.12)', color: 'var(--primary)', fontWeight: 700 }}>2 Modes</span>
+                              </div>
+                              <ChevronDown 
+                                size={14} 
+                                style={{ 
+                                  transform: mobileSeatsExpanded ? 'rotate(180deg)' : 'none', 
+                                  transition: 'transform 0.2s ease' 
+                                }} 
+                              />
+                            </button>
+                            {mobileSeatsExpanded && (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '10px', marginTop: '6px' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSeatsStudioMode('shop');
+                                    setSelectedCategory('seats');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('seats');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/vehicle-seats');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'seats' && seatsStudioMode === 'shop' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon shop">
+                                    <Layers size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Shop & Create</span>
+                                      <span className="nav-submenu-pill bespoke" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Bespoke</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Custom fit seat covers for all vehicles</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSeatsStudioMode('restore');
+                                    setSelectedCategory('seats');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('seats');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/vehicle-seats/repair');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'seats' && seatsStudioMode === 'restore' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon restore">
+                                    <Wrench size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Repair & Restore</span>
+                                      <span className="nav-submenu-pill repair" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Restoration</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Foam renewal, tear repair & doorstep fitting</span>
                                   </div>
                                   <ChevronRight size={13} style={{ opacity: 0.5 }} />
                                 </button>

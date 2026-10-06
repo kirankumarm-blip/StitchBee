@@ -290,6 +290,7 @@
   overflow: hidden;
   box-shadow: var(--veh-shadow-md);
   border: 1px solid var(--veh-border);
+  background: var(--veh-surface, #ffffff);
 }
 
 .veh-hero-main-img {
@@ -297,6 +298,33 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 0.8) 16%, black 28%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 0.8) 16%, black 28%);
+  transition: all 0.3s ease;
+}
+
+.veh-hero-img-fade-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(255, 243, 245, 0.95) 0%,
+    rgba(255, 243, 245, 0.5) 8%,
+    rgba(255, 243, 245, 0.15) 20%,
+    transparent 32%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.dark .veh-hero-img-fade-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(33, 24, 32, 0.95) 0%,
+    rgba(33, 24, 32, 0.5) 8%,
+    rgba(33, 24, 32, 0.15) 20%,
+    transparent 32%
+  );
 }
 
 .veh-hero-script-tag {
@@ -782,100 +810,71 @@
 /* ==========================================================================
    6. WHY CHOOSE STITCHBEEZ BANNER
    ========================================================================== */
+.veh-why-section-full {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 48px;
+  margin-bottom: 56px;
+  box-sizing: border-box;
+}
+
 .veh-why-banner-wrap {
   position: relative;
   width: 100%;
   border-radius: var(--veh-radius-lg);
   overflow: hidden;
-  box-shadow: var(--veh-shadow-md);
-  min-height: 280px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--veh-border);
+  background-color: transparent;
+  display: block;
+}
+
+.veh-why-hd-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+  filter: none !important;
+}
+
+.dark .veh-why-hd-banner-img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.veh-why-mobile-cards {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.veh-why-mobile-card {
   display: flex;
   align-items: center;
-  background-color: #1A1F2B;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--veh-surface);
+  border: 1px solid var(--veh-border);
+  border-radius: var(--veh-radius-md);
 }
 
-.veh-why-bg-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0.55;
-}
-
-.veh-why-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(14, 23, 42, 0.94) 0%,
-    rgba(14, 23, 42, 0.82) 60%,
-    rgba(14, 23, 42, 0.35) 100%
-  );
-  z-index: 1;
-}
-
-.veh-why-content-box {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding: 36px 44px;
-}
-
-.veh-why-heading {
-  font-family: var(--veh-font-serif);
-  font-size: 2rem;
-  font-weight: 700;
-  color: #FFFFFF;
-  margin: 0 0 28px 0;
-  text-align: center;
-}
-
-.veh-why-benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
-}
-
-.veh-why-benefit-col {
+.veh-why-mobile-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
+  gap: 2px;
 }
 
-.veh-why-icon-circle {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--veh-pink);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-}
-
-.veh-why-benefit-text {
-  font-size: 0.78rem;
+.veh-why-mobile-title {
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #FFFFFF;
-  line-height: 1.25;
+  color: var(--veh-text-primary);
 }
 
-.veh-why-script-tag {
-  position: absolute;
-  top: 18px;
-  right: 28px;
-  z-index: 2;
-  font-family: var(--veh-script);
-  font-size: 1.55rem;
-  color: #FFFFFF;
-  pointer-events: none;
-  font-weight: 600;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+.veh-why-mobile-desc {
+  font-size: 0.72rem;
+  color: var(--veh-text-secondary);
 }
 
 /* ==========================================================================
