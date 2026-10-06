@@ -5,6 +5,7 @@ import SofasShopPage from '../sofas/SofasShopPage';
 import SofaProductDetailView from '../sofas/SofaProductDetailView';
 import SofaCustomWizardPage from '../sofas/SofaCustomWizardPage';
 import SofaCategoryListingView from '../sofas/SofaCategoryListingView';
+import SofaRestorePage from '../sofas/SofaRestorePage';
 import BeforeAfterSlider from './BeforeAfterSlider';
 import SpecialistMapDiscovery from './SpecialistMapDiscovery';
 
@@ -148,63 +149,18 @@ export default function SofasExperience({
 
       {/* ALTERATION & REPAIR SERVICES MODE */}
       {serviceMode === 'alteration' && (
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ margin: '2rem 0' }}>
-            <button 
-              type="button" 
-              onClick={() => {
-                if (onSelectServiceMode) onSelectServiceMode('buying');
-                navigate('/sofas');
-              }}
-              className="sofa-btn-secondary"
-              style={{ marginBottom: '16px' }}
-            >
-              ← Back to Sofas Shop
-            </button>
-            <BeforeAfterSlider
-              beforeImage="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80"
-              afterImage="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80"
-              beforeLabel="Stained & Sagging Fabric Couch"
-              afterLabel="Fitted Textured Linen Cover & High-Density Foam"
-              title="Living Room Sofa Transformation"
-              subtitle="Compare old, stained upholstery against custom-tailored slipcovers fitted with piping and high-density foam rejuvenation."
-              aspectRatio="21/9"
-            />
-          </div>
-
-          <section style={{ margin: '4rem 0' }}>
-            <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <h2 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>
-                Complete Sofa & Cushion Tailoring Services
-              </h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-                From single cushion restitching to entire sectional upholstery transformations.
-              </p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
-              {[
-                { title: 'New Fitted Sofa Covers', price: '₹2,499', desc: 'Custom tailored to your exact sofa frame with zipper tucks.' },
-                { title: 'Sofa Cover Replacement', price: '₹1,899', desc: 'Copy existing fit with brand new premium fabrics.' },
-                { title: 'Cushion Foam Replacement', price: '₹999', desc: 'Restores sagging couches with high-density 40-density foam.' },
-                { title: 'Cushion Cover Sets (Set of 5)', price: '₹799', desc: 'Matching or contrast accent cushion cover stitching.' },
-                { title: 'Leather Sofa Scratch Buffing', price: '₹899', desc: 'Color restoration and tear patching for genuine & PU leather.' },
-                { title: 'Zip Replacement & Restitching', price: '₹299', desc: 'Heavy-duty nylon coil zippers for cushion cases.' }
-              ].map((ser, i) => (
-                <div key={i} className="glass-card" style={{ padding: '20px', borderRadius: '16px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: 'var(--bg-card)' }}>
-                  <div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>{ser.title}</h4>
-                    <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: 0 }}>{ser.desc}</p>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '10px', marginTop: '12px' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>From</span>
-                    <strong style={{ fontSize: '1.05rem', color: '#E11D74' }}>{ser.price}</strong>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
+        <SofaRestorePage
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onAddToCart={onAddToCart}
+          onDirectCheckout={onDirectCheckout}
+          theme={theme}
+          showToast={showToast}
+          onNavigateShop={() => {
+            if (onSelectServiceMode) onSelectServiceMode('buying');
+            navigate('/sofas');
+          }}
+        />
       )}
 
       {/* SPECIALIST PARTNER SELECTION MODE */}
