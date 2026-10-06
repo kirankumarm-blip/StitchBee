@@ -26,7 +26,7 @@ export default function SofasExperience({
 
   // Sync pathname to serviceMode
   useEffect(() => {
-    if (pathname === '/sofas/repair' || pathname === '/sofas/restore') {
+    if (pathname === '/sofas/repair' || pathname === '/sofas/restore' || pathname.startsWith('/sofas/repair') || pathname.startsWith('/sofas/restore')) {
       if (onSelectServiceMode && serviceMode !== 'alteration') {
         onSelectServiceMode('alteration');
       }

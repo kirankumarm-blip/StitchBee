@@ -617,7 +617,7 @@ export default function CustomerView({
       setSelectedCategory('sofas');
       setActiveHub('category-landing');
       setSofasStudioMode('shop');
-    } else if (path === '/sofas/repair' || path === '/sofas/restore' || path === '/sofa/repair') {
+    } else if (path === '/sofas/repair' || path === '/sofas/restore' || path === '/sofa/repair' || path.startsWith('/sofas/repair') || path.startsWith('/sofas/restore') || path.startsWith('/sofa/repair')) {
       setSelectedCategory('sofas');
       setActiveHub('category-landing');
       setSofasStudioMode('restore');
