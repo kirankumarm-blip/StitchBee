@@ -379,6 +379,7 @@ export default function SpecialtyCategoryView({
                 onDirectCheckout={handleDirectCheckout}
                 serviceMode={serviceMode}
                 onSelectServiceMode={setServiceMode}
+                theme={theme}
               />
             )}
           </>

@@ -191,6 +191,13 @@ export default function App() {
       setRole('customer');
       setCustomerCategory('pets');
       setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/sofas') ||
+      path.startsWith('/sofa')
+    ) {
+      setRole('customer');
+      setCustomerCategory('sofas');
+      setCustomerHub('category-landing');
     }
   }, [location.pathname]);
 
@@ -875,8 +882,8 @@ export default function App() {
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'seats' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('seats'); setActiveDropdown(null); }}>Vehicle Seat Covers</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'designers' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('designers'); setCustomerCategory('all'); setActiveDropdown(null); }}>Custom Design</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'gifts' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('gifts'); setActiveDropdown(null); }}>Hand Made Gifts</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'pets' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('pets'); setActiveDropdown(null); }}>Pet Outfits</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'sofas' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('sofas'); setActiveDropdown(null); }}>Sofas</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'pets' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('pets'); setActiveDropdown(null); navigate('/pets'); }}>Pet Outfits</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'sofas' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('sofas'); setActiveDropdown(null); navigate('/sofas'); }}>Sofas</li>
                 </ul>
               </div>
 
@@ -1600,9 +1607,9 @@ export default function App() {
                   },
                   {
                     name: "Sofas",
-                    img: "./Vehicle Seat Covers.png",
-                    desc: "Custom fitted sofa covers, cushions & upholstery stitching.",
-                    cat: "seats",
+                    img: "/assets/sofas/HERO.png",
+                    desc: "Custom fitted sofa covers, handcrafted sofas & upholstery stitching.",
+                    cat: "sofas",
                     icon: (
                       <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M19 10V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v5a4 4 0 0 0-4 4v4a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2v-4a4 4 0 0 0-4-4z" />
@@ -1625,6 +1632,10 @@ export default function App() {
                       navigate('/shoes');
                     } else if (category.cat === 'gifts') {
                       navigate('/gifts');
+                    } else if (category.cat === 'pets') {
+                      navigate('/pets');
+                    } else if (category.cat === 'sofas') {
+                      navigate('/sofas');
                     }
                   }}
                   onMouseEnter={() => setHoveredCategoryIdx(idx)}
