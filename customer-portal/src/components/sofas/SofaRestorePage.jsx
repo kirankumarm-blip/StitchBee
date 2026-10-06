@@ -139,12 +139,16 @@ export default function SofaRestorePage({
 
   // Toggle common issue tag in step 3
   const toggleIssueTag = (tag) => {
-    setAssessmentData(prev => ({
-      ...prev,
-      selectedIssues: prev.selectedIssues.includes(tag)
-        ? prev.selectedIssues.filter(t => t !== tag)
-        : [...prev, selectedIssues, tag]
-    }));
+    setAssessmentData(prev => {
+      const currentList = prev.selectedIssues || [];
+      const updated = currentList.includes(tag)
+        ? currentList.filter(t => t !== tag)
+        : [...currentList, tag];
+      return {
+        ...prev,
+        selectedIssues: updated
+      };
+    });
   };
 
   // --------------------------------------------------------------------------
@@ -690,7 +694,7 @@ export default function SofaRestorePage({
                   </label>
                   <div className="assessment-issues-pills-wrap">
                     {COMMON_SOFA_ISSUES.map(issue => {
-                      const isSelected = assessmentData.selectedIssues.includes(issue);
+                      const isSelected = (assessmentData.selectedIssues || []).includes(issue);
                       return (
                         <button
                           key={issue}
