@@ -742,7 +742,7 @@
 }
 
 /* ==========================================================================
-   6. WHY CHOOSE STITCHBEEZ BANNER (100% Full Width Panoramic Banner)
+   6. WHY CHOOSE STITCHBEEZ (3D Full Width Panoramic Banner)
    ========================================================================== */
 .veh-why-section-full {
   width: 100%;
@@ -755,122 +755,62 @@
 .veh-why-banner-wrap {
   position: relative;
   width: 100%;
-  min-height: 320px;
-  background-image: url('/assets/repair-vehicle-seats/why_bg_banner_hd.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 0;
+  overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   border-top: 1px solid var(--veh-border);
   border-bottom: 1px solid var(--veh-border);
-  overflow: hidden;
-  box-sizing: border-box;
-  padding: 48px 36px;
+  background-color: transparent;
+  display: block;
 }
 
-.veh-why-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.42) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.42) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-.dark .veh-why-overlay {
-  background: linear-gradient(
-    180deg,
-    rgba(14, 23, 42, 0.85) 0%,
-    rgba(14, 23, 42, 0.7) 50%,
-    rgba(14, 23, 42, 0.85) 100%
-  );
-}
-
-.veh-why-content-box {
-  position: relative;
-  z-index: 2;
+.veh-why-3d-banner-img {
   width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  text-align: center;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  filter: none !important;
 }
 
-.veh-why-heading {
-  font-family: var(--veh-font-serif);
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #0F1E36;
-  margin: 0 0 32px 0;
-  text-align: center;
+.dark .veh-why-3d-banner-img {
+  filter: none !important;
+  opacity: 1 !important;
 }
 
-.dark .veh-why-heading {
-  color: #FFFFFF;
+.veh-why-mobile-cards {
+  display: none;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  padding: 0 20px;
 }
 
-.veh-why-benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
+.veh-why-mobile-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--veh-surface);
+  border: 1px solid var(--veh-border);
+  border-radius: var(--veh-radius-md);
 }
 
-.veh-why-benefit-col {
+.veh-why-mobile-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
+  gap: 2px;
 }
 
-.veh-why-icon-circle {
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--veh-pink, #E11D74);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.veh-why-benefit-col:hover .veh-why-icon-circle {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(225, 29, 116, 0.25);
-}
-
-.veh-why-benefit-text {
-  font-size: 0.86rem;
+.veh-why-mobile-title {
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #0F1E36;
-  line-height: 1.25;
+  color: var(--veh-text-primary);
 }
 
-.dark .veh-why-benefit-text {
-  color: #FFFFFF;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-}
-
-.veh-why-script-tag {
-  position: absolute;
-  top: 18px;
-  right: 32px;
-  z-index: 3;
-  font-family: var(--veh-script);
-  font-size: 1.6rem;
-  color: #FFFFFF;
-  pointer-events: none;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+.veh-why-mobile-desc {
+  font-size: 0.72rem;
+  color: var(--veh-text-secondary);
 }
 
 /* ==========================================================================
@@ -1101,12 +1041,12 @@
   width: 100%;
   border-radius: var(--veh-radius-lg);
   overflow: hidden;
-  box-shadow: var(--veh-shadow-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   margin-bottom: 24px;
-  min-height: 260px;
+  min-height: 310px;
   display: flex;
   align-items: center;
-  background-color: #1A1817;
+  background-color: #0F172A;
 }
 
 .veh-final-cta-bg-img {
@@ -1115,7 +1055,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center bottom;
 }
 
 .veh-final-cta-overlay {
@@ -1123,9 +1063,10 @@
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(14, 23, 42, 0.95) 0%,
-    rgba(14, 23, 42, 0.8) 50%,
-    rgba(14, 23, 42, 0.25) 100%
+    rgba(10, 15, 30, 0.92) 0%,
+    rgba(10, 15, 30, 0.78) 45%,
+    rgba(10, 15, 30, 0.25) 75%,
+    transparent 100%
   );
   z-index: 1;
 }
@@ -1133,39 +1074,70 @@
 .dark .veh-final-cta-overlay {
   background: linear-gradient(
     to right,
-    rgba(14, 17, 23, 0.96) 0%,
-    rgba(14, 17, 23, 0.85) 50%,
-    rgba(14, 17, 23, 0.3) 100%
+    rgba(10, 15, 30, 0.94) 0%,
+    rgba(10, 15, 30, 0.82) 45%,
+    rgba(10, 15, 30, 0.3) 75%,
+    transparent 100%
   );
 }
 
 .veh-final-cta-content {
   position: relative;
   z-index: 2;
-  max-width: 540px;
-  padding: 36px 48px;
+  max-width: 560px;
+  padding: 40px 48px;
 }
 
-.veh-final-cta-title {
+.veh-final-cta-title,
+body.light-theme .veh-final-cta-container .veh-final-cta-title,
+.dark .veh-final-cta-container .veh-final-cta-title {
   font-family: var(--veh-font-serif);
-  font-size: 2.3rem;
+  font-size: 2.35rem;
   font-weight: 700;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   line-height: 1.15;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
 }
 
-.veh-final-cta-sub {
-  font-size: 0.95rem;
-  color: #E2E8F0;
+.veh-final-cta-sub,
+body.light-theme .veh-final-cta-container .veh-final-cta-sub,
+.dark .veh-final-cta-container .veh-final-cta-sub {
+  font-size: 0.98rem;
+  color: #FFFFFF !important;
+  opacity: 0.95;
   line-height: 1.5;
-  margin: 0 0 22px 0;
+  margin: 0 0 24px 0;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
 }
 
 .veh-final-cta-btns-row {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.veh-final-cta-btns-row .veh-btn-primary,
+body.light-theme .veh-final-cta-btns-row .veh-btn-primary {
+  background: #E11D74 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 16px rgba(225, 29, 116, 0.45);
+}
+
+.veh-final-cta-btns-row .veh-btn-secondary,
+body.light-theme .veh-final-cta-btns-row .veh-btn-secondary {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(8px);
+}
+
+.veh-final-cta-btns-row .veh-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
 }
 
 /* ==========================================================================
