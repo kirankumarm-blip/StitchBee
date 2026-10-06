@@ -497,7 +497,6 @@ export default function SofasShopPage({
               className="studio-img"
               loading="lazy"
             />
-            <div className="sofa-studio-right-fade-overlay" />
           </div>
         </div>
       </section>
