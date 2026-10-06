@@ -1057,9 +1057,9 @@ export default function VehicleSeatRestorePage({
     <div className={`veh-restore-wrapper ${theme === 'dark' ? 'dark' : ''}`}>
 
       {/* ======================================================================
-          1. HERO SECTION
+          1. HERO SECTION (100% Full Width Panoramic Background)
           ====================================================================== */}
-      <section className="veh-hero-section">
+      <section className="veh-hero-section veh-hero-fullwidth">
         <div className="veh-hero-container">
           
           {/* Left Side Content */}
@@ -1126,34 +1126,9 @@ export default function VehicleSeatRestorePage({
             </div>
           </div>
 
-          {/* Right Side Visual: Main Car Interior + Stacked Strip */}
-          <div className="veh-hero-visual-wrap">
-            <div className="veh-hero-main-img-wrap">
-              <img 
-                src={VEHICLE_SEAT_ASSETS.hero.main} 
-                alt="Vehicle Seat Interior" 
-                className="veh-hero-main-img" 
-              />
-              <div className="veh-hero-img-fade-overlay" />
-              <span className="veh-hero-script-tag">
-                Same Seats New Comfort Every Journey ♡
-              </span>
-            </div>
-
-            {/* Stacked 4 thumbnails */}
-            <div className="veh-hero-side-strip">
-              {VEHICLE_SEAT_ASSETS.hero.thumbnails.map(thumb => (
-                <div 
-                  key={thumb.id}
-                  className="veh-hero-strip-card"
-                  onClick={scrollToTransformations}
-                  title={thumb.title}
-                >
-                  <img src={thumb.img} alt={thumb.title} />
-                </div>
-              ))}
-            </div>
-          </div>
+          <span className="veh-hero-script-tag">
+            Same Seats New Comfort Every Journey ♡
+          </span>
 
         </div>
       </section>
@@ -1393,35 +1368,35 @@ export default function VehicleSeatRestorePage({
 
 
       {/* ======================================================================
-          6. WHY CHOOSE STITCHBEEZ BANNER
+          6. WHY CHOOSE STITCHBEEZ BANNER (100% Full Width Panoramic Background)
           ====================================================================== */}
-      <section className="veh-section veh-why-section-full">
+      <section className="veh-why-section-full">
         <div className="veh-why-banner-wrap">
-          <img 
-            src="/assets/repair-vehicle-seats/why_choose_stitchbeez_hd.png" 
-            alt="Why Choose StitchBeez - Built For Every Journey" 
-            className="veh-why-hd-banner-img" 
-          />
-        </div>
+          <div className="veh-why-overlay" />
 
-        {/* Responsive mobile cards for smaller touchscreens */}
-        <div className="veh-why-mobile-cards">
-          {WHY_STITCHBEEZ_BENEFITS.map(b => (
-            <div key={b.id} className="veh-why-mobile-card">
-              <div className="veh-why-icon-circle">
-                {b.icon === 'ruler' && <Car size={20} />}
-                {b.icon === 'shield' && <ShieldCheck size={20} />}
-                {b.icon === 'palette' && <Palette size={20} />}
-                {b.icon === 'users' && <Award size={20} />}
-                {b.icon === 'badge-percent' && <BadgePercent size={20} />}
-                {b.icon === 'truck' && <Truck size={20} />}
-              </div>
-              <div className="veh-why-mobile-text">
-                <span className="veh-why-mobile-title">{b.title}</span>
-                <span className="veh-why-mobile-desc">{b.desc}</span>
-              </div>
+          <div className="veh-why-content-box">
+            <h2 className="veh-why-heading">Why Choose StitchBeez</h2>
+
+            <div className="veh-why-benefits-grid">
+              {WHY_STITCHBEEZ_BENEFITS.map(b => (
+                <div key={b.id} className="veh-why-benefit-col">
+                  <div className="veh-why-icon-circle">
+                    {b.icon === 'ruler' && <Ruler size={24} />}
+                    {b.icon === 'shield' && <ShieldCheck size={24} />}
+                    {b.icon === 'palette' && <Palette size={24} />}
+                    {b.icon === 'users' && <Award size={24} />}
+                    {b.icon === 'badge-percent' && <BadgePercent size={24} />}
+                    {b.icon === 'truck' && <Truck size={24} />}
+                  </div>
+                  <span className="veh-why-benefit-text">{b.title}</span>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <span className="veh-why-script-tag">
+            Built For Every Journey ♡
+          </span>
         </div>
       </section>
 

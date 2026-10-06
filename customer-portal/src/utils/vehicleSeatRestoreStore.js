@@ -381,37 +381,37 @@ export function calculateVehicleSeatEstimate({
 export const WHY_STITCHBEEZ_BENEFITS = [
   {
     id: "perfect-fit",
-    title: "Perfect Fit for All Vehicles",
+    title: "Perfect Fit",
     desc: "Laser-measured patterns tailored specifically to your vehicle's frame and contours.",
     icon: "ruler"
   },
   {
     id: "durable-materials",
-    title: "Premium Durable Materials",
+    title: "1-Year Warranty",
     desc: "Automotive-tested leatherettes and ballistic fabrics engineered for tropical heat and monsoons.",
     icon: "shield"
   },
   {
     id: "custom-designs",
-    title: "Custom Designs & Personalization",
+    title: "50+ Materials",
     desc: "Diamond quilting, contrast piping, colored stitching threads, and custom foam contours.",
     icon: "palette"
   },
   {
     id: "skilled-artisans",
-    title: "Skilled & Verified Artisans",
+    title: "Master Artisans",
     desc: "15+ years experienced master automotive upholsterers with verified workshop certifications.",
     icon: "users"
   },
   {
     id: "affordable-pricing",
-    title: "Affordable Pricing",
+    title: "Save Up To 70%",
     desc: "Save up to 70% compared to buying brand new factory seats with zero quality compromises.",
     icon: "badge-percent"
   },
   {
     id: "doorstep-service",
-    title: "On-Time Doorstep Service",
+    title: "Doorstep Fitting",
     desc: "Mobile fitment vans visit your apartment parking or home garage at your chosen time.",
     icon: "truck"
   }

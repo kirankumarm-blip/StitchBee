@@ -179,57 +179,76 @@
 }
 
 /* ==========================================================================
-   1. HERO SECTION
+   1. HERO SECTION (100% Full Width Panoramic Banner)
    ========================================================================== */
 .veh-hero-section {
   width: 100%;
-  padding: 24px 48px 48px 48px;
-  margin: 0 auto 48px auto;
+  max-width: 100%;
+  margin: 0 0 52px 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .veh-hero-container {
-  display: grid;
-  grid-template-columns: 1fr 1.35fr;
-  align-items: center;
-  gap: 40px;
-  background: linear-gradient(135deg, rgba(255, 243, 245, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
-  border-radius: var(--veh-radius-lg);
-  padding: 40px;
-  border: 1px solid var(--veh-estimate-border);
+  width: 100%;
+  min-height: 520px;
+  background-image: url('/assets/repair-vehicle-seats/hero_bg_banner_hd.png');
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: cover;
   position: relative;
-}
-
-.dark .veh-hero-container {
-  background: linear-gradient(135deg, rgba(33, 24, 32, 0.7) 0%, rgba(22, 26, 34, 0) 100%);
-  border-color: var(--veh-border);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .veh-hero-left {
-  max-width: 540px;
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  padding: 56px 48px 56px 64px;
+  background: linear-gradient(
+    to right,
+    rgba(255, 246, 247, 0.95) 0%,
+    rgba(255, 246, 247, 0.88) 65%,
+    rgba(255, 246, 247, 0.45) 88%,
+    rgba(255, 246, 247, 0) 100%
+  );
+  border-radius: 0 var(--veh-radius-lg) var(--veh-radius-lg) 0;
+}
+
+.dark .veh-hero-left {
+  background: linear-gradient(
+    to right,
+    rgba(15, 23, 42, 0.96) 0%,
+    rgba(15, 23, 42, 0.88) 65%,
+    rgba(15, 23, 42, 0.45) 88%,
+    rgba(15, 23, 42, 0) 100%
+  );
 }
 
 .veh-hero-title {
   font-family: var(--veh-font-serif);
-  font-size: 3.4rem;
+  font-size: 3.3rem;
   font-weight: 700;
   line-height: 1.12;
   color: var(--veh-text-primary);
-  margin: 6px 0 16px 0;
+  margin: 8px 0 16px 0;
 }
 
 .veh-hero-desc {
   font-size: 1.02rem;
   color: var(--veh-text-secondary);
   line-height: 1.6;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
 .veh-hero-features-row {
   display: flex;
   align-items: center;
-  gap: 22px;
-  margin-bottom: 32px;
+  gap: 20px;
+  margin-bottom: 30px;
   flex-wrap: wrap;
 }
 
@@ -250,7 +269,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--veh-shadow-sm);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   color: var(--veh-pink);
 }
 
@@ -273,111 +292,26 @@
   flex-wrap: wrap;
 }
 
-/* Right Hero: Main Image + Stacked Thumbnail Strip */
-.veh-hero-visual-wrap {
-  display: grid;
-  grid-template-columns: 1fr 130px;
-  gap: 16px;
-  height: 440px;
-  position: relative;
-}
-
-.veh-hero-main-img-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: var(--veh-radius-lg);
-  overflow: hidden;
-  box-shadow: var(--veh-shadow-md);
-  border: 1px solid var(--veh-border);
-  background: var(--veh-surface, #ffffff);
-}
-
-.veh-hero-main-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 0.8) 16%, black 28%);
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 6%, rgba(0, 0, 0, 0.8) 16%, black 28%);
-  transition: all 0.3s ease;
-}
-
-.veh-hero-img-fade-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(255, 243, 245, 0.95) 0%,
-    rgba(255, 243, 245, 0.5) 8%,
-    rgba(255, 243, 245, 0.15) 20%,
-    transparent 32%
-  );
-  pointer-events: none;
-  z-index: 2;
-}
-
-.dark .veh-hero-img-fade-overlay {
-  background: linear-gradient(
-    to right,
-    rgba(33, 24, 32, 0.95) 0%,
-    rgba(33, 24, 32, 0.5) 8%,
-    rgba(33, 24, 32, 0.15) 20%,
-    transparent 32%
-  );
-}
-
 .veh-hero-script-tag {
   position: absolute;
-  top: 16px;
-  left: 20px;
+  top: 22px;
+  right: 32px;
   z-index: 5;
   font-family: var(--veh-script);
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   color: #10213F;
   background: rgba(255, 255, 255, 0.88);
-  padding: 4px 12px;
-  border-radius: 10px;
-  backdrop-filter: blur(4px);
+  padding: 4px 14px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
   pointer-events: none;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 .dark .veh-hero-script-tag {
   color: #F8FAFC;
   background: rgba(16, 23, 42, 0.85);
-}
-
-/* Right Side Stacked Strip */
-.veh-hero-side-strip {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  height: 100%;
-}
-
-.veh-hero-strip-card {
-  flex: 1;
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--veh-border);
-  box-shadow: var(--veh-shadow-sm);
-  cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.veh-hero-strip-card:hover {
-  transform: scale(1.03);
-  border-color: var(--veh-pink);
-}
-
-.veh-hero-strip-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 /* ==========================================================================
@@ -808,73 +742,135 @@
 }
 
 /* ==========================================================================
-   6. WHY CHOOSE STITCHBEEZ BANNER
+   6. WHY CHOOSE STITCHBEEZ BANNER (100% Full Width Panoramic Banner)
    ========================================================================== */
 .veh-why-section-full {
   width: 100%;
   max-width: 100%;
-  padding: 0 48px;
-  margin-bottom: 56px;
+  margin: 0 0 56px 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 .veh-why-banner-wrap {
   position: relative;
   width: 100%;
-  border-radius: var(--veh-radius-lg);
-  overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  border: 1px solid var(--veh-border);
-  background-color: transparent;
-  display: block;
-}
-
-.veh-why-hd-banner-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  border-radius: inherit;
-  filter: none !important;
-}
-
-.dark .veh-why-hd-banner-img {
-  filter: none !important;
-  opacity: 1 !important;
-}
-
-.veh-why-mobile-cards {
-  display: none;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.veh-why-mobile-card {
+  min-height: 320px;
+  background-image: url('/assets/repair-vehicle-seats/why_bg_banner_hd.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: var(--veh-surface);
-  border: 1px solid var(--veh-border);
-  border-radius: var(--veh-radius-md);
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--veh-border);
+  border-bottom: 1px solid var(--veh-border);
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 48px 36px;
 }
 
-.veh-why-mobile-text {
+.veh-why-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.42) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dark .veh-why-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(14, 23, 42, 0.85) 0%,
+    rgba(14, 23, 42, 0.7) 50%,
+    rgba(14, 23, 42, 0.85) 100%
+  );
+}
+
+.veh-why-content-box {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.veh-why-heading {
+  font-family: var(--veh-font-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0F1E36;
+  margin: 0 0 32px 0;
+  text-align: center;
+}
+
+.dark .veh-why-heading {
+  color: #FFFFFF;
+}
+
+.veh-why-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.veh-why-benefit-col {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
 }
 
-.veh-why-mobile-title {
-  font-size: 0.82rem;
+.veh-why-icon-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--veh-pink, #E11D74);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.veh-why-benefit-col:hover .veh-why-icon-circle {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(225, 29, 116, 0.25);
+}
+
+.veh-why-benefit-text {
+  font-size: 0.86rem;
   font-weight: 700;
-  color: var(--veh-text-primary);
+  color: #0F1E36;
+  line-height: 1.25;
 }
 
-.veh-why-mobile-desc {
-  font-size: 0.72rem;
-  color: var(--veh-text-secondary);
+.dark .veh-why-benefit-text {
+  color: #FFFFFF;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.veh-why-script-tag {
+  position: absolute;
+  top: 18px;
+  right: 32px;
+  z-index: 3;
+  font-family: var(--veh-script);
+  font-size: 1.6rem;
+  color: #FFFFFF;
+  pointer-events: none;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 
 /* ==========================================================================
@@ -1327,12 +1323,17 @@
   }
 
   .veh-hero-section {
-    padding: 20px 32px 36px 32px;
+    padding: 0;
+    margin-bottom: 48px;
   }
 
   .veh-hero-container {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    min-height: 480px;
+  }
+
+  .veh-hero-left {
+    max-width: 540px;
+    padding: 44px 36px 44px 44px;
   }
 
   .veh-types-grid {
@@ -1376,34 +1377,57 @@
   }
 
   .veh-hero-section {
-    padding: 16px 18px 28px 18px;
+    padding: 0;
+    margin-bottom: 38px;
   }
 
   .veh-hero-container {
-    padding: 24px 18px;
+    min-height: auto;
+    background-position: center right;
+  }
+
+  .veh-hero-left {
+    max-width: 100%;
+    padding: 32px 20px;
+    border-radius: 0;
+    background: rgba(255, 246, 247, 0.94);
+  }
+
+  .dark .veh-hero-left {
+    background: rgba(15, 23, 42, 0.94);
   }
 
   .veh-hero-title {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
   }
 
-  .veh-hero-visual-wrap {
-    grid-template-columns: 1fr;
-    height: auto;
+  .veh-hero-script-tag {
+    position: static;
+    display: inline-block;
+    margin: 16px 20px 20px 20px;
   }
 
-  .veh-hero-main-img-wrap {
-    height: 260px;
+  .veh-why-banner-wrap {
+    padding: 32px 16px;
   }
 
-  .veh-hero-side-strip {
-    flex-direction: row;
-    height: 80px;
-    overflow-x: auto;
+  .veh-why-heading {
+    font-size: 1.7rem;
+    margin-bottom: 22px;
   }
 
-  .veh-hero-strip-card {
-    flex: 0 0 90px;
+  .veh-why-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .veh-why-script-tag {
+    position: static;
+    display: block;
+    margin-top: 18px;
+    font-size: 1.35rem;
+    color: #FF087A;
+    text-shadow: none;
   }
 
   .veh-types-grid {
