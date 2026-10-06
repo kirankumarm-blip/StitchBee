@@ -198,6 +198,14 @@ export default function App() {
       setRole('customer');
       setCustomerCategory('sofas');
       setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/vehicle-seats') ||
+      path.startsWith('/seats') ||
+      path.startsWith('/vehicle')
+    ) {
+      setRole('customer');
+      setCustomerCategory('seats');
+      setCustomerHub('category-landing');
     }
   }, [location.pathname]);
 

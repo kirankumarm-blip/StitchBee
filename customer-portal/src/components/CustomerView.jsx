@@ -453,6 +453,9 @@ export default function CustomerView({
   const [sofasStudioMode, setSofasStudioMode] = useState('shop'); // 'shop' | 'restore'
   const [sofasSubmenuHovered, setSofasSubmenuHovered] = useState(false);
   const [mobileSofasExpanded, setMobileSofasExpanded] = useState(false);
+  const [seatsStudioMode, setSeatsStudioMode] = useState('shop'); // 'shop' | 'restore'
+  const [seatsSubmenuHovered, setSeatsSubmenuHovered] = useState(false);
+  const [mobileSeatsExpanded, setMobileSeatsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [rewardPoints, setRewardPoints] = useState(120);
   
@@ -624,6 +627,14 @@ export default function CustomerView({
     } else if (path.startsWith('/sofas') || path.startsWith('/sofa')) {
       setSelectedCategory('sofas');
       setActiveHub('category-landing');
+    } else if (path === '/vehicle-seats/repair' || path === '/vehicle-seats/restore' || path === '/seats/repair' || path === '/seats/restore' || path.startsWith('/vehicle-seats/repair') || path.startsWith('/seats/repair')) {
+      setSelectedCategory('seats');
+      setActiveHub('category-landing');
+      setSeatsStudioMode('restore');
+    } else if (path === '/vehicle-seats' || path === '/seats' || path.startsWith('/vehicle-seats') || path.startsWith('/seats') || path.startsWith('/vehicle')) {
+      setSelectedCategory('seats');
+      setActiveHub('category-landing');
+      setSeatsStudioMode('shop');
     }
   }, [location.pathname]);
 
@@ -7054,6 +7065,8 @@ export default function CustomerView({
           setShoesStudioMode={setShoesStudioMode}
           sofasStudioMode={sofasStudioMode}
           setSofasStudioMode={setSofasStudioMode}
+          seatsStudioMode={seatsStudioMode}
+          setSeatsStudioMode={setSeatsStudioMode}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onLoginRequired={onLoginRequired}

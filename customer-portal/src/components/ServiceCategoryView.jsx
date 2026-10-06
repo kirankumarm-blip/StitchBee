@@ -443,6 +443,7 @@ export default function ServiceCategoryView({
   bagsStudioMode = 'shop', setBagsStudioMode,
   shoesStudioMode = 'shop', setShoesStudioMode,
   sofasStudioMode = 'shop', setSofasStudioMode,
+  seatsStudioMode = 'shop', setSeatsStudioMode,
   searchQuery, setSearchQuery
 }) {
   if (categoryKey === 'bags') {
@@ -510,6 +511,8 @@ export default function ServiceCategoryView({
         setShoesStudioMode={setShoesStudioMode}
         sofasStudioMode={sofasStudioMode}
         setSofasStudioMode={setSofasStudioMode}
+        seatsStudioMode={seatsStudioMode}
+        setSeatsStudioMode={setSeatsStudioMode}
         theme={theme}
         setTheme={setTheme}
       />

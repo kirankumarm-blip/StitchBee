@@ -36,12 +36,15 @@ export default function SpecialtyCategoryView({
   setShoesStudioMode,
   sofasStudioMode = 'shop',
   setSofasStudioMode,
+  seatsStudioMode = 'shop',
+  setSeatsStudioMode,
   theme = 'light'
 }) {
   const [activeCategory, setActiveCategory] = useState(categoryKey);
   const initialMode = 
     (categoryKey === 'shoes' && shoesStudioMode === 'restore') ? 'alteration' :
     (categoryKey === 'sofas' && (sofasStudioMode === 'restore' || (typeof window !== 'undefined' && (window.location.pathname === '/sofas/repair' || window.location.pathname === '/sofas/restore')))) ? 'alteration' : 
+    (categoryKey === 'seats' && (seatsStudioMode === 'restore' || (typeof window !== 'undefined' && (window.location.pathname === '/vehicle-seats/repair' || window.location.pathname === '/vehicle-seats/restore' || window.location.pathname === '/seats/repair' || window.location.pathname.startsWith('/vehicle-seats/repair'))))) ? 'alteration' :
     'buying';
   const [serviceMode, setServiceMode] = useState(initialMode);
   const [cartItems, setCartItems] = useState([]);
@@ -84,6 +87,17 @@ export default function SpecialtyCategoryView({
       }
     }
   }, [sofasStudioMode, activeCategory]);
+
+  // Sync serviceMode when seatsStudioMode prop changes
+  useEffect(() => {
+    if (activeCategory === 'seats') {
+      if (seatsStudioMode === 'restore') {
+        setServiceMode('alteration');
+      } else if (seatsStudioMode === 'shop') {
+        setServiceMode('buying');
+      }
+    }
+  }, [seatsStudioMode, activeCategory]);
 
   const handleShoeModeChange = (mode) => {
     setServiceMode(mode);
@@ -356,7 +370,13 @@ export default function SpecialtyCategoryView({
                 onAddToCart={handleAddToCart}
                 onDirectCheckout={handleDirectCheckout}
                 serviceMode={serviceMode}
-                onSelectServiceMode={setServiceMode}
+                onSelectServiceMode={(mode) => {
+                  setServiceMode(mode);
+                  if (setSeatsStudioMode) {
+                    setSeatsStudioMode(mode === 'alteration' ? 'restore' : 'shop');
+                  }
+                }}
+                theme={theme}
               />
             )}
 
