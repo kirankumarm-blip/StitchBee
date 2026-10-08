@@ -5,6 +5,8 @@ import VehicleSeatShopPage from '../seats/VehicleSeatShopPage';
 import VehicleSeatCustomWizardPage from '../seats/VehicleSeatCustomWizardPage';
 import VehicleSeatProductDetailView from '../seats/VehicleSeatProductDetailView';
 import VehicleSeatCategoryListingView from '../seats/VehicleSeatCategoryListingView';
+import FlipkartProductDetailView from './FlipkartProductDetailView';
+import { FEATURED_PRODUCTS, ALL_SEAT_PRODUCTS } from '../../utils/vehicleSeatShopStore';
 
 export default function VehicleSeatExperience({
   tailors = [],
@@ -117,6 +119,78 @@ export default function VehicleSeatExperience({
         </div>
       )}
 
+      {/* Top Mode Switcher Bar (Shop & Create vs Repair & Restore) */}
+      <div 
+        className="v-top-mode-switcher"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '12px 20px',
+          gap: '12px',
+          background: theme === 'dark' ? '#0F172A' : '#F8FAFC',
+          borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          backdropFilter: 'blur(8px)'
+        }}
+      >
+        <button
+          type="button"
+          onClick={() => {
+            if (onSelectServiceMode) onSelectServiceMode('buying');
+            setSubView(null);
+            navigate('/vehicle-seats');
+          }}
+          style={{
+            padding: '9px 24px',
+            fontSize: '0.88rem',
+            fontWeight: 700,
+            borderRadius: '24px',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s ease',
+            background: serviceMode === 'buying' ? 'linear-gradient(135deg, #E11D74 0%, #FF087A 100%)' : (theme === 'dark' ? '#1E293B' : '#FFFFFF'),
+            color: serviceMode === 'buying' ? '#FFFFFF' : (theme === 'dark' ? '#94A3B8' : '#64748B'),
+            boxShadow: serviceMode === 'buying' ? '0 4px 14px rgba(225, 29, 116, 0.35)' : '0 1px 3px rgba(0,0,0,0.05)',
+            border: serviceMode === 'buying' ? 'none' : (theme === 'dark' ? '1px solid #334155' : '1px solid #CBD5E1')
+          }}
+        >
+          <span>🛍️</span>
+          <span>Shop & Create</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            if (onSelectServiceMode) onSelectServiceMode('alteration');
+            setSubView(null);
+            navigate('/vehicle-seats/repair');
+          }}
+          style={{
+            padding: '9px 24px',
+            fontSize: '0.88rem',
+            fontWeight: 700,
+            borderRadius: '24px',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s ease',
+            background: serviceMode === 'alteration' ? 'linear-gradient(135deg, #E11D74 0%, #FF087A 100%)' : (theme === 'dark' ? '#1E293B' : '#FFFFFF'),
+            color: serviceMode === 'alteration' ? '#FFFFFF' : (theme === 'dark' ? '#94A3B8' : '#64748B'),
+            boxShadow: serviceMode === 'alteration' ? '0 4px 14px rgba(225, 29, 116, 0.35)' : '0 1px 3px rgba(0,0,0,0.05)',
+            border: serviceMode === 'alteration' ? 'none' : (theme === 'dark' ? '1px solid #334155' : '1px solid #CBD5E1')
+          }}
+        >
+          <span>✂️</span>
+          <span>Repair & Restore</span>
+        </button>
+      </div>
+
       {/* ALTERATION & REPAIR SERVICES MODE */}
       {serviceMode === 'alteration' && (
         <VehicleSeatRestorePage
@@ -152,21 +226,49 @@ export default function VehicleSeatExperience({
             />
           )}
 
-          {/* Subview 2: Dedicated Product Detail Page */}
-          {subView === 'product-detail' && (
-            <VehicleSeatProductDetailView
-              productId={activeProductId}
-              currentUser={currentUser}
-              onAddToCart={onAddToCart}
-              onDirectCheckout={onDirectCheckout}
-              onBack={() => {
-                setSubView(null);
-                navigate('/vehicle-seats');
-              }}
-              theme={theme}
-              showToast={showToast}
-            />
-          )}
+          {/* Subview 2: Dedicated Product Detail Page (Flipkart / Shoe-shop Style) */}
+          {subView === 'product-detail' && (() => {
+            const rawProd = (ALL_SEAT_PRODUCTS && ALL_SEAT_PRODUCTS.find(p => p.id === activeProductId)) || FEATURED_PRODUCTS.find(p => p.id === activeProductId) || FEATURED_PRODUCTS[0];
+            const flipkartProduct = rawProd ? {
+              ...rawProd,
+              brand: 'StitchBee Automotive Atelier',
+              categoryLabel: 'Vehicle Seat Covers',
+              image: rawProd.img || rawProd.image,
+              gallery: rawProd.gallery && rawProd.gallery.length > 0 ? rawProd.gallery : [rawProd.img || rawProd.image],
+              colors: rawProd.swatches ? rawProd.swatches.map(s => s.name) : ['Onyx Black', 'Crimson Red', 'Saddle Brown', 'Cognac Tan'],
+              sizes: ['Universal Factory Fit', 'Custom Tailored Fit'],
+              isAssured: true,
+              rating: rawProd.rating || 4.9,
+              reviewsCount: rawProd.reviewsCount || 142,
+              description: rawProd.description || 'Custom and ready-made seat covers engineered for extreme durability and luxurious riding comfort.'
+            } : null;
+
+            return (
+              <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '16px 24px' }}>
+                <FlipkartProductDetailView
+                  product={flipkartProduct}
+                  categoryTitle="Vehicle Seat Covers"
+                  onBack={() => {
+                    setSubView(null);
+                    navigate('/vehicle-seats');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onAddToCart={(prod) => {
+                    if (onAddToCart) onAddToCart(prod);
+                    showToast(`Added ${prod.name || 'Seat Cover'} to Cart! 🛒`);
+                  }}
+                  onBuyNow={(prod) => {
+                    if (onDirectCheckout) {
+                      onDirectCheckout(prod);
+                    } else if (onAddToCart) {
+                      onAddToCart(prod);
+                    }
+                  }}
+                  currentUser={currentUser}
+                />
+              </div>
+            );
+          })()}
 
           {/* Subview 3: Dedicated Category Listing View (All Products or Filtered by Category) */}
           {subView === 'category-listing' && (

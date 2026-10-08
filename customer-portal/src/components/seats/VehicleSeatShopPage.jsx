@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Sparkles, ShieldCheck, Gem, PenTool, CheckCircle2, 
   Heart, ShoppingCart, ChevronLeft, ChevronRight, 
@@ -23,9 +23,10 @@ import './VehicleSeatShopPage.css';
 
 function BeforeAfterTransformationCard({ trans }) {
   const [sliderPos, setSliderPos] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
 
-  const updatePosition = (clientX) => {
+  const updatePosition = useCallback((clientX) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = clientX - rect.left;
@@ -33,6 +34,45 @@ function BeforeAfterTransformationCard({ trans }) {
     if (pct < 3) pct = 3;
     if (pct > 97) pct = 97;
     setSliderPos(pct);
+  }, []);
+
+  useEffect(() => {
+    if (!isDragging) return;
+    const handleWindowMouseMove = (e) => {
+      updatePosition(e.clientX);
+    };
+    const handleWindowMouseUp = () => {
+      setIsDragging(false);
+    };
+    window.addEventListener('mousemove', handleWindowMouseMove);
+    window.addEventListener('mouseup', handleWindowMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleWindowMouseMove);
+      window.removeEventListener('mouseup', handleWindowMouseUp);
+    };
+  }, [isDragging, updatePosition]);
+
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+    updatePosition(e.clientX);
+  };
+
+  const handleTouchStart = (e) => {
+    if (e.touches && e.touches[0]) {
+      setIsDragging(true);
+      updatePosition(e.touches[0].clientX);
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (e.touches && e.touches[0]) {
+      updatePosition(e.touches[0].clientX);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
   };
 
   return (
@@ -40,18 +80,19 @@ function BeforeAfterTransformationCard({ trans }) {
       <div 
         className="v-trans-slider-box"
         ref={containerRef}
-        onMouseMove={(e) => {
-          if (e.buttons === 1) updatePosition(e.clientX);
-        }}
-        onTouchMove={(e) => {
-          if (e.touches && e.touches[0]) updatePosition(e.touches[0].clientX);
-        }}
+        onMouseDown={handleMouseDown}
+        onClick={(e) => updatePosition(e.clientX)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{ touchAction: 'none' }}
       >
         {/* AFTER IMAGE (Base Layer) */}
         <img 
           src={trans.after} 
           alt={`${trans.title} - After`} 
           className="v-trans-img v-trans-after-img" 
+          draggable="false"
         />
         <span className="v-trans-badge v-badge-after">After</span>
 
@@ -64,6 +105,7 @@ function BeforeAfterTransformationCard({ trans }) {
             src={trans.before} 
             alt={`${trans.title} - Before`} 
             className="v-trans-img v-trans-before-img" 
+            draggable="false"
           />
           <span className="v-trans-badge v-badge-before">Before</span>
         </div>
@@ -73,21 +115,10 @@ function BeforeAfterTransformationCard({ trans }) {
           className="v-trans-divider-handle-line"
           style={{ left: `${sliderPos}%` }}
         >
-          <div className="v-trans-divider-handle">
+          <div className="v-trans-divider-handle" style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
             <span>⇄</span>
           </div>
         </div>
-
-        {/* ACCESSIBLE SLIDER RANGE INPUT */}
-        <input 
-          type="range" 
-          min="3" 
-          max="97" 
-          value={sliderPos}
-          onChange={(e) => setSliderPos(Number(e.target.value))}
-          className="v-trans-range-slider"
-          aria-label={`Compare Before and After for ${trans.title}`}
-        />
       </div>
     </div>
   );

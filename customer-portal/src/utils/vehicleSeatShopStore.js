@@ -31,7 +31,7 @@ export const SEAT_SHOP_ASSETS = {
     van: "/assets/shop-seat-cover/products/van-seat-cover.png"
   },
   customDesign: {
-    sketchToSeat: "/assets/shop-seat-cover/custom-design/design-own-seat-cover.png"
+    sketchToSeat: "/assets/shop-seat-cover/custom-design/Custom Automotive Seat Design Infographic.png"
   },
   materials: {
     leatherette: "/assets/shop-seat-cover/materials/leatherette.jpg",
