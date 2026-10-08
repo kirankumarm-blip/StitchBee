@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   Sparkles, Wrench, ShieldCheck, Star, ArrowRight, 
-  Truck, Check, Layers, ChevronRight, Sliders, MapPin, Eye 
+  Truck, Check, ChevronRight, Sliders, MapPin, Eye 
 } from 'lucide-react';
 import BeforeAfterSlider from './BeforeAfterSlider';
 import MaterialShowcase from './MaterialShowcase';
@@ -186,76 +186,6 @@ export default function VehicleSeatExperience({
   return (
     <div className={`vehicle-experience animate-fade-in ${theme === 'dark' ? 'dark' : ''}`} style={{ width: '100%', minHeight: '100vh', paddingBottom: '4rem' }}>
       
-      {/* Top Category Mode Switcher Bar (Shop & Create vs Repair & Restore) */}
-      <div style={{ 
-        width: '100%', 
-        borderBottom: '1px solid var(--border-color, rgba(255,255,255,0.08))', 
-        background: 'var(--bg-card, rgba(18,18,31,0.6))', 
-        padding: '12px 48px', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        boxSizing: 'border-box',
-        flexWrap: 'wrap',
-        gap: '12px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button
-            type="button"
-            onClick={() => {
-              if (onSelectServiceMode) onSelectServiceMode('buying');
-              navigate('/vehicle-seats');
-            }}
-            style={{
-              padding: '8px 20px',
-              borderRadius: '24px',
-              border: serviceMode === 'buying' ? '2px solid #E11D74' : '1px solid var(--border-color, rgba(255,255,255,0.12))',
-              background: serviceMode === 'buying' ? '#FCE7F3' : 'transparent',
-              color: serviceMode === 'buying' ? '#E11D74' : 'inherit',
-              fontWeight: 700,
-              fontSize: '0.85rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            <Layers size={16} />
-            <span>Shop & Create</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              if (onSelectServiceMode) onSelectServiceMode('alteration');
-              navigate('/vehicle-seats/repair');
-            }}
-            style={{
-              padding: '8px 20px',
-              borderRadius: '24px',
-              border: serviceMode === 'alteration' ? '2px solid #E11D74' : '1px solid var(--border-color, rgba(255,255,255,0.12))',
-              background: serviceMode === 'alteration' ? '#FCE7F3' : 'transparent',
-              color: serviceMode === 'alteration' ? '#E11D74' : 'inherit',
-              fontWeight: 700,
-              fontSize: '0.85rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            <Wrench size={16} />
-            <span>Repair & Restore</span>
-          </button>
-        </div>
-
-        <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary, #94a3b8)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sparkles size={14} color="#E11D74" />
-          <span>StitchBee Vehicle Atelier • Automotive & Motorcycle Upholstery in Bengaluru</span>
-        </div>
-      </div>
 
       {toastMessage && (
         <div 
