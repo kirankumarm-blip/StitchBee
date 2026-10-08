@@ -3,7 +3,7 @@ import {
   ArrowLeft, Heart, ShoppingCart, Star, ShieldCheck, 
   Truck, CheckCircle2, ChevronRight, Gem, Wrench, Share2 
 } from 'lucide-react';
-import { FEATURED_PRODUCTS } from '../../utils/vehicleSeatShopStore';
+import { FEATURED_PRODUCTS, ALL_SEAT_PRODUCTS } from '../../utils/vehicleSeatShopStore';
 
 export default function VehicleSeatProductDetailView({
   productId,
@@ -14,7 +14,7 @@ export default function VehicleSeatProductDetailView({
   theme = 'light',
   showToast = () => {}
 }) {
-  const product = FEATURED_PRODUCTS.find(p => p.id === productId) || FEATURED_PRODUCTS[0];
+  const product = (ALL_SEAT_PRODUCTS && ALL_SEAT_PRODUCTS.find(p => p.id === productId)) || FEATURED_PRODUCTS.find(p => p.id === productId) || FEATURED_PRODUCTS[0];
 
   const [activeImg, setActiveImg] = useState(product.gallery[0] || product.img);
   const [selectedColor, setSelectedColor] = useState(product.swatches[0]?.name || 'Default');

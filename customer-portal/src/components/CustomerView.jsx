@@ -6078,7 +6078,6 @@ export default function CustomerView({
                     setBagsStudioMode('shop');
                     if (setCustomerCategory) setCustomerCategory('bags');
                     if (setCustomerHub) setCustomerHub('category-landing');
-                    navigate('/bags');
                   } else if (category.cat === 'shoes') {
                     setSelectedCategory('shoes');
                     setActiveHub('category-landing');
@@ -6086,6 +6085,20 @@ export default function CustomerView({
                     if (setCustomerCategory) setCustomerCategory('shoes');
                     if (setCustomerHub) setCustomerHub('category-landing');
                     navigate('/shoes');
+                  } else if (category.cat === 'seats') {
+                    setSelectedCategory('seats');
+                    setActiveHub('category-landing');
+                    setSeatsStudioMode('shop');
+                    if (setCustomerCategory) setCustomerCategory('seats');
+                    if (setCustomerHub) setCustomerHub('category-landing');
+                    navigate('/vehicle-seats');
+                  } else if (category.cat === 'sofas') {
+                    setSelectedCategory('sofas');
+                    setActiveHub('category-landing');
+                    setSofasStudioMode('shop');
+                    if (setCustomerCategory) setCustomerCategory('sofas');
+                    if (setCustomerHub) setCustomerHub('category-landing');
+                    navigate('/sofas');
                   } else {
                     setSelectedCategory(category.cat);
                     setActiveHub('category-landing');

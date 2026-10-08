@@ -4,6 +4,7 @@ import VehicleSeatRestorePage from '../seats/VehicleSeatRestorePage';
 import VehicleSeatShopPage from '../seats/VehicleSeatShopPage';
 import VehicleSeatCustomWizardPage from '../seats/VehicleSeatCustomWizardPage';
 import VehicleSeatProductDetailView from '../seats/VehicleSeatProductDetailView';
+import VehicleSeatCategoryListingView from '../seats/VehicleSeatCategoryListingView';
 
 export default function VehicleSeatExperience({
   tailors = [],
@@ -21,7 +22,7 @@ export default function VehicleSeatExperience({
   const [toastMessage, setToastMessage] = useState(null);
 
   // Subview states for smooth client routing
-  const [subView, setSubView] = useState(null); // 'custom-design' | 'product-detail' | null
+  const [subView, setSubView] = useState(null); // 'custom-design' | 'product-detail' | 'category-listing' | null
   const [activeProductId, setActiveProductId] = useState(null);
 
   // Sync pathname to serviceMode & subviews
@@ -61,6 +62,16 @@ export default function VehicleSeatExperience({
       if (onSelectServiceMode && serviceMode === 'alteration') {
         onSelectServiceMode('buying');
       }
+    } else if (
+      pathname.startsWith('/vehicle-seats/category/') || 
+      pathname.startsWith('/vehicle-seat-covers/category/') || 
+      pathname === '/vehicle-seats/products' || 
+      pathname === '/vehicle-seat-covers/products'
+    ) {
+      if (onSelectServiceMode && serviceMode === 'alteration') {
+        onSelectServiceMode('buying');
+      }
+      setSubView('category-listing');
     } else {
       if (onSelectServiceMode && serviceMode === 'alteration') {
         onSelectServiceMode('buying');
@@ -157,6 +168,29 @@ export default function VehicleSeatExperience({
             />
           )}
 
+          {/* Subview 3: Dedicated Category Listing View (All Products or Filtered by Category) */}
+          {subView === 'category-listing' && (
+            <VehicleSeatCategoryListingView
+              showToast={showToast}
+              onAddToCart={onAddToCart}
+              onDirectCheckout={onDirectCheckout}
+              onNavigateProduct={(prodId) => {
+                setActiveProductId(prodId);
+                setSubView('product-detail');
+                navigate(`/vehicle-seat-covers/product/${prodId}`);
+              }}
+              onNavigateCustomDesign={() => {
+                setSubView('custom-design');
+                navigate('/vehicle-seat-covers/custom-design');
+              }}
+              onBack={() => {
+                setSubView(null);
+                navigate('/vehicle-seats');
+              }}
+              theme={theme}
+            />
+          )}
+
           {/* Main Landing View: Shop & Create Page (Exact 10 Sections matching Screenshot) */}
           {!subView && (
             <VehicleSeatShopPage
@@ -164,6 +198,14 @@ export default function VehicleSeatExperience({
               onLoginRequired={onLoginRequired}
               onAddToCart={onAddToCart}
               onDirectCheckout={onDirectCheckout}
+              onNavigateCategory={(catId) => {
+                setSubView('category-listing');
+                if (catId === 'all') {
+                  navigate('/vehicle-seat-covers/products');
+                } else {
+                  navigate(`/vehicle-seat-covers/category/${catId}`);
+                }
+              }}
               onNavigateCustomDesign={() => {
                 setSubView('custom-design');
                 navigate('/vehicle-seat-covers/custom-design');

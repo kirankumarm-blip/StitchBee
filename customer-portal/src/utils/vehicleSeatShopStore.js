@@ -3,6 +3,14 @@
 // Exact UI reproduction data, catalog, and custom designer store
 // ============================================================================
 
+import { 
+  getCart, 
+  saveCart, 
+  getWishlist, 
+  saveWishlist, 
+  toggleWishlist as globalToggleWishlist 
+} from './bagsStore';
+
 export const SEAT_SHOP_ASSETS = {
   hero: "/assets/shop-seat-cover/hero/hero.png",
   categories: {
@@ -345,6 +353,249 @@ export const FEATURED_PRODUCTS = [
     warranty: "2 Years Stitching Warranty"
   }
 ];
+
+export const ALL_SEAT_PRODUCTS = [
+  ...FEATURED_PRODUCTS,
+  {
+    id: "prod-car-nappa-luxury",
+    name: "Executive Nappa 360° Car Seat Set",
+    price: 4299,
+    formattedPrice: "₹4,299",
+    originalPrice: 5999,
+    rating: 5.0,
+    reviewsCount: 88,
+    category: "cars",
+    vehicleType: "car",
+    img: SEAT_SHOP_ASSETS.hero,
+    gallery: [
+      SEAT_SHOP_ASSETS.hero,
+      SEAT_SHOP_ASSETS.products.car,
+      SEAT_SHOP_ASSETS.transformations.car.after
+    ],
+    swatches: [
+      { id: "tan", name: "Cognac Tan", hex: "#b45309" },
+      { id: "black", name: "Onyx Black", hex: "#1c1917" },
+      { id: "brown", name: "Mocha Brown", hex: "#451a03" }
+    ],
+    description: "Ultra-luxurious Italian Nappa grain leatherette with full 360° wrap protection, memory foam orthopedic bolster inserts, and breathable perforations.",
+    features: [
+      "Custom laser-cut for Creta, Seltos, XUV700, Thar, Fortuner",
+      "Airbag seam release certified",
+      "Spill-proof and anti-scuff topcoat",
+      "Doorstep fitment included"
+    ],
+    material: "Executive Nappa Leatherette",
+    stitching: "Hexagon Sport Quilt",
+    seatCoverage: "Full 5/7 Seater Rows",
+    warranty: "3 Years Color & Tear Warranty"
+  },
+  {
+    id: "prod-car-sport-suede",
+    name: "Sport Alcantara Suede Bucket Seat Covers",
+    price: 3499,
+    formattedPrice: "₹3,499",
+    originalPrice: 4899,
+    rating: 4.9,
+    reviewsCount: 76,
+    category: "cars",
+    vehicleType: "car",
+    img: SEAT_SHOP_ASSETS.products.car,
+    gallery: [
+      SEAT_SHOP_ASSETS.products.car,
+      SEAT_SHOP_ASSETS.transformations.car.after
+    ],
+    swatches: [
+      { id: "black", name: "Anthracite Black", hex: "#18181b" },
+      { id: "red", name: "Racing Red", hex: "#dc2626" },
+      { id: "grey", name: "Slate Grey", hex: "#4b5563" }
+    ],
+    description: "High-friction sport micro-suede center inserts with leatherette outer bolsters preventing lateral slip during spirited driving.",
+    features: [
+      "Sport bucket seat contouring",
+      "Hydrophobic spill resistance",
+      "Cool touch in hot summers"
+    ],
+    material: "Alcantara Spec Suede & Leatherette",
+    stitching: "Red Contrast Double Needle",
+    seatCoverage: "Front Buckets / Full Set",
+    warranty: "2 Years Stitching Warranty"
+  },
+  {
+    id: "prod-bike-touring-gel",
+    name: "Royal Tourer Orthopedic Gel Bike Saddle",
+    price: 1299,
+    formattedPrice: "₹1,299",
+    originalPrice: 1799,
+    rating: 4.9,
+    reviewsCount: 164,
+    category: "bikes-scooters",
+    vehicleType: "bike",
+    img: SEAT_SHOP_ASSETS.products.bike,
+    gallery: [
+      SEAT_SHOP_ASSETS.products.bike,
+      SEAT_SHOP_ASSETS.transformations.bike.after
+    ],
+    swatches: [
+      { id: "black", name: "Matte Black", hex: "#18181b" },
+      { id: "brown", name: "Vintage Tan", hex: "#78350f" }
+    ],
+    description: "Built-in medical grade silicone gel pad with contoured tailbone groove. Eliminates saddle numbness on Royal Enfield and cruiser highway tours.",
+    features: [
+      "Integrated 15mm shock-absorbing gel layer",
+      "Weatherproof heat-sealed seams",
+      "Anti-slip pillion grip"
+    ],
+    material: "Heavy-Duty Vinyl & Gel Insert",
+    stitching: "Diamond Touring Quilting",
+    seatCoverage: "Split Rider + Pillion Set",
+    warranty: "2 Years Comfort Warranty"
+  },
+  {
+    id: "prod-auto-comfort-passenger",
+    name: "Auto Rickshaw Commercial Heavy-Duty Set",
+    price: 1899,
+    formattedPrice: "₹1,899",
+    originalPrice: 2699,
+    rating: 4.8,
+    reviewsCount: 52,
+    category: "autos",
+    vehicleType: "auto",
+    img: SEAT_SHOP_ASSETS.products.auto,
+    gallery: [
+      SEAT_SHOP_ASSETS.products.auto,
+      SEAT_SHOP_ASSETS.transformations.auto.after
+    ],
+    swatches: [
+      { id: "black", name: "Black & Yellow", hex: "#1c1917" },
+      { id: "red", name: "Red & Black", hex: "#991b1b" }
+    ],
+    description: "Complete cabin overhaul set including reinforced driver bucket cushion and full three-passenger bench with high-density foam backing.",
+    features: [
+      "1.4mm commercial vinyl",
+      "Rain & mud washable",
+      "Heavy brass eyelets with tension cords"
+    ],
+    material: "Commercial Heavy Vinyl",
+    stitching: "Double Flute Seam",
+    seatCoverage: "Driver Seat + Passenger Bench",
+    warranty: "18 Months Guarantee"
+  },
+  {
+    id: "prod-bus-coach-jacquard",
+    name: "Luxury Coach 2x2 Recliner Covers (Set of 10)",
+    price: 8999,
+    formattedPrice: "₹8,999",
+    originalPrice: 12999,
+    rating: 4.9,
+    reviewsCount: 39,
+    category: "buses",
+    vehicleType: "bus",
+    img: SEAT_SHOP_ASSETS.products.bus,
+    gallery: [
+      SEAT_SHOP_ASSETS.products.bus,
+      SEAT_SHOP_ASSETS.transformations.bus.after
+    ],
+    swatches: [
+      { id: "blue", name: "Coach Royal Blue", hex: "#1d4ed8" },
+      { id: "crimson", name: "Executive Crimson", hex: "#b91c1c" }
+    ],
+    description: "High-traffic commercial jacquard fabric seat covers with Velcro headrest wraps and integrated magazine netting for tourist buses.",
+    features: [
+      "Fire retardant standard certified",
+      "Stain-shield fabric protection",
+      "Bulk fleet discounts available"
+    ],
+    material: "Jacquard Fabric & Marine Vinyl",
+    stitching: "Industrial Overlock Stitch",
+    seatCoverage: "10-Seat Set (5 Pairs of 2x2 Recliners)",
+    warranty: "2 Years Fleet Wear Warranty"
+  },
+  {
+    id: "prod-truck-bellows-suspension",
+    name: "Truck Driver Air-Suspension High-Back Cover",
+    price: 2999,
+    formattedPrice: "₹2,999",
+    originalPrice: 4199,
+    rating: 4.8,
+    reviewsCount: 67,
+    category: "trucks",
+    vehicleType: "truck",
+    img: SEAT_SHOP_ASSETS.products.truck,
+    gallery: [
+      SEAT_SHOP_ASSETS.products.truck,
+      SEAT_SHOP_ASSETS.transformations.truck.after
+    ],
+    swatches: [
+      { id: "black", name: "Highway Black", hex: "#0f172a" },
+      { id: "brown", name: "Earth Brown", hex: "#451a03" }
+    ],
+    description: "Engineered specifically for driver air-suspension high-back seats in Tata Prima, BharatBenz, and Ashok Leyland heavy haulers.",
+    features: [
+      "Bellows-compatible flexible skirt",
+      "Ballistic tear-proof canvas bolsters",
+      "Lumbar support insert pocket"
+    ],
+    material: "Ballistic Canvas & Diamond PU",
+    stitching: "Reinforced Triple Seam",
+    seatCoverage: "Driver Seat with Armrest Sleeves",
+    warranty: "2 Years Heavy Duty Warranty"
+  },
+  {
+    id: "prod-other-tractor-seat",
+    name: "Heavy-Duty Agricultural Tractor Weatherproof Seat",
+    price: 1499,
+    formattedPrice: "₹1,499",
+    originalPrice: 2199,
+    rating: 4.8,
+    reviewsCount: 44,
+    category: "other-vehicles",
+    vehicleType: "other",
+    img: SEAT_SHOP_ASSETS.categories.other,
+    gallery: [
+      SEAT_SHOP_ASSETS.categories.other
+    ],
+    swatches: [
+      { id: "black", name: "Field Black", hex: "#18181b" },
+      { id: "yellow", name: "Industrial Yellow", hex: "#eab308" }
+    ],
+    description: "UV-stabilized, waterproof pan seat cover for agricultural tractors (Mahindra, John Deere, Swaraj, Massey Ferguson) and construction forklifts.",
+    features: [
+      "100% monsoonal waterproof PVC",
+      "UV-inhibitor formulation prevents cracking",
+      "High-density drainage foam cushion"
+    ],
+    material: "Tear-Proof Agricultural Vinyl",
+    stitching: "Waterproof Heat Welded Seams",
+    seatCoverage: "Single Operator Pan / Suspension Seat",
+    warranty: "2 Years Farm Weather Warranty"
+  }
+];
+
+export function getVehicleSeatCategoryById(categoryId) {
+  if (!categoryId || categoryId === 'all') {
+    return {
+      id: 'all',
+      name: 'All Vehicle Seat Covers',
+      desc: 'Browse our complete catalog of precision-fit custom and ready-made seat covers for all vehicle types.',
+      img: SEAT_SHOP_ASSETS.hero,
+      vehicleType: 'all'
+    };
+  }
+  return VEHICLE_CATEGORIES.find(c => c.id === categoryId || c.vehicleType === categoryId) || {
+    id: categoryId,
+    name: categoryId.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()),
+    desc: 'Explore custom tailored vehicle seat covers.',
+    img: SEAT_SHOP_ASSETS.hero,
+    vehicleType: categoryId
+  };
+}
+
+export function getVehicleSeatProductsByCategory(categoryId) {
+  if (!categoryId || categoryId === 'all') {
+    return ALL_SEAT_PRODUCTS;
+  }
+  return ALL_SEAT_PRODUCTS.filter(p => p.category === categoryId || p.vehicleType === categoryId);
+}
 
 // ============================================================================
 // 9 PREMIUM MATERIAL OPTIONS (EXACT SCREENSHOT MAPPING)
@@ -865,3 +1116,44 @@ export function calculateCustomDesignQuote({
     }
   };
 }
+
+// ============================================================================
+// CART & WISHLIST STORAGE HELPERS
+// ============================================================================
+export const getVehicleSeatWishlist = () => {
+  return getWishlist();
+};
+
+export const toggleVehicleSeatWishlist = (productId) => {
+  return globalToggleWishlist(productId);
+};
+
+export const isVehicleSeatInWishlist = (productId) => {
+  const list = getWishlist();
+  return list.includes(productId);
+};
+
+export const addVehicleSeatToCart = (item) => {
+  const cart = getCart();
+  const existingIndex = cart.findIndex(c => 
+    c.id === item.id && 
+    c.selectedColor === item.selectedColor
+  );
+
+  let updated;
+  if (existingIndex > -1) {
+    updated = [...cart];
+    updated[existingIndex].quantity = (updated[existingIndex].quantity || 1) + (item.quantity || 1);
+  } else {
+    updated = [
+      ...cart,
+      {
+        ...item,
+        quantity: item.quantity || 1,
+        addedAt: new Date().toISOString()
+      }
+    ];
+  }
+  saveCart(updated);
+  return updated;
+};

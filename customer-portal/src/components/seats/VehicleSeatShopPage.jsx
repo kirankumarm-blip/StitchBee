@@ -14,9 +14,84 @@ import {
   BEFORE_AFTER_TRANSFORMATIONS, 
   CUSTOMER_REVIEWS, 
   DESIGN_STUDIO_STEPS, 
-  BOTTOM_BENEFITS 
+  BOTTOM_BENEFITS,
+  addVehicleSeatToCart,
+  toggleVehicleSeatWishlist,
+  getVehicleSeatWishlist
 } from '../../utils/vehicleSeatShopStore';
 import './VehicleSeatShopPage.css';
+
+function BeforeAfterTransformationCard({ trans }) {
+  const [sliderPos, setSliderPos] = useState(50);
+  const containerRef = useRef(null);
+
+  const updatePosition = (clientX) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    let pct = (x / rect.width) * 100;
+    if (pct < 3) pct = 3;
+    if (pct > 97) pct = 97;
+    setSliderPos(pct);
+  };
+
+  return (
+    <div className="v-transformation-card">
+      <div 
+        className="v-trans-slider-box"
+        ref={containerRef}
+        onMouseMove={(e) => {
+          if (e.buttons === 1) updatePosition(e.clientX);
+        }}
+        onTouchMove={(e) => {
+          if (e.touches && e.touches[0]) updatePosition(e.touches[0].clientX);
+        }}
+      >
+        {/* AFTER IMAGE (Base Layer) */}
+        <img 
+          src={trans.after} 
+          alt={`${trans.title} - After`} 
+          className="v-trans-img v-trans-after-img" 
+        />
+        <span className="v-trans-badge v-badge-after">After</span>
+
+        {/* BEFORE IMAGE (Clipped Layer on Top) */}
+        <div 
+          className="v-trans-clip-container"
+          style={{ clipPath: `polygon(0 0, ${sliderPos}% 0, ${sliderPos}% 100%, 0 100%)` }}
+        >
+          <img 
+            src={trans.before} 
+            alt={`${trans.title} - Before`} 
+            className="v-trans-img v-trans-before-img" 
+          />
+          <span className="v-trans-badge v-badge-before">Before</span>
+        </div>
+
+        {/* DRAGGABLE DIVIDER LINE & HANDLE */}
+        <div 
+          className="v-trans-divider-handle-line"
+          style={{ left: `${sliderPos}%` }}
+        >
+          <div className="v-trans-divider-handle">
+            <span>⇄</span>
+          </div>
+        </div>
+
+        {/* ACCESSIBLE SLIDER RANGE INPUT */}
+        <input 
+          type="range" 
+          min="3" 
+          max="97" 
+          value={sliderPos}
+          onChange={(e) => setSliderPos(Number(e.target.value))}
+          className="v-trans-range-slider"
+          aria-label={`Compare Before and After for ${trans.title}`}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function VehicleSeatShopPage({
   currentUser,
@@ -26,6 +101,7 @@ export default function VehicleSeatShopPage({
   onNavigateCustomDesign,
   onNavigateProductDetail,
   onNavigateRepairRestore,
+  onNavigateCategory,
   theme = 'light',
   showToast = () => {}
 }) {
@@ -254,20 +330,25 @@ export default function VehicleSeatShopPage({
                   key={cat.id} 
                   className={`v-category-card ${isSelected ? 'active' : ''}`}
                   onClick={() => {
-                    if (isSelected) {
-                      setSelectedVehicleCategory(null);
-                      showToast(`Showing all seat covers`);
+                    if (onNavigateCategory) {
+                      onNavigateCategory(cat.id);
                     } else {
-                      setSelectedVehicleCategory(cat.id);
-                      showToast(`Filtered seat covers for ${cat.name}`);
-                      scrollToSection('v-featured-collection');
+                      if (isSelected) {
+                        setSelectedVehicleCategory(null);
+                        showToast(`Showing all seat covers`);
+                      } else {
+                        setSelectedVehicleCategory(cat.id);
+                        showToast(`Filtered seat covers for ${cat.name}`);
+                        scrollToSection('v-featured-collection');
+                      }
                     }
                   }}
                   tabIndex={0}
                   role="button"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
-                      setSelectedVehicleCategory(isSelected ? null : cat.id);
+                      if (onNavigateCategory) onNavigateCategory(cat.id);
+                      else setSelectedVehicleCategory(isSelected ? null : cat.id);
                     }
                   }}
                 >
@@ -316,8 +397,12 @@ export default function VehicleSeatShopPage({
                 type="button" 
                 className="v-link-view-all"
                 onClick={() => {
-                  setSelectedVehicleCategory(null);
-                  showToast("Displaying all verified seat cover styles");
+                  if (onNavigateCategory) {
+                    onNavigateCategory('all');
+                  } else {
+                    setSelectedVehicleCategory(null);
+                    showToast("Displaying all verified seat cover styles");
+                  }
                 }}
               >
                 <span>View All</span>
@@ -536,43 +621,49 @@ export default function VehicleSeatShopPage({
       </section>
 
       {/* ===================================================================== */}
-      {/* SECTION 6: WHY CHOOSE STITCHBEEZ                                      */}
+      {/* SECTION 6: WHY CHOOSE STITCHBEEZ (EXACT MATCH TO REFERENCE SCREENSHOT) */}
       {/* ===================================================================== */}
       <section className="v-why-section" id="v-why-choose-us">
-        <div className="v-why-outer-banner">
-          
-          {/* Background image: wide vehicle seats with Comfort In Every Ride text on right */}
-          <div 
-            className="v-why-bg-layer" 
-            style={{ backgroundImage: `url("${SEAT_SHOP_ASSETS.whyChooseUs.bg}")` }} 
-          />
+        <div className="v-section-container">
+          <div className="v-why-card-banner">
+            
+            {/* Left Column: Heading and 6 Benefit Icon Badges in Horizontal Row */}
+            <div className="v-why-left-content">
+              <h2 className="v-why-heading">Why Choose StitchBeez</h2>
 
-          <div className="v-section-container v-why-content-container">
-            <h2 className="v-why-heading">Why Choose StitchBeez</h2>
-
-            <div className="v-why-benefits-bar">
-              {WHY_CHOOSE_BENEFITS.map((b) => (
-                <div key={b.id} className="v-why-benefit-card">
-                  <div className="v-why-icon-bubble">
-                    {b.id === 'benefit-fit' && <ShieldCheck size={22} className="v-pink-icon" />}
-                    {b.id === 'benefit-materials' && <Gem size={22} className="v-pink-icon" />}
-                    {b.id === 'benefit-custom' && <PenTool size={22} className="v-pink-icon" />}
-                    {b.id === 'benefit-artisans' && <UserCheck size={22} className="v-pink-icon" />}
-                    {b.id === 'benefit-pricing' && <Tag size={22} className="v-pink-icon" />}
-                    {b.id === 'benefit-delivery' && <Truck size={22} className="v-pink-icon" />}
+              <div className="v-why-benefits-bar">
+                {WHY_CHOOSE_BENEFITS.map((b) => (
+                  <div key={b.id} className="v-why-benefit-card">
+                    <div className="v-why-icon-bubble">
+                      {b.id === 'benefit-fit' && <ShieldCheck size={22} className="v-pink-icon" />}
+                      {b.id === 'benefit-materials' && <Gem size={22} className="v-pink-icon" />}
+                      {b.id === 'benefit-custom' && <PenTool size={22} className="v-pink-icon" />}
+                      {b.id === 'benefit-artisans' && <UserCheck size={22} className="v-pink-icon" />}
+                      {b.id === 'benefit-pricing' && <Tag size={22} className="v-pink-icon" />}
+                      {b.id === 'benefit-delivery' && <Truck size={22} className="v-pink-icon" />}
+                    </div>
+                    <span className="v-why-benefit-title">{b.title}</span>
                   </div>
-                  <span className="v-why-benefit-title">{b.title}</span>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column: Seamless Blended Panoramic Car Interior with cursive Comfort In Every Ride ♡ */}
+            <div className="v-why-right-visual">
+              <img 
+                src={SEAT_SHOP_ASSETS.whyChooseUs.bg} 
+                alt="Comfort In Every Ride - StitchBeez Custom Upholstery" 
+                className="v-why-car-img" 
+              />
+              <div className="v-why-visual-blend-mask" />
             </div>
 
           </div>
-
         </div>
       </section>
 
       {/* ===================================================================== */}
-      {/* SECTION 7: BEFORE & AFTER TRANSFORMATIONS                             */}
+      {/* SECTION 7: BEFORE & AFTER TRANSFORMATIONS (DRAGGABLE COMPARISON)      */}
       {/* ===================================================================== */}
       <section className="v-transformations-section" id="v-transformations">
         <div className="v-section-container">
@@ -596,31 +687,10 @@ export default function VehicleSeatShopPage({
             </button>
           </div>
 
-          {/* 5 Transformation Cards Grid (matching screenshot) */}
+          {/* 5 Interactive Draggable Transformation Cards Grid */}
           <div className="v-transformations-grid">
-            {BEFORE_AFTER_TRANSFORMATIONS.map((trans, idx) => (
-              <div key={trans.id} className="v-transformation-card">
-                
-                <div className="v-trans-slider-box">
-                  {/* Left Side: Before Image */}
-                  <div className="v-trans-side v-trans-before">
-                    <img src={trans.before} alt={`${trans.title} - Before`} className="v-trans-img" />
-                    <span className="v-trans-badge v-badge-before">Before</span>
-                  </div>
-
-                  {/* Center Divider / Slider Icon */}
-                  <div className="v-trans-divider-handle">
-                    <span>⇄</span>
-                  </div>
-
-                  {/* Right Side: After Image */}
-                  <div className="v-trans-side v-trans-after">
-                    <img src={trans.after} alt={`${trans.title} - After`} className="v-trans-img" />
-                    <span className="v-trans-badge v-badge-after">After</span>
-                  </div>
-                </div>
-
-              </div>
+            {BEFORE_AFTER_TRANSFORMATIONS.map((trans) => (
+              <BeforeAfterTransformationCard key={trans.id} trans={trans} />
             ))}
           </div>
 

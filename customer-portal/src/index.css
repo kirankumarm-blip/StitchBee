@@ -1402,7 +1402,10 @@ body.light-theme .negotiation-panel {
 /* 100% Edge-to-Edge Container for Specialty & Atelier Studios */
 .view-container.category-landing-fullwidth,
 .view-container:has(.sf-shoes-studio),
-.view-container:has(.bl-leather-studio) {
+.view-container:has(.bl-leather-studio),
+.view-container:has(.vehicle-experience),
+.view-container:has(.v-shop-page),
+.view-container:has(.v-category-listing) {
   padding: 0 !important;
   max-width: 100% !important;
   width: 100% !important;
@@ -1415,7 +1418,10 @@ body.light-theme .negotiation-panel {
   }
   .view-container.category-landing-fullwidth,
   .view-container:has(.sf-shoes-studio),
-  .view-container:has(.bl-leather-studio) {
+  .view-container:has(.bl-leather-studio),
+  .view-container:has(.vehicle-experience),
+  .view-container:has(.v-shop-page),
+  .view-container:has(.v-category-listing) {
     padding: 0 !important;
   }
 }

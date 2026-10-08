@@ -61,11 +61,12 @@
   box-sizing: border-box;
 }
 
-/* Reusable Container */
+/* Reusable Container - 100% Edge-to-Edge Full Width */
 .v-section-container {
-  max-width: 1320px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 48px;
 }
 
 /* Common Typography & Eyebrows */
@@ -222,13 +223,15 @@
 }
 
 .v-hero-container {
-  max-width: 1440px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: 580px;
   position: relative;
+  padding: 0 48px;
 }
 
 .v-hero-content {
@@ -870,7 +873,7 @@
 }
 
 /* ==========================================================================
-   6. WHY CHOOSE STITCHBEEZ
+   6. WHY CHOOSE STITCHBEEZ (EXACT REFERENCE SCREENSHOT DESIGN)
    ========================================================================== */
 .v-why-section {
   width: 100%;
@@ -878,52 +881,54 @@
   background-color: var(--v-bg-page);
 }
 
-.v-why-outer-banner {
+.v-why-card-banner {
   width: 100%;
   min-height: 250px;
-  position: relative;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid #FFE4EC;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   display: flex;
-  align-items: center;
-}
-
-.v-why-bg-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: right center;
-  z-index: 1;
-}
-
-.v-why-content-container {
+  align-items: stretch;
   position: relative;
+}
+
+.v-shop-page.dark .v-why-card-banner {
+  background: #1B2029;
+  border-color: #333D4D;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.v-why-left-content {
+  flex: 1.35;
+  padding: 36px 36px 36px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   z-index: 2;
-  width: 100%;
-  padding: 36px 24px;
+  position: relative;
+  background: #FFFFFF;
+}
+
+.v-shop-page.dark .v-why-left-content {
+  background: #1B2029;
 }
 
 .v-why-heading {
-  font-size: 1.8rem;
+  font-size: 1.85rem;
   font-weight: 800;
-  color: var(--v-text-primary);
+  color: var(--v-text-primary, #10213F);
   margin: 0 0 24px 0;
+  letter-spacing: -0.01em;
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
 .v-why-benefits-bar {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 16px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--v-radius-pill);
-  padding: 16px 24px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-}
-
-.v-shop-page.dark .v-why-benefits-bar {
-  background: rgba(27, 32, 41, 0.92);
-  border-color: rgba(255, 255, 255, 0.1);
+  gap: 12px;
+  width: 100%;
 }
 
 .v-why-benefit-card {
@@ -935,29 +940,62 @@
 }
 
 .v-why-icon-bubble {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background-color: var(--v-brand-pink-light);
+  background-color: #FFF0F5;
+  border: 1.5px solid #FFD0E0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.v-shop-page.dark .v-why-icon-bubble {
+  background-color: rgba(255, 8, 122, 0.12);
+  border-color: rgba(255, 8, 122, 0.25);
 }
 
 .v-why-benefit-card:hover .v-why-icon-bubble {
-  transform: scale(1.1);
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 4px 12px rgba(255, 8, 122, 0.2);
 }
 
 .v-why-benefit-title {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  color: var(--v-text-primary);
+  color: var(--v-text-primary, #10213F);
   line-height: 1.25;
 }
 
+.v-why-right-visual {
+  flex: 0.95;
+  position: relative;
+  min-height: 240px;
+  overflow: hidden;
+}
+
+.v-why-car-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center left;
+  display: block;
+}
+
+.v-why-visual-blend-mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to right, #FFFFFF 0%, rgba(255, 255, 255, 0.2) 20%, transparent 45%);
+}
+
+.v-shop-page.dark .v-why-visual-blend-mask {
+  background: linear-gradient(to right, #1B2029 0%, rgba(27, 32, 41, 0.2) 20%, transparent 45%);
+}
+
 /* ==========================================================================
-   7. BEFORE & AFTER TRANSFORMATIONS
+   7. BEFORE & AFTER TRANSFORMATIONS (DRAGGABLE COMPARISON)
    ========================================================================== */
 .v-transformations-section {
   padding: 40px 0 64px 0;
@@ -977,6 +1015,7 @@
   overflow: hidden;
   box-shadow: var(--v-shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 
 .v-transformation-card:hover {
@@ -986,23 +1025,43 @@
 
 .v-trans-slider-box {
   width: 100%;
-  height: 175px;
-  display: flex;
+  height: 185px;
   position: relative;
   overflow: hidden;
+  cursor: ew-resize;
+  user-select: none;
+  background-color: #0F172A;
 }
 
-.v-trans-side {
-  flex: 1;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.v-trans-img {
+.v-trans-img-layer {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.v-trans-clip-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.v-trans-divider-handle-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #FFFFFF;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
 .v-trans-divider-handle {
@@ -1010,20 +1069,38 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background-color: #FFFFFF;
   border: 2px solid var(--v-brand-pink);
   color: var(--v-brand-pink);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   pointer-events: none;
+  transition: transform 0.15s ease;
+}
+
+.v-transformation-card:hover .v-trans-divider-handle {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.v-trans-range-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: ew-resize;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
 }
 
 .v-trans-badge {
@@ -1039,13 +1116,13 @@
 
 .v-badge-before {
   left: 8px;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.85);
   color: #FFFFFF;
 }
 
 .v-badge-after {
   right: 8px;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(15, 23, 42, 0.85);
   color: #FFFFFF;
 }
 
@@ -1424,9 +1501,24 @@
   .v-studio-btn {
     align-self: flex-start;
   }
+  .v-why-card-banner {
+    flex-direction: column;
+  }
+  .v-why-left-content {
+    padding: 28px 24px;
+  }
   .v-why-benefits-bar {
     grid-template-columns: repeat(3, 1fr);
-    border-radius: var(--v-radius-lg);
+  }
+  .v-why-right-visual {
+    min-height: 200px;
+    height: 200px;
+  }
+  .v-why-visual-blend-mask {
+    background: linear-gradient(to bottom, #FFFFFF 0%, transparent 40%);
+  }
+  .v-shop-page.dark .v-why-visual-blend-mask {
+    background: linear-gradient(to bottom, #1B2029 0%, transparent 40%);
   }
   .v-transformations-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1519,9 +1611,12 @@
   }
 
   /* Why Choose Mobile */
+  .v-why-left-content {
+    padding: 24px 16px;
+  }
   .v-why-benefits-bar {
     grid-template-columns: repeat(2, 1fr);
-    padding: 16px 12px;
+    gap: 14px;
   }
 
   /* Transformations Mobile */
