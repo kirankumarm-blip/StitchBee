@@ -1,0 +1,16 @@
+/* ==========================================================================
+   WOMEN'S DESIGNER WORKFLOW PAGE STYLESHEET
+   ========================================================================== */
+
+.women-designer-page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #FDFBFC;
+  color: #071B49;
+  font-family: var(--women-font-sans, -apple-system, sans-serif);
+}
+
+.women-designer-page-root.dark-theme {
+  background: #10131C;
+  color: #F7F8FC;
+}

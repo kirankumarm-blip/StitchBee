@@ -1,0 +1,565 @@
+/* ==========================================================================
+   BRIDAL LUXURY FABRIC STUDIO STYLES
+   ========================================================================== */
+
+.bridal-fabrics-page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #FFFDFE;
+  font-family: var(--bridal-font-sans, 'Poppins', sans-serif);
+  color: #1E293B;
+  padding-bottom: 80px;
+}
+
+.bridal-fabrics-page-root.dark-theme {
+  background: #0B0F19;
+  color: #E2E8F0;
+}
+
+/* Header Strip */
+.bridal-fabrics-header-strip {
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0E7ED;
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-header-strip {
+  background: #111827;
+  border-color: #1F2937;
+}
+
+.bridal-fabrics-header-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bridal-fabrics-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF0F5;
+  color: #FF008A;
+  border: 1px solid rgba(255, 0, 138, 0.2);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-fabrics-back-btn:hover {
+  background: #FF008A;
+  color: #FFFFFF;
+  transform: translateX(-3px);
+}
+
+.bridal-fabrics-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: #64748B;
+}
+
+.bridal-fabrics-breadcrumbs .current {
+  color: #071B49;
+  font-weight: 700;
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-breadcrumbs .current {
+  color: #F8FAFC;
+}
+
+/* Hero */
+.bridal-fabrics-hero {
+  background: linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%);
+  padding: 48px 32px 36px 32px;
+  border-bottom: 1px solid #F1E5EC;
+  text-align: center;
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-hero {
+  background: linear-gradient(135deg, #1A1322 0%, #111827 100%);
+  border-color: #2D3748;
+}
+
+.bridal-fabrics-hero-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.bridal-fabrics-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 0, 138, 0.1);
+  color: #FF008A;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+
+.bridal-fabrics-title {
+  font-family: var(--bridal-font-serif, 'Playfair Display', serif);
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #071B49;
+  line-height: 1.18;
+  margin: 0 0 14px 0;
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-title {
+  color: #F8FAFC;
+}
+
+.bridal-fabrics-title .pink-gradient {
+  color: #FF008A;
+}
+
+.bridal-fabrics-subtitle {
+  font-size: 1rem;
+  color: #425579;
+  line-height: 1.6;
+  margin: 0 auto 24px auto;
+  max-width: 760px;
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-subtitle {
+  color: #94A3B8;
+}
+
+.bridal-fabrics-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #071B49;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.bridal-fabrics-page-root.dark-theme .stat-pill {
+  background: #1E293B;
+  border-color: #334155;
+  color: #F1F5F9;
+}
+
+.stat-pill svg {
+  color: #FF008A;
+}
+
+/* Controls */
+.bridal-fabrics-controls-container {
+  max-width: 1300px;
+  margin: 28px auto 0 auto;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bridal-fabrics-search-box {
+  position: relative;
+  width: 100%;
+}
+
+.bridal-fabrics-search-box .search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+}
+
+.bridal-fabrics-search-box input {
+  width: 100%;
+  padding: 14px 44px 14px 48px;
+  background: #FFFFFF;
+  border: 1.5px solid #F0E7ED;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-search-box input {
+  background: #111827;
+  border-color: #1F2937;
+  color: #F8FAFC;
+}
+
+.bridal-fabrics-search-box input:focus {
+  border-color: #FF008A;
+  box-shadow: 0 0 0 3px rgba(255, 0, 138, 0.15);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #94A3B8;
+  cursor: pointer;
+}
+
+.bridal-fabrics-tabs-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.bridal-fabrics-tabs-row::-webkit-scrollbar {
+  display: none;
+}
+
+.bridal-fabric-category-tab {
+  padding: 10px 20px;
+  border-radius: 9999px;
+  border: 1.5px solid #F0E7ED;
+  background: #FFFFFF;
+  color: #425579;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabric-category-tab {
+  background: #111827;
+  border-color: #1F2937;
+  color: #94A3B8;
+}
+
+.bridal-fabric-category-tab:hover {
+  border-color: #FF008A;
+  color: #FF008A;
+}
+
+.bridal-fabric-category-tab.active {
+  background: #FF008A;
+  color: #FFFFFF;
+  border-color: #FF008A;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.25);
+}
+
+/* Fabrics Grid */
+.bridal-fabrics-grid-container {
+  max-width: 1300px;
+  margin: 32px auto 0 auto;
+  padding: 0 32px;
+}
+
+.bridal-fabrics-grid-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bridal-fabrics-grid-header h3 {
+  font-size: 1.25rem;
+  color: #071B49;
+  margin: 0;
+  font-weight: 700;
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-fabrics-grid-header h3 {
+  color: #F8FAFC;
+}
+
+.bridal-fabrics-grid-header .hint {
+  font-size: 0.84rem;
+  color: #64748B;
+}
+
+.bridal-fabrics-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.bridal-luxury-fabric-card {
+  background: #FFFFFF;
+  border: 1px solid #F0E7ED;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.bridal-fabrics-page-root.dark-theme .bridal-luxury-fabric-card {
+  background: #111827;
+  border-color: #1F2937;
+}
+
+.bridal-luxury-fabric-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 0, 138, 0.4);
+  box-shadow: 0 12px 30px rgba(7, 27, 73, 0.1);
+}
+
+.fabric-card-image-box {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #F1F5F9;
+}
+
+.fabric-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.bridal-luxury-fabric-card:hover .fabric-card-img {
+  transform: scale(1.06);
+}
+
+.fabric-type-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(7, 27, 73, 0.85);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fabric-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.fabric-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.fabric-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0;
+}
+
+.bridal-fabrics-page-root.dark-theme .fabric-title {
+  color: #F8FAFC;
+}
+
+.fabric-price-meter {
+  font-size: 0.84rem;
+  color: #64748B;
+  white-space: nowrap;
+}
+
+.fabric-price-meter strong {
+  font-size: 1.1rem;
+  color: #FF008A;
+}
+
+.fabric-desc {
+  font-size: 0.84rem;
+  color: #64748B;
+  line-height: 1.5;
+  margin: 0 0 14px 0;
+  flex: 1;
+}
+
+.bridal-fabrics-page-root.dark-theme .fabric-desc {
+  color: #94A3B8;
+}
+
+.fabric-meta-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.meta-pill {
+  font-size: 0.76rem;
+  color: #425579;
+  background: #FFF0F5;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 0, 138, 0.15);
+  font-weight: 500;
+}
+
+.bridal-fabrics-page-root.dark-theme .meta-pill {
+  background: #1E293B;
+  color: #CBD5E1;
+  border-color: #334155;
+}
+
+.fabric-actions-row {
+  margin-top: auto;
+}
+
+.fabric-btn-stitch {
+  width: 100%;
+  background: #FF008A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.25);
+}
+
+.fabric-btn-stitch:hover {
+  background: #E60078;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 0, 138, 0.35);
+}
+
+/* Custom Fabric Assurance Callout */
+.bridal-fabrics-custom-assurance {
+  max-width: 1300px;
+  margin: 48px auto 0 auto;
+  padding: 0 32px;
+}
+
+.assurance-card {
+  background: linear-gradient(135deg, #071B49 0%, #172D63 100%);
+  border-radius: 20px;
+  padding: 32px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: #FFFFFF;
+  box-shadow: 0 12px 36px rgba(7, 27, 73, 0.15);
+}
+
+.assurance-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 750px;
+}
+
+.assurance-icon {
+  color: #FF008A;
+  flex-shrink: 0;
+}
+
+.assurance-left h3 {
+  font-size: 1.35rem;
+  margin: 0 0 6px 0;
+  color: #FFFFFF;
+}
+
+.assurance-left p {
+  font-size: 0.9rem;
+  color: #E2E8F0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.assurance-cta-btn {
+  background: #FFFFFF;
+  color: #071B49;
+  border: none;
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.assurance-cta-btn:hover {
+  background: #FFF0F5;
+  color: #FF008A;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bridal-fabrics-header-strip {
+    padding: 12px 16px;
+  }
+  .bridal-fabrics-hero {
+    padding: 32px 16px;
+  }
+  .bridal-fabrics-title {
+    font-size: 2rem;
+  }
+  .bridal-fabrics-controls-container,
+  .bridal-fabrics-grid-container,
+  .bridal-fabrics-custom-assurance {
+    padding: 0 16px;
+  }
+  .bridal-fabrics-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .assurance-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
+  }
+  .assurance-left {
+    flex-direction: column;
+  }
+  .assurance-cta-btn {
+    width: 100%;
+  }
+}

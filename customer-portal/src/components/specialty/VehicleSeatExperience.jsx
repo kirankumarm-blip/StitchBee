@@ -119,77 +119,7 @@ export default function VehicleSeatExperience({
         </div>
       )}
 
-      {/* Top Mode Switcher Bar (Shop & Create vs Repair & Restore) */}
-      <div 
-        className="v-top-mode-switcher"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '12px 20px',
-          gap: '12px',
-          background: theme === 'dark' ? '#0F172A' : '#F8FAFC',
-          borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.08)' : '1px solid #E2E8F0',
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          backdropFilter: 'blur(8px)'
-        }}
-      >
-        <button
-          type="button"
-          onClick={() => {
-            if (onSelectServiceMode) onSelectServiceMode('buying');
-            setSubView(null);
-            navigate('/vehicle-seats');
-          }}
-          style={{
-            padding: '9px 24px',
-            fontSize: '0.88rem',
-            fontWeight: 700,
-            borderRadius: '24px',
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            transition: 'all 0.2s ease',
-            background: serviceMode === 'buying' ? 'linear-gradient(135deg, #E11D74 0%, #FF087A 100%)' : (theme === 'dark' ? '#1E293B' : '#FFFFFF'),
-            color: serviceMode === 'buying' ? '#FFFFFF' : (theme === 'dark' ? '#94A3B8' : '#64748B'),
-            boxShadow: serviceMode === 'buying' ? '0 4px 14px rgba(225, 29, 116, 0.35)' : '0 1px 3px rgba(0,0,0,0.05)',
-            border: serviceMode === 'buying' ? 'none' : (theme === 'dark' ? '1px solid #334155' : '1px solid #CBD5E1')
-          }}
-        >
-          <span>🛍️</span>
-          <span>Shop & Create</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => {
-            if (onSelectServiceMode) onSelectServiceMode('alteration');
-            setSubView(null);
-            navigate('/vehicle-seats/repair');
-          }}
-          style={{
-            padding: '9px 24px',
-            fontSize: '0.88rem',
-            fontWeight: 700,
-            borderRadius: '24px',
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            transition: 'all 0.2s ease',
-            background: serviceMode === 'alteration' ? 'linear-gradient(135deg, #E11D74 0%, #FF087A 100%)' : (theme === 'dark' ? '#1E293B' : '#FFFFFF'),
-            color: serviceMode === 'alteration' ? '#FFFFFF' : (theme === 'dark' ? '#94A3B8' : '#64748B'),
-            boxShadow: serviceMode === 'alteration' ? '0 4px 14px rgba(225, 29, 116, 0.35)' : '0 1px 3px rgba(0,0,0,0.05)',
-            border: serviceMode === 'alteration' ? 'none' : (theme === 'dark' ? '1px solid #334155' : '1px solid #CBD5E1')
-          }}
-        >
-          <span>✂️</span>
-          <span>Repair & Restore</span>
-        </button>
-      </div>
+      {/* Main Vehicle Seat Views */}
 
       {/* ALTERATION & REPAIR SERVICES MODE */}
       {serviceMode === 'alteration' && (

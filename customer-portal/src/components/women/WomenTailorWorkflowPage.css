@@ -1,0 +1,938 @@
+/* ==========================================================================
+   WOMEN'S TAILOR WORKFLOW PAGE STYLESHEET
+   ========================================================================== */
+
+.women-tailor-page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #FDFBFC;
+  color: #071B49;
+  font-family: var(--women-font-sans, -apple-system, sans-serif);
+}
+
+.women-tailor-page-root.dark-theme {
+  background: #10131C;
+  color: #F7F8FC;
+}
+
+/* Header Strip */
+.women-workflow-header-strip {
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0E7ED;
+  padding: 24px 0;
+}
+
+.women-tailor-page-root.dark-theme .women-workflow-header-strip {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.women-workflow-header-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.women-back-link-btn {
+  background: none;
+  border: none;
+  color: var(--women-pink, #FF008A);
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.workflow-badge {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #FF008A;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.workflow-page-title {
+  font-family: var(--women-font-serif, serif);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0;
+}
+
+.women-tailor-page-root.dark-theme .workflow-page-title {
+  color: #F7F8FC;
+}
+
+/* Stepper Bar */
+.women-stepper-wrap {
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0E7ED;
+  padding: 16px 0;
+}
+
+.women-tailor-page-root.dark-theme .women-stepper-wrap {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.women-stepper-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.women-step-node {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.women-step-node.active {
+  opacity: 1;
+}
+
+.women-step-node.completed {
+  opacity: 0.9;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+
+.women-step-node.active .step-circle {
+  background: #FF008A;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(255, 0, 138, 0.4);
+}
+
+.women-step-node.completed .step-circle {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.step-text {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* Content Area */
+.women-workflow-content-wrap {
+  padding: 36px 0 60px 0;
+}
+
+.women-workflow-content-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.workflow-step-card {
+  background: #FFFFFF;
+  border: 1px solid #F0E7ED;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 18px rgba(7, 27, 73, 0.04);
+}
+
+.women-tailor-page-root.dark-theme .workflow-step-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.step-card-header {
+  margin-bottom: 24px;
+}
+
+.step-card-header h2 {
+  font-family: var(--women-font-serif, serif);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 6px 0;
+}
+
+.women-tailor-page-root.dark-theme .step-card-header h2 {
+  color: #F7F8FC;
+}
+
+.step-card-header p {
+  color: #64748B;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Category Pills in Step 1 */
+.workflow-cat-pills-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.workflow-cat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 8px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #071B49;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.women-tailor-page-root.dark-theme .workflow-cat-pill {
+  background: #181E2B;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.workflow-cat-pill.active {
+  border-color: #FF008A;
+  background: #FFF0F5;
+  color: #FF008A;
+}
+
+.pill-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Preview Box */
+.workflow-category-preview-box {
+  display: flex;
+  gap: 20px;
+  background: #FFF9FB;
+  border: 1px solid #FBCFE8;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.women-tailor-page-root.dark-theme .workflow-category-preview-box {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.preview-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.preview-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .preview-info h3 {
+  color: #F7F8FC;
+}
+
+.preview-sub {
+  font-size: 0.78rem;
+  color: #FF008A;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+}
+
+.preview-desc {
+  font-size: 0.82rem;
+  color: #64748B;
+  margin: 0;
+}
+
+.preview-price-tag {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #FF008A;
+  margin-top: 6px;
+}
+
+/* Options Grid */
+.workflow-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.opt-block label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .opt-block label {
+  color: #F7F8FC;
+}
+
+.opt-pills-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.opt-pill {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #071B49;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.women-tailor-page-root.dark-theme .opt-pill {
+  background: #181E2B;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.opt-pill.active {
+  border-color: #FF008A;
+  background: #FF008A;
+  color: #FFFFFF;
+}
+
+.workflow-textarea,
+.workflow-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #071B49;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.women-tailor-page-root.dark-theme .workflow-textarea,
+.women-tailor-page-root.dark-theme .workflow-input {
+  background: #181E2B;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+/* Fabric Mode Toggle */
+.fabric-mode-toggle-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.fabric-mode-pill {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #071B49;
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.women-tailor-page-root.dark-theme .fabric-mode-pill {
+  background: #181E2B;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.fabric-mode-pill.active {
+  border-color: #FF008A;
+  background: #FFF0F5;
+  color: #FF008A;
+}
+
+.workflow-fabrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.workflow-fabric-card {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.women-tailor-page-root.dark-theme .workflow-fabric-card {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.workflow-fabric-card.selected {
+  border-color: #FF008A;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.2);
+}
+
+.fab-thumb {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.fab-info h4 {
+  margin: 0 0 2px 0;
+  font-size: 0.9rem;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .fab-info h4 {
+  color: #F7F8FC;
+}
+
+.fab-price {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #FF008A;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.fab-desc {
+  font-size: 0.72rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.fab-check-badge,
+.tailor-check-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FF008A;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Map Split in Step 3 */
+.tailor-map-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.workflow-leaflet-map {
+  width: 100%;
+  height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+}
+
+.map-info-footer {
+  padding: 8px 12px;
+  font-size: 0.74rem;
+  color: #64748B;
+  background: #F8FAFC;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+
+.tailor-cards-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 410px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.workflow-tailor-item-card {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.women-tailor-page-root.dark-theme .workflow-tailor-item-card {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.workflow-tailor-item-card.selected {
+  border-color: #FF008A;
+  background: #FFF9FB;
+}
+
+.women-tailor-page-root.dark-theme .workflow-tailor-item-card.selected {
+  background: rgba(255, 0, 138, 0.08);
+}
+
+.tailor-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #FF008A;
+}
+
+.tailor-meta h4 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0;
+}
+
+.women-tailor-page-root.dark-theme .tailor-meta h4 {
+  color: #F7F8FC;
+}
+
+.dist-chip {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #FF008A;
+  background: #FFF0F5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.tailor-rating-row {
+  font-size: 0.72rem;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 2px 0;
+}
+
+.tailor-spec-tag {
+  font-size: 0.72rem;
+  color: #071B49;
+  font-weight: 600;
+}
+
+.women-tailor-page-root.dark-theme .tailor-spec-tag {
+  color: #CBD5E1;
+}
+
+.tailor-loc-tag {
+  font-size: 0.68rem;
+  color: #94A3B8;
+}
+
+.locality-pills-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.loc-pill {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #071B49;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.loc-pill.active {
+  background: #FF008A;
+  color: #FFFFFF;
+  border-color: #FF008A;
+}
+
+/* Measurement Options in Step 4 */
+.measurement-options-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.meas-option-card {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.women-tailor-page-root.dark-theme .meas-option-card {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.meas-option-card.active {
+  border-color: #FF008A;
+  background: #FFF9FB;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.2);
+}
+
+.meas-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FFF0F5;
+  color: #FF008A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meas-option-card h4 {
+  font-size: 0.88rem;
+  font-weight: 800;
+  margin: 0;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .meas-option-card h4 {
+  color: #F7F8FC;
+}
+
+.meas-option-card p {
+  font-size: 0.72rem;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.meas-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #FF008A;
+  background: #FFF0F5;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.meas-detail-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.women-tailor-page-root.dark-theme .meas-detail-box {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.ai-scan-console {
+  text-align: center;
+  padding: 20px;
+}
+
+.radar-spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 3px solid #FF008A;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 14px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.success-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #10B981;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px auto;
+}
+
+/* Quote Step 5 */
+.quote-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.quote-summary-col,
+.quote-price-col {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.women-tailor-page-root.dark-theme .quote-summary-col,
+.women-tailor-page-root.dark-theme .quote-price-col {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.quote-summary-col h3,
+.quote-price-col h3 {
+  font-family: var(--women-font-serif, serif);
+  font-size: 1.25rem;
+  margin: 0 0 16px 0;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .quote-summary-col h3,
+.women-tailor-page-root.dark-theme .quote-price-col h3 {
+  color: #F7F8FC;
+}
+
+.quote-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  padding: 8px 0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.quote-guarantee-badge {
+  display: flex;
+  gap: 10px;
+  background: #FFF0F5;
+  border: 1px solid #FBCFE8;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+  font-size: 0.78rem;
+  color: #071B49;
+  font-weight: 600;
+}
+
+.price-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.86rem;
+  padding: 8px 0;
+}
+
+.price-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 14px 0;
+  border-top: 2px dashed #CBD5E1;
+  margin-top: 12px;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .price-total-row {
+  color: #F7F8FC;
+}
+
+.total-val {
+  color: #FF008A;
+}
+
+.confirm-order-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+}
+
+/* Step 6 Tracking */
+.success-badge-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #10B981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+}
+
+.tracking-timeline-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.track-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94A3B8;
+}
+
+.track-step.active {
+  color: #FF008A;
+}
+
+.track-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.track-step.active .track-dot {
+  background: #FF008A;
+  color: #FFFFFF;
+}
+
+.track-line {
+  flex: 1;
+  height: 3px;
+  background: #E2E8F0;
+  margin: 0 6px 18px 6px;
+}
+
+.track-line.active {
+  background: #FF008A;
+}
+
+/* Actions Row */
+.workflow-actions-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #E2E8F0;
+}
+
+/* Form Layouts */
+.workflow-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.workflow-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #071B49;
+}
+
+.women-tailor-page-root.dark-theme .form-group label {
+  color: #F7F8FC;
+}
+
+.info-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF0F5;
+  border: 1px solid #FBCFE8;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: #071B49;
+  margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .workflow-options-grid,
+  .workflow-fabrics-grid,
+  .tailor-map-split-grid,
+  .measurement-options-grid,
+  .quote-split-grid,
+  .workflow-grid-2,
+  .workflow-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-timeline-box {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .track-line {
+    display: none;
+  }
+}

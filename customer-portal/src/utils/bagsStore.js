@@ -531,11 +531,16 @@ export function addToCart(product, qty = 1, selectedColor = null) {
       ...current,
       {
         id: product.id,
+        productId: product.productId || product.id,
         name: product.name,
         price: product.price,
+        originalPrice: product.originalPrice || product.mrp,
         color: colorName,
-        img: product.img,
-        material: product.material || 'Premium Tuscan Leather',
+        size: product.size || product.chosenSize || null,
+        img: product.img || product.image,
+        image: product.image || product.img,
+        material: product.material || 'Premium Fabric',
+        category: product.category || 'bags',
         qty
       }
     ];
@@ -567,70 +572,34 @@ export function removeFromCart(productId, color) {
 }
 
 // -------------------------------------------------------------
-// WISHLIST MANAGEMENT (stitchbeez_wishlist)
+// CENTRALIZED UNIVERSAL WISHLIST MANAGEMENT (stitchbeez_wishlist)
+// Delegated to universal wishlistStore supporting all service categories
 // -------------------------------------------------------------
-export function getWishlist() {
-  try {
-    const raw = localStorage.getItem('stitchbeez_wishlist');
-    if (raw) return JSON.parse(raw);
-  } catch (e) {
-    console.error('Error reading stitchbeez_wishlist:', e);
-  }
-  return ['prod-1', 'prod-4'];
-}
-
-export function saveWishlist(ids) {
-  try {
-    localStorage.setItem('stitchbeez_wishlist', JSON.stringify(ids));
-    notifyStoreUpdate();
-  } catch (e) {
-    console.error('Error saving stitchbeez_wishlist:', e);
-  }
-}
-
-export function toggleWishlist(productId) {
-  const current = getWishlist();
-  const exists = current.includes(productId);
-  const updated = exists ? current.filter(id => id !== productId) : [...current, productId];
-  saveWishlist(updated);
-  return { updated, added: !exists };
-}
+export { 
+  getWishlist, 
+  saveWishlist, 
+  toggleWishlist, 
+  isItemInWishlist, 
+  getWishlistProducts, 
+  clearWishlist, 
+  WISHLIST_SERVICE_CATEGORIES 
+} from './wishlistStore';
 
 // -------------------------------------------------------------
-// ORDERS MANAGEMENT (stitchbeez_orders)
+// CENTRALIZED UNIVERSAL ORDERS MANAGEMENT (stitchbeez_orders)
+// Delegated to universal ordersStore supporting all service categories
 // -------------------------------------------------------------
-export function getOrders() {
-  try {
-    const raw = localStorage.getItem('stitchbeez_orders');
-    if (raw) return JSON.parse(raw);
-  } catch (e) {
-    console.error('Error reading stitchbeez_orders:', e);
-  }
-  return DEFAULT_ORDERS;
-}
-
-export function saveOrders(orders) {
-  try {
-    localStorage.setItem('stitchbeez_orders', JSON.stringify(orders));
-    notifyStoreUpdate();
-  } catch (e) {
-    console.error('Error saving stitchbeez_orders:', e);
-  }
-}
-
-export function addOrder(orderData) {
-  const current = getOrders();
-  const newOrder = {
-    id: orderData.type === 'custom' ? `CUST-${Math.floor(1000 + Math.random() * 9000)}` : (orderData.type === 'restoration' ? `RESTORE-${Math.floor(1000 + Math.random() * 9000)}` : `ORD-${Math.floor(1000 + Math.random() * 9000)}`),
-    date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-    ...orderData
-  };
-  const updated = [newOrder, ...current];
-  saveOrders(updated);
-  return newOrder;
-}
-
-export const createOrder = addOrder;
+export {
+  getOrders,
+  saveOrders,
+  addOrder,
+  createOrder,
+  cancelOrder,
+  ORDER_SERVICE_CATEGORIES,
+  ORDER_STATUS_TABS,
+  REGULAR_ORDER_STEPS,
+  CUSTOM_QUOTE_STEPS
+} from './ordersStore';
 
 
 // -------------------------------------------------------------

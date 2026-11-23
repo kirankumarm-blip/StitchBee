@@ -1405,7 +1405,10 @@ body.light-theme .negotiation-panel {
 .view-container:has(.bl-leather-studio),
 .view-container:has(.vehicle-experience),
 .view-container:has(.v-shop-page),
-.view-container:has(.v-category-listing) {
+.view-container:has(.v-category-listing),
+.view-container:has(.kids-page-wrapper),
+.view-container:has(.kids-stitching-experience-root),
+.view-container:has(.kids-workflow-container) {
   padding: 0 !important;
   max-width: 100% !important;
   width: 100% !important;
@@ -1421,7 +1424,10 @@ body.light-theme .negotiation-panel {
   .view-container:has(.bl-leather-studio),
   .view-container:has(.vehicle-experience),
   .view-container:has(.v-shop-page),
-  .view-container:has(.v-category-listing) {
+  .view-container:has(.v-category-listing),
+  .view-container:has(.kids-page-wrapper),
+  .view-container:has(.kids-stitching-experience-root),
+  .view-container:has(.kids-workflow-container) {
     padding: 0 !important;
   }
 }
@@ -3274,6 +3280,12 @@ body.light-theme .reels-nav-btn {
   border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
+.nav-submenu-icon-box.stitch {
+  background: linear-gradient(135deg, rgba(225, 29, 116, 0.2), rgba(30, 42, 94, 0.25));
+  color: #e11d74;
+  border: 1px solid rgba(225, 29, 116, 0.35);
+}
+
 .nav-submenu-content {
   flex: 1;
   min-width: 0;
@@ -3328,6 +3340,12 @@ body.light-theme .reels-nav-btn {
   background: rgba(245, 158, 11, 0.16);
   color: #fcd34d;
   border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.nav-submenu-pill.stitch {
+  background: rgba(225, 29, 116, 0.16);
+  color: #ff6ba6;
+  border: 1px solid rgba(225, 29, 116, 0.35);
 }
 
 .nav-submenu-desc {
@@ -3414,6 +3432,12 @@ body.light-theme .nav-submenu-pill.repair {
   border-color: rgba(245, 158, 11, 0.25);
 }
 
+body.light-theme .nav-submenu-pill.stitch {
+  background: rgba(225, 29, 116, 0.1);
+  color: #be185d;
+  border-color: rgba(225, 29, 116, 0.25);
+}
+
 body.light-theme .nav-submenu-footer {
   border-top-color: rgba(15, 23, 42, 0.07);
   color: #64748b;
@@ -3463,6 +3487,11 @@ body.light-theme .mobile-bags-mode-btn {
 .mobile-bags-btn-icon.restore {
   background: rgba(245, 158, 11, 0.15);
   color: #f59e0b;
+}
+
+.mobile-bags-btn-icon.stitch {
+  background: rgba(225, 29, 116, 0.15);
+  color: #e11d74;
 }
 
 
@@ -12682,8 +12711,47 @@ body.dark-theme .footer-bottom-links-v4 span:hover {
   top: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: cover;
+  object-position: center;
   transition: opacity 0.8s ease-in-out;
+}
+
+.guest-landing-hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 25;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.guest-landing-hero-arrow:hover {
+  background: #FF008A;
+  border-color: #FF008A;
+  color: #FFFFFF;
+  opacity: 1;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.4);
+}
+
+.guest-landing-hero-arrow.prev {
+  left: 14px;
+}
+
+.guest-landing-hero-arrow.next {
+  right: 14px;
 }
 
 .guest-landing-hero-dots {
@@ -12692,12 +12760,15 @@ body.dark-theme .footer-bottom-links-v4 span:hover {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 6px;
+  gap: 5px;
   z-index: 20;
-  background: rgba(0, 0, 0, 0.25);
-  padding: 5px 12px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 14px;
   border-radius: 20px;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  max-width: 90%;
+  overflow-x: auto;
 }
 
 /* Mobile adjustments ONLY: applied on mobile viewports */

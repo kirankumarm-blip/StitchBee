@@ -116,10 +116,11 @@ function BeforeAfterTransformationCard({ trans }) {
           style={{ left: `${sliderPos}%` }}
         >
           <div className="v-trans-divider-handle" style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
-            <span>⇄</span>
+            <span>◄►</span>
           </div>
         </div>
       </div>
+      <h4 className="v-trans-footer-title">{trans.title}</h4>
     </div>
   );
 }
@@ -148,8 +149,17 @@ export default function VehicleSeatShopPage({
     return initial;
   });
 
-  // Local wishlist state: Set of product IDs
-  const [wishlistSet, setWishlistSet] = useState(new Set());
+  // Central wishlist state: Set of product IDs
+  const [wishlistSet, setWishlistSet] = useState(() => new Set(getVehicleSeatWishlist()));
+
+  // Sync wishlist with store updates
+  useEffect(() => {
+    const syncWishlist = () => {
+      setWishlistSet(new Set(getVehicleSeatWishlist()));
+    };
+    window.addEventListener('stitchbee-store-update', syncWishlist);
+    return () => window.removeEventListener('stitchbee-store-update', syncWishlist);
+  }, []);
 
   // Material carousel ref & modal state
   const materialCarouselRef = useRef(null);
@@ -179,19 +189,13 @@ export default function VehicleSeatShopPage({
     }));
   };
 
-  // Toggle Wishlist
+  // Toggle Wishlist via universal central store
   const handleToggleWishlist = (product) => {
-    setWishlistSet(prev => {
-      const next = new Set(prev);
-      if (next.has(product.id)) {
-        next.delete(product.id);
-        showToast(`Removed "${product.name}" from your wishlist`);
-      } else {
-        next.add(product.id);
-        showToast(`Added "${product.name}" to your wishlist ❤️`);
-      }
-      return next;
-    });
+    const res = toggleVehicleSeatWishlist(product.id);
+    const updatedIds = res.updated || res.list || res;
+    setWishlistSet(new Set(updatedIds));
+    const isAdded = res.added ?? res.isAdded ?? updatedIds.includes(product.id);
+    showToast(isAdded ? `Added "${product.name}" to your wishlist ❤️` : `Removed "${product.name}" from your wishlist`);
   };
 
   // Add Product to Cart
@@ -810,11 +814,13 @@ export default function VehicleSeatShopPage({
             <div className="v-section-container v-final-cta-content-wrapper">
               
               <div className="v-final-cta-text">
-                <h2 className="v-final-cta-title">
+                <h2 className="v-final-cta-title" style={{ color: '#FFFFFF', textShadow: '0 2px 10px rgba(0,0,0,0.9), 0 4px 20px rgba(0,0,0,0.8)' }}>
                   Comfort for <br />
                   Every Road Ahead
                 </h2>
-                <p className="v-final-cta-subtitle">Custom seat covers for all vehicles.</p>
+                <p className="v-final-cta-subtitle" style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 2px 8px rgba(0,0,0,0.9)' }}>
+                  Custom seat covers for all vehicles.
+                </p>
               </div>
 
               <div className="v-final-cta-buttons">

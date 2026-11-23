@@ -7,6 +7,13 @@ import SpecialtyCategoryView from './specialty/SpecialtyCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
 import ShoesFootwearStudio from './shoes/ShoesFootwearStudio';
 import ShoesRepairRestore from './shoes/ShoesRepairRestore';
+import KidsStitchingExperience from './specialty/KidsStitchingExperience';
+import KidsShopExperience from './specialty/KidsShopExperience';
+import MenStitchingExperience from './specialty/MenStitchingExperience';
+import BridalStitchingExperience from './specialty/BridalStitchingExperience';
+import WomenStitchingExperience from './specialty/WomenStitchingExperience';
+import ClothingAlterationsPage from './alterations/ClothingAlterationsPage';
+import UniformShopPage from './uniforms/UniformShopPage';
 
 const categoryTemplates = {
   mens: {
@@ -137,9 +144,9 @@ const categoryTemplates = {
     ]
   },
   kids: {
-    badge: "COMFORTABLE FESTIVE CUDDLES",
-    title: "Premium Kids Tailoring",
-    subtext: "Comfortable, soft-lined, and premium custom wear for kids. Stitched with internal cotton lining sheets to prevent itching, designed for ease of movement.",
+    badge: "STITCHBEE KIDS ATELIER • SHOP & CREATE",
+    title: "Handcrafted Kids Wear & Boutique Collections",
+    subtext: "Comfortable, soft-lined, and handcrafted bespoke wear for kids. Stitched with anti-itch pure cotton linings, organic fabrics, and smart growth seam allowances.",
     services: [
       { name: "Festive wear", desc: "Kurta pyjamas, lehenga-cholis, and kids sherwanis.", icon: <Scissors size={20} /> },
       { name: "Party Wear Suits", desc: "Tuxedo suits, blazers, and custom birthday gowns.", icon: <Sparkles size={20} /> },
@@ -439,13 +446,42 @@ const categoryTemplates = {
 const SPECIALTY_KEYS = ['bags', 'shoes', 'seats', 'gifts', 'pets', 'sofas'];
 
 export default function ServiceCategoryView({ 
-  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], onSelectCategory, onAddToCart, theme, setTheme,
+  categoryKey, currentUser, onLoginRequired, onExploreDesigns, onViewFabrics, onBookStitching, tailors = [], orders = [], addOrder, onSelectCategory, onAddToCart, theme, setTheme,
   bagsStudioMode = 'shop', setBagsStudioMode,
   shoesStudioMode = 'shop', setShoesStudioMode,
   sofasStudioMode = 'shop', setSofasStudioMode,
   seatsStudioMode = 'shop', setSeatsStudioMode,
+  kidsStudioMode = 'stitching', setKidsStudioMode,
   searchQuery, setSearchQuery
 }) {
+  if (categoryKey === 'alterations' || categoryKey === 'alteration') {
+    return (
+      <ClothingAlterationsPage
+        currentUser={currentUser}
+        theme={theme}
+        setTheme={setTheme}
+        tailors={tailors}
+        orders={orders}
+        addOrder={addOrder}
+        onLoginRequired={onLoginRequired}
+        onNavigateHome={onExploreDesigns}
+      />
+    );
+  }
+  if (categoryKey === 'uniforms' || categoryKey === 'uniform' || categoryKey === 'uniform-shop' || categoryKey === 'shop-uniforms') {
+    return (
+      <UniformShopPage
+        currentUser={currentUser}
+        theme={theme}
+        setTheme={setTheme}
+        onAddToCart={onAddToCart}
+        onLoginRequired={onLoginRequired}
+        onNavigateHome={onExploreDesigns}
+        onNavigateCategory={onSelectCategory}
+        addOrder={addOrder}
+      />
+    );
+  }
   if (categoryKey === 'bags') {
     return (
       <BagsLeatherStudio
@@ -491,6 +527,73 @@ export default function ServiceCategoryView({
         onBookStitching={onBookStitching}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
+      />
+    );
+  }
+
+  if (categoryKey === 'kids') {
+    if (kidsStudioMode === 'shop') {
+      return (
+        <KidsShopExperience
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          onNavigateHome={onExploreDesigns}
+          onAddToCart={onAddToCart}
+          theme={theme}
+          setTheme={setTheme}
+        />
+      );
+    }
+    return (
+      <KidsStitchingExperience
+        currentUser={currentUser}
+        onLoginRequired={onLoginRequired}
+        onNavigateHome={onExploreDesigns}
+        tailors={tailors}
+        theme={theme}
+        setTheme={setTheme}
+        onSwitchToShop={() => {
+          if (setKidsStudioMode) setKidsStudioMode('shop');
+        }}
+      />
+    );
+  }
+
+  if (categoryKey === 'mens' || categoryKey === 'men') {
+    return (
+      <MenStitchingExperience
+        currentUser={currentUser}
+        onLoginRequired={onLoginRequired}
+        onNavigateHome={onExploreDesigns}
+        tailors={tailors}
+        theme={theme}
+        setTheme={setTheme}
+      />
+    );
+  }
+
+  if (categoryKey === 'bridal' || categoryKey === 'wedding') {
+    return (
+      <BridalStitchingExperience
+        currentUser={currentUser}
+        onLoginRequired={onLoginRequired}
+        onNavigateHome={onExploreDesigns}
+        tailors={tailors}
+        theme={theme}
+        setTheme={setTheme}
+      />
+    );
+  }
+
+  if (categoryKey === 'womens' || categoryKey === 'women') {
+    return (
+      <WomenStitchingExperience
+        currentUser={currentUser}
+        onLoginRequired={onLoginRequired}
+        onNavigateHome={onExploreDesigns}
+        tailors={tailors}
+        theme={theme}
+        setTheme={setTheme}
       />
     );
   }

@@ -1,0 +1,280 @@
+/* ==========================================================================
+   WOMEN'S FABRICS PAGE STYLESHEET
+   ========================================================================== */
+
+.women-fabrics-page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #FDFBFC;
+  color: #071B49;
+  font-family: var(--women-font-sans, -apple-system, sans-serif);
+}
+
+.women-fabrics-page-root.dark-theme {
+  background: #10131C;
+  color: #F7F8FC;
+}
+
+.women-fabrics-header-strip {
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0E7ED;
+  padding: 30px 0;
+}
+
+.women-fabrics-page-root.dark-theme .women-fabrics-header-strip {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.women-fabrics-header-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.fabrics-eyebrow {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #FF008A;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.fabrics-title {
+  font-family: var(--women-font-serif, serif);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 6px 0;
+}
+
+.women-fabrics-page-root.dark-theme .fabrics-title {
+  color: #F7F8FC;
+}
+
+.fabrics-sub {
+  font-size: 0.92rem;
+  color: #64748B;
+  margin: 0;
+}
+
+.women-fabrics-controls-wrap {
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0E7ED;
+  padding: 16px 0;
+}
+
+.women-fabrics-page-root.dark-theme .women-fabrics-controls-wrap {
+  background: #181E2B;
+  border-color: #343B4B;
+}
+
+.women-fabrics-controls-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.fabrics-pills-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fabrics-pill-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #071B49;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.women-fabrics-page-root.dark-theme .fabrics-pill-btn {
+  background: #1C2230;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.fabrics-pill-btn.active {
+  background: #FF008A;
+  color: #FFFFFF;
+  border-color: #FF008A;
+}
+
+.fabrics-search-box {
+  display: flex;
+  align-items: center;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  gap: 8px;
+  width: 280px;
+}
+
+.women-fabrics-page-root.dark-theme .fabrics-search-box {
+  background: #10131C;
+  border-color: #343B4B;
+}
+
+.search-icon {
+  color: #94A3B8;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: inherit;
+  width: 100%;
+  outline: none;
+}
+
+.women-fabrics-grid-wrap {
+  padding: 36px 0 60px 0;
+}
+
+.women-fabrics-grid-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.women-fabric-detail-card {
+  background: #FFFFFF;
+  border: 1px solid #F0E7ED;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(7, 27, 73, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.women-fabrics-page-root.dark-theme .women-fabric-detail-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.women-fabric-detail-card:hover {
+  transform: translateY(-4px);
+  border-color: #FF008A;
+  box-shadow: 0 10px 28px rgba(255, 0, 138, 0.14);
+}
+
+.fabric-card-img-box {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #F1F5F9;
+  overflow: hidden;
+}
+
+.fabric-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.women-fabric-detail-card:hover .fabric-card-img {
+  transform: scale(1.06);
+}
+
+.fabric-tag-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(7, 27, 73, 0.85);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.fabric-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.fabric-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.fabric-name-row h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #071B49;
+}
+
+.women-fabrics-page-root.dark-theme .fabric-name-row h3 {
+  color: #F7F8FC;
+}
+
+.fabric-price {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FF008A;
+}
+
+.fabric-material {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #FF008A;
+  margin-bottom: 8px;
+}
+
+.fabric-desc {
+  font-size: 0.82rem;
+  color: #64748B;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.select-fab-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .women-fabrics-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .women-fabrics-grid-container {
+    grid-template-columns: 1fr;
+  }
+}

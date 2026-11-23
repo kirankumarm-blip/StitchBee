@@ -12,6 +12,7 @@ import { loadFromStorage, saveToStorage, executePgQuery, FABRIC_MARKETPLACE_DATA
 import { getCart as getBagsCart, getWishlist as getBagsWishlist, getOrders as getBagsOrders } from '../utils/bagsStore';
 import ServiceCategoryView from './ServiceCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
+import CottonFabricsMarketplace from './fabrics/CottonFabricsMarketplace';
 
 const resolveInspirationImage = (inputUrl) => {
   if (!inputUrl) return '';
@@ -456,6 +457,9 @@ export default function CustomerView({
   const [seatsStudioMode, setSeatsStudioMode] = useState('shop'); // 'shop' | 'restore'
   const [seatsSubmenuHovered, setSeatsSubmenuHovered] = useState(false);
   const [mobileSeatsExpanded, setMobileSeatsExpanded] = useState(false);
+  const [kidsStudioMode, setKidsStudioMode] = useState('stitching'); // 'stitching' | 'shop'
+  const [kidsSubmenuHovered, setKidsSubmenuHovered] = useState(false);
+  const [mobileKidsExpanded, setMobileKidsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [rewardPoints, setRewardPoints] = useState(120);
   
@@ -635,6 +639,23 @@ export default function CustomerView({
       setSelectedCategory('seats');
       setActiveHub('category-landing');
       setSeatsStudioMode('shop');
+    } else if (path === '/kids/shop' || path === '/kids-shop' || path.startsWith('/kids-shop') || path === '/kids-collection' || path === '/kids/boutique') {
+      setSelectedCategory('kids');
+      setActiveHub('category-landing');
+      setKidsStudioMode('shop');
+    } else if (path === '/kids' || path === '/kids-stitching' || path.startsWith('/kids-stitching') || path.startsWith('/kids/')) {
+      setSelectedCategory('kids');
+      setActiveHub('category-landing');
+      setKidsStudioMode('stitching');
+    } else if (path === '/mens' || path === '/men' || path === '/mens-stitching' || path === '/men-stitching' || path.startsWith('/mens') || path.startsWith('/men')) {
+      setSelectedCategory('mens');
+      setActiveHub('category-landing');
+    } else if (path === '/alterations' || path === '/alteration' || path === '/clothing-alterations' || path.startsWith('/alterations') || path.startsWith('/alteration')) {
+      setSelectedCategory('alterations');
+      setActiveHub('category-landing');
+    } else if (path === '/uniforms' || path === '/uniform' || path === '/uniform-shop' || path === '/shop-uniforms' || path.startsWith('/uniforms') || path.startsWith('/uniform')) {
+      setSelectedCategory('uniforms');
+      setActiveHub('category-landing');
     }
   }, [location.pathname]);
 
@@ -644,6 +665,8 @@ export default function CustomerView({
       setBagsSubmenuHovered(false);
       setShoesSubmenuHovered(false);
       setSofasSubmenuHovered(false);
+      setSeatsSubmenuHovered(false);
+      setKidsSubmenuHovered(false);
       setNotificationDropdownOpen(false);
       setProfileDropdownOpen(false);
     };
@@ -2549,6 +2572,7 @@ export default function CustomerView({
                 const isShoes = cat.id === 'shoes';
                 const isSofas = cat.id === 'sofas';
                 const isSeats = cat.id === 'seats';
+                const isKids = cat.id === 'kids';
                 const isActive = cat.id === 'designers'
                   ? activeHub === 'designers'
                   : (activeHub === 'category-landing' && selectedCategory === cat.id);
@@ -2985,6 +3009,114 @@ export default function CustomerView({
                   );
                 }
 
+                if (isKids) {
+                  return (
+                    <li 
+                      key={cat.id}
+                      className={`dropdown-item nav-item-has-submenu ${isActive ? 'active' : ''}`}
+                      onMouseEnter={() => setKidsSubmenuHovered(true)}
+                      onMouseLeave={() => setKidsSubmenuHovered(false)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setKidsSubmenuHovered(prev => !prev);
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', gap: '12px' }}>
+                        <span>{cat.label}</span>
+                        <ChevronRight size={13} style={{ opacity: 0.7 }} />
+                      </div>
+
+                      {/* Submenu on hover & select */}
+                      <div className={`nav-submenu ${kidsSubmenuHovered ? 'show' : ''}`}>
+                        <div className="nav-submenu-header">
+                          <div className="nav-submenu-eyebrow">
+                            <Sparkles size={11} className="nav-submenu-sparkle" />
+                            <span>STITCHBEE KIDS ATELIER</span>
+                          </div>
+                          <div className="nav-submenu-header-sub">Custom Stitching, Tailoring & Boutique Collections</div>
+                        </div>
+
+                        <div className="nav-submenu-body">
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'kids' && kidsStudioMode === 'shop' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setKidsStudioMode('shop');
+                              setSelectedCategory('kids');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('kids');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setKidsSubmenuHovered(false);
+                              navigate('/kids/shop');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box shop">
+                              <ShoppingBag size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Shop & Create</span>
+                                <span className="nav-submenu-pill bespoke">Boutique</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Handcrafted festive frocks, party dresses, kurtas & bespoke sets</p>
+                              <div className="nav-submenu-tags">
+                                <span>Organic Cotton</span>
+                                <span>•</span>
+                                <span>Anti-Itch Linings</span>
+                                <span>•</span>
+                                <span>Growing Fit</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div 
+                            className={`nav-submenu-card ${activeHub === 'category-landing' && selectedCategory === 'kids' && kidsStudioMode === 'stitching' ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setKidsStudioMode('stitching');
+                              setSelectedCategory('kids');
+                              setActiveHub('category-landing');
+                              if (setCustomerCategory) setCustomerCategory('kids');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              setWizardOpen(false);
+                              setServicesDropdownOpen(false);
+                              setKidsSubmenuHovered(false);
+                              navigate('/kids-stitching');
+                            }}
+                          >
+                            <div className="nav-submenu-icon-box stitch">
+                              <Scissors size={18} />
+                            </div>
+                            <div className="nav-submenu-content">
+                              <div className="nav-submenu-title-row">
+                                <span className="nav-submenu-title">Custom Stitching & Tailoring</span>
+                                <span className="nav-submenu-pill stitch">Bespoke Fit</span>
+                                <ArrowRight size={13} className="nav-submenu-arrow" />
+                              </div>
+                              <p className="nav-submenu-desc">Stitch with nearby verified tailors or fashion designers</p>
+                              <div className="nav-submenu-tags">
+                                <span>Verified Tailors</span>
+                                <span>•</span>
+                                <span>Fashion Designers</span>
+                                <span>•</span>
+                                <span>Doorstep Trial</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="nav-submenu-footer">
+                          <Shield size={12} style={{ color: '#E11D74' }} />
+                          <span>Skin-Gentle Fabrics • Growing Seam Allowances • Verified Tailors</span>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                }
+
                 return (
                   <li 
                     key={cat.id}
@@ -2994,6 +3126,12 @@ export default function CustomerView({
                         setActiveHub('designers');
                         if (setCustomerHub) setCustomerHub('designers');
                         if (setCustomerCategory) setCustomerCategory('all');
+                      } else if (cat.id === 'alterations') {
+                        setActiveHub('category-landing');
+                        setSelectedCategory('alterations');
+                        if (setCustomerCategory) setCustomerCategory('alterations');
+                        if (setCustomerHub) setCustomerHub('category-landing');
+                        navigate('/alterations');
                       } else {
                         setActiveHub('category-landing');
                         setSelectedCategory(cat.id);
@@ -3056,34 +3194,18 @@ export default function CustomerView({
           </button>
 
           <button 
-            className={`role-btn ${activeHub === 'history' || location.pathname === '/orders' ? 'active' : ''}`}
+            className={`role-btn ${location.pathname === '/orders' ? 'active' : ''}`}
             onClick={() => { 
-              if (selectedCategory === 'bags' || selectedCategory === 'shoes' || location.pathname.startsWith('/bags') || location.pathname.startsWith('/footwear') || location.pathname.startsWith('/shoes')) {
-                navigate('/orders');
-                return;
-              }
-              setActiveHub('history'); 
-              setWizardOpen(false); 
-              if (setCustomerHub) setCustomerHub('history');
+              navigate('/orders');
             }}
           >
             My Orders
           </button>
 
           <button 
-            className={`role-btn ${activeHub === 'wishlist' || location.pathname === '/wishlist' ? 'active' : ''}`}
+            className={`role-btn ${location.pathname === '/wishlist' ? 'active' : ''}`}
             onClick={() => { 
-              if (selectedCategory === 'bags' || location.pathname.startsWith('/bags')) {
-                navigate('/wishlist');
-                return;
-              }
-              if (!currentUser) {
-                if (onLoginRequired) onLoginRequired();
-                return;
-              }
-              setActiveHub('wishlist');
-              setWizardOpen(false);
-              if (setCustomerHub) setCustomerHub('wishlist');
+              navigate('/wishlist');
             }}
           >
             Wishlist
@@ -3169,6 +3291,21 @@ export default function CustomerView({
               </div>
             </ul>
           </div>
+
+          {/* Wishlist Icon with badge */}
+          <button 
+            className="role-btn" 
+            style={{ padding: '8px', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }} 
+            onClick={() => {
+              navigate('/wishlist');
+            }}
+            title="My Wishlist"
+          >
+            <Heart size={18} />
+            {bagsWishlistCount > 0 && (
+              <span className="notif-badge-dot" style={{ top: '6px', right: '6px', background: 'var(--primary)' }} />
+            )}
+          </button>
 
           {/* Cart Icon with badge */}
           <button 
@@ -3378,8 +3515,13 @@ export default function CustomerView({
                         setSidebarOpen(false);
                         return;
                       }
-                      if (tab.id === 'wishlist' && !currentUser) {
-                        if (onLoginRequired) onLoginRequired();
+                      if (tab.id === 'history') {
+                        navigate('/orders');
+                        setSidebarOpen(false);
+                        return;
+                      }
+                      if (tab.id === 'wishlist') {
+                        navigate('/wishlist');
                         setSidebarOpen(false);
                         return;
                       }
@@ -3883,6 +4025,102 @@ export default function CustomerView({
                         );
                       }
 
+                      if (cat.id === 'kids') {
+                        return (
+                          <div key={cat.id} style={{ width: '100%', margin: '4px 0' }}>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMobileKidsExpanded(!mobileKidsExpanded);
+                              }}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '8px 12px',
+                                borderRadius: '8px',
+                                border: `1px solid ${selectedCategory === 'kids' ? 'var(--primary)' : borderColor}`,
+                                background: selectedCategory === 'kids' ? 'rgba(225,29,116,0.1)' : (isDark ? 'rgba(255,255,255,0.04)' : '#fff'),
+                                color: selectedCategory === 'kids' ? 'var(--primary)' : colorTextPrimary,
+                                fontSize: '0.78rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span>🧸 {cat.label}</span>
+                                <span style={{ fontSize: '0.62rem', padding: '1px 6px', borderRadius: '10px', background: 'rgba(225,29,116,0.12)', color: 'var(--primary)', fontWeight: 700 }}>2 Modes</span>
+                              </div>
+                              <ChevronDown 
+                                size={14} 
+                                style={{ 
+                                  transform: mobileKidsExpanded ? 'rotate(180deg)' : 'none', 
+                                  transition: 'transform 0.2s ease' 
+                                }} 
+                              />
+                            </button>
+                            {mobileKidsExpanded && (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingLeft: '10px', marginTop: '6px' }}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setKidsStudioMode('shop');
+                                    setSelectedCategory('kids');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('kids');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/kids/shop');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'kids' && kidsStudioMode === 'shop' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon shop">
+                                    <ShoppingBag size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Shop & Create</span>
+                                      <span className="nav-submenu-pill bespoke" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Boutique</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Handcrafted frocks, dresses, kurtas & sets</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setKidsStudioMode('stitching');
+                                    setSelectedCategory('kids');
+                                    setActiveHub('category-landing');
+                                    if (setCustomerCategory) setCustomerCategory('kids');
+                                    if (setCustomerHub) setCustomerHub('category-landing');
+                                    setWizardOpen(false);
+                                    setSidebarOpen(false);
+                                    navigate('/kids-stitching');
+                                  }}
+                                  className={`mobile-bags-mode-btn ${selectedCategory === 'kids' && kidsStudioMode === 'stitching' ? 'active' : ''}`}
+                                >
+                                  <div className="mobile-bags-btn-icon stitch">
+                                    <Scissors size={14} />
+                                  </div>
+                                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                      <span style={{ fontWeight: 700, fontSize: '0.8rem' }}>Custom Stitching & Tailoring</span>
+                                      <span className="nav-submenu-pill stitch" style={{ fontSize: '0.58rem', padding: '1px 5px' }}>Bespoke Fit</span>
+                                    </div>
+                                    <span style={{ fontSize: '0.68rem', opacity: 0.7, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>Verified nearby tailors & fashion designers</span>
+                                  </div>
+                                  <ChevronRight size={13} style={{ opacity: 0.5 }} />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+
                       return (
                         <button
                           key={cat.id}
@@ -3891,6 +4129,18 @@ export default function CustomerView({
                               setActiveHub('designers');
                               if (setCustomerHub) setCustomerHub('designers');
                               if (setCustomerCategory) setCustomerCategory('all');
+                            } else if (cat.id === 'kids') {
+                              setActiveHub('category-landing');
+                              setSelectedCategory('kids');
+                              if (setCustomerCategory) setCustomerCategory('kids');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              navigate('/kids-stitching');
+                            } else if (cat.id === 'alterations') {
+                              setActiveHub('category-landing');
+                              setSelectedCategory('alterations');
+                              if (setCustomerCategory) setCustomerCategory('alterations');
+                              if (setCustomerHub) setCustomerHub('category-landing');
+                              navigate('/alterations');
                             } else {
                               setActiveHub('category-landing');
                               setSelectedCategory(cat.id);
@@ -4026,12 +4276,12 @@ export default function CustomerView({
       )}
 
 
-      <div className={`view-container ${activeHub === 'category-landing' ? 'category-landing-fullwidth' : ''}`}>
+      <div className={`view-container ${activeHub === 'category-landing' || activeHub === 'fabrics' ? 'category-landing-fullwidth' : ''}`}>
 
 
 
       {/* Hub Tabs selector */}
-      {activeHub !== 'home' && activeHub !== 'tailors' && activeHub !== 'category-landing' && (
+      {activeHub !== 'home' && activeHub !== 'tailors' && activeHub !== 'category-landing' && activeHub !== 'fabrics' && (
         <div style={{ display: 'flex', gap: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
           <button className={`btn ${activeHub === 'fabrics' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => { setActiveHub('fabrics'); setWizardOpen(false); }}>
             <Layers size={16} /> Fabric Marketplace
@@ -4070,8 +4320,8 @@ export default function CustomerView({
         </div>
       )}
 
-      {/* Cart Float Button */}
-      {cart.length > 0 && (
+      {/* Cart Float Button - Hidden on Kids Stitching page */}
+      {cart.length > 0 && activeHub !== 'kids' && !location.pathname.startsWith('/kids') && (
         <button 
           onClick={() => navigate('/cart')}
           style={{
@@ -6099,6 +6349,12 @@ export default function CustomerView({
                     if (setCustomerCategory) setCustomerCategory('sofas');
                     if (setCustomerHub) setCustomerHub('category-landing');
                     navigate('/sofas');
+                  } else if (category.cat === 'kids') {
+                    setSelectedCategory('kids');
+                    setActiveHub('category-landing');
+                    if (setCustomerCategory) setCustomerCategory('kids');
+                    if (setCustomerHub) setCustomerHub('category-landing');
+                    navigate('/kids-stitching');
                   } else {
                     setSelectedCategory(category.cat);
                     setActiveHub('category-landing');
@@ -7285,6 +7541,8 @@ export default function CustomerView({
           setSofasStudioMode={setSofasStudioMode}
           seatsStudioMode={seatsStudioMode}
           setSeatsStudioMode={setSeatsStudioMode}
+          kidsStudioMode={kidsStudioMode}
+          setKidsStudioMode={setKidsStudioMode}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           onLoginRequired={onLoginRequired}
@@ -7312,7 +7570,9 @@ export default function CustomerView({
             setActiveHub('tailors');
           }}
           tailors={tailors}
-          onAddToCart={null}
+          orders={orders}
+          addOrder={addOrder}
+          onAddToCart={handleAddToCart}
           onSelectCategory={(catId) => {
             setSelectedCategory(catId);
             if (setCustomerCategory) setCustomerCategory(catId);
@@ -7736,789 +7996,36 @@ export default function CustomerView({
         </div>
       )}
 
-      {/* --- HUB 2: FABRIC MARKETPLACE --- */}
+      {/* --- HUB 2: FABRIC MARKETPLACE (Cotton Fabrics Marketplace) --- */}
       {activeHub === 'fabrics' && (
-        <div className="fabric-explorer-layout" style={{ display: 'flex', gap: '24px', minHeight: '80vh', position: 'relative' }}>
-          
-          {/* FILTER SIDEBAR */}
-          <div className="fabric-filter-sidebar glass-card" style={{ width: '280px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', flexShrink: 0, height: 'fit-content', position: 'sticky', top: '90px' }}>
-            <div className="flex-row-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}><Sliders size={16} /> Filters</h3>
-              {isAnyFilterActive() && (
-                <button 
-                  onClick={() => setFabricFilters({
-                    brand: {},
-                    priceRange: [0, 10000],
-                    color: {},
-                    stretch: {},
-                    shine: {},
-                    texture: {},
-                    season: {},
-                    availability: {}
-                  })} 
-                  style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 'bold' }}
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-
-            {/* Price Filter */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Price Range (per meter)</h4>
-              <div className="flex-row-between" style={{ gap: '8px', fontSize: '0.8rem' }}>
-                <span>₹{fabricFilters.priceRange[0]}</span>
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="10000" 
-                  step="100" 
-                  value={fabricFilters.priceRange[1]} 
-                  onChange={(e) => setFabricFilters(prev => ({ ...prev, priceRange: [prev.priceRange[0], parseInt(e.target.value)] }))} 
-                  style={{ flexGrow: 1, accentColor: 'var(--primary)' }}
-                />
-                <span>₹{fabricFilters.priceRange[1]}</span>
-              </div>
-            </div>
-
-            {/* Brand Checkboxes */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Brand</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '120px', overflowY: 'auto', paddingRight: '4px' }}>
-                {['Raymond', 'Nalli', 'Kalanjali', 'Fabindia', 'Biba', 'Arvind Limited', "Siyaram's", 'Donear'].map(b => (
-                  <label key={b} className="filter-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!fabricFilters.brand[b]} 
-                      onChange={(e) => setFabricFilters(prev => ({ ...prev, brand: { ...prev.brand, [b]: e.target.checked } }))} 
-                      style={{ accentColor: 'var(--primary)' }}
-                    />
-                    <span>{b}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Color Checkboxes */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Color</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '120px', overflowY: 'auto', paddingRight: '4px' }}>
-                {['Black', 'Navy Blue', 'Charcoal Grey', 'Royal Blue', 'Brown', 'Maroon', 'Beige', 'White'].map(c => (
-                  <label key={c} className="filter-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!fabricFilters.color[c]} 
-                      onChange={(e) => setFabricFilters(prev => ({ ...prev, color: { ...prev.color, [c]: e.target.checked } }))} 
-                      style={{ accentColor: 'var(--primary)' }}
-                    />
-                    <span>{c}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Stretch Checkboxes */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Stretch</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {['None', 'Low', 'Medium', 'High'].map(s => (
-                  <label key={s} className="filter-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!fabricFilters.stretch[s]} 
-                      onChange={(e) => setFabricFilters(prev => ({ ...prev, stretch: { ...prev.stretch, [s]: e.target.checked } }))} 
-                      style={{ accentColor: 'var(--primary)' }}
-                    />
-                    <span>{s}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Shine Checkboxes */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Shine</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {['None', 'Subtle', 'Premium', 'High'].map(s => (
-                  <label key={s} className="filter-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!fabricFilters.shine[s]} 
-                      onChange={(e) => setFabricFilters(prev => ({ ...prev, shine: { ...prev.shine, [s]: e.target.checked } }))} 
-                      style={{ accentColor: 'var(--primary)' }}
-                    />
-                    <span>{s}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Season Checkboxes */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Season</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {['Summer', 'Winter', 'Festive', 'Wedding', 'All Season'].map(s => (
-                  <label key={s} className="filter-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!fabricFilters.season[s]} 
-                      onChange={(e) => setFabricFilters(prev => ({ ...prev, season: { ...prev.season, [s]: e.target.checked } }))} 
-                      style={{ accentColor: 'var(--primary)' }}
-                    />
-                    <span>{s}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Availability Checkboxes */}
-            <div className="filter-group">
-              <h4 className="filter-title" style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '8px', color: '#fff' }}>Availability</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                {['In Stock', 'Low Stock'].map(a => (
-                  <label key={a} className="filter-checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', cursor: 'pointer' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={!!fabricFilters.availability[a]} 
-                      onChange={(e) => setFabricFilters(prev => ({ ...prev, availability: { ...prev.availability, [a]: e.target.checked } }))} 
-                      style={{ accentColor: 'var(--primary)' }}
-                    />
-                    <span>{a}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* MAIN EXPLORER CONTENT */}
-          <div className="fabric-explorer-content" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            
-            {/* Breadcrumb Trail */}
-            <div className="fabric-breadcrumbs" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-              <span onClick={() => setExplorerPath([])} style={{ cursor: 'pointer', color: 'var(--primary)', fontWeight: 'bold' }}>Fabric Shop</span>
-              {explorerPath.map((crumb, idx) => {
-                let label = crumb;
-                if (idx === 0) {
-                  label = FABRIC_MARKETPLACE_DATA.categories[crumb]?.name || crumb;
-                } else if (idx === 1) {
-                  const cat = FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]];
-                  label = cat?.subcategories[crumb]?.name || crumb;
-                } else if (idx === 2) {
-                  const cat = FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]];
-                  const sub = cat?.subcategories[explorerPath[1]];
-                  label = sub?.fabricTypes[crumb]?.name || crumb;
-                } else if (idx === 3) {
-                  const cat = FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]];
-                  const sub = cat?.subcategories[explorerPath[1]];
-                  const type = sub?.fabricTypes[explorerPath[2]];
-                  label = type?.brands[crumb]?.name || crumb;
-                } else if (idx === 4) {
-                  const cat = FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]];
-                  const sub = cat?.subcategories[explorerPath[1]];
-                  const type = sub?.fabricTypes[explorerPath[2]];
-                  const brand = type?.brands[explorerPath[3]];
-                  label = brand?.collections[crumb]?.name || crumb;
-                } else if (idx === 5) {
-                  const cat = FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]];
-                  const sub = cat?.subcategories[explorerPath[1]];
-                  const type = sub?.fabricTypes[explorerPath[2]];
-                  const brand = type?.brands[explorerPath[3]];
-                  const coll = brand?.collections[explorerPath[4]];
-                  const v = coll?.variants.find(item => item.id === crumb);
-                  label = v ? v.color : crumb;
-                }
-                return (
-                  <React.Fragment key={crumb}>
-                    <ChevronRight size={12} />
-                    <span 
-                      onClick={() => setExplorerPath(explorerPath.slice(0, idx + 1))} 
-                      style={{ cursor: 'pointer', color: idx === explorerPath.length - 1 ? '#fff' : 'var(--primary)', fontWeight: idx === explorerPath.length - 1 ? 'bold' : 'normal' }}
-                    >
-                      {label}
-                    </span>
-                  </React.Fragment>
-                );
-              })}
-            </div>
-
-            {/* DUAL MODE DISPLAY */}
-            {isAnyFilterActive() ? (
-              // FILTERED LIST VIEW
-              <div>
-                <div style={{ marginBottom: '16px' }}>
-                  <h3 style={{ fontSize: '1.25rem', color: '#fff' }}>Search & Filter Results</h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Showing {getFilteredVariants().length} matching fabrics</p>
-                </div>
-                {getFilteredVariants().length === 0 ? (
-                  <div className="glass-card" style={{ padding: '40px', textAlign: 'center' }}>
-                    <p style={{ color: 'var(--text-secondary)' }}>No fabrics match your selected filters.</p>
-                    <button 
-                      className="btn btn-primary" 
-                      style={{ marginTop: '16px' }}
-                      onClick={() => setFabricFilters({
-                        brand: {},
-                        priceRange: [0, 10000],
-                        color: {},
-                        stretch: {},
-                        shine: {},
-                        texture: {},
-                        season: {},
-                        availability: {}
-                      })}
-                    >
-                      Clear Filters
-                    </button>
-                  </div>
-                ) : (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-                    {getFilteredVariants().map(v => (
-                      <div key={v.id} className="glass-card fabric-product-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', position: 'relative' }}>
-                        
-                        {/* Wishlist Heart Toggle overlay */}
-                        <button 
-                          onClick={() => {
-                            if (!currentUser) {
-                              if (onLoginRequired) onLoginRequired();
-                              return;
-                            }
-                            if (fabricWishlist.includes(v.id)) {
-                              setFabricWishlist(fabricWishlist.filter(id => id !== v.id));
-                            } else {
-                              setFabricWishlist([...fabricWishlist, v.id]);
-                            }
-                          }}
-                          style={{ position: 'absolute', top: '24px', right: '24px', background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: fabricWishlist.includes(v.id) ? 'var(--primary)' : '#fff', cursor: 'pointer', zIndex: 10 }}
-                        >
-                          <Heart size={16} fill={fabricWishlist.includes(v.id) ? 'var(--primary)' : 'none'} />
-                        </button>
-
-                        <img src={v.image || 'https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80'} alt={v.color} style={{ width: '100%', height: '150px', borderRadius: '8px', objectFit: 'cover' }} />
-                        
-                        <div>
-                          <span style={{ fontSize: '0.72rem', color: 'var(--accent)', fontWeight: 'bold' }}>{v.brandName} • {v.typeName}</span>
-                          <h4 style={{ fontSize: '0.95rem', color: '#fff', fontWeight: 'bold', marginTop: '2px' }}>{v.collName} ({v.color})</h4>
-                          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>Path: {v.catName} &gt; {v.subName}</p>
-                        </div>
-
-                        <div className="flex-row-between" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px', marginTop: 'auto' }}>
-                          <span style={{ color: '#fff', fontWeight: '800', fontSize: '1rem' }}>₹{v.price}/m</span>
-                          <div style={{ display: 'flex', gap: '6px' }}>
-                            <button 
-                              className="btn btn-secondary" 
-                              style={{ padding: '6px', minWidth: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
-                              title="Compare"
-                              onClick={() => {
-                                if (fabricCompareList.includes(v.id)) {
-                                  setFabricCompareList(fabricCompareList.filter(id => id !== v.id));
-                                } else {
-                                  if (fabricCompareList.length >= 2) {
-                                    alert('You can compare a maximum of 2 fabrics.');
-                                  } else {
-                                    setFabricCompareList([...fabricCompareList, v.id]);
-                                  }
-                                }
-                              }}
-                            >
-                              <Layers size={14} style={{ color: fabricCompareList.includes(v.id) ? 'var(--accent)' : '#fff' }} />
-                            </button>
-                            <button 
-                              className="btn btn-primary" 
-                              style={{ padding: '6px 12px', fontSize: '0.75rem' }}
-                              onClick={() => {
-                                setExplorerPath([v.catKey, v.subKey, v.typeKey, v.brandKey, v.collKey, v.id]);
-                              }}
-                            >
-                              View Details
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              // HIERARCHICAL DRILL-DOWN PANELS
-              <div className="fabric-drilldown-panel">
-                {explorerPath.length === 0 && (
-                  // LEVEL 1: Main Categories
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Premium Fabric Marketplace</h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Select a collection category to start exploring premium materials.</p>
-                    </div>
-                    
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-                      {Object.keys(FABRIC_MARKETPLACE_DATA.categories).map(catKey => {
-                        const cat = FABRIC_MARKETPLACE_DATA.categories[catKey];
-                        return (
-                          <div 
-                            key={catKey} 
-                            className="glass-card category-explorer-card" 
-                            style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px', cursor: 'pointer', transition: 'transform 0.2s' }}
-                            onClick={() => setExplorerPath([catKey])}
-                          >
-                            <img src={cat.image} alt={cat.name} style={{ width: '100%', height: '180px', borderRadius: '8px', objectFit: 'cover' }} />
-                            <div className="flex-row-between">
-                              <h3 style={{ fontSize: '1.25rem', color: '#fff', fontWeight: 'bold' }}>{cat.name}</h3>
-                              <ChevronRight size={20} style={{ color: 'var(--primary)' }} />
-                            </div>
-                            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                              Explore tailored materials for {cat.name.toLowerCase()} custom suits, outfits, and seasonal specials.
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                {explorerPath.length === 1 && (
-                  // LEVEL 2: Subcategories
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>
-                        {FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].name} Collection
-                      </h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Choose an occasion or outfit wear style.</p>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-                      {Object.entries(FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].subcategories).map(([subKey, sub]) => (
-                        <div 
-                          key={subKey} 
-                          className="glass-card subcategory-explorer-card" 
-                          style={{ padding: '20px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '10px' }}
-                          onClick={() => setExplorerPath([...explorerPath, subKey])}
-                        >
-                          <div className="flex-row-between">
-                            <h3 style={{ fontSize: '1.15rem', color: '#fff', fontWeight: 'bold' }}>{sub.name}</h3>
-                            <ChevronRight size={18} style={{ color: 'var(--primary)' }} />
-                          </div>
-                          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                            Premium custom tailoring and fits tailored specifically for {sub.name.toLowerCase()}.
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {explorerPath.length === 2 && (
-                  // LEVEL 3: Fabric Types
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Choose Fabric Material Type</h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Select the raw material structure for your design.</p>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-                      {Object.entries(FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].subcategories[explorerPath[1]].fabricTypes).map(([typeKey, type]) => (
-                        <div 
-                          key={typeKey} 
-                          className="glass-card type-explorer-card" 
-                          style={{ padding: '16px', cursor: 'pointer', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}
-                          onClick={() => setExplorerPath([...explorerPath, typeKey])}
-                        >
-                          <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto', color: 'var(--primary)', fontWeight: 'bold' }}>
-                            {type.name.charAt(0)}
-                          </div>
-                          <h4 style={{ color: '#fff', fontWeight: 'bold', fontSize: '1rem' }}>{type.name}</h4>
-                          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>View Brands</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {explorerPath.length === 3 && (
-                  // LEVEL 4: Brand Selection
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Select Brand</h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Choose from our verified luxury weaving partners.</p>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '16px' }}>
-                      {Object.entries(FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].subcategories[explorerPath[1]].fabricTypes[explorerPath[2]].brands).map(([brandKey, brand]) => (
-                        <div 
-                          key={brandKey} 
-                          className="glass-card brand-explorer-card" 
-                          style={{ padding: '20px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '8px' }}
-                          onClick={() => setExplorerPath([...explorerPath, brandKey])}
-                        >
-                          <h3 style={{ color: '#fff', fontWeight: 'bold', fontSize: '1.2rem' }}>{brand.name}</h3>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Official Brand Store</p>
-                          <span style={{ color: 'var(--primary)', fontSize: '0.8rem', fontWeight: 'bold', marginTop: '10px', display: 'block' }}>View Collections &rarr;</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {explorerPath.length === 4 && (
-                  // LEVEL 5: Collection List
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>
-                        {FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].subcategories[explorerPath[1]].fabricTypes[explorerPath[2]].brands[explorerPath[3]].name} Collections
-                      </h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Select a weave series collection to see colors.</p>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
-                      {Object.entries(FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].subcategories[explorerPath[1]].fabricTypes[explorerPath[2]].brands[explorerPath[3]].collections).map(([collKey, coll]) => (
-                        <div 
-                          key={collKey} 
-                          className="glass-card collection-explorer-card" 
-                          style={{ padding: '20px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '8px' }}
-                          onClick={() => setExplorerPath([...explorerPath, collKey])}
-                        >
-                          <h3 style={{ color: '#fff', fontWeight: 'bold', fontSize: '1.1rem' }}>{coll.name}</h3>
-                          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{coll.variants.length} color variants available</p>
-                          <span style={{ color: 'var(--accent)', fontSize: '0.8rem', fontWeight: 'bold', marginTop: '10px' }}>Explore Swatches &rarr;</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {explorerPath.length === 5 && (
-                  // LEVEL 6: Color Variants List
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    <div>
-                      <h2 style={{ fontSize: '1.5rem', marginBottom: '4px' }}>Color Swatches</h2>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Select a color swatch to view technical specifications and buy.</p>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
-                      {FABRIC_MARKETPLACE_DATA.categories[explorerPath[0]].subcategories[explorerPath[1]].fabricTypes[explorerPath[2]].brands[explorerPath[3]].collections[explorerPath[4]].variants.map(v => (
-                        <div 
-                          key={v.id} 
-                          className="glass-card fabric-variant-card" 
-                          style={{ padding: '16px', cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '12px' }}
-                          onClick={() => setExplorerPath([...explorerPath, v.id])}
-                        >
-                          <img src={v.image || 'https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80'} alt={v.color} style={{ width: '100%', height: '150px', borderRadius: '8px', objectFit: 'cover' }} />
-                          <div className="flex-row-between">
-                            <h4 style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.95rem' }}>{v.color}</h4>
-                            <span style={{ width: '20px', height: '20px', borderRadius: '50%', background: v.color === 'Black' ? '#181818' : v.color === 'Navy Blue' ? '#0d1f3d' : v.color === 'Charcoal Grey' ? '#555' : v.color === 'Royal Blue' ? '#1c3a6b' : v.color === 'Brown' ? '#8b5a2b' : v.color === 'Maroon' ? '#800000' : v.color === 'Beige' ? '#d2b48c' : v.color === 'White' ? '#fff' : 'var(--primary)', border: '1px solid rgba(255,255,255,0.2)' }} />
-                          </div>
-                          <div className="flex-row-between" style={{ marginTop: 'auto', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                            <span style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '1rem' }}>₹{v.price}/m</span>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>View Details</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {explorerPath.length === 6 && (
-                  // LEVEL 7: Detailed Swatch View Sheet
-                  (() => {
-                    const catKey = explorerPath[0];
-                    const subKey = explorerPath[1];
-                    const typeKey = explorerPath[2];
-                    const brandKey = explorerPath[3];
-                    const collKey = explorerPath[4];
-                    const varId = explorerPath[5];
-                    
-                    const cat = FABRIC_MARKETPLACE_DATA.categories[catKey];
-                    const sub = cat.subcategories[subKey];
-                    const type = sub.fabricTypes[typeKey];
-                    const brand = type.brands[brandKey];
-                    const coll = brand.collections[collKey];
-                    const v = coll.variants.find(item => item.id === varId);
-                    
-                    if (!v) return <p>Fabric not found.</p>;
-                    
-                    return (
-                      <div className="glass-card fabric-detail-sheet" style={{ padding: '30px', display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '30px' }}>
-                        {/* Left Column: Image, Zoom texture & Swatches selector */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                          <div className="fabric-image-zoom-container" style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px', height: '320px' }}>
-                            <img src={v.image || 'https://images.unsplash.com/photo-1545042679-41d22b2ca130?auto=format&fit=crop&w=300&q=80'} alt={v.color} className="fabric-detail-zoom-img" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease-in-out' }} />
-                            <div className="zoom-text-overlay" style={{ position: 'absolute', bottom: '10px', left: '10px', background: 'rgba(0,0,0,0.6)', color: '#fff', fontSize: '0.72rem', padding: '4px 8px', borderRadius: '4px' }}>
-                              Hover to zoom texture feel
-                            </div>
-                          </div>
-
-                          {/* Swatches picker row */}
-                          <div>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>Other Colors in this Collection:</span>
-                            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                              {coll.variants.map(other => (
-                                <button
-                                  key={other.id}
-                                  onClick={() => setExplorerPath([...explorerPath.slice(0, 5), other.id])}
-                                  title={other.color}
-                                  style={{
-                                    width: '32px',
-                                    height: '32px',
-                                    borderRadius: '50%',
-                                    border: other.id === varId ? '2px solid var(--primary)' : '2px solid rgba(255,255,255,0.2)',
-                                    background: other.color === 'Black' ? '#181818' : other.color === 'Navy Blue' ? '#0d1f3d' : other.color === 'Charcoal Grey' ? '#555' : other.color === 'Royal Blue' ? '#1c3a6b' : other.color === 'Brown' ? '#8b5a2b' : other.color === 'Maroon' ? '#800000' : other.color === 'Beige' ? '#d2b48c' : other.color === 'White' ? '#fff' : 'var(--primary)',
-                                    cursor: 'pointer',
-                                    transform: other.id === varId ? 'scale(1.1)' : 'scale(1)'
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Right Column: Specs table, Feel ratings, CTAs */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                          <div>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--accent)', fontWeight: 'bold', textTransform: 'uppercase' }}>
-                              {brand.name} • {coll.name}
-                            </span>
-                            <h2 style={{ fontSize: '1.8rem', color: '#fff', fontWeight: 'bold', marginTop: '4px' }}>
-                              {type.name} Fabric in {v.color}
-                            </h2>
-                            <span style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--primary)', display: 'block', marginTop: '6px' }}>
-                              ₹{v.price}/meter
-                            </span>
-                          </div>
-
-                          {/* technical specs table */}
-                          <div style={{ background: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                            <h4 style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '10px', color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px' }}>Technical Specifications</h4>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                              <div><strong>Width:</strong> {v.width || '58 inches'}</div>
-                              <div><strong>GSM (Weight):</strong> {v.gsm || '280'} g/m²</div>
-                              <div><strong>Texture Feel:</strong> {v.texture || 'Smooth'}</div>
-                              <div><strong>Stretch Level:</strong> {v.stretch || 'Low'}</div>
-                              <div><strong>Fabric Shine:</strong> {v.shine || 'Subtle'}</div>
-                              <div><strong>Occasion:</strong> {sub.name}</div>
-                              <div><strong>Season:</strong> {v.season || 'All Season'}</div>
-                              <div><strong>Pattern Style:</strong> {v.pattern || 'Solid'}</div>
-                              <div style={{ gridColumn: 'span 2' }}>
-                                <strong>Availability Status:</strong> <span style={{ color: 'var(--success)' }}>{v.availability || 'In Stock'}</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Feel Ratings */}
-                          <div style={{ display: 'flex', gap: '24px', fontSize: '0.82rem' }}>
-                            <div>
-                              <span style={{ color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Softness</span>
-                              <div style={{ display: 'flex', gap: '2px', color: 'var(--warning)' }}>
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                  <Star key={i} size={12} fill={i < 4 ? 'var(--warning)' : 'none'} stroke="var(--warning)" />
-                                ))}
-                              </div>
-                            </div>
-                            <div>
-                              <span style={{ color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Breathability</span>
-                              <div style={{ display: 'flex', gap: '2px', color: 'var(--warning)' }}>
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                  <Star key={i} size={12} fill={i < 4 ? 'var(--warning)' : 'none'} stroke="var(--warning)" />
-                                ))}
-                              </div>
-                            </div>
-                            <div>
-                              <span style={{ color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>Luxury feel</span>
-                              <div style={{ display: 'flex', gap: '2px', color: 'var(--warning)' }}>
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                  <Star key={i} size={12} fill={i < 5 ? 'var(--warning)' : 'none'} stroke="var(--warning)" />
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Meters quantity selector */}
-                          <div className="flex-row-between" style={{ background: 'rgba(255,255,255,0.02)', padding: '10px 16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', maxWidth: '220px' }}>
-                            <span style={{ fontSize: '0.85rem', color: '#fff' }}>Length (Meters):</span>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <button 
-                                className="btn btn-secondary" 
-                                style={{ padding: '2px 8px', minHeight: '26px' }}
-                                onClick={() => setSelectedMeters(prev => Math.max(1, prev - 1))}
-                              >
-                                -
-                              </button>
-                              <strong style={{ fontSize: '1rem', color: '#fff' }}>{selectedMeters}</strong>
-                              <button 
-                                className="btn btn-secondary" 
-                                style={{ padding: '2px 8px', minHeight: '26px' }}
-                                onClick={() => setSelectedMeters(prev => prev + 1)}
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* CTA Actions */}
-                          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px', marginTop: '10px' }}>
-                            <button 
-                              className="btn btn-primary"
-                              onClick={() => {
-                                addFabricToCart(v, selectedMeters, brand.name, coll.name);
-                              }}
-                            >
-                              Add to Cart (₹{v.price * selectedMeters})
-                            </button>
-                            <button 
-                              className="btn btn-secondary"
-                              onClick={() => {
-                                if (!currentUser) {
-                                  if (onLoginRequired) onLoginRequired();
-                                  return;
-                                  }
-                                if (fabricWishlist.includes(v.id)) {
-                                  setFabricWishlist(fabricWishlist.filter(id => id !== v.id));
-                                } else {
-                                  setFabricWishlist([...fabricWishlist, v.id]);
-                                }
-                              }}
-                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                            >
-                              <Heart size={14} fill={fabricWishlist.includes(v.id) ? 'var(--primary)' : 'none'} style={{ color: fabricWishlist.includes(v.id) ? 'var(--primary)' : '#fff' }} />
-                              {fabricWishlist.includes(v.id) ? 'Wishlisted' : 'Add to Wishlist'}
-                            </button>
-                          </div>
-
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                            <button 
-                              className="btn btn-ghost"
-                              style={{ border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                              onClick={() => {
-                                if (fabricCompareList.includes(v.id)) {
-                                  setFabricCompareList(fabricCompareList.filter(id => id !== v.id));
-                                } else {
-                                  if (fabricCompareList.length >= 2) {
-                                    alert('You can compare a maximum of 2 fabrics.');
-                                  } else {
-                                    setFabricCompareList([...fabricCompareList, v.id]);
-                                  }
-                                }
-                              }}
-                            >
-                              <Layers size={14} style={{ color: fabricCompareList.includes(v.id) ? 'var(--accent)' : '#fff' }} />
-                              {fabricCompareList.includes(v.id) ? 'Comparing' : 'Compare Swatch'}
-                            </button>
-                            <button 
-                              className="btn btn-accent"
-                              onClick={() => {
-                                addFabricToCart(v, selectedMeters, brand.name, coll.name);
-                                setCartOpen(true);
-                              }}
-                            >
-                              Buy Now
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })()
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* FLOATING COMPARE BAR */}
-          {fabricCompareList.length > 0 && (
-            <div className="fabric-compare-bar animate-fade-in" style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(20, 18, 38, 0.95)', border: '1px solid var(--primary)', borderRadius: '12px', padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '20px', zIndex: 999, boxShadow: 'var(--shadow-glow)' }}>
-              <span style={{ fontSize: '0.85rem', color: '#fff' }}>
-                Compare List: <strong>{fabricCompareList.length}/2</strong> fabrics selected
-              </span>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button 
-                  className="btn btn-secondary" 
-                  style={{ padding: '6px 12px', fontSize: '0.78rem' }}
-                  onClick={() => setFabricCompareList([])}
-                >
-                  Reset
-                </button>
-                <button 
-                  className="btn btn-primary" 
-                  style={{ padding: '6px 16px', fontSize: '0.78rem' }}
-                  disabled={fabricCompareList.length < 2}
-                  onClick={() => setCompareModalOpen(true)}
-                >
-                  Compare Now
-                </button>
-              </div>
-            </div>
-          )}
-
-          {compareModalOpen && (
-            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'flex-start', paddingTop: '3rem', overflowY: 'auto', justifyContent: 'center', zIndex: 1000 }}>
-              <div className="glass-card" style={{ width: '800px', maxWidth: '90%', padding: '24px', position: 'relative', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <button 
-                  onClick={() => {
-                    setCompareModalOpen(false);
-                  }} 
-                  style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
-                >
-                  <X size={20} />
-                </button>
-                
-                <h3 style={{ fontSize: '1.25rem', color: '#fff', fontWeight: 'bold' }}>Fabric Comparison</h3>
-                
-                <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', textAlign: 'left' }}>
-                    <thead>
-                      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                        <th style={{ padding: '10px' }}>Specification</th>
-                        {fabricCompareList.map(id => {
-                          const flatList = getAllVariants();
-                          const item = flatList.find(f => f.id === id);
-                          return (
-                            <th key={id} style={{ padding: '10px', color: 'var(--primary)' }}>
-                              {item ? `${item.brandName} - ${item.color}` : 'Unknown Fabric'}
-                            </th>
-                          );
-                        })}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        { label: 'Category', key: 'catName' },
-                        { label: 'Subcategory', key: 'subName' },
-                        { label: 'Weave Type', key: 'typeName' },
-                        { label: 'Collection', key: 'collName' },
-                        { label: 'Price (per meter)', key: 'price', format: (v) => `₹${v}` },
-                        { label: 'Width', key: 'width' },
-                        { label: 'Weight (GSM)', key: 'gsm' },
-                        { label: 'Texture feel', key: 'texture' },
-                        { label: 'Stretch level', key: 'stretch' },
-                        { label: 'Fabric Shine', key: 'shine' },
-                        { label: 'Season compatibility', key: 'season' },
-                        { label: 'Pattern', key: 'pattern' }
-                      ].map(row => (
-                        <tr key={row.label} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                          <td style={{ padding: '10px', fontWeight: 'bold', color: 'var(--text-secondary)' }}>{row.label}</td>
-                          {fabricCompareList.map(id => {
-                            const flatList = getAllVariants();
-                            const item = flatList.find(f => f.id === id);
-                            const val = item ? item[row.key] : '-';
-                            return (
-                              <td key={id} style={{ padding: '10px', color: '#fff' }}>
-                                {row.format ? row.format(val) : val}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                  <button className="btn btn-primary" onClick={() => setCompareModalOpen(false)}>
-                    Close Comparison
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-        </div>
+        <CottonFabricsMarketplace
+          theme={theme}
+          currentUser={currentUser}
+          onLoginRequired={onLoginRequired}
+          cart={cart}
+          setCart={setCart}
+          setCartOpen={setCartOpen}
+          wishlist={wishlist}
+          setWishlist={setWishlist}
+          orders={orders}
+          addOrder={addOrder}
+          tailors={tailors}
+          onNavigate={(dest) => {
+            if (dest === 'home') {
+              setActiveHub('home');
+              setSelectedCategory('all');
+              navigate('/');
+            } else if (dest === 'categories') {
+              setActiveHub('home');
+              navigate('/#categories-section');
+            } else if (dest === 'cart') {
+              setCartOpen(true);
+            } else if (dest.startsWith('/')) {
+              navigate(dest);
+            }
+          }}
+        />
       )}
-
 
       {/* --- HUB 3: READY DESIGNS --- */}
       {activeHub === 'sarees' && (() => {

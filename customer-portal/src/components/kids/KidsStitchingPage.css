@@ -1,0 +1,1448 @@
+/* ==========================================================================
+   STITCHBEEZ - KIDS STITCHING & TAILORING STYLESHEET
+   Supports Desktop (1920, 1440, 1366), Tablet (768-1199), and Mobile (<768)
+   Full Light & Dark Theme Support
+   ========================================================================== */
+
+:root {
+  --kids-pink: #FF087A;
+  --kids-pink-hover: #E11D74;
+  --kids-pink-light: #FFF0F5;
+  --kids-pink-soft: #FFF5F8;
+  --kids-pink-border: #FFD6E7;
+  --kids-blue: #3B82F6;
+  --kids-blue-light: #EFF6FF;
+  --kids-navy: #10213F;
+  --kids-navy-muted: #52627A;
+  --kids-bg-creamy: #FFFDFB;
+  --kids-card-bg: #FFFFFF;
+  --kids-border: #E8E8EE;
+  --kids-border-light: #F1F2F6;
+  --kids-shadow-sm: 0 2px 8px rgba(16, 33, 63, 0.04);
+  --kids-shadow-md: 0 6px 20px rgba(16, 33, 63, 0.08);
+  --kids-shadow-lg: 0 12px 32px rgba(16, 33, 63, 0.12);
+  --kids-radius-sm: 10px;
+  --kids-radius-md: 16px;
+  --kids-radius-lg: 24px;
+  --kids-radius-full: 9999px;
+  --kids-font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --kids-font-serif: 'Playfair Display', Georgia, serif;
+}
+
+/* ==========================================================================
+   DARK MODE OVERRIDES
+   ========================================================================== */
+.kids-page-wrapper.dark,
+body.dark-theme .kids-page-wrapper {
+  --kids-navy: #F8FAFC;
+  --kids-navy-muted: #94A3B8;
+  --kids-bg-creamy: #0B0F17;
+  --kids-card-bg: #141B26;
+  --kids-border: #222C3A;
+  --kids-border-light: #1A2332;
+  --kids-pink-light: rgba(255, 8, 122, 0.12);
+  --kids-pink-soft: #121824;
+  --kids-pink-border: rgba(255, 8, 122, 0.25);
+  --kids-blue-light: rgba(59, 130, 246, 0.12);
+  --kids-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --kids-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
+  --kids-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.kids-page-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--kids-bg-creamy);
+  color: var(--kids-navy);
+  font-family: var(--kids-font-display);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Container Utility - 100% Full Width (No Left/Right Gaps) */
+.kids-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+/* Section Header Shared */
+.kids-section-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.kids-eyebrow {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--kids-pink);
+  margin-bottom: 8px;
+}
+
+.kids-section-title {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+  font-family: var(--kids-font-display);
+}
+
+.kids-section-subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--kids-navy-muted);
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* Buttons */
+.kids-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-radius: var(--kids-radius-full);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+
+.kids-btn-primary,
+.kids-page-wrapper .kids-btn-primary,
+.kids-page-wrapper .kids-btn-primary *,
+.kids-page-wrapper .kids-btn-primary span,
+.kids-page-wrapper .kids-btn-primary svg,
+body.light-theme .kids-page-wrapper .kids-btn-primary,
+body.light-theme .kids-page-wrapper .kids-btn-primary *,
+body.light-theme .kids-page-wrapper .kids-btn-primary span,
+body.light-theme .kids-page-wrapper .kids-btn-primary svg {
+  background: linear-gradient(135deg, #E11D74 0%, #FF087A 100%);
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 116, 0.32);
+}
+
+.kids-btn-primary:hover,
+.kids-page-wrapper .kids-btn-primary:hover,
+.kids-page-wrapper .kids-btn-primary:hover *,
+.kids-page-wrapper .kids-btn-primary:hover span,
+body.light-theme .kids-page-wrapper .kids-btn-primary:hover,
+body.light-theme .kids-page-wrapper .kids-btn-primary:hover * {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(225, 29, 116, 0.42);
+  background: linear-gradient(135deg, #D01066 0%, #F50070 100%);
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.kids-btn-outline,
+.kids-page-wrapper .kids-btn-outline,
+body.light-theme .kids-page-wrapper .kids-btn-outline {
+  background: #FFFFFF;
+  color: var(--kids-navy) !important;
+  -webkit-text-fill-color: var(--kids-navy) !important;
+  border: 1.5px solid #CBD5E1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.kids-btn-outline *,
+.kids-btn-outline span,
+.kids-page-wrapper .kids-btn-outline *,
+.kids-page-wrapper .kids-btn-outline span,
+body.light-theme .kids-page-wrapper .kids-btn-outline *,
+body.light-theme .kids-page-wrapper .kids-btn-outline span {
+  color: var(--kids-navy) !important;
+  -webkit-text-fill-color: var(--kids-navy) !important;
+}
+
+.kids-btn-outline:hover,
+.kids-page-wrapper .kids-btn-outline:hover,
+body.light-theme .kids-page-wrapper .kids-btn-outline:hover {
+  border-color: var(--kids-pink);
+  color: var(--kids-pink) !important;
+  -webkit-text-fill-color: var(--kids-pink) !important;
+  background-color: var(--kids-pink-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 8, 122, 0.15);
+}
+
+.kids-btn-outline:hover *,
+.kids-btn-outline:hover span,
+.kids-page-wrapper .kids-btn-outline:hover *,
+.kids-page-wrapper .kids-btn-outline:hover span,
+body.light-theme .kids-page-wrapper .kids-btn-outline:hover * {
+  color: var(--kids-pink) !important;
+  -webkit-text-fill-color: var(--kids-pink) !important;
+}
+
+.kids-page-wrapper.dark .kids-btn-outline {
+  background: #151D2A;
+  border-color: #2E3B52;
+  color: #F8FAFC !important;
+  -webkit-text-fill-color: #F8FAFC !important;
+}
+
+.kids-page-wrapper.dark .kids-btn-outline * {
+  color: #F8FAFC !important;
+  -webkit-text-fill-color: #F8FAFC !important;
+}
+
+.kids-btn-sm {
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  border-radius: var(--kids-radius-full);
+}
+
+/* ==========================================================================
+   1. HERO SECTION (100% FULL BLEED ULTRA-WIDE BANNER)
+   ========================================================================== */
+.kids-hero-section {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  background-color: #FFFDFB;
+}
+
+.kids-hero-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.kids-hero-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+
+/* Soft gradient transition over the left text area */
+.kids-hero-bg-gradient-fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 55%;
+  background: linear-gradient(
+    90deg, 
+    rgba(255, 253, 251, 0.96) 0%, 
+    rgba(255, 253, 251, 0.92) 36%, 
+    rgba(255, 253, 251, 0.65) 54%, 
+    rgba(255, 253, 251, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.kids-page-wrapper.dark .kids-hero-section {
+  background-color: #0B0F17;
+}
+
+.kids-page-wrapper.dark .kids-hero-bg-gradient-fade {
+  background: linear-gradient(
+    90deg, 
+    rgba(11, 15, 23, 0.96) 0%, 
+    rgba(11, 15, 23, 0.92) 36%, 
+    rgba(11, 15, 23, 0.65) 54%, 
+    rgba(11, 15, 23, 0) 100%
+  );
+}
+
+.kids-hero-content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 44px 48px;
+  box-sizing: border-box;
+}
+
+.kids-hero-left {
+  max-width: 620px;
+}
+
+.kids-hero-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.12;
+  color: var(--kids-navy);
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.kids-hero-title-accent {
+  color: var(--kids-pink);
+  font-family: var(--kids-font-serif);
+  font-style: italic;
+  font-weight: 700;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.kids-hero-desc {
+  font-size: 1.02rem;
+  color: var(--kids-navy-muted);
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+}
+
+/* 4 Feature Badges */
+.kids-hero-features-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.kids-hero-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.kids-hero-feature-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--kids-pink-light);
+  border: 1.5px solid var(--kids-pink-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kids-pink);
+  transition: transform 0.2s ease;
+}
+
+.kids-hero-feature-item:hover .kids-hero-feature-icon-circle {
+  transform: scale(1.08) translateY(-2px);
+}
+
+.kids-hero-feature-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--kids-navy);
+  line-height: 1.25;
+}
+
+.kids-hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   2. CATEGORIES SECTION (10 CARDS)
+   ========================================================================== */
+.kids-categories-section {
+  padding: 40px 0 50px 0;
+}
+
+.kids-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 12px;
+}
+
+.kids-category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border-radius: var(--kids-radius-md);
+  padding: 8px 4px 10px 4px;
+  transition: all 0.25s ease;
+  user-select: none;
+  text-decoration: none;
+}
+
+.kids-category-card:hover {
+  transform: translateY(-4px);
+}
+
+.kids-category-thumb-box {
+  width: 100%;
+  aspect-ratio: 1 / 1.12;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: var(--kids-card-bg);
+  border: 1px solid var(--kids-border);
+  box-shadow: var(--kids-shadow-sm);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kids-category-card:hover .kids-category-thumb-box {
+  border-color: var(--kids-pink);
+  box-shadow: 0 8px 18px rgba(255, 8, 122, 0.15);
+}
+
+.kids-category-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.kids-category-card:hover .kids-category-thumb-img {
+  transform: scale(1.05);
+}
+
+.kids-category-name {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--kids-navy);
+  margin: 0 0 3px 0;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 28px;
+}
+
+.kids-category-arrow {
+  color: var(--kids-pink);
+  font-size: 0.85rem;
+  font-weight: 800;
+  transition: transform 0.2s ease;
+}
+
+.kids-category-card:hover .kids-category-arrow {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   3. TWO MAIN STITCHING OPTIONS (SIDE-BY-SIDE CARDS)
+   ========================================================================== */
+.kids-services-section {
+  padding: 30px 0 50px 0;
+}
+
+.kids-services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.kids-service-banner-card {
+  background: var(--kids-card-bg);
+  border: 1px solid var(--kids-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--kids-shadow-sm);
+  display: flex;
+  align-items: stretch;
+  min-height: 310px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.kids-service-banner-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--kids-shadow-md);
+  border-color: var(--kids-pink-border);
+}
+
+.kids-service-left-col {
+  flex: 0.92;
+  padding: 24px 20px 24px 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.kids-service-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kids-service-number-badge {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.kids-badge-pink {
+  background: linear-gradient(135deg, #E11D74 0%, #FF087A 100%);
+  box-shadow: 0 2px 8px rgba(225, 29, 116, 0.3);
+}
+
+.kids-badge-blue {
+  background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.kids-service-heading {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.kids-service-check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kids-service-check-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.82rem;
+  color: var(--kids-navy);
+  font-weight: 500;
+}
+
+.kids-check-icon {
+  color: var(--kids-pink);
+  min-width: 14px;
+}
+
+.kids-service-btn-container {
+  margin-top: auto;
+}
+
+.kids-service-right-visual {
+  flex: 1.35;
+  position: relative;
+  overflow: hidden;
+  min-height: 275px;
+}
+
+.kids-service-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.kids-service-card-tailor .kids-service-img {
+  object-position: 95% center;
+}
+
+.kids-service-card-designer .kids-service-img {
+  object-position: 82% center;
+}
+
+/* Gradient fade overlays blending smoothly from card background into photos */
+.kids-service-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.kids-service-fade-overlay.tailor-fade {
+  background: linear-gradient(
+    to right,
+    #FFFFFF 0%,
+    rgba(255, 255, 255, 0.98) 10%,
+    rgba(255, 235, 243, 0.85) 30%,
+    rgba(255, 242, 248, 0.4) 65%,
+    transparent 100%
+  );
+}
+
+.kids-service-fade-overlay.designer-fade {
+  background: linear-gradient(
+    to right,
+    #FFFFFF 0%,
+    rgba(255, 255, 255, 0.98) 10%,
+    rgba(224, 242, 254, 0.85) 30%,
+    rgba(238, 246, 255, 0.4) 65%,
+    transparent 100%
+  );
+}
+
+.kids-page-wrapper.dark .kids-service-fade-overlay.tailor-fade {
+  background: linear-gradient(
+    to right,
+    var(--kids-card-bg) 0%,
+    rgba(19, 27, 46, 0.96) 12%,
+    rgba(225, 29, 116, 0.28) 36%,
+    transparent 100%
+  );
+}
+
+.kids-page-wrapper.dark .kids-service-fade-overlay.designer-fade {
+  background: linear-gradient(
+    to right,
+    var(--kids-card-bg) 0%,
+    rgba(19, 27, 46, 0.96) 12%,
+    rgba(37, 99, 235, 0.28) 36%,
+    transparent 100%
+  );
+}
+
+/* ==========================================================================
+   4. PREMIUM FABRICS SECTION (CAROUSEL)
+   ========================================================================== */
+.kids-fabrics-section {
+  padding: 40px 0 50px 0;
+}
+
+.kids-fabrics-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.kids-carousel-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.kids-carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--kids-card-bg);
+  border: 1px solid var(--kids-border);
+  box-shadow: var(--kids-shadow-md);
+  color: var(--kids-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.kids-carousel-nav-btn:hover {
+  background: var(--kids-pink);
+  color: #FFFFFF;
+  border-color: var(--kids-pink);
+}
+
+.kids-carousel-btn-prev {
+  left: -18px;
+}
+
+.kids-carousel-btn-next {
+  right: -18px;
+}
+
+.kids-fabrics-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 6px 2px 14px 2px;
+}
+
+.kids-fabrics-track::-webkit-scrollbar {
+  display: none;
+}
+
+.kids-fabric-card {
+  flex: 0 0 calc(10% - 14.4px);
+  min-width: 108px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.kids-fabric-card:hover {
+  transform: translateY(-4px);
+}
+
+.kids-fabric-swatch-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1.5px solid var(--kids-border);
+  box-shadow: var(--kids-shadow-sm);
+  margin-bottom: 8px;
+  background-color: var(--kids-card-bg);
+  transition: all 0.2s ease;
+}
+
+.kids-fabric-card:hover .kids-fabric-swatch-box {
+  border-color: var(--kids-pink);
+  box-shadow: 0 6px 16px rgba(255, 8, 122, 0.2);
+}
+
+.kids-fabric-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.kids-fabric-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--kids-navy);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   5. ALL AGE GROUPS (6 CARDS)
+   ========================================================================== */
+.kids-age-section {
+  padding: 40px 0 50px 0;
+}
+
+.kids-age-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.kids-age-card {
+  background: var(--kids-card-bg);
+  border: 1px solid var(--kids-border);
+  border-radius: var(--kids-radius-md);
+  overflow: hidden;
+  box-shadow: var(--kids-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.kids-age-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--kids-shadow-md);
+  border-color: var(--kids-pink);
+}
+
+.kids-age-img-box {
+  width: 100%;
+  aspect-ratio: 1.1 / 1;
+  overflow: hidden;
+  background-color: #F8FAFC;
+}
+
+.kids-age-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.kids-age-card:hover .kids-age-img {
+  transform: scale(1.06);
+}
+
+.kids-age-content {
+  padding: 10px 8px 12px 8px;
+}
+
+.kids-age-label {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 2px 0;
+}
+
+.kids-age-range {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--kids-navy-muted);
+  margin: 0;
+}
+
+/* ==========================================================================
+   6. SIMPLE AND TRANSPARENT PROCESS (HOW IT WORKS)
+   ========================================================================== */
+.kids-process-section {
+  padding: 40px 0 50px 0;
+}
+
+.kids-process-steps-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  position: relative;
+}
+
+.kids-process-card {
+  background: var(--kids-card-bg);
+  border: 1px solid var(--kids-border-light);
+  border-radius: var(--kids-radius-md);
+  padding: 20px 12px 18px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: var(--kids-shadow-sm);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.kids-process-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--kids-pink-border);
+  box-shadow: var(--kids-shadow-md);
+}
+
+.kids-process-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--kids-pink-light);
+  border: 1.5px solid var(--kids-pink-border);
+  color: var(--kids-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.kids-process-step-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 6px 0;
+}
+
+.kids-process-step-sub {
+  font-size: 0.72rem;
+  color: var(--kids-navy-muted);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* Connecting arrows between steps */
+.kids-process-connector-arrow {
+  position: absolute;
+  top: 42px;
+  right: -10px;
+  color: #CBD5E1;
+  z-index: 5;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   7. LOVED BY PARENTS (REVIEWS)
+   ========================================================================== */
+.kids-reviews-section {
+  padding: 40px 0 50px 0;
+}
+
+.kids-reviews-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.kids-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.kids-review-card {
+  background: var(--kids-card-bg);
+  border: 1px solid var(--kids-border);
+  border-radius: var(--kids-radius-md);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--kids-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kids-review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--kids-shadow-md);
+}
+
+.kids-review-child-photo {
+  width: 76px;
+  height: 76px;
+  min-width: 76px;
+  border-radius: var(--kids-radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--kids-border);
+}
+
+.kids-review-content {
+  flex: 1;
+}
+
+.kids-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #F59E0B;
+  margin-bottom: 6px;
+}
+
+.kids-review-text {
+  font-size: 0.78rem;
+  color: var(--kids-navy);
+  line-height: 1.38;
+  margin: 0 0 6px 0;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.kids-review-author-meta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--kids-navy-muted);
+}
+
+/* ==========================================================================
+   8. FINAL CTA BANNER
+   ========================================================================== */
+.kids-final-cta-section {
+  padding: 30px 0 40px 0;
+}
+
+.kids-final-cta-container {
+  width: 100%;
+  border-radius: 24px;
+  background: #FFF2F6;
+  border: 1px solid #FFD6E7;
+  box-shadow: 0 6px 24px rgba(255, 8, 122, 0.06);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  overflow: hidden;
+  height: 165px;
+  min-height: 165px;
+  position: relative;
+}
+
+.kids-page-wrapper.dark .kids-final-cta-container {
+  background: #151D2A;
+  border-color: #263346;
+}
+
+.kids-final-cta-left-img {
+  flex: 0 0 auto;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.kids-final-cta-left-img img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  display: block;
+}
+
+.kids-final-cta-right-img {
+  flex: 0 0 auto;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.kids-final-cta-right-img img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  display: block;
+}
+
+/* Edge fades blending seamlessly into the soft pink center background */
+.kids-cta-fade-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.kids-cta-fade-overlay.left-fade {
+  right: 0;
+  width: 60px;
+  background: linear-gradient(to right, transparent 0%, rgba(255, 242, 246, 0.7) 40%, #FFF2F6 100%);
+}
+
+.kids-cta-fade-overlay.right-fade {
+  left: 0;
+  width: 60px;
+  background: linear-gradient(to left, transparent 0%, rgba(255, 242, 246, 0.7) 40%, #FFF2F6 100%);
+}
+
+.kids-page-wrapper.dark .kids-cta-fade-overlay.left-fade {
+  background: linear-gradient(to right, transparent 0%, rgba(21, 29, 42, 0.7) 40%, #151D2A 100%);
+}
+
+.kids-page-wrapper.dark .kids-cta-fade-overlay.right-fade {
+  background: linear-gradient(to left, transparent 0%, rgba(21, 29, 42, 0.7) 40%, #151D2A 100%);
+}
+
+.kids-final-cta-center-text {
+  flex: 1;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+  min-width: 320px;
+}
+
+.kids-final-cta-title {
+  font-family: var(--kids-font-serif, 'Playfair Display', Georgia, serif);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.kids-final-cta-subtitle {
+  font-size: 0.86rem;
+  color: var(--kids-navy-muted);
+  margin: 0 0 18px 0;
+  text-align: center;
+}
+
+.kids-final-cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: nowrap;
+}
+
+.kids-final-cta-buttons .kids-btn {
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #FFFFFF !important;
+}
+
+.kids-final-cta-buttons .kids-btn-primary {
+  background: linear-gradient(135deg, #E11D74 0%, #FF087A 100%);
+  border: 1.5px solid #FF087A;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 116, 0.28);
+}
+
+.kids-final-cta-buttons .kids-btn-primary:hover {
+  background: linear-gradient(135deg, #D01066 0%, #F50070 100%);
+  border-color: #F50070;
+  color: #FFFFFF !important;
+}
+
+.kids-final-cta-buttons .kids-btn-outline {
+  background: #FFFFFF;
+  border: 1.5px solid #FF087A;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.kids-final-cta-buttons .kids-btn-outline,
+.kids-final-cta-buttons .kids-btn-outline *,
+.kids-final-cta-buttons .kids-btn-outline span {
+  color: var(--kids-navy) !important;
+  -webkit-text-fill-color: var(--kids-navy) !important;
+}
+
+.kids-final-cta-buttons .kids-btn-outline:hover {
+  background: #FF087A;
+  border-color: #FF087A;
+  box-shadow: 0 4px 14px rgba(255, 8, 122, 0.3);
+}
+
+.kids-final-cta-buttons .kids-btn-outline:hover,
+.kids-final-cta-buttons .kids-btn-outline:hover *,
+.kids-final-cta-buttons .kids-btn-outline:hover span {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+.kids-page-wrapper.dark .kids-final-cta-buttons .kids-btn-outline {
+  background: #1E293B;
+  border-color: #FF087A;
+}
+
+.kids-page-wrapper.dark .kids-final-cta-buttons .kids-btn-outline,
+.kids-page-wrapper.dark .kids-final-cta-buttons .kids-btn-outline * {
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+
+/* Hide floating cart button on Kids Stitching page */
+body:has(.kids-page-wrapper) button[style*="position: fixed"],
+.kids-page-wrapper ~ button[style*="position: fixed"] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   9. BOTTOM FEATURE STRIP
+   ========================================================================== */
+.kids-bottom-strip {
+  width: 100%;
+  border-top: 1px solid var(--kids-border);
+  background-color: var(--kids-card-bg);
+  padding: 16px 0;
+}
+
+.kids-bottom-strip-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.kids-bottom-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--kids-navy);
+}
+
+.kids-bottom-strip-icon {
+  color: var(--kids-pink);
+}
+
+/* ==========================================================================
+   MODALS: FABRIC DETAILS & REVIEWS
+   ========================================================================== */
+.kids-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 15, 29, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: kidsFadeIn 0.2s ease-out;
+}
+
+.kids-modal-card {
+  background: var(--kids-card-bg);
+  border: 1px solid var(--kids-border);
+  border-radius: var(--kids-radius-lg);
+  box-shadow: var(--kids-shadow-lg);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 28px;
+  animation: kidsScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kids-modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--kids-border-light);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kids-navy);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kids-modal-close-btn:hover {
+  background: var(--kids-pink);
+  color: #FFFFFF;
+}
+
+@keyframes kidsFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes kidsScaleUp {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIVENESS: TABLET (768px - 1199px)
+   ========================================================================== */
+@media (max-width: 1199px) {
+  .kids-hero-section {
+    min-height: 480px;
+  }
+  .kids-hero-content-layer {
+    padding: 36px 32px;
+  }
+  .kids-hero-left {
+    max-width: 520px;
+  }
+  .kids-hero-title {
+    font-size: 2.6rem;
+  }
+  .kids-categories-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .kids-services-grid {
+    grid-template-columns: 1fr;
+  }
+  .kids-age-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .kids-process-steps-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .kids-process-connector-arrow {
+    display: none;
+  }
+  .kids-reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .kids-review-card:last-child {
+    display: none;
+  }
+  .kids-final-cta-container {
+    height: auto;
+    min-height: auto;
+    flex-direction: column;
+  }
+  .kids-final-cta-left-img,
+  .kids-final-cta-right-img {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 150px;
+    flex: 0 0 150px;
+  }
+  .kids-final-cta-left-img img,
+  .kids-final-cta-right-img img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVENESS: MOBILE (< 768px)
+   ========================================================================== */
+@media (max-width: 767px) {
+  .kids-container {
+    padding: 0 16px;
+  }
+  .kids-hero-section {
+    min-height: auto;
+    flex-direction: column-reverse;
+  }
+  .kids-hero-bg-container {
+    position: relative;
+    width: 100%;
+    height: 240px;
+  }
+  .kids-hero-bg-gradient-fade {
+    display: none;
+  }
+  .kids-hero-content-layer {
+    padding: 24px 16px 20px 16px;
+  }
+  .kids-hero-left {
+    max-width: 100%;
+    text-align: center;
+  }
+  .kids-hero-title {
+    font-size: 2.1rem;
+  }
+  .kids-hero-features-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .kids-hero-cta-group {
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+  }
+  .kids-hero-cta-group .kids-btn {
+    width: 100%;
+  }
+  .kids-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .kids-services-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .kids-service-banner-card {
+    flex-direction: column;
+  }
+  .kids-service-left-col {
+    padding: 20px 18px;
+  }
+  .kids-service-right-visual {
+    height: 200px;
+    min-height: 200px;
+  }
+  .kids-service-fade-overlay {
+    width: 100%;
+    height: 40%;
+    bottom: auto;
+  }
+  .kids-service-fade-overlay.tailor-fade {
+    background: linear-gradient(
+      to bottom,
+      #FFFFFF 0%,
+      rgba(255, 235, 243, 0.85) 40%,
+      transparent 100%
+    );
+  }
+  .kids-service-fade-overlay.designer-fade {
+    background: linear-gradient(
+      to bottom,
+      #FFFFFF 0%,
+      rgba(224, 242, 254, 0.85) 40%,
+      transparent 100%
+    );
+  }
+  .kids-page-wrapper.dark .kids-service-fade-overlay.tailor-fade {
+    background: linear-gradient(
+      to bottom,
+      var(--kids-card-bg) 0%,
+      rgba(225, 29, 116, 0.25) 40%,
+      transparent 100%
+    );
+  }
+  .kids-page-wrapper.dark .kids-service-fade-overlay.designer-fade {
+    background: linear-gradient(
+      to bottom,
+      var(--kids-card-bg) 0%,
+      rgba(37, 99, 235, 0.25) 40%,
+      transparent 100%
+    );
+  }
+  .kids-age-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .kids-process-steps-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .kids-reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .kids-review-card:last-child {
+    display: flex;
+  }
+  .kids-final-cta-container {
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+  }
+  .kids-final-cta-left-img,
+  .kids-final-cta-right-img {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 130px;
+    flex: 0 0 130px;
+  }
+  .kids-final-cta-left-img img,
+  .kids-final-cta-right-img img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .kids-final-cta-center-text {
+    padding: 20px 16px;
+    text-align: center;
+    align-items: center;
+  }
+  .kids-final-cta-buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+  .kids-final-cta-buttons .kids-btn {
+    width: 100%;
+  }
+  .kids-bottom-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}

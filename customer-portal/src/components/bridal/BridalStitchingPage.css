@@ -1,0 +1,1957 @@
+/* ==========================================================================
+   STITCHBEEZ BRIDAL STITCHING & TAILORING MASTER STYLES
+   100% Full-Width, Exact UI Matching, 7-Second Trending Image Alternation & Dark Mode
+   ========================================================================== */
+
+:root {
+  --bridal-pink: #FF008A;
+  --bridal-pink-hover: #E60078;
+  --bridal-navy: #071B49;
+  --bridal-subtext: #425579;
+  --bridal-bg-soft: #FFF0F5;
+  --bridal-border: #F0E7ED;
+  --bridal-font-serif: 'Playfair Display', Georgia, serif;
+  --bridal-font-sans: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --bridal-font-script: 'Great Vibes', 'Brush Script MT', cursive;
+}
+
+/* 100% Full-Width Wrapper */
+.bridal-stitching-page-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--bridal-font-sans);
+  background: #FFFFFF;
+  color: var(--bridal-subtext);
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Tokens */
+.bridal-stitching-page-wrapper.dark {
+  background: #10131C;
+  color: #CBD5E1;
+  --bridal-navy: #F7F8FC;
+  --bridal-subtext: #94A3B8;
+  --bridal-bg-soft: #171C28;
+  --bridal-border: #343B4B;
+}
+
+/* Typography & Headings */
+.bridal-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--bridal-pink);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.bridal-section-title {
+  font-family: var(--bridal-font-serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+}
+
+.pink-accent {
+  color: var(--bridal-pink);
+}
+
+.bridal-section-sub {
+  font-size: 0.92rem;
+  color: var(--bridal-subtext);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Buttons */
+.bridal-btn-pink {
+  background: var(--bridal-pink);
+  color: #FFFFFF !important;
+  border: 1px solid var(--bridal-pink);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.28);
+  text-decoration: none;
+}
+
+.bridal-btn-pink:hover {
+  background: var(--bridal-pink-hover);
+  border-color: var(--bridal-pink-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 138, 0.35);
+}
+
+.bridal-btn-outline {
+  background: #FFFFFF;
+  color: var(--bridal-navy) !important;
+  border: 1.5px solid var(--bridal-pink);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-btn-outline {
+  background: rgba(255, 255, 255, 0.05);
+  color: #F7F8FC !important;
+  border-color: rgba(255, 0, 138, 0.6);
+}
+
+.bridal-btn-outline:hover {
+  background: #FFF0F5;
+  color: var(--bridal-pink) !important;
+  transform: translateY(-2px);
+}
+
+/* 100% Full-Width Section Containers */
+.bridal-section-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 34px 48px;
+  box-sizing: border-box;
+}
+
+.bridal-section-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.bridal-section-link-btn {
+  background: none;
+  border: none;
+  color: var(--bridal-pink);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease;
+}
+
+.bridal-section-link-btn:hover {
+  transform: translateX(3px);
+}
+
+/* Carousel Navigation Arrows */
+.bridal-carousel-nav-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.bridal-nav-arrow-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid var(--bridal-border);
+  color: var(--bridal-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(7, 27, 73, 0.08);
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-nav-arrow-btn {
+  background: #1C2230;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.bridal-nav-arrow-btn:hover {
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+  border-color: var(--bridal-pink);
+  transform: scale(1.08);
+}
+
+/* ==========================================================================
+   SECTION 1: HERO SECTION
+   ========================================================================== */
+.bridal-hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  background-color: #FFFDFB;
+  overflow: hidden;
+}
+
+.bridal-hero-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.bridal-hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+
+/* Cursive script watermark in top right */
+.bridal-hero-script-watermark {
+  position: absolute;
+  top: 36px;
+  right: 50px;
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+}
+
+.script-text {
+  font-family: var(--bridal-font-script);
+  font-size: 2.2rem;
+  color: #071B49;
+  line-height: 1.15;
+  transform: rotate(-3deg);
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.8);
+}
+
+.script-heart {
+  color: var(--bridal-pink);
+  font-size: 1.4rem;
+  margin-top: 2px;
+  display: block;
+  line-height: 1;
+}
+
+.bridal-hero-content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 100%;
+  padding: 60px 40px 60px clamp(110px, 11vw, 175px);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.bridal-hero-left {
+  max-width: 530px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.bridal-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--bridal-pink);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bridal-hero-title {
+  font-family: var(--bridal-font-serif);
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1.12;
+  color: #071B49;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-hero-title {
+  color: #F7F8FC;
+}
+
+.bridal-hero-title .pink-accent {
+  color: var(--bridal-pink);
+}
+
+.bridal-hero-desc {
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: #263B63;
+  margin: 0;
+  max-width: 490px;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-hero-desc {
+  color: #CDD5E5;
+}
+
+.bridal-hero-features-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 8px 0 16px 0;
+  max-width: 490px;
+}
+
+.bridal-hero-feat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.bridal-feat-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: #071B49;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #FBCFE8;
+  box-shadow: 0 2px 8px rgba(255, 0, 138, 0.08);
+  transition: all 0.25s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-feat-icon-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 0, 138, 0.4);
+  color: #F7F8FC;
+}
+
+.bridal-hero-feat-item:hover .bridal-feat-icon-box {
+  transform: translateY(-2px);
+  border-color: var(--bridal-pink);
+  color: var(--bridal-pink);
+}
+
+.bridal-feat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #071B49;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-feat-label {
+  color: #F7F8FC;
+}
+
+.bridal-hero-buttons-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.bridal-btn-pink.hero-btn {
+  background: var(--bridal-pink);
+  color: #FFFFFF !important;
+  border: 1.5px solid var(--bridal-pink);
+  border-radius: 8px;
+  padding: 13px 26px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.28);
+  white-space: nowrap;
+}
+
+.bridal-btn-outline.hero-btn {
+  background: #FFFFFF;
+  color: #071B49 !important;
+  border: 1.5px solid var(--bridal-pink);
+  border-radius: 8px;
+  padding: 13px 26px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-btn-outline.hero-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #F7F8FC !important;
+  border-color: var(--bridal-pink);
+}
+
+.bridal-btn-outline.hero-btn:hover {
+  background: #FFF0F5;
+  color: var(--bridal-pink) !important;
+}
+
+/* ==========================================================================
+   SECTION 2: CHOOSE YOUR BRIDAL STYLE (10 CATEGORIES)
+   ========================================================================== */
+.bridal-categories-row {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(105px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.bridal-cat-card {
+  background: #FFFFFF;
+  border: 1px solid var(--bridal-border);
+  border-radius: 14px;
+  padding: 12px 8px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-cat-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.bridal-cat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--bridal-pink);
+  box-shadow: 0 8px 24px rgba(255, 0, 138, 0.15);
+}
+
+.bridal-cat-img-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: #FFF5F8;
+}
+
+.bridal-cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.bridal-cat-card:hover .bridal-cat-img {
+  transform: scale(1.08);
+}
+
+.bridal-cat-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+  margin: 0 0 2px 0;
+  line-height: 1.25;
+}
+
+.bridal-cat-tag {
+  font-size: 0.72rem;
+  color: var(--bridal-pink);
+  margin: 0;
+  font-weight: 600;
+}
+
+.bridal-cat-arrow {
+  color: var(--bridal-pink);
+  font-size: 0.9rem;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   SECTION 3: THREE MAIN BRIDAL SERVICE PANELS
+   ========================================================================== */
+.bridal-three-panels-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.bridal-panel-card {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid var(--bridal-border);
+  border-radius: 18px;
+  overflow: hidden;
+  min-height: 295px;
+  box-shadow: 0 6px 24px rgba(7, 27, 73, 0.04);
+  display: flex;
+  transition: all 0.3s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-panel-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.bridal-panel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(7, 27, 73, 0.08);
+}
+
+.bridal-panel-bg-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  z-index: 1;
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+
+.bridal-panel-card:hover .bridal-panel-bg-img {
+  transform: scale(1.04);
+}
+
+.bridal-panel-content {
+  position: relative;
+  z-index: 2;
+  width: 60%;
+  max-width: 65%;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.92) 58%, rgba(255,255,255,0) 100%);
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-panel-content {
+  background: linear-gradient(90deg, rgba(28,34,48,0.97) 0%, rgba(28,34,48,0.90) 58%, rgba(28,34,48,0) 100%);
+}
+
+.panel-badge-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.sparkle-icon-wrap {
+  background: #FFF0F5;
+  color: var(--bridal-pink);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 0, 138, 0.2);
+}
+
+.bridal-stitching-page-wrapper.dark .sparkle-icon-wrap {
+  background: rgba(255, 0, 138, 0.2);
+}
+
+.bridal-panel-heading {
+  font-family: var(--bridal-font-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.bridal-panel-heading.pink-head {
+  color: var(--bridal-pink) !important;
+}
+
+.bridal-panel-subheading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--bridal-pink);
+  margin-top: 3px;
+  margin-bottom: 6px;
+}
+
+.bridal-panel-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.bridal-panel-checklist li {
+  font-size: 0.76rem;
+  color: var(--bridal-subtext);
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  line-height: 1.35;
+}
+
+.bridal-panel-checklist .check-icon {
+  color: var(--bridal-pink);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.panel-cta-btn {
+  padding: 9px 18px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  margin-top: 8px;
+  align-self: flex-start;
+}
+
+/* ==========================================================================
+   SECTION 4: FIND VERIFIED DESIGNERS & TAILORS NEAR YOU
+   ========================================================================== */
+.bridal-location-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-label {
+  font-size: 0.82rem;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.search-input-pill {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1.5px solid var(--bridal-border);
+  border-radius: 9999px;
+  padding: 3px 4px 3px 12px;
+  gap: 6px;
+}
+
+.bridal-stitching-page-wrapper.dark .search-input-pill {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.pin-icon {
+  color: var(--bridal-pink);
+}
+
+.search-select {
+  border: none;
+  background: transparent;
+  color: var(--bridal-navy);
+  font-weight: 700;
+  font-size: 0.84rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.bridal-stitching-page-wrapper.dark .search-select {
+  color: #F7F8FC;
+}
+
+.search-btn-pink {
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-btn-pink:hover {
+  background: var(--bridal-pink-hover);
+}
+
+.bridal-providers-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(150px, 1fr));
+  gap: 14px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.bridal-provider-card {
+  background: #FFFFFF;
+  border: 1px solid var(--bridal-border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-provider-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.bridal-provider-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 0, 138, 0.4);
+  box-shadow: 0 10px 24px rgba(7, 27, 73, 0.08);
+}
+
+.prov-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 165px;
+  overflow: hidden;
+  background: #FFF5F8;
+}
+
+.prov-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.35s ease;
+}
+
+.bridal-provider-card:hover .prov-img {
+  transform: scale(1.06);
+}
+
+.prov-heart-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.prov-heart-btn:hover {
+  transform: scale(1.15);
+}
+
+.prov-body {
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.prov-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+  margin: 0;
+}
+
+.prov-rating {
+  font-size: 0.74rem;
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+
+.prov-rating strong {
+  color: #f59e0b;
+}
+
+.reviews-sub {
+  color: #64748B;
+  font-weight: 500;
+  font-size: 0.72rem;
+}
+
+.prov-type-tag {
+  font-size: 0.74rem;
+  color: var(--bridal-navy);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.prov-pink-pin {
+  color: var(--bridal-pink);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.prov-loc {
+  font-size: 0.7rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.prov-view-profile-btn {
+  width: 100%;
+  background: #FFFFFF;
+  color: var(--bridal-pink);
+  border: 1.5px solid var(--bridal-pink);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.prov-view-profile-btn:hover {
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+}
+
+.bridal-stitching-page-wrapper.dark .prov-view-profile-btn {
+  background: rgba(255, 0, 138, 0.1);
+  color: #FF008A;
+}
+
+/* 7th Card: Real Interactive Google / Leaflet Maps Card */
+.bridal-map-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--bridal-border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 250px;
+  padding: 10px;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-map-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.map-card-graphic {
+  position: relative;
+  width: 100%;
+  height: 185px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+  background: #F1F5F9;
+}
+
+.map-badge-overlay {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #071B49;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.map-view-btn-pink {
+  width: 100%;
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.map-view-btn-pink:hover {
+  background: var(--bridal-pink-hover);
+}
+
+/* ==========================================================================
+   SECTION 5: TRENDING BRIDAL STYLES (TWO IMAGES PER CARD - MAIN REQ)
+   ========================================================================== */
+.bridal-trending-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.trending-filter-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-pill-chip {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--bridal-border);
+  background: #FFFFFF;
+  color: var(--bridal-navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .filter-pill-chip {
+  background: #1C2230;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.filter-pill-chip:hover {
+  border-color: var(--bridal-pink);
+  color: var(--bridal-pink);
+}
+
+.filter-pill-chip.active {
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+  border-color: var(--bridal-pink);
+  box-shadow: 0 2px 8px rgba(255, 0, 138, 0.25);
+}
+
+.bridal-trending-carousel-track {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+.bridal-trending-card {
+  width: 100%;
+  min-width: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--bridal-border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+@media (max-width: 1200px) {
+  .bridal-trending-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+
+  .bridal-trending-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bridal-trending-card {
+    flex: 0 0 210px;
+    min-width: 210px;
+  }
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-trending-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.bridal-trending-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(7, 27, 73, 0.09);
+  border-color: rgba(255, 0, 138, 0.3);
+}
+
+.trending-card-slider-wrap {
+  position: relative;
+  width: 100%;
+  height: 285px;
+  background: #FFF9FB;
+  overflow: hidden;
+}
+
+/* 2-Image Slider Styles */
+.bridal-card-slider-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.bridal-slider-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease;
+  transform: scale(1.0);
+}
+
+.bridal-slider-img.active {
+  opacity: 1;
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+.bridal-trending-card:hover .bridal-slider-img.active {
+  transform: scale(1.06);
+}
+
+.bridal-slider-indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.bridal-slider-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bridal-slider-dot.active {
+  width: 16px;
+  border-radius: 4px;
+  background: var(--bridal-pink);
+}
+
+.trending-heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.trending-heart-btn:hover {
+  transform: scale(1.15);
+}
+
+.trending-card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.trending-outfit-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--bridal-navy);
+  margin: 0;
+}
+
+.trending-outfit-desc {
+  font-size: 0.74rem;
+  color: var(--bridal-subtext);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.bridal-start-stitching-btn {
+  background: transparent;
+  color: var(--bridal-pink);
+  border: 1px solid var(--bridal-pink);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.bridal-start-stitching-btn:hover {
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.25);
+}
+
+/* ==========================================================================
+   SECTION 6: PREMIUM FABRICS FOR BRIDAL
+   ========================================================================== */
+.bridal-fabrics-carousel-track {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(115px, 1fr));
+  gap: 14px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.bridal-fabric-swatch-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
+
+.bridal-fabric-swatch-card:hover {
+  transform: translateY(-4px);
+}
+
+.bridal-fabric-swatch-img-box {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(7, 27, 73, 0.08);
+  margin-bottom: 6px;
+  border: 1px solid var(--bridal-border);
+}
+
+.bridal-fabric-swatch-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.bridal-fabric-swatch-card:hover .bridal-fabric-swatch-img {
+  transform: scale(1.1);
+}
+
+.bridal-fabric-swatch-name {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--bridal-navy);
+  text-align: center;
+}
+
+/* ==========================================================================
+   SECTION 7: HOW IT WORKS (7 STEPS)
+   ========================================================================== */
+.bridal-process-flow-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px 0;
+}
+
+.bridal-process-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 130px;
+}
+
+.bridal-process-circle {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FFF0F5;
+  color: var(--bridal-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 0, 138, 0.25);
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-process-circle {
+  background: rgba(255, 0, 138, 0.15);
+  border-color: rgba(255, 0, 138, 0.3);
+}
+
+.bridal-process-node:hover .bridal-process-circle {
+  transform: translateY(-2px);
+  background: #FFE4EE;
+}
+
+.bridal-process-circle .node-num {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bridal-pink);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bridal-process-title {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+  margin: 0;
+}
+
+.bridal-process-desc {
+  font-size: 0.72rem;
+  color: var(--bridal-subtext);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.bridal-process-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  color: #CBD5E1;
+  flex-shrink: 0;
+  padding: 0 4px;
+}
+
+/* ==========================================================================
+   SECTION 8: REAL COUPLES, REAL HAPPINESS
+   ========================================================================== */
+.bridal-reviews-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.bridal-review-card {
+  background: #FFFFFF;
+  border: 1px solid var(--bridal-border);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 6px 20px rgba(7, 27, 73, 0.04);
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-review-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.bridal-review-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bridal-review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bridal-pink);
+}
+
+.bridal-review-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.bridal-review-quote {
+  font-size: 0.86rem;
+  color: var(--bridal-subtext);
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+.bridal-review-author-info .author-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+}
+
+.bridal-review-author-info .author-loc {
+  font-size: 0.74rem;
+  color: #94A3B8;
+}
+
+/* ==========================================================================
+   SECTION 9: BOTTOM BRIDAL BANNER
+   ========================================================================== */
+.bridal-bottom-banner-card {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 12px 36px rgba(7, 27, 73, 0.08);
+  background: #FFF0F5;
+}
+
+.bridal-bottom-banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  z-index: 0;
+}
+
+/* Protective elegant gradient: 0-25% totally clear for bride & groom, 35%+ clean readable backdrop */
+.bridal-bottom-banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 240, 245, 0) 0%,
+    rgba(255, 240, 245, 0) 25%,
+    rgba(255, 242, 246, 0.72) 34%,
+    rgba(255, 240, 245, 0.92) 44%,
+    rgba(255, 240, 245, 0.78) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-bottom-banner-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(16, 19, 28, 0) 0%,
+    rgba(16, 19, 28, 0) 25%,
+    rgba(28, 34, 48, 0.75) 34%,
+    rgba(28, 34, 48, 0.94) 44%,
+    rgba(16, 19, 28, 0.85) 100%
+  );
+}
+
+.bridal-bottom-banner-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 30px 48px 30px clamp(360px, 35%, 520px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 14px;
+  background: transparent;
+}
+
+.bridal-bottom-banner-text {
+  text-align: left;
+  flex: 1 1 auto;
+  max-width: 520px;
+}
+
+.bridal-bottom-banner-title {
+  font-family: var(--bridal-font-serif);
+  font-size: clamp(1.6rem, 2.1vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.16;
+  color: #071B49;
+  margin: 0 0 8px 0;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
+  text-align: left;
+}
+
+.bridal-bottom-banner-title .pink-line {
+  color: #FF008A !important;
+  display: inline;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-bottom-banner-title {
+  color: #F7F8FC;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.bridal-bottom-banner-desc {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #263B63;
+  margin: 0;
+  text-align: left;
+  font-weight: 500;
+  max-width: 500px;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-bottom-banner-desc {
+  color: #CBD5E1;
+}
+
+.bridal-bottom-banner-buttons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.bridal-bottom-banner-buttons .banner-btn {
+  white-space: nowrap;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 11px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bridal-bottom-banner-buttons .bridal-btn-pink.banner-btn {
+  background: #FF008A;
+  color: #FFFFFF !important;
+  border: 1.5px solid #FF008A;
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.25);
+}
+
+.bridal-bottom-banner-buttons .bridal-btn-pink.banner-btn:hover {
+  background: #E0007A;
+  transform: translateY(-2px);
+}
+
+.bridal-bottom-banner-buttons .bridal-btn-outline.banner-btn {
+  background: #FFFFFF;
+  color: #071B49 !important;
+  border: 1.5px solid #FF008A;
+}
+
+.bridal-bottom-banner-buttons .bridal-btn-outline.banner-btn:hover {
+  background: #FFF0F5;
+  color: #FF008A !important;
+  transform: translateY(-2px);
+}
+
+/* Widescreen Desktop: Side-by-side layout like Image 5 */
+@media (min-width: 1380px) {
+  .bridal-bottom-banner-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .bridal-bottom-banner-buttons {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+  }
+}
+
+/* ==========================================================================
+   MODAL STYLES (PROVIDER PROFILE & BOOKING)
+   ========================================================================== */
+.bridal-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 27, 73, 0.65);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.bridal-modal-dialog {
+  background: #FFFFFF;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: modalFadeIn 0.25s ease;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-modal-dialog {
+  background: #1C2230;
+  color: #F8FAFC;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.bridal-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px;
+  border-bottom: 1px solid #F0E7ED;
+}
+
+.bridal-stitching-page-wrapper.dark .bridal-modal-header {
+  border-color: #343B4B;
+}
+
+.prov-modal-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.modal-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bridal-pink);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--bridal-navy);
+  margin: 0 0 2px 0;
+}
+
+.bridal-stitching-page-wrapper.dark .modal-title {
+  color: #F8FAFC;
+}
+
+.modal-specialty {
+  font-size: 0.82rem;
+  color: var(--bridal-pink);
+  font-weight: 700;
+}
+
+.modal-rating {
+  font-size: 0.74rem;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+}
+
+.bridal-modal-body {
+  padding: 24px;
+}
+
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+
+.stat-card {
+  background: #F8FAFC;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.bridal-stitching-page-wrapper.dark .stat-card {
+  background: #151924;
+}
+
+.stat-num {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--bridal-pink);
+}
+
+.stat-lbl {
+  font-size: 0.72rem;
+  color: #64748B;
+}
+
+.services-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.chip {
+  background: #FFF0F5;
+  color: var(--bridal-pink);
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 9999px;
+}
+
+.bridal-stitching-page-wrapper.dark .chip {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================================================== */
+@media (max-width: 1199px) {
+  .bridal-categories-row {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .bridal-three-panels-grid {
+    grid-template-columns: 1fr;
+  }
+  .bridal-providers-grid {
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .bridal-section-container {
+    padding: 24px 16px;
+  }
+
+  /* Hero Section: Card at top, Image below on mobile */
+  .bridal-hero-section {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    padding: 20px 16px 20px 16px;
+    background: #FFFDFB;
+  }
+
+  .bridal-stitching-page-wrapper.dark .bridal-hero-section {
+    background: #10131C;
+  }
+
+  .bridal-hero-content-layer {
+    order: 1;
+    position: static;
+    padding: 0;
+    width: 100%;
+  }
+
+  .bridal-hero-script-watermark {
+    display: none;
+  }
+
+  .bridal-hero-left {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 26px 18px;
+    box-shadow: 0 10px 30px rgba(7, 27, 73, 0.08);
+    border: 1px solid var(--bridal-border);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+  }
+
+  .bridal-stitching-page-wrapper.dark .bridal-hero-left {
+    background: #1C2230;
+    border-color: #343B4B;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .bridal-hero-title {
+    font-size: 2.1rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .bridal-hero-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .bridal-hero-features-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin: 14px 0 18px 0;
+  }
+
+  .bridal-hero-feat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .bridal-hero-buttons-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .bridal-hero-buttons-row button {
+    width: 100%;
+    padding: 13px 20px;
+  }
+
+  .bridal-hero-bg-container {
+    order: 2;
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    height: 300px;
+    margin-top: 18px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(7, 27, 73, 0.1);
+  }
+
+  .bridal-hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  /* Categories: 2-column grid on mobile (No horizontal scroll) */
+  .bridal-categories-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    overflow-x: visible;
+    width: 100%;
+  }
+
+  .bridal-cat-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 10px;
+  }
+
+  /* Three service panels: stacked vertically */
+  .bridal-panel-card {
+    grid-template-columns: 1fr;
+  }
+
+  .bridal-panel-right-img-box {
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .bridal-providers-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+  }
+
+  .bridal-provider-card {
+    flex: 0 0 160px;
+  }
+
+  .bridal-map-card {
+    flex: 0 0 180px;
+  }
+
+  .bridal-fabrics-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+  }
+
+  .bridal-fabric-swatch-card {
+    flex: 0 0 115px;
+    min-width: 115px;
+  }
+
+  .bridal-process-flow-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .bridal-process-arrow {
+    transform: rotate(90deg);
+    margin: 0;
+  }
+
+  .bridal-reviews-track {
+    grid-template-columns: 1fr;
+  }
+
+  /* Bottom Banner: Image First, Card Below */
+  .bridal-bottom-banner-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #FFF0F5;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(7, 27, 73, 0.08);
+  }
+
+  .bridal-bottom-banner-bg {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center left;
+    display: block;
+    border-radius: 20px 20px 0 0;
+    z-index: 1;
+  }
+
+  .bridal-bottom-banner-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #FFFFFF;
+    border-radius: 0 0 20px 20px;
+    box-sizing: border-box;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .bridal-stitching-page-wrapper.dark .bridal-bottom-banner-content {
+    background: #1C2230;
+  }
+
+  .bridal-bottom-banner-text {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .bridal-bottom-banner-title {
+    font-size: 1.85rem;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--bridal-navy);
+    margin-bottom: 8px;
+  }
+
+  .bridal-bottom-banner-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--bridal-subtext);
+    margin: 0;
+  }
+
+  .bridal-bottom-banner-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bridal-bottom-banner-buttons button {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 768px) {
+  .bridal-categories-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

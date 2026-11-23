@@ -3,7 +3,7 @@ import {
   Scissors, User, Lock, Mail, MapPin, Sparkles, Check, Truck, 
   Phone, Star, Eye, EyeOff, Sun, Moon, Headphones, ArrowRight, 
   Shield, CreditCard, Activity, Calendar, Award, Layers, 
-  CheckCircle, Tag, ShoppingBag, Gift
+  CheckCircle, Tag, ShoppingBag, Gift, X
 } from 'lucide-react';
 
 export default function AuthPage({ 
@@ -171,7 +171,11 @@ export default function AuthPage({
         flexDirection: 'column',
         minHeight: '100vh', 
         position: 'relative',
-        background: bgPageGrad, 
+        backgroundImage: "url('/login_bg.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed', 
         fontFamily: '"Plus Jakarta Sans", "Inter", sans-serif',
         boxSizing: 'border-box',
         overflowX: 'hidden',
@@ -239,82 +243,7 @@ export default function AuthPage({
       <div className="animate-float-2" style={{ position: 'absolute', bottom: '25%', left: '42%', color: '#7B2DFF', opacity: 0.35, pointerEvents: 'none' }}><Sparkles size={20} /></div>
       <div className="animate-float-1" style={{ position: 'absolute', top: '45%', left: '10%', color: '#D81BFF', opacity: 0.25, pointerEvents: 'none' }}><Sparkles size={14} /></div>
 
-      {/* TOP NAVIGATION */}
-      <header style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '20px 40px',
-        width: '100%',
-        boxSizing: 'border-box',
-        zIndex: 50,
-        position: 'relative'
-      }}>
-        {/* Left: StitchBee logo */}
-        <div 
-          onClick={onClose} 
-          style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-          title="Go to Home"
-        >
-          <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
-        </div>
-
-        {/* Right Nav Options */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          {/* Dark Mode Toggle */}
-          <button 
-            type="button"
-            onClick={() => setTheme(isDark ? 'light' : 'dark')}
-            style={{
-              background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)',
-              border: `1px solid ${borderColor}`,
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              color: colorTextPrimary,
-              transition: 'all 0.2s ease'
-            }}
-          >
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button
-              className="btn-primary"
-              onClick={() => setTab(tab === 'login' ? 'signup' : 'login')}
-              style={{
-                background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)',
-                border: 'none',
-                color: '#ffffff',
-                padding: '8px 20px',
-                borderRadius: '12px',
-                fontWeight: '700',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(255, 46, 138, 0.2)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(255, 46, 138, 0.35)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 46, 138, 0.2)';
-              }}
-            >
-              {tab === 'login' ? 'Create Account' : 'Login'}
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Top bar removed per user specification */}
 
       {/* MAIN CONTAINER */}
       <main style={{
@@ -323,420 +252,135 @@ export default function AuthPage({
         width: '100%',
         maxWidth: '1440px',
         margin: '0 auto',
-        padding: '0 40px',
+        padding: '16px 60px 12px',
         boxSizing: 'border-box',
         alignItems: 'center',
-        gap: '40px',
+        justifyContent: 'flex-end',
         zIndex: 10,
         position: 'relative'
       }} className="auth-main-wrapper">
         
-        {/* LEFT COLUMN (PREMIUM MINI STUDIO HERO - 45% Width) */}
-        <div style={{
-          width: '45%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          gap: '24px',
-          position: 'relative',
-          paddingBottom: '40px'
-        }} className="auth-left-column">
-          
-          {/* Headline and subtitle */}
-          <div>
-            <h1 style={{
-              fontSize: '52px',
-              fontWeight: '800',
-              lineHeight: '1.05',
-              letterSpacing: '-2px',
-              color: colorTextPrimary,
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column'
-            }}>
-              <span>Dress Better.</span>
-              <span style={{ color: '#FF2E8A' }}>Designed</span>
-              <span style={{ color: '#7B2DFF' }}>for You.</span>
-            </h1>
-            <div style={{
-              width: '80px',
-              height: '4px',
-              background: 'linear-gradient(90deg, #FF2E8A 0%, #7B2DFF 100%)',
-              borderRadius: '2px',
-              marginTop: '12px',
-              marginBottom: '16px'
-            }} />
-            <p style={{
-              fontSize: '15px',
-              color: colorTextSecondary,
-              lineHeight: '1.5',
-              maxWidth: '460px',
-              margin: 0,
-              fontWeight: '500'
-            }}>
-              Book expert tailors, choose premium fabrics, customize every stitch, and track your order from start to finish.
-            </p>
-          </div>
-
-          {/* PREMIUM MINI TAILORING STUDIO ON circular podium DISPLAY */}
-          <div style={{
-            position: 'relative',
-            width: '100%',
-            height: '480px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '24px',
-            background: 'transparent',
-            overflow: 'hidden'
-          }}>
-            {/* Ambient Lighting: Warm glow center, pink/purple edge light */}
-            <div style={{
-              position: 'absolute',
-              width: '280px',
-              height: '280px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(216, 27, 255, 0.08) 0%, transparent 70%)',
-              bottom: '10%',
-              left: '50%',
-              marginLeft: '-140px',
-              pointerEvents: 'none',
-              zIndex: 1
-            }} />
-
-            {/* Glowing Connecting lines SVG (curving outward from podium to the 6 cards) */}
-            <svg viewBox="0 0 500 480" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 2, pointerEvents: 'none' }}>
-              <defs>
-                <linearGradient id="glow-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#FF2E8A" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#7B2DFF" stopOpacity="0.2" />
-                </linearGradient>
-                <linearGradient id="glow-grad-2" x1="100%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#D81BFF" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#FF2E8A" stopOpacity="0.2" />
-                </linearGradient>
-              </defs>
-              {/* Connecting lines from circular display center (250, 320) to the 6 float cards */}
-              {/* Left Column connections */}
-              <path d="M 250 320 Q 140 290, 80 120" stroke="url(#glow-grad-1)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
-              <path d="M 250 320 Q 120 320, 80 230" stroke="url(#glow-grad-1)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
-              <path d="M 250 320 Q 130 350, 80 370" stroke="url(#glow-grad-1)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
-              {/* Right Column connections */}
-              <path d="M 250 320 Q 360 290, 420 120" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
-              <path d="M 250 320 Q 380 320, 420 230" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
-              <path d="M 250 320 Q 370 350, 420 370" stroke="url(#glow-grad-2)" strokeWidth="1.5" strokeDasharray="4,4" className="animate-dash-flow animate-pulse-glow" fill="none" />
-            </svg>
-
-            {/* MINIATURE BOUTIQUE SETUP ON CONCENTRIC ELLIPSE DISPLAY */}
-            <div style={{
-              position: 'absolute',
-              bottom: '10%',
-              width: '320px',
-              height: '280px',
-              zIndex: 5,
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-              pointerEvents: 'none'
-            }}>
-              <svg viewBox="0 0 280 240" style={{ width: '100%', height: '100%' }}>
-                <defs>
-                  <linearGradient id="gown-grad-new" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#FF2E8A" />
-                    <stop offset="100%" stopColor="#D81BFF" />
-                  </linearGradient>
-                  <radialGradient id="podium-glow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="rgba(255, 46, 138, 0.12)" />
-                    <stop offset="70%" stopColor="rgba(255, 46, 138, 0.03)" />
-                    <stop offset="100%" stopColor="rgba(255, 46, 138, 0)" />
-                  </radialGradient>
-                </defs>
-
-                {/* concentric display platform ellipses (Podium from image) */}
-                {/* Outer Glow Ellipse */}
-                <ellipse cx="140" cy="155" rx="122" ry="56" fill="url(#podium-glow)" stroke="rgba(255, 46, 138, 0.15)" strokeWidth="1" />
-                {/* Mid Ellipse */}
-                <ellipse cx="140" cy="155" rx="112" ry="51" fill="none" stroke="rgba(255, 46, 138, 0.35)" strokeWidth="1.5" />
-                {/* Inner Ellipse */}
-                <ellipse cx="140" cy="155" rx="100" ry="45" fill="none" stroke="#FF2E8A" strokeWidth="2.5" />
-
-                {/* 1. Mannequin Stand & Torso (Right Side) */}
-                <line x1="196" y1="125" x2="196" y2="200" stroke="#475569" strokeWidth="2.5" />
-                <line x1="186" y1="200" x2="206" y2="200" stroke="#475569" strokeWidth="2.5" />
-                {/* Torso Silhouette */}
-                <path d="M 186 122 C 186 102, 206 102, 206 122 L 202 165 C 202 170, 190 170, 190 165 Z" fill="url(#gown-grad-new)" stroke="#FF2E8A" strokeWidth="1" />
-                {/* Gold necklace string */}
-                <path d="M 190 124 Q 196 142, 202 124" stroke="#fbbf24" strokeWidth="2" fill="none" />
-
-                {/* 2. Clothes Hanger Rack (Center) */}
-                {/* Simple metallic U-stand */}
-                <path d="M 143 175 L 143 115 A 2 2 0 0 1 145 113 L 175 113 A 2 2 0 0 1 177 115 L 177 175" stroke="#cbd5e1" strokeWidth="2" fill="none" />
-                {/* Hanging garment swatches */}
-                <rect x="149" y="117" width="10" height="38" rx="1.5" fill="#FF2E8A" opacity="0.9" />
-                <rect x="163" y="117" width="10" height="38" rx="1.5" fill="#7B2DFF" opacity="0.9" />
-
-                {/* 3. Folded Premium Fabric Rolls (Center Bottom overlapping) */}
-                <g transform="translate(136, 165)">
-                  {/* Roll 1: Pink */}
-                  <rect x="5" y="1" width="30" height="9" rx="2" fill="#FF2E8A" />
-                  <ellipse cx="35" cy="5.5" rx="1.5" ry="4.5" fill="#fbbf24" />
-                  {/* Roll 2: Purple */}
-                  <rect x="12" y="9" width="30" height="9" rx="2" fill="#7B2DFF" />
-                  <ellipse cx="42" cy="13.5" rx="1.5" ry="4.5" fill="#fbbf24" />
-                </g>
-
-                {/* 4. Luxury Sewing Machine (Left Side) */}
-                {/* Machine base */}
-                <rect x="85" y="172" width="46" height="5" rx="1.5" fill="#e2e8f0" />
-                {/* Machine body */}
-                <path d="M 91 172 L 91 148 C 91 145, 94 143, 97 143 L 118 143 L 118 158" stroke="#7B2DFF" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                <line x1="114" y1="158" x2="114" y2="172" stroke="#475569" strokeWidth="1" />
-                {/* Pink thread spool */}
-                <rect x="93" y="137" width="5" height="6" fill="#FF2E8A" rx="0.5" />
-                {/* Yellow wheel/dot */}
-                <circle cx="118" cy="151" r="2.5" fill="#fbbf24" />
-
-                {/* 5. Sewing Tools & Buttons on floor */}
-                {/* Buttons/Dots */}
-                <circle cx="127" cy="204" r="2.5" fill="#7B2DFF" />
-                <circle cx="132" cy="202" r="2" fill="#fbbf24" />
-                <circle cx="141" cy="201" r="3" fill="#FF2E8A" />
-                {/* Scissors */}
-                <g transform="translate(158, 192)">
-                  <circle cx="2.5" cy="2.5" r="2.2" fill="none" stroke="#475569" strokeWidth="0.8" />
-                  <circle cx="7.5" cy="2.5" r="2.2" fill="none" stroke="#475569" strokeWidth="0.8" />
-                  <line x1="4.5" y1="4.5" x2="11" y2="13" stroke="#475569" strokeWidth="1" />
-                  <line x1="6.5" y1="4.5" x2="0" y2="13" stroke="#475569" strokeWidth="1" />
-                </g>
-              </svg>
-            </div>
-
-            {/* 6 FLOATING GLASSMORPHIC FEATURE CARDS (Circular Spacing layout) */}
-            
-            {/* 1. AI Body Measurements (Top Left) */}
-            <div className="animate-float-1" style={{
-              position: 'absolute',
-              top: '6%',
-              left: '4%',
-              background: bgCard,
-              backdropFilter: 'blur(16px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '10px 16px',
-              borderRadius: '16px',
-              textAlign: 'left',
-              width: '150px',
-              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
-              zIndex: 20
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                <Activity size={13} style={{ color: '#FF2E8A' }} />
-                <span style={{ fontSize: '11px', fontWeight: '800' }}>AI Measurements</span>
-              </div>
-              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Accurate. Fast. Easy.</span>
-            </div>
-
-            {/* 2. Premium Fabrics (Mid Left) */}
-            <div className="animate-float-2" style={{
-              position: 'absolute',
-              top: '32%',
-              left: '2%',
-              background: bgCard,
-              backdropFilter: 'blur(16px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '10px 16px',
-              borderRadius: '16px',
-              textAlign: 'left',
-              width: '150px',
-              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
-              zIndex: 20
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                <Layers size={13} style={{ color: '#D81BFF' }} />
-                <span style={{ fontSize: '11px', fontWeight: '800' }}>Premium Fabrics</span>
-              </div>
-              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>1000+ Fabric Collections</span>
-            </div>
-
-            {/* 3. Custom Stitching (Bottom Left) */}
-            <div className="animate-float-1" style={{
-              position: 'absolute',
-              bottom: '10%',
-              left: '4%',
-              background: bgCard,
-              backdropFilter: 'blur(16px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '10px 16px',
-              borderRadius: '16px',
-              textAlign: 'left',
-              width: '150px',
-              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
-              zIndex: 20
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                <Scissors size={13} style={{ color: '#7B2DFF' }} />
-                <span style={{ fontSize: '11px', fontWeight: '800' }}>Custom Stitching</span>
-              </div>
-              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Design any outfit you love</span>
-            </div>
-
-            {/* 4. Expert Tailors (Top Right) */}
-            <div className="animate-float-2" style={{
-              position: 'absolute',
-              top: '6%',
-              right: '4%',
-              background: bgCard,
-              backdropFilter: 'blur(16px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '10px 16px',
-              borderRadius: '16px',
-              textAlign: 'left',
-              width: '150px',
-              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
-              zIndex: 20
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                <Award size={13} style={{ color: '#FF2E8A' }} />
-                <span style={{ fontSize: '11px', fontWeight: '800' }}>Expert Tailors</span>
-              </div>
-              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Verified & Experienced</span>
-            </div>
-
-            {/* 5. Live Order Tracking (Mid Right) */}
-            <div className="animate-float-1" style={{
-              position: 'absolute',
-              top: '32%',
-              right: '2%',
-              background: bgCard,
-              backdropFilter: 'blur(16px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '10px 16px',
-              borderRadius: '16px',
-              textAlign: 'left',
-              width: '150px',
-              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
-              zIndex: 20
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                <Truck size={13} style={{ color: '#D81BFF' }} />
-                <span style={{ fontSize: '11px', fontWeight: '800' }}>Order Tracking</span>
-              </div>
-              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Track every stitching stage</span>
-            </div>
-
-            {/* 6. Home Delivery (Bottom Right) */}
-            <div className="animate-float-2" style={{
-              position: 'absolute',
-              bottom: '10%',
-              right: '4%',
-              background: bgCard,
-              backdropFilter: 'blur(16px)',
-              border: `1.5px solid ${borderColor}`,
-              color: colorTextPrimary,
-              padding: '10px 16px',
-              borderRadius: '16px',
-              textAlign: 'left',
-              width: '150px',
-              boxShadow: '0 12px 28px rgba(0,0,0,0.04)',
-              zIndex: 20
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
-                <Gift size={13} style={{ color: '#7B2DFF' }} />
-                <span style={{ fontSize: '11px', fontWeight: '800' }}>Home Delivery</span>
-              </div>
-              <span style={{ fontSize: '9px', color: colorTextSecondary, display: 'block', fontWeight: '500' }}>Delivered to your doorstep</span>
-            </div>
-
-          </div>
-
-          {/* Bottom Statistics Bar */}
-          <div className="animate-float-delayed" style={{
-            background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(16px)',
-            border: `1.5px solid ${borderColor}`,
-            borderRadius: '20px',
-            padding: '16px 20px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '12px',
-            width: '100%',
+        {/* Glassmorphic Form Card (Right Side) */}
+        <div 
+          style={{ 
+            width: '100%', 
+            maxWidth: '460px', 
+            background: isDark ? 'rgba(18, 15, 38, 0.95)' : 'rgba(255, 255, 255, 0.96)', 
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: `1.5px solid ${borderColor}`, 
+            borderRadius: '20px', 
+            padding: '20px 28px 18px',
+            boxShadow: isDark ? '0 24px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 46, 138, 0.12)' : '0 24px 50px rgba(0, 0, 0, 0.18), 0 0 30px rgba(255, 46, 138, 0.08)',
             boxSizing: 'border-box',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.03)'
-          }}>
-            <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: colorTextPrimary, display: 'block' }}>👥 50K+</span>
-              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Happy Customers</span>
-            </div>
-            <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                ⭐ 4.9
-              </span>
-              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Rating</span>
-            </div>
-            <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: '#10b981', display: 'block' }}>👕 100K+</span>
-              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Custom Outfits</span>
-            </div>
-            <div style={{ textAlign: 'left' }}>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: '#D81BFF', display: 'block' }}>🛡 500+</span>
-              <span style={{ fontSize: '10px', color: colorTextMuted, fontWeight: '600' }}>Verified Tailors</span>
-            </div>
+            zIndex: 20,
+            position: 'relative'
+          }}
+          className="auth-card"
+        >
+          {/* Close (X) button on top-left of card */}
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              style={{
+                position: 'absolute',
+                top: '18px',
+                left: '18px',
+                background: isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9',
+                border: isDark ? '1.5px solid rgba(255, 255, 255, 0.2)' : '1.5px solid #cbd5e1',
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: isDark ? '#e2e8f0' : '#475569',
+                boxShadow: isDark ? '0 2px 8px rgba(0,0,0,0.4)' : '0 2px 8px rgba(0,0,0,0.08)',
+                transition: 'all 0.2s ease',
+                zIndex: 10
+              }}
+              title="Return to Home"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.08)';
+                e.currentTarget.style.color = '#FF2E8A';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.color = isDark ? '#e2e8f0' : '#475569';
+              }}
+            >
+              <X size={18} />
+            </button>
+          )}
+
+          {/* Dark / Light Mode Corner Icon Button on top-right of card - clearly visible */}
+          <button 
+            type="button"
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            style={{
+              position: 'absolute',
+              top: '18px',
+              right: '18px',
+              background: isDark ? 'rgba(255, 255, 255, 0.12)' : '#ffffff',
+              border: isDark ? '1.5px solid rgba(251, 191, 36, 0.45)' : '1.5px solid #94a3b8',
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: isDark ? '#fbbf24' : '#0f172a',
+              boxShadow: isDark ? '0 4px 12px rgba(251, 191, 36, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.12)',
+              transition: 'all 0.2s ease',
+              zIndex: 10
+            }}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.08)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            {isDark ? (
+              <Sun size={20} style={{ filter: 'drop-shadow(0 0 5px rgba(251, 191, 36, 0.7))' }} />
+            ) : (
+              <Moon size={20} style={{ color: '#1e293b' }} />
+            )}
+          </button>
+
+          {/* StitchBee Logo placed cleanly inside the card */}
+          <div 
+            onClick={onClose}
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              cursor: 'pointer',
+              marginTop: '2px',
+              marginBottom: '8px'
+            }}
+            title="StitchBee Atelier"
+          >
+            <img 
+              src="/logo.png" 
+              alt="StitchBee" 
+              style={{ height: '42px', maxWidth: '190px', objectFit: 'contain' }} 
+            />
           </div>
 
-        </div>
-
-        {/* RIGHT COLUMN (55% Width) */}
-        <div style={{
-          width: '55%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingBottom: '40px'
-        }} className="auth-right-column">
-          
-          {/* Subtle glowing light behind form */}
-          <div style={{
-            position: 'absolute',
-            bottom: '-40px',
-            right: '-10px',
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            background: 'rgba(216, 27, 255, 0.08)',
-            filter: 'blur(80px)',
-            pointerEvents: 'none'
-          }} />
-
-          {/* Glassmorphic Form Card */}
-          <div 
-            style={{ 
-              width: '100%', 
-              maxWidth: '520px', 
-              background: bgCard, 
-              backdropFilter: 'blur(20px)',
-              border: `1.5px solid ${borderColor}`, 
-              borderRadius: '24px', 
-              padding: '40px',
-              boxShadow: isDark ? '0 30px 60px rgba(0, 0, 0, 0.4)' : '0 30px 60px rgba(106, 0, 244, 0.08)',
-              boxSizing: 'border-box',
-              zIndex: 20
-            }}
-            className="auth-card"
-          >
-            {/* Header Content */}
-            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <span style={{ fontSize: '15px', fontWeight: '700', color: '#FF2E8A', display: 'block', marginBottom: '6px' }}>
-                {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
-              </span>
-              <h2 style={{ margin: 0, fontSize: '28px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
-                {tab === 'login' ? 'Login to your account' : 'Create your account'}
-              </h2>
-            </div>
+          {/* Header Content */}
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <span style={{ fontSize: '13px', fontWeight: '700', color: '#FF2E8A', display: 'block', marginBottom: '2px' }}>
+              {tab === 'login' ? 'Welcome back! 👋' : 'Welcome to StitchBee! 🎉'}
+            </span>
+            <h2 style={{ margin: 0, fontSize: '23px', fontWeight: '800', color: colorTextPrimary, letterSpacing: '-0.5px' }}>
+              {tab === 'login' ? 'Login to your account' : 'Create your account'}
+            </h2>
+          </div>
 
             {/* Error box */}
             {error && (
@@ -746,7 +390,7 @@ export default function AuthPage({
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '11px' }}>
               
               {tab === 'signup' && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="auth-name-phone-row">
@@ -755,7 +399,7 @@ export default function AuthPage({
                     <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Full Name</label>
                     <div 
                       className="input-glow-focus"
-                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '42px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
                     >
                       <User size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
                       <input 
@@ -774,7 +418,7 @@ export default function AuthPage({
                     <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Phone Number</label>
                     <div 
                       className="input-glow-focus"
-                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '42px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
                     >
                       <Phone size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
                       <input 
@@ -795,7 +439,7 @@ export default function AuthPage({
                 <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Email Address</label>
                 <div 
                   className="input-glow-focus"
-                  style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                  style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '42px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
                 >
                   <Mail size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
                   <input 
@@ -817,7 +461,7 @@ export default function AuthPage({
                   <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Password</label>
                   <div 
                     className="input-glow-focus"
-                    style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
+                    style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '42px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
                   >
                     <Lock size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
                     <input 
@@ -844,14 +488,14 @@ export default function AuthPage({
                     <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Confirm Password</label>
                     <div 
                       className="input-glow-focus"
-                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
+                      style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '42px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', position: 'relative', transition: 'all 0.2s' }}
                     >
                       <Lock size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
                       <input 
                         type={showConfirmPassword ? 'text' : 'password'} 
                         placeholder="••••••••" 
                         value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.checked)} 
+                        onChange={(e) => setConfirmPassword(e.target.value)} 
                         style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '14px', color: colorTextPrimary, fontWeight: '500', paddingRight: '24px' }} 
                         required 
                       />
@@ -876,7 +520,7 @@ export default function AuthPage({
                   <label style={{ fontSize: '13px', fontWeight: '600', color: colorTextSecondary }}>Delivery & Sizing Address</label>
                   <div 
                     className="input-glow-focus"
-                    style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '48px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
+                    style={{ display: 'flex', alignItems: 'center', border: `1.5px solid ${borderColor}`, borderRadius: '12px', padding: '0 16px', height: '42px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', transition: 'all 0.2s' }}
                   >
                     <MapPin size={16} style={{ color: colorTextMuted, marginRight: '10px', flexShrink: 0 }} />
                     <input 
@@ -934,20 +578,20 @@ export default function AuthPage({
                 className="btn-primary"
                 style={{ 
                   width: '100%', 
-                  height: '56px',
+                  height: '46px',
                   background: 'linear-gradient(135deg, #FF2E8A 0%, #7B2DFF 100%)', 
                   color: '#ffffff', 
                   border: 'none', 
                   borderRadius: '16px', 
                   fontWeight: '700', 
-                  fontSize: '16px', 
+                  fontSize: '15px', 
                   cursor: 'pointer', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   gap: '8px',
                   boxShadow: '0 12px 28px rgba(255, 46, 138, 0.2)',
-                  marginTop: '8px',
+                  marginTop: '4px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
@@ -966,14 +610,14 @@ export default function AuthPage({
             </form>
 
             {/* Below Submit Indicators */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginTop: '16px', fontSize: '11px', color: colorTextMuted, fontWeight: '600' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', marginTop: '8px', fontSize: '11px', color: colorTextMuted, fontWeight: '600' }}>
               <span>✓ Secure Login</span>
               <span>• Privacy Protected</span>
               <span>• Trusted by Thousands</span>
             </div>
 
             {/* Separator */}
-            <div style={{ display: 'flex', alignItems: 'center', margin: '24px 0 16px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', margin: '10px 0 8px 0' }}>
               <div style={{ flex: 1, height: '1px', background: borderColor }} />
               <span style={{ padding: '0 12px', fontSize: '11px', color: colorTextMuted, fontWeight: '800', textTransform: 'uppercase', letterSpacing: '1px' }}>or continue with</span>
               <div style={{ flex: 1, height: '1px', background: borderColor }} />
@@ -985,7 +629,7 @@ export default function AuthPage({
               <button 
                 type="button"
                 onClick={() => handleQuickFill('customer@stitchbee.com', 'customer123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '38px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
                 title="Google Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
@@ -1003,7 +647,7 @@ export default function AuthPage({
               <button 
                 type="button"
                 onClick={() => handleQuickFill('delivery@stitchbee.com', 'delivery123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '38px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
                 title="Apple Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
@@ -1021,7 +665,7 @@ export default function AuthPage({
               <button 
                 type="button"
                 onClick={() => handleQuickFill('tailor@stitchbee.com', 'tailor123')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '48px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: isDark ? 'rgba(255,255,255,0.02)' : '#FFFFFF', border: `1.5px solid ${borderColor}`, height: '38px', borderRadius: '12px', fontSize: '13px', fontWeight: '700', color: colorTextPrimary, cursor: 'pointer', transition: 'all 0.2s ease', boxSizing: 'border-box' }}
                 title="Facebook Login"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-1px)';
@@ -1036,16 +680,58 @@ export default function AuthPage({
                 <span>Facebook</span>
               </button>
 
+                        </div>
+
+            {/* Direct Switch Link */}
+            <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '12px', color: colorTextSecondary }}>
+              {tab === 'login' ? (
+                <span>
+                  Don't have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setTab('signup')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#FF2E8A',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      padding: 0,
+                      textDecoration: 'underline'
+                    }}
+                  >
+                    Create Account
+                  </button>
+                </span>
+              ) : (
+                <span>
+                  Already have an account?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setTab('login')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#FF2E8A',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      padding: 0,
+                      textDecoration: 'underline'
+                    }}
+                  >
+                    Login
+                  </button>
+                </span>
+              )}
             </div>
 
           </div>
-        </div>
 
       </main>
 
       {/* BOTTOM TRUST FEATURES FOOTER */}
       <footer style={{
-        padding: '0 40px 40px 40px',
+        padding: '0 40px 16px 40px',
         display: 'flex',
         justifyContent: 'center',
         width: '100%',
@@ -1057,71 +743,131 @@ export default function AuthPage({
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '32px',
+          gap: '18px',
           maxWidth: '1200px',
           width: '100%'
         }} className="auth-trust-row">
           
+          {/* Card 1: Secure Orders */}
           <div style={{
             display: 'flex', 
             alignItems: 'center', 
             gap: '16px', 
             textAlign: 'left',
-            padding: '20px',
+            padding: '12px 20px',
             borderRadius: '20px',
-            background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.5)',
-            backdropFilter: 'blur(10px)',
-            border: `1px solid ${borderColor}`,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
+            background: isDark ? 'rgba(18, 14, 40, 0.94)' : 'rgba(255, 255, 255, 0.96)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: isDark ? '1.5px solid rgba(255, 255, 255, 0.18)' : '1.5px solid rgba(19, 26, 52, 0.16)',
+            boxShadow: isDark 
+              ? '0 16px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.12)' 
+              : '0 16px 36px rgba(0, 0, 0, 0.16), 0 0 20px rgba(16, 185, 129, 0.08)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(29, 185, 84, 0.12)', color: '#1DB954', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Shield size={22} />
+            <div style={{ 
+              width: '48px', 
+              height: '42px', 
+              borderRadius: '14px', 
+              background: isDark ? 'rgba(16, 185, 129, 0.22)' : 'rgba(16, 185, 129, 0.15)', 
+              border: '1.5px solid rgba(16, 185, 129, 0.5)', 
+              color: isDark ? '#34d399' : '#059669', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              flexShrink: 0 
+            }}>
+              <Shield size={22} strokeWidth={2.4} />
             </div>
             <div>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>🛡 Secure Orders</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted, display: 'block', marginTop: '2px' }}>End-to-end protected</span>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: isDark ? '#ffffff' : '#0f172a', display: 'block', lineHeight: '1.2' }}>
+                Secure Orders
+              </span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: isDark ? '#cbd5e1' : '#334155', display: 'block', marginTop: '3px' }}>
+                End-to-end protected
+              </span>
             </div>
           </div>
 
+          {/* Card 2: 24/7 Customer Support */}
           <div style={{
             display: 'flex', 
             alignItems: 'center', 
             gap: '16px', 
             textAlign: 'left',
-            padding: '20px',
+            padding: '12px 20px',
             borderRadius: '20px',
-            background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.5)',
-            backdropFilter: 'blur(10px)',
-            border: `1px solid ${borderColor}`,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
+            background: isDark ? 'rgba(18, 14, 40, 0.94)' : 'rgba(255, 255, 255, 0.96)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: isDark ? '1.5px solid rgba(255, 255, 255, 0.18)' : '1.5px solid rgba(19, 26, 52, 0.16)',
+            boxShadow: isDark 
+              ? '0 16px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(123, 45, 255, 0.12)' 
+              : '0 16px 36px rgba(0, 0, 0, 0.16), 0 0 20px rgba(123, 45, 255, 0.08)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(114, 9, 183, 0.12)', color: '#7B2DFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Headphones size={22} />
+            <div style={{ 
+              width: '48px', 
+              height: '42px', 
+              borderRadius: '14px', 
+              background: isDark ? 'rgba(123, 45, 255, 0.22)' : 'rgba(123, 45, 255, 0.15)', 
+              border: '1.5px solid rgba(123, 45, 255, 0.5)', 
+              color: isDark ? '#a78bfa' : '#7c3aed', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              flexShrink: 0 
+            }}>
+              <Headphones size={22} strokeWidth={2.4} />
             </div>
             <div>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>💬 24/7 Customer Support</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted, display: 'block', marginTop: '2px' }}>Always available</span>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: isDark ? '#ffffff' : '#0f172a', display: 'block', lineHeight: '1.2' }}>
+                24/7 Customer Support
+              </span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: isDark ? '#cbd5e1' : '#334155', display: 'block', marginTop: '3px' }}>
+                Always available
+              </span>
             </div>
           </div>
 
+          {/* Card 3: Secure Payments */}
           <div style={{
             display: 'flex', 
             alignItems: 'center', 
             gap: '16px', 
             textAlign: 'left',
-            padding: '20px',
+            padding: '12px 20px',
             borderRadius: '20px',
-            background: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.5)',
-            backdropFilter: 'blur(10px)',
-            border: `1px solid ${borderColor}`,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.02)'
+            background: isDark ? 'rgba(18, 14, 40, 0.94)' : 'rgba(255, 255, 255, 0.96)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            border: isDark ? '1.5px solid rgba(255, 255, 255, 0.18)' : '1.5px solid rgba(19, 26, 52, 0.16)',
+            boxShadow: isDark 
+              ? '0 16px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 46, 138, 0.12)' 
+              : '0 16px 36px rgba(0, 0, 0, 0.16), 0 0 20px rgba(255, 46, 138, 0.08)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255, 46, 138, 0.12)', color: '#FF2E8A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <CreditCard size={22} />
+            <div style={{ 
+              width: '48px', 
+              height: '42px', 
+              borderRadius: '14px', 
+              background: isDark ? 'rgba(255, 46, 138, 0.22)' : 'rgba(255, 46, 138, 0.15)', 
+              border: '1.5px solid rgba(255, 46, 138, 0.5)', 
+              color: isDark ? '#f472b6' : '#db2777', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              flexShrink: 0 
+            }}>
+              <CreditCard size={22} strokeWidth={2.4} />
             </div>
             <div>
-              <span style={{ fontSize: '15px', fontWeight: '800', color: colorTextPrimary, display: 'block', lineHeight: '1.2' }}>💳 Secure Payments</span>
-              <span style={{ fontSize: '12px', color: colorTextMuted, display: 'block', marginTop: '2px' }}>Multiple payment methods</span>
+              <span style={{ fontSize: '15px', fontWeight: '800', color: isDark ? '#ffffff' : '#0f172a', display: 'block', lineHeight: '1.2' }}>
+                Secure Payments
+              </span>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: isDark ? '#cbd5e1' : '#334155', display: 'block', marginTop: '3px' }}>
+                Multiple payment methods
+              </span>
             </div>
           </div>
 

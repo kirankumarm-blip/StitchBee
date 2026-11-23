@@ -1,0 +1,2901 @@
+/* ==========================================================================
+   STITCHBEEZ MEN'S STITCHING & TAILORING PAGE STYLES
+   100% Full Width, Exact UI Matching, Auto-Sliding Inspiration Showcase & Responsive
+   ========================================================================== */
+
+:root {
+  --men-pink: #FF008A;
+  --men-pink-hover: #E60078;
+  --men-navy: #071B49;
+  --men-subtext: #263B63;
+  --men-bg-soft: #FFF0F5;
+  --men-card-bg: #FFFFFF;
+  --men-border: #F0E8EC;
+  --men-font-serif: 'Playfair Display', Georgia, serif;
+  --men-font-sans: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 100% Full-Width Wrapper */
+.men-stitching-page-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--men-font-sans);
+  background: #FFFFFF;
+  color: var(--men-subtext);
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Tokens */
+.men-stitching-page-wrapper.dark {
+  background: #10131C;
+  color: #CDD5E5;
+  --men-navy: #F7F8FC;
+  --men-subtext: #A0ABC0;
+  --men-bg-soft: #171C28;
+  --men-card-bg: #1C2230;
+  --men-border: #343B4B;
+}
+
+/* Typography & Headings */
+.men-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--men-pink);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.men-section-title {
+  font-family: var(--men-font-serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  line-height: 1.2;
+  margin: 0 0 6px 0;
+}
+
+.men-section-sub {
+  font-size: 0.92rem;
+  color: var(--men-subtext);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Buttons */
+.men-btn-pink {
+  background: var(--men-pink);
+  color: #FFFFFF !important;
+  border: 1px solid var(--men-pink);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.28);
+  text-decoration: none;
+}
+
+.men-btn-pink:hover {
+  background: var(--men-pink-hover);
+  border-color: var(--men-pink-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 138, 0.35);
+}
+
+.men-btn-pink * {
+  color: #FFFFFF !important;
+}
+
+.men-btn-outline {
+  background: #FFFFFF;
+  color: var(--men-navy) !important;
+  border: 1.5px solid var(--men-pink);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.men-stitching-page-wrapper.dark .men-btn-outline {
+  background: rgba(255, 255, 255, 0.05);
+  color: #F7F8FC !important;
+  border-color: rgba(255, 0, 138, 0.6);
+}
+
+.men-btn-outline:hover {
+  background: #FFF0F5;
+  color: var(--men-pink) !important;
+  transform: translateY(-2px);
+}
+
+/* 100% Full-Width Section Containers */
+.men-section-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 38px 48px;
+  box-sizing: border-box;
+}
+
+.men-section-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.men-section-header-center {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.men-section-link-btn {
+  background: none;
+  border: none;
+  color: var(--men-pink);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease;
+}
+
+.men-section-link-btn:hover {
+  transform: translateX(3px);
+}
+
+/* Carousel Navigation Arrows */
+.men-carousel-nav-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.men-nav-arrow-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid var(--men-border);
+  color: var(--men-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(7, 27, 73, 0.08);
+}
+
+.men-stitching-page-wrapper.dark .men-nav-arrow-btn {
+  background: #1C2230;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.men-nav-arrow-btn:hover {
+  background: var(--men-pink);
+  color: #FFFFFF;
+  border-color: var(--men-pink);
+  transform: scale(1.08);
+}
+
+/* ==========================================================================
+   SECTION 1: HERO SECTION
+   ========================================================================== */
+.men-hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  background-color: #FFFDFB;
+  overflow: hidden;
+}
+
+.men-hero-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.men-hero-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+
+.men-hero-content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 100%;
+  padding: 40px 40px 40px clamp(75px, 9vw, 150px);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.men-hero-left {
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.men-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--men-pink);
+  letter-spacing: 0.12em;
+}
+
+.men-hero-title {
+  font-family: var(--men-font-serif);
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--men-navy);
+  margin: 0;
+}
+
+.men-hero-title-pink {
+  color: var(--men-pink);
+  display: inline-block;
+}
+
+.men-hero-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--men-subtext);
+  margin: 0;
+}
+
+.men-hero-features-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 8px 0 14px 0;
+  max-width: 480px;
+}
+
+.men-hero-feat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+
+.men-feat-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #F8F5FF;
+  color: #7C3AED;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #E9D5FF;
+  transition: transform 0.2s ease;
+}
+
+.men-hero-feat-item:hover .men-feat-icon-box {
+  transform: scale(1.08);
+}
+
+.men-feat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  line-height: 1.25;
+  text-align: center;
+}
+
+.men-hero-buttons-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.men-btn-pink.hero-btn {
+  background: var(--men-pink);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.35);
+}
+
+.men-btn-pink.hero-btn:hover {
+  background: #E60078;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 0, 138, 0.45);
+}
+
+.men-btn-outline.hero-btn {
+  background: #FFFFFF;
+  color: var(--men-navy);
+  border: 1.5px solid var(--men-pink);
+  border-radius: 8px;
+  padding: 13px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.men-btn-outline.hero-btn:hover {
+  background: #FFF0F5;
+  border-color: #E60078;
+  transform: translateY(-2px);
+}
+
+/* Floating Tailored Script Badge */
+.men-hero-floating-tailored {
+  position: absolute;
+  top: 36px;
+  right: 50px;
+  z-index: 3;
+  text-align: center;
+  pointer-events: none;
+}
+
+.tailored-script {
+  font-family: 'Playfair Display', Georgia, cursive, serif;
+  font-style: italic;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  line-height: 1.15;
+}
+
+.tailored-heart {
+  color: var(--men-pink);
+  font-size: 1.1rem;
+  margin-top: 2px;
+  display: block;
+}
+
+/* ==========================================================================
+   SECTION 2: EXPLORE MEN'S OUTFITS (10 CATEGORIES)
+   ========================================================================== */
+.men-categories-scroll-row {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(125px, 1fr));
+  gap: 14px;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 10px;
+}
+
+.men-cat-card {
+  background: #FFF9FB;
+  border: 1px solid #F5E8EF;
+  border-radius: 14px;
+  padding: 12px 10px 14px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  width: 100%;
+}
+
+.men-stitching-page-wrapper.dark .men-cat-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.men-cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(255, 0, 138, 0.12);
+  border-color: rgba(255, 0, 138, 0.4);
+}
+
+.men-cat-img-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+}
+
+.men-stitching-page-wrapper.dark .men-cat-img-box {
+  background: #151924;
+}
+
+.men-cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.men-cat-card:hover .men-cat-img {
+  transform: scale(1.08);
+}
+
+.men-cat-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  margin: 0 0 3px 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.men-cat-sub {
+  font-size: 0.68rem;
+  color: var(--men-subtext);
+  margin: 0;
+  opacity: 0.85;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* ==========================================================================
+   SECTION 3: TWO MAIN STITCHING OPTIONS
+   ========================================================================== */
+.men-two-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  width: 100%;
+}
+
+.men-option-feature-card {
+  border-radius: 20px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  box-shadow: 0 10px 32px rgba(7, 27, 73, 0.05);
+  border: 1px solid #F5E8EF;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.men-option-feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(7, 27, 73, 0.09);
+}
+
+.men-option-feature-card.tailor-card {
+  background: #FFF7FA;
+}
+
+.men-option-feature-card.designer-card {
+  background: #FFF7FC;
+}
+
+.men-stitching-page-wrapper.dark .men-option-feature-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.men-option-left-content {
+  padding: 32px 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.men-option-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.men-option-badge-tag.tailor {
+  background: #FFE4EE;
+  color: var(--men-pink);
+}
+
+.men-option-badge-tag.designer {
+  background: #F3E8FF;
+  color: #9333ea;
+}
+
+.men-option-heading {
+  font-family: var(--men-font-serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  line-height: 1.25;
+  margin: 0;
+}
+
+.men-option-heading .pink-accent {
+  color: var(--men-pink);
+}
+
+.men-option-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.men-option-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: var(--men-subtext);
+}
+
+.men-option-checklist .check-icon {
+  color: var(--men-pink);
+  flex-shrink: 0;
+}
+
+.option-cta-btn {
+  width: fit-content;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+}
+
+.men-option-right-img-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 290px;
+  overflow: hidden;
+}
+
+.men-option-right-img-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 35%;
+  background: linear-gradient(to right, #FFF7FA 0%, rgba(255, 247, 250, 0) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.men-option-feature-card.designer-card .men-option-right-img-box::before {
+  background: linear-gradient(to right, #FFF7FC 0%, rgba(255, 247, 252, 0) 100%);
+}
+
+.men-stitching-page-wrapper.dark .men-option-right-img-box::before {
+  background: linear-gradient(to right, #1C2230 0%, rgba(28, 34, 48, 0) 100%);
+}
+
+.men-option-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 8%, rgba(0, 0, 0, 1) 25%, black 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 8%, rgba(0, 0, 0, 1) 25%, black 100%);
+}
+
+.men-option-feature-card:hover .men-option-img {
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   SECTION 4: POPULAR STYLES FOR EVERY OCCASION (8 CARDS CAROUSEL)
+   ========================================================================== */
+.men-styles-carousel-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 14px;
+  scrollbar-width: none;
+}
+
+.men-styles-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.men-popular-style-card {
+  flex: 0 0 215px;
+  scroll-snap-align: start;
+  background: #FFFFFF;
+  border: 1px solid var(--men-border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.men-stitching-page-wrapper.dark .men-popular-style-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.men-popular-style-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(7, 27, 73, 0.09);
+  border-color: rgba(255, 0, 138, 0.3);
+}
+
+.men-style-card-image-wrap {
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  background: #FFF9FB;
+}
+
+.men-popular-style-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.men-popular-style-card:hover .men-popular-style-img {
+  transform: scale(1.06);
+}
+
+.men-popular-style-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.men-style-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  margin: 0;
+}
+
+.men-style-starting-price {
+  font-size: 0.8rem;
+  color: var(--men-subtext);
+}
+
+.men-style-starting-price strong {
+  font-size: 0.95rem;
+  color: var(--men-navy);
+}
+
+.men-start-stitching-btn {
+  background: transparent;
+  color: var(--men-pink);
+  border: 1px solid var(--men-pink);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.men-start-stitching-btn:hover {
+  background: var(--men-pink);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.25);
+}
+
+/* ==========================================================================
+   SECTION 5: SUPERIOR FABRICS CAROUSEL (10 SWATCHES - FULL WIDTH)
+   ========================================================================== */
+.men-fabrics-carousel-track {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(115px, 1fr));
+  gap: 14px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+}
+
+.men-fabric-swatch-card {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid var(--men-border);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding-bottom: 10px;
+}
+
+.men-stitching-page-wrapper.dark .men-fabric-swatch-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.men-fabric-swatch-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--men-pink);
+  box-shadow: 0 8px 20px rgba(255, 0, 138, 0.12);
+}
+
+.men-fabric-swatch-img-box {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  height: 95px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.men-fabric-swatch-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+
+.men-fabric-swatch-card:hover .men-fabric-swatch-img {
+  transform: scale(1.08);
+}
+
+.men-fabric-swatch-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   SECTION 6: HOW IT WORKS (6 STEPS FLOW - EXACT FULL-WIDTH ALIGNMENT)
+   ========================================================================== */
+.men-process-flow-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  margin: 10px 0;
+  padding: 10px 0;
+}
+
+.men-process-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 135px;
+}
+
+.men-process-circle {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #FFF0F5;
+  color: var(--men-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(255, 0, 138, 0.25);
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.men-stitching-page-wrapper.dark .men-process-circle {
+  background: rgba(255, 0, 138, 0.15);
+  border-color: rgba(255, 0, 138, 0.3);
+}
+
+.men-process-node:hover .men-process-circle {
+  transform: translateY(-2px);
+  background: #FFE4EE;
+}
+
+.men-process-circle .node-num {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--men-pink);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.men-process-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 0;
+}
+
+.men-process-desc {
+  font-size: 0.74rem;
+  color: var(--men-subtext);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.men-process-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px; /* MATCHES CIRCLE HEIGHT FOR PERFECT VERTICAL CENTER ALIGNMENT! */
+  color: #CBD5E1;
+  flex-shrink: 0;
+  padding: 0 4px;
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   SECTION 7: LOOK YOUR BEST, ALWAYS (6 CARDS ROW + INNER IMAGE SLIDER)
+   ========================================================================== */
+.men-inspiration-section {
+  position: relative;
+  background: #FFFDFE;
+}
+
+.men-stitching-page-wrapper.dark .men-inspiration-section {
+  background: #131722;
+}
+
+.men-style-inspiration-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(175px, 1fr));
+  gap: 16px;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 12px;
+}
+
+.men-style-card {
+  position: relative;
+  height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0B1120;
+  box-shadow: 0 8px 24px rgba(7, 27, 73, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.men-style-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(7, 27, 73, 0.16);
+}
+
+.men-style-card-image-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.men-style-card-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease, opacity 0.4s ease;
+}
+
+.men-style-card:hover .men-style-card-bg-img {
+  transform: scale(1.05);
+}
+
+.men-card-inner-indicators {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 5px;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.inner-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.inner-dot.active {
+  width: 14px;
+  border-radius: 4px;
+  background: #FF008A;
+}
+
+.men-style-card-bottom-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 55px 14px 20px 14px;
+  background: linear-gradient(to top, rgba(7, 27, 73, 0.98) 0%, rgba(7, 27, 73, 0.88) 50%, rgba(7, 27, 73, 0.45) 80%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  gap: 3px;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.men-style-card-bottom-overlay .men-style-card-title,
+.men-style-card-title {
+  font-family: var(--men-font-serif);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #FFFFFF !important;
+  margin: 0;
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+}
+
+.men-style-card-bottom-overlay .men-style-card-desc,
+.men-style-card-desc {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.95) !important;
+  margin: 0 0 10px 0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+}
+
+.men-style-card-cta-btn {
+  background: #FF008A !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid #FF008A;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.45);
+  margin-top: 4px;
+}
+
+.men-style-card-cta-btn:hover {
+  background: #FFFFFF !important;
+  color: #FF008A !important;
+  border-color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   SECTION 8: CUSTOMER REVIEWS
+   ========================================================================== */
+.men-reviews-track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+}
+
+.men-reviews-track::-webkit-scrollbar {
+  display: none;
+}
+
+.men-review-card {
+  flex: 0 0 340px;
+  scroll-snap-align: start;
+  background: #FFFFFF;
+  border: 1px solid var(--men-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 6px 20px rgba(7, 27, 73, 0.04);
+}
+
+.men-stitching-page-wrapper.dark .men-review-card {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.men-review-top-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.men-review-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.men-review-author-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--men-navy);
+}
+
+.men-review-locality {
+  font-size: 0.72rem;
+  color: #94A3B8;
+}
+
+.men-review-stars {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.men-review-quote {
+  font-size: 0.86rem;
+  color: var(--men-subtext);
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+.men-review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+  font-size: 0.74rem;
+}
+
+.men-stitching-page-wrapper.dark .men-review-footer {
+  border-color: #2D3748;
+}
+
+.men-review-order-tag {
+  color: var(--men-pink);
+  font-weight: 700;
+}
+
+.men-review-verified {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   SECTION 9: BOTTOM PROMOTIONAL BANNER
+   ========================================================================== */
+.men-bottom-banner-card {
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 12px 36px rgba(7, 27, 73, 0.08);
+  background: #FFF0F5;
+}
+
+.men-bottom-banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+}
+
+.men-bottom-banner-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 36px 50px 36px clamp(240px, 20vw, 360px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: transparent;
+}
+
+.men-stitching-page-wrapper.dark .men-bottom-banner-content {
+  background: transparent;
+}
+
+.men-bottom-banner-text {
+  max-width: 520px;
+}
+
+.men-bottom-banner-title {
+  font-family: var(--men-font-serif);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--men-navy);
+  margin: 0 0 8px 0;
+}
+
+.men-bottom-banner-title .pink-line {
+  color: var(--men-pink);
+}
+
+.men-bottom-banner-desc {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--men-subtext);
+  margin: 0;
+}
+
+.men-bottom-banner-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   WORKFLOW MODALS (TAILOR & DESIGNER EXPERIENCE)
+   ========================================================================== */
+.men-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 27, 73, 0.65);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.men-modal-dialog {
+  background: #FFFFFF;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: menModalFadeIn 0.25s ease-out;
+}
+
+.men-modal-backdrop.dark .men-modal-dialog {
+  background: #1C2230;
+  color: #CDD5E5;
+}
+
+@keyframes menModalFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.men-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #F0E8EC;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.men-modal-backdrop.dark .men-modal-header {
+  border-color: #343B4B;
+}
+
+.men-modal-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--men-pink);
+  letter-spacing: 0.1em;
+}
+
+.men-modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 4px 0 0 0;
+}
+
+.men-modal-backdrop.dark .men-modal-title {
+  color: #F7F8FC;
+}
+
+.men-modal-close-btn {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.men-modal-close-btn:hover {
+  background: #F1F5F9;
+  color: var(--men-navy);
+}
+
+.men-modal-stepper {
+  display: flex;
+  padding: 12px 24px;
+  background: #FFF9FB;
+  border-bottom: 1px solid #F5E8EF;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.men-modal-backdrop.dark .men-modal-stepper {
+  background: #151924;
+  border-color: #2D3748;
+}
+
+.men-modal-step-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #94A3B8;
+  cursor: pointer;
+  white-space: nowrap;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+}
+
+.men-modal-backdrop.dark .men-modal-step-pill {
+  background: #1C2230;
+  border-color: #343B4B;
+}
+
+.men-modal-step-pill.active {
+  background: var(--men-pink);
+  color: #FFFFFF;
+  border-color: var(--men-pink);
+}
+
+.men-modal-step-pill.completed {
+  background: #DCFCE7;
+  color: #15803D;
+  border-color: #BBF7D0;
+}
+
+.men-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.men-form-group {
+  margin-bottom: 18px;
+}
+
+.men-form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  margin-bottom: 8px;
+}
+
+.men-modal-backdrop.dark .men-form-label {
+  color: #F7F8FC;
+}
+
+.men-form-select,
+.men-form-input,
+.men-form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--men-navy);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.men-modal-backdrop.dark .men-form-select,
+.men-modal-backdrop.dark .men-form-input,
+.men-modal-backdrop.dark .men-form-textarea {
+  background: #151924;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.men-form-select:focus,
+.men-form-input:focus,
+.men-form-textarea:focus {
+  border-color: var(--men-pink);
+}
+
+.men-category-pills-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.men-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--men-navy);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.men-modal-backdrop.dark .men-pill-btn {
+  background: #151924;
+  border-color: #343B4B;
+  color: #CDD5E5;
+}
+
+.men-pill-btn.active {
+  background: var(--men-pink);
+  color: #FFFFFF;
+  border-color: var(--men-pink);
+}
+
+.men-pill-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.men-style-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.men-style-card {
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.men-modal-backdrop.dark .men-style-card {
+  border-color: #343B4B;
+}
+
+.men-style-card.active {
+  border-color: var(--men-pink);
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.2);
+}
+
+.men-style-card-img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.men-style-card-info {
+  padding: 8px 10px;
+}
+
+.men-style-card-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--men-navy);
+}
+
+.men-modal-backdrop.dark .men-style-card-name {
+  color: #F7F8FC;
+}
+
+.men-style-card-price {
+  font-size: 0.74rem;
+  color: var(--men-pink);
+  font-weight: 800;
+}
+
+.men-style-card-time {
+  font-size: 0.68rem;
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.men-customization-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* Fabric Selection Modal View */
+.men-fabric-source-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.men-source-tab {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #CBD5E1;
+  background: #FFFFFF;
+  color: var(--men-navy);
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.men-modal-backdrop.dark .men-source-tab {
+  background: #151924;
+  border-color: #343B4B;
+  color: #CDD5E5;
+}
+
+.men-source-tab.active {
+  border-color: var(--men-pink);
+  background: #FFF0F5;
+  color: var(--men-pink);
+}
+
+.men-modal-backdrop.dark .men-source-tab.active {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.men-fabrics-select-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.men-fabric-select-card {
+  position: relative;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  padding-bottom: 6px;
+  transition: all 0.2s ease;
+}
+
+.men-modal-backdrop.dark .men-fabric-select-card {
+  border-color: #343B4B;
+}
+
+.men-fabric-select-card.active {
+  border-color: var(--men-pink);
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.2);
+}
+
+.men-fabric-select-img {
+  width: 100%;
+  height: 75px;
+  object-fit: cover;
+}
+
+.men-fabric-select-info {
+  padding: 4px;
+}
+
+.men-fabric-select-name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--men-navy);
+}
+
+.men-modal-backdrop.dark .men-fabric-select-name {
+  color: #F7F8FC;
+}
+
+.men-fabric-select-type {
+  font-size: 0.64rem;
+  color: #94A3B8;
+}
+
+.men-fabric-select-price {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--men-pink);
+  margin-top: 2px;
+}
+
+.men-selected-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--men-pink);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.men-fabric-selected-summary {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #FFF9FB;
+  border: 1px solid #F5E8EF;
+  flex-wrap: wrap;
+}
+
+.men-modal-backdrop.dark .men-fabric-selected-summary {
+  background: #151924;
+  border-color: #2D3748;
+}
+
+.men-summary-pill {
+  font-size: 0.8rem;
+}
+
+.men-summary-pill.price {
+  color: var(--men-pink);
+  margin-left: auto;
+}
+
+.men-own-fabric-box {
+  padding: 24px;
+  background: #FFFDFE;
+  border: 2px dashed #CBD5E1;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.men-own-fabric-icon-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FFF0F5;
+  color: var(--men-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+}
+
+.men-own-fabric-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #10B981;
+  margin-top: 10px;
+}
+
+/* Google Maps Discovery Header */
+.men-maps-search-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.men-maps-search-input-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.men-modal-backdrop.dark .men-maps-search-input-box {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-maps-pin-icon {
+  color: var(--men-pink);
+}
+
+.men-maps-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.84rem;
+  color: inherit;
+  width: 100%;
+}
+
+.men-maps-radius-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
+  font-size: 0.82rem;
+  background: #FFFFFF;
+}
+
+.men-modal-backdrop.dark .men-maps-radius-select {
+  background: #151924;
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.men-view-toggle-btns {
+  display: flex;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.men-toggle-btn {
+  padding: 8px 12px;
+  border: none;
+  background: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.men-modal-backdrop.dark .men-toggle-btn {
+  background: #151924;
+  color: #CDD5E5;
+}
+
+.men-toggle-btn.active {
+  background: var(--men-pink);
+  color: #FFFFFF;
+}
+
+/* Interactive Map Simulation */
+.men-interactive-map-container {
+  height: 180px;
+  background: #E2E8F0;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.men-map-canvas-mock {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80') center/cover;
+}
+
+.men-map-watermark {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--men-navy);
+}
+
+.men-map-marker-pin {
+  position: absolute;
+  cursor: pointer;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.men-marker-bubble {
+  background: #FFFFFF;
+  color: var(--men-navy);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.men-map-marker-pin.active .men-marker-bubble {
+  background: var(--men-pink);
+  color: #FFFFFF;
+}
+
+.men-pin-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--men-pink);
+  border: 2px solid #FFFFFF;
+  margin-top: 2px;
+}
+
+/* Tailor List Cards */
+.men-tailors-list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.men-tailor-item-card {
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+}
+
+.men-modal-backdrop.dark .men-tailor-item-card {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-tailor-item-card.selected {
+  border-color: var(--men-pink);
+  background: #FFFDFE;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.15);
+}
+
+.men-tailor-item-top {
+  display: flex;
+  gap: 14px;
+}
+
+.men-tailor-item-img {
+  width: 68px;
+  height: 68px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.men-tailor-item-details {
+  flex: 1;
+}
+
+.men-tailor-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.men-tailor-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 0;
+}
+
+.men-modal-backdrop.dark .men-tailor-name {
+  color: #F7F8FC;
+}
+
+.men-verified-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #DCFCE7;
+  color: #15803D;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.men-tailor-owner {
+  font-size: 0.76rem;
+  color: #64748B;
+  margin: 2px 0;
+}
+
+.men-tailor-locality {
+  font-size: 0.74rem;
+  color: var(--men-subtext);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.men-tailor-rating {
+  font-size: 0.74rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.men-tailor-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.men-modal-backdrop.dark .men-tailor-item-bottom {
+  border-color: #2D3748;
+}
+
+.men-tailor-specs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.men-spec-badge {
+  background: #F1F5F9;
+  color: var(--men-navy);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.men-modal-backdrop.dark .men-spec-badge {
+  background: #1C2230;
+  color: #CDD5E5;
+}
+
+.men-btn-select-tailor {
+  background: var(--men-pink);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.men-selected-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--men-pink);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* Measurement Options Grid */
+.men-measurement-options-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.men-measure-card {
+  border: 1.5px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+}
+
+.men-modal-backdrop.dark .men-measure-card {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-measure-card.active {
+  border-color: var(--men-pink);
+  background: #FFF0F5;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.15);
+}
+
+.men-modal-backdrop.dark .men-measure-card.active {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.men-measure-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px auto;
+}
+
+.men-measure-icon-circle.ai { background: #EEF2FF; color: #4F46E5; }
+.men-measure-icon-circle.manual { background: #FEF3C7; color: #D97706; }
+.men-measure-icon-circle.home { background: #FFE4EE; color: var(--men-pink); }
+.men-measure-icon-circle.shop { background: #DCFCE7; color: #15803D; }
+
+.men-measure-card h4 {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 0 0 4px 0;
+}
+
+.men-modal-backdrop.dark .men-measure-card h4 {
+  color: #F7F8FC;
+}
+
+.men-measure-card p {
+  font-size: 0.68rem;
+  color: var(--men-subtext);
+  line-height: 1.35;
+  margin: 0 0 8px 0;
+}
+
+.men-measure-cost {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--men-pink);
+}
+
+.men-measure-interactive-panel {
+  padding: 16px;
+  background: #FFFDFE;
+  border: 1px solid #F5E8EF;
+  border-radius: 12px;
+}
+
+.men-modal-backdrop.dark .men-measure-interactive-panel {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-measure-interactive-panel h5 {
+  font-size: 0.9rem;
+  color: var(--men-navy);
+  margin: 0 0 6px 0;
+}
+
+.men-modal-backdrop.dark .men-measure-interactive-panel h5 {
+  color: #F7F8FC;
+}
+
+.men-manual-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.men-manual-inputs-grid label {
+  font-size: 0.74rem;
+  color: #64748B;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Quotation Review Grid */
+.men-quote-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+}
+
+.men-quote-item-box {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  background: #FFF9FB;
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+
+.men-modal-backdrop.dark .men-quote-item-box {
+  background: #151924;
+}
+
+.men-quote-img {
+  width: 70px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.men-quote-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--men-pink);
+  text-transform: uppercase;
+}
+
+.men-quote-item-box h4 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 2px 0 4px 0;
+}
+
+.men-modal-backdrop.dark .men-quote-item-box h4 {
+  color: #F7F8FC;
+}
+
+.men-quote-item-box p {
+  font-size: 0.74rem;
+  color: #64748B;
+  margin: 0;
+}
+
+.men-quote-provider-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+}
+
+.men-modal-backdrop.dark .men-quote-provider-box {
+  border-color: #343B4B;
+}
+
+.men-provider-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.82rem;
+}
+
+.men-prov-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #FFF0F5;
+  color: var(--men-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.men-quote-itemized-card {
+  padding: 20px;
+  border-radius: 16px;
+  background: #FFFDFE;
+  border: 1.5px solid #F5E8EF;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.men-modal-backdrop.dark .men-quote-itemized-card {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-quote-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 0 0 6px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.men-modal-backdrop.dark .men-quote-card-title {
+  color: #F7F8FC;
+  border-color: #2D3748;
+}
+
+.men-quote-line-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: var(--men-subtext);
+}
+
+.men-quote-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  margin-top: 6px;
+  border-top: 2px dashed #E2E8F0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--men-navy);
+}
+
+.men-modal-backdrop.dark .men-quote-total-row {
+  border-color: #343B4B;
+  color: #F7F8FC;
+}
+
+.total-amount {
+  font-size: 1.3rem;
+  color: var(--men-pink);
+}
+
+.men-quote-guarantee-text {
+  font-size: 0.72rem;
+  color: #10B981;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0 0 0;
+}
+
+/* Confirmation Screen */
+.men-confirmation-screen {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.men-success-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #DCFCE7;
+  color: #15803D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.men-conf-title {
+  font-family: var(--men-font-serif);
+  font-size: 1.8rem;
+  color: var(--men-navy);
+  margin: 0 0 6px 0;
+}
+
+.men-modal-backdrop.dark .men-conf-title {
+  color: #F7F8FC;
+}
+
+.men-conf-subtitle {
+  font-size: 0.92rem;
+  color: var(--men-subtext);
+  margin: 0 0 20px 0;
+}
+
+.men-conf-summary-card {
+  background: #FFF9FB;
+  border: 1px solid #F5E8EF;
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.men-modal-backdrop.dark .men-conf-summary-card {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-conf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  text-align: left;
+  font-size: 0.82rem;
+}
+
+.men-conf-grid label {
+  color: #94A3B8;
+  font-size: 0.72rem;
+}
+
+.men-conf-grid p {
+  font-weight: 700;
+  color: var(--men-navy);
+  margin: 2px 0 0 0;
+}
+
+.men-modal-backdrop.dark .men-conf-grid p {
+  color: #F7F8FC;
+}
+
+.men-conf-tracker-bar {
+  display: flex;
+  gap: 6px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #E2E8F0;
+}
+
+.tracker-step {
+  flex: 1;
+  padding: 6px 4px;
+  border-radius: 6px;
+  background: #E2E8F0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #64748B;
+}
+
+.tracker-step.done {
+  background: #DCFCE7;
+  color: #15803D;
+}
+
+.men-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #F0E8EC;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.men-modal-backdrop.dark .men-modal-footer {
+  border-color: #343B4B;
+}
+
+/* Designer Specific Styles */
+.men-upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border: 2px dashed #CBD5E1;
+  border-radius: 14px;
+  cursor: pointer;
+  background: #FFFDFE;
+  transition: all 0.2s ease;
+}
+
+.men-upload-dropzone:hover {
+  border-color: var(--men-pink);
+  background: #FFF9FB;
+}
+
+.men-designers-list-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.men-designer-card {
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.men-modal-backdrop.dark .men-designer-card {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.men-designer-card.active {
+  border-color: var(--men-pink);
+  box-shadow: 0 4px 16px rgba(255, 0, 138, 0.2);
+}
+
+.men-designer-card-top {
+  display: flex;
+  gap: 12px;
+}
+
+.men-designer-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.men-designer-details {
+  flex: 1;
+}
+
+.men-designer-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--men-navy);
+  margin: 0;
+}
+
+.men-modal-backdrop.dark .men-designer-name {
+  color: #F7F8FC;
+}
+
+.men-designer-lead {
+  font-size: 0.72rem;
+  color: #64748B;
+}
+
+.men-designer-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #9333EA;
+  background: #F3E8FF;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin: 3px 0;
+}
+
+.men-designer-locality {
+  font-size: 0.7rem;
+  color: var(--men-subtext);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.men-designer-rating {
+  font-size: 0.72rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.men-designer-portfolio-row {
+  margin-top: 12px;
+}
+
+.portfolio-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #94A3B8;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.portfolio-thumbs {
+  display: flex;
+  gap: 6px;
+}
+
+.portfolio-thumb-item {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.portfolio-thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.men-designer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.consult-fee {
+  font-size: 0.74rem;
+  color: #64748B;
+}
+
+.consult-fee strong {
+  font-size: 0.95rem;
+  color: var(--men-pink);
+  display: block;
+}
+
+.men-btn-select-des {
+  background: #FFFFFF;
+  border: 1px solid var(--men-pink);
+  color: var(--men-pink);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.men-btn-select-des.selected {
+  background: var(--men-pink);
+  color: #FFFFFF;
+}
+
+.men-consult-mode-toggle {
+  display: flex;
+  gap: 12px;
+}
+
+.men-mode-tab {
+  flex: 1;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1.5px solid #CBD5E1;
+  background: #FFFFFF;
+  color: var(--men-navy);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.men-modal-backdrop.dark .men-mode-tab {
+  background: #151924;
+  border-color: #343B4B;
+  color: #CDD5E5;
+}
+
+.men-mode-tab.active {
+  border-color: var(--men-pink);
+  background: #FFF0F5;
+  color: var(--men-pink);
+}
+
+.men-modal-backdrop.dark .men-mode-tab.active {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 1199px) {
+  .men-hero-title {
+    font-size: 2.6rem;
+  }
+
+  .men-categories-scroll-row {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .men-two-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .men-inspiration-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+  }
+
+  .men-inspiration-slider-track {
+    transform: none !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .men-inspiration-card {
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 768px) {
+  .men-section-container {
+    padding: 24px 16px;
+  }
+
+  /* Requirement 1: Hero Section - card at top, image below */
+  .men-hero-section {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    padding: 20px 16px 20px 16px;
+    background: #FFFDFB;
+  }
+
+  .men-stitching-page-wrapper.dark .men-hero-section {
+    background: #10131C;
+  }
+
+  .men-hero-content-layer {
+    order: 1;
+    position: static;
+    padding: 0;
+    width: 100%;
+  }
+
+  .men-hero-floating-tailored {
+    display: none;
+  }
+
+  .men-hero-left {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 26px 18px;
+    box-shadow: 0 10px 30px rgba(7, 27, 73, 0.08);
+    border: 1px solid var(--men-border);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+  }
+
+  .men-stitching-page-wrapper.dark .men-hero-left {
+    background: #1C2230;
+    border-color: #343B4B;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .men-hero-title {
+    font-size: 2.1rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .men-hero-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .men-hero-features-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin: 14px 0 18px 0;
+  }
+
+  .men-hero-feat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .men-feat-icon-box {
+    background: #FFF0F5 !important;
+    color: #FF008A !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .men-stitching-page-wrapper.dark .men-feat-icon-box {
+    background: rgba(255, 0, 138, 0.2) !important;
+  }
+
+  .men-feat-label {
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    color: var(--men-navy) !important;
+    line-height: 1.3;
+  }
+
+  .men-hero-buttons-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .men-hero-buttons-row button {
+    width: 100%;
+    padding: 13px 20px;
+  }
+
+  /* Hero image displayed below the text/buttons section */
+  .men-hero-bg-container {
+    order: 2;
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    height: 300px;
+    margin-top: 18px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(7, 27, 73, 0.1);
+  }
+
+  .men-hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  /* Requirement 2: Categories in mobile mode - no horizontal scroll, show all in page grid */
+  .men-categories-scroll-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    overflow-x: visible;
+    width: 100%;
+    padding-bottom: 0;
+    scrollbar-width: none;
+  }
+
+  .men-categories-scroll-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .men-cat-card {
+    flex: none;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 10px;
+  }
+
+  .men-cat-img-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+  }
+
+  .men-fabrics-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+  }
+
+  .men-fabric-swatch-card {
+    flex: 0 0 115px;
+    min-width: 115px;
+  }
+
+  .men-option-feature-card {
+    grid-template-columns: 1fr;
+  }
+
+  .men-option-left-content {
+    padding: 24px 20px;
+  }
+
+  .men-option-right-img-box {
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .men-process-flow-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .men-process-arrow {
+    transform: rotate(90deg);
+    margin: 0;
+  }
+
+  .men-style-inspiration-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+  }
+
+  .men-style-card {
+    flex: 0 0 210px;
+    min-width: 210px;
+    height: 330px;
+  }
+
+  /* Requirement 3: Every Occasion A Perfect Outfit - show first image and then card section */
+  .men-bottom-banner-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #FFF0F5;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(7, 27, 73, 0.08);
+  }
+
+  .men-bottom-banner-bg {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center left;
+    display: block;
+    border-radius: 20px 20px 0 0;
+    z-index: 1;
+  }
+
+  .men-bottom-banner-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #FFFFFF;
+    border-radius: 0 0 20px 20px;
+    box-sizing: border-box;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .men-stitching-page-wrapper.dark .men-bottom-banner-content {
+    background: #1C2230;
+  }
+
+  .men-bottom-banner-text {
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .men-bottom-banner-title {
+    font-size: 1.85rem;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--men-navy);
+    margin-bottom: 8px;
+  }
+
+  .men-bottom-banner-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--men-subtext);
+    margin: 0;
+  }
+
+  .men-bottom-banner-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .men-bottom-banner-buttons button {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+  }
+
+  .men-measurement-options-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .men-quote-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .men-designers-list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .men-consult-mode-toggle {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 768px) {
+  .men-categories-scroll-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

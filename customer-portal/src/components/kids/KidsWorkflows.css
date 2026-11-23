@@ -1,0 +1,1048 @@
+/* ==========================================================================
+   STITCHBEEZ KIDS WORKFLOWS STYLESHEET (Tailor & Designer Workflows)
+   Complete styling for all steps, grids, thumbnails, chips, and controls
+   ========================================================================== */
+
+:root {
+  --kids-pink: #FF087A;
+  --kids-pink-hover: #E11D74;
+  --kids-pink-light: #FFF0F5;
+  --kids-pink-soft: #FFF5F8;
+  --kids-pink-border: #FFD6E7;
+  --kids-blue: #3B82F6;
+  --kids-blue-light: #EFF6FF;
+  --kids-navy: #10213F;
+  --kids-navy-muted: #52627A;
+  --kids-bg-creamy: #FFFDFB;
+  --kids-card-bg: #FFFFFF;
+  --kids-border: #E2E8F0;
+  --kids-border-light: #F1F5F9;
+  --kids-shadow-sm: 0 2px 8px rgba(16, 33, 63, 0.04);
+  --kids-shadow-md: 0 6px 20px rgba(16, 33, 63, 0.08);
+  --kids-shadow-lg: 0 12px 32px rgba(16, 33, 63, 0.12);
+  --kids-radius-sm: 10px;
+  --kids-radius-md: 16px;
+  --kids-radius-lg: 24px;
+}
+
+/* Dark mode overrides */
+.dark-theme,
+.kids-page-wrapper.dark,
+.kids-stitching-experience-root.dark-theme {
+  --kids-navy: #F8FAFC;
+  --kids-navy-muted: #94A3B8;
+  --kids-bg-creamy: #0B0F17;
+  --kids-card-bg: #141B26;
+  --kids-border: #222C3A;
+  --kids-border-light: #1A2332;
+  --kids-pink-light: rgba(255, 8, 122, 0.12);
+  --kids-pink-border: rgba(255, 8, 122, 0.25);
+  --kids-blue-light: rgba(59, 130, 246, 0.12);
+}
+
+/* ================= 1. WORKFLOW CONTAINER & HEADER ================= */
+.kids-workflow-container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 24px 32px 80px 32px;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: var(--kids-navy);
+}
+
+.kids-workflow-header {
+  margin-bottom: 24px;
+}
+
+.kids-workflow-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--kids-navy-muted);
+  cursor: pointer;
+  margin-bottom: 8px;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.kids-workflow-back-btn:hover {
+  color: var(--kids-pink);
+}
+
+.kids-workflow-title-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.kids-workflow-main-title {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: var(--kids-navy);
+  margin: 0;
+}
+
+/* ================= 2. STEPPER PROGRESS BAR ================= */
+.kids-stepper-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: var(--kids-radius-md);
+  padding: 12px 20px;
+  margin-bottom: 28px;
+  overflow-x: auto;
+  box-shadow: var(--kids-shadow-sm);
+  gap: 8px;
+}
+
+.kids-stepper-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.kids-stepper-bar::-webkit-scrollbar-thumb {
+  background: var(--kids-border);
+  border-radius: 2px;
+}
+
+.kids-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--kids-navy-muted);
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.kids-step-pill.active {
+  color: var(--kids-pink);
+  font-weight: 800;
+}
+
+.kids-step-pill.completed {
+  color: #10B981;
+}
+
+.kids-step-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: var(--kids-border-light);
+  color: var(--kids-navy-muted);
+  flex-shrink: 0;
+}
+
+.kids-step-pill.active .kids-step-circle {
+  background: var(--kids-pink);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(255, 8, 122, 0.4);
+}
+
+.kids-step-pill.completed .kids-step-circle {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+/* ================= 3. STEP CONTENT BOX ================= */
+.kids-step-content-box {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: var(--kids-radius-lg);
+  padding: 32px;
+  box-shadow: var(--kids-shadow-md);
+  box-sizing: border-box;
+}
+
+.kids-fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kids-form-group {
+  margin-bottom: 24px;
+}
+
+.kids-form-label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin-bottom: 10px;
+}
+
+/* ================= 4. STEP 1: AGE GROUP PILL GRID ================= */
+.kids-age-pill-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.kids-select-tile {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kids-select-tile:hover {
+  border-color: var(--kids-pink);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 8, 122, 0.12);
+}
+
+.kids-select-tile.selected {
+  border-color: var(--kids-pink);
+  background: #FFF1F7;
+  box-shadow: 0 3px 12px rgba(255, 8, 122, 0.2);
+}
+
+.kids-select-tile.selected > div:first-child {
+  color: var(--kids-pink);
+}
+
+/* ================= 5. GENDER & DESIGN CHOICE CHIPS ================= */
+.kids-choice-chip {
+  padding: 8px 22px;
+  border-radius: 24px;
+  border: 1.5px solid var(--kids-border);
+  background: var(--kids-card-bg);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--kids-navy);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.kids-choice-chip:hover {
+  border-color: var(--kids-pink);
+  color: var(--kids-pink);
+}
+
+.kids-choice-chip.active {
+  background: var(--kids-pink);
+  border-color: var(--kids-pink);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(255, 8, 122, 0.35);
+}
+
+/* ================= 6. CLOTHING CATEGORY PICKER GRID ================= */
+.kids-category-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.kids-cat-tile {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.kids-cat-tile:hover {
+  border-color: var(--kids-pink);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.kids-cat-tile.active {
+  border-color: var(--kids-pink);
+  background: #FFF9FB;
+  box-shadow: 0 4px 16px rgba(255, 8, 122, 0.18);
+}
+
+.kids-cat-tile-thumb {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  background: #F8FAFC;
+  position: relative;
+}
+
+.kids-cat-tile-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.kids-cat-tile:hover .kids-cat-tile-thumb img {
+  transform: scale(1.06);
+}
+
+.kids-cat-tile-info {
+  padding: 10px 12px;
+  flex: 1;
+}
+
+.kids-cat-tile-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kids-cat-tile-sub {
+  font-size: 0.74rem;
+  color: var(--kids-pink);
+  font-weight: 700;
+}
+
+.kids-cat-tile-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--kids-pink);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(255, 8, 122, 0.45);
+}
+
+/* ================= 7. STEP 2: FABRIC SELECTION ================= */
+.kids-fabric-mode-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.kids-fabric-mode-card {
+  display: flex;
+  gap: 14px;
+  padding: 20px;
+  border: 1.5px solid var(--kids-border);
+  border-radius: 16px;
+  background: var(--kids-card-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kids-fabric-mode-card:hover {
+  border-color: var(--kids-pink);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.kids-fabric-mode-card.active {
+  border-color: var(--kids-pink);
+  background: #FFF9FB;
+  box-shadow: 0 4px 16px rgba(255, 8, 122, 0.14);
+}
+
+.kids-mode-radio {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--kids-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.radio-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.radio-dot.active {
+  background: var(--kids-pink);
+}
+
+.kids-mode-title {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 4px 0;
+}
+
+.kids-mode-desc {
+  font-size: 0.84rem;
+  color: var(--kids-navy-muted);
+  margin: 0 0 10px 0;
+  line-height: 1.45;
+}
+
+.kids-mode-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: #FFF1F7;
+  color: var(--kids-pink);
+}
+
+.kids-mode-badge.success {
+  background: #ECFDF5;
+  color: #10B981;
+}
+
+/* Fabrics Picker Grid */
+.kids-fabrics-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.kids-fab-tile {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.kids-fab-tile:hover {
+  border-color: var(--kids-pink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.kids-fab-tile.active {
+  border-color: var(--kids-pink);
+  background: #FFF9FB;
+  box-shadow: 0 4px 14px rgba(255, 8, 122, 0.16);
+}
+
+.kids-fab-tile-thumb {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  background: #F8FAFC;
+}
+
+.kids-fab-tile-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.kids-fab-tile-info {
+  padding: 10px 12px;
+  flex: 1;
+}
+
+.kids-fab-tile-name {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin-bottom: 2px;
+}
+
+.kids-fab-tile-tag {
+  font-size: 0.72rem;
+  color: var(--kids-navy-muted);
+  margin-bottom: 4px;
+}
+
+.kids-fab-tile-price {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--kids-pink);
+}
+
+.kids-fab-tile-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--kids-pink);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kids-fabric-info-strip {
+  display: flex;
+  gap: 20px;
+  padding: 12px 16px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  margin-top: 16px;
+  color: var(--kids-navy);
+  flex-wrap: wrap;
+}
+
+/* ================= 8. FORM INPUTS & GRIDS ================= */
+.kids-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.kids-grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.kids-grid-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.kids-text-input,
+.kids-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #CBD5E1;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  background: var(--kids-card-bg);
+  color: var(--kids-navy);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.kids-text-input:focus,
+.kids-textarea:focus {
+  border-color: var(--kids-pink);
+}
+
+.kids-banner-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #FFF1F7;
+  border: 1px solid #FFD0E5;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.84rem;
+  color: var(--kids-navy);
+  line-height: 1.45;
+}
+
+.kids-upload-dropzone {
+  border: 2px dashed #CBD5E1;
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  background: #F8FAFC;
+  margin-top: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.kids-upload-dropzone:hover {
+  border-color: var(--kids-pink);
+}
+
+/* ================= 9. MEASUREMENTS GRID ================= */
+.kids-measurements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.kids-measure-input-box {
+  background: var(--kids-card-bg);
+  border: 1.5px solid #CBD5E1;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease;
+}
+
+.kids-measure-input-box:focus-within {
+  border-color: var(--kids-pink);
+}
+
+.kids-measure-input-box label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--kids-navy-muted);
+  margin-bottom: 2px;
+}
+
+.kids-measure-input-box input {
+  border: none;
+  background: transparent;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--kids-navy);
+  outline: none;
+  width: 100%;
+}
+
+.kids-measure-input-box span {
+  font-size: 0.7rem;
+  color: #94A3B8;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ================= 10. SUMMARY BOXES & PRICING ================= */
+.kids-summary-box {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 16px;
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+.kids-summary-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 16px 0;
+}
+
+.kids-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.86rem;
+  border-bottom: 1px solid var(--kids-border-light);
+}
+
+.kids-summary-row:last-child {
+  border-bottom: none;
+}
+
+.kids-summary-row .label {
+  color: var(--kids-navy-muted);
+  font-weight: 600;
+}
+
+.kids-summary-row .value {
+  color: var(--kids-navy);
+  font-weight: 800;
+}
+
+.kids-price-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kids-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.88rem;
+  color: var(--kids-navy);
+}
+
+.kids-price-row.total {
+  border-top: 1.5px dashed #CBD5E1;
+  margin-top: 10px;
+  padding-top: 12px;
+  font-size: 1.12rem;
+  font-weight: 900;
+}
+
+.kids-price-row.total .total-val {
+  color: var(--kids-pink);
+  font-size: 1.35rem;
+}
+
+/* ================= 11. CONFIRMATION & TRACKER ================= */
+.kids-confirmation-card {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.kids-review-pill {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 14px;
+  position: relative;
+}
+
+.kids-review-pill .pill-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--kids-pink);
+  text-transform: uppercase;
+}
+
+.kids-review-pill .pill-val {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 3px 0 2px 0;
+}
+
+.kids-review-pill .pill-sub {
+  font-size: 0.78rem;
+  color: var(--kids-navy-muted);
+}
+
+.kids-review-pill .pill-edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--kids-pink);
+  cursor: pointer;
+}
+
+/* Live Tracker Pipeline */
+.kids-tracking-container {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.kids-tracking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--kids-border);
+}
+
+.kids-tracking-badge {
+  background: #ECFDF5;
+  color: #10B981;
+  border: 1px solid #A7F3D0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.kids-live-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  margin-left: 10px;
+}
+
+.kids-live-pipeline::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 11px;
+  width: 2px;
+  background: var(--kids-border);
+  z-index: 1;
+}
+
+.kids-tracking-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.pipeline-bullet {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--kids-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.kids-tracking-step.done .pipeline-bullet {
+  background: #10B981;
+  border-color: #10B981;
+  color: #FFFFFF;
+}
+
+.kids-tracking-step.current .pipeline-bullet {
+  background: var(--kids-pink);
+  border-color: var(--kids-pink);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(255, 8, 122, 0.25);
+}
+
+.pipeline-details {
+  flex: 1;
+}
+
+.pipeline-step-title {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--kids-navy);
+  margin: 0 0 2px 0;
+}
+
+.pipeline-step-desc {
+  font-size: 0.8rem;
+  color: var(--kids-navy-muted);
+  margin: 0;
+}
+
+/* ================= 12. DESIGNER WORKFLOW MOCKUP CARD ================= */
+.kids-mockup-card {
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.kids-mockup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.kids-mockup-preview-img-box {
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #F8FAFC;
+  margin-bottom: 14px;
+}
+
+.kids-mockup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.kids-mockup-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #10B981;
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.kids-mockup-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--kids-navy);
+}
+
+/* ================= 13. BUTTONS & BOTTOM FOOTER NAV ================= */
+.kids-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--kids-pink);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 8, 122, 0.35);
+  transition: all 0.2s ease;
+}
+
+.kids-primary-btn:hover {
+  background: var(--kids-pink-hover);
+  transform: translateY(-1px);
+}
+
+.kids-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #F1F5F9;
+  color: var(--kids-navy);
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
+  padding: 9px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kids-secondary-btn:hover {
+  background: #E2E8F0;
+}
+
+/* Sticky/Fixed Step Footer Navigation */
+.kids-workflow-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--kids-card-bg);
+  border: 1.5px solid var(--kids-border);
+  border-radius: 16px;
+  margin-top: 32px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.kids-workflow-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #F1F5F9;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.kids-workflow-nav-back:hover {
+  background: #E2E8F0;
+}
+
+.kids-workflow-nav-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--kids-pink);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 8, 122, 0.35);
+  transition: all 0.2s ease;
+}
+
+.kids-workflow-nav-next:hover {
+  background: var(--kids-pink-hover);
+  transform: translateY(-1px);
+}
+
+.kids-workflow-nav-next.confirm {
+  background: #10B981;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.kids-workflow-nav-next.confirm:hover {
+  background: #059669;
+}
+
+/* ================= 14. RESPONSIVE BREAKPOINTS ================= */
+@media (max-width: 1100px) {
+  .kids-age-pill-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .kids-category-picker-grid,
+  .kids-fabrics-picker-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .kids-grid-4col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kids-workflow-container {
+    padding: 16px 16px 60px 16px;
+  }
+  .kids-step-content-box {
+    padding: 20px 16px;
+  }
+  .kids-age-pill-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .kids-category-picker-grid,
+  .kids-fabrics-picker-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .kids-fabric-mode-selector,
+  .kids-grid-2col,
+  .kids-grid-3col,
+  .kids-grid-4col {
+    grid-template-columns: 1fr;
+  }
+  .kids-workflow-footer-nav {
+    flex-direction: column-reverse;
+    gap: 14px;
+  }
+  .kids-workflow-footer-nav > * {
+    width: 100%;
+    justify-content: center;
+  }
+}

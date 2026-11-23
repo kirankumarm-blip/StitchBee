@@ -26,6 +26,36 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
   });
   const [checkoutStep, setCheckoutStep] = useState(0); // 0: Cart list, 1: Address, 2: Delivery, 3: Payment, 4: Confirmation
 
+  // Category Detection
+  const hasUniforms = (cartItems || []).some(it => 
+    it.category === 'uniforms' || 
+    it.category === 'uniform' || 
+    it.category === 'School Uniforms' || 
+    it.category === 'Corporate Uniforms' || 
+    it.category === 'Medical & Scrubs' || 
+    it.category === 'Security Uniforms' || 
+    (it.id && String(it.id).startsWith('uni-'))
+  );
+  const isFootwearOrder = (cartItems || []).some(it => 
+    it.category === 'shoes' || 
+    it.category === 'footwear' || 
+    (it.id && String(it.id).startsWith('shoe-'))
+  );
+
+  const categoryName = hasUniforms ? 'Uniforms' : (isFootwearOrder ? 'Shoes & Footwear' : 'Bags & Leather');
+  const categoryLink = hasUniforms ? '/uniforms' : (isFootwearOrder ? '/shoes' : '/bags');
+  const continueShoppingLink = hasUniforms ? '/uniforms' : (isFootwearOrder ? '/shoes' : '/bags/shop');
+
+  const handleItemClick = (item) => {
+    if (item.category === 'uniforms' || item.category === 'uniform' || (item.id && String(item.id).startsWith('uni-'))) {
+      navigate('/uniforms');
+    } else if (item.category === 'shoes' || item.category === 'footwear') {
+      navigate('/shoes');
+    } else {
+      navigate(`/bags/product/${item.id}`);
+    }
+  };
+
   useEffect(() => {
     const handleUpdate = () => {
       try {
@@ -119,15 +149,24 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
         };
       });
 
-      const isFootwearOrder = sanitizedItems.some(it => it.category && !['bags', 'handbag', 'backpack', 'tote', 'crossbody', 'wallet', 'duffle'].includes(it.category.toLowerCase()));
+      const orderHasUniforms = sanitizedItems.some(it => 
+        it.category === 'uniforms' || 
+        it.category === 'uniform' || 
+        it.category === 'School Uniforms' || 
+        it.category === 'Corporate Uniforms' || 
+        it.category === 'Medical & Scrubs' || 
+        it.category === 'Security Uniforms' || 
+        (it.id && String(it.id).startsWith('uni-'))
+      );
+      const isFootwearOrder = sanitizedItems.some(it => it.category && !['bags', 'handbag', 'backpack', 'tote', 'crossbody', 'wallet', 'duffle'].includes(it.category.toLowerCase()) && !orderHasUniforms);
       const finalAddress = `${addressName || 'Customer'}, ${addressLine || 'Address'}, ${addressCity || 'Bengaluru'}, ${addressState || 'Karnataka'} - ${addressPincode || '560078'} (Ph: ${addressPhone || ''})`;
 
       const newOrder = addOrder({
         type: 'ready',
-        category: isFootwearOrder ? 'shoes' : 'bags',
+        category: orderHasUniforms ? 'uniforms' : (isFootwearOrder ? 'shoes' : 'bags'),
         title: sanitizedItems.length > 0 
           ? (sanitizedItems.length === 1 ? sanitizedItems[0].name : `${sanitizedItems[0].name} + ${sanitizedItems.length - 1} more`)
-          : 'Artisan Handcrafted Order',
+          : (orderHasUniforms ? 'Premium Uniform Order' : 'Artisan Handcrafted Order'),
         status: 'Order Placed',
         statusCode: 'placed',
         statusIndex: 0,
@@ -181,7 +220,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
         <nav className="bl-breadcrumbs" aria-label="Breadcrumb">
           <span onClick={() => navigate('/')} className="bl-crumb-link">Home</span>
           <ChevronRight size={14} className="bl-crumb-sep" />
-          <span onClick={() => navigate('/bags')} className="bl-crumb-link">Bags & Leather</span>
+          <span onClick={() => navigate(categoryLink)} className="bl-crumb-link">{categoryName}</span>
           <ChevronRight size={14} className="bl-crumb-sep" />
           <span className="bl-crumb-active">
             {checkoutStep === 0 ? 'Shopping Bag' : 'Checkout'}
@@ -192,7 +231,7 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
         <div style={{ marginBottom: '20px' }}>
           <button 
             className="bl-back-btn" 
-            onClick={() => checkoutStep > 0 ? setCheckoutStep(s => s - 1) : navigate('/bags/shop')}
+            onClick={() => checkoutStep > 0 ? setCheckoutStep(s => s - 1) : navigate(continueShoppingLink)}
           >
             <ArrowLeft size={16} /> {checkoutStep > 0 ? 'Back to Previous Step' : 'Continue Shopping'}
           </button>
@@ -206,8 +245,8 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
           </h1>
           <p className="bl-section-subtext" style={{ margin: 0 }}>
             {checkoutStep === 0 
-              ? 'Review your selected artisan leather pieces before placing your order.' 
-              : 'Complete your delivery and payment details for artisan doorstep dispatch.'}
+              ? (hasUniforms ? 'Review your selected uniform and apparel items before placing your order.' : 'Review your selected artisan pieces before placing your order.') 
+              : 'Complete your delivery and payment details for doorstep dispatch.'}
           </p>
         </div>
 
@@ -229,24 +268,34 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
                       <div key={`${item.id}-${item.color}-${idx}`} className="bl-cart-item-row">
                         <div 
                           className="bl-cart-thumb-box"
-                          onClick={() => navigate(`/bags/product/${item.id}`)}
+                          onClick={() => handleItemClick(item)}
                           style={{ cursor: 'pointer' }}
                         >
-                          <img src={item.img} alt={item.name} />
+                          <img src={item.img || item.image} alt={item.name} />
                         </div>
 
                         <div className="bl-cart-info-box">
                           <h4 
                             className="bl-cart-item-name"
-                            onClick={() => navigate(`/bags/product/${item.id}`)}
+                            onClick={() => handleItemClick(item)}
                           >
                             {item.name}
                           </h4>
 
                           <div className="bl-cart-item-meta">
                             <span>Color: <strong>{item.color}</strong></span>
-                            <span>•</span>
-                            <span>Material: <strong>{item.material}</strong></span>
+                            {item.size && (
+                              <>
+                                <span>•</span>
+                                <span>Size: <strong>{item.size}</strong></span>
+                              </>
+                            )}
+                            {item.material && (
+                              <>
+                                <span>•</span>
+                                <span>Material: <strong>{item.material}</strong></span>
+                              </>
+                            )}
                           </div>
 
                           <div className="bl-cart-item-pricing">
@@ -297,9 +346,9 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
 
                 {/* Trust strip */}
                 <div className="bl-cart-trust-strip">
-                  <div className="bl-trust-item"><ShieldCheck size={18} className="bl-text-pink" /> 100% Genuine Certified Leather</div>
+                  <div className="bl-trust-item"><ShieldCheck size={18} className="bl-text-pink" /> {hasUniforms ? '100% Quality Inspected Uniforms' : '100% Genuine Certified Quality'}</div>
                   <div className="bl-trust-item"><Truck size={18} className="bl-text-pink" /> Free Doorstep Returns (7 Days)</div>
-                  <div className="bl-trust-item"><CheckCircle2 size={18} className="bl-text-pink" /> Master Handcrafted Assurance</div>
+                  <div className="bl-trust-item"><CheckCircle2 size={18} className="bl-text-pink" /> {hasUniforms ? 'Reinforced Seams & Stitching Assurance' : 'Master Handcrafted Assurance'}</div>
                 </div>
               </div>
 
@@ -672,9 +721,9 @@ export default function BagsCartView({ showToast, currentUser, onOpenAuthModal }
               </button>
               <button 
                 className="bl-btn-secondary"
-                onClick={() => navigate('/bags')}
+                onClick={() => navigate(categoryLink)}
               >
-                Back to Bags Studio
+                Back to {categoryName}
               </button>
             </div>
           </div>

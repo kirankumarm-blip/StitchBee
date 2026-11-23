@@ -1,0 +1,994 @@
+/* ==========================================================================
+   StitchBeez - Shop and Stitch Studio Dedicated Page Styles
+   ========================================================================== */
+
+.shop-stitch-page {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 16px 24px 60px 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Top Back & Breadcrumb Bar */
+.stitch-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E8EAF2;
+}
+
+.stitch-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #FF008A;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.stitch-back-btn:hover {
+  background: rgba(255, 0, 138, 0.08);
+}
+
+.stitch-breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #687395;
+}
+
+.crumb-link {
+  cursor: pointer;
+  color: #687395;
+  transition: color 0.2s ease;
+}
+
+.crumb-link:hover {
+  color: #FF008A;
+}
+
+.crumb-active {
+  color: #07145C;
+  font-weight: 700;
+}
+
+/* Page Hero Header */
+.stitch-page-hero {
+  background: linear-gradient(135deg, #FFF0F6 0%, #FFE4F0 100%);
+  border: 1px solid #FFD3E6;
+  border-radius: 16px;
+  padding: 32px 40px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-mode .stitch-page-hero {
+  background: #1C2033;
+  border-color: #34394D;
+}
+
+.stitch-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFFFFF;
+  color: #FF008A;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(255, 0, 138, 0.1);
+}
+
+.stitch-page-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #07145C;
+  margin: 0 0 10px 0;
+}
+
+.dark-mode .stitch-page-title {
+  color: #F8FAFC;
+}
+
+.pink-text {
+  color: #FF008A;
+}
+
+.stitch-page-desc {
+  font-size: 14px;
+  color: #4B5563;
+  margin: 0;
+  max-width: 780px;
+  line-height: 1.5;
+}
+
+.dark-mode .stitch-page-desc {
+  color: #CBD5E1;
+}
+
+/* Two Column Layout */
+.stitch-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+.stitch-steps-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stitch-card {
+  background: #FFFFFF;
+  border: 1px solid #E8EAF2;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.dark-mode .stitch-card {
+  background: #1C2033;
+  border-color: #34394D;
+}
+
+.card-section-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #FF008A;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.card-section-title h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #07145C;
+  margin: 0 0 2px 0;
+}
+
+.dark-mode .card-section-title h3 {
+  color: #F8FAFC;
+}
+
+.card-section-title p {
+  font-size: 12.5px;
+  color: #687395;
+  margin: 0;
+}
+
+/* Fabric Spotlight Card */
+.fabric-spotlight-card {
+  border: 1.5px solid #FFD3E6;
+  background: #FFFDFC;
+}
+
+.dark-mode .fabric-spotlight-card {
+  background: #161A2B;
+  border-color: #FF008A;
+}
+
+.card-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.step-tag {
+  background: #FF008A;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.change-fabric-btn {
+  background: none;
+  border: 1px solid #FF008A;
+  color: #FF008A;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.change-fabric-btn:hover {
+  background: #FFF0F6;
+}
+
+.spotlight-body {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.spotlight-img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #E8EAF2;
+  flex-shrink: 0;
+}
+
+.spotlight-details {
+  flex: 1;
+}
+
+.spotlight-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #07145C;
+  margin: 0 0 4px 0;
+}
+
+.dark-mode .spotlight-name {
+  color: #F8FAFC;
+}
+
+.spotlight-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #FF008A;
+  margin-bottom: 6px;
+}
+
+.per-meter {
+  font-size: 12px;
+  color: #687395;
+  font-weight: 500;
+}
+
+.spotlight-specs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #687395;
+  margin-bottom: 12px;
+}
+
+.meters-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.meters-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #07145C;
+}
+
+.dark-mode .meters-label {
+  color: #E2E8F0;
+}
+
+.meters-quick-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.meter-pill {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #E8EAF2;
+  background: #FFFFFF;
+  color: #07145C;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .meter-pill {
+  background: #1C2033;
+  border-color: #34394D;
+  color: #E2E8F0;
+}
+
+.meter-pill.active {
+  background: #FF008A;
+  border-color: #FF008A;
+  color: #FFFFFF;
+}
+
+/* Fabric Swapper Drawer */
+.fabric-swapper-drawer {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #E8EAF2;
+}
+
+.fabric-swapper-drawer h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #07145C;
+  margin: 0 0 10px 0;
+}
+
+.fabric-swapper-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.swapper-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1.5px solid #E8EAF2;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.swapper-item.active {
+  border-color: #FF008A;
+  background: #FFF0F6;
+}
+
+.swapper-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.swapper-item span {
+  font-size: 11px;
+  font-weight: 600;
+  color: #07145C;
+  line-height: 1.2;
+}
+
+/* Garment Options Grid */
+.garment-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.garment-card {
+  padding: 14px 16px;
+  border: 1.5px solid #E8EAF2;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+}
+
+.dark-mode .garment-card {
+  background: #161A2B;
+  border-color: #34394D;
+}
+
+.garment-card:hover {
+  border-color: #FF008A;
+}
+
+.garment-card.selected {
+  border-color: #FF008A;
+  background: #FFF0F6;
+  box-shadow: 0 2px 8px rgba(255, 0, 138, 0.1);
+}
+
+.dark-mode .garment-card.selected {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.garment-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.garment-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #07145C;
+  margin: 0;
+}
+
+.dark-mode .garment-name {
+  color: #F8FAFC;
+}
+
+.garment-price {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #FF008A;
+}
+
+.garment-desc {
+  font-size: 11.5px;
+  color: #687395;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+.garment-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4B5563;
+}
+
+.dark-mode .garment-meta {
+  color: #CBD5E1;
+}
+
+.meta-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #FF008A;
+}
+
+/* Measurement Modes */
+.measurement-modes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.measure-mode-card {
+  padding: 12px 14px;
+  border: 1.5px solid #E8EAF2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+}
+
+.dark-mode .measure-mode-card {
+  background: #161A2B;
+  border-color: #34394D;
+}
+
+.measure-mode-card.selected {
+  border-color: #FF008A;
+  background: #FFF0F6;
+}
+
+.dark-mode .measure-mode-card.selected {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.measure-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #07145C;
+  margin-bottom: 4px;
+}
+
+.dark-mode .measure-radio-row {
+  color: #F8FAFC;
+}
+
+.measure-mode-card p {
+  font-size: 11.5px;
+  color: #687395;
+  margin: 0;
+}
+
+.standard-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #F8FAFC;
+  border-radius: 8px;
+}
+
+.dark-mode .standard-size-selector {
+  background: #161A2B;
+}
+
+.size-buttons-row {
+  display: flex;
+  gap: 8px;
+}
+
+.size-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  color: #07145C;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .size-btn {
+  background: #1C2033;
+  border-color: #34394D;
+  color: #F8FAFC;
+}
+
+.size-btn.active {
+  background: #FF008A;
+  border-color: #FF008A;
+  color: #FFFFFF;
+}
+
+.custom-measure-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  padding: 14px;
+  background: #F8FAFC;
+  border-radius: 8px;
+}
+
+.dark-mode .custom-measure-inputs-grid {
+  background: #161A2B;
+}
+
+.measure-field label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #07145C;
+  margin-bottom: 4px;
+}
+
+.dark-mode .measure-field label {
+  color: #CBD5E1;
+}
+
+.measure-field input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+/* Tailors Grid */
+.tailors-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.tailor-option-card {
+  padding: 14px 16px;
+  border: 1.5px solid #E8EAF2;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+}
+
+.dark-mode .tailor-option-card {
+  background: #161A2B;
+  border-color: #34394D;
+}
+
+.tailor-option-card.selected {
+  border-color: #FF008A;
+  background: #FFF0F6;
+  box-shadow: 0 2px 8px rgba(255, 0, 138, 0.1);
+}
+
+.dark-mode .tailor-option-card.selected {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.tailor-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.tailor-name-flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tailor-name-flex h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #07145C;
+  margin: 0;
+}
+
+.dark-mode .tailor-name-flex h4 {
+  color: #F8FAFC;
+}
+
+.tailor-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #FF008A;
+  background: #FFE4F0;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.tailor-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #07145C;
+}
+
+.dark-mode .tailor-rating {
+  color: #F8FAFC;
+}
+
+.tailor-details {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #687395;
+}
+
+/* Addons List */
+.addons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.addon-checkbox-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid #E8EAF2;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addon-checkbox-row:hover {
+  border-color: #FF008A;
+}
+
+.addon-label-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #07145C;
+}
+
+.dark-mode .addon-label-group {
+  color: #E2E8F0;
+}
+
+.addon-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FF008A;
+}
+
+.special-notes-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #07145C;
+  margin-bottom: 6px;
+}
+
+.dark-mode .special-notes-box label {
+  color: #E2E8F0;
+}
+
+.special-notes-box textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.dark-mode .special-notes-box textarea {
+  background: #161A2B;
+  border-color: #34394D;
+  color: #FFFFFF;
+}
+
+/* RIGHT COLUMN: Sticky Summary Card */
+.stitch-summary-col {
+  position: sticky;
+  top: 90px;
+}
+
+.stitch-summary-card {
+  background: #FFFFFF;
+  border: 1.5px solid #FFD3E6;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .stitch-summary-card {
+  background: #1C2033;
+  border-color: #34394D;
+}
+
+.summary-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #07145C;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #E8EAF2;
+}
+
+.dark-mode .summary-title {
+  color: #F8FAFC;
+}
+
+.summary-line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.item-label-group strong {
+  display: block;
+  font-size: 13px;
+  color: #07145C;
+}
+
+.dark-mode .item-label-group strong {
+  color: #F8FAFC;
+}
+
+.item-sub {
+  font-size: 11px;
+  color: #687395;
+}
+
+.item-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: #07145C;
+}
+
+.dark-mode .item-val {
+  color: #F8FAFC;
+}
+
+.free-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #10B981;
+  background: #D1FAE5;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.summary-divider {
+  height: 1.5px;
+  background: #E8EAF2;
+  margin: 16px 0;
+}
+
+.dark-mode .summary-divider {
+  background: #34394D;
+}
+
+.grand-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #07145C;
+}
+
+.dark-mode .grand-total-row {
+  color: #F8FAFC;
+}
+
+.grand-total-price {
+  font-size: 24px;
+  color: #FF008A;
+}
+
+.summary-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-book-stitch {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  background: #FF008A;
+  border: none;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.25);
+}
+
+.btn-book-stitch:hover {
+  background: #E60078;
+  transform: translateY(-1px);
+}
+
+.btn-cart-stitch {
+  width: 100%;
+  height: 42px;
+  border-radius: 8px;
+  background: #FFFFFF;
+  border: 1.5px solid #FF008A;
+  color: #FF008A;
+  font-size: 13.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cart-stitch:hover {
+  background: #FFF0F6;
+}
+
+.dark-mode .btn-cart-stitch {
+  background: #161A2B;
+}
+
+.guarantee-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px dashed #E8EAF2;
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #4B5563;
+  font-weight: 500;
+}
+
+.dark-mode .guarantee-item {
+  color: #CBD5E1;
+}
+
+/* Success Card */
+.stitch-success-card {
+  background: #FFFFFF;
+  border: 1px solid #E8EAF2;
+  border-radius: 16px;
+  padding: 48px 32px;
+  text-align: center;
+  max-width: 560px;
+  margin: 40px auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .stitch-success-card {
+  background: #1C2033;
+  border-color: #34394D;
+}
+
+.stitch-success-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 24px;
+  color: #07145C;
+  margin: 16px 0 8px 0;
+}
+
+.dark-mode .stitch-success-card h2 {
+  color: #F8FAFC;
+}
+
+.stitch-success-card p {
+  font-size: 14px;
+  color: #4B5563;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.dark-mode .stitch-success-card p {
+  color: #CBD5E1;
+}
+
+.btn-primary-stitch {
+  background: #FF008A;
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-stitch:hover {
+  background: #E60078;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .stitch-layout-grid {
+    grid-template-columns: 1fr;
+  }
+  .stitch-summary-col {
+    position: static;
+  }
+}

@@ -144,12 +144,90 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [role, setRole] = useState('landing'); // 'landing' | 'customer' | 'tailor' | 'student' | 'admin'
+  const getInitialRouteState = () => {
+    if (typeof window === 'undefined') return { role: 'landing', category: 'all', hub: 'home' };
+    const path = window.location.pathname;
+    if (path === '/fabrics' || path === '/cotton-fabrics' || path.startsWith('/fabrics') || path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch')) {
+      return { role: 'customer', category: 'all', hub: 'fabrics' };
+    }
+    if (path === '/login') {
+      return { role: 'login', category: 'all', hub: 'home' };
+    }
+    if (path === '/signup') {
+      return { role: 'signup', category: 'all', hub: 'home' };
+    }
+    if (
+      path.startsWith('/uniforms') ||
+      path.startsWith('/uniform') ||
+      path.startsWith('/uniform-shop') ||
+      path.startsWith('/shop-uniforms')
+    ) {
+      return { role: 'customer', category: 'uniforms', hub: 'category-landing' };
+    }
+    if (
+      path.startsWith('/bags') || 
+      path === '/cart' || 
+      path === '/wishlist' || 
+      path === '/orders'
+    ) {
+      return { role: 'customer', category: 'bags', hub: 'category-landing' };
+    }
+    if (
+      path.startsWith('/shoes') ||
+      path === '/cart' ||
+      path === '/wishlist' ||
+      path === '/orders' ||
+      path.startsWith('/shoes-slippers') ||
+      path.startsWith('/footwear') ||
+      path.startsWith('/repair/footwear')
+    ) {
+      return { role: 'customer', category: 'shoes', hub: 'category-landing' };
+    }
+    if (
+      path.startsWith('/gifts') ||
+      path.startsWith('/handmade-gifts') ||
+      path.startsWith('/handmade')
+    ) {
+      return { role: 'customer', category: 'gifts', hub: 'category-landing' };
+    }
+    if (
+      path.startsWith('/pets') ||
+      path.startsWith('/pet-outfits') ||
+      path.startsWith('/pet')
+    ) {
+      return { role: 'customer', category: 'pets', hub: 'category-landing' };
+    }
+    if (path.startsWith('/sofas') || path.startsWith('/sofa')) {
+      return { role: 'customer', category: 'sofas', hub: 'category-landing' };
+    }
+    if (path.startsWith('/vehicle-seats') || path.startsWith('/seats') || path.startsWith('/vehicle')) {
+      return { role: 'customer', category: 'seats', hub: 'category-landing' };
+    }
+    if (path.startsWith('/kids') || path.startsWith('/kids-stitching')) {
+      return { role: 'customer', category: 'kids', hub: 'category-landing' };
+    }
+    if (path.startsWith('/bridal') || path.startsWith('/bridal-stitching') || path.startsWith('/wedding')) {
+      return { role: 'customer', category: 'bridal', hub: 'category-landing' };
+    }
+    if (path.startsWith('/mens') || path.startsWith('/men-stitching')) {
+      return { role: 'customer', category: 'mens', hub: 'category-landing' };
+    }
+    if (path.startsWith('/womens') || path.startsWith('/women-stitching') || path.startsWith('/women')) {
+      return { role: 'customer', category: 'womens', hub: 'category-landing' };
+    }
+    if (path.startsWith('/alterations') || path.startsWith('/alteration') || path.startsWith('/clothing-alterations') || path.startsWith('/clothing-alteration')) {
+      return { role: 'customer', category: 'alterations', hub: 'category-landing' };
+    }
+    return { role: 'landing', category: 'all', hub: 'home' };
+  };
+
+  const initialRoute = getInitialRouteState();
+  const [role, setRole] = useState(initialRoute.role);
   const [currentUser, setCurrentUser] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalConfig, setAuthModalConfig] = useState({ role: 'customer', tab: 'login' });
-  const [customerCategory, setCustomerCategory] = useState('all');
-  const [customerHub, setCustomerHub] = useState('home');
+  const [customerCategory, setCustomerCategory] = useState(initialRoute.category);
+  const [customerHub, setCustomerHub] = useState(initialRoute.hub);
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -206,6 +284,67 @@ export default function App() {
       setRole('customer');
       setCustomerCategory('seats');
       setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/kids') ||
+      path.startsWith('/kids-stitching')
+    ) {
+      setRole('customer');
+      setCustomerCategory('kids');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/bridal') ||
+      path.startsWith('/bridal-stitching') ||
+      path.startsWith('/wedding')
+    ) {
+      setRole('customer');
+      setCustomerCategory('bridal');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/mens') ||
+      path.startsWith('/men-stitching')
+    ) {
+      setRole('customer');
+      setCustomerCategory('mens');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/womens') ||
+      path.startsWith('/women-stitching') ||
+      path.startsWith('/women')
+    ) {
+      setRole('customer');
+      setCustomerCategory('womens');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/alterations') ||
+      path.startsWith('/alteration') ||
+      path.startsWith('/clothing-alterations') ||
+      path.startsWith('/clothing-alteration')
+    ) {
+      setRole('customer');
+      setCustomerCategory('alterations');
+      setCustomerHub('category-landing');
+    } else if (
+      path.startsWith('/uniforms') ||
+      path.startsWith('/uniform') ||
+      path.startsWith('/uniform-shop') ||
+      path.startsWith('/shop-uniforms')
+    ) {
+      setRole('customer');
+      setCustomerCategory('uniforms');
+      setCustomerHub('category-landing');
+    } else if (
+      path === '/fabrics' ||
+      path === '/cotton-fabrics' ||
+      path.startsWith('/fabrics') ||
+      path.startsWith('/cotton-fabrics')
+    ) {
+      setRole('customer');
+      setCustomerCategory('all');
+      setCustomerHub('fabrics');
+    } else if (path === '/login') {
+      setRole('login');
+    } else if (path === '/signup') {
+      setRole('signup');
     }
   }, [location.pathname]);
 
@@ -213,17 +352,81 @@ export default function App() {
   const [currentLandingSlide, setCurrentLandingSlide] = useState(0);
   const [pauseLandingCarousel, setPauseLandingCarousel] = useState(false);
   const guestLandingBanners = [
-    '/banners/banner1.png',
-    '/banners/banner2.png',
-    '/banners/banner3.png',
-    '/banners/banner4.png',
-    '/banners/banner5.png',
-    '/banners/banner6.png',
-    '/banners/banner7.png',
-    '/banners/banner8.png',
-    '/banners/banner9.png',
-    '/banners/banner10.png',
-    '/banners/Banner11.png'
+    {
+      src: '/banners/Bridal Elegance Couture Moment.png',
+      title: 'Bridal Elegance Couture Moment',
+      route: '/bridal'
+    },
+    {
+      src: '/banners/Tailored to Perfection Atelier.png',
+      title: 'Tailored to Perfection Atelier',
+      route: '/mens'
+    },
+    {
+      src: '/banners/Tailored Style Together.png',
+      title: 'Tailored Style Together',
+      route: '/womens'
+    },
+    {
+      src: '/banners/Little Styles, Big Moments.png',
+      title: 'Little Styles, Big Moments',
+      route: '/kids'
+    },
+    {
+      src: '/banners/Uniforms for Every Role.png',
+      title: 'Uniforms for Every Role',
+      route: '/uniforms'
+    },
+    {
+      src: '/banners/Crafted in Leather, Styled for Life.png',
+      title: 'Crafted in Leather, Styled for Life',
+      route: '/bags'
+    },
+    {
+      src: '/banners/Every Step, Styled by Hand.png',
+      title: 'Every Step, Styled by Hand',
+      route: '/shoes'
+    },
+    {
+      src: '/banners/Handmade with Love Gift Studio.png',
+      title: 'Handmade with Love Gift Studio',
+      route: '/gifts'
+    },
+    {
+      src: '/banners/Leather Bag Repair & Restoration.png',
+      title: 'Leather Bag Repair & Restoration',
+      route: '/bags'
+    },
+    {
+      src: '/banners/Repair & Restore Workshop.png',
+      title: 'Repair & Restore Workshop',
+      route: '/alterations'
+    },
+    {
+      src: '/banners/Sofa Styles for Every Space.png',
+      title: 'Sofa Styles for Every Space',
+      route: '/sofas'
+    },
+    {
+      src: '/banners/Sofa Repair and Restoration Workshop.png',
+      title: 'Sofa Repair and Restoration Workshop',
+      route: '/sofas'
+    },
+    {
+      src: '/banners/Custom Seat Covers for Every Journey.png',
+      title: 'Custom Seat Covers for Every Journey',
+      route: '/vehicle-seats'
+    },
+    {
+      src: '/banners/Repair & Restoration_ Vehicle Seat Revival.png',
+      title: 'Repair & Restoration Vehicle Seat Revival',
+      route: '/vehicle-seats'
+    },
+    {
+      src: '/banners/Stylish Outfits for Furry Friends.png',
+      title: 'Stylish Outfits for Furry Friends',
+      route: '/pets'
+    }
   ];
 
 
@@ -540,7 +743,13 @@ export default function App() {
     setRole('customer');
   };
 
-  const [theme, setTheme] = useState(localStorage.getItem('stitchbee_theme') || 'dark');
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search);
+      if (p.get('theme')) return p.get('theme');
+    }
+    return localStorage.getItem('stitchbee_theme') || 'light';
+  });
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expandedFaqIdx, setExpandedFaqIdx] = useState(null);
   const reelsRef = useRef(null);
@@ -649,6 +858,30 @@ export default function App() {
 
     // Load user session
     const savedUser = localStorage.getItem('stitchbee_user');
+    const path = window.location.pathname;
+    const isPublicCategoryRoute = 
+      path === '/login' ||
+      path === '/signup' ||
+      path === '/cart' ||
+      path === '/wishlist' ||
+      path === '/orders' ||
+      path.startsWith('/uniforms') ||
+      path.startsWith('/uniform') ||
+      path.startsWith('/bags') ||
+      path.startsWith('/shoes') ||
+      path.startsWith('/gifts') ||
+      path.startsWith('/pets') ||
+      path.startsWith('/sofas') ||
+      path.startsWith('/vehicle-seats') ||
+      path.startsWith('/kids') ||
+      path.startsWith('/bridal') ||
+      path.startsWith('/mens') ||
+      path.startsWith('/womens') ||
+      path.startsWith('/alterations') ||
+      path.startsWith('/fabrics') ||
+      path === '/cotton-fabrics' ||
+      path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch');
+
     if (savedUser) {
       try {
         const parsed = JSON.parse(savedUser);
@@ -662,13 +895,27 @@ export default function App() {
           }
         } else {
           setCurrentUser(null);
-          setRole('landing');
+          if (!isPublicCategoryRoute) {
+            setRole('landing');
+          }
         }
       } catch (err) {
-        setRole('landing');
+        if (!isPublicCategoryRoute) {
+          setRole('landing');
+        }
       }
     } else {
-      setRole('landing');
+      if (!isPublicCategoryRoute) {
+        setRole('landing');
+      } else if (path === '/login') {
+        setRole('login');
+      } else if (path === '/signup') {
+        setRole('signup');
+      } else if (path.startsWith('/fabrics') || path === '/cotton-fabrics' || path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch')) {
+        setRole('customer');
+        setCustomerCategory('all');
+        setCustomerHub('fabrics');
+      }
     }
   }, []);
 
@@ -720,15 +967,18 @@ export default function App() {
   };
 
   const handleLandingBannerClick = () => {
+    const activeBanner = guestLandingBanners[currentLandingSlide];
+    const targetRoute = typeof activeBanner === 'object' && activeBanner?.route ? activeBanner.route : null;
+    if (targetRoute) {
+      navigate(targetRoute);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     if (!currentUser) {
       openAuthModal('customer', 'login');
     } else {
       setRole('customer');
       setCustomerHub('tailors');
-      // If fabrics slide is active (Banner 4 / index 3), open fabrics
-      if (currentLandingSlide === 3) {
-        setCustomerHub('fabrics');
-      }
     }
   };
 
@@ -879,10 +1129,10 @@ export default function App() {
                   Services ▼
                 </button>
                 <ul className={`nav-dropdown-menu services-dropdown-menu ${activeDropdown === 'services' ? 'show' : ''}`}>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); }}>Men</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); }}>Women</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); }}>Bridal</li>
-                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); }}>Kids</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'mens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('mens'); setActiveDropdown(null); navigate('/mens'); }}>Men</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'womens' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('womens'); setActiveDropdown(null); navigate('/womens'); }}>Women</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bridal' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bridal'); setActiveDropdown(null); navigate('/bridal'); }}>Bridal</li>
+                  <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'kids' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('kids'); setActiveDropdown(null); navigate('/kids-stitching'); }}>Kids</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'alterations' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('alterations'); setActiveDropdown(null); }}>Alterations</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'uniforms' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('uniforms'); setActiveDropdown(null); }}>Uniforms</li>
                   <li className={`dropdown-item ${role === 'customer' && customerHub === 'category-landing' && customerCategory === 'bags' ? 'active' : ''}`} onClick={() => { setRole('customer'); setCustomerHub('category-landing'); setCustomerCategory('bags'); setActiveDropdown(null); navigate('/bags'); }}>Bags And Leathers</li>
@@ -1214,6 +1464,9 @@ export default function App() {
                                 setRole('customer');
                                 setCustomerHub('category-landing');
                                 setCustomerCategory(cat.id);
+                                if (cat.id === 'bridal') navigate('/bridal');
+                                if (cat.id === 'mens') navigate('/mens');
+                                if (cat.id === 'womens') navigate('/womens');
                               }
                               setMobileMenuOpen(false);
                             }}
@@ -1356,18 +1609,46 @@ export default function App() {
                 onClick={handleLandingBannerClick}
               >
                 {/* Slides */}
-                {guestLandingBanners.map((banner, idx) => (
-                  <img 
-                    key={idx}
-                    className="guest-landing-hero-slide"
-                    src={banner} 
-                    alt={`banner-${idx+1}`} 
-                    style={{
-                      opacity: currentLandingSlide === idx ? 1 : 0,
-                      pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
-                    }}
-                  />
-                ))}
+                {guestLandingBanners.map((banner, idx) => {
+                  const bannerSrc = typeof banner === 'string' ? banner : banner.src;
+                  const bannerTitle = typeof banner === 'string' ? `banner-${idx+1}` : banner.title;
+                  return (
+                    <img 
+                      key={idx}
+                      className="guest-landing-hero-slide"
+                      src={bannerSrc} 
+                      alt={bannerTitle} 
+                      style={{
+                        opacity: currentLandingSlide === idx ? 1 : 0,
+                        pointerEvents: currentLandingSlide === idx ? 'auto' : 'none'
+                      }}
+                    />
+                  );
+                })}
+
+                {/* Navigation Arrows */}
+                <button
+                  type="button"
+                  className="guest-landing-hero-arrow prev"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevLandingSlide();
+                  }}
+                  aria-label="Previous Banner"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  className="guest-landing-hero-arrow next"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextLandingSlide();
+                  }}
+                  aria-label="Next Banner"
+                >
+                  <ChevronRight size={20} />
+                </button>
 
                 {/* Dot Indicators */}
                 <div className="guest-landing-hero-dots">
@@ -1379,12 +1660,12 @@ export default function App() {
                         setCurrentLandingSlide(idx);
                       }}
                       style={{
-                        width: '6px',
+                        width: currentLandingSlide === idx ? '16px' : '6px',
                         height: '6px',
-                        borderRadius: '50%',
-                        background: currentLandingSlide === idx ? 'var(--primary)' : 'rgba(255,255,255,0.5)',
+                        borderRadius: '3px',
+                        background: currentLandingSlide === idx ? '#FF008A' : 'rgba(255,255,255,0.6)',
                         cursor: 'pointer',
-                        transition: 'all 0.2s'
+                        transition: 'all 0.25s ease'
                       }}
                     />
                   ))}
@@ -1644,6 +1925,12 @@ export default function App() {
                       navigate('/pets');
                     } else if (category.cat === 'sofas') {
                       navigate('/sofas');
+                    } else if (category.cat === 'bridal') {
+                      navigate('/bridal');
+                    } else if (category.cat === 'mens') {
+                      navigate('/mens');
+                    } else if (category.cat === 'womens') {
+                      navigate('/womens');
                     }
                   }}
                   onMouseEnter={() => setHoveredCategoryIdx(idx)}

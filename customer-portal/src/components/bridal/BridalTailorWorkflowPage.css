@@ -1,0 +1,1496 @@
+/* ==========================================================================
+   BRIDAL BESPOKE TAILOR WORKFLOW PAGE STYLES
+   ========================================================================== */
+
+.bridal-workflow-page-root {
+  width: 100%;
+  min-height: 100vh;
+  background: #FFFDFE;
+  font-family: var(--bridal-font-sans, 'Poppins', sans-serif);
+  color: #1E293B;
+  padding-bottom: 80px;
+}
+
+.bridal-workflow-page-root.dark-theme {
+  background: #0B0F19;
+  color: #E2E8F0;
+}
+
+/* Header Strip */
+.bridal-workflow-header-strip {
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0E7ED;
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-workflow-header-strip {
+  background: #111827;
+  border-color: #1F2937;
+}
+
+.bridal-workflow-header-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.bridal-workflow-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF0F5;
+  color: #FF008A;
+  border: 1px solid rgba(255, 0, 138, 0.2);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-back-btn:hover {
+  background: #FF008A;
+  color: #FFFFFF;
+  transform: translateX(-3px);
+}
+
+.bridal-workflow-header-title h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 2px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-workflow-header-title h2 {
+  color: #F8FAFC;
+}
+
+.bridal-workflow-header-title .sub {
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+/* Step Circles */
+.bridal-workflow-step-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.step-circle-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.bridal-workflow-page-root.dark-theme .step-circle-pill {
+  background: #1E293B;
+  color: #94A3B8;
+}
+
+.step-circle-pill.active {
+  background: #FF008A;
+  color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(255, 0, 138, 0.25);
+}
+
+.step-circle-pill.completed {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+/* Container */
+.bridal-workflow-content-container {
+  max-width: 1200px;
+  margin: 30px auto 0 auto;
+  padding: 0 24px;
+}
+
+.workflow-step-card {
+  background: #FFFFFF;
+  border: 1px solid #F0E7ED;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 30px rgba(7, 27, 73, 0.05);
+}
+
+.bridal-workflow-page-root.dark-theme .workflow-step-card {
+  background: #111827;
+  border-color: #1F2937;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.step-card-header {
+  margin-bottom: 24px;
+}
+
+.step-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 0, 138, 0.1);
+  color: #FF008A;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.step-card-header h3 {
+  font-family: var(--bridal-font-serif, 'Playfair Display', serif);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 6px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .step-card-header h3 {
+  color: #F8FAFC;
+}
+
+.step-card-header p {
+  font-size: 0.92rem;
+  color: #425579;
+  margin: 0;
+}
+
+.bridal-workflow-page-root.dark-theme .step-card-header p {
+  color: #94A3B8;
+}
+
+/* Category Tabs */
+.bridal-cat-tabs-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+}
+
+.bridal-cat-tab-chip {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 9999px;
+  border: 1.5px solid #F0E7ED;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-cat-tab-chip {
+  background: #1E293B;
+  border-color: #334155;
+}
+
+.bridal-cat-tab-chip:hover {
+  border-color: #FF008A;
+}
+
+.bridal-cat-tab-chip.active {
+  border-color: #FF008A;
+  background: #FFF0F5;
+  box-shadow: 0 4px 12px rgba(255, 0, 138, 0.15);
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-cat-tab-chip.active {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.cat-chip-thumb {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cat-chip-name {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #071B49;
+}
+
+.bridal-workflow-page-root.dark-theme .cat-chip-name {
+  color: #F8FAFC;
+}
+
+.cat-chip-tag {
+  font-size: 0.72rem;
+  color: #FF008A;
+  font-weight: 600;
+}
+
+/* Couple Coordinated Config Box */
+.couple-coordinated-config-box {
+  background: linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%);
+  border: 1.5px solid rgba(255, 0, 138, 0.25);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.bridal-workflow-page-root.dark-theme .couple-coordinated-config-box {
+  background: linear-gradient(135deg, #1A1322 0%, #111827 100%);
+  border-color: rgba(255, 0, 138, 0.4);
+}
+
+.couple-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #FF008A;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+
+.couple-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.config-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #071B49;
+  margin-bottom: 6px;
+}
+
+.bridal-workflow-page-root.dark-theme .config-group label {
+  color: #F8FAFC;
+}
+
+/* Silhouettes Grid */
+.section-subheading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #071B49;
+  margin: 18px 0 14px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .section-subheading {
+  color: #F8FAFC;
+}
+
+.bridal-silhouettes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.bridal-silhouette-card {
+  border: 1.5px solid #F0E7ED;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-silhouette-card {
+  background: #1E293B;
+  border-color: #334155;
+}
+
+.bridal-silhouette-card:hover {
+  border-color: #FF008A;
+  transform: translateY(-2px);
+}
+
+.bridal-silhouette-card.selected {
+  border-color: #FF008A;
+  box-shadow: 0 4px 16px rgba(255, 0, 138, 0.2);
+}
+
+.silhouette-img-box {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #F8FAFC;
+}
+
+.silhouette-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selected-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #FF008A;
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.silhouette-content {
+  padding: 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.silhouette-content h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #071B49;
+  margin: 0 0 4px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .silhouette-content h5 {
+  color: #F8FAFC;
+}
+
+.silhouette-content p {
+  font-size: 0.78rem;
+  color: #64748B;
+  margin: 0 0 10px 0;
+  line-height: 1.4;
+}
+
+.silhouette-price {
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+.silhouette-price strong {
+  color: #FF008A;
+  font-size: 0.95rem;
+}
+
+/* Options & Pills */
+.bridal-options-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.option-col label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #071B49;
+  margin-bottom: 8px;
+}
+
+.bridal-workflow-page-root.dark-theme .option-col label {
+  color: #F8FAFC;
+}
+
+.pills-selector {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill-btn {
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1.5px solid #F0E7ED;
+  background: #FFFFFF;
+  color: #425579;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .pill-btn {
+  background: #1E293B;
+  border-color: #334155;
+  color: #94A3B8;
+}
+
+.pill-btn.active {
+  background: #FF008A;
+  color: #FFFFFF;
+  border-color: #FF008A;
+}
+
+.notes-box label {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #071B49;
+  margin-bottom: 8px;
+}
+
+.bridal-workflow-page-root.dark-theme .notes-box label {
+  color: #F8FAFC;
+}
+
+.bridal-input,
+.bridal-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #F0E7ED;
+  background: #FFFFFF;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: inherit;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-input,
+.bridal-workflow-page-root.dark-theme .bridal-textarea {
+  background: #1E293B;
+  border-color: #334155;
+  color: #F8FAFC;
+}
+
+.bridal-input:focus,
+.bridal-textarea:focus {
+  border-color: #FF008A;
+}
+
+/* Fabric Mode Switcher */
+.fabric-mode-switcher {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.mode-toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1.5px solid #F0E7ED;
+  background: #FFFFFF;
+  color: #071B49;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .mode-toggle-btn {
+  background: #1E293B;
+  border-color: #334155;
+  color: #F8FAFC;
+}
+
+.mode-toggle-btn.active {
+  border-color: #FF008A;
+  background: #FFF0F5;
+  color: #FF008A;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.15);
+}
+
+.bridal-workflow-page-root.dark-theme .mode-toggle-btn.active {
+  background: rgba(255, 0, 138, 0.18);
+}
+
+/* Swatches Grid */
+.swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.bridal-swatch-item {
+  border: 1.5px solid #F0E7ED;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  background: #FFFFFF;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .bridal-swatch-item {
+  background: #1E293B;
+  border-color: #334155;
+}
+
+.bridal-swatch-item:hover {
+  border-color: #FF008A;
+}
+
+.bridal-swatch-item.active {
+  border-color: #FF008A;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.2);
+}
+
+.swatch-img-box {
+  position: relative;
+  width: 100%;
+  height: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.swatch-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swatch-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #FF008A;
+  color: #FFFFFF;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swatch-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #071B49;
+}
+
+.bridal-workflow-page-root.dark-theme .swatch-name {
+  color: #F8FAFC;
+}
+
+.swatch-price {
+  font-size: 0.78rem;
+  color: #FF008A;
+  font-weight: 700;
+}
+
+.swatch-sub {
+  font-size: 0.7rem;
+  color: #64748B;
+}
+
+.selected-fabric-preview-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #FFF0F5;
+  border: 1px solid rgba(255, 0, 138, 0.2);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-top: 14px;
+}
+
+.bridal-workflow-page-root.dark-theme .selected-fabric-preview-card {
+  background: rgba(255, 0, 138, 0.12);
+  border-color: rgba(255, 0, 138, 0.3);
+}
+
+.preview-swatch-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.selected-fabric-preview-card h4 {
+  font-size: 1.05rem;
+  color: #071B49;
+  margin: 0 0 4px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .selected-fabric-preview-card h4 {
+  color: #F8FAFC;
+}
+
+.selected-fabric-preview-card p {
+  font-size: 0.84rem;
+  color: #425579;
+  margin: 0 0 6px 0;
+}
+
+.meta-row {
+  display: flex;
+  gap: 20px;
+  font-size: 0.78rem;
+  color: #64748B;
+}
+
+/* Own Fabric */
+.own-fabric-form-box {
+  background: #F8FAFC;
+  border: 1.5px dashed #CBD5E1;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.bridal-workflow-page-root.dark-theme .own-fabric-form-box {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.own-fabric-alert {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.shield-icon {
+  color: #10B981;
+  flex-shrink: 0;
+}
+
+.own-fabric-alert h5 {
+  font-size: 1rem;
+  color: #071B49;
+  margin: 0 0 4px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .own-fabric-alert h5 {
+  color: #F8FAFC;
+}
+
+.own-fabric-alert p {
+  font-size: 0.84rem;
+  color: #64748B;
+  margin: 0;
+}
+
+.form-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #071B49;
+  margin-bottom: 6px;
+}
+
+.bridal-workflow-page-root.dark-theme .form-group label {
+  color: #F8FAFC;
+}
+
+/* Step 3: Google Maps & Side split */
+.maps-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.locality-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chips-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #64748B;
+}
+
+.loc-chip {
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #071B49;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .loc-chip {
+  background: #1E293B;
+  border-color: #334155;
+  color: #F8FAFC;
+}
+
+.loc-chip.active {
+  background: #071B49;
+  color: #FFFFFF;
+  border-color: #071B49;
+}
+
+.type-toggle-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.type-pill {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #64748B;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.type-pill.active {
+  background: #FF008A;
+  color: #FFFFFF;
+  border-color: #FF008A;
+}
+
+.maps-and-cards-split {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+}
+
+.map-view-container {
+  position: relative;
+  border: 1.5px solid #F0E7ED;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.map-floating-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #071B49;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  z-index: 400;
+}
+
+.tailors-list-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.tailor-card-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid #F0E7ED;
+  border-radius: 14px;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bridal-workflow-page-root.dark-theme .tailor-card-item {
+  background: #1E293B;
+  border-color: #334155;
+}
+
+.tailor-card-item:hover {
+  border-color: #FF008A;
+}
+
+.tailor-card-item.selected {
+  border-color: #FF008A;
+  background: #FFF0F5;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.15);
+}
+
+.bridal-workflow-page-root.dark-theme .tailor-card-item.selected {
+  background: rgba(255, 0, 138, 0.12);
+}
+
+.tailor-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tailor-info {
+  flex: 1;
+}
+
+.tailor-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tailor-name-row h4 {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0;
+}
+
+.bridal-workflow-page-root.dark-theme .tailor-name-row h4 {
+  color: #F8FAFC;
+}
+
+.verified-tag {
+  color: #10B981;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tailor-specialty {
+  font-size: 0.76rem;
+  color: #FF008A;
+  font-weight: 600;
+}
+
+.tailor-locality {
+  font-size: 0.72rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tailor-meta-row {
+  display: flex;
+  gap: 10px;
+  font-size: 0.72rem;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.select-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid #FF008A;
+  background: transparent;
+  color: #FF008A;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.select-btn.active {
+  background: #FF008A;
+  color: #FFFFFF;
+}
+
+/* Step 4: Measurements */
+.measurement-options-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.measurement-card {
+  border: 1.5px solid #F0E7ED;
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  background: #FFFFFF;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bridal-workflow-page-root.dark-theme .measurement-card {
+  background: #1E293B;
+  border-color: #334155;
+}
+
+.measurement-card:hover {
+  border-color: #FF008A;
+}
+
+.measurement-card.active {
+  border-color: #FF008A;
+  background: #FFF0F5;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.15);
+}
+
+.bridal-workflow-page-root.dark-theme .measurement-card.active {
+  background: rgba(255, 0, 138, 0.15);
+}
+
+.icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FFF0F5;
+  color: #FF008A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.bridal-workflow-page-root.dark-theme .icon-circle {
+  background: rgba(255, 0, 138, 0.2);
+}
+
+.measurement-card h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #071B49;
+  margin: 0 0 6px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .measurement-card h4 {
+  color: #F8FAFC;
+}
+
+.measurement-card p {
+  font-size: 0.74rem;
+  color: #64748B;
+  line-height: 1.4;
+  margin: 0 0 12px 0;
+  flex: 1;
+}
+
+.badge-free {
+  background: #DCFCE7;
+  color: #15803D;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.badge-price {
+  background: #FEF3C7;
+  color: #B45309;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.badge-standard {
+  background: #F1F5F9;
+  color: #475569;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.ai-scan-panel {
+  background: linear-gradient(135deg, #071B49 0%, #152A5A 100%);
+  color: #FFFFFF;
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.camera-icon {
+  color: #FF008A;
+  margin-bottom: 12px;
+}
+
+.ai-scan-inner h4 {
+  font-size: 1.25rem;
+  margin: 0 0 8px 0;
+}
+
+.ai-scan-inner p {
+  font-size: 0.88rem;
+  color: #CBD5E1;
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+}
+
+.btn-start-ai {
+  background: #FF008A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-start-ai:hover {
+  background: #E60078;
+  transform: translateY(-2px);
+}
+
+.scan-success-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #10B981;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.86rem;
+  padding: 8px 20px;
+  border-radius: 9999px;
+}
+
+.manual-inputs-panel {
+  background: #F8FAFC;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.bridal-workflow-page-root.dark-theme .manual-inputs-panel {
+  background: #151924;
+}
+
+.manual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #071B49;
+  margin-bottom: 6px;
+}
+
+.bridal-workflow-page-root.dark-theme .input-group label {
+  color: #F8FAFC;
+}
+
+/* Step 5: Quotation Split */
+.quote-grid-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.quote-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quote-detail-block {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.bridal-workflow-page-root.dark-theme .quote-detail-block {
+  background: #151924;
+  border-color: #343B4B;
+}
+
+.quote-detail-block h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 12px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .quote-detail-block h4 {
+  color: #F8FAFC;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  padding: 6px 0;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.bridal-workflow-page-root.dark-theme .detail-row {
+  border-color: #334155;
+}
+
+.detail-row span {
+  color: #64748B;
+}
+
+.detail-row strong {
+  color: #071B49;
+}
+
+.bridal-workflow-page-root.dark-theme .detail-row strong {
+  color: #F8FAFC;
+}
+
+.quote-billing-col {
+  background: #FFFFFF;
+  border: 1.5px solid #F0E7ED;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.bridal-workflow-page-root.dark-theme .quote-billing-col {
+  background: #1E293B;
+  border-color: #334155;
+}
+
+.quote-billing-col h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 16px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .quote-billing-col h4 {
+  color: #F8FAFC;
+}
+
+.bill-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  padding: 8px 0;
+  color: #425579;
+}
+
+.bridal-workflow-page-root.dark-theme .bill-line {
+  color: #CBD5E1;
+}
+
+.bill-total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 0;
+  border-top: 2px dashed #E2E8F0;
+  margin-top: 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #071B49;
+}
+
+.bridal-workflow-page-root.dark-theme .bill-total-line {
+  color: #F8FAFC;
+  border-color: #334155;
+}
+
+.total-amount {
+  font-size: 1.5rem;
+  color: #FF008A;
+}
+
+.free-perks-box {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 14px 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #166534;
+}
+
+.btn-confirm-order {
+  width: 100%;
+  background: #FF008A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.3);
+}
+
+.btn-confirm-order:hover {
+  background: #E60078;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 138, 0.4);
+}
+
+/* Step 6: Success */
+.order-success-card {
+  text-align: center;
+  padding: 48px 32px;
+}
+
+.success-badge-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #10B981;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
+}
+
+.success-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #071B49;
+  margin: 0 0 8px 0;
+}
+
+.bridal-workflow-page-root.dark-theme .success-title {
+  color: #F8FAFC;
+}
+
+.success-subtitle {
+  font-size: 0.95rem;
+  color: #64748B;
+  margin: 0 0 32px 0;
+}
+
+.order-live-stepper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto 36px auto;
+  position: relative;
+}
+
+.stepper-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.node-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  color: #64748B;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.stepper-node.completed .node-circle {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.stepper-node.active .node-circle {
+  background: #FF008A;
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(255, 0, 138, 0.2);
+}
+
+.node-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #071B49;
+}
+
+.bridal-workflow-page-root.dark-theme .node-label {
+  color: #F8FAFC;
+}
+
+.node-date {
+  font-size: 0.7rem;
+  color: #64748B;
+}
+
+.order-summary-box {
+  background: #F8FAFC;
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 650px;
+  margin: 0 auto 28px auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  text-align: left;
+}
+
+.bridal-workflow-page-root.dark-theme .order-summary-box {
+  background: #151924;
+}
+
+.summary-item span {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748B;
+}
+
+.summary-item strong {
+  font-size: 0.9rem;
+  color: #071B49;
+}
+
+.bridal-workflow-page-root.dark-theme .summary-item strong {
+  color: #F8FAFC;
+}
+
+.btn-return-hub {
+  background: #071B49;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  padding: 12px 30px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-return-hub:hover {
+  background: #FF008A;
+}
+
+/* Footer Navigation */
+.step-actions-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #F0E7ED;
+}
+
+.bridal-workflow-page-root.dark-theme .step-actions-footer {
+  border-color: #1F2937;
+}
+
+.btn-prev-step {
+  background: #FFFFFF;
+  color: #071B49;
+  border: 1.5px solid #CBD5E1;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.bridal-workflow-page-root.dark-theme .btn-prev-step {
+  background: #1E293B;
+  color: #F8FAFC;
+  border-color: #334155;
+}
+
+.btn-next-step {
+  background: #FF008A;
+  color: #FFFFFF;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(255, 0, 138, 0.25);
+  margin-left: auto;
+}
+
+.btn-next-step:hover {
+  background: #E60078;
+  transform: translateX(2px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .maps-and-cards-split,
+  .quote-grid-split {
+    grid-template-columns: 1fr;
+  }
+  .swatches-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .measurement-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .couple-fields-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .swatches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bridal-options-row,
+  .form-fields-grid,
+  .manual-grid {
+    grid-template-columns: 1fr;
+  }
+  .order-live-stepper {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .workflow-step-card {
+    padding: 20px 16px;
+  }
+}

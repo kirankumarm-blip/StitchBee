@@ -8199,3 +8199,403 @@ body.bl-theme-dark .bl-custom-spec-pill {
   color: var(--bl-pink);
 }
 
+
+/* ========================================================================= */
+/* CENTRALIZED UNIVERSAL WISHLIST VIEW ENHANCEMENTS                          */
+/* ========================================================================= */
+.bl-wishlist-filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 2px 14px;
+  margin-bottom: 20px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bl-wishlist-filters-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.bl-wishlist-filters-bar::-webkit-scrollbar-thumb {
+  background: var(--bl-border);
+  border-radius: 4px;
+}
+
+.bl-wishlist-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid var(--bl-border);
+  background: var(--bl-warm-card, #ffffff);
+  color: var(--bl-text, #1e293b);
+  font-size: 0.84rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.bl-wishlist-filter-pill:hover {
+  border-color: var(--bl-pink, #f72585);
+  background: rgba(247, 37, 133, 0.05);
+}
+
+.bl-wishlist-filter-pill.active {
+  background: var(--bl-pink, #f72585);
+  border-color: var(--bl-pink, #f72585);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25);
+}
+
+.bl-wishlist-pill-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.06);
+  color: inherit;
+}
+
+.bl-wishlist-filter-pill.active .bl-wishlist-pill-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.bl-wishlist-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.bl-wishlist-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
+}
+
+.bl-wishlist-search-box input {
+  width: 100%;
+  padding: 9px 14px 9px 38px;
+  border-radius: 10px;
+  border: 1px solid var(--bl-border);
+  background: var(--bl-warm-card, #ffffff);
+  color: var(--bl-text, #1e293b);
+  font-size: 0.86rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bl-wishlist-search-box input:focus {
+  border-color: var(--bl-pink, #f72585);
+  box-shadow: 0 0 0 3px rgba(247, 37, 133, 0.12);
+}
+
+.bl-wishlist-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--bl-text-secondary, #64748b);
+  pointer-events: none;
+}
+
+.bl-wishlist-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--bl-text-secondary, #64748b);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bl-wishlist-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bl-wishlist-sort-select {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--bl-border);
+  background: var(--bl-warm-card, #ffffff);
+  color: var(--bl-text, #1e293b);
+  font-size: 0.84rem;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.bl-wishlist-sort-select:focus {
+  border-color: var(--bl-pink, #f72585);
+}
+
+.bl-wishlist-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--bl-border);
+  background: transparent;
+  color: var(--bl-text-secondary, #64748b);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bl-wishlist-clear-btn:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Service Category Badges */
+.bl-cat-badge-clothing {
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563eb;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.bl-cat-badge-bags {
+  background: rgba(217, 119, 6, 0.12);
+  color: #b45309;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+}
+
+.bl-cat-badge-shoes {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.bl-cat-badge-seats {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.bl-cat-badge-pets {
+  background: rgba(236, 72, 153, 0.12);
+  color: #db2777;
+  border: 1px solid rgba(236, 72, 153, 0.25);
+}
+
+.bl-cat-badge-gifts {
+  background: rgba(139, 92, 246, 0.12);
+  color: #7c3aed;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.bl-cat-badge-sofas {
+  background: rgba(20, 184, 166, 0.12);
+  color: #0d9488;
+  border: 1px solid rgba(20, 184, 166, 0.25);
+}
+
+.bl-cat-badge-kids {
+  background: rgba(249, 115, 22, 0.12);
+  color: #ea580c;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+}
+
+/* Category Discovery Pills in Empty State */
+.bl-wishlist-discovery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 900px;
+  margin: 28px auto 0;
+}
+
+@media (max-width: 860px) {
+  .bl-wishlist-discovery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .bl-wishlist-discovery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bl-wishlist-discovery-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--bl-border);
+  background: var(--bl-warm-card, #ffffff);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.bl-wishlist-discovery-card:hover {
+  border-color: var(--bl-pink, #f72585);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.bl-wishlist-discovery-icon {
+  font-size: 1.5rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(247, 37, 133, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bl-wishlist-discovery-text h5 {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--bl-text, #1e293b);
+}
+
+.bl-wishlist-discovery-text p {
+  margin: 2px 0 0;
+  font-size: 0.74rem;
+  color: var(--bl-text-secondary, #64748b);
+}
+
+
+/* ========================================================================= */
+/* CENTRALIZED UNIVERSAL ORDERS VIEW ENHANCEMENTS                            */
+/* ========================================================================= */
+.bl-orders-cat-filters-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.bl-orders-cat-filters-bar::-webkit-scrollbar-thumb {
+  background: var(--bl-border, #cbd5e1);
+  border-radius: 4px;
+}
+
+.bl-orders-cat-pill:hover {
+  border-color: var(--bl-pink, #f72585) !important;
+  transform: translateY(-1px);
+}
+
+body.bl-theme-dark .bl-order-card {
+  background: #181528 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
+}
+
+body.bl-theme-dark .bl-order-top-bar {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.bl-theme-dark .bl-order-top-bar strong {
+  color: #f8fafc !important;
+}
+
+body.bl-theme-dark .bl-orders-controls-bar {
+  background: #181528 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.bl-theme-dark .bl-orders-controls-bar input,
+body.bl-theme-dark .bl-orders-controls-bar select {
+  background: #120f20 !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+body.bl-theme-dark .bl-orders-cat-pill {
+  background: #181528 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+body.bl-theme-dark .bl-orders-cat-pill.active {
+  background: #f72585 !important;
+  border-color: #f72585 !important;
+  color: #ffffff !important;
+}
+
+body.bl-theme-dark .bl-order-stepper-box {
+  background: rgba(20, 18, 30, 0.5) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.bl-theme-dark .bl-order-item-mini {
+  background: #120f20 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.bl-theme-dark .bl-order-item-mini strong {
+  color: #f8fafc !important;
+}
+
+body.bl-theme-dark .bl-order-step-name {
+  color: #94a3b8 !important;
+}
+
+body.bl-theme-dark .bl-custom-spec-pill {
+  background: #120f20 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #cbd5e1 !important;
+}
+
+body.bl-theme-dark .bl-order-card button {
+  color: #f8fafc;
+}
+
+body.bl-theme-dark .bl-modal-container {
+  background: #181528 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+/* Print styling for Invoice Modal */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .bl-invoice-modal-content, .bl-invoice-modal-content * {
+    visibility: visible;
+  }
+  .bl-invoice-modal-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .bl-no-print {
+    display: none !important;
+  }
+}

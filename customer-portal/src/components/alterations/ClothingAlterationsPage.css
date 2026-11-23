@@ -1,0 +1,1703 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   StitchBeez - Clothing Alterations & Fit Services Styles
+   100% Full-Width Responsive Design with Dedicated Booking Workflow Page
+   ========================================================================== */
+
+.alterations-page-root {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Theme Color Tokens */
+.alterations-page-root.light {
+  --alt-bg: #FFFFFF;
+  --alt-bg-subtle: #FFF7F9;
+  --alt-bg-card: #FFFFFF;
+  --alt-bg-card-hover: #FFF5F8;
+  --alt-text-primary: #1E1B4B; /* Deep Navy */
+  --alt-text-secondary: #4B5563;
+  --alt-text-muted: #6B7280;
+  --alt-border: #E5E7EB;
+  --alt-border-pink: #FCE7F0;
+  --alt-primary: #E11D74; /* StitchBeez Signature Pink */
+  --alt-primary-hover: #C21360;
+  --alt-primary-light: #FDF2F7;
+  --alt-primary-rgba: rgba(225, 29, 116, 0.08);
+  --alt-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --alt-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --alt-shadow-lg: 0 10px 25px rgba(225, 29, 116, 0.12);
+  --alt-pill-bg: #FFF5F8;
+  --alt-pill-border: #FBCFE8;
+  background-color: #FFFFFF;
+  color: #1E1B4B;
+}
+
+.alterations-page-root.dark {
+  --alt-bg: #0B0914;
+  --alt-bg-subtle: #120E22;
+  --alt-bg-card: #18142A;
+  --alt-bg-card-hover: #221C3A;
+  --alt-text-primary: #F8FAFC;
+  --alt-text-secondary: #CBD5E1;
+  --alt-text-muted: #94A3B8;
+  --alt-border: rgba(255, 255, 255, 0.08);
+  --alt-border-pink: rgba(225, 29, 116, 0.25);
+  --alt-primary: #F72585;
+  --alt-primary-hover: #FF4097;
+  --alt-primary-light: rgba(247, 37, 133, 0.15);
+  --alt-primary-rgba: rgba(247, 37, 133, 0.12);
+  --alt-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --alt-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.35);
+  --alt-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.45);
+  --alt-pill-bg: #1F1932;
+  --alt-pill-border: rgba(247, 37, 133, 0.3);
+  background-color: #0B0914;
+  color: #F8FAFC;
+}
+
+/* 100% Full-Width Fluid Container */
+.alt-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 48px !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 1024px) {
+  .alt-container {
+    padding: 0 24px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .alt-container {
+    padding: 0 16px !important;
+  }
+}
+
+/* Common Section Header */
+.alt-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  gap: 16px;
+  width: 100%;
+}
+
+.alt-section-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.alt-section-title {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #002B7F !important;
+  letter-spacing: -0.01em;
+}
+
+.alt-section-subtitle {
+  font-size: 0.92rem;
+  color: #002B7F !important;
+  font-weight: 500;
+}
+
+.alt-section-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--alt-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.alt-section-action-btn:hover {
+  background: var(--alt-primary-light);
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   1. HERO SECTION – 100% FULL-WIDTH BANNER IMAGE WITH PRECISION ALIGNMENT
+   ========================================================================== */
+.alt-hero-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--alt-border);
+  background: #FFF5F8;
+}
+
+.alterations-page-root.dark .alt-hero-section {
+  background: #100C1F;
+}
+
+.alt-hero-full-banner-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.alt-hero-full-img {
+  width: 100% !important;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  min-height: 480px;
+  max-height: 560px;
+}
+
+/* Desktop: Clears the flowers on the left edge, stops before the tailor on the right */
+.alt-hero-overlay-content {
+  position: absolute;
+  top: 0;
+  left: clamp(48px, 6.8vw, 115px);
+  width: auto;
+  max-width: 540px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.alt-hero-eyebrow {
+  display: inline-block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #E11D74 !important;
+  margin-bottom: 8px;
+}
+
+.alt-hero-heading {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.4rem, 3.2vw, 3.3rem);
+  line-height: 1.08;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.01em;
+}
+
+.alt-hero-heading-navy {
+  color: #002B7F !important;
+  display: block;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.alterations-page-root.dark .alt-hero-heading-navy {
+  color: #FFFFFF !important;
+}
+
+.alt-hero-heading-pink {
+  color: #E11D74 !important;
+  display: block;
+  font-style: normal !important;
+  font-weight: 800;
+  white-space: nowrap !important;
+}
+
+.alt-hero-subtext {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #002B7F !important;
+  font-weight: 600;
+  max-width: 490px;
+  margin: 0 0 22px 0;
+}
+
+.alterations-page-root.dark .alt-hero-subtext {
+  color: #CBD5E1 !important;
+}
+
+/* 4 Feature Badges with Soft Blue Fill and Navy Circles */
+.alt-hero-features-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.alt-hero-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.alt-hero-feature-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #EEF2FF !important;
+  color: #002B7F !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #002B7F !important;
+  box-shadow: 0 2px 6px rgba(0, 43, 127, 0.1);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.alterations-page-root.dark .alt-hero-feature-icon-box {
+  background: #18142A !important;
+  border-color: #818CF8 !important;
+  color: #818CF8 !important;
+}
+
+.alt-hero-feature-item:hover .alt-hero-feature-icon-box {
+  transform: translateY(-2px);
+  border-color: #E11D74 !important;
+  color: #E11D74 !important;
+}
+
+.alt-hero-feature-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #002B7F !important;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.alterations-page-root.dark .alt-hero-feature-label {
+  color: #F8FAFC !important;
+}
+
+/* Hero CTA Buttons */
+.alt-hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.alt-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #E11D74 !important;
+  color: #FFFFFF !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(225, 29, 116, 0.28);
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.alt-btn-primary:hover {
+  background-color: #C21360 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(225, 29, 116, 0.4);
+}
+
+.alt-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #FFFFFF !important;
+  color: #002B7F !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: 1.8px solid #E11D74 !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.alterations-page-root.dark .alt-btn-outline {
+  background-color: #18142A !important;
+  color: #FFFFFF !important;
+  border-color: #E11D74 !important;
+}
+
+.alt-btn-outline:hover {
+  background-color: #FDF2F7 !important;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS FOR HERO SECTION
+   ========================================================================== */
+@media (max-width: 860px) {
+  .alt-hero-section {
+    background: #FFF5F8;
+  }
+
+  .alterations-page-root.dark .alt-hero-section {
+    background: #100C1F;
+  }
+
+  .alt-hero-full-banner-wrap {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Keep the tailor and bridal gown sharply visible and framed on mobile */
+  .alt-hero-full-img {
+    width: 100% !important;
+    height: 230px !important;
+    min-height: 230px !important;
+    max-height: 230px !important;
+    object-fit: cover;
+    object-position: 82% center !important;
+    display: block;
+  }
+
+  .alt-hero-overlay-content {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 24px 20px 32px 20px;
+    background: #FFF5F8;
+    align-items: center;
+    text-align: center;
+  }
+
+  .alterations-page-root.dark .alt-hero-overlay-content {
+    background: #100C1F;
+  }
+
+  .alt-hero-heading {
+    font-size: 2.1rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .alt-hero-subtext {
+    text-align: center;
+    margin: 0 auto 20px auto;
+    max-width: 100%;
+    font-size: 0.86rem;
+  }
+
+  .alt-hero-features-row {
+    max-width: 100%;
+    gap: 8px;
+    margin: 0 auto 24px auto;
+  }
+
+  .alt-hero-cta-group {
+    width: 100%;
+    max-width: 340px;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  .alt-hero-cta-group .alt-btn-primary,
+  .alt-hero-cta-group .alt-btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .alt-hero-full-img {
+    height: 195px !important;
+    min-height: 195px !important;
+    max-height: 195px !important;
+    object-position: 84% center !important;
+  }
+
+  .alt-hero-heading {
+    font-size: 1.85rem;
+  }
+
+  .alt-hero-features-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 14px;
+    column-gap: 10px;
+    max-width: 280px;
+  }
+}
+
+/* ==========================================================================
+   2. CHOOSE YOUR CLOTHING TYPE (10 CARDS - 100% FULL-WIDTH EVEN DISTRIBUTION)
+   ========================================================================== */
+.alt-categories-section {
+  padding: 36px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.alt-categories-grid-10 {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+  .alt-categories-grid-10 {
+    grid-template-columns: repeat(5, 1fr);
+    row-gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .alt-categories-grid-10 {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .alt-categories-grid-10 .alt-category-card {
+    flex: 0 0 110px;
+  }
+}
+
+.alt-category-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  transition: transform 0.2s ease;
+}
+
+.alt-category-card:hover {
+  transform: translateY(-4px);
+}
+
+.alt-category-img-box {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: var(--alt-bg-card);
+  border: 2px solid transparent;
+  box-shadow: var(--alt-shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.alt-category-card.active .alt-category-img-box {
+  border-color: var(--alt-primary);
+  box-shadow: 0 0 0 3px var(--alt-primary-light);
+}
+
+.alt-category-card:hover .alt-category-img-box {
+  box-shadow: var(--alt-shadow-md);
+}
+
+.alt-category-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.alt-category-card:hover .alt-category-img {
+  transform: scale(1.05);
+}
+
+.alt-category-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 8px;
+  color: var(--alt-text-primary);
+  line-height: 1.2;
+}
+
+.alt-category-card.active .alt-category-label {
+  color: var(--alt-primary);
+}
+
+.alt-active-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--alt-primary-light);
+  border: 1px solid var(--alt-border-pink);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--alt-primary);
+  margin-bottom: 16px;
+}
+
+.alt-clear-filter-btn {
+  background: none;
+  border: none;
+  color: var(--alt-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* ==========================================================================
+   3. POPULAR ALTERING SERVICES (8 CARDS - CORRECTLY FITTED IMAGES)
+   ========================================================================== */
+.alt-services-section {
+  padding: 32px 0 44px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.alt-services-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .alt-services-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .alt-services-grid .alt-service-card {
+    flex: 0 0 155px;
+    scroll-snap-align: start;
+  }
+}
+
+.alt-service-card {
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  position: relative;
+}
+
+.alt-service-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--alt-border-pink);
+  box-shadow: var(--alt-shadow-md);
+}
+
+/* Image box fitted with natural ~1.15 / 1 ratio in single horizontal line */
+.alt-service-img-box {
+  width: 100%;
+  aspect-ratio: 1.15 / 1;
+  overflow: hidden;
+  position: relative;
+  background: var(--alt-bg-subtle);
+}
+
+.alt-service-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.35s ease;
+}
+
+.alt-service-card:hover .alt-service-img {
+  transform: scale(1.05);
+}
+
+.alt-service-body {
+  padding: 10px 10px 12px 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.alt-service-title-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.alt-service-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #002B7F !important;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.alterations-page-root.dark .alt-service-title {
+  color: #FFFFFF !important;
+}
+
+.alt-service-tags {
+  font-size: 0.68rem;
+  color: var(--alt-text-muted);
+  line-height: 1.3;
+}
+
+.alt-service-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--alt-border);
+}
+
+.alt-service-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1E1B4B;
+}
+
+.alterations-page-root.dark .alt-service-price {
+  color: #F8FAFC;
+}
+
+.alt-service-arrow-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--alt-primary-light);
+  color: var(--alt-primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.alt-service-card:hover .alt-service-arrow-btn {
+  background: var(--alt-primary);
+  color: #FFFFFF;
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   DEDICATED FULL-PAGE BOOKING WORKFLOW (NEXT PAGE - NOT INLINE 3RD SECTION)
+   ========================================================================== */
+.alt-workflow-page-wrap {
+  width: 100%;
+  min-height: 80vh;
+  padding: 32px 0 64px 0;
+  background: var(--alt-bg);
+}
+
+.alt-workflow-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--alt-border);
+  margin-bottom: 28px;
+}
+
+.alt-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--alt-bg-subtle);
+  border: 1px solid var(--alt-border);
+  border-radius: 8px;
+  padding: 10px 18px;
+  color: var(--alt-text-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.alt-back-btn:hover {
+  background: var(--alt-primary-light);
+  border-color: var(--alt-primary);
+  color: var(--alt-primary);
+  transform: translateX(-2px);
+}
+
+.alt-workflow-stepper {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto 36px auto;
+}
+
+.alt-workflow-stepper::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  background: var(--alt-border);
+  z-index: 1;
+}
+
+.alt-workflow-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.alt-workflow-step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--alt-bg-card);
+  border: 2px solid var(--alt-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--alt-text-muted);
+  transition: all 0.2s ease;
+}
+
+.alt-workflow-step-item.active .alt-workflow-step-circle {
+  background: var(--alt-primary);
+  border-color: var(--alt-primary);
+  color: #FFFFFF;
+}
+
+.alt-workflow-step-item.completed .alt-workflow-step-circle {
+  background: #10B981;
+  border-color: #10B981;
+  color: #FFFFFF;
+}
+
+.alt-workflow-step-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--alt-text-muted);
+}
+
+.alt-workflow-step-item.active .alt-workflow-step-label {
+  color: var(--alt-primary);
+  font-weight: 700;
+}
+
+.alt-workflow-content-card {
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  border-radius: 16px;
+  padding: 36px;
+  max-width: 980px;
+  margin: 0 auto;
+  box-shadow: var(--alt-shadow-md);
+  box-sizing: border-box;
+}
+
+.alt-step-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.alt-step-two-col.alt-tailor-step-split {
+  grid-template-columns: 1.1fr 0.9fr;
+  margin-bottom: 32px;
+}
+
+.alt-step-two-col.alt-summary-step-split {
+  grid-template-columns: 1.2fr 0.8fr;
+  margin-bottom: 32px;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .alt-workflow-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .alt-workflow-stepper {
+    margin: 0 auto 24px auto;
+  }
+
+  .alt-workflow-step-label {
+    display: none;
+  }
+
+  .alt-workflow-step-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .alt-workflow-content-card {
+    padding: 18px 14px;
+    border-radius: 12px;
+  }
+
+  .alt-step-two-col,
+  .alt-step-two-col.alt-tailor-step-split,
+  .alt-step-two-col.alt-summary-step-split {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+}
+
+/* ==========================================================================
+   4. HOW ALTERATION WORKS (6 STEPS)
+   ========================================================================== */
+.alt-process-section {
+  padding: 40px 0 48px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+  background: var(--alt-bg-subtle);
+  border-top: 1px solid var(--alt-border);
+  border-bottom: 1px solid var(--alt-border);
+}
+
+.alt-process-steps-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  position: relative;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .alt-process-steps-row {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .alt-process-steps-row {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 24px;
+  }
+}
+
+.alt-process-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 0 4px;
+}
+
+.alt-process-step-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.alt-step-number-bubble {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--alt-primary);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(225, 29, 116, 0.3);
+  margin-right: 6px;
+}
+
+.alt-step-icon-circle {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--alt-pill-bg);
+  border: 1.5px solid var(--alt-pill-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--alt-primary);
+  box-shadow: var(--alt-shadow-sm);
+  transition: transform 0.25s ease;
+}
+
+.alt-process-step-item:hover .alt-step-icon-circle {
+  transform: scale(1.08);
+  border-color: var(--alt-primary);
+}
+
+.alt-step-connector-arrow {
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--alt-primary);
+  opacity: 0.6;
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .alt-step-connector-arrow {
+    display: none;
+  }
+}
+
+.alt-step-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--alt-text-primary);
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+}
+
+.alt-step-desc {
+  font-size: 0.74rem;
+  color: var(--alt-text-secondary);
+  line-height: 1.35;
+  margin: 0;
+  max-width: 160px;
+}
+
+/* ==========================================================================
+   5. BEFORE & AFTER TRANSFORMATIONS
+   ========================================================================== */
+.alt-transformations-section {
+  padding: 40px 0 48px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.alt-carousel-nav-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.alt-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  box-shadow: var(--alt-shadow-md);
+  color: var(--alt-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.alt-carousel-btn:hover {
+  background: var(--alt-primary);
+  color: #FFFFFF;
+  border-color: var(--alt-primary);
+}
+
+.alt-carousel-btn.prev {
+  left: -14px;
+}
+
+.alt-carousel-btn.next {
+  right: -14px;
+}
+
+@media (max-width: 768px) {
+  .alt-carousel-btn {
+    display: none;
+  }
+}
+
+.alt-transformations-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .alt-transformations-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .alt-transformations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.alt-transformation-card {
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--alt-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.alt-transformation-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--alt-border-pink);
+  box-shadow: var(--alt-shadow-md);
+}
+
+.alt-trans-images-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  width: 100%;
+  height: 195px;
+  background: var(--alt-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.alt-trans-single-half {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.alt-trans-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.alt-transformation-card:hover .alt-trans-img {
+  transform: scale(1.05);
+}
+
+.alt-trans-pill {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.alt-trans-pill.before {
+  background: rgba(255, 255, 255, 0.95);
+  color: #374151;
+}
+
+.alt-trans-pill.after {
+  background: var(--alt-primary);
+  color: #FFFFFF;
+}
+
+.alt-trans-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--alt-text-primary);
+  text-align: center;
+  padding: 10px 8px;
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* ==========================================================================
+   6. ALTERATION PRICE GUIDE (8 PILL CARDS)
+   ========================================================================== */
+.alt-pricing-section {
+  padding: 36px 0 44px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.alt-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .alt-pricing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .alt-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.alt-price-pill-card {
+  background: var(--alt-pill-bg);
+  border: 1px solid var(--alt-pill-border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.alt-price-pill-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--alt-primary);
+  box-shadow: 0 4px 12px rgba(225, 29, 116, 0.15);
+}
+
+.alt-price-pill-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--alt-text-primary);
+}
+
+.alt-price-pill-value {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--alt-primary);
+}
+
+/* ==========================================================================
+   7. WHY CHOOSE STITCHBEEZ ALTERATION?
+   ========================================================================== */
+.alt-benefits-section {
+  padding: 40px 0 48px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+  background: var(--alt-bg-subtle);
+  border-top: 1px solid var(--alt-border);
+  border-bottom: 1px solid var(--alt-border);
+}
+
+.alt-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .alt-benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .alt-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.alt-benefit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px;
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  border-radius: 12px;
+  box-shadow: var(--alt-shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.alt-benefit-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--alt-border-pink);
+  box-shadow: var(--alt-shadow-md);
+}
+
+.alt-benefit-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--alt-primary-light);
+  color: var(--alt-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alt-benefit-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--alt-text-primary);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.alt-benefit-desc {
+  font-size: 0.78rem;
+  color: var(--alt-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   8. WHAT OUR CUSTOMERS SAY (REVIEWS)
+   ========================================================================== */
+.alt-reviews-section {
+  padding: 40px 0 48px 0;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.alt-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .alt-reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.alt-review-card {
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: var(--alt-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.alt-review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--alt-shadow-md);
+}
+
+.alt-review-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alt-review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--alt-primary-light);
+}
+
+.alt-review-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.alt-review-author {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--alt-text-primary);
+}
+
+.alt-review-city {
+  font-size: 0.74rem;
+  color: var(--alt-text-muted);
+}
+
+.alt-review-stars {
+  display: flex;
+  gap: 2px;
+  color: #FBBF24;
+}
+
+.alt-review-quote {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--alt-text-secondary);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ==========================================================================
+   9. BOTTOM CTA BANNER – 100% FULL-WIDTH BANNER IMAGE
+   ========================================================================== */
+.alt-bottom-cta-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top: 1px solid var(--alt-border);
+}
+
+.alt-bottom-cta-full-banner-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #FFF0F5;
+}
+
+.alterations-page-root.dark .alt-bottom-cta-full-banner-wrap {
+  background: #181128;
+}
+
+.alt-bottom-cta-full-img {
+  width: 100% !important;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  min-height: 280px;
+  max-height: 420px;
+}
+
+.alt-bottom-cta-overlay-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 48px 0 0;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+@media (max-width: 860px) {
+  .alt-bottom-cta-section {
+    background: #FFF0F5;
+  }
+  .alterations-page-root.dark .alt-bottom-cta-section {
+    background: #181128;
+  }
+  .alt-bottom-cta-full-banner-wrap {
+    flex-direction: column;
+    width: 100%;
+  }
+  .alt-bottom-cta-full-img {
+    width: 100% !important;
+    height: 200px !important;
+    min-height: 200px !important;
+    max-height: 200px !important;
+    object-fit: cover;
+    object-position: 80% center !important;
+  }
+  .alt-bottom-cta-overlay-content {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 20px 32px 20px;
+    background: #FFF0F5;
+    align-items: center;
+    text-align: center;
+  }
+  .alterations-page-root.dark .alt-bottom-cta-overlay-content {
+    background: #181128;
+  }
+  .alt-bottom-cta-title {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+  .alt-bottom-cta-subtext {
+    text-align: center;
+    margin: 0 auto 20px auto;
+  }
+  .alt-bottom-cta-buttons {
+    width: 100%;
+    max-width: 340px;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 auto;
+  }
+  .alt-bottom-cta-buttons .alt-btn-primary,
+  .alt-bottom-cta-buttons .alt-btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.alt-bottom-cta-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #1E1B4B;
+  margin: 0 0 10px 0;
+  line-height: 1.2;
+}
+
+.alterations-page-root.dark .alt-bottom-cta-title {
+  color: #FFFFFF;
+}
+
+.alt-bottom-cta-subtext {
+  font-size: 0.98rem;
+  color: #374151;
+  margin: 0 0 20px 0;
+  max-width: 520px;
+  line-height: 1.5;
+}
+
+.alterations-page-root.dark .alt-bottom-cta-subtext {
+  color: #CBD5E1;
+}
+
+.alt-bottom-cta-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Form Controls */
+.alt-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.alt-form-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--alt-text-primary);
+}
+
+.alt-form-input,
+.alt-form-select,
+.alt-form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--alt-border);
+  background: var(--alt-bg-card);
+  color: var(--alt-text-primary);
+  font-size: 0.88rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.alt-form-input:focus,
+.alt-form-select:focus,
+.alt-form-textarea:focus {
+  border-color: var(--alt-primary);
+  box-shadow: 0 0 0 2px var(--alt-primary-light);
+}
+
+/* Interactive Draggable Split Box */
+.alt-drag-compare-container {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+  border-radius: 12px;
+  user-select: none;
+  background: #000;
+}
+
+.alt-drag-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.alt-drag-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  cursor: ew-resize;
+  z-index: 10;
+}
+
+.alt-drag-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--alt-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Modals */
+.alt-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.alt-modal-dialog {
+  background: var(--alt-bg-card);
+  border: 1px solid var(--alt-border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--alt-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.alt-modal-dialog.large {
+  max-width: 960px;
+}
+
+.alt-modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--alt-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--alt-bg-card);
+  z-index: 5;
+}
+
+.alt-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--alt-text-primary);
+  margin: 0;
+}
+
+.alt-modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--alt-text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.alt-modal-close-btn:hover {
+  background: var(--alt-primary-light);
+  color: var(--alt-primary);
+}
+
+.alt-modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.alt-map-container {
+  width: 100%;
+  height: 360px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--alt-border);
+  position: relative;
+}
