@@ -1,94 +1,340 @@
-import React, { useRef } from 'react';
-import { Award, Compass, Sparkles, Scissors, Ruler, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export default function FabricMarketplace({ openAuthModal, currentUser, setRole, onCategorySelect, theme }) {
-  // Ref for categories scroll buttons
-  const catScrollRef = useRef(null);
-  const scrollCategories = (dir) => {
-    if (catScrollRef.current) {
-      const scrollAmt = 280;
-      catScrollRef.current.scrollBy({ left: dir === 'left' ? -scrollAmt : scrollAmt, behavior: 'smooth' });
-    }
-  };
+const FABRIC_SHOWCASE_ITEMS = [
+  {
+    id: 'silk',
+    name: 'Royal Silk',
+    descriptor: 'Women · Bridal',
+    categoryKey: 'women',
+    mainImg: '/fabrics-showcase/silk-main.jpg',
+    detailImg: '/fabrics-showcase/silk-detail.jpg',
+    detailLabel: 'Silk Weave',
+  },
+  {
+    id: 'linen',
+    name: 'Natural Linen',
+    descriptor: 'Men · Women · Kids',
+    categoryKey: 'men',
+    mainImg: '/fabrics-showcase/linen-main.jpg',
+    detailImg: '/fabrics-showcase/linen-detail.jpg',
+    detailLabel: 'Flax Slub Weave',
+  },
+  {
+    id: 'cotton',
+    name: 'Premium Cotton',
+    descriptor: 'Kids · Uniforms · Men',
+    categoryKey: 'all',
+    mainImg: '/fabrics-showcase/cotton-main.jpg',
+    detailImg: '/fabrics-showcase/cotton-detail.jpg',
+    detailLabel: 'Crisp Cotton Weave',
+  },
+  {
+    id: 'leather',
+    name: 'Classic Leather',
+    descriptor: 'Bags · Shoes · Accessories',
+    categoryKey: 'all',
+    mainImg: '/fabrics-showcase/leather-main.jpg',
+    detailImg: '/fabrics-showcase/leather-detail.jpg',
+    detailLabel: 'Full-Grain Pebble',
+  },
+  {
+    id: 'satin',
+    name: 'Lustrous Satin',
+    descriptor: 'Gowns · Blouses · Evening',
+    categoryKey: 'women',
+    mainImg: '/fabrics-showcase/satin-main.jpg',
+    detailImg: '/fabrics-showcase/satin-detail.jpg',
+    detailLabel: 'Glossy Satin Sheen',
+  },
+  {
+    id: 'velvet',
+    name: 'Plush Velvet',
+    descriptor: 'Bridal · Sherwanis · Blazers',
+    categoryKey: 'bridal',
+    mainImg: '/fabrics-showcase/velvet-main.jpg',
+    detailImg: '/fabrics-showcase/velvet-detail.jpg',
+    detailLabel: 'Dense Velvet Pile',
+  },
+  {
+    id: 'denim',
+    name: 'Selvedge Denim',
+    descriptor: 'Jackets · Casuals · Jeans',
+    categoryKey: 'men',
+    mainImg: '/fabrics-showcase/denim-main.jpg',
+    detailImg: '/fabrics-showcase/denim-detail.jpg',
+    detailLabel: 'Indigo Twill Weave',
+  },
+  {
+    id: 'chiffon',
+    name: 'Airy Chiffon',
+    descriptor: 'Sarees · Dupattas · Drapes',
+    categoryKey: 'women',
+    mainImg: '/fabrics-showcase/chiffon-main.jpg',
+    detailImg: '/fabrics-showcase/chiffon-detail.jpg',
+    detailLabel: 'Sheer Crepe Mesh',
+  },
+  {
+    id: 'georgette',
+    name: 'Flowing Georgette',
+    descriptor: 'Kurtis · Anarkalis · Dresses',
+    categoryKey: 'women',
+    mainImg: '/fabrics-showcase/georgette-main.jpg',
+    detailImg: '/fabrics-showcase/georgette-detail.jpg',
+    detailLabel: 'Twisted Crepe Texture',
+  },
+  {
+    id: 'net',
+    name: 'Embroidered Net',
+    descriptor: 'Bridal · Lehengas · Overlays',
+    categoryKey: 'bridal',
+    mainImg: '/fabrics-showcase/net-main.jpg',
+    detailImg: '/fabrics-showcase/net-detail.jpg',
+    detailLabel: 'Tulle & Threadwork',
+  },
+  {
+    id: 'brocade',
+    name: 'Zari Brocade',
+    descriptor: 'Wedding · Sherwanis · Ethnic',
+    categoryKey: 'bridal',
+    mainImg: '/fabrics-showcase/brocade-main.jpg',
+    detailImg: '/fabrics-showcase/brocade-detail.jpg',
+    detailLabel: 'Metallic Zari Jacquard',
+  },
+  {
+    id: 'wool-blends',
+    name: 'Wool Blends',
+    descriptor: 'Suits · Tuxedos · Blazers',
+    categoryKey: 'men',
+    mainImg: '/fabrics-showcase/wool-blends-main.jpg',
+    detailImg: '/fabrics-showcase/wool-blends-detail.jpg',
+    detailLabel: 'Worsted Twill Grain',
+  },
+  {
+    id: 'suede',
+    name: 'Brushed Suede',
+    descriptor: 'Footwear · Bags · Trim',
+    categoryKey: 'all',
+    mainImg: '/fabrics-showcase/suede-main.jpg',
+    detailImg: '/fabrics-showcase/suede-detail.jpg',
+    detailLabel: 'Velvety Napped Fibers',
+  },
+  {
+    id: 'faux-leather',
+    name: 'Faux Leather',
+    descriptor: 'Vegan Bags · Jackets · Covers',
+    categoryKey: 'all',
+    mainImg: '/fabrics-showcase/faux-leather-main.jpg',
+    detailImg: '/fabrics-showcase/faux-leather-detail.jpg',
+    detailLabel: 'Fine Vegan Grain',
+  },
+  {
+    id: 'upholstery-leather',
+    name: 'Upholstery Leather',
+    descriptor: 'Vehicle Seats · Sofas · Interiors',
+    categoryKey: 'all',
+    mainImg: '/fabrics-showcase/upholstery-leather-main.jpg',
+    detailImg: '/fabrics-showcase/upholstery-leather-detail.jpg',
+    detailLabel: 'Stitched Heavy Grain',
+  },
+];
+
+// Duplicate list for seamless infinite horizontal carousel looping
+const CAROUSEL_TRACK_ITEMS = [...FABRIC_SHOWCASE_ITEMS, ...FABRIC_SHOWCASE_ITEMS];
+
+export default function FabricMarketplace({ onCategorySelect, theme }) {
+  const trackRef = useRef(null);
+  const scrollFloatRef = useRef(0);
+  const isPausedRef = useRef(false);
+  const stepAnimRef = useRef(null);
+  const [hoveredId, setHoveredId] = useState(null);
 
   const isLight = theme === 'light';
 
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let rafId = null;
+    let lastTime = null;
+    const speedPxPerMs = 0.042; // Smooth luxury glide (~42px/sec)
+
+    const tick = (now) => {
+      if (lastTime === null) lastTime = now;
+      const dt = Math.min(now - lastTime, 64);
+      lastTime = now;
+
+      if (!prefersReducedMotion && !isPausedRef.current && !stepAnimRef.current && trackRef.current) {
+        const track = trackRef.current;
+        const halfWidth = track.scrollWidth / 2;
+        if (halfWidth > 0) {
+          scrollFloatRef.current += speedPxPerMs * dt;
+          if (scrollFloatRef.current >= halfWidth) {
+            scrollFloatRef.current -= halfWidth;
+          }
+          track.scrollLeft = scrollFloatRef.current;
+        }
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      if (stepAnimRef.current) cancelAnimationFrame(stepAnimRef.current);
+    };
+  }, []);
+
+  const handleStepScroll = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const firstCard = track.querySelector('.fabric-showcase-card');
+    const computedStyle = window.getComputedStyle(track);
+    const gap = parseFloat(computedStyle.columnGap || computedStyle.gap || '24') || 24;
+    const stepSize = firstCard ? firstCard.offsetWidth + gap : 320;
+    const halfWidth = track.scrollWidth / 2;
+    if (halfWidth <= 0) return;
+
+    if (stepAnimRef.current) {
+      cancelAnimationFrame(stepAnimRef.current);
+      stepAnimRef.current = null;
+    }
+
+    let startPos = scrollFloatRef.current;
+    if (direction === 'left' && startPos - stepSize < 0) {
+      startPos += halfWidth;
+      scrollFloatRef.current = startPos;
+      track.scrollLeft = startPos;
+    }
+
+    const delta = direction === 'right' ? stepSize : -stepSize;
+    const targetPos = startPos + delta;
+    const duration = 420;
+    const startTime = performance.now();
+
+    const animateStep = (now) => {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      // Cubic ease-out
+      const eased = 1 - Math.pow(1 - t, 3);
+      let nextPos = startPos + delta * eased;
+
+      if (nextPos >= halfWidth) nextPos -= halfWidth;
+      if (nextPos < 0) nextPos += halfWidth;
+
+      scrollFloatRef.current = nextPos;
+      if (trackRef.current) {
+        trackRef.current.scrollLeft = nextPos;
+      }
+
+      if (t < 1) {
+        stepAnimRef.current = requestAnimationFrame(animateStep);
+      } else {
+        stepAnimRef.current = null;
+      }
+    };
+
+    stepAnimRef.current = requestAnimationFrame(animateStep);
+  };
+
+  const handlePause = () => {
+    isPausedRef.current = true;
+  };
+
+  const handleResume = () => {
+    isPausedRef.current = false;
+    setHoveredId(null);
+  };
+
   return (
-    <section id="fabric-marketplace" className="fabric-marketplace-section">
+    <section
+      id="fabric-marketplace"
+      className={`fabrics-creation-section ${isLight ? 'is-light' : 'is-dark'}`}
+      aria-label="Fabrics for every creation"
+    >
       <div className="landing-container">
-        
-        {/* Section Header */}
-        <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <span className="badge" style={{ background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', padding: '6px 12px', borderRadius: 'var(--radius-full)', fontWeight: '600', fontSize: '0.78rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            Curated Material Catalog
-          </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginTop: '10px', color: isLight ? '#0f172a' : '#fff' }}>
-            Explore Premium Fabric Marketplace
-          </h2>
-          <p style={{ color: isLight ? '#64748b' : 'var(--text-secondary)', marginTop: '8px', fontSize: '1.02rem', maxWidth: '600px', margin: '8px auto 0' }}>
-            Choose from luxury fabrics sourced for perfect custom tailoring.
+        <div className="fabrics-creation-header">
+          <h2 className="fabrics-creation-title"><span className="landing-title-pink">FABRICS</span> FOR EVERY CREATION</h2>
+          <p className="fabrics-creation-subtitle">
+            From everyday essentials to extraordinary creations.
           </p>
         </div>
 
-        {/* 1. Fabric Category Cards (Horizontal Row) */}
-        <div className="categories-slider-wrapper">
-          <button className="slider-nav-btn slider-left" onClick={() => scrollCategories('left')}>&#8592;</button>
-          <div className="categories-slider" ref={catScrollRef}>
-            {[
-              { key: 'men', name: 'Men Collection', price: '₹599', img: './Mens Collection.jpg' },
-              { key: 'women', name: 'Women Collection', price: '₹499', img: '/womensCollection.jpg' },
-              { key: 'bridal', name: 'Bridal Collection', price: '₹899', img: '/bridalCollection.jpg' },
-              { key: 'kids', name: 'Kids Collection', price: '₹399', img: '/kidsCollection.jpg' },
-              { key: 'luxury', name: 'Luxury Exclusive', price: '₹899', img: '/luxuryCollection.jpg' }
-            ].map((cat, idx) => (
-              <div 
-                key={idx} 
-                className="category-scroll-card glass-card" 
-                onClick={() => onCategorySelect && onCategorySelect(cat.key)} 
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="cat-img-box">
-                  <img src={cat.img} alt={cat.name} />
-                  <div className="cat-img-overlay"></div>
-                </div>
-                <div className="cat-info">
-                  <h4 style={{ color: isLight ? '#0f172a' : '#fff' }}>{cat.name}</h4>
-                  <span className="price-tag">From {cat.price}/meter</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="slider-nav-btn slider-right" onClick={() => scrollCategories('right')}>&#8594;</button>
-        </div>
+        <div
+          className="fabrics-carousel-shell"
+          onMouseEnter={handlePause}
+          onMouseLeave={handleResume}
+          onTouchStart={handlePause}
+          onTouchEnd={handleResume}
+          onFocus={handlePause}
+          onBlur={handleResume}
+        >
+          <button
+            type="button"
+            className="fabrics-nav-arrow fabrics-nav-prev"
+            onClick={() => handleStepScroll('left')}
+            aria-label="Previous fabrics"
+          >
+            <ChevronLeft size={20} strokeWidth={2} />
+          </button>
 
-        {/* 2. Why Our Fabrics? */}
-        <div className="why-fabrics-section" style={{ margin: '4rem 0' }}>
-          <h3 style={{ fontSize: '1.6rem', fontWeight: 'bold', marginBottom: '20px', textAlign: 'center', color: isLight ? '#0f172a' : '#fff' }}>Why Our Fabrics?</h3>
-          <div className="why-fabrics-grid">
-            {[
-              { title: 'Premium Quality Checked', desc: 'Every meter undergoes strict thread count, color bleed, and shrinkage inspection.', icon: <Award size={20} /> },
-              { title: 'Imported Fabrics', desc: 'Direct sourcing of wool from Biella, linen from Belgium, and cotton from Giza.', icon: <Compass size={20} /> },
-              { title: 'Authentic Material', desc: 'Certified pure fabrics complete with official SilkMark and Woolmark certifications.', icon: <ShieldCheck size={20} /> },
-              { title: 'Best Stitch Compatibility', desc: 'Pre-treated fabric structures optimized for hand-stitching and tailored durability.', icon: <Scissors size={20} /> },
-              { title: 'Custom Fit Ready', desc: 'Sufficient fabric sizing allowance designed specifically for bespoke suit and shirt fittings.', icon: <Ruler size={20} /> },
-              { title: 'Long-lasting Quality', desc: 'Highly resilient fibers that maintain structure, fit, and sheen through repeated dry cleaning.', icon: <Sparkles size={20} /> }
-            ].map((why, idx) => (
-              <div key={idx} className="glass-card why-fabric-card" style={{ padding: '20px', display: 'flex', gap: '15px' }}>
-                <div className="why-icon-box" style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  {why.icon}
-                </div>
-                <div>
-                  <h4 style={{ fontWeight: 'bold', fontSize: '0.98rem', color: isLight ? '#0f172a' : '#fff' }}>{why.title}</h4>
-                  <p style={{ color: isLight ? '#64748b' : 'var(--text-secondary)', fontSize: '0.78rem', marginTop: '4px', lineHeight: '1.4' }}>{why.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+          <div className="fabrics-carousel-track" ref={trackRef}>
+            {CAROUSEL_TRACK_ITEMS.map((fabric, idx) => {
+              const cardKey = `${fabric.id}-${idx}`;
+              const isHovered = hoveredId === cardKey;
+              return (
+                <article
+                  key={cardKey}
+                  className={`fabric-showcase-card ${isHovered ? 'is-hovered' : ''}`}
+                  onMouseEnter={() => setHoveredId(cardKey)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onClick={() => onCategorySelect && onCategorySelect(fabric.categoryKey)}
+                >
+                  <div className="fabric-showcase-media">
+                    <img
+                      src={fabric.mainImg}
+                      alt={fabric.name}
+                      className="fabric-img-main"
+                      loading={idx < 6 ? 'eager' : 'lazy'}
+                      draggable="false"
+                    />
+                    <img
+                      src={fabric.detailImg}
+                      alt={`${fabric.name} close-up texture`}
+                      className="fabric-img-detail"
+                      loading="lazy"
+                      draggable="false"
+                    />
+                    <div className="fabric-media-sheen" />
+                    <span className="fabric-detail-pill">{fabric.detailLabel}</span>
+                  </div>
 
+                  <div className="fabric-showcase-meta">
+                    <h3 className="fabric-showcase-name">{fabric.name}</h3>
+                    <p className="fabric-showcase-desc">{fabric.descriptor}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <button
+            type="button"
+            className="fabrics-nav-arrow fabrics-nav-next"
+            onClick={() => handleStepScroll('right')}
+            aria-label="Next fabrics"
+          >
+            <ChevronRight size={20} strokeWidth={2} />
+          </button>
+        </div>
       </div>
     </section>
   );
 }
-
-

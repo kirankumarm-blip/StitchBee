@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Check, Users, ShieldCheck, Headphones, ChevronLeft, ArrowRight, Facebook, Instagram, Linkedin, Twitter, Play, Pause, Volume2, VolumeX, Apple, Menu, X, Home, Layers, Shirt, Clock, ChevronDown, BookOpen, Phone, LogOut } from 'lucide-react';
+import { Scissors, User, Award, ShieldAlert, Heart, Star, Sparkles, MapPin, Truck, ChevronRight, Sun, Moon, RefreshCw, Users, ShieldCheck, Headphones, ChevronLeft, Facebook, Instagram, Linkedin, Twitter, Play, Apple, Menu, X, Home, Layers, Shirt, Clock, ChevronDown, BookOpen, Phone, LogOut } from 'lucide-react';
 import { seedDatabase, loadFromStorage, saveToStorage } from './utils/mockDb';
 import CustomerView from './components/CustomerView';
 import AuthModal from './components/AuthModal';
@@ -10,143 +10,33 @@ import BlogsView from './components/BlogsView';
 import DressCustomizer360 from './components/DressCustomizer360';
 import FabricMarketplace from './components/FabricMarketplace';
 import VerifiedTailorsShowcase from './components/VerifiedTailorsShowcase';
-
-function TrendingReelCard({ reel, idx, currentUser, openAuthModal, setCustomerCategory, setCustomerHub, setRole }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const videoRef = useRef(null);
-
-  const togglePlay = (e) => {
-    e.stopPropagation();
-    if (!videoRef.current) return;
-
-    if (videoRef.current.paused) {
-      // Pause all other video elements
-      document.querySelectorAll('video.reel-video').forEach((v) => {
-        if (v !== videoRef.current) {
-          v.pause();
-        }
-      });
-      videoRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch((err) => {
-        console.warn("Video play error:", err);
-      });
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const toggleMute = (e) => {
-    e.stopPropagation();
-    if (!videoRef.current) return;
-    const nextMuted = !videoRef.current.muted;
-    videoRef.current.muted = nextMuted;
-    setIsMuted(nextMuted);
-  };
-
-  return (
-    <div 
-      className={`reel-card ${isPlaying ? 'is-playing' : ''} reveal-zoom stagger-${(idx % 4) + 1}`}
-      onClick={togglePlay}
-    >
-      {/* Centered Play Button (Only visible when paused) */}
-      {!isPlaying && (
-        <div className="reel-play-overlay">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
-      )}
-
-      {/* Audio Mute/Unmute Button (Visible when playing) */}
-      {isPlaying && (
-        <button
-          onClick={toggleMute}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            background: 'rgba(0, 0, 0, 0.65)',
-            backdropFilter: 'blur(4px)',
-            border: '1px solid rgba(255, 255, 255, 0.35)',
-            borderRadius: '50%',
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff',
-            cursor: 'pointer',
-            zIndex: 12,
-            transition: 'all 0.2s ease'
-          }}
-          title={isMuted ? "Unmute sound" : "Mute sound"}
-        >
-          {isMuted ? <VolumeX size={15} style={{ color: '#ffffff' }} /> : <Volume2 size={15} style={{ color: '#ffffff' }} />}
-        </button>
-      )}
-
-      <video 
-        ref={videoRef}
-        className="reel-video" 
-        src={reel.videoUrl} 
-        muted={isMuted} 
-        loop 
-        playsInline 
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onEnded={() => setIsPlaying(false)}
-      />
-
-      <div className="reel-info-overlay" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-          <span className="badge" style={{ background: 'var(--primary)', color: '#fff', fontSize: '0.65rem', margin: 0, width: 'fit-content' }}>
-            ₹{reel.price}
-          </span>
-          <button 
-            className="btn btn-primary" 
-            style={{ 
-              padding: '3px 8px', 
-              fontSize: '0.65rem', 
-              background: 'var(--primary)', 
-              border: 'none', 
-              borderRadius: '4px',
-              fontWeight: 'bold',
-              cursor: 'pointer'
-            }} 
-            onClick={(e) => { 
-              e.stopPropagation(); 
-              if (!currentUser) { 
-                openAuthModal('customer', 'login'); 
-              } else { 
-                setCustomerCategory(reel.cat); 
-                setCustomerHub('designers'); 
-                setRole('customer'); 
-              } 
-            }}
-          >
-            Book Now
-          </button>
-        </div>
-        <div className="reel-designer">
-          <div className="reel-designer-avatar">{reel.designer.charAt(0)}</div>
-          <span className="reel-designer-name">By {reel.designer}</span>
-        </div>
-        <span className="reel-title-text">{reel.title}</span>
-      </div>
-    </div>
-  );
-}
+import TailorsNearYouPage from './components/TailorsNearYouPage';
+import ProfessionalProfilePage from './components/ProfessionalProfilePage';
+import HowStitchBeezWorks from './components/HowStitchBeezWorks';
+import CraftsmanshipGallery from './components/CraftsmanshipGallery';
+import CustomerReviewsCarousel from './components/CustomerReviewsCarousel';
+import TrendingCreationsCarousel from './components/TrendingCreationsCarousel';
 
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const getInitialRouteState = () => {
-    if (typeof window === 'undefined') return { role: 'landing', category: 'all', hub: 'home' };
+    if (typeof window === 'undefined') return { role: 'landing', category: 'all', hub: 'home', professionalId: null };
     const path = window.location.pathname;
+    if (path === '/gallery') {
+      return { role: 'craft-gallery', category: 'all', hub: 'home', professionalId: null };
+    }
+    if (path === '/designers' || path === '/designer-studio' || path === '/custom-design') {
+      return { role: 'customer', category: 'all', hub: 'designers', professionalId: null };
+    }
+    if (path === '/tailors-near-you' || path === '/tailors') {
+      return { role: 'tailors-near-you', category: 'all', hub: 'tailors', professionalId: null };
+    }
+    if (path.startsWith('/professionals/')) {
+      const id = decodeURIComponent(path.replace('/professionals/', '').split('/')[0] || '');
+      return { role: 'professional-profile', category: 'all', hub: 'home', professionalId: id || null };
+    }
     if (path === '/fabrics' || path === '/cotton-fabrics' || path.startsWith('/fabrics') || path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch')) {
       return { role: 'customer', category: 'all', hub: 'fabrics' };
     }
@@ -228,6 +118,12 @@ export default function App() {
   const [authModalConfig, setAuthModalConfig] = useState({ role: 'customer', tab: 'login' });
   const [customerCategory, setCustomerCategory] = useState(initialRoute.category);
   const [customerHub, setCustomerHub] = useState(initialRoute.hub);
+  const [selectedProfessionalId, setSelectedProfessionalId] = useState(initialRoute.professionalId || null);
+  const [sharedUserLocation, setSharedUserLocation] = useState(null);
+  const [mapInitialFilters, setMapInitialFilters] = useState({
+    category: 'all',
+    neighborhood: 'All Localities',
+  });
   const [activeDropdown, setActiveDropdown] = useState(null); // null | 'services' | 'earn'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -341,6 +237,22 @@ export default function App() {
       setRole('customer');
       setCustomerCategory('all');
       setCustomerHub('fabrics');
+    } else if (path === '/gallery') {
+      setRole('craft-gallery');
+    } else if (path === '/designers' || path === '/designer-studio' || path === '/custom-design') {
+      setRole('customer');
+      setCustomerCategory('all');
+      setCustomerHub('designers');
+    } else if (path === '/tailors-near-you' || path === '/tailors') {
+      setRole('tailors-near-you');
+    } else if (path.startsWith('/professionals/')) {
+      const id = decodeURIComponent(path.replace('/professionals/', '').split('/')[0] || '');
+      setSelectedProfessionalId(id || null);
+      setRole('professional-profile');
+    } else if (path === '/') {
+      setRole((prev) =>
+        prev === 'tailors-near-you' || prev === 'professional-profile' || prev === 'craft-gallery' ? 'landing' : prev
+      );
     } else if (path === '/login') {
       setRole('login');
     } else if (path === '/signup') {
@@ -752,9 +664,71 @@ export default function App() {
   });
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expandedFaqIdx, setExpandedFaqIdx] = useState(null);
-  const reelsRef = useRef(null);
   const [showSplash, setShowSplash] = useState(true);
   const [splashFade, setSplashFade] = useState(false);
+
+  const handleTrendingCategoryNavigate = (item) => {
+    setCustomerCategory(item.categoryKey);
+    setCustomerHub('category-landing');
+    setRole('customer');
+    navigate(item.route);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleViewProfessionalProfile = (pro) => {
+    if (!pro || !pro.id) return;
+    setSelectedProfessionalId(pro.id);
+    setRole('professional-profile');
+    navigate(`/professionals/${encodeURIComponent(pro.id)}`);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleExploreProfessionalsMap = (category = 'all', neighborhood = 'All Localities') => {
+    setMapInitialFilters({
+      category: category || 'all',
+      neighborhood: neighborhood || 'All Localities',
+    });
+    setRole('tailors-near-you');
+    navigate('/tailors-near-you');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleBackToLandingProfessionals = () => {
+    setRole('landing');
+    navigate('/');
+  };
+
+  const handleOpenCraftGallery = () => {
+    setRole('craft-gallery');
+    navigate('/gallery');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleExploreCraftService = (item) => {
+    if (!item) return;
+    setRole('customer');
+    setCustomerCategory(item.categoryKey || 'all');
+    setCustomerHub(item.hub || 'category-landing');
+    if (item.route) {
+      navigate(item.route);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleBookProfessional = (pro, selectedService = null) => {
+    if (!currentUser) {
+      openAuthModal('customer', 'login');
+      return;
+    }
+    if (pro && pro.category) {
+      setCustomerCategory(pro.category);
+    } else if (selectedService && selectedService.name) {
+      setCustomerCategory('all');
+    }
+    setCustomerHub('tailors');
+    setRole('customer');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
 
   useEffect(() => {
     // Lock scrolling on mount if splash screen is visible
@@ -776,13 +750,6 @@ export default function App() {
       document.body.style.overflow = '';
     };
   }, []);
-
-  const scrollReels = (direction) => {
-    if (reelsRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      reelsRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
 
   // Auto scroll landing slideshow
   useEffect(() => {
@@ -880,7 +847,14 @@ export default function App() {
       path.startsWith('/alterations') ||
       path.startsWith('/fabrics') ||
       path === '/cotton-fabrics' ||
-      path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch');
+      path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch') ||
+      path === '/tailors-near-you' ||
+      path === '/tailors' ||
+      path === '/gallery' ||
+      path === '/designers' ||
+      path === '/designer-studio' ||
+      path === '/custom-design' ||
+      path.startsWith('/professionals/');
 
     if (savedUser) {
       try {
@@ -888,10 +862,12 @@ export default function App() {
         if (parsed && (parsed.role === 'customer' || !parsed.role)) {
           const custUser = { ...parsed, role: 'customer' };
           setCurrentUser(custUser);
-          setRole('customer');
-          if (location.pathname === '/' || !location.pathname) {
-            setCustomerHub('home');
-            setCustomerCategory('all');
+          if (!isPublicCategoryRoute) {
+            setRole('customer');
+            if (location.pathname === '/' || !location.pathname) {
+              setCustomerHub('home');
+              setCustomerCategory('all');
+            }
           }
         } else {
           setCurrentUser(null);
@@ -911,6 +887,18 @@ export default function App() {
         setRole('login');
       } else if (path === '/signup') {
         setRole('signup');
+      } else if (path === '/gallery') {
+        setRole('craft-gallery');
+      } else if (path === '/designers' || path === '/designer-studio' || path === '/custom-design') {
+        setRole('customer');
+        setCustomerCategory('all');
+        setCustomerHub('designers');
+      } else if (path === '/tailors-near-you' || path === '/tailors') {
+        setRole('tailors-near-you');
+      } else if (path.startsWith('/professionals/')) {
+        const id = decodeURIComponent(path.replace('/professionals/', '').split('/')[0] || '');
+        setSelectedProfessionalId(id || null);
+        setRole('professional-profile');
       } else if (path.startsWith('/fabrics') || path === '/cotton-fabrics' || path.startsWith('/cotton-fabrics') || path.startsWith('/shop-and-stitch') || path.startsWith('/shop-stitch')) {
         setRole('customer');
         setCustomerCategory('all');
@@ -1069,6 +1057,9 @@ export default function App() {
 
   const navigateToSection = (sectionId) => {
     setRole('landing');
+    if (location.pathname !== '/') {
+      navigate('/');
+    }
     setTimeout(() => {
       const element = document.getElementById(sectionId);
       if (element) {
@@ -1112,7 +1103,7 @@ export default function App() {
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
 
-              <div className="logo" onClick={() => setRole('landing')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+              <div className="logo" onClick={() => { setRole('landing'); if (location.pathname !== '/') navigate('/'); }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                 <img src="/logo.png" alt="StitchBee" style={{ height: '100px', width: '300px', objectFit: 'contain', display: 'block', marginLeft: '-60px' }} />
               </div>
             </div>
@@ -1157,13 +1148,6 @@ export default function App() {
                 onClick={() => navigateToSection('tailors-near-you')}
               >
                 Tailors Near You
-              </button>
-
-              <button 
-                className="role-btn"
-                onClick={() => navigateToSection('pricing-section')}
-              >
-                Pricing
               </button>
 
               <button 
@@ -1314,7 +1298,6 @@ export default function App() {
                     { id: 'fabrics', label: 'Fabric Marketplace', subtitle: 'Explore Pure Silks & Linens', icon: <Layers size={20} />, action: () => { setRole('customer'); setCustomerHub('fabrics'); } },
                     { id: 'tailors', label: 'Tailors Near You', subtitle: 'Locate Verified Local Boutiques', icon: <MapPin size={20} />, action: () => navigateToSection('tailors-near-you') },
                     { id: 'how-it-works', label: 'How It Works', subtitle: 'Doorstep Measurements & Delivery', icon: <Scissors size={20} />, action: () => navigateToSection('how-it-works') },
-                    { id: 'pricing', label: 'Pricing Plans', subtitle: 'Tailoring & Alteration Rates', icon: <Award size={20} />, action: () => navigateToSection('pricing-section') },
                     { id: 'track', label: 'Track Order', subtitle: 'Live Stitching & Dispatch Status', icon: <Truck size={20} />, action: () => handleTrackOrder() },
                     { id: 'blogs', label: 'Style Blogs', subtitle: 'Fashion Articles & Care Guides', icon: <BookOpen size={20} />, action: () => setRole('blogs') },
                     { id: 'contact', label: 'Contact Us', subtitle: '24/7 Atelier & Support Desk', icon: <Phone size={20} />, action: () => navigateToSection('contact-footer') }
@@ -1728,7 +1711,7 @@ export default function App() {
           <section id="categories-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container reveal">
               <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick Service Categories</h2>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Quick <span className="landing-title-pink">Service</span> Categories</h2>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Select from our premium custom tailoring categories</p>
               </div>
             
@@ -2006,412 +1989,22 @@ export default function App() {
             </div>
           </section>
 
-          {/* Fold 3: How It Works */}
-          <section id="how-it-works" style={{ padding: '6rem 0', borderTop: '1px solid var(--border-color)', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', overflow: 'hidden' }}>
-            <div className="landing-container reveal how-it-works-container-premium">
-              <div className="how-it-works-mesh-bg"></div>
-              
-              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                <h2 style={{ fontSize: '2.8rem', fontWeight: '800', fontFamily: 'Outfit, sans-serif', color: theme === 'dark' ? '#fff' : '#0f172a', letterSpacing: '-0.02em' }}>
-                  How <span style={{ background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>StitchBee</span> Works
-                </h2>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '8px', fontSize: '1.08rem', fontWeight: '500' }}>Get your custom outfit in 4 easy steps</p>
-              </div>
+          {/* Fold 3: How StitchBeez Works */}
+          <HowStitchBeezWorks
+            theme={theme}
+            onExploreServices={() => {
+              const target = document.getElementById('categories-section');
+              if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          />
 
-              {/* Connected Timeline Progress Line (Desktop only) */}
-              <div className="timeline-progress-line-desktop" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '2rem auto 3.5rem auto', maxWidth: '800px', position: 'relative' }}>
-                <div style={{ position: 'absolute', left: '40px', right: '40px', height: '2px', background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#e2e8f0', zIndex: 1 }}>
-                  <div style={{ width: '100%', height: '100%', borderTop: '2px dashed var(--border-color)' }}></div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', position: 'relative', zIndex: 2 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--primary)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>1</div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--accent)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>2</div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid var(--success)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>3</div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: theme === 'dark' ? '#0b0a11' : '#f8fafc', padding: '0 12px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#fff', border: '2px solid #8b5cf6', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800', fontSize: '0.9rem' }}>4</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="timeline-grid-premium">
-                {/* Step 1: Select Style */}
-                <div className="how-step-card-premium theme-pink reveal-zoom stagger-1">
-                  {/* Card Header Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
-                    <div style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
-                      border: '2px solid var(--primary)',
-                      color: 'var(--primary)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: '800',
-                      fontSize: '0.85rem'
-                    }}>
-                      1
-                    </div>
-                    <div style={{
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#fff5f8',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(247,37,133,0.15)'}`,
-                      color: 'var(--primary)',
-                      fontSize: '0.72rem',
-                      fontWeight: '700',
-                      padding: '4px 10px',
-                      borderRadius: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      ⏱ 2 mins
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
-                    Select Style
-                  </h3>
-
-                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="/step_style.jpg" alt="Select Style" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                  </div>
-
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Browse 1000+ designs</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Upload inspiration photos</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(247,37,133,0.1)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Customize sleeves & necks</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Step 2: Measure Body */}
-                <div className="how-step-card-premium theme-blue reveal-zoom stagger-2">
-                  {/* Card Header Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
-                    <div style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
-                      border: '2px solid var(--accent)',
-                      color: 'var(--accent)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: '800',
-                      fontSize: '0.85rem'
-                    }}>
-                      2
-                    </div>
-                    <div style={{
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#ecfeff',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(76,201,240,0.15)'}`,
-                      color: 'var(--accent)',
-                      fontSize: '0.72rem',
-                      fontWeight: '700',
-                      padding: '4px 10px',
-                      borderRadius: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      ⏱ 5 mins
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
-                    Measure Body
-                  </h3>
-
-                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="/step_measure.jpg" alt="Measure Body" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                  </div>
-
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Instant 3D AI Scan</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Home Visit pickup slots</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(76,201,240,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Reference dress sizing</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Step 3: Choose Tailor */}
-                <div className="how-step-card-premium theme-green reveal-zoom stagger-3">
-                  {/* Card Header Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
-                    <div style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
-                      border: '2px solid var(--success)',
-                      color: 'var(--success)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: '800',
-                      fontSize: '0.85rem'
-                    }}>
-                      3
-                    </div>
-                    <div style={{
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f0fdf4',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(16,185,129,0.15)'}`,
-                      color: 'var(--success)',
-                      fontSize: '0.72rem',
-                      fontWeight: '700',
-                      padding: '4px 10px',
-                      borderRadius: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      ⏱ 10 mins
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
-                    Choose Tailor
-                  </h3>
-
-                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="/step_tailor.jpg" alt="Choose Tailor" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                  </div>
-
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Compare tailor bids</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Direct real-time chat</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(16,185,129,0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Check rating reviews</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Step 4: Delivered */}
-                <div className="how-step-card-premium theme-purple reveal-zoom stagger-4">
-                  {/* Card Header Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', marginBottom: '12px' }}>
-                    <div style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '50%',
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.06)' : '#fff',
-                      border: '2px solid #8b5cf6',
-                      color: '#8b5cf6',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: '800',
-                      fontSize: '0.85rem'
-                    }}>
-                      4
-                    </div>
-                    <div style={{
-                      background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f5f3ff',
-                      border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(139,92,246,0.15)'}`,
-                      color: '#8b5cf6',
-                      fontSize: '0.72rem',
-                      fontWeight: '700',
-                      padding: '4px 10px',
-                      borderRadius: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      ⏱ 3-5 Days
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', textAlign: 'center', margin: '4px 0 12px 0' }}>
-                    Delivered
-                  </h3>
-
-                  <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.05)' : '#f1f5f9'}` }}>
-                    <img src="/step_delivery.jpg" alt="Delivered" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                  </div>
-
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '16px 0 0 0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Live tracking</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>Contactless doorstep drop</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: theme === 'dark' ? 'var(--text-secondary)' : '#475569', textAlign: 'left' }}>
-                      <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.1)', color: '#8b5cf6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Check size={10} strokeWidth={4} />
-                      </div>
-                      <span style={{ fontWeight: '500' }}>7-day free alterations</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Bottom CTA Block */}
-              <div 
-                className="reveal" 
-                style={{ 
-                  marginTop: '4rem', 
-                  background: theme === 'dark' ? 'rgba(247,37,133,0.04)' : '#fff5f8', 
-                  border: `1px solid ${theme === 'dark' ? 'rgba(247,37,133,0.15)' : 'rgba(247,37,133,0.08)'}`, 
-                  borderRadius: '24px', 
-                  padding: '24px 32px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '24px',
-                  flexWrap: 'wrap',
-                  textAlign: 'left',
-                  position: 'relative',
-                  zIndex: 2
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fff', border: '2px solid rgba(247,37,133,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 }}>
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z" />
-                      <circle cx="12" cy="11" r="3" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: theme === 'dark' ? '#fff' : '#0f172a', margin: 0 }}>
-                      Ready to design your perfect custom outfit?
-                    </h3>
-                    <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0 0', fontSize: '0.92rem' }}>
-                      Your style. Your fit. Made just for you.
-                    </p>
-                  </div>
-                </div>
-                <button 
-                  className="btn" 
-                  onClick={() => {
-                    if (!currentUser) {
-                      openAuthModal('customer', 'login');
-                    } else {
-                      setRole('customer');
-                      setCustomerHub('landing');
-                    }
-                  }}
-                  style={{ 
-                    padding: '14px 32px', 
-                    fontSize: '1.02rem', 
-                    fontWeight: '700', 
-                    borderRadius: '12px', 
-                    background: 'linear-gradient(135deg, #f72585 0%, #7209b7 100%)', 
-                    color: '#ffffff',
-                    display: 'inline-flex', 
-                    alignItems: 'center', 
-                    gap: '8px', 
-                    boxShadow: '0 8px 25px rgba(247,37,133,0.25)',
-                    border: 'none',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <span style={{ color: '#ffffff' }}>Start Designing</span> <ArrowRight size={18} style={{ color: '#ffffff' }} />
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Fold 4: Popular Designs Section */}
-          <section id="popular-designs" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container reveal-zoom">
-              <div className="reels-header reveal">
-              <div className="reels-title-box">
-                <h2 className="reels-title">Trending Designer Outfits</h2>
-                <p className="reels-subtitle">Watch fits and choose custom designs from our master fashion designers</p>
-              </div>
-              <div className="reels-nav-group">
-                <button className="reels-nav-btn" onClick={() => scrollReels('left')} title="Scroll Left">&#8592;</button>
-                <button className="reels-nav-btn" onClick={() => scrollReels('right')} title="Scroll Right">&#8594;</button>
-              </div>
-            </div>
-
-            <div className="reels-carousel-container">
-              <div className="reels-carousel" ref={reelsRef}>
-                {[
-                  { title: "Zardozi Royal Lehenga", designer: "Sneha Reddy (Expert)", price: 8500, cat: "bridal", videoUrl: "/trending_video_1.mp4" },
-                  { title: "Italian Double-Breasted Suit", designer: "Vikram Singh (Expert)", price: 5500, cat: "mens", videoUrl: "/trending_video_2.mp4" },
-                  { title: "Georgette Floral Kurti", designer: "Ananya Pillai (Expert)", price: 1200, cat: "womens", videoUrl: "/trending_video_3.mp4" },
-                  { title: "Padded Silk Blouse", designer: "Sarah Khan (Expert)", price: 1500, cat: "womens", videoUrl: "/trending_video_4.mp4" },
-                  { title: "Classic Oxford Cotton Shirt", designer: "Amit Kumar (Student)", price: 1800, cat: "mens", videoUrl: "/trending_video_5.mp4" },
-                  { title: "Handwoven Chanderi Saree", designer: "Pooja Mehta (Expert)", price: 6200, cat: "womens", videoUrl: "/trending_video_6.mp4" },
-                  { title: "Bespoke Indigo Sherwani", designer: "Rajesh Nair (Expert)", price: 9500, cat: "mens", videoUrl: "/trending_video_7.mp4" },
-                  { title: "Organza Pastel Anarkali", designer: "Kiran Shah (Student)", price: 4800, cat: "womens", videoUrl: "/trending_video_8.mp4" },
-                  { title: "Kid's Velvet Party Suit", designer: "Meena Patel (Expert)", price: 2400, cat: "kids", videoUrl: "/trending_video_9.mp4" },
-                  { title: "Premium Tweed Blazer", designer: "Sanjay Dutta (Expert)", price: 3800, cat: "mens", videoUrl: "/trending_video_10.mp4" },
-                  { title: "Satin Evening Slip Gown", designer: "Nisha Sen (Student)", price: 5200, cat: "womens", videoUrl: "/trending_video_11.mp4" },
-                  { title: "Embroidered Pashmina Shawl", designer: "Harish Gupta (Expert)", price: 7000, cat: "womens", videoUrl: "/trending_video_12.mp4" }
-                ].map((reel, idx) => (
-                  <TrendingReelCard 
-                    key={idx}
-                    reel={reel}
-                    idx={idx}
-                    currentUser={currentUser}
-                    openAuthModal={openAuthModal}
-                    setCustomerCategory={setCustomerCategory}
-                    setCustomerHub={setCustomerHub}
-                    setRole={setRole}
-                  />
-                ))}
-              </div>
-            </div>
-            </div>
-          </section>
+          {/* Fold 4: Trending Creations & Transformations */}
+          <TrendingCreationsCarousel
+            theme={theme}
+            onNavigateCategory={handleTrendingCategoryNavigate}
+          />
 
           {/* Fold 5: Fabric Marketplace */}
           <div className="reveal">
@@ -2424,156 +2017,33 @@ export default function App() {
             />
           </div>
 
-          {/* Fold 6: Verified Tailors Showcase */}
+          {/* Fold 6: Expert Craftsmen Discovery Section */}
           <div className="reveal">
             <VerifiedTailorsShowcase 
-              openAuthModal={openAuthModal}
-              currentUser={currentUser}
-              setRole={setRole}
-              setCustomerHub={setCustomerHub}
+              tailors={tailors}
+              userLocation={sharedUserLocation}
+              onSetUserLocation={setSharedUserLocation}
+              onViewProfile={handleViewProfessionalProfile}
+              onExploreMap={handleExploreProfessionalsMap}
               theme={theme}
             />
           </div>
 
-          {/* Fold 7: Why Choose StitchBee */}
-          <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container">
-              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>The StitchBee Promise</h2>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Designed to ensure convenience, safety, and visual perfection</p>
-            </div>
-
-            <div className="trust-grid-v2">
-              {[
-                { title: "Verified Boutique Experts", desc: "All local tailors pass rigorous ID verification and sewing assessments.", icon: <Sparkles size={24} style={{ color: 'var(--primary)' }} /> },
-                { title: "100% Fit Guarantee", desc: "Enjoy completely free alterations within 7 days of receiving your outfit.", icon: <Scissors size={24} style={{ color: 'var(--accent)' }} /> },
-                { title: "On-Time Delivery Protection", desc: "Track shipping in 12 real-time stages with cash-back guarantee if delayed.", icon: <Truck size={24} style={{ color: '#10b981' }} /> },
-                { title: "Sealed & Sanitized Packaging", desc: "Each outfit is steam-pressed, sanitized, and delivered in a premium sealed package.", icon: <Award size={24} style={{ color: '#8b5cf6' }} /> },
-                { title: "No-Markup Fair Pricing", desc: "Get quotes directly from tailors and choose the bid matching your budget.", icon: <Star size={24} style={{ color: '#fbbf24' }} /> },
-                { title: "Escrow Protected Payments", desc: "Stitching fees are held securely, and released to tailors only after trial satisfaction.", icon: <User size={24} style={{ color: '#ec4899' }} /> }
-              ].map((trust, idx) => (
-                <div key={idx} className={`trust-item-v2 reveal-zoom stagger-${(idx % 3) + 1}`}>
-                  <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
-                    {trust.icon}
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#ffffff' }}>{trust.title}</h3>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: '1.4' }}>{trust.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            </div>
-          </section>
-
-          {/* Fold 8: Pricing Section */}
-          <section id="pricing-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
-            <div className="landing-container">
-              <div className="section-header reveal" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold' }}>Transparent Tailoring Pricing</h2>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Standard stitching rates. Choose the tier matching your styling goals.</p>
-            </div>
-
-            <div className="pricing-grid-v2">
-              {[
-                { name: "Basic Stitching", price: "399", features: ["Essential shirts, simple kurtis", "Standard fit alignments", "5-day standard delivery", "1 free alteration trial"], action: "Book Basic" },
-                { name: "Premium Stitching", price: "899", features: ["Double-breasted suits, designer gowns", "Expert necklines & sleeve adjustments", "3-day express delivery", "2 free alteration trials"], action: "Book Premium" },
-                { name: "Bridal / Heavy Designer", price: "2499", features: ["Intricate wedding lehengas, heavy zari", "Pre-stitch designer consultation", "Priority boutique stitching slot", "Unlimited alteration revisions"], action: "Book Designer" },
-                { name: "Alteration Specialist", price: "149", features: ["Resizing, hemming, repairs", "Zipper / button replacements", "24-hour express completion", "Perfect fit guarantee"], action: "Book Alteration" }
-              ].map((tier, idx) => (
-                <div key={idx} className={`pricing-card-v2 reveal-zoom stagger-${idx + 1}`}>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{tier.name}</h3>
-                  <div className="pricing-price-box">
-                    <span style={{ fontSize: '1rem', fontWeight: 'normal', color: 'var(--text-secondary)' }}>From</span> ₹{tier.price}
-                  </div>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: '10px 0', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.82rem', color: 'var(--text-secondary)', textAlign: 'left', flexGrow: 1 }}>
-                    {tier.features.map((f, i) => (
-                      <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>✓</span> {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <button 
-                    className="btn btn-primary" 
-                    style={{ width: '100%', marginTop: '10px' }}
-                    onClick={() => {
-                      if (!currentUser) {
-                        openAuthModal('customer', 'login');
-                      } else {
-                        setCustomerCategory('all');
-                        setCustomerHub('tailors');
-                        setRole('customer');
-                      }
-                    }}
-                  >
-                    {tier.action}
-                  </button>
-                </div>
-              ))}
-            </div>
-            </div>
-          </section>
+          {/* Fold 7: Craftsmanship Gallery */}
+          <CraftsmanshipGallery
+            mode="landing"
+            theme={theme}
+            onExploreGallery={handleOpenCraftGallery}
+            onExploreService={handleExploreCraftService}
+          />
 
           {/* Fold 9: Customer Reviews */}
-          <section style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-            <div className="landing-container">
-              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Loved by 10,000+ Fashion Enthusiasts</h2>
-            <div className="testimonial-grid">
-              <div className="testimonial-card reveal-zoom stagger-1">
-                <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6', fontStyle: 'italic' }}>
-                  "StitchBee is a game-changer! I ordered a custom lehenga for my sister's wedding. The student came to my home for measurements, and the fit was absolutely flawless! Highly recommend."
-                </p>
-                <div className="testimonial-author">
-                  <div className="testimonial-avatar" style={{ background: 'var(--grad-primary)' }}>P</div>
-                  <div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Priya Sharma</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Verified Customer</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="testimonial-card reveal-zoom stagger-2">
-                <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6', fontStyle: 'italic' }}>
-                  "I was skeptical about manual measurements, but their AI measurement option is surprisingly accurate. The blazer fits like a glove, and the master tailor was very professional."
-                </p>
-                <div className="testimonial-author">
-                  <div className="testimonial-avatar" style={{ background: 'var(--grad-accent)' }}>R</div>
-                  <div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Rahul Verma</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Verified Customer</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="testimonial-card reveal-zoom stagger-3">
-                <div style={{ display: 'flex', gap: '4px', color: '#fbbf24', marginBottom: '8px' }}>
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="#fbbf24" style={{ color: '#fbbf24' }} />)}
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6', fontStyle: 'italic' }}>
-                  "Being able to buy premium fabrics directly on the platform and have it sent directly to a local boutique is so convenient. This is the future of custom tailoring."
-                </p>
-                <div className="testimonial-author">
-                  <div className="testimonial-avatar" style={{ background: 'var(--success)' }}>A</div>
-                  <div>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>Ananya Iyer</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Verified Customer</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </div>
-          </section>
+          <CustomerReviewsCarousel theme={theme} />
 
           {/* Fold 10: Interactive FAQ Accordion Section */}
           <section className="faq-section" style={{ padding: '4rem 0', borderTop: '1px solid var(--border-color)' }}>
             <div className="landing-container">
-              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Frequently Asked Questions</h2>
+              <h2 className="reveal" style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '2.5rem' }}>Frequently Asked <span className="landing-title-pink">Questions</span></h2>
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
               {[
                 {
@@ -2630,6 +2100,41 @@ export default function App() {
         <BlogsView setRole={setRole} />
       )}
 
+      {role === 'tailors-near-you' && (
+        <TailorsNearYouPage
+          tailors={tailors}
+          initialCategory={mapInitialFilters.category}
+          initialNeighborhood={mapInitialFilters.neighborhood}
+          userLocation={sharedUserLocation}
+          onSetUserLocation={setSharedUserLocation}
+          onBack={handleBackToLandingProfessionals}
+          onViewProfile={handleViewProfessionalProfile}
+          onBookProfessional={handleBookProfessional}
+          theme={theme}
+        />
+      )}
+
+      {role === 'craft-gallery' && (
+        <CraftsmanshipGallery
+          mode="full"
+          theme={theme}
+          onBack={handleBackToLandingProfessionals}
+          onExploreService={handleExploreCraftService}
+        />
+      )}
+
+      {role === 'professional-profile' && (
+        <ProfessionalProfilePage
+          professionalId={selectedProfessionalId}
+          tailors={tailors}
+          userLocation={sharedUserLocation}
+          theme={theme}
+          onBack={handleBackToLandingProfessionals}
+          onExploreMap={() => handleExploreProfessionalsMap('all', 'All Localities')}
+          onBookProfessional={handleBookProfessional}
+        />
+      )}
+
 
       {role === 'customer' && (
         <CustomerView 
@@ -2654,8 +2159,8 @@ export default function App() {
         />
       )}
 
-      {/* Global Premium Footer on landing/about/blogs roles */}
-      {(role === 'landing' || role === 'about' || role === 'blogs' || role === 'become-tailor' || role === 'become-delivery' || role === 'become-student' || role === 'customer') && (
+      {/* Global Premium Footer on landing/about/blogs/discovery roles */}
+      {(role === 'landing' || role === 'about' || role === 'blogs' || role === 'tailors-near-you' || role === 'professional-profile' || role === 'craft-gallery' || role === 'become-tailor' || role === 'become-delivery' || role === 'become-student' || role === 'customer') && (
         <footer id="contact-footer" className="delivery-premium-footer">
           <div className="footer-container-v4">
             <div className="footer-top-v4">

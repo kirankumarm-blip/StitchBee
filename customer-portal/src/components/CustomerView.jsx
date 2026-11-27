@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import L from 'leaflet';
 import { 
   Search, MapPin, Star, Scissors, Truck, Calendar, Sparkles, User, Info, Map, List, Clock, 
@@ -13,6 +14,9 @@ import { getCart as getBagsCart, getWishlist as getBagsWishlist, getOrders as ge
 import ServiceCategoryView from './ServiceCategoryView';
 import BagsLeatherStudio from './BagsLeatherStudio';
 import CottonFabricsMarketplace from './fabrics/CottonFabricsMarketplace';
+import ActiveOrderTracker from './ActiveOrderTracker';
+import { mergeAndNormalizeActiveOrders, normalizeActiveOrder } from '../data/orderWorkflows';
+import PremiumSelect from './PremiumSelect';
 
 const resolveInspirationImage = (inputUrl) => {
   if (!inputUrl) return '';
@@ -486,6 +490,22 @@ export default function CustomerView({
   
   // My Profile Options States
   const [isMyProfileOpen, setIsMyProfileOpen] = useState(false);
+  const [centralOrdersTick, setCentralOrdersTick] = useState(0);
+  const [trackedOrderModal, setTrackedOrderModal] = useState(null);
+  const [detailsOrderModal, setDetailsOrderModal] = useState(null);
+  const [expertChatOrder, setExpertChatOrder] = useState(null);
+  const [expertChatInput, setExpertChatInput] = useState('');
+  const [expertChatMessages, setExpertChatMessages] = useState({});
+
+  useEffect(() => {
+    const bump = () => setCentralOrdersTick((t) => t + 1);
+    window.addEventListener('stitchbeez_store_update', bump);
+    window.addEventListener('storage', bump);
+    return () => {
+      window.removeEventListener('stitchbeez_store_update', bump);
+      window.removeEventListener('storage', bump);
+    };
+  }, []);
   const [activeProfileTab, setActiveProfileTab] = useState('edit'); // 'edit' | 'password' | 'notifications' | 'payments' | 'privacy'
   const [isPhotoDropdownOpen, setIsPhotoDropdownOpen] = useState(false);
   const fileInputRef = React.useRef(null);
@@ -2501,6 +2521,27 @@ export default function CustomerView({
   const completedOrders = orders.filter(o => o.status === 'closed');
   const activeOrders = orders.filter(o => o.status !== 'closed');
 
+  const { normalizedActiveOrders, activeOrdersError } = React.useMemo(() => {
+    try {
+      let persistedCentral = [];
+      const rawCentral = localStorage.getItem('stitchbeez_orders');
+      if (rawCentral) {
+        const parsed = JSON.parse(rawCentral);
+        if (Array.isArray(parsed)) persistedCentral = parsed;
+      }
+      return {
+        normalizedActiveOrders: mergeAndNormalizeActiveOrders(orders, persistedCentral, currentUser),
+        activeOrdersError: '',
+      };
+    } catch (err) {
+      console.error('Failed to read active orders:', err);
+      return {
+        normalizedActiveOrders: mergeAndNormalizeActiveOrders(orders, [], currentUser),
+        activeOrdersError: 'Could not read saved order updates.',
+      };
+    }
+  }, [orders, centralOrdersTick, currentUser]);
+
   return (
     <>
       {/* CUSTOM CUSTOMER STICKY HEADER */}
@@ -3346,7 +3387,7 @@ export default function CustomerView({
               <ul className={`nav-dropdown-menu ${profileDropdownOpen ? 'show' : ''}`} style={{ right: 0, left: 'auto', width: '220px' }}>
                 <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--border-color)', marginBottom: '6px' }}>
                   <div style={{ fontSize: '0.8rem', fontWeight: '700' }}>{currentUser.name}</div>
-                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{currentUser.email}</div>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{currentUser.email || currentUser.phone}</div>
                 </div>
               
               <li 
@@ -6214,61 +6255,39 @@ export default function CustomerView({
               </div>
             </div>
 
-            {/* Right: Active Order Tracker */}
-            <div className="active-order-tracking-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '24px' }}>
-              <div className="flex-row-between" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '12px' }}>
-                <div>
-                  <span style={{ fontSize: '0.65rem', fontWeight: '800', color: 'var(--primary)', letterSpacing: '0.5px' }}>ACTIVE ORDER</span>
-                  <h4 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', fontWeight: '800', margin: '4px 0' }}>Wedding Sherwani</h4>
-                  <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', margin: 0 }}>Order ID: STB10234</p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Status: </span>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--primary)', fontWeight: 'bold' }}>Stitching in Progress</span>
-                  <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Est. Delivery: <strong>18 May 2025</strong> <span style={{ color: 'var(--text-muted)' }}>(3 days left)</span></p>
-                </div>
-              </div>
-
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>
-                Tailor: <strong style={{ color: 'var(--text-primary)' }}>Royal Bespoke</strong>
-              </div>
-
-              {/* Progress Steps Timeline */}
-              <div className="tracking-step-timeline-horizontal">
-                <div className="tracking-timeline-line-horizontal">
-                  <div className="tracking-timeline-line-fill-horizontal" style={{ width: '60%' }} />
-                </div>
-                
-                {[
-                  { name: 'Order Placed', completed: true },
-                  { name: 'Fabric Picked', completed: true },
-                  { name: 'Tailor Assigned', completed: true },
-                  { name: 'Stitching', active: true },
-                  { name: 'QC Check', pending: true },
-                  { name: 'Out for Delivery', pending: true }
-                ].map((step, idx) => (
-                  <div key={idx} className={`tracking-timeline-node-horizontal ${step.completed ? 'completed' : ''} ${step.active ? 'active' : ''}`}>
-                    <div className="tracking-node-dot-horizontal" style={{ background: step.completed || step.active ? 'var(--primary)' : 'var(--border-color)', color: '#fff' }}>
-                      {step.completed ? '✓' : step.active ? '★' : idx + 1}
-                    </div>
-                    <span className="tracking-node-label-horizontal" style={{ color: step.active ? 'var(--primary)' : 'var(--text-secondary)' }}>{step.name}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
-                <button className="btn btn-primary-ghost" style={{ flex: 1, padding: '8px', fontSize: '0.75rem', color: 'var(--primary)', border: '1.5px solid var(--primary)', background: 'rgba(247,37,133,0.02)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => alert("Launching Live Video Call & AR fitting room...")}>
-                  <Camera size={14} /> Track Live
-                </button>
-                <button className="btn btn-secondary" style={{ flex: 1, padding: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => alert("Connecting secure chat with master tailor Sneha Reddy...")}>
-                  <MessageSquare size={14} /> Chat with Tailor
-                </button>
-                <button className="btn btn-secondary" style={{ flex: 1, padding: '8px', fontSize: '0.75rem', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => alert("Invoice details & 3D garment specs loading...")}>
-                  View Details
-                </button>
-              </div>
-            </div>
+            {/* Right: Dynamic Active Order Tracker */}
+            <ActiveOrderTracker
+              activeOrders={normalizedActiveOrders}
+              loadError={activeOrdersError}
+              theme={theme}
+              onViewAllOrders={() => {
+                setOrdersFilter('all');
+                setActiveHub('history');
+              }}
+              onTrackOrder={(ord) => {
+                setOrdersFilter('all');
+                setActiveHub('history');
+                setTrackedOrderModal(ord);
+              }}
+              onChatWithExpert={(ord) => {
+                setExpertChatOrder(ord);
+                setExpertChatInput('');
+              }}
+              onViewDetails={(ord) => {
+                setOrdersFilter('all');
+                setActiveHub('history');
+                setDetailsOrderModal(ord);
+              }}
+              onExploreServices={() => {
+                setCategoriesExpanded(true);
+                const el = document.querySelector('.popular-categories-section');
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  setActiveHub('tailors');
+                }
+              }}
+            />
           </div>
 
           {/* FOLD 2: Quick Actions Section */}
@@ -9637,24 +9656,19 @@ export default function CustomerView({
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <select
+                    <PremiumSelect
+                      icon={Calendar}
                       value={ordersTimeframe}
-                      onChange={(e) => setOrdersTimeframe(e.target.value)}
-                      style={{
-                        padding: '6px 12px',
-                        borderRadius: '8px',
-                        border: `1px solid ${borderColor}`,
-                        background: bgInput,
-                        color: colorTextPrimary,
-                        fontSize: '0.82rem',
-                        fontWeight: '500',
-                        outline: 'none'
-                      }}
-                    >
-                      <option value="Last 30 Days">Last 30 Days</option>
-                      <option value="Last 6 Months">Last 6 Months</option>
-                      <option value="Last Year">Last Year</option>
-                    </select>
+                      onChange={setOrdersTimeframe}
+                      ariaLabel="Filter orders timeframe"
+                      theme={theme}
+                      compact
+                      options={[
+                        { value: 'Last 30 Days', label: 'Last 30 Days' },
+                        { value: 'Last 6 Months', label: 'Last 6 Months' },
+                        { value: 'Last Year', label: 'Last Year' }
+                      ]}
+                    />
 
                     <button
                       className="btn"
@@ -9804,38 +9818,32 @@ export default function CustomerView({
                           </p>
                         </div>
 
-                        <button
-                          onClick={() => {
-                            if (order.status === 'Completed') {
-                              addOrder({
-                                serviceName: `${order.title} (Repeat)`,
-                                tailorName: order.tailor,
-                                price: order.price,
-                                date: 'June 28, 2026',
-                                status: 'order_placed',
-                                category: 'custom'
-                              });
-                              alert(`Successfully requested repeat stitching for ${order.title}!`);
-                            } else {
-                              alert(`Order Details:\nID: #${order.id}\nTailor: ${order.tailor}\nPrice: ₹${order.price}`);
-                            }
-                          }}
-                          style={{
-                            width: '100%',
-                            padding: '8px 12px',
-                            borderRadius: '8px',
-                            border: '1.5px solid var(--primary)',
-                            color: 'var(--primary)',
-                            background: bgCard,
-                            fontSize: '0.78rem',
-                            fontWeight: 'bold',
-                            cursor: 'pointer',
-                            marginTop: '16px',
-                            textAlign: 'center'
-                          }}
-                        >
-                          {order.status === 'Completed' ? 'Reorder' : order.status === 'Out for Delivery' ? 'Track Order' : 'View Details'}
-                        </button>
+                        <div className="my-orders-action-group">
+                          <button
+                            type="button"
+                            className="aot-btn-primary"
+                            onClick={() => setTrackedOrderModal(normalizeActiveOrder({ ...order, serviceName: order.title, tailorName: order.tailor, estimatedDelivery: order.deliveryDate }))}
+                          >
+                            <span>Track Order</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="aot-btn-outline"
+                            onClick={() => {
+                              setExpertChatOrder(normalizeActiveOrder({ ...order, serviceName: order.title, tailorName: order.tailor || 'StitchBeez Order Support', estimatedDelivery: order.deliveryDate }));
+                              setExpertChatInput('');
+                            }}
+                          >
+                            <span>Chat with Expert</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="aot-btn-outline"
+                            onClick={() => setDetailsOrderModal(normalizeActiveOrder({ ...order, serviceName: order.title, tailorName: order.tailor, estimatedDelivery: order.deliveryDate }))}
+                          >
+                            <span>View Details</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))
@@ -10657,6 +10665,141 @@ export default function CustomerView({
             </div>
           </div>
         </div>
+      )}
+
+
+      {/* Focused Order Tracking Modal */}
+      {trackedOrderModal && createPortal(
+        <div className="aot-modal-overlay" onClick={() => setTrackedOrderModal(null)}>
+          <div className="animate-fade-in aot-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '640px', width: '94%', padding: '24px', border: '1px solid ' + borderColor, color: colorTextPrimary }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <div>
+                <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--primary)', textTransform: 'uppercase' }}>{trackedOrderModal.categoryLabel}</span>
+                <h3 style={{ margin: '2px 0 0', fontSize: '1.25rem', fontWeight: '800' }}>Track Order #{trackedOrderModal.id}</h3>
+              </div>
+              <button type="button" onClick={() => setTrackedOrderModal(null)} style={{ background: 'transparent', border: 'none', color: colorTextSecondary, cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', borderRadius: '12px', background: bgInput, marginBottom: '18px' }}>
+              <img src={trackedOrderModal.thumbnail} alt={trackedOrderModal.title} style={{ width: '52px', height: '52px', borderRadius: '10px', objectFit: 'cover' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: '700', fontSize: '0.96rem' }}>{trackedOrderModal.title}</div>
+                <div style={{ fontSize: '0.8rem', color: colorTextSecondary }}>
+                  Current Status: <strong style={{ color: 'var(--primary)' }}>{trackedOrderModal.statusLabel}</strong>
+                  {trackedOrderModal.estimatedDate ? ` · Est. ${trackedOrderModal.estimatedDate}` : ''}
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {trackedOrderModal.stages.map((st, idx) => {
+                const done = idx < trackedOrderModal.currentStageIndex;
+                const active = idx === trackedOrderModal.currentStageIndex;
+                return (
+                  <div key={st} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 12px', borderRadius: '10px', border: '1px solid ' + (active ? 'var(--primary)' : borderColor), background: active ? 'rgba(247, 37, 133, 0.06)' : 'transparent' }}>
+                    <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: done || active ? 'var(--primary)' : borderColor, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: '700', flexShrink: 0 }}>
+                      {done ? '✓' : active ? '●' : idx + 1}
+                    </div>
+                    <span style={{ fontWeight: active || done ? '700' : '500', color: active ? 'var(--primary)' : colorTextPrimary, fontSize: '0.88rem' }}>{st}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Focused Order Details Modal */}
+      {detailsOrderModal && createPortal(
+        <div className="aot-modal-overlay" onClick={() => setDetailsOrderModal(null)}>
+          <div className="animate-fade-in aot-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '580px', width: '94%', padding: '24px', border: '1px solid ' + borderColor, color: colorTextPrimary }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <div>
+                <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--primary)', textTransform: 'uppercase' }}>{detailsOrderModal.categoryLabel}</span>
+                <h3 style={{ margin: '2px 0 0', fontSize: '1.25rem', fontWeight: '800' }}>Order Details #{detailsOrderModal.id}</h3>
+              </div>
+              <button type="button" onClick={() => setDetailsOrderModal(null)} style={{ background: 'transparent', border: 'none', color: colorTextSecondary, cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
+            <div style={{ display: 'flex', gap: '14px', padding: '14px', borderRadius: '12px', background: bgInput, marginBottom: '14px' }}>
+              <img src={detailsOrderModal.thumbnail} alt={detailsOrderModal.title} style={{ width: '68px', height: '68px', borderRadius: '10px', objectFit: 'cover', flexShrink: 0 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <strong style={{ fontSize: '1rem' }}>{detailsOrderModal.title}</strong>
+                <span style={{ fontSize: '0.82rem', color: 'var(--primary)', fontWeight: '700' }}>{detailsOrderModal.statusLabel}</span>
+                {detailsOrderModal.professionalName && <span style={{ fontSize: '0.8rem', color: colorTextSecondary }}>Assigned Professional: {detailsOrderModal.professionalName}</span>}
+                {detailsOrderModal.estimatedDate && <span style={{ fontSize: '0.8rem', color: colorTextSecondary }}>Estimated Completion: {detailsOrderModal.estimatedDate}</span>}
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: colorTextSecondary }}>
+              {(detailsOrderModal.raw?.price || detailsOrderModal.raw?.total) && (
+                <div>Total Amount: <strong style={{ color: colorTextPrimary }}>₹{Number(detailsOrderModal.raw.total || detailsOrderModal.raw.price).toLocaleString()}</strong></div>
+              )}
+              {detailsOrderModal.raw?.paymentStatus && (
+                <div>Payment: <strong style={{ color: colorTextPrimary }}>{detailsOrderModal.raw.paymentStatus}</strong></div>
+              )}
+              {(detailsOrderModal.raw?.customerAddress || detailsOrderModal.raw?.address) && (
+                <div>Address: <strong style={{ color: colorTextPrimary }}>{detailsOrderModal.raw.customerAddress || detailsOrderModal.raw.address}</strong></div>
+              )}
+              {detailsOrderModal.raw?.notes && (
+                <div>Notes: <strong style={{ color: colorTextPrimary }}>{detailsOrderModal.raw.notes}</strong></div>
+              )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Chat with Expert Modal */}
+      {expertChatOrder && createPortal(
+        <div className="aot-modal-overlay" onClick={() => setExpertChatOrder(null)}>
+          <div className="animate-fade-in aot-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '480px', width: '94%', padding: '20px', border: '1px solid ' + borderColor, color: colorTextPrimary, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid ' + borderColor, paddingBottom: '10px' }}>
+              <div>
+                <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: '800' }}>{expertChatOrder.professionalName || 'StitchBeez Order Support'}</h4>
+                <span style={{ fontSize: '0.76rem', color: 'var(--primary)', fontWeight: '600' }}>Order #{expertChatOrder.id} · {expertChatOrder.categoryLabel}</span>
+              </div>
+              <button type="button" onClick={() => setExpertChatOrder(null)} style={{ background: 'transparent', border: 'none', color: colorTextSecondary, cursor: 'pointer' }}>
+                <X size={20} />
+              </button>
+            </div>
+            <div style={{ maxHeight: '240px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', padding: '6px 0' }}>
+              {(expertChatMessages[expertChatOrder.id] || [
+                { sender: 'expert', text: `Hello! Feel free to share any questions or customization notes for Order #${expertChatOrder.id}.` }
+              ]).map((msg, mIdx) => (
+                <div key={mIdx} style={{ alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '82%', padding: '8px 12px', borderRadius: '12px', fontSize: '0.84rem', background: msg.sender === 'user' ? '#f72585' : bgInput, color: msg.sender === 'user' ? '#ffffff' : colorTextPrimary }}>
+                  {msg.text}
+                </div>
+              ))}
+            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const text = expertChatInput.trim();
+                if (!text) return;
+                setExpertChatMessages((prev) => {
+                  const existing = prev[expertChatOrder.id] || [
+                    { sender: 'expert', text: `Hello! Feel free to share any questions or customization notes for Order #${expertChatOrder.id}.` }
+                  ];
+                  return { ...prev, [expertChatOrder.id]: [...existing, { sender: 'user', text }] };
+                });
+                setExpertChatInput('');
+              }}
+              style={{ display: 'flex', gap: '8px' }}
+            >
+              <input
+                type="text"
+                placeholder="Write a message to your assigned professional..."
+                value={expertChatInput}
+                onChange={(e) => setExpertChatInput(e.target.value)}
+                style={{ flex: 1, padding: '9px 12px', borderRadius: '10px', border: '1px solid ' + borderColor, background: bgInput, color: colorTextPrimary, fontSize: '0.85rem', outline: 'none' }}
+              />
+              <button type="submit" className="btn btn-primary" style={{ padding: '9px 16px', fontSize: '0.84rem' }}>Send</button>
+            </form>
+          </div>
+        </div>,
+        document.body
       )}
 
     </div>
